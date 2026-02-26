@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuclear Decay Animation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        canvas { display: block; width: 100%; border-radius: 8px; border: 1px solid #e2e8f0; background: #fafbfc; margin-bottom: 10px; }
+        .btn-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; flex-wrap: wrap; }
+        .decay-btn { font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 700; padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; transition: all 0.15s; color: #fff; }
+        .decay-btn.alpha { background: #e74c3c; }
+        .decay-btn.beta { background: #3498db; }
+        .decay-btn.gamma { background: #9b59b6; }
+        .decay-btn:hover { transform: scale(1.04); }
+        .decay-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .reset-btn { font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600; padding: 6px 14px; border-radius: 5px; border: 2px solid #637EA1; background: #fff; color: #637EA1; cursor: pointer; }
+        .equation { font-family: 'Outfit', sans-serif; font-size: 0.9rem; text-align: center; padding: 10px; background: #F5E6E8; border-radius: 6px; margin-bottom: 8px; min-height: 42px; display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+        .equation .nuclide { display: inline-flex; flex-direction: column; align-items: flex-start; position: relative; padding-left: 18px; margin: 0 4px; }
+        .equation .nuclide .mass { font-size: 0.7rem; font-weight: 700; position: absolute; left: 0; top: -2px; }
+        .equation .nuclide .atomic { font-size: 0.7rem; font-weight: 700; position: absolute; left: 0; bottom: -2px; }
+        .equation .nuclide .symbol { font-size: 1.05rem; font-weight: 700; color: #637EA1; }
+        .equation .arrow { font-size: 1.1rem; color: #4a5568; margin: 0 4px; }
+        .readings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+        .reading-card { background: #F5E6E8; border-radius: 6px; padding: 8px 10px; text-align: center; }
+        .reading-card .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: #637EA1; margin-top: 2px; }
+        .legend { display: flex; gap: 12px; justify-content: center; margin-top: 6px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.72rem; color: #4a5568; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nuclear Decay: Alpha, Beta, Gamma</h1>
+        <canvas id="decayCanvas" width="550" height="320"></canvas>
+        <div class="btn-row">
+            <button class="decay-btn alpha" id="btnAlpha">Alpha Decay (&alpha;)</button>
+            <button class="decay-btn beta" id="btnBeta">Beta Decay (&beta;)</button>
+            <button class="decay-btn gamma" id="btnGamma">Gamma Decay (&gamma;)</button>
+            <button class="reset-btn" id="btnReset">Reset</button>
+        </div>
+        <div class="equation" id="equationDisplay">Select a decay type to begin</div>
+        <div class="readings">
+            <div class="reading-card"><div class="label">Element</div><div class="value" id="dispElement">U</div></div>
+            <div class="reading-card"><div class="label">Atomic Number (Z)</div><div class="value" id="dispZ">92</div></div>
+            <div class="reading-card"><div class="label">Mass Number (A)</div><div class="value" id="dispA">238</div></div>
+        </div>
+        <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#e74c3c;"></div> Proton</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#4a5568;"></div> Neutron</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#3498db;"></div> Electron</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#9b59b6;"></div> Gamma Ray</div>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('decayCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width; H = 320;
+            canvas.width = W * dpr; canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); drawStatic(); });
+
+        // Element lookup (simplified)
+        const elements = {
+            1:'H',2:'He',3:'Li',4:'Be',5:'B',6:'C',7:'N',8:'O',9:'F',10:'Ne',
+            11:'Na',12:'Mg',13:'Al',14:'Si',15:'P',16:'S',17:'Cl',18:'Ar',19:'K',20:'Ca',
+            26:'Fe',29:'Cu',30:'Zn',38:'Sr',43:'Tc',44:'Ru',53:'I',54:'Xe',55:'Cs',56:'Ba',
+            82:'Pb',83:'Bi',84:'Po',85:'At',86:'Rn',87:'Fr',88:'Ra',89:'Ac',90:'Th',91:'Pa',92:'U',93:'Np',94:'Pu'
+        };
+        function getSymbol(z) { return elements[z] || 'X'; }
+
+        let Z = 92, A = 238;
+        let animating = false;
+        let animFrames = [];
+        let animFrame = 0;
+
+        // Nucleon positions in the nucleus cluster
+        function generateNucleons(z, a) {
+            const n = Math.min(a, 40); // limit visual nucleons for clarity
+            const protons = Math.min(z, Math.round(n * z / a));
+            const neutrons = n - protons;
+            const nucleons = [];
+            const r = 5;
+            // Arrange in a rough circle cluster
+            const layers = Math.ceil(Math.sqrt(n));
+            let idx = 0;
+            for (let ring = 0; idx < n; ring++) {
+                if (ring === 0) {
+                    nucleons.push({ x: 0, y: 0, type: idx < protons ? 'p' : 'n' });
+                    idx++;
+                } else {
+                    const count = Math.min(ring * 6, n - idx);
+                    for (let i = 0; i < count && idx < n; i++) {
+                        const angle = (i / count) * Math.PI * 2 + ring * 0.3;
+                        const dist = ring * r * 1.9;
+                        nucleons.push({
+                            x: Math.cos(angle) * dist,
+                            y: Math.sin(angle) * dist,
+                            type: idx < protons ? 'p' : 'n'
+                        });
+                        idx++;
+                    }
+                }
+            }
+            return nucleons;
+        }
+
+        function drawNucleus(cx, cy, nucleons, scale) {
+            scale = scale || 1;
+            for (const nuc of nucleons) {
+                const x = cx + nuc.x * scale;
+                const y = cy + nuc.y * scale;
+                ctx.beginPath();
+                ctx.arc(x, y, 4.5 * scale, 0, Math.PI * 2);
+                ctx.fillStyle = nuc.type === 'p' ? '#e74c3c' : '#4a5568';
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 0.8 * scale;
+                ctx.stroke();
+            }
+        }
+
+        function drawStatic() {
+            ctx.clearRect(0, 0, W, H);
+            const cx = W * 0.35, cy = H / 2;
+            const nucleons = generateNucleons(Z, A);
+            drawNucleus(cx, cy, nucleons);
+
+            // Label
+            ctx.font = "600 12px 'Outfit'";
+            ctx.fillStyle = '#637EA1';
+            ctx.textAlign = 'center';
+            ctx.fillText(getSymbol(Z) + '-' + A, cx, cy + 55);
+
+            document.getElementById('dispElement').textContent = getSymbol(Z);
+            document.getElementById('dispZ').textContent = Z;
+            document.getElementById('dispA').textContent = A;
+        }
+
+        function animateDecay(type) {
+            if (animating) return;
+
+            const oldZ = Z, oldA = A;
+            let newZ, newA;
+            let emittedParticle;
+
+            if (type === 'alpha') {
+                if (A < 4 || Z < 2) return;
+                newZ = Z - 2; newA = A - 4;
+                emittedParticle = 'alpha';
+            } else if (type === 'beta') {
+                if (A < 1) return;
+                newZ = Z + 1; newA = A;
+                emittedParticle = 'beta';
+            } else {
+                newZ = Z; newA = A;
+                emittedParticle = 'gamma';
+            }
+
+            animating = true;
+            const btns = document.querySelectorAll('.decay-btn');
+            btns.forEach(b => b.disabled = true);
+
+            const cx = W * 0.35, cy = H / 2;
+            const oldNucleons = generateNucleons(oldZ, oldA);
+            const newNucleons = generateNucleons(newZ, newA);
+
+            const totalFrames = 90;
+            let frame = 0;
+
+            function renderFrame() {
+                ctx.clearRect(0, 0, W, H);
+                const t = frame / totalFrames;
+                const easeT = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+                // Draw parent nucleus (shrinks slightly for alpha)
+                if (type === 'alpha') {
+                    // Interpolate between old and new nucleus
+                    const currentNucleons = t < 0.3 ? oldNucleons : newNucleons;
+                    drawNucleus(cx, cy, currentNucleons);
+
+                    // Alpha particle flying out
+                    if (t > 0.2) {
+                        const at = (t - 0.2) / 0.8;
+                        const ax = cx + at * (W * 0.5);
+                        const ay = cy - at * 60 + Math.sin(at * 4) * 10;
+                        // Draw alpha particle (2p + 2n cluster)
+                        const alphaParticles = [
+                            { x: -5, y: -5, type: 'p' }, { x: 5, y: -5, type: 'p' },
+                            { x: -5, y: 5, type: 'n' }, { x: 5, y: 5, type: 'n' }
+                        ];
+                        for (const p of alphaParticles) {
+                            ctx.beginPath();
+                            ctx.arc(ax + p.x, ay + p.y, 4, 0, Math.PI * 2);
+                            ctx.fillStyle = p.type === 'p' ? '#e74c3c' : '#4a5568';
+                            ctx.fill();
+                            ctx.strokeStyle = '#fff'; ctx.lineWidth = 0.8; ctx.stroke();
+                        }
+                        // Label
+                        ctx.font = "600 11px 'Outfit'"; ctx.fillStyle = '#e74c3c';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('\u03B1 particle', ax, ay + 22);
+                        ctx.font = "500 9px 'Outfit'";
+                        ctx.fillText('(He-4)', ax, ay + 34);
+                    }
+                } else if (type === 'beta') {
+                    const currentNucleons = t < 0.3 ? oldNucleons : newNucleons;
+                    drawNucleus(cx, cy, currentNucleons);
+
+                    // Beta particle (electron) flying out
+                    if (t > 0.2) {
+                        const bt = (t - 0.2) / 0.8;
+                        const bx = cx + bt * (W * 0.5);
+                        const by = cy + bt * 50 - Math.sin(bt * 6) * 15;
+                        ctx.beginPath();
+                        ctx.arc(bx, by, 4, 0, Math.PI * 2);
+                        ctx.fillStyle = '#3498db'; ctx.fill();
+                        // Trail
+                        ctx.strokeStyle = '#3498db40'; ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        for (let i = 0; i <= 20; i++) {
+                            const tt = bt * (i / 20);
+                            const tx = cx + tt * (W * 0.5);
+                            const ty = cy + tt * 50 - Math.sin(tt * 6) * 15;
+                            if (i === 0) ctx.moveTo(tx, ty); else ctx.lineTo(tx, ty);
+                        }
+                        ctx.stroke();
+                        ctx.font = "600 11px 'Outfit'"; ctx.fillStyle = '#3498db';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('\u03B2\u207B particle', bx, by + 18);
+                        ctx.font = "500 9px 'Outfit'";
+                        ctx.fillText('(electron)', bx, by + 30);
+                    }
+
+                    // Show neutron->proton conversion indicator
+                    if (t > 0.1 && t < 0.5) {
+                        ctx.font = "500 10px 'Outfit'"; ctx.fillStyle = '#F4D35E';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('n \u2192 p + e\u207B + \u03BD\u0305', cx, cy - 50);
+                    }
+                } else {
+                    // Gamma
+                    drawNucleus(cx, cy, oldNucleons);
+
+                    // Gamma ray - wavy line
+                    if (t > 0.1) {
+                        const gt = (t - 0.1) / 0.9;
+                        ctx.strokeStyle = '#9b59b6'; ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        const gLen = gt * W * 0.5;
+                        for (let i = 0; i <= 60; i++) {
+                            const frac = i / 60;
+                            const gx = cx + frac * gLen;
+                            const gy = cy - 30 + Math.sin(frac * 20) * 8;
+                            if (i === 0) ctx.moveTo(gx, gy); else ctx.lineTo(gx, gy);
+                        }
+                        ctx.stroke();
+                        ctx.font = "600 11px 'Outfit'"; ctx.fillStyle = '#9b59b6';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('\u03B3 ray', cx + gLen / 2, cy - 50);
+                        ctx.font = "500 9px 'Outfit'";
+                        ctx.fillText('(high-energy photon)', cx + gLen / 2, cy - 38);
+                    }
+                }
+
+                // Labels
+                ctx.font = "600 12px 'Outfit'"; ctx.fillStyle = '#637EA1';
+                ctx.textAlign = 'center';
+                if (t > 0.5) {
+                    ctx.fillText(getSymbol(newZ) + '-' + newA, cx, cy + 55);
+                } else {
+                    ctx.fillText(getSymbol(oldZ) + '-' + oldA, cx, cy + 55);
+                }
+
+                frame++;
+                if (frame <= totalFrames) {
+                    requestAnimationFrame(renderFrame);
+                } else {
+                    Z = newZ; A = newA;
+                    animating = false;
+                    btns.forEach(b => b.disabled = false);
+                    drawStatic();
+                    updateEquation(type, oldZ, oldA, newZ, newA);
+                }
+            }
+
+            renderFrame();
+        }
+
+        function updateEquation(type, oldZ, oldA, newZ, newA) {
+            const eq = document.getElementById('equationDisplay');
+            const oldSym = getSymbol(oldZ);
+            const newSym = getSymbol(newZ);
+
+            function nuclideHTML(sym, z, a) {
+                return `<span class="nuclide"><span class="mass">${a}</span><span class="atomic">${z}</span><span class="symbol">${sym}</span></span>`;
+            }
+
+            if (type === 'alpha') {
+                eq.innerHTML = nuclideHTML(oldSym, oldZ, oldA) +
+                    '<span class="arrow">&rarr;</span>' +
+                    nuclideHTML(newSym, newZ, newA) +
+                    ' + ' +
+                    nuclideHTML('He', 2, 4) +
+                    ' <span style="font-size:0.8rem;color:#4a5568;">(&alpha;)</span>';
+            } else if (type === 'beta') {
+                eq.innerHTML = nuclideHTML(oldSym, oldZ, oldA) +
+                    '<span class="arrow">&rarr;</span>' +
+                    nuclideHTML(newSym, newZ, newA) +
+                    ' + ' +
+                    nuclideHTML('e', -1, 0) +
+                    ' + <span style="font-size:0.8rem;color:#4a5568;">\u03BD\u0305 (&beta;\u207B)</span>';
+            } else {
+                eq.innerHTML = nuclideHTML(oldSym, oldZ, oldA) +
+                    '<span class="arrow">&rarr;</span>' +
+                    nuclideHTML(newSym, newZ, newA) +
+                    ' + <span style="font-size:0.8rem;color:#9b59b6;">&gamma;</span>';
+            }
+        }
+
+        document.getElementById('btnAlpha').addEventListener('click', () => animateDecay('alpha'));
+        document.getElementById('btnBeta').addEventListener('click', () => animateDecay('beta'));
+        document.getElementById('btnGamma').addEventListener('click', () => animateDecay('gamma'));
+        document.getElementById('btnReset').addEventListener('click', () => {
+            if (animating) return;
+            Z = 92; A = 238;
+            document.getElementById('equationDisplay').textContent = 'Select a decay type to begin';
+            drawStatic();
+        });
+
+        drawStatic();
+    </script>
+</body>
+</html>

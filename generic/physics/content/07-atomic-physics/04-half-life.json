@@ -1,5 +1,1911 @@
 {
   "title": "Half-Life",
-  "content": "# Half-Life\n\n## Introduction\n\nRadioactive decay is random—we can't predict when a particular nucleus will decay. However, for large numbers of nuclei, we can predict how many will decay in a given time. Half-life is the key concept that allows us to make these predictions and has important applications from carbon dating to nuclear medicine.\n\n## Key Concepts\n\n### What is Half-Life?\n\n**Half-life** is the time taken for half of the radioactive nuclei in a sample to decay.\n\nAlternatively: the time for the activity (or count rate) to halve.\n\nSymbol: $t_{1/2}$\n\n### Properties of Half-Life\n\n- Constant for a given isotope\n- Not affected by temperature, pressure, or chemical state\n- Different isotopes have different half-lives\n- Ranges from fractions of a second to billions of years\n\n### Examples of Half-Lives\n\n| Isotope | Half-Life | Use |\n|---------|-----------|-----|\n| Polonium-214 | 0.00016 s | — |\n| Technetium-99m | 6 hours | Medical imaging |\n| Iodine-131 | 8 days | Thyroid treatment |\n| Cobalt-60 | 5.3 years | Radiotherapy |\n| Carbon-14 | 5730 years | Archaeological dating |\n| Uranium-238 | 4.5 billion years | Geological dating |\n\n## Decay Curves\n\n### The Decay Pattern\n\nAfter each half-life, the quantity (number of nuclei, activity, or count rate) halves:\n\n| Time | Fraction Remaining |\n|------|--------------------|\n| 0 | 1 (100%) |\n| 1 half-life | 1/2 (50%) |\n| 2 half-lives | 1/4 (25%) |\n| 3 half-lives | 1/8 (12.5%) |\n| 4 half-lives | 1/16 (6.25%) |\n| 5 half-lives | 1/32 (3.125%) |\n\n### Graphical Representation\n\n[GRAPH: Exponential decay curve showing activity vs time, with half-life marked]\n\nThe graph is a smooth exponential curve, not a stepped line.\n\n### Mathematical Relationship\n\nAfter $n$ half-lives:\n\n$$N = N_0 \\times \\left(\\frac{1}{2}\\right)^n$$\n\nWhere:\n- $N$ = remaining quantity\n- $N_0$ = initial quantity\n- $n$ = number of half-lives\n\n## Finding Half-Life from a Graph\n\n### Method\n\n1. Pick any value on the y-axis\n2. Find the corresponding time\n3. Find the time when the value is half\n4. The difference in time is one half-life\n\n### Improving Accuracy\n\n- Repeat for different starting points\n- Take an average\n- Use larger sections of the graph\n\n## Worked Examples\n\n**Example 1:** A radioactive sample has an activity of 800 Bq. After 3 hours, the activity is 100 Bq. Calculate the half-life.\n\n**Solution:**\n800 → 400 → 200 → 100\n\nThe activity has halved 3 times.\n3 half-lives = 3 hours\nHalf-life = 1 hour\n\n**Example 2:** Carbon-14 has a half-life of 5730 years. A sample originally had 1200 atoms of C-14. How many remain after 17,190 years?\n\n**Solution:**\nNumber of half-lives = 17190 / 5730 = 3\n\n$$N = 1200 \\times \\left(\\frac{1}{2}\\right)^3 = 1200 \\times \\frac{1}{8} = 150 \\text{ atoms}$$\n\n**Example 3:** A sample has activity 640 Bq. After 28 days it has activity 40 Bq. Calculate the half-life.\n\n**Solution:**\n640 → 320 → 160 → 80 → 40\n\nHalved 4 times in 28 days.\nHalf-life = 28/4 = 7 days\n\n**Example 4:** The count rate from a source is 480 counts/minute. The background count is 30 counts/minute. After 2 hours, the count rate is 90 counts/minute. Calculate the half-life.\n\n**Solution:**\nCorrected initial = 480 − 30 = 450 counts/minute\nCorrected final = 90 − 30 = 60 counts/minute\n\n450 → 225 → 112.5 → 56.25 ≈ 60\n\nApproximately 3 half-lives in 2 hours.\nHalf-life ≈ 40 minutes\n\n**Example 5:** Iodine-131 has a half-life of 8 days. A patient receives a dose with activity 400 MBq. What will the activity be after 24 days?\n\n**Solution:**\nNumber of half-lives = 24/8 = 3\n\n$$A = 400 \\times \\left(\\frac{1}{2}\\right)^3 = 400 \\times \\frac{1}{8} = 50 \\text{ MBq}$$\n\n## Radioactive Dating\n\n### Carbon Dating\n\n- Living things contain carbon-14\n- When they die, C-14 decays with half-life 5730 years\n- Measuring remaining C-14 gives age\n- Useful up to ~50,000 years\n\n### Example\n\nA wooden artifact has 1/8 of the original C-14 activity.\n\n1/8 = (1/2)³ → 3 half-lives\n\nAge = 3 × 5730 = 17,190 years\n\n### Uranium Dating\n\n- Uranium-238 decays to lead-206\n- Half-life: 4.5 billion years\n- Used for very old rocks\n- Compare U-238 to Pb-206 ratio\n\n## Random Nature of Decay\n\n### Why Decay is Random\n\n- Each nucleus has a certain probability of decaying\n- We cannot predict which nuclei will decay\n- Large numbers give predictable averages\n- Individual behavior is random\n\n### Practical Implications\n\n- Count rates fluctuate around an average\n- Longer counting times give more reliable results\n- Statistical analysis needed for accurate measurements\n\n## Common Misconceptions\n\n1. **\"After 2 half-lives, all nuclei have decayed\"** — After 2 half-lives, 1/4 remain. Decay continues indefinitely.\n\n2. **\"Half-life is half the life of the sample\"** — Half-life is the time for half to decay, not when the sample is gone.\n\n3. **\"We can predict exactly when each nucleus decays\"** — Decay is random. We can only predict probabilities.\n\n4. **\"Half-life changes with temperature\"** — Nuclear properties are unaffected by physical conditions.\n\n5. **\"After many half-lives, exactly zero remain\"** — Theoretically, some nuclei always remain. Practically, it becomes negligible.\n\n## Practice Problems\n\n1. A sample has activity 800 Bq. The half-life is 2 hours. Calculate the activity after:\n   a) 2 hours\n   b) 4 hours\n   c) 8 hours\n\n2. A radioactive source has a count rate of 1200 counts/minute. After 30 minutes, the count rate is 150 counts/minute. Calculate the half-life.\n\n3. Carbon-14 has a half-life of 5730 years. A bone contains 1/4 of its original C-14. How old is it?\n\n4. A sample contains 6.4 × 10¹⁰ atoms of a radioactive isotope. How many remain after 4 half-lives?\n\n5. A radioactive source has activity 1600 Bq. How many half-lives until the activity drops below 100 Bq?\n\n6. From a decay graph, the count rate drops from 400 to 200 counts/s in 15 minutes. What is the half-life?\n\n7. Explain why radioactive decay is described as random and spontaneous.\n\n## Summary\n\n- Half-life ($t_{1/2}$): time for half of nuclei to decay\n- Constant for each isotope, unaffected by conditions\n- After $n$ half-lives: $N = N_0 \\times (1/2)^n$\n- Decay curve is exponential\n- Half-life found from graph by measuring time for value to halve\n- Applications: dating (carbon, uranium), medicine, nuclear safety\n- Decay is random (can't predict individual nuclei)\n- Always account for background radiation in measurements",
-  "order": 4
+  "order": 4,
+  "pageType": "markdown",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Half-Life"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Radioactive decay is random—we can't predict when a particular nucleus will decay. However, for large numbers of nuclei, we can predict how many will decay in a given time. Half-life is the key concept that allows us to make these predictions and has important applications from carbon dating to nuclear medicine."
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concept: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "Half-life is the time taken for half the radioactive nuclei in a sample to decay, or equivalently, the time for the activity to halve. It is constant for a given isotope and unaffected by external conditions."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "What is Half-Life?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Half-life",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is the time taken for half of the radioactive nuclei in a sample to decay."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Alternatively: the time for the activity (or count rate) to halve."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Symbol: "
+          },
+          {
+            "type": "text",
+            "text": "t_{1/2}",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Properties of Half-Life"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Constant for a given isotope"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Not affected by temperature, pressure, or chemical state"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Different isotopes have different half-lives"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Ranges from fractions of a second to billions of years"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Examples of Half-Lives"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "| Isotope | Half-Life | Use |\n|---------|-----------|-----|\n| Polonium-214 | 0.00016 s | — |\n| Technetium-99m | 6 hours | Medical imaging |\n| Iodine-131 | 8 days | Thyroid treatment |\n| Cobalt-60 | 5.3 years | Radiotherapy |\n| Carbon-14 | 5730 years | Archaeological dating |\n| Uranium-238 | 4.5 billion years | Geological dating |"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Decay Curves"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The Decay Pattern"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "After each half-life, the quantity (number of nuclei, activity, or count rate) halves:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "| Time | Fraction Remaining |\n|------|--------------------|\n| 0 | 1 (100%) |\n| 1 half-life | 1/2 (50%) |\n| 2 half-lives | 1/4 (25%) |\n| 3 half-lives | 1/8 (12.5%) |\n| 4 half-lives | 1/16 (6.25%) |\n| 5 half-lives | 1/32 (3.125%) |"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Graphical Representation"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "   Activity (Bq)\n     |\n 800 |*\n     |  *\n 600 |    *\n     |      *\n 400 |· · · · ·*· · · · · · · · · · ·\n     |          *\n 200 |· · · · · · · · *· · · · · · · ·\n     |                  *\n 100 |· · · · · · · · · · · · *· · · ·\n     |                          * * *\n  50 |· · · · · · · · · · · · · · · ·* *\n     |________________________________*___\n     0    t½    2t½   3t½   4t½   5t½\n                   Time\n\n   Each half-life: activity drops to half\n   Smooth exponential curve, never reaches zero"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The graph is a smooth exponential curve, not a stepped line."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Mathematical Relationship"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "After "
+          },
+          {
+            "type": "text",
+            "text": "n",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " half-lives:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "N = N_0 \\times \\left(\\frac{1}{2}\\right)^n"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Where:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "N",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = remaining quantity"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "N_0",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = initial quantity"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "n",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = number of half-lives"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Finding Half-Life from a Graph"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Method"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Pick any value on the y-axis"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Find the corresponding time"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Find the time when the value is half"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The difference in time is one half-life"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Improving Accuracy"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Repeat for different starting points"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Take an average"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Use larger sections of the graph"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-half-life"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A radioactive sample has an activity of 800 Bq. After 3 hours, the activity is 100 Bq. Calculate the half-life."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " 800 → 400 → 200 → 100"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The activity has halved 3 times. 3 half-lives = 3 hours Half-life = 1 hour"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Carbon-14 has a half-life of 5730 years. A sample originally had 1200 atoms of C-14. How many remain after 17,190 years?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Number of half-lives = 17190 / 5730 = 3"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "N = 1200 \\times \\left(\\frac{1}{2}\\right)^3 = 1200 \\times \\frac{1}{8} = 150 \\text{ atoms}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 3:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A sample has activity 640 Bq. After 28 days it has activity 40 Bq. Calculate the half-life."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " 640 → 320 → 160 → 80 → 40"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Halved 4 times in 28 days. Half-life = 28/4 = 7 days"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 4:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " The count rate from a source is 480 counts/minute. The background count is 30 counts/minute. After 2 hours, the count rate is 90 counts/minute. Calculate the half-life."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Corrected initial = 480 − 30 = 450 counts/minute Corrected final = 90 − 30 = 60 counts/minute"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "450 → 225 → 112.5 → 56.25 ≈ 60"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Approximately 3 half-lives in 2 hours. Half-life ≈ 40 minutes"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 5:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Iodine-131 has a half-life of 8 days. A patient receives a dose with activity 400 MBq. What will the activity be after 24 days?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Number of half-lives = 24/8 = 3"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "A = 400 \\times \\left(\\frac{1}{2}\\right)^3 = 400 \\times \\frac{1}{8} = 50 \\text{ MBq}"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Radioactive Dating"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Carbon Dating"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Living things contain carbon-14"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "When they die, C-14 decays with half-life 5730 years"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Measuring remaining C-14 gives age"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Useful up to ~50,000 years"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A wooden artifact has 1/8 of the original C-14 activity."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "1/8 = (1/2)³ → 3 half-lives"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Age = 3 × 5730 = 17,190 years"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Uranium Dating"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Uranium-238 decays to lead-206"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Half-life: 4.5 billion years"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Used for very old rocks"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Compare U-238 to Pb-206 ratio"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Random Nature of Decay"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Why Decay is Random"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Each nucleus has a certain probability of decaying"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "We cannot predict which nuclei will decay"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Large numbers give predictable averages"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Individual behavior is random"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practical Implications"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Count rates fluctuate around an average"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Longer counting times give more reliable results"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Statistical analysis needed for accurate measurements"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-half-life-2"
+        }
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Exam Tip: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "To find the half-life from a decay graph, pick any starting activity on the y-axis, find half that value, then read across to the curve and down to the time axis. The difference in time is the half-life. Repeat at different starting points and average for a more reliable result."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Misconceptions"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"After 2 half-lives, all nuclei have decayed\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — After 2 half-lives, 1/4 remain. Decay continues indefinitely."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Half-life is half the life of the sample\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Half-life is the time for half to decay, not when the sample is gone."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"We can predict exactly when each nucleus decays\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Decay is random. We can only predict probabilities."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Half-life changes with temperature\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Nuclear properties are unaffected by physical conditions."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"After many half-lives, exactly zero remain\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Theoretically, some nuclei always remain. Practically, it becomes negligible."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Problems"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the activity of a sample that starts at 800 Bq with a half-life of 2 hours after: a) 2 hours b) 4 hours c) 8 hours"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the half-life of a radioactive source whose count rate drops from 1200 counts/minute to 150 counts/minute in 30 minutes."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the age of a bone that contains 1/4 of its original carbon-14, given that C-14 has a half-life of 5730 years."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate how many atoms remain from a sample of 6.4 × 10¹⁰ radioactive atoms after 4 half-lives."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate how many half-lives are needed for a source with activity 1600 Bq to drop below 100 Bq."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "State the half-life of a source if a decay graph shows the count rate dropping from 400 to 200 counts/s in 15 minutes."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Explain why radioactive decay is described as random and spontaneous."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Remember: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "After n half-lives, the fraction remaining is (1/2)^n. So after 1 half-life: 1/2 remains; after 2: 1/4; after 3: 1/8; after 4: 1/16, and so on. A radioactive sample never fully decays to zero."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Half-life ("
+                  },
+                  {
+                    "type": "text",
+                    "text": "t_{1/2}",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "): time for half of nuclei to decay"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Constant for each isotope, unaffected by conditions"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "After "
+                  },
+                  {
+                    "type": "text",
+                    "text": "n",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " half-lives: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "N = N_0 \\times (1/2)^n",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Decay curve is exponential"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Half-life found from graph by measuring time for value to halve"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Applications: dating (carbon, uranium), medicine, nuclear safety"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Decay is random (can't predict individual nuclei)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Always account for background radiation in measurements"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer Key"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "a) After 2 hours (1 half-life): 800 x 1/2 = 400 Bq. b) After 4 hours (2 half-lives): 800 x (1/2)^2 = 200 Bq. c) After 8 hours (4 half-lives): 800 x (1/2)^4 = 50 Bq.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — divide by 2 for each half-life (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "1200 -> 600 -> 300 -> 150 = 3 halvings. Half-life = 30/3 = 10 minutes.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — count the number of halvings and divide total time (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "1/4 = (1/2)^2, so 2 half-lives have passed. Age = 2 x 5730 = 11,460 years.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — determine n from remaining fraction (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "N = 6.4 x 10^10 x (1/2)^4 = 6.4 x 10^10 x 1/16 = 4.0 x 10^9 atoms.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — apply halving formula (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "1600 -> 800 -> 400 -> 200 -> 100 -> 50. Need 5 half-lives to drop below 100 Bq (to 50 Bq).",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — 1600 x (1/2)^4 = 100 exactly, so need at least 5 (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The count rate halved (400 -> 200) in 15 minutes, so the half-life is 15 minutes.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — direct reading from halving (graph interpretation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "visualizationEmbed",
+        "attrs": {
+          "visualizationId": "phys-half-life-graph",
+          "displayMode": "expanded",
+          "customHeight": 500
+        }
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Radioactive decay is random because it is impossible to predict when any individual nucleus will decay; each has a fixed probability per unit time. It is spontaneous because it occurs without any external trigger and is not affected by temperature, pressure, or chemical conditions.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — nuclear process governed by quantum probability (reasoning)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

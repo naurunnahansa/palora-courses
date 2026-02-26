@@ -1,5 +1,2421 @@
 {
   "title": "Ohm's Law",
-  "content": "# Ohm's Law\n\n## Introduction\n\nIn 1827, German physicist Georg Ohm discovered a simple but powerful relationship between voltage, current, and resistance. Ohm's Law is one of the most important equations in electricity—it allows us to predict and control the behaviour of electric circuits.\n\n## Key Concepts\n\n### The Relationship\n\n**Ohm's Law** states that the current through a conductor is directly proportional to the potential difference across it, provided the temperature remains constant.\n\n$$V = IR$$\n\nWhere:\n- $V$ = potential difference (volts, V)\n- $I$ = current (amperes, A)\n- $R$ = resistance (ohms, Ω)\n\n### Rearranging Ohm's Law\n\nThe equation can be rearranged to find any quantity:\n\n$$V = IR \\quad\\quad I = \\frac{V}{R} \\quad\\quad R = \\frac{V}{I}$$\n\nMemory aid: Cover the quantity you want to find in the triangle:\n\n```\n    V\n  ─────\n  I × R\n```\n\n### Ohmic Conductors\n\nAn **ohmic conductor** obeys Ohm's Law:\n- Current is proportional to voltage\n- Resistance stays constant\n- Graph of V against I is a straight line through the origin\n\nExamples: metal wires, carbon resistors (at constant temperature)\n\n### Non-Ohmic Components\n\n**Non-ohmic components** do NOT have constant resistance:\n- Current is NOT proportional to voltage\n- Graph of V against I is curved or non-linear\n\nExamples: filament lamps, diodes, thermistors, LDRs\n\n## I-V Characteristics\n\n### Investigating I-V Characteristics\n\nCircuit setup:\n1. Variable power supply or variable resistor\n2. Ammeter in series with component\n3. Voltmeter in parallel with component\n4. Vary voltage and record current\n\n[DIAGRAM: Circuit for investigating I-V characteristics]\n\n### Resistor (Ohmic Conductor)\n\n- Straight line through origin\n- Constant gradient = constant resistance\n- Same behaviour for current in either direction\n\n[GRAPH: Straight line through origin for resistor]\n\n### Filament Lamp\n\n- Curve that becomes less steep at higher currents\n- Resistance INCREASES as current increases\n- Why? Filament heats up → more ion vibration → more resistance\n\n[GRAPH: Curved line for filament lamp]\n\n### Diode\n\n- Only conducts in one direction (forward bias)\n- Almost no current in reverse direction\n- Threshold voltage (~0.7 V for silicon) before it conducts\n\n[GRAPH: Diode characteristic showing forward conduction, reverse blocking]\n\n### Thermistor\n\n**NTC (Negative Temperature Coefficient) thermistor:**\n- Resistance DECREASES as temperature increases\n- More charge carriers freed at higher temperatures\n- Used in temperature sensors and circuits\n\n### LDR (Light Dependent Resistor)\n\n- Resistance DECREASES as light intensity increases\n- Light frees more charge carriers\n- Used in automatic lighting systems\n\n## Worked Examples\n\n**Example 1:** Calculate the current through a 20 Ω resistor when connected to a 12 V supply.\n\n**Solution:**\n$$I = \\frac{V}{R} = \\frac{12}{20} = 0.6 \\text{ A}$$\n\n**Example 2:** A current of 2.5 A flows through a resistor when the p.d. is 10 V. Find the resistance.\n\n**Solution:**\n$$R = \\frac{V}{I} = \\frac{10}{2.5} = 4 \\text{ Ω}$$\n\n**Example 3:** What voltage is needed to drive a current of 0.5 A through a 100 Ω resistor?\n\n**Solution:**\n$$V = IR = 0.5 \\times 100 = 50 \\text{ V}$$\n\n**Example 4:** A lamp is connected to a 6 V supply. When the lamp is cold, its resistance is 10 Ω. What is the initial current? After warming up, the current is 0.3 A. What is the lamp's resistance when hot?\n\n**Solution:**\nCold: $I = V/R = 6/10 = 0.6$ A\n\nHot: $R = V/I = 6/0.3 = 20$ Ω\n\nThe resistance has doubled as the lamp heated up.\n\n**Example 5:** A 12 V battery is connected to two resistors in series: 4 Ω and 8 Ω. Calculate the current and the p.d. across each resistor.\n\n**Solution:**\nTotal resistance: $R = 4 + 8 = 12$ Ω\n\nCurrent: $I = V/R = 12/12 = 1$ A\n\nP.d. across 4 Ω: $V = IR = 1 \\times 4 = 4$ V\n\nP.d. across 8 Ω: $V = IR = 1 \\times 8 = 8$ V\n\nCheck: $4 + 8 = 12$ V ✓\n\n## Applications\n\n### Voltage Dividers\n\nTwo resistors in series divide the supply voltage:\n\n$$V_{out} = V_{in} \\times \\frac{R_2}{R_1 + R_2}$$\n\nUsed with thermistors and LDRs to create temperature and light sensors.\n\n### Current Limiting\n\nResistors limit current to protect components:\n- LED circuits need resistors to prevent burnout\n- Calculate using Ohm's Law\n\n### Heating Elements\n\nHeaters use resistance to convert electrical energy to heat:\n- Kettles, toasters, electric heaters\n- High current × resistance = heating effect\n\n## Common Misconceptions\n\n1. **\"Ohm's Law applies to everything\"** — It only applies to ohmic conductors. Many components don't obey it.\n\n2. **\"V = IR is Ohm's Law\"** — The equation is just a definition of resistance. Ohm's Law is the statement that R is constant.\n\n3. **\"Current causes voltage\"** — Voltage (EMF) drives current. Voltage exists whether or not current flows.\n\n4. **\"Resistance is always constant\"** — Resistance can change with temperature, light, or other factors.\n\n5. **\"Diodes have infinite resistance in reverse\"** — They have very high resistance, but not infinite. At very high reverse voltages, they break down.\n\n## Practical Investigation\n\n### I-V Characteristics Experiment\n\n**Aim:** To investigate the relationship between current and voltage for different components.\n\n**Equipment:**\n- Power supply (variable)\n- Ammeter, voltmeter\n- Various components (resistor, lamp, diode)\n- Connecting wires\n\n**Method:**\n1. Connect component in circuit with ammeter in series, voltmeter in parallel\n2. Start at 0 V and gradually increase\n3. Record V and I at regular intervals\n4. Reverse the connection for negative values\n5. Plot V against I for each component\n\n**Analysis:**\n- Straight line through origin = ohmic\n- Curved or non-linear = non-ohmic\n- Calculate resistance at different points\n\n## Practice Problems\n\n1. A 6 V battery is connected to a 15 Ω resistor. Calculate the current.\n\n2. What is the resistance of a component if a current of 0.2 A flows when the p.d. is 5 V?\n\n3. A current of 3 A flows through a 4 Ω resistor. Calculate the potential difference.\n\n4. Explain why a filament lamp does not obey Ohm's Law.\n\n5. Two resistors of 6 Ω and 3 Ω are connected in series to a 9 V supply. Calculate:\n   a) The total resistance\n   b) The current in the circuit\n   c) The p.d. across each resistor\n\n6. Sketch the I-V characteristics for:\n   a) A resistor\n   b) A filament lamp\n   c) A diode\n\n7. A thermistor has resistance 5000 Ω at 20°C and 500 Ω at 100°C. If connected to a 10 V supply, calculate the current at each temperature.\n\n## Summary\n\n- Ohm's Law: $V = IR$ (for ohmic conductors at constant temperature)\n- Ohmic conductors have constant resistance\n- I-V graph: straight line through origin = ohmic\n- Non-ohmic: filament lamps (R increases with T), diodes (one-way)\n- Thermistors: R decreases as temperature increases\n- LDRs: R decreases as light intensity increases\n- Rearrangements: $I = V/R$ and $R = V/I$\n- Applications: voltage dividers, current limiting, heating elements",
-  "order": 6
+  "order": 6,
+  "pageType": "markdown",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Ohm's Law"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In 1827, German physicist Georg Ohm discovered a simple but powerful relationship between voltage, current, and resistance. Ohm's Law is one of the most important equations in electricity—it allows us to predict and control the behaviour of electric circuits."
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concept: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "Ohm's Law states that the current through a conductor is directly proportional to the potential difference across it, provided the temperature remains constant. The formula is V = IR."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The Relationship"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Ohm's Law",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " states that the current through a conductor is directly proportional to the potential difference across it, provided the temperature remains constant."
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V = IR"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Where:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "V",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = potential difference (volts, V)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "I",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = current (amperes, A)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "R",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = resistance (ohms, Ω)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Rearranging Ohm's Law"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The equation can be rearranged to find any quantity:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V = IR \\quad\\quad I = \\frac{V}{R} \\quad\\quad R = \\frac{V}{I}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Memory aid: Cover the quantity you want to find in the triangle:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "    V\n  ─────\n  I × R"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Ohmic Conductors"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "An "
+          },
+          {
+            "type": "text",
+            "text": "ohmic conductor",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " obeys Ohm's Law:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current is proportional to voltage"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Resistance stays constant"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Graph of V against I is a straight line through the origin"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Examples: metal wires, carbon resistors (at constant temperature)"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Non-Ohmic Components"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Non-ohmic components",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " do NOT have constant resistance:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current is NOT proportional to voltage"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Graph of V against I is curved or non-linear"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Examples: filament lamps, diodes, thermistors, LDRs"
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-ohms-law"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "I-V Characteristics"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Investigating I-V Characteristics"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Circuit setup:"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Variable power supply or variable resistor"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Ammeter in series with component"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Voltmeter in parallel with component"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Vary voltage and record current"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "   + |---[A]---+---[Component]---+---| -\n     |         |                 |   |\n     |         +------[V]--------+   |\n     |                               |\n     |---[Variable resistor]----------\n\n   A = ammeter (series)\n   V = voltmeter (parallel with component)"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Resistor (Ohmic Conductor)"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Straight line through origin"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Constant gradient = constant resistance"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Same behaviour for current in either direction"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "  I (A)\n   |\n   |        /\n   |      /\n   |    /\n   |  /\n   |/\n   +----------> V (V)\n   Straight line through origin\n   Gradient = 1/R (constant)"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Filament Lamp"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Curve that becomes less steep at higher currents"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Resistance INCREASES as current increases"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Why? Filament heats up → more ion vibration → more resistance"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "  I (A)\n   |\n   |         ___---\n   |      _--\n   |    _-\n   |  _/\n   | /\n   |/\n   +----------> V (V)\n   Curve flattens: resistance\n   increases as filament heats up"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Diode"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Only conducts in one direction (forward bias)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Almost no current in reverse direction"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Threshold voltage (~0.7 V for silicon) before it conducts"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "  I (A)\n   |          /\n   |         /\n   |        /\n   |       |\n  ---------+----------> V (V)\n   |       ~0.7 V\n   |  (threshold)\n   |\n   Almost zero current\n   in reverse direction"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Thermistor"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "NTC (Negative Temperature Coefficient) thermistor:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Resistance DECREASES as temperature increases"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "More charge carriers freed at higher temperatures"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Used in temperature sensors and circuits"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "LDR (Light Dependent Resistor)"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Resistance DECREASES as light intensity increases"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Light frees more charge carriers"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Used in automatic lighting systems"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Calculate the current through a 20 Ω resistor when connected to a 12 V supply."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "I = \\frac{V}{R} = \\frac{12}{20} = 0.6 \\text{ A}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A current of 2.5 A flows through a resistor when the p.d. is 10 V. Find the resistance."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "R = \\frac{V}{I} = \\frac{10}{2.5} = 4 \\text{ Ω}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 3:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " What voltage is needed to drive a current of 0.5 A through a 100 Ω resistor?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V = IR = 0.5 \\times 100 = 50 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 4:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A lamp is connected to a 6 V supply. When the lamp is cold, its resistance is 10 Ω. What is the initial current? After warming up, the current is 0.3 A. What is the lamp's resistance when hot?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Cold: "
+          },
+          {
+            "type": "text",
+            "text": "I = V/R = 6/10 = 0.6",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Hot: "
+          },
+          {
+            "type": "text",
+            "text": "R = V/I = 6/0.3 = 20",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Ω"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The resistance has doubled as the lamp heated up."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 5:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A 12 V battery is connected to two resistors in series: 4 Ω and 8 Ω. Calculate the current and the p.d. across each resistor."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Total resistance: "
+          },
+          {
+            "type": "text",
+            "text": "R = 4 + 8 = 12",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Ω"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Current: "
+          },
+          {
+            "type": "text",
+            "text": "I = V/R = 12/12 = 1",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "P.d. across 4 Ω: "
+          },
+          {
+            "type": "text",
+            "text": "V = IR = 1 \\times 4 = 4",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " V"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "P.d. across 8 Ω: "
+          },
+          {
+            "type": "text",
+            "text": "V = IR = 1 \\times 8 = 8",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " V"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Check: "
+          },
+          {
+            "type": "text",
+            "text": "4 + 8 = 12",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " V ✓"
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Exam Tip: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "Be careful with the V = IR triangle. Always identify which quantity you need to find, then rearrange the formula accordingly: V = IR, I = V/R, or R = V/I."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Applications"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Voltage Dividers"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Two resistors in series divide the supply voltage:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{out} = V_{in} \\times \\frac{R_2}{R_1 + R_2}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Used with thermistors and LDRs to create temperature and light sensors."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Current Limiting"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Resistors limit current to protect components:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "LED circuits need resistors to prevent burnout"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate using Ohm's Law"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Heating Elements"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Heaters use resistance to convert electrical energy to heat:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Kettles, toasters, electric heaters"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "High current × resistance = heating effect"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Real-World Link: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "LDRs (light-dependent resistors) and thermistors are non-ohmic components used extensively in automatic systems such as street lights, central heating thermostats, and fire alarms."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-ohms-law-2"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Misconceptions"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Ohm's Law applies to everything\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — It only applies to ohmic conductors. Many components don't obey it."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"V = IR is Ohm's Law\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — The equation is just a definition of resistance. Ohm's Law is the statement that R is constant."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Current causes voltage\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Voltage (EMF) drives current. Voltage exists whether or not current flows."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Resistance is always constant\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Resistance can change with temperature, light, or other factors."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Diodes have infinite resistance in reverse\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — They have very high resistance, but not infinite. At very high reverse voltages, they break down."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practical Investigation"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "I-V Characteristics Experiment"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Aim:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " To investigate the relationship between current and voltage for different components."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Equipment:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Power supply (variable)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Ammeter, voltmeter"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Various components (resistor, lamp, diode)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Connecting wires"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Method:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Connect component in circuit with ammeter in series, voltmeter in parallel"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Start at 0 V and gradually increase"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Record V and I at regular intervals"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Reverse the connection for negative values"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Plot V against I for each component"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Analysis:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Straight line through origin = ohmic"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Curved or non-linear = non-ohmic"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate resistance at different points"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Problems"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the current when a 6 V battery is connected to a 15 Ω resistor."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the resistance of a component through which a current of 0.2 A flows when the p.d. is 5 V."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the potential difference across a 4 Ω resistor when a current of 3 A flows through it."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Explain why a filament lamp does not obey Ohm's Law."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Two resistors of 6 Ω and 3 Ω are connected in series to a 9 V supply. Calculate the following: a) The total resistance b) The current in the circuit c) The p.d. across each resistor"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Sketch the I-V characteristic graph for each of the following: a) A resistor b) A filament lamp c) A diode"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the current at each temperature when a thermistor with resistance 5000 Ω at 20°C and 500 Ω at 100°C is connected to a 10 V supply."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Ohm's Law: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "V = IR",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (for ohmic conductors at constant temperature)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Ohmic conductors have constant resistance"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "I-V graph: straight line through origin = ohmic"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Non-ohmic: filament lamps (R increases with T), diodes (one-way)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Thermistors: R decreases as temperature increases"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "LDRs: R decreases as light intensity increases"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Rearrangements: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "I = V/R",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " and "
+                  },
+                  {
+                    "type": "text",
+                    "text": "R = V/I",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Applications: voltage dividers, current limiting, heating elements"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer Key"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "I = V/R = 6/15 = 0.4 A",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "R = V/I = 5/0.2 = 25 Ohm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "V = IR = 3 x 4 = 12 V",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "As current flows through the filament, it heats up. Higher temperature causes greater vibration of metal ions, increasing collisions with electrons and thus increasing resistance. Because resistance changes with current/voltage, the I-V graph is curved, not a straight line through the origin -- so it does not obey Ohm's Law.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (reasoning)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) R_total = 6 + 3 = 9 Ohm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " -- "
+                  },
+                  {
+                    "type": "text",
+                    "text": "(b) I = V/R = 9/9 = 1 A",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " -- "
+                  },
+                  {
+                    "type": "text",
+                    "text": "(c) V across 6 Ohm = IR = 1 x 6 = 6 V; V across 3 Ohm = 1 x 3 = 3 V. Check: 6 + 3 = 9 V.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) Resistor: straight line through the origin (both quadrants). (b) Filament lamp: curve through the origin that gets less steep at higher V (both quadrants, symmetrical). (c) Diode: almost no current for negative V; current begins to flow above threshold (~0.7 V for silicon) and rises steeply.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (sketching & recall)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "visualizationEmbed",
+        "attrs": {
+          "visualizationId": "phys-ohms-law",
+          "displayMode": "expanded",
+          "customHeight": 500
+        }
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "At 20 deg C: I = V/R = 10/5000 = 0.002 A = 2 mA. At 100 deg C: I = 10/500 = 0.02 A = 20 mA.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

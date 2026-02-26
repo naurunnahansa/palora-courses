@@ -1,5 +1,1548 @@
 {
   "title": "Physical Quantities and Units",
-  "content": "# Physical Quantities and Units\n\n## Introduction\n\nPhysics is the study of the natural world, and to describe it accurately we need to measure things. A **physical quantity** is any property that can be measured and expressed as a number with a unit. Understanding physical quantities and their units is fundamental to all of physics.\n\n## Key Concepts\n\n### What is a Physical Quantity?\n\nA physical quantity consists of two parts:\n1. A **numerical value** (the magnitude)\n2. A **unit** (what is being measured)\n\nFor example, a length of 5 metres has:\n- Numerical value: 5\n- Unit: metres (m)\n\n### SI Units (International System of Units)\n\nScientists worldwide use a standardised system called **SI units** (Système International). This ensures everyone uses the same measurements.\n\n#### Base SI Units\n\n| Quantity | Unit Name | Symbol |\n|----------|-----------|--------|\n| Length | metre | m |\n| Mass | kilogram | kg |\n| Time | second | s |\n| Electric current | ampere | A |\n| Temperature | kelvin | K |\n| Amount of substance | mole | mol |\n| Luminous intensity | candela | cd |\n\n#### Derived Units\n\nMany units are combinations of base units:\n\n| Quantity | Unit | Symbol | In Base Units |\n|----------|------|--------|---------------|\n| Force | newton | N | kg·m/s² |\n| Energy | joule | J | kg·m²/s² |\n| Power | watt | W | kg·m²/s³ |\n| Pressure | pascal | Pa | kg/(m·s²) |\n| Frequency | hertz | Hz | 1/s |\n\n### SI Prefixes\n\nPrefixes are used to express very large or very small quantities:\n\n| Prefix | Symbol | Factor | Example |\n|--------|--------|--------|--------|\n| tera | T | $10^{12}$ | THz (terahertz) |\n| giga | G | $10^{9}$ | GW (gigawatt) |\n| mega | M | $10^{6}$ | MHz (megahertz) |\n| kilo | k | $10^{3}$ | km (kilometre) |\n| centi | c | $10^{-2}$ | cm (centimetre) |\n| milli | m | $10^{-3}$ | mm (millimetre) |\n| micro | μ | $10^{-6}$ | μm (micrometre) |\n| nano | n | $10^{-9}$ | nm (nanometre) |\n\n## Mathematical Relationships\n\n### Converting Between Units\n\nTo convert between units, multiply or divide by the appropriate factor:\n\n$$1 \\text{ km} = 1000 \\text{ m} = 10^3 \\text{ m}$$\n\n$$1 \\text{ mm} = 0.001 \\text{ m} = 10^{-3} \\text{ m}$$\n\n### Standard Form\n\nVery large or small numbers are written in standard form:\n\n$$a \\times 10^n$$\n\nWhere $1 \\leq a < 10$ and $n$ is an integer.\n\nExamples:\n- Speed of light: $3.0 \\times 10^8$ m/s\n- Electron mass: $9.1 \\times 10^{-31}$ kg\n\n## Worked Examples\n\n**Example 1:** Convert 2.5 km to metres.\n\n**Solution:**\n$$2.5 \\text{ km} = 2.5 \\times 1000 \\text{ m} = 2500 \\text{ m}$$\n\n**Example 2:** Convert 450 mm to metres.\n\n**Solution:**\n$$450 \\text{ mm} = 450 \\times 10^{-3} \\text{ m} = 0.45 \\text{ m}$$\n\n**Example 3:** Express 0.000025 m in standard form and convert to micrometres.\n\n**Solution:**\nIn standard form: $2.5 \\times 10^{-5}$ m\n\nIn micrometres: $2.5 \\times 10^{-5} \\text{ m} = 25 \\text{ μm}$\n\n## Significant Figures\n\n### Rules for Significant Figures\n\n1. All non-zero digits are significant: 123 has 3 s.f.\n2. Zeros between non-zero digits are significant: 102 has 3 s.f.\n3. Leading zeros are not significant: 0.0025 has 2 s.f.\n4. Trailing zeros after a decimal point are significant: 2.50 has 3 s.f.\n\n### Calculations with Significant Figures\n\nYour answer should have the same number of significant figures as the least precise measurement used.\n\n## Real-World Applications\n\n- **Engineering:** Precise measurements in construction and manufacturing\n- **Medicine:** Drug dosages measured in milligrams or micrograms\n- **Astronomy:** Distances measured in kilometres, light-years, or parsecs\n- **Electronics:** Component values in microfarads, nanohenries\n\n## Common Misconceptions\n\n1. **\"Weight is measured in kilograms\"** — Weight is a force, measured in newtons (N). Mass is measured in kilograms.\n\n2. **\"Centi means one hundredth everywhere\"** — It does! 1 cm = 0.01 m, but students often forget this when converting.\n\n3. **\"More decimal places means more accurate\"** — Precision is not the same as accuracy. A measurement can be precise but inaccurate.\n\n## Practice Problems\n\n1. Convert 3.2 km to:\n   a) metres\n   b) centimetres\n   c) millimetres\n\n2. Express the following in standard form:\n   a) 150,000,000 m\n   b) 0.00000067 s\n\n3. Convert 750 mg to kilograms.\n\n4. A measurement is recorded as 4.50 m. How many significant figures does this have, and why is the zero important?\n\n5. Calculate the area of a rectangle measuring 2.5 m by 3.25 m. Express your answer to the appropriate number of significant figures.\n\n## Summary\n\n- Physical quantities have a numerical value and a unit\n- SI units provide a standardised measurement system\n- The seven base SI units are: metre, kilogram, second, ampere, kelvin, mole, candela\n- Prefixes (kilo, milli, micro, etc.) express large and small quantities\n- Standard form expresses numbers as $a \\times 10^n$\n- Significant figures indicate the precision of a measurement\n- Always include units in your answers",
-  "order": 1
+  "order": 1,
+  "pageType": "markdown",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Physical Quantities and Units"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Physics is the study of the natural world, and to describe it accurately we need to measure things. A "
+          },
+          {
+            "type": "text",
+            "text": "physical quantity",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is any property that can be measured and expressed as a number with a unit. Understanding physical quantities and their units is fundamental to all of physics."
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Remember: ",
+                "marks": [{ "type": "bold" }]
+              },
+              {
+                "type": "text",
+                "text": "Every measurement in physics must include both a number and a unit. Writing '5' on its own is meaningless -- you must specify '5 metres', '5 seconds', or whatever quantity you are measuring."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "What is a Physical Quantity?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A physical quantity consists of two parts:"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A "
+                  },
+                  {
+                    "type": "text",
+                    "text": "numerical value",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (the magnitude)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A "
+                  },
+                  {
+                    "type": "text",
+                    "text": "unit",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (what is being measured)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "For example, a length of 5 metres has:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Numerical value: 5"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Unit: metres (m)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "SI Units (International System of Units)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Scientists worldwide use a standardised system called "
+          },
+          {
+            "type": "text",
+            "text": "SI units",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " (Système International). This ensures everyone uses the same measurements."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 4
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Base SI Units"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "| Quantity | Unit Name | Symbol |\n|----------|-----------|--------|\n| Length | metre | m |\n| Mass | kilogram | kg |\n| Time | second | s |\n| Electric current | ampere | A |\n| Temperature | kelvin | K |\n| Amount of substance | mole | mol |\n| Luminous intensity | candela | cd |"
+          }
+        ]
+      },
+      {
+        "type": "infoGrid",
+        "attrs": {
+          "title": "SI Base Units at a Glance",
+          "columns": 2,
+          "variant": "cards",
+          "items": [
+            {
+              "title": "Length",
+              "description": "Metre (m)",
+              "color": "primary",
+              "bullets": ["Base SI unit for distance", "1 km = 1000 m"]
+            },
+            {
+              "title": "Mass",
+              "description": "Kilogram (kg)",
+              "color": "secondary",
+              "bullets": ["Base SI unit (not the gram!)", "1 kg = 1000 g"]
+            },
+            {
+              "title": "Time",
+              "description": "Second (s)",
+              "color": "primary",
+              "bullets": ["Base SI unit for duration", "1 hour = 3600 s"]
+            },
+            {
+              "title": "Electric Current",
+              "description": "Ampere (A)",
+              "color": "secondary",
+              "bullets": ["Flow of electric charge", "Often shortened to 'amp'"]
+            },
+            {
+              "title": "Temperature",
+              "description": "Kelvin (K)",
+              "color": "primary",
+              "bullets": ["Absolute temperature scale", "0 K = -273.15 °C"]
+            },
+            {
+              "title": "Amount of Substance",
+              "description": "Mole (mol)",
+              "color": "secondary",
+              "bullets": ["Contains 6.02 x 10²³ particles", "Avogadro's number"]
+            }
+          ]
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 4
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Derived Units"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Many units are combinations of base units:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "| Quantity | Unit | Symbol | In Base Units |\n|----------|------|--------|---------------|\n| Force | newton | N | kg·m/s² |\n| Energy | joule | J | kg·m²/s² |\n| Power | watt | W | kg·m²/s³ |\n| Pressure | pascal | Pa | kg/(m·s²) |\n| Frequency | hertz | Hz | 1/s |"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "SI Prefixes"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Prefixes are used to express very large or very small quantities:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "| Prefix | Symbol | Factor | Example |\n|--------|--------|--------|--------|\n| tera | T | $10^{12}$ | THz (terahertz) |\n| giga | G | $10^{9}$ | GW (gigawatt) |\n| mega | M | $10^{6}$ | MHz (megahertz) |\n| kilo | k | $10^{3}$ | km (kilometre) |\n| centi | c | $10^{-2}$ | cm (centimetre) |\n| milli | m | $10^{-3}$ | mm (millimetre) |\n| micro | μ | $10^{-6}$ | μm (micrometre) |\n| nano | n | $10^{-9}$ | nm (nanometre) |"
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concept: ",
+                "marks": [{ "type": "bold" }]
+              },
+              {
+                "type": "text",
+                "text": "The SI system has seven base units (metre, kilogram, second, ampere, kelvin, mole, candela). All other units in physics are derived from combinations of these base units. For example, the newton (N) is equivalent to kg·m/s²."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-physical-quantities"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Mathematical Relationships"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Converting Between Units"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "To convert between units, multiply or divide by the appropriate factor:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "1 \\text{ km} = 1000 \\text{ m} = 10^3 \\text{ m}"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "1 \\text{ mm} = 0.001 \\text{ m} = 10^{-3} \\text{ m}"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Standard Form"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Very large or small numbers are written in standard form:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "a \\times 10^n"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Where "
+          },
+          {
+            "type": "text",
+            "text": "1 \\leq a < 10",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " and "
+          },
+          {
+            "type": "text",
+            "text": "n",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is an integer."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Examples:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Speed of light: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "3.0 \\times 10^8",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " m/s"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Electron mass: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "9.1 \\times 10^{-31}",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " kg"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Convert 2.5 km to metres."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "2.5 \\text{ km} = 2.5 \\times 1000 \\text{ m} = 2500 \\text{ m}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Convert 450 mm to metres."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "450 \\text{ mm} = 450 \\times 10^{-3} \\text{ m} = 0.45 \\text{ m}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 3:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Express 0.000025 m in standard form and convert to micrometres."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " In standard form: "
+          },
+          {
+            "type": "text",
+            "text": "2.5 \\times 10^{-5}",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " m"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In micrometres: "
+          },
+          {
+            "type": "text",
+            "text": "2.5 \\times 10^{-5} \\text{ m} = 25 \\text{ μm}",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Common Mistake: ",
+                "marks": [{ "type": "bold" }]
+              },
+              {
+                "type": "text",
+                "text": "When converting units, students often multiply when they should divide, or vice versa. Remember: converting to a smaller unit means the number gets bigger (e.g. 2.5 km = 2500 m), and converting to a larger unit means the number gets smaller (e.g. 450 mm = 0.45 m)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-physical-quantities-2"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Significant Figures"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Rules for Significant Figures"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "All non-zero digits are significant: 123 has 3 s.f."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Zeros between non-zero digits are significant: 102 has 3 s.f."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Leading zeros are not significant: 0.0025 has 2 s.f."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Trailing zeros after a decimal point are significant: 2.50 has 3 s.f."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Calculations with Significant Figures"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Your answer should have the same number of significant figures as the least precise measurement used."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Real-World Applications"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Engineering:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Precise measurements in construction and manufacturing"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Medicine:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Drug dosages measured in milligrams or micrograms"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Astronomy:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Distances measured in kilometres, light-years, or parsecs"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Electronics:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Component values in microfarads, nanohenries"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Misconceptions"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Weight is measured in kilograms\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Weight is a force, measured in newtons (N). Mass is measured in kilograms."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Centi means one hundredth everywhere\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — It does! 1 cm = 0.01 m, but students often forget this when converting."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"More decimal places means more accurate\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Precision is not the same as accuracy. A measurement can be precise but inaccurate."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Problems"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the result of converting 3.2 km to: a) metres b) centimetres c) millimetres"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Express the following in standard form: a) 150,000,000 m b) 0.00000067 s"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the value of 750 mg in kilograms."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "State how many significant figures the measurement 4.50 m has. Explain why the trailing zero is important."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the area of a rectangle measuring 2.5 m by 3.25 m. Express your answer to the appropriate number of significant figures."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Physical quantities have a numerical value and a unit"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "SI units provide a standardised measurement system"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The seven base SI units are: metre, kilogram, second, ampere, kelvin, mole, candela"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Prefixes (kilo, milli, micro, etc.) express large and small quantities"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Standard form expresses numbers as "
+                  },
+                  {
+                    "type": "text",
+                    "text": "a \\times 10^n",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Significant figures indicate the precision of a measurement"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Always include units in your answers"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer Key"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "a) 3200 m, b) 320,000 cm, c) 3,200,000 mm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Multiply by "
+                  },
+                  {
+                    "type": "text",
+                    "text": "10^3",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ", "
+                  },
+                  {
+                    "type": "text",
+                    "text": "10^5",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ", "
+                  },
+                  {
+                    "type": "text",
+                    "text": "10^6",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " respectively (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "a) $1.5 \\times 10^{8}$ m, b) $6.7 \\times 10^{-7}$ s",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Move decimal point and count places (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$7.5 \\times 10^{-4}$ kg (0.00075 kg)",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — "
+                  },
+                  {
+                    "type": "text",
+                    "text": "750 \\div 10^6 = 7.5 \\times 10^{-4}",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " kg (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "3 significant figures.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " The trailing zero after the decimal point indicates precision — it tells us the measurement was made to the nearest 0.01 m, not just 0.1 m (explanation with physics reasoning)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$8.1 \\text{ m}^2$",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — "
+                  },
+                  {
+                    "type": "text",
+                    "text": "2.5 \\times 3.25 = 8.125",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ", rounded to 2 s.f. (matching the least precise value, 2.5) (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

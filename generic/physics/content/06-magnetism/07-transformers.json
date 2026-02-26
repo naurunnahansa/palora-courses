@@ -1,5 +1,2786 @@
 {
   "title": "Transformers",
-  "content": "# Transformers\n\n## Introduction\n\nHow can electricity travel hundreds of kilometres from power stations to our homes without losing most of its energy? The answer involves transformers—devices that change AC voltage up or down. Transformers are essential to our power grid and are found in countless devices from phone chargers to substations.\n\n## Key Concepts\n\n### What is a Transformer?\n\nA **transformer** changes the voltage of an alternating current (AC) supply.\n\n- **Step-up transformer:** Increases voltage\n- **Step-down transformer:** Decreases voltage\n\nTransformers only work with AC—they cannot change DC voltage.\n\n### Structure of a Transformer\n\nA transformer has three main parts:\n\n**Primary coil:**\n- Connected to input (AC supply)\n- Has $n_p$ turns\n\n**Secondary coil:**\n- Connected to output (load)\n- Has $n_s$ turns\n- Electrically isolated from primary\n\n**Iron core:**\n- Soft iron, usually laminated\n- Links the two coils magnetically\n- Carries magnetic flux\n\n[DIAGRAM: Transformer with labelled primary, secondary, and core]\n\n## How Transformers Work\n\n### Step-by-Step\n\n1. AC flows through primary coil\n2. This creates a changing magnetic field\n3. Iron core concentrates and carries the field\n4. Changing flux passes through secondary coil\n5. By electromagnetic induction, voltage is induced in secondary\n6. If circuit is complete, current flows in secondary\n\n### Why AC is Essential\n\n- DC creates a constant magnetic field\n- Constant field means no change in flux\n- No change means no induced voltage\n- Transformers cannot work with DC\n\n## The Transformer Equation\n\n### Voltage Ratio\n\n$$\\frac{V_p}{V_s} = \\frac{n_p}{n_s}$$\n\nWhere:\n- $V_p$ = primary voltage (V)\n- $V_s$ = secondary voltage (V)\n- $n_p$ = number of turns on primary\n- $n_s$ = number of turns on secondary\n\n### Step-Up vs Step-Down\n\n**Step-up ($V_s > V_p$):**\n- $n_s > n_p$ (more turns on secondary)\n- Voltage increases\n\n**Step-down ($V_s < V_p$):**\n- $n_s < n_p$ (fewer turns on secondary)\n- Voltage decreases\n\n### Turns Ratio\n\nThe **turns ratio** is $n_p : n_s$\n\nExample: A 10:1 step-down transformer converts 230 V to 23 V.\n\n## Power in Transformers\n\n### Ideal Transformer\n\nFor a 100% efficient (ideal) transformer:\n\n$$P_p = P_s$$\n$$V_p I_p = V_s I_s$$\n\nPower in = Power out\n\n### Current Relationship\n\nRearranging:\n\n$$\\frac{I_p}{I_s} = \\frac{V_s}{V_p} = \\frac{n_s}{n_p}$$\n\n**Key insight:** If voltage goes UP, current goes DOWN (and vice versa).\n\n- Step-up transformer: higher voltage, lower current\n- Step-down transformer: lower voltage, higher current\n\n## Worked Examples\n\n**Example 1:** A transformer has 500 turns on the primary and 50 turns on the secondary. The input voltage is 230 V. Calculate the output voltage.\n\n**Solution:**\n$$\\frac{V_p}{V_s} = \\frac{n_p}{n_s}$$\n$$\\frac{230}{V_s} = \\frac{500}{50}$$\n$$\\frac{230}{V_s} = 10$$\n$$V_s = \\frac{230}{10} = 23 \\text{ V}$$\n\nThis is a step-down transformer (voltage decreased).\n\n**Example 2:** A phone charger converts 230 V mains to 5 V. If the primary has 920 turns, how many turns does the secondary have?\n\n**Solution:**\n$$\\frac{n_p}{n_s} = \\frac{V_p}{V_s}$$\n$$\\frac{920}{n_s} = \\frac{230}{5}$$\n$$\\frac{920}{n_s} = 46$$\n$$n_s = \\frac{920}{46} = 20 \\text{ turns}$$\n\n**Example 3:** A step-up transformer increases voltage from 25 kV to 400 kV for transmission. If the primary current is 800 A, calculate the secondary current (assuming 100% efficiency).\n\n**Solution:**\n$$V_p I_p = V_s I_s$$\n$$25000 \\times 800 = 400000 \\times I_s$$\n$$I_s = \\frac{25000 \\times 800}{400000} = \\frac{20000000}{400000} = 50 \\text{ A}$$\n\nVoltage increased by factor of 16, current decreased by factor of 16.\n\n**Example 4:** A transformer is 90% efficient. The input is 230 V at 2 A. Calculate the output power.\n\n**Solution:**\nInput power: $P_p = V_p I_p = 230 \\times 2 = 460$ W\n\nOutput power: $P_s = 0.90 \\times 460 = 414$ W\n\n## Energy Losses in Transformers\n\n### Sources of Energy Loss\n\n**Resistance heating:**\n- Coils have resistance\n- Current causes heating ($P = I^2R$)\n- Reduced by using thick, low-resistance wire\n\n**Eddy currents:**\n- Induced currents in the iron core\n- Cause heating in the core\n- Reduced by laminating the core (thin insulated sheets)\n\n**Magnetic flux leakage:**\n- Not all flux transfers to secondary\n- Reduced by good core design\n\n**Hysteresis:**\n- Energy lost magnetising and demagnetising core\n- Reduced by using soft iron\n\n### Improving Efficiency\n\n| Loss | Solution |\n|------|----------|\n| Resistance | Thick copper wire |\n| Eddy currents | Laminated core |\n| Flux leakage | Tight core design |\n| Hysteresis | Soft iron core |\n\nGood transformers are over 99% efficient.\n\n## Applications\n\n### Power Transmission\n\nStep-up transformers at power stations:\n- Increase voltage to 275 kV or 400 kV\n- Reduce current for same power\n- Less energy lost in cables ($P = I^2R$)\n\nStep-down transformers at substations:\n- Reduce voltage for distribution\n- Eventually to 230 V for homes\n\n### Electronic Devices\n\n- Phone chargers: 230 V → 5 V\n- Laptop chargers: 230 V → 19 V\n- LED drivers: various voltages\n\n### Welding\n\n- Very low voltage (safer)\n- Very high current (for heating metal)\n- Step-down transformer\n\n### Isolation\n\n- 1:1 transformers (same voltage)\n- Provide electrical isolation\n- Safety in some applications\n\n## Common Misconceptions\n\n1. **\"Transformers work with DC\"** — They only work with AC. DC creates a constant field with no induction.\n\n2. **\"Step-up transformers create energy\"** — Power is conserved. Higher voltage means lower current.\n\n3. **\"The coils must touch\"** — The coils are magnetically linked but electrically isolated. No direct electrical connection.\n\n4. **\"More turns always means higher voltage\"** — It's the ratio that matters, not the absolute number.\n\n5. **\"Transformers are 100% efficient\"** — Real transformers have losses, though they can be very efficient (>99%).\n\n## Practice Problems\n\n1. A transformer has 400 primary turns and 100 secondary turns. If the input voltage is 240 V, what is the output voltage?\n\n2. A step-up transformer increases voltage from 12 V to 120 V. What is the turns ratio?\n\n3. Explain why transformers cannot work with DC.\n\n4. A transformer supplies 12 V at 2 A from 240 V mains. Calculate:\n   a) The output power\n   b) The input current (assuming 100% efficiency)\n\n5. Describe two ways energy is lost in a transformer and how these losses can be reduced.\n\n6. Explain why electricity is transmitted at very high voltages.\n\n7. A transformer is 95% efficient with input power of 500 W. Calculate the output power.\n\n## Summary\n\n- Transformers change AC voltage (not DC)\n- Structure: primary coil, secondary coil, iron core\n- Step-up: more secondary turns, higher voltage\n- Step-down: fewer secondary turns, lower voltage\n- Transformer equation: $\\frac{V_p}{V_s} = \\frac{n_p}{n_s}$\n- Power equation (ideal): $V_p I_p = V_s I_s$\n- Higher voltage = lower current (for same power)\n- Energy losses: resistance heating, eddy currents, flux leakage, hysteresis\n- Reduce losses: thick wire, laminated core, good design, soft iron\n- Applications: power transmission, chargers, welding, isolation",
-  "order": 7
+  "order": 7,
+  "pageType": "markdown",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Transformers"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "How can electricity travel hundreds of kilometres from power stations to our homes without losing most of its energy? The answer involves transformers—devices that change AC voltage up or down. Transformers are essential to our power grid and are found in countless devices from phone chargers to substations."
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concept: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "A transformer changes AC voltage using two coils wound on a shared iron core. The ratio of turns on the primary and secondary coils determines whether the voltage is stepped up or stepped down. Transformers only work with AC because a changing current is needed to produce a changing magnetic field."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "What is a Transformer?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A "
+          },
+          {
+            "type": "text",
+            "text": "transformer",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " changes the voltage of an alternating current (AC) supply."
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Step-up transformer:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Increases voltage"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Step-down transformer:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Decreases voltage"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Transformers only work with AC—they cannot change DC voltage."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Structure of a Transformer"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A transformer has three main parts:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Primary coil:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Connected to input (AC supply)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Has "
+                  },
+                  {
+                    "type": "text",
+                    "text": "n_p",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " turns"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Secondary coil:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Connected to output (load)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Has "
+                  },
+                  {
+                    "type": "text",
+                    "text": "n_s",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " turns"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Electrically isolated from primary"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Iron core:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Soft iron, usually laminated"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Links the two coils magnetically"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Carries magnetic flux"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "  Transformer:\n\n   AC input                          output\n     │                                  │\n     │  Primary        Secondary        │\n     │   coil            coil           │\n     │   ┌──┐          ┌──┐             │\n     ├───┤  ├──┐  ┌────┤  ├─────────────┤\n     │   │  │  │  │    │  │             │\n     │   │  │  ╠══╣    │  │             │\n     │   │  │  ║  ║    │  │             │\n     │   │  │  ╠══╣    │  │             │\n     │   │  │  │  │    │  │             │\n     ├───┤  ├──┘  └────┤  ├─────────────┤\n     │   └──┘          └──┘             │\n     │       ║  iron  ║                 │\n     │       ║  core  ║                 │\n              (laminated)\n\n  np turns on primary, ns turns on secondary.\n  Vp/Vs = np/ns"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "How Transformers Work"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Step-by-Step"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "AC flows through primary coil"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "This creates a changing magnetic field"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Iron core concentrates and carries the field"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Changing flux passes through secondary coil"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "By electromagnetic induction, voltage is induced in secondary"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If circuit is complete, current flows in secondary"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Why AC is Essential"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "DC creates a constant magnetic field"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Constant field means no change in flux"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "No change means no induced voltage"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Transformers cannot work with DC"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-transformers"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The Transformer Equation"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Voltage Ratio"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\frac{V_p}{V_s} = \\frac{n_p}{n_s}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Where:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "V_p",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = primary voltage (V)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "V_s",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = secondary voltage (V)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "n_p",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = number of turns on primary"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "n_s",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = number of turns on secondary"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Step-Up vs Step-Down"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Step-up ($V_s > V_p$):",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "n_s > n_p",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (more turns on secondary)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Voltage increases"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Step-down ($V_s < V_p$):",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "n_s < n_p",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (fewer turns on secondary)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Voltage decreases"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "comparisonTable",
+        "attrs": {
+          "title": "Step-Up vs Step-Down Transformers",
+          "leftHeader": "Step-Up Transformer",
+          "rightHeader": "Step-Down Transformer",
+          "leftColor": "neutral",
+          "rightColor": "neutral",
+          "rows": [
+            {
+              "label": "Turns",
+              "left": "More turns on secondary than primary (ns > np)",
+              "right": "Fewer turns on secondary than primary (ns < np)"
+            },
+            {
+              "label": "Voltage",
+              "left": "Output voltage is higher than input voltage (Vs > Vp)",
+              "right": "Output voltage is lower than input voltage (Vs < Vp)"
+            },
+            {
+              "label": "Current (ideal)",
+              "left": "Output current is lower than input current",
+              "right": "Output current is higher than input current"
+            },
+            {
+              "label": "Power",
+              "left": "Power in = Power out (ideal)",
+              "right": "Power in = Power out (ideal)"
+            },
+            {
+              "label": "Use in Grid",
+              "left": "At power stations: increases voltage to 400 kV for long-distance transmission",
+              "right": "At substations: reduces voltage to 230 V for homes and businesses"
+            },
+            {
+              "label": "Everyday Examples",
+              "left": "Power station transformers, CRT television tubes",
+              "right": "Phone chargers, laptop adapters, doorbell transformers"
+            }
+          ]
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Turns Ratio"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The "
+          },
+          {
+            "type": "text",
+            "text": "turns ratio",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is "
+          },
+          {
+            "type": "text",
+            "text": "n_p : n_s",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example: A 10:1 step-down transformer converts 230 V to 23 V."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Power in Transformers"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Ideal Transformer"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "For a 100% efficient (ideal) transformer:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "P_p = P_s"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_p I_p = V_s I_s"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Power in = Power out"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Current Relationship"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Rearranging:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\frac{I_p}{I_s} = \\frac{V_s}{V_p} = \\frac{n_s}{n_p}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Key insight:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " If voltage goes UP, current goes DOWN (and vice versa)."
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Step-up transformer: higher voltage, lower current"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Step-down transformer: lower voltage, higher current"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Exam Tip: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "When using the transformer equation Vp/Vs = np/ns, always check which coil is primary and which is secondary. The primary is connected to the input (AC supply) and the secondary is connected to the output (load). A common exam error is to swap the two."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A transformer has 500 turns on the primary and 50 turns on the secondary. The input voltage is 230 V. Calculate the output voltage."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\frac{V_p}{V_s} = \\frac{n_p}{n_s}"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\frac{230}{V_s} = \\frac{500}{50}"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\frac{230}{V_s} = 10"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_s = \\frac{230}{10} = 23 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "This is a step-down transformer (voltage decreased)."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A phone charger converts 230 V mains to 5 V. If the primary has 920 turns, how many turns does the secondary have?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\frac{n_p}{n_s} = \\frac{V_p}{V_s}"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\frac{920}{n_s} = \\frac{230}{5}"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\frac{920}{n_s} = 46"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "n_s = \\frac{920}{46} = 20 \\text{ turns}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 3:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A step-up transformer increases voltage from 25 kV to 400 kV for transmission. If the primary current is 800 A, calculate the secondary current (assuming 100% efficiency)."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_p I_p = V_s I_s"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "25000 \\times 800 = 400000 \\times I_s"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "I_s = \\frac{25000 \\times 800}{400000} = \\frac{20000000}{400000} = 50 \\text{ A}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Voltage increased by factor of 16, current decreased by factor of 16."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 4:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A transformer is 90% efficient. The input is 230 V at 2 A. Calculate the output power."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Input power: "
+          },
+          {
+            "type": "text",
+            "text": "P_p = V_p I_p = 230 \\times 2 = 460",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " W"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Output power: "
+          },
+          {
+            "type": "text",
+            "text": "P_s = 0.90 \\times 460 = 414",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " W"
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-transformers-2"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Energy Losses in Transformers"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Sources of Energy Loss"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Resistance heating:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Coils have resistance"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current causes heating ("
+                  },
+                  {
+                    "type": "text",
+                    "text": "P = I^2R",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ")"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Reduced by using thick, low-resistance wire"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Eddy currents:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Induced currents in the iron core"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Cause heating in the core"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Reduced by laminating the core (thin insulated sheets)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Magnetic flux leakage:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Not all flux transfers to secondary"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Reduced by good core design"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Hysteresis:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Energy lost magnetising and demagnetising core"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Reduced by using soft iron"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Improving Efficiency"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "| Loss | Solution |\n|------|----------|\n| Resistance | Thick copper wire |\n| Eddy currents | Laminated core |\n| Flux leakage | Tight core design |\n| Hysteresis | Soft iron core |"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Good transformers are over 99% efficient."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Applications"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Power Transmission"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Step-up transformers at power stations:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Increase voltage to 275 kV or 400 kV"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Reduce current for same power"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Less energy lost in cables ("
+                  },
+                  {
+                    "type": "text",
+                    "text": "P = I^2R",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ")"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Step-down transformers at substations:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Reduce voltage for distribution"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Eventually to 230 V for homes"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Electronic Devices"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Phone chargers: 230 V → 5 V"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Laptop chargers: 230 V → 19 V"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "LED drivers: various voltages"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Welding"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Very low voltage (safer)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Very high current (for heating metal)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Step-down transformer"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Isolation"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "1:1 transformers (same voltage)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Provide electrical isolation"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Safety in some applications"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Misconceptions"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Transformers work with DC\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — They only work with AC. DC creates a constant field with no induction."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Step-up transformers create energy\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Power is conserved. Higher voltage means lower current."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"The coils must touch\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — The coils are magnetically linked but electrically isolated. No direct electrical connection."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"More turns always means higher voltage\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — It's the ratio that matters, not the absolute number."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Transformers are 100% efficient\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Real transformers have losses, though they can be very efficient (>99%)."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Remember: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "For an ideal transformer, power in equals power out (VpIp = VsIs). If voltage goes up, current must come down by the same factor. This is why the National Grid uses high voltage for transmission -- it reduces the current and therefore reduces energy lost as heat in the cables (P = I squared R)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Problems"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the output voltage of a transformer with 400 primary turns and 100 secondary turns when the input voltage is 240 V."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the turns ratio for a step-up transformer that increases voltage from 12 V to 120 V."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Explain why transformers cannot work with DC."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A transformer supplies 12 V at 2 A from 240 V mains. Calculate: a) The output power b) The input current (assuming 100% efficiency)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Describe two ways energy is lost in a transformer and state how each loss can be reduced."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Explain why electricity is transmitted at very high voltages, referring to power losses."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the output power of a transformer that is 95% efficient with an input power of 500 W."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Transformers change AC voltage (not DC)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Structure: primary coil, secondary coil, iron core"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Step-up: more secondary turns, higher voltage"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Step-down: fewer secondary turns, lower voltage"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Transformer equation: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\frac{V_p}{V_s} = \\frac{n_p}{n_s}",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Power equation (ideal): "
+                  },
+                  {
+                    "type": "text",
+                    "text": "V_p I_p = V_s I_s",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Higher voltage = lower current (for same power)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Energy losses: resistance heating, eddy currents, flux leakage, hysteresis"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Reduce losses: thick wire, laminated core, good design, soft iron"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Applications: power transmission, chargers, welding, isolation"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer Key"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Vs = Vp x (ns/np) = 240 x (100/400) = 240 x 0.25 = 60 V",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — This is a step-down transformer (fewer secondary turns). (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Turns ratio np:ns = Vp:Vs = 12:120 = 1:10",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Secondary has 10 times more turns than primary. (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "DC produces a constant current, which creates a constant magnetic field in the core. A constant field means zero rate of change of flux through the secondary coil. With no changing flux, no voltage is induced in the secondary — so the transformer does not work.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (explanation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "a) "
+                  },
+                  {
+                    "type": "text",
+                    "text": "Ps = Vs x Is = 12 x 2 = 24 W",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " b) "
+                  },
+                  {
+                    "type": "text",
+                    "text": "At 100% efficiency: VpIp = VsIs, so Ip = VsIs / Vp = 24 / 240 = 0.1 A",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Resistance heating in the coils (I²R losses) — reduced by using thick, low-resistance copper wire. Eddy currents induced in the iron core cause heating — reduced by laminating the core (thin insulated sheets interrupt the eddy current paths).",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (description)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Power transmitted P = IV. For the same power, increasing voltage reduces current. Power lost in cables = I²R, so reducing the current dramatically reduces energy wasted as heat in the cables. Doubling the voltage halves the current and quarters the losses.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (explanation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "visualizationEmbed",
+        "attrs": {
+          "visualizationId": "phys-transformer-ratio",
+          "displayMode": "expanded",
+          "customHeight": 500
+        }
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Ps = efficiency x Pp = 0.95 x 500 = 475 W",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

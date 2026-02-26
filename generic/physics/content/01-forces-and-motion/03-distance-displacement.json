@@ -1,5 +1,1666 @@
 {
   "title": "Distance and Displacement",
-  "content": "# Distance and Displacement\n\n## Introduction\n\nWhen describing motion, we need to specify how far an object has moved. However, there are two different ways to measure this: **distance** and **displacement**. Though they might seem similar, they give us different information about motion.\n\n## Key Concepts\n\n### Distance\n\n**Distance** is the total length of the path travelled by an object. It is a **scalar** quantity.\n\n- Always positive or zero\n- Measured along the actual path taken\n- Does not depend on direction\n- SI unit: metre (m)\n\n### Displacement\n\n**Displacement** is the shortest straight-line distance from the starting point to the finishing point, with a specified direction. It is a **vector** quantity.\n\n- Can be positive, negative, or zero\n- Measured in a straight line from start to end\n- Must include direction\n- SI unit: metre (m)\n\n### Visual Comparison\n\n[DIAGRAM: Curved path from A to B showing distance along curve vs displacement as straight arrow]\n\nImagine walking around a running track:\n- **Distance** = 400 m (the full lap)\n- **Displacement** = 0 m (you end up where you started)\n\n## Mathematical Relationships\n\nFor motion in a straight line:\n\n**Distance** is the sum of all path lengths:\n$$d = d_1 + d_2 + d_3 + ...$$\n\n**Displacement** is the vector sum:\n$$\\vec{s} = \\vec{s_1} + \\vec{s_2} + \\vec{s_3} + ...$$\n\nFor motion in one dimension with a positive direction defined:\n- Movement in the positive direction: positive displacement\n- Movement in the negative direction: negative displacement\n\n### Important Relationships\n\n- Distance is always ≥ |Displacement|\n- Distance = |Displacement| only when motion is in a straight line without changing direction\n- If an object returns to its starting point, displacement = 0 (but distance ≠ 0)\n\n## Worked Examples\n\n**Example 1:** A student walks 30 m east, then 40 m north. Calculate:\na) the distance travelled\nb) the displacement\n\n**Solution:**\na) Distance = 30 + 40 = **70 m**\n\nb) Using Pythagoras:\n$$s = \\sqrt{30^2 + 40^2} = \\sqrt{900 + 1600} = \\sqrt{2500} = 50 \\text{ m}$$\n\nDirection:\n$$\\theta = \\tan^{-1}\\left(\\frac{40}{30}\\right) = 53.1°$$\n\nDisplacement = **50 m at 53.1° north of east**\n\n**Example 2:** A ball is thrown 12 m upward and falls back to the thrower's hand. Find:\na) the distance travelled\nb) the displacement\n\n**Solution:**\na) Distance = 12 m (up) + 12 m (down) = **24 m**\n\nb) Displacement = **0 m** (returns to starting point)\n\n**Example 3:** A car travels 100 m east, then 60 m west. Calculate the distance and displacement.\n\n**Solution:**\nDistance = 100 + 60 = **160 m**\n\nDisplacement = 100 - 60 = **40 m east**\n\n(Taking east as positive: +100 + (-60) = +40 m)\n\n## Real-World Applications\n\n### Navigation\nGPS systems calculate displacement (straight-line distance to destination), while odometers measure distance (actual path travelled).\n\n### Athletics\n- A marathon covers a distance of 42.195 km\n- If it starts and ends at the same place, displacement is 0\n- If it ends at a different point, displacement is the straight-line distance from start to finish\n\n### Physics Problems\nDisplacement is essential for:\n- Calculating velocity (rate of change of displacement)\n- Determining work done by a force\n- Analysing projectile motion\n\n## Common Misconceptions\n\n1. **\"Distance and displacement are always different\"** — They are equal when motion is in a straight line without direction change.\n\n2. **\"Displacement is always less than distance\"** — Displacement magnitude can equal distance, but never exceed it.\n\n3. **\"Negative displacement means moving backward\"** — It means moving in the direction defined as negative (often left or down).\n\n4. **\"If you travel far, you have large displacement\"** — Not necessarily! A plane flying around the world has huge distance but zero displacement.\n\n5. **\"Displacement has units of direction\"** — Displacement has units of metres. Direction is stated separately.\n\n## Practice Problems\n\n1. A lift travels from the ground floor (0 m) to the 5th floor (15 m), then down to the 2nd floor (6 m). Calculate:\n   a) the distance travelled\n   b) the displacement from the starting point\n\n2. An ant crawls 20 cm north, 15 cm east, then 20 cm south. Find:\n   a) the total distance\n   b) the magnitude and direction of displacement\n\n3. A cyclist rides 8 km north, then 6 km east, then 8 km south. Calculate the displacement.\n\n4. A pendulum swings 10 cm to the right, then 10 cm back to centre, then 10 cm to the left, then back to centre. What is:\n   a) the total distance?\n   b) the final displacement?\n\n5. A hiker walks from camp A to camp B (5 km east), then to camp C (3 km north of B), then back to camp A. Calculate the total distance and confirm the displacement is zero.\n\n## Summary\n\n- **Distance** is the total path length (scalar, always positive)\n- **Displacement** is the straight-line distance from start to finish with direction (vector)\n- Distance ≥ |Displacement| always\n- If an object returns to its starting point, displacement = 0\n- Use Pythagoras' theorem to find displacement magnitude for perpendicular paths\n- Displacement is essential for defining velocity and other motion quantities",
-  "order": 3
+  "order": 3,
+  "pageType": "markdown",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Distance and Displacement"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "When describing motion, we need to specify how far an object has moved. However, there are two different ways to measure this: "
+          },
+          {
+            "type": "text",
+            "text": "distance",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " and "
+          },
+          {
+            "type": "text",
+            "text": "displacement",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ". Though they might seem similar, they give us different information about motion."
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Remember: ",
+                "marks": [{ "type": "bold" }]
+              },
+              {
+                "type": "text",
+                "text": "Distance asks 'how far did you travel in total?' while displacement asks 'how far are you from where you started, and in which direction?'"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Distance"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Distance",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is the total length of the path travelled by an object. It is a "
+          },
+          {
+            "type": "text",
+            "text": "scalar",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " quantity."
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Always positive or zero"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Measured along the actual path taken"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Does not depend on direction"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "SI unit: metre (m)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Displacement"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Displacement",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is the shortest straight-line distance from the starting point to the finishing point, with a specified direction. It is a "
+          },
+          {
+            "type": "text",
+            "text": "vector",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " quantity."
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Can be positive, negative, or zero"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Measured in a straight line from start to end"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Must include direction"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "SI unit: metre (m)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Visual Comparison"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "        . . .\n      .       .       Distance = total length\n    .    ~~~    .      of curved path from A to B\n   .   /    \\   .\n  A---+      +---B\n  |                |\n  |<--- - - - - -->|\n     Displacement\n   (straight line,\n    start to finish)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Imagine walking around a running track:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Distance",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = 400 m (the full lap)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Displacement",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = 0 m (you end up where you started)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "comparisonTable",
+        "attrs": {
+          "title": "Distance vs Displacement",
+          "leftHeader": "Distance",
+          "rightHeader": "Displacement",
+          "leftColor": "neutral",
+          "rightColor": "neutral",
+          "rows": [
+            { "label": "Type", "left": "Scalar quantity", "right": "Vector quantity" },
+            { "label": "Definition", "left": "Total length of path travelled", "right": "Straight-line distance from start to finish with direction" },
+            { "label": "Sign", "left": "Always positive or zero", "right": "Can be positive, negative, or zero" },
+            { "label": "Direction", "left": "No direction needed", "right": "Direction must be stated" },
+            { "label": "Round trip", "left": "Sum of all path lengths", "right": "Zero (back to start)" }
+          ],
+          "footer": "Distance is always greater than or equal to the magnitude of displacement."
+        }
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concept: ",
+                "marks": [{ "type": "bold" }]
+              },
+              {
+                "type": "text",
+                "text": "If you walk one complete lap around a 400 m track, your distance is 400 m but your displacement is 0 m. This is the clearest example of how distance and displacement can be very different."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-distance-displacement"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Mathematical Relationships"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "For motion in a straight line:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Distance",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is the sum of all path lengths:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "d = d_1 + d_2 + d_3 + ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Displacement",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is the vector sum:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\vec{s} = \\vec{s_1} + \\vec{s_2} + \\vec{s_3} + ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "For motion in one dimension with a positive direction defined:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Movement in the positive direction: positive displacement"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Movement in the negative direction: negative displacement"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Important Relationships"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Distance is always ≥ |Displacement|"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Distance = |Displacement| only when motion is in a straight line without changing direction"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If an object returns to its starting point, displacement = 0 (but distance ≠ 0)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A student walks 30 m east, then 40 m north. Calculate: a) the distance travelled b) the displacement"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " a) Distance = 30 + 40 = "
+          },
+          {
+            "type": "text",
+            "text": "70 m",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "b) Using Pythagoras:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "s = \\sqrt{30^2 + 40^2} = \\sqrt{900 + 1600} = \\sqrt{2500} = 50 \\text{ m}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Direction:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\theta = \\tan^{-1}\\left(\\frac{40}{30}\\right) = 53.1°"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Displacement = "
+          },
+          {
+            "type": "text",
+            "text": "50 m at 53.1° north of east",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A ball is thrown 12 m upward and falls back to the thrower's hand. Find: a) the distance travelled b) the displacement"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " a) Distance = 12 m (up) + 12 m (down) = "
+          },
+          {
+            "type": "text",
+            "text": "24 m",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "b) Displacement = "
+          },
+          {
+            "type": "text",
+            "text": "0 m",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " (returns to starting point)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 3:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A car travels 100 m east, then 60 m west. Calculate the distance and displacement."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Distance = 100 + 60 = "
+          },
+          {
+            "type": "text",
+            "text": "160 m",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Displacement = 100 - 60 = "
+          },
+          {
+            "type": "text",
+            "text": "40 m east",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(Taking east as positive: +100 + (-60) = +40 m)"
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Common Mistake: ",
+                "marks": [{ "type": "bold" }]
+              },
+              {
+                "type": "text",
+                "text": "Students often forget to include a direction when stating displacement. Saying '50 m' is a distance. Saying '50 m north-east' is a displacement. Always check that your displacement answer includes a direction."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-distance-displacement-2"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Real-World Applications"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Navigation"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "GPS systems calculate displacement (straight-line distance to destination), while odometers measure distance (actual path travelled)."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Athletics"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A marathon covers a distance of 42.195 km"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If it starts and ends at the same place, displacement is 0"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If it ends at a different point, displacement is the straight-line distance from start to finish"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Physics Problems"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Displacement is essential for:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculating velocity (rate of change of displacement)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Determining work done by a force"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Analysing projectile motion"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Misconceptions"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Distance and displacement are always different\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — They are equal when motion is in a straight line without direction change."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Displacement is always less than distance\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Displacement magnitude can equal distance, but never exceed it."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Negative displacement means moving backward\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — It means moving in the direction defined as negative (often left or down)."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"If you travel far, you have large displacement\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Not necessarily! A plane flying around the world has huge distance but zero displacement."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Displacement has units of direction\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Displacement has units of metres. Direction is stated separately."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Problems"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A lift travels from the ground floor (0 m) to the 5th floor (15 m), then down to the 2nd floor (6 m). Calculate: a) the total distance travelled b) the displacement from the starting point"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "An ant crawls 20 cm north, 15 cm east, then 20 cm south. Calculate: a) the total distance b) the magnitude and direction of displacement"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the displacement of a cyclist who rides 8 km north, then 6 km east, then 8 km south."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A pendulum swings 10 cm to the right, then 10 cm back to centre, then 10 cm to the left, then back to centre. Calculate: a) the total distance b) the final displacement"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A hiker walks from camp A to camp B (5 km east), then to camp C (3 km north of B), then back to camp A. Calculate the total distance. Explain why the displacement is zero."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Distance",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " is the total path length (scalar, always positive)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Displacement",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " is the straight-line distance from start to finish with direction (vector)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Distance ≥ |Displacement| always"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If an object returns to its starting point, displacement = 0"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Use Pythagoras' theorem to find displacement magnitude for perpendicular paths"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Displacement is essential for defining velocity and other motion quantities"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer Key"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "a) 24 m",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Up 15 m then down 9 m: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "15 + 9 = 24",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " m (calculation) "
+                  },
+                  {
+                    "type": "text",
+                    "text": "b) 6 m upward",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Final position is 6 m above the start (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "a) 55 cm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — "
+                  },
+                  {
+                    "type": "text",
+                    "text": "20 + 15 + 20 = 55",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " cm (calculation) "
+                  },
+                  {
+                    "type": "text",
+                    "text": "b) 15 cm east",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — The 20 cm north and 20 cm south cancel, leaving only the 15 cm east component (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "6 km east",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — The 8 km north and 8 km south cancel, leaving only the 6 km east displacement (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "a) 40 cm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — "
+                  },
+                  {
+                    "type": "text",
+                    "text": "10 + 10 + 10 + 10 = 40",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " cm (calculation) "
+                  },
+                  {
+                    "type": "text",
+                    "text": "b) 0 cm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — The pendulum returns to the centre (its starting point), so displacement is zero (explanation with physics reasoning)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Total distance = $5 + 3 + \\sqrt{5^2 + 3^2} = 5 + 3 + 5.83 = 13.83$ km",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — The return leg is the hypotenuse from C to A. Displacement is zero because the hiker returns to the starting point — the vector sum of all displacements is zero (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

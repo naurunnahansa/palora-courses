@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expanding Universe & Red Shift</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .section-label { font-family: 'Oswald', sans-serif; font-size: 0.7rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin: 6px 0 3px; }
+        canvas { width: 100%; display: block; border-radius: 8px; background: #f8f9fa; }
+        .controls { display: flex; gap: 8px; align-items: center; background: #f8f9fa; border-radius: 8px; padding: 8px 10px; margin: 6px 0; }
+        .controls label { font-size: 0.7rem; font-weight: 600; color: #4a5568; white-space: nowrap; }
+        .controls .val { font-weight: 700; color: #637EA1; }
+        .controls input[type=range] { flex: 1; accent-color: #637EA1; }
+        .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
+        .box { background: #f8f9fa; border-radius: 8px; overflow: hidden; }
+        .box-label { font-family: 'Oswald', sans-serif; font-size: 0.65rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; padding: 4px; background: #f0f4f8; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin: 6px 0; }
+        .stat { background: #f8f9fa; border-radius: 6px; padding: 5px; text-align: center; }
+        .stat .lbl { font-size: 0.55rem; color: #4a5568; text-transform: uppercase; }
+        .stat .val { font-size: 0.8rem; font-weight: 700; color: #637EA1; }
+        .stat .unit { font-size: 0.55rem; color: #4a5568; }
+        .hubble-box { background: #f0f4f8; border-radius: 8px; padding: 8px 10px; text-align: center; margin-bottom: 6px; }
+        .hubble-box .formula { font-size: 1rem; font-weight: 700; color: #637EA1; margin: 3px 0; }
+        .hubble-box .desc { font-size: 0.65rem; color: #4a5568; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Expanding Universe & Red Shift</h1>
+
+    <div class="section-label">Galaxy Spectrum Red Shift</div>
+    <canvas id="spectrumCanvas" height="90"></canvas>
+
+    <div class="controls">
+        <label>Galaxy Distance: <span class="val" id="distVal">100 Mpc</span></label>
+        <input type="range" id="distSlider" min="10" max="1000" value="100" oninput="updateAll()">
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="lbl">Distance</div>
+            <div class="val" id="statDist">100</div>
+            <div class="unit">Mpc</div>
+        </div>
+        <div class="stat">
+            <div class="lbl">Recession Velocity</div>
+            <div class="val" id="statVel">7,000</div>
+            <div class="unit">km/s</div>
+        </div>
+        <div class="stat">
+            <div class="lbl">Red Shift (z)</div>
+            <div class="val" id="statZ">0.023</div>
+            <div class="unit"></div>
+        </div>
+    </div>
+
+    <div class="hubble-box">
+        <div class="desc">Hubble's Law</div>
+        <div class="formula">v = H₀ d</div>
+        <div class="desc">v = recession velocity, H₀ ≈ 70 km/s/Mpc, d = distance</div>
+    </div>
+
+    <div class="row2">
+        <div class="box">
+            <div class="box-label">Hubble Diagram: v vs d</div>
+            <canvas id="hubbleCanvas" height="150"></canvas>
+        </div>
+        <div class="box">
+            <div class="box-label">Balloon Analogy</div>
+            <canvas id="balloonCanvas" height="150"></canvas>
+        </div>
+    </div>
+
+    <div class="controls" style="justify-content: center;">
+        <label style="font-size:0.6rem;color:#4a5568;">The balloon analogy shows how space itself expands - every dot moves away from every other dot, with no centre.</label>
+    </div>
+</div>
+<script>
+const H0 = 70; // km/s/Mpc
+const c = 3e5; // km/s
+
+const specC = document.getElementById('spectrumCanvas');
+const hubC = document.getElementById('hubbleCanvas');
+const balC = document.getElementById('balloonCanvas');
+
+function initC(cv, h) {
+    const r = cv.getBoundingClientRect();
+    cv.width = r.width * 2; cv.height = h * 2;
+    cv.getContext('2d').scale(2, 2);
+    return { w: r.width, h, ctx: cv.getContext('2d') };
+}
+
+let sS, hS, bS;
+setTimeout(() => {
+    sS = initC(specC, 90);
+    hS = initC(hubC, 150);
+    bS = initC(balC, 150);
+    updateAll();
+    animateBalloon();
+}, 50);
+
+function updateAll() {
+    const d = parseInt(document.getElementById('distSlider').value);
+    const v = H0 * d;
+    const z = v / c;
+
+    document.getElementById('distVal').textContent = d + ' Mpc';
+    document.getElementById('statDist').textContent = d.toLocaleString();
+    document.getElementById('statVel').textContent = v.toLocaleString();
+    document.getElementById('statZ').textContent = z.toFixed(4);
+
+    drawSpectrum(z);
+    drawHubble(d, v);
+}
+
+function wavelengthToRGB(wl) {
+    let r = 0, g = 0, b = 0;
+    if (wl >= 380 && wl < 440) { r = -(wl - 440) / (440 - 380); b = 1; }
+    else if (wl >= 440 && wl < 490) { g = (wl - 440) / (490 - 440); b = 1; }
+    else if (wl >= 490 && wl < 510) { g = 1; b = -(wl - 510) / (510 - 490); }
+    else if (wl >= 510 && wl < 580) { r = (wl - 510) / (580 - 510); g = 1; }
+    else if (wl >= 580 && wl < 645) { r = 1; g = -(wl - 645) / (645 - 580); }
+    else if (wl >= 645 && wl <= 780) { r = 1; }
+    // Intensity falloff at edges
+    let f = 1;
+    if (wl >= 380 && wl < 420) f = 0.3 + 0.7 * (wl - 380) / (420 - 380);
+    else if (wl > 700 && wl <= 780) f = 0.3 + 0.7 * (780 - wl) / (780 - 700);
+    else if (wl < 380 || wl > 780) f = 0;
+    return `rgb(${Math.round(r*f*255)},${Math.round(g*f*255)},${Math.round(b*f*255)})`;
+}
+
+function drawSpectrum(z) {
+    const ctx = sS.ctx;
+    const W = sS.w, H = sS.h;
+    ctx.clearRect(0, 0, W, H);
+
+    const margin = 15;
+    const specW = W - 2 * margin;
+    const specH = 22;
+
+    // Reference spectrum (lab)
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '600 7px Outfit';
+    ctx.textAlign = 'left';
+    ctx.fillText('Lab reference spectrum', margin, 12);
+
+    for (let x = 0; x < specW; x++) {
+        const wl = 380 + (x / specW) * 400;
+        ctx.fillStyle = wavelengthToRGB(wl);
+        ctx.fillRect(margin + x, 16, 1, specH);
+    }
+
+    // Absorption lines (hydrogen Balmer series approx positions in nm)
+    const lines = [410, 434, 486, 656]; // Hδ, Hγ, Hβ, Hα
+    const lineNames = ['Hδ', 'Hγ', 'Hβ', 'Hα'];
+
+    lines.forEach((wl, i) => {
+        const x = margin + ((wl - 380) / 400) * specW;
+        ctx.fillStyle = 'rgba(0,0,0,0.8)';
+        ctx.fillRect(x - 1, 16, 2, specH);
+        ctx.fillStyle = '#1a1f2e';
+        ctx.font = '600 6px Outfit';
+        ctx.textAlign = 'center';
+        ctx.fillText(lineNames[i], x, 14);
+    });
+
+    // Observed (redshifted) spectrum
+    const obsY = 48;
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '600 7px Outfit';
+    ctx.textAlign = 'left';
+    ctx.fillText('Observed galaxy spectrum (z=' + z.toFixed(3) + ')', margin, obsY);
+
+    for (let x = 0; x < specW; x++) {
+        const wl = 380 + (x / specW) * 400;
+        ctx.fillStyle = wavelengthToRGB(wl);
+        ctx.fillRect(margin + x, obsY + 4, 1, specH);
+    }
+
+    // Redshifted absorption lines
+    lines.forEach((wl, i) => {
+        const shiftedWl = wl * (1 + z);
+        const x = margin + ((shiftedWl - 380) / 400) * specW;
+        if (x >= margin && x <= margin + specW) {
+            ctx.fillStyle = 'rgba(0,0,0,0.8)';
+            ctx.fillRect(x - 1, obsY + 4, 2, specH);
+            // Arrow showing shift
+            ctx.strokeStyle = '#e53e3e';
+            ctx.lineWidth = 1;
+            const origX = margin + ((wl - 380) / 400) * specW;
+            ctx.setLineDash([2, 2]);
+            ctx.beginPath(); ctx.moveTo(origX, obsY + 4 + specH + 2); ctx.lineTo(x, obsY + 4 + specH + 2); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = '#e53e3e';
+            if (x > origX) {
+                ctx.beginPath(); ctx.moveTo(x - 4, obsY + specH + 3); ctx.lineTo(x, obsY + specH + 6); ctx.lineTo(x - 4, obsY + specH + 9); ctx.fill();
+            }
+        }
+    });
+
+    // Wavelength axis
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '7px Outfit';
+    ctx.textAlign = 'center';
+    for (let wl = 400; wl <= 750; wl += 50) {
+        const x = margin + ((wl - 380) / 400) * specW;
+        ctx.fillText(wl + 'nm', x, H - 2);
+    }
+    ctx.fillText('← Blue', margin + 30, H - 2);
+    ctx.fillText('Red →', margin + specW - 30, H - 2);
+}
+
+function drawHubble(currentD, currentV) {
+    const ctx = hS.ctx;
+    const W = hS.w, H = hS.h;
+    ctx.clearRect(0, 0, W, H);
+
+    const m = { l: 30, r: 10, t: 10, b: 22 };
+    const gW = W - m.l - m.r;
+    const gH = H - m.t - m.b;
+
+    // Axes
+    ctx.strokeStyle = '#cbd5e0';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(m.l, m.t); ctx.lineTo(m.l, m.t + gH); ctx.lineTo(m.l + gW, m.t + gH); ctx.stroke();
+
+    // Grid
+    ctx.strokeStyle = '#e2e8f0';
+    ctx.lineWidth = 0.5;
+    for (let i = 1; i <= 4; i++) {
+        const y = m.t + gH - (i / 4) * gH;
+        ctx.beginPath(); ctx.moveTo(m.l, y); ctx.lineTo(m.l + gW, y); ctx.stroke();
+    }
+
+    // Hubble line (v = H0 * d)
+    const maxD = 1000;
+    const maxV = H0 * maxD;
+    ctx.strokeStyle = '#637EA1';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(m.l, m.t + gH);
+    ctx.lineTo(m.l + gW, m.t);
+    ctx.stroke();
+
+    // Scatter some "galaxies"
+    const galaxies = [
+        [50, 3200], [120, 8800], [200, 14500], [350, 23000], [500, 36000],
+        [650, 44000], [800, 57000], [150, 11000], [400, 27000], [750, 53000],
+        [80, 6000], [280, 19000], [600, 41000], [900, 64000], [450, 32000]
+    ];
+
+    galaxies.forEach(([d, v]) => {
+        const x = m.l + (d / maxD) * gW;
+        const y = m.t + gH - (v / maxV) * gH;
+        ctx.fillStyle = 'rgba(99,126,161,0.4)';
+        ctx.beginPath(); ctx.arc(x, y, 2.5, 0, Math.PI * 2); ctx.fill();
+    });
+
+    // Current point
+    const cx = m.l + (currentD / maxD) * gW;
+    const cy = m.t + gH - (currentV / maxV) * gH;
+    ctx.fillStyle = '#F4D35E';
+    ctx.strokeStyle = '#1a1f2e';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+    // Dashed lines to axes
+    ctx.setLineDash([3, 3]);
+    ctx.strokeStyle = '#F4D35E';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx, m.t + gH); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(m.l, cy); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Labels
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '7px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('Distance (Mpc)', m.l + gW / 2, H - 3);
+    ctx.save();
+    ctx.translate(8, m.t + gH / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Velocity (km/s)', 0, 0);
+    ctx.restore();
+
+    // Axis values
+    ctx.textAlign = 'center';
+    ctx.fillText('0', m.l, H - 10);
+    ctx.fillText(maxD.toString(), m.l + gW, H - 10);
+    ctx.textAlign = 'right';
+    ctx.fillText('0', m.l - 3, m.t + gH + 3);
+    ctx.fillText((maxV / 1000).toFixed(0) + 'k', m.l - 3, m.t + 5);
+
+    // Slope label
+    ctx.fillStyle = '#637EA1';
+    ctx.font = '600 7px Outfit';
+    ctx.textAlign = 'left';
+    ctx.fillText('slope = H₀', m.l + gW * 0.3, m.t + gH * 0.3);
+}
+
+// Balloon animation
+let balloonTime = 0;
+let balloonPaused = false;
+
+const dots = [];
+for (let i = 0; i < 12; i++) {
+    const ang = Math.random() * Math.PI * 2;
+    const r = 0.3 + Math.random() * 0.6;
+    dots.push({
+        angle: ang,
+        radius: r,
+        color: `hsl(${Math.random() * 60 + 200}, 60%, ${50 + Math.random() * 30}%)`
+    });
+}
+
+function animateBalloon() {
+    if (!bS) { requestAnimationFrame(animateBalloon); return; }
+    balloonTime += 0.005;
+
+    const ctx = bS.ctx;
+    const W = bS.w, H = bS.h;
+    ctx.clearRect(0, 0, W, H);
+
+    const cx = W / 2, cy = H / 2 + 5;
+    // Balloon radius oscillates to show expansion
+    const expansion = 0.6 + 0.4 * (0.5 + 0.5 * Math.sin(balloonTime * 2));
+    const maxR = Math.min(W, H) / 2 - 15;
+    const ballR = maxR * expansion;
+
+    // Draw balloon (circle outline)
+    ctx.strokeStyle = '#637EA1';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(cx, cy, ballR, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = 'rgba(99,126,161,0.05)';
+    ctx.fill();
+
+    // Surface pattern
+    ctx.strokeStyle = 'rgba(99,126,161,0.1)';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < 4; i++) {
+        const a = i * Math.PI / 4 + balloonTime * 0.5;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, ballR * Math.abs(Math.cos(a)), ballR, 0, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+
+    // Dots on balloon surface
+    dots.forEach(d => {
+        const x = cx + Math.cos(d.angle) * d.radius * ballR;
+        const y = cy + Math.sin(d.angle) * d.radius * ballR;
+        // Check if on balloon surface (roughly)
+        const dist = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2);
+        if (dist <= ballR + 5) {
+            ctx.fillStyle = d.color;
+            ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+        }
+    });
+
+    // "Us" marker
+    const usX = cx + Math.cos(0.5) * 0.4 * ballR;
+    const usY = cy + Math.sin(0.5) * 0.4 * ballR;
+    ctx.fillStyle = '#F4D35E';
+    ctx.beginPath(); ctx.arc(usX, usY, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#1a1f2e';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.fillStyle = '#1a1f2e';
+    ctx.font = '600 7px Outfit';
+    ctx.textAlign = 'left';
+    ctx.fillText('Us', usX + 6, usY + 3);
+
+    // Expansion label
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '8px Outfit';
+    ctx.textAlign = 'center';
+    const expandPct = (expansion * 100).toFixed(0);
+    ctx.fillText('Expansion: ' + expandPct + '%', cx, H - 5);
+
+    // Arrows showing expansion
+    if (expansion > 0.65) {
+        ctx.strokeStyle = 'rgba(244,211,94,0.5)';
+        ctx.lineWidth = 1;
+        for (let a = 0; a < Math.PI * 2; a += Math.PI / 3) {
+            const ix = cx + Math.cos(a) * (ballR - 15);
+            const iy = cy + Math.sin(a) * (ballR - 15);
+            const ox = cx + Math.cos(a) * (ballR - 5);
+            const oy = cy + Math.sin(a) * (ballR - 5);
+            ctx.beginPath(); ctx.moveTo(ix, iy); ctx.lineTo(ox, oy); ctx.stroke();
+            ctx.fillStyle = 'rgba(244,211,94,0.5)';
+            ctx.beginPath();
+            ctx.moveTo(ox, oy);
+            ctx.lineTo(ox - 4 * Math.cos(a - 0.4), oy - 4 * Math.sin(a - 0.4));
+            ctx.lineTo(ox - 4 * Math.cos(a + 0.4), oy - 4 * Math.sin(a + 0.4));
+            ctx.fill();
+        }
+    }
+
+    requestAnimationFrame(animateBalloon);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ohm's Law V-I Graph</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        canvas { display: block; width: 100%; border-radius: 8px; border: 1px solid #e2e8f0; background: #fafbfc; margin-bottom: 10px; cursor: crosshair; }
+        .controls { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+        .slider-row { display: flex; align-items: center; gap: 8px; }
+        .slider-row label { font-size: 0.82rem; font-weight: 600; color: #4a5568; min-width: 100px; }
+        .slider-row input[type="range"] { flex: 1; accent-color: #637EA1; height: 6px; }
+        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #637EA1; min-width: 52px; text-align: right; }
+        .toggle-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+        .toggle-btn { font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600; padding: 5px 12px; border-radius: 5px; border: 2px solid #637EA1; background: #fff; color: #637EA1; cursor: pointer; transition: all 0.15s; }
+        .toggle-btn.active { background: #637EA1; color: #fff; }
+        .readings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+        .reading-card { background: #F5E6E8; border-radius: 6px; padding: 8px 10px; text-align: center; }
+        .reading-card .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 1.05rem; color: #637EA1; margin-top: 2px; }
+        .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ohm's Law: V-I Characteristics</h1>
+        <canvas id="graphCanvas" width="550" height="400"></canvas>
+        <div class="controls">
+            <div class="slider-row">
+                <label>Resistance (&Omega;)</label>
+                <input type="range" id="resistance" min="1" max="20" step="0.5" value="5">
+                <span class="val" id="resistanceVal">5.0 &Omega;</span>
+            </div>
+        </div>
+        <div class="toggle-row">
+            <button class="toggle-btn active" id="btnOhmic">Ohmic (Wire)</button>
+            <button class="toggle-btn" id="btnFilament">Filament Lamp</button>
+            <button class="toggle-btn" id="btnDiode">Diode</button>
+        </div>
+        <div class="readings">
+            <div class="reading-card"><div class="label">Voltage (V)</div><div class="value" id="dispV">--</div></div>
+            <div class="reading-card"><div class="label">Current (A)</div><div class="value" id="dispI">--</div></div>
+            <div class="reading-card"><div class="label">Resistance (&Omega;)</div><div class="value" id="dispR">--</div></div>
+        </div>
+        <p class="hint">Click on the graph to read off V and I values</p>
+    </div>
+    <script>
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+        const PAD = { left: 52, right: 20, top: 20, bottom: 42 };
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width;
+            H = 400;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); draw(); });
+
+        const resistanceSlider = document.getElementById('resistance');
+        const resistanceVal = document.getElementById('resistanceVal');
+        let mode = 'ohmic'; // 'ohmic', 'filament', 'diode'
+        let clickPoint = null; // {v, i}
+
+        const maxV = 12;
+        const maxI = 6;
+
+        function graphX(v) { return PAD.left + (v / maxV) * (W - PAD.left - PAD.right); }
+        function graphY(i) { return H - PAD.bottom - (i / maxI) * (H - PAD.top - PAD.bottom); }
+        function invGraphV(x) { return ((x - PAD.left) / (W - PAD.left - PAD.right)) * maxV; }
+        function invGraphI(y) { return ((H - PAD.bottom - y) / (H - PAD.top - PAD.bottom)) * maxI; }
+
+        function drawAxes() {
+            ctx.strokeStyle = '#1a1f2e';
+            ctx.lineWidth = 1.5;
+            // Y axis
+            ctx.beginPath(); ctx.moveTo(PAD.left, PAD.top); ctx.lineTo(PAD.left, H - PAD.bottom); ctx.stroke();
+            // X axis
+            ctx.beginPath(); ctx.moveTo(PAD.left, H - PAD.bottom); ctx.lineTo(W - PAD.right, H - PAD.bottom); ctx.stroke();
+
+            ctx.font = "600 11px 'Outfit'";
+            ctx.fillStyle = '#4a5568';
+            ctx.textAlign = 'center';
+
+            // X axis ticks (V)
+            for (let v = 0; v <= maxV; v += 2) {
+                const x = graphX(v);
+                ctx.beginPath(); ctx.moveTo(x, H - PAD.bottom); ctx.lineTo(x, H - PAD.bottom + 5); ctx.stroke();
+                ctx.fillText(v, x, H - PAD.bottom + 18);
+                if (v > 0) {
+                    ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 0.5;
+                    ctx.beginPath(); ctx.moveTo(x, PAD.top); ctx.lineTo(x, H - PAD.bottom); ctx.stroke();
+                    ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 1.5;
+                }
+            }
+
+            // Y axis ticks (I)
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= maxI; i += 1) {
+                const y = graphY(i);
+                ctx.beginPath(); ctx.moveTo(PAD.left - 5, y); ctx.lineTo(PAD.left, y); ctx.stroke();
+                ctx.fillText(i.toFixed(0), PAD.left - 8, y + 4);
+                if (i > 0) {
+                    ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 0.5;
+                    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(W - PAD.right, y); ctx.stroke();
+                    ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 1.5;
+                }
+            }
+
+            // Axis labels
+            ctx.font = "600 12px 'Outfit'";
+            ctx.fillStyle = '#637EA1';
+            ctx.textAlign = 'center';
+            ctx.fillText('Voltage (V)', (PAD.left + W - PAD.right) / 2, H - 4);
+            ctx.save();
+            ctx.translate(14, (PAD.top + H - PAD.bottom) / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Current (A)', 0, 0);
+            ctx.restore();
+        }
+
+        function drawOhmicLine(R) {
+            ctx.strokeStyle = '#637EA1';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            for (let v = 0; v <= maxV; v += 0.1) {
+                const i = v / R;
+                if (i > maxI) break;
+                const x = graphX(v), y = graphY(i);
+                if (v === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Gradient annotation
+            const annotV = Math.min(maxV * 0.6, R * maxI * 0.6);
+            const annotI = annotV / R;
+            if (annotI <= maxI) {
+                ctx.font = "600 11px 'Outfit'";
+                ctx.fillStyle = '#637EA1';
+                ctx.textAlign = 'left';
+                const ax = graphX(annotV) + 8;
+                const ay = graphY(annotI) - 8;
+                ctx.fillText('Gradient = 1/R = ' + (1/R).toFixed(3), ax, ay);
+                ctx.fillText('R = ' + R.toFixed(1) + ' Ω', ax, ay + 15);
+            }
+        }
+
+        function drawFilamentCurve(R) {
+            // Filament: resistance increases with temperature. I = V / (R * (1 + k*V^2))
+            const k = 0.03;
+            ctx.strokeStyle = '#F4D35E';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            let started = false;
+            for (let v = 0; v <= maxV; v += 0.05) {
+                const effectiveR = R * (1 + k * v * v);
+                const i = v / effectiveR;
+                if (i > maxI) break;
+                const x = graphX(v), y = graphY(i);
+                if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.font = "600 10px 'Outfit'"; ctx.fillStyle = '#F4D35E'; ctx.textAlign = 'left';
+            ctx.fillText('Filament lamp (non-ohmic)', graphX(maxV * 0.35), graphY(maxI * 0.82));
+        }
+
+        function drawDiodeCurve() {
+            // Diode: I = Is * (e^(V/Vt) - 1), simplified
+            const Is = 0.00001; // saturation current
+            const Vt = 0.07; // thermal voltage scaled for visibility
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            let started = false;
+            for (let v = 0; v <= maxV; v += 0.02) {
+                let i;
+                if (v < 0.5) {
+                    i = Is * (Math.exp(v / Vt) - 1);
+                    i = Math.min(i, 0.01);
+                } else {
+                    // After threshold ~0.6V, current rises steeply
+                    const threshold = 0.6;
+                    if (v < threshold) {
+                        i = 0.005 * Math.exp((v - 0.3) * 8);
+                    } else {
+                        i = 0.05 + (v - threshold) * 2.5;
+                    }
+                }
+                if (i > maxI) break;
+                if (i < 0) i = 0;
+                const x = graphX(v), y = graphY(i);
+                if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.font = "600 10px 'Outfit'"; ctx.fillStyle = '#e74c3c'; ctx.textAlign = 'left';
+            ctx.fillText('Diode (non-ohmic)', graphX(1.5), graphY(maxI * 0.9));
+        }
+
+        function getIForMode(v, R) {
+            if (mode === 'ohmic') return v / R;
+            if (mode === 'filament') {
+                const k = 0.03;
+                return v / (R * (1 + k * v * v));
+            }
+            if (mode === 'diode') {
+                if (v < 0.6) return 0.005 * Math.exp((v - 0.3) * 8);
+                return 0.05 + (v - 0.6) * 2.5;
+            }
+            return v / R;
+        }
+
+        function drawClickPoint() {
+            if (!clickPoint) return;
+            const x = graphX(clickPoint.v);
+            const y = graphY(clickPoint.i);
+            // Crosshairs
+            ctx.setLineDash([4, 4]);
+            ctx.strokeStyle = '#4a5568';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(x, H - PAD.bottom); ctx.lineTo(x, y); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(x, y); ctx.stroke();
+            ctx.setLineDash([]);
+            // Dot
+            ctx.fillStyle = '#1a1f2e';
+            ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#F4D35E';
+            ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+            const R = parseFloat(resistanceSlider.value);
+            drawAxes();
+
+            if (mode === 'ohmic') {
+                drawOhmicLine(R);
+            } else if (mode === 'filament') {
+                // Draw ohmic reference line faintly
+                ctx.globalAlpha = 0.2;
+                drawOhmicLine(R);
+                ctx.globalAlpha = 1;
+                drawFilamentCurve(R);
+            } else if (mode === 'diode') {
+                ctx.globalAlpha = 0.2;
+                drawOhmicLine(R);
+                ctx.globalAlpha = 1;
+                drawDiodeCurve();
+            }
+
+            drawClickPoint();
+        }
+
+        function updateDisplay() {
+            const R = parseFloat(resistanceSlider.value);
+            resistanceVal.innerHTML = R.toFixed(1) + ' &Omega;';
+            if (clickPoint) {
+                document.getElementById('dispV').textContent = clickPoint.v.toFixed(2) + ' V';
+                document.getElementById('dispI').textContent = clickPoint.i.toFixed(3) + ' A';
+                const effR = clickPoint.i > 0.001 ? (clickPoint.v / clickPoint.i) : Infinity;
+                document.getElementById('dispR').innerHTML = effR === Infinity ? '&infin;' : effR.toFixed(2) + ' &Omega;';
+            }
+            draw();
+        }
+
+        resistanceSlider.addEventListener('input', () => {
+            clickPoint = null;
+            document.getElementById('dispV').textContent = '--';
+            document.getElementById('dispI').textContent = '--';
+            document.getElementById('dispR').textContent = '--';
+            updateDisplay();
+        });
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+            const v = invGraphV(mx);
+            const i_raw = invGraphI(my);
+            if (v < 0 || v > maxV || i_raw < 0 || i_raw > maxI) return;
+            const R = parseFloat(resistanceSlider.value);
+            // Snap to curve
+            const i = Math.max(0, getIForMode(v, R));
+            clickPoint = { v: Math.max(0, v), i };
+            updateDisplay();
+        });
+
+        ['btnOhmic', 'btnFilament', 'btnDiode'].forEach(id => {
+            document.getElementById(id).addEventListener('click', () => {
+                document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                document.getElementById(id).classList.add('active');
+                mode = id.replace('btn', '').toLowerCase();
+                clickPoint = null;
+                document.getElementById('dispV').textContent = '--';
+                document.getElementById('dispI').textContent = '--';
+                document.getElementById('dispR').textContent = '--';
+                draw();
+            });
+        });
+
+        updateDisplay();
+    </script>
+</body>
+</html>

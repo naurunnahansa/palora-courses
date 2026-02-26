@@ -1,5 +1,2445 @@
 {
   "title": "Parallel Circuits",
-  "content": "# Parallel Circuits\n\n## Introduction\n\nIn a parallel circuit, components are connected across each other—there are multiple paths for current to flow. This is how most household wiring works: each appliance has its own path to the supply, so if one fails, the others continue working. Understanding parallel circuits is essential for electrical engineering and everyday safety.\n\n## Key Concepts\n\n### What is a Parallel Circuit?\n\nIn a **parallel circuit**, components are connected across each other, providing multiple paths for current.\n\n- Each component has its own path from positive to negative\n- Each branch experiences the full supply voltage\n- If one branch fails, others continue working\n\n[DIAGRAM: Parallel circuit with battery and three branches]\n\n## Rules for Parallel Circuits\n\n### Potential Difference\n\n**The p.d. is the SAME across all branches.**\n\n$$V_1 = V_2 = V_3 = ... = V_{supply}$$\n\nWhy? Each branch connects directly to the supply terminals.\n\n### Current\n\n**The total current equals the SUM of currents in each branch.**\n\n$$I_{total} = I_1 + I_2 + I_3 + ...$$\n\nThe current splits at junctions and recombines when branches meet.\n\nThis is Kirchhoff's Current Law: current in = current out at any junction.\n\n### Resistance\n\n**Total resistance is found using the reciprocal formula:**\n\n$$\\frac{1}{R_{total}} = \\frac{1}{R_1} + \\frac{1}{R_2} + \\frac{1}{R_3} + ...$$\n\nOr for the total resistance:\n\n$$R_{total} = \\frac{1}{\\frac{1}{R_1} + \\frac{1}{R_2} + \\frac{1}{R_3} + ...}$$\n\n**Important:** Total resistance is ALWAYS less than the smallest individual resistance.\n\n### Special Case: Two Resistors\n\nFor exactly two resistors in parallel:\n\n$$R_{total} = \\frac{R_1 \\times R_2}{R_1 + R_2}$$\n\nThis 'product over sum' formula is quicker for two resistors.\n\n### Special Case: Identical Resistors\n\nFor $n$ identical resistors of value $R$ in parallel:\n\n$$R_{total} = \\frac{R}{n}$$\n\n## Analysing Parallel Circuits\n\n### Step-by-Step Method\n\n1. Identify parallel branches\n2. Remember: p.d. is the same across each branch\n3. Find current in each branch: $I = V/R$\n4. Add branch currents for total: $I_T = I_1 + I_2 + ...$\n5. Find total resistance: $R_T = V/I_T$ or use reciprocal formula\n\n## Worked Examples\n\n**Example 1:** A 6 Ω and 12 Ω resistor are connected in parallel to a 12 V supply. Calculate:\na) The total resistance\nb) The current through each resistor\nc) The total current\n\n**Solution:**\na) $R_{total} = \\frac{6 \\times 12}{6 + 12} = \\frac{72}{18} = 4$ Ω\n\nb) Both have 12 V across them:\n   $I_1 = V/R_1 = 12/6 = 2$ A\n   $I_2 = V/R_2 = 12/12 = 1$ A\n\nc) $I_{total} = I_1 + I_2 = 2 + 1 = 3$ A\n\nCheck: $R_T = V/I_T = 12/3 = 4$ Ω ✓\n\n**Example 2:** Three 6 Ω resistors are connected in parallel to a 9 V supply. Calculate:\na) The total resistance\nb) The total current\n\n**Solution:**\na) For identical resistors: $R_T = R/n = 6/3 = 2$ Ω\n\nOr using reciprocal formula:\n$\\frac{1}{R_T} = \\frac{1}{6} + \\frac{1}{6} + \\frac{1}{6} = \\frac{3}{6} = \\frac{1}{2}$\n$R_T = 2$ Ω\n\nb) $I_{total} = V/R_T = 9/2 = 4.5$ A\n\n**Example 3:** In a parallel circuit, the current from the battery is 5 A. Two branches carry 1.5 A and 2 A. What current flows in the third branch?\n\n**Solution:**\n$I_{total} = I_1 + I_2 + I_3$\n$5 = 1.5 + 2 + I_3$\n$I_3 = 5 - 1.5 - 2 = 1.5$ A\n\n**Example 4:** A 4 Ω and 12 Ω resistor are connected in parallel. This combination is connected in series with a 2 Ω resistor to a 12 V supply. Calculate:\na) The total resistance\nb) The current from the supply\n\n**Solution:**\na) Parallel combination: $R_p = \\frac{4 \\times 12}{4 + 12} = \\frac{48}{16} = 3$ Ω\n   Total (series): $R_T = 3 + 2 = 5$ Ω\n\nb) $I = V/R_T = 12/5 = 2.4$ A\n\n## Why Does Parallel Reduce Resistance?\n\nAdding resistors in parallel provides more paths for current:\n\n- Think of resistors as narrow pipes\n- One pipe restricts flow\n- Two pipes in parallel allow more flow\n- Total resistance to flow decreases\n\n## Advantages and Disadvantages\n\n### Advantages\n\n- Each branch gets full voltage\n- If one component fails, others still work\n- Components can be switched independently\n- Lower total resistance allows more current\n\n### Disadvantages\n\n- More wiring required\n- Higher total current drawn from supply\n- More complex to analyse\n\n## Applications\n\n### Household Wiring\n\n- All mains appliances in parallel\n- Each gets 230 V (UK)\n- One appliance failing doesn't affect others\n- Individual switches control each circuit\n\n### Car Electrical Systems\n\n- Lights, radio, etc. in parallel\n- All get 12 V from battery\n- Each controlled independently\n\n### Battery Packs (Parallel)\n\n- Cells in parallel:\n- Voltage stays the same\n- Current capacity increases\n- Battery lasts longer\n\n### Computer Components\n\n- USB ports in parallel\n- Each provides 5 V\n- Can power multiple devices simultaneously\n\n## Common Misconceptions\n\n1. **\"Adding resistors always increases total resistance\"** — True for series, but in parallel, adding resistors DECREASES total resistance.\n\n2. **\"Current is the same in all branches\"** — Current splits according to resistance. Lower resistance = more current.\n\n3. **\"Total resistance is the average\"** — Total parallel resistance is always LESS than the smallest individual resistor.\n\n4. **\"Parallel means side by side\"** — Components can be drawn anywhere but are parallel if they share the same two nodes (connection points).\n\n5. **\"Breaking one branch breaks the circuit\"** — Breaking one branch in parallel just stops current in that branch; others continue.\n\n## Practical Investigation\n\n### Investigating Parallel Circuits\n\n**Aim:** To verify the rules for current and voltage in parallel circuits.\n\n**Equipment:**\n- Power supply, two or three resistors\n- Ammeter, voltmeter\n- Connecting wires\n\n**Method:**\n1. Connect resistors in parallel\n2. Measure p.d. across each resistor\n3. Measure current in each branch and total current\n4. Verify that p.d.s are equal and currents add up\n5. Calculate total resistance both ways and compare\n\n## Practice Problems\n\n1. Two 10 Ω resistors are connected in parallel. Calculate the total resistance.\n\n2. A 4 Ω and 6 Ω resistor are connected in parallel to a 12 V supply. Calculate:\n   a) The total resistance\n   b) The current through each resistor\n   c) The total current\n\n3. Three resistors of 3 Ω, 6 Ω, and 9 Ω are connected in parallel. Calculate the total resistance.\n\n4. The total current drawn from a supply is 3 A. If one branch carries 0.8 A and another carries 1.4 A, what current flows in the third branch?\n\n5. Explain why household appliances are connected in parallel rather than series.\n\n6. A 6 Ω and 3 Ω resistor are in parallel. This combination is in series with a 4 Ω resistor connected to a 10 V supply. Calculate the current from the supply.\n\n7. Four identical 20 Ω resistors are connected in parallel. What is the total resistance?\n\n## Summary\n\n| Property | Parallel Rule |\n|----------|---------------|\n| Voltage | Same across all: $V_1 = V_2 = V_3$ |\n| Current | Adds up: $I_T = I_1 + I_2 + I_3$ |\n| Resistance | $\\frac{1}{R_T} = \\frac{1}{R_1} + \\frac{1}{R_2} + \\frac{1}{R_3}$ |\n\n- Multiple paths for current\n- Each branch gets full supply voltage\n- Current splits according to resistance (more current through lower resistance)\n- Total resistance is less than smallest individual resistance\n- If one branch fails, others continue working\n- Applications: household wiring, car electrics, USB systems",
-  "order": 9
+  "order": 9,
+  "pageType": "markdown",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Parallel Circuits"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In a parallel circuit, components are connected across each other—there are multiple paths for current to flow. This is how most household wiring works: each appliance has its own path to the supply, so if one fails, the others continue working. Understanding parallel circuits is essential for electrical engineering and everyday safety."
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concept: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "In a parallel circuit: potential difference is the same across each branch, current splits between branches, and total resistance is less than the smallest individual resistance."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "What is a Parallel Circuit?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In a "
+          },
+          {
+            "type": "text",
+            "text": "parallel circuit",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", components are connected across each other, providing multiple paths for current."
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Each component has its own path from positive to negative"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Each branch experiences the full supply voltage"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If one branch fails, others continue working"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "         +---[R1]---+\n         |          |\n   + |---+---[R2]---+---| -\n         |          |\n         +---[R3]---+\n\n   Three branches, each with its\n   own path from + to -"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Rules for Parallel Circuits"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Potential Difference"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The p.d. is the SAME across all branches.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_1 = V_2 = V_3 = ... = V_{supply}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Why? Each branch connects directly to the supply terminals."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Current"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The total current equals the SUM of currents in each branch.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "I_{total} = I_1 + I_2 + I_3 + ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The current splits at junctions and recombines when branches meet."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "This is Kirchhoff's Current Law: current in = current out at any junction."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Resistance"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Total resistance is found using the reciprocal formula:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\frac{1}{R_{total}} = \\frac{1}{R_1} + \\frac{1}{R_2} + \\frac{1}{R_3} + ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Or for the total resistance:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "R_{total} = \\frac{1}{\\frac{1}{R_1} + \\frac{1}{R_2} + \\frac{1}{R_3} + ...}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Important:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Total resistance is ALWAYS less than the smallest individual resistance."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Special Case: Two Resistors"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "For exactly two resistors in parallel:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "R_{total} = \\frac{R_1 \\times R_2}{R_1 + R_2}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "This 'product over sum' formula is quicker for two resistors."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Special Case: Identical Resistors"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "For "
+          },
+          {
+            "type": "text",
+            "text": "n",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " identical resistors of value "
+          },
+          {
+            "type": "text",
+            "text": "R",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " in parallel:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "R_{total} = \\frac{R}{n}"
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-parallel-circuits"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Analysing Parallel Circuits"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Step-by-Step Method"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Identify parallel branches"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Remember: p.d. is the same across each branch"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Find current in each branch: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "I = V/R",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Add branch currents for total: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "I_T = I_1 + I_2 + ...",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Find total resistance: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "R_T = V/I_T",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " or use reciprocal formula"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A 6 Ω and 12 Ω resistor are connected in parallel to a 12 V supply. Calculate: a) The total resistance b) The current through each resistor c) The total current"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " a) "
+          },
+          {
+            "type": "text",
+            "text": "R_{total} = \\frac{6 \\times 12}{6 + 12} = \\frac{72}{18} = 4",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Ω"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "b) Both have 12 V across them:    "
+          },
+          {
+            "type": "text",
+            "text": "I_1 = V/R_1 = 12/6 = 2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A    "
+          },
+          {
+            "type": "text",
+            "text": "I_2 = V/R_2 = 12/12 = 1",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "c) "
+          },
+          {
+            "type": "text",
+            "text": "I_{total} = I_1 + I_2 = 2 + 1 = 3",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Check: "
+          },
+          {
+            "type": "text",
+            "text": "R_T = V/I_T = 12/3 = 4",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Ω ✓"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Three 6 Ω resistors are connected in parallel to a 9 V supply. Calculate: a) The total resistance b) The total current"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " a) For identical resistors: "
+          },
+          {
+            "type": "text",
+            "text": "R_T = R/n = 6/3 = 2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Ω"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Or using reciprocal formula: "
+          },
+          {
+            "type": "text",
+            "text": "\\frac{1}{R_T} = \\frac{1}{6} + \\frac{1}{6} + \\frac{1}{6} = \\frac{3}{6} = \\frac{1}{2}",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " "
+          },
+          {
+            "type": "text",
+            "text": "R_T = 2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Ω"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "b) "
+          },
+          {
+            "type": "text",
+            "text": "I_{total} = V/R_T = 9/2 = 4.5",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 3:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " In a parallel circuit, the current from the battery is 5 A. Two branches carry 1.5 A and 2 A. What current flows in the third branch?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " "
+          },
+          {
+            "type": "text",
+            "text": "I_{total} = I_1 + I_2 + I_3",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " "
+          },
+          {
+            "type": "text",
+            "text": "5 = 1.5 + 2 + I_3",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " "
+          },
+          {
+            "type": "text",
+            "text": "I_3 = 5 - 1.5 - 2 = 1.5",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 4:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A 4 Ω and 12 Ω resistor are connected in parallel. This combination is connected in series with a 2 Ω resistor to a 12 V supply. Calculate: a) The total resistance b) The current from the supply"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " a) Parallel combination: "
+          },
+          {
+            "type": "text",
+            "text": "R_p = \\frac{4 \\times 12}{4 + 12} = \\frac{48}{16} = 3",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Ω    Total (series): "
+          },
+          {
+            "type": "text",
+            "text": "R_T = 3 + 2 = 5",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Ω"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "b) "
+          },
+          {
+            "type": "text",
+            "text": "I = V/R_T = 12/5 = 2.4",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Why Does Parallel Reduce Resistance?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Adding resistors in parallel provides more paths for current:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Think of resistors as narrow pipes"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "One pipe restricts flow"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Two pipes in parallel allow more flow"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Total resistance to flow decreases"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Exam Tip: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "To find total resistance in parallel, use 1/R_total = 1/R1 + 1/R2 + ... Do not forget to take the reciprocal at the end to get R_total. A common mistake is to leave the answer as 1/R_total."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Advantages and Disadvantages"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Advantages"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Each branch gets full voltage"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If one component fails, others still work"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Components can be switched independently"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Lower total resistance allows more current"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Disadvantages"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "More wiring required"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Higher total current drawn from supply"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "More complex to analyse"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Applications"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Household Wiring"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "All mains appliances in parallel"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Each gets 230 V (UK)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "One appliance failing doesn't affect others"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Individual switches control each circuit"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Car Electrical Systems"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Lights, radio, etc. in parallel"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "All get 12 V from battery"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Each controlled independently"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Battery Packs (Parallel)"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Cells in parallel:"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Voltage stays the same"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current capacity increases"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Battery lasts longer"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Computer Components"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "USB ports in parallel"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Each provides 5 V"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Can power multiple devices simultaneously"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "comparisonTable",
+        "attrs": {
+          "title": "Series vs Parallel Circuits",
+          "leftHeader": "Series Circuit",
+          "rightHeader": "Parallel Circuit",
+          "leftColor": "neutral",
+          "rightColor": "neutral",
+          "rows": [
+            {
+              "label": "Current",
+              "left": "Same through all components",
+              "right": "Splits between branches; total = sum of branch currents"
+            },
+            {
+              "label": "Potential Difference",
+              "left": "Shared between components (adds up to supply)",
+              "right": "Same across each branch (equals supply voltage)"
+            },
+            {
+              "label": "Total Resistance",
+              "left": "R_total = R1 + R2 + R3 (always increases)",
+              "right": "1/R_total = 1/R1 + 1/R2 + ... (always decreases)"
+            },
+            {
+              "label": "Component Failure",
+              "left": "Entire circuit stops working",
+              "right": "Only the failed branch is affected"
+            },
+            {
+              "label": "Brightness of Bulbs",
+              "left": "Adding more bulbs makes all dimmer",
+              "right": "Each bulb gets full voltage; brightness unaffected"
+            },
+            {
+              "label": "Typical Use",
+              "left": "Simple torch circuits, series fuses",
+              "right": "Household wiring, car electrics, most practical circuits"
+            }
+          ]
+        }
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Real-World Link: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "Every socket in your home is wired in parallel to the mains supply. This is why you can switch a kettle off without turning off the lights — each appliance operates independently."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-parallel-circuits-2"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Misconceptions"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Adding resistors always increases total resistance\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — True for series, but in parallel, adding resistors DECREASES total resistance."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Current is the same in all branches\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Current splits according to resistance. Lower resistance = more current."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Total resistance is the average\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Total parallel resistance is always LESS than the smallest individual resistor."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Parallel means side by side\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Components can be drawn anywhere but are parallel if they share the same two nodes (connection points)."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Breaking one branch breaks the circuit\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Breaking one branch in parallel just stops current in that branch; others continue."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practical Investigation"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Investigating Parallel Circuits"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Aim:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " To verify the rules for current and voltage in parallel circuits."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Equipment:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Power supply, two or three resistors"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Ammeter, voltmeter"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Connecting wires"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Method:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Connect resistors in parallel"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Measure p.d. across each resistor"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Measure current in each branch and total current"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Verify that p.d.s are equal and currents add up"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate total resistance both ways and compare"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Problems"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the total resistance when two 10 Ω resistors are connected in parallel."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A 4 Ω and 6 Ω resistor are connected in parallel to a 12 V supply. Calculate the following: a) The total resistance b) The current through each resistor c) The total current"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the total resistance when three resistors of 3 Ω, 6 Ω, and 9 Ω are connected in parallel."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the current in the third branch when the total current from the supply is 3 A, and two branches carry 0.8 A and 1.4 A respectively."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Explain why household appliances are connected in parallel rather than in series."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the current from the supply when a 6 Ω and 3 Ω parallel combination is connected in series with a 4 Ω resistor to a 10 V supply."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the total resistance when four identical 20 Ω resistors are connected in parallel."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "| Property | Parallel Rule |\n|----------|---------------|\n| Voltage | Same across all: $V_1 = V_2 = V_3$ |\n| Current | Adds up: $I_T = I_1 + I_2 + I_3$ |\n| Resistance | $\\frac{1}{R_T} = \\frac{1}{R_1} + \\frac{1}{R_2} + \\frac{1}{R_3}$ |"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Multiple paths for current"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Each branch gets full supply voltage"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current splits according to resistance (more current through lower resistance)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Total resistance is less than smallest individual resistance"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If one branch fails, others continue working"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Applications: household wiring, car electrics, USB systems"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer Key"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "R_total = R/n = 10/2 = 5 Ohm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (or product/sum: 10x10/(10+10) = 5 Ohm) (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) R_total = (4 x 6)/(4 + 6) = 24/10 = 2.4 Ohm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " -- "
+                  },
+                  {
+                    "type": "text",
+                    "text": "(b) I_4 = V/R = 12/4 = 3 A; I_6 = 12/6 = 2 A",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " -- "
+                  },
+                  {
+                    "type": "text",
+                    "text": "(c) I_total = 3 + 2 = 5 A",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "1/R_T = 1/3 + 1/6 + 1/9 = 6/18 + 3/18 + 2/18 = 11/18; R_T = 18/11 = 1.64 Ohm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "I3 = 3 - 0.8 - 1.4 = 0.8 A",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In parallel, each appliance receives the full mains voltage (230 V) regardless of other appliances. If one appliance fails, the others continue working because each has its own independent path. Appliances can also be switched on and off independently. In series, voltage would be shared, failure of one would break the whole circuit, and adding appliances would reduce the current to all.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (reasoning)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Parallel: R_p = (6 x 3)/(6 + 3) = 18/9 = 2 Ohm. Total (series): R_T = 2 + 4 = 6 Ohm. I = V/R_T = 10/6 = 1.67 A",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "visualizationEmbed",
+        "attrs": {
+          "visualizationId": "phys-circuit-builder-parallel",
+          "displayMode": "expanded",
+          "customHeight": 500
+        }
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "R_total = R/n = 20/4 = 5 Ohm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

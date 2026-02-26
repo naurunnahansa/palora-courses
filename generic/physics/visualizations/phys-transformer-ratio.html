@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformer Ratio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .formula-box { text-align: center; background: #F5E6E8; border-radius: 5px; padding: 6px; margin-bottom: 10px; font-size: 0.82rem; font-weight: 600; color: #637EA1; }
+        canvas { display: block; margin: 0 auto 8px; }
+        .slider-row { display: flex; gap: 8px; margin-bottom: 6px; }
+        .slider-group { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px 10px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600; margin-bottom: 4px; }
+        .slider-label .val { color: #637EA1; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #e5dfe0; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #637EA1; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .results { display: flex; gap: 6px; margin-bottom: 8px; }
+        .res-card { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px; text-align: center; }
+        .res-card h3 { font-family: 'Oswald', sans-serif; font-size: 0.7rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+        .res-card .val { font-size: 1.1rem; font-weight: 700; color: #637EA1; }
+        .res-card .unit { font-size: 0.62rem; color: #4a5568; }
+        .type-badge { display: inline-block; background: #637EA1; color: #fff; border-radius: 5px; padding: 4px 12px; font-size: 0.75rem; font-weight: 600; margin-bottom: 8px; }
+        .type-badge.step-up { background: #28a745; }
+        .type-badge.step-down { background: #dc3545; }
+        .type-badge.equal { background: #F4D35E; color: #1a1f2e; }
+        .center { text-align: center; }
+        .note { background: #F5E6E8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #637EA1; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Transformer Ratio</h1>
+    <div class="formula-box">V<sub>s</sub> / V<sub>p</sub> = N<sub>s</sub> / N<sub>p</sub></div>
+    <canvas id="transformerCanvas" width="530" height="200"></canvas>
+    <div class="slider-row">
+        <div class="slider-group">
+            <div class="slider-label"><span>Primary Turns (N<sub>p</sub>)</span><span class="val" id="npVal">10</span></div>
+            <input type="range" id="npSlider" min="1" max="50" value="10" oninput="update()">
+        </div>
+        <div class="slider-group">
+            <div class="slider-label"><span>Secondary Turns (N<sub>s</sub>)</span><span class="val" id="nsVal">20</span></div>
+            <input type="range" id="nsSlider" min="1" max="50" value="20" oninput="update()">
+        </div>
+    </div>
+    <div class="slider-group" style="margin-bottom:8px">
+        <div class="slider-label"><span>Input Voltage (V<sub>p</sub>)</span><span class="val" id="vpVal">230 V</span></div>
+        <input type="range" id="vpSlider" min="1" max="500" value="230" oninput="update()">
+    </div>
+    <div class="center" style="margin-bottom:8px">
+        <span class="type-badge" id="typeBadge">Step-Up Transformer</span>
+    </div>
+    <div class="results">
+        <div class="res-card"><h3>Turns Ratio</h3><div class="val" id="ratioVal">2.0</div><div class="unit">N<sub>s</sub> / N<sub>p</sub></div></div>
+        <div class="res-card"><h3>Output Voltage</h3><div class="val" id="vsVal">460</div><div class="unit">Volts (V)</div></div>
+        <div class="res-card"><h3>Power</h3><div class="val" id="powerNote">Conserved</div><div class="unit">(ideal transformer)</div></div>
+    </div>
+    <div class="note">
+        <strong>Note:</strong> In an ideal transformer, power is conserved: P<sub>in</sub> = P<sub>out</sub>. If voltage increases, current must decrease proportionally (and vice versa). V<sub>p</sub> &times; I<sub>p</sub> = V<sub>s</sub> &times; I<sub>s</sub>
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('transformerCanvas');
+const ctx = canvas.getContext('2d');
+let time = 0;
+
+function update() {
+    const np = parseInt(document.getElementById('npSlider').value);
+    const ns = parseInt(document.getElementById('nsSlider').value);
+    const vp = parseInt(document.getElementById('vpSlider').value);
+    document.getElementById('npVal').textContent = np;
+    document.getElementById('nsVal').textContent = ns;
+    document.getElementById('vpVal').textContent = vp + ' V';
+    const ratio = ns / np;
+    const vs = (vp * ns / np);
+    document.getElementById('ratioVal').textContent = ratio.toFixed(2);
+    document.getElementById('vsVal').textContent = vs.toFixed(1);
+    const badge = document.getElementById('typeBadge');
+    if (ns > np) {
+        badge.textContent = 'Step-Up Transformer';
+        badge.className = 'type-badge step-up';
+    } else if (ns < np) {
+        badge.textContent = 'Step-Down Transformer';
+        badge.className = 'type-badge step-down';
+    } else {
+        badge.textContent = 'Isolation Transformer (1:1)';
+        badge.className = 'type-badge equal';
+    }
+    drawTransformer(np, ns, vp, vs);
+}
+
+function drawTransformer(np, ns, vp, vs) {
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(0, 0, w, h);
+
+    const cx = w / 2, cy = h / 2;
+    const coreW = 160, coreH = 120;
+    const coreX = cx - coreW / 2, coreY = cy - coreH / 2;
+    const coreThick = 20;
+
+    // Iron core (E-I shape simplified as rectangle)
+    ctx.fillStyle = '#8B8B8B';
+    // Top
+    ctx.fillRect(coreX, coreY, coreW, coreThick);
+    // Bottom
+    ctx.fillRect(coreX, coreY + coreH - coreThick, coreW, coreThick);
+    // Left
+    ctx.fillRect(coreX, coreY, coreThick, coreH);
+    // Right
+    ctx.fillRect(coreX + coreW - coreThick, coreY, coreThick, coreH);
+
+    // Core label
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 9px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('Iron Core', cx, coreY + coreH / 2 + 3);
+
+    // Draw coils
+    const coilTop = coreY + coreThick + 5;
+    const coilBot = coreY + coreH - coreThick - 5;
+    const coilH = coilBot - coilTop;
+
+    // Primary coil (left side)
+    const pCoilX = coreX - 8;
+    const pTurns = Math.min(np, 25); // visual cap
+    const pSpacing = coilH / (pTurns + 1);
+    ctx.strokeStyle = '#dc3545';
+    ctx.lineWidth = 2;
+    for (let i = 0; i < pTurns; i++) {
+        const y = coilTop + (i + 1) * pSpacing;
+        ctx.beginPath();
+        ctx.ellipse(pCoilX, y, 12, pSpacing * 0.35, 0, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+    // Connection wires primary
+    ctx.beginPath();
+    ctx.moveTo(pCoilX - 30, coilTop + pSpacing - pSpacing * 0.35);
+    ctx.lineTo(pCoilX - 12, coilTop + pSpacing - pSpacing * 0.35);
+    ctx.moveTo(pCoilX - 30, coilBot - (coilH - pTurns * pSpacing) + pSpacing * 0.35);
+    ctx.lineTo(pCoilX - 12, coilBot - (coilH - pTurns * pSpacing) + pSpacing * 0.35);
+    ctx.stroke();
+    // AC source symbol
+    ctx.beginPath();
+    ctx.arc(pCoilX - 40, cy, 12, 0, Math.PI * 2);
+    ctx.strokeStyle = '#dc3545';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(pCoilX - 48, cy);
+    ctx.quadraticCurveTo(pCoilX - 43, cy - 6, pCoilX - 40, cy);
+    ctx.quadraticCurveTo(pCoilX - 37, cy + 6, pCoilX - 32, cy);
+    ctx.stroke();
+
+    // Secondary coil (right side)
+    const sCoilX = coreX + coreW + 8;
+    const sTurns = Math.min(ns, 25);
+    const sSpacing = coilH / (sTurns + 1);
+    ctx.strokeStyle = '#3498db';
+    ctx.lineWidth = 2;
+    for (let i = 0; i < sTurns; i++) {
+        const y = coilTop + (i + 1) * sSpacing;
+        ctx.beginPath();
+        ctx.ellipse(sCoilX, y, 12, sSpacing * 0.35, 0, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+    // Connection wires secondary
+    ctx.beginPath();
+    ctx.moveTo(sCoilX + 12, coilTop + sSpacing - sSpacing * 0.35);
+    ctx.lineTo(sCoilX + 30, coilTop + sSpacing - sSpacing * 0.35);
+    ctx.moveTo(sCoilX + 12, coilBot - (coilH - sTurns * sSpacing) + sSpacing * 0.35);
+    ctx.lineTo(sCoilX + 30, coilBot - (coilH - sTurns * sSpacing) + sSpacing * 0.35);
+    ctx.stroke();
+    // Load symbol
+    ctx.beginPath();
+    ctx.strokeStyle = '#3498db';
+    ctx.lineWidth = 1.5;
+    const loadX = sCoilX + 42;
+    ctx.strokeRect(loadX - 8, cy - 10, 16, 20);
+    ctx.moveTo(loadX - 4, cy - 4);
+    ctx.lineTo(loadX + 4, cy + 4);
+    ctx.moveTo(loadX + 4, cy - 4);
+    ctx.lineTo(loadX - 4, cy + 4);
+    ctx.stroke();
+
+    // Labels
+    ctx.fillStyle = '#dc3545';
+    ctx.font = 'bold 11px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('Primary', pCoilX, coreY - 8);
+    ctx.fillText(np + ' turns', pCoilX, coreY + coreH + 16);
+    ctx.fillText(vp + ' V', pCoilX - 40, cy + 28);
+
+    ctx.fillStyle = '#3498db';
+    ctx.fillText('Secondary', sCoilX, coreY - 8);
+    ctx.fillText(ns + ' turns', sCoilX, coreY + coreH + 16);
+    ctx.fillText(vs.toFixed(1) + ' V', sCoilX + 42, cy + 28);
+
+    // Magnetic flux arrows in core
+    const fluxPhase = Math.sin(time * 0.05);
+    ctx.fillStyle = `rgba(244,211,94,${0.4 + 0.3 * Math.abs(fluxPhase)})`;
+    const arrowDir = fluxPhase > 0 ? 1 : -1;
+    // Top arrows
+    for (let i = 0; i < 3; i++) {
+        const ax = coreX + 30 + i * 40;
+        const ay = coreY + coreThick / 2;
+        drawSmallArrow(ctx, ax, ay, arrowDir * 8, 0);
+    }
+    // Bottom arrows
+    for (let i = 0; i < 3; i++) {
+        const ax = coreX + 30 + i * 40;
+        const ay = coreY + coreH - coreThick / 2;
+        drawSmallArrow(ctx, ax, ay, -arrowDir * 8, 0);
+    }
+
+    time++;
+}
+
+function drawSmallArrow(ctx, x, y, dx, dy) {
+    ctx.beginPath();
+    ctx.moveTo(x - dx, y - dy);
+    ctx.lineTo(x + dx, y + dy);
+    ctx.strokeStyle = ctx.fillStyle;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    const angle = Math.atan2(dy, dx);
+    ctx.beginPath();
+    ctx.moveTo(x + dx, y + dy);
+    ctx.lineTo(x + dx - 5 * Math.cos(angle - 0.5), y + dy - 5 * Math.sin(angle - 0.5));
+    ctx.lineTo(x + dx - 5 * Math.cos(angle + 0.5), y + dy - 5 * Math.sin(angle + 0.5));
+    ctx.closePath();
+    ctx.fill();
+}
+
+function resize() {
+    canvas.width = Math.min(530, document.querySelector('.container').clientWidth - 4);
+    canvas.height = 200;
+    update();
+}
+
+function animate() {
+    drawTransformer(
+        parseInt(document.getElementById('npSlider').value),
+        parseInt(document.getElementById('nsSlider').value),
+        parseInt(document.getElementById('vpSlider').value),
+        parseInt(document.getElementById('vpSlider').value) * parseInt(document.getElementById('nsSlider').value) / parseInt(document.getElementById('npSlider').value)
+    );
+    requestAnimationFrame(animate);
+}
+
+resize();
+window.addEventListener('resize', resize);
+animate();
+</script>
+</body>
+</html>

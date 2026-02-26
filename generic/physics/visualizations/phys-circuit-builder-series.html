@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Series Circuit Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        canvas { display: block; width: 100%; border-radius: 8px; border: 1px solid #e2e8f0; background: #fafbfc; margin-bottom: 10px; }
+        .controls { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+        .slider-row { display: flex; align-items: center; gap: 8px; }
+        .slider-row label { font-size: 0.82rem; font-weight: 600; color: #4a5568; min-width: 90px; }
+        .slider-row input[type="range"] { flex: 1; accent-color: #637EA1; height: 6px; }
+        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #637EA1; min-width: 48px; text-align: right; }
+        .readings { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .reading-card { background: #F5E6E8; border-radius: 6px; padding: 8px 10px; text-align: center; }
+        .reading-card .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 1.05rem; color: #637EA1; margin-top: 2px; }
+        .reading-card.full { grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Series Circuit Builder</h1>
+        <canvas id="circuitCanvas" width="550" height="320"></canvas>
+        <div class="controls">
+            <div class="slider-row">
+                <label>Battery (V)</label>
+                <input type="range" id="voltage" min="1" max="12" step="0.5" value="6">
+                <span class="val" id="voltageVal">6.0 V</span>
+            </div>
+            <div class="slider-row">
+                <label>R1 (&Omega;)</label>
+                <input type="range" id="r1" min="1" max="20" step="1" value="4">
+                <span class="val" id="r1Val">4 &Omega;</span>
+            </div>
+            <div class="slider-row">
+                <label>R2 (&Omega;)</label>
+                <input type="range" id="r2" min="1" max="20" step="1" value="6">
+                <span class="val" id="r2Val">6 &Omega;</span>
+            </div>
+            <div class="slider-row">
+                <label>R3 (&Omega;)</label>
+                <input type="range" id="r3" min="1" max="20" step="1" value="10">
+                <span class="val" id="r3Val">10 &Omega;</span>
+            </div>
+        </div>
+        <div class="readings">
+            <div class="reading-card"><div class="label">Total Resistance</div><div class="value" id="rTotal">20 &Omega;</div></div>
+            <div class="reading-card"><div class="label">Current (I)</div><div class="value" id="current">0.30 A</div></div>
+            <div class="reading-card"><div class="label">V across R1</div><div class="value" id="v1">1.20 V</div></div>
+            <div class="reading-card"><div class="label">V across R2</div><div class="value" id="v2">1.80 V</div></div>
+            <div class="reading-card"><div class="label">V across R3</div><div class="value" id="v3">3.00 V</div></div>
+            <div class="reading-card"><div class="label">Ammeter Reading</div><div class="value" id="ammeter">0.30 A</div></div>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('circuitCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width;
+            H = 320;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const sliders = { voltage: document.getElementById('voltage'), r1: document.getElementById('r1'), r2: document.getElementById('r2'), r3: document.getElementById('r3') };
+        const valSpans = { voltage: document.getElementById('voltageVal'), r1: document.getElementById('r1Val'), r2: document.getElementById('r2Val'), r3: document.getElementById('r3Val') };
+
+        let animTime = 0;
+
+        function getValues() {
+            const V = parseFloat(sliders.voltage.value);
+            const R1 = parseFloat(sliders.r1.value);
+            const R2 = parseFloat(sliders.r2.value);
+            const R3 = parseFloat(sliders.r3.value);
+            const Rt = R1 + R2 + R3;
+            const I = V / Rt;
+            return { V, R1, R2, R3, Rt, I, V1: I * R1, V2: I * R2, V3: I * R3 };
+        }
+
+        function updateReadings() {
+            const v = getValues();
+            valSpans.voltage.textContent = v.V.toFixed(1) + ' V';
+            valSpans.r1.innerHTML = v.R1 + ' &Omega;';
+            valSpans.r2.innerHTML = v.R2 + ' &Omega;';
+            valSpans.r3.innerHTML = v.R3 + ' &Omega;';
+            document.getElementById('rTotal').innerHTML = v.Rt + ' &Omega;';
+            document.getElementById('current').textContent = v.I.toFixed(3) + ' A';
+            document.getElementById('v1').textContent = v.V1.toFixed(2) + ' V';
+            document.getElementById('v2').textContent = v.V2.toFixed(2) + ' V';
+            document.getElementById('v3').textContent = v.V3.toFixed(2) + ' V';
+            document.getElementById('ammeter').textContent = v.I.toFixed(3) + ' A';
+        }
+
+        Object.values(sliders).forEach(s => s.addEventListener('input', updateReadings));
+
+        // Circuit path: rectangular loop
+        // Battery on left side, R1 top-left, R2 top-center, R3 top-right
+        function getCircuitPath() {
+            const mx = W / 2, my = H / 2;
+            const hw = Math.min(W * 0.42, 220), hh = Math.min(H * 0.36, 115);
+            const l = mx - hw, r = mx + hw, t = my - hh, b = my + hh;
+            // Path goes clockwise from battery bottom-left
+            // Bottom-left -> top-left (battery side, going up)
+            // top-left -> top-right (resistors)
+            // top-right -> bottom-right (going down)
+            // bottom-right -> bottom-left (ammeter)
+            return { l, r, t, b, mx, my, hw, hh };
+        }
+
+        function drawBattery(x, y1, y2) {
+            const cy = (y1 + y2) / 2;
+            ctx.strokeStyle = '#1a1f2e';
+            ctx.lineWidth = 2;
+            // Wires to battery
+            ctx.beginPath(); ctx.moveTo(x, y1); ctx.lineTo(x, cy - 14); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x, cy + 14); ctx.lineTo(x, y2); ctx.stroke();
+            // Battery symbol: long line (+) and short line (-)
+            ctx.lineWidth = 2.5;
+            ctx.beginPath(); ctx.moveTo(x - 12, cy - 14); ctx.lineTo(x + 12, cy - 14); ctx.stroke();
+            ctx.lineWidth = 2.5;
+            ctx.beginPath(); ctx.moveTo(x - 6, cy - 6); ctx.lineTo(x + 6, cy - 6); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x - 12, cy + 6); ctx.lineTo(x + 12, cy + 6); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x - 6, cy + 14); ctx.lineTo(x + 6, cy + 14); ctx.stroke();
+            ctx.lineWidth = 2;
+            // Labels
+            ctx.font = "600 11px 'Outfit'";
+            ctx.fillStyle = '#e74c3c';
+            ctx.textAlign = 'right';
+            ctx.fillText('+', x - 15, cy - 8);
+            ctx.fillStyle = '#3498db';
+            ctx.fillText('−', x - 15, cy + 18);
+        }
+
+        function drawResistor(x1, y, x2, label, vLabel) {
+            const cx = (x1 + x2) / 2;
+            const rw = Math.min(40, (x2 - x1) * 0.4);
+            ctx.strokeStyle = '#1a1f2e';
+            ctx.lineWidth = 2;
+            // Wire to resistor
+            ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(cx - rw, y); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(cx + rw, y); ctx.lineTo(x2, y); ctx.stroke();
+            // Zigzag
+            const segs = 6;
+            const amp = 8;
+            ctx.beginPath();
+            ctx.moveTo(cx - rw, y);
+            for (let i = 0; i <= segs; i++) {
+                const px = cx - rw + (2 * rw) * (i / segs);
+                const py = y + (i % 2 === 0 ? 0 : (i % 4 === 1 ? -amp : amp));
+                ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+            // Label
+            ctx.font = "600 11px 'Outfit'";
+            ctx.fillStyle = '#637EA1';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, cx, y - 14);
+            // Voltage label
+            ctx.font = "500 10px 'Outfit'";
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillText(vLabel, cx, y + 22);
+        }
+
+        function drawAmmeter(x1, y, x2) {
+            const cx = (x1 + x2) / 2;
+            ctx.strokeStyle = '#1a1f2e';
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(cx - 14, y); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(cx + 14, y); ctx.lineTo(x2, y); ctx.stroke();
+            // Circle
+            ctx.beginPath(); ctx.arc(cx, y, 14, 0, Math.PI * 2); ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2; ctx.stroke();
+            ctx.fillStyle = '#fff'; ctx.fill();
+            ctx.font = "700 12px 'Oswald'";
+            ctx.fillStyle = '#e74c3c';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('A', cx, y + 1);
+            ctx.textBaseline = 'alphabetic';
+        }
+
+        function drawVoltmeter(x, y, vStr) {
+            ctx.beginPath(); ctx.arc(x, y, 13, 0, Math.PI * 2);
+            ctx.strokeStyle = '#3498db'; ctx.lineWidth = 1.5; ctx.stroke();
+            ctx.fillStyle = '#fff'; ctx.fill();
+            ctx.font = "700 11px 'Oswald'";
+            ctx.fillStyle = '#3498db';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('V', x, y + 1);
+            ctx.textBaseline = 'alphabetic';
+            // Dashed lines to indicate connection
+            ctx.setLineDash([3, 3]);
+            ctx.strokeStyle = '#3498db';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(x, y - 13); ctx.lineTo(x, y - 22); ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        // Build path segments for animation
+        function buildPath() {
+            const p = getCircuitPath();
+            // Clockwise from battery + terminal (top-left corner area)
+            // Current flows: + terminal (top of battery) -> right along top -> down right side -> left along bottom -> up through battery
+            return [
+                // Top wire: left to right (through resistors)
+                { x1: p.l, y1: p.t, x2: p.r, y2: p.t },
+                // Right wire: top to bottom
+                { x1: p.r, y1: p.t, x2: p.r, y2: p.b },
+                // Bottom wire: right to left (through ammeter)
+                { x1: p.r, y1: p.b, x2: p.l, y2: p.b },
+                // Left wire: bottom to top (through battery)
+                { x1: p.l, y1: p.b, x2: p.l, y2: p.t }
+            ];
+        }
+
+        function drawCurrentDots() {
+            const v = getValues();
+            const speed = Math.max(0.3, Math.min(3, v.I * 3));
+            const path = buildPath();
+            let totalLen = 0;
+            const segLens = path.map(seg => {
+                const dx = seg.x2 - seg.x1, dy = seg.y2 - seg.y1;
+                const len = Math.sqrt(dx * dx + dy * dy);
+                totalLen += len;
+                return len;
+            });
+
+            const numDots = 18;
+            const spacing = totalLen / numDots;
+            ctx.fillStyle = '#F4D35E';
+
+            for (let i = 0; i < numDots; i++) {
+                let dist = ((animTime * speed * 60 + i * spacing) % totalLen + totalLen) % totalLen;
+                let accumulated = 0;
+                for (let s = 0; s < path.length; s++) {
+                    if (accumulated + segLens[s] >= dist) {
+                        const t = (dist - accumulated) / segLens[s];
+                        const x = path[s].x1 + (path[s].x2 - path[s].x1) * t;
+                        const y = path[s].y1 + (path[s].y2 - path[s].y1) * t;
+                        ctx.beginPath();
+                        ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+                        ctx.fill();
+                        break;
+                    }
+                    accumulated += segLens[s];
+                }
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+            const v = getValues();
+            const p = getCircuitPath();
+
+            // Draw wires
+            ctx.strokeStyle = '#1a1f2e';
+            ctx.lineWidth = 2;
+            // Corners
+            ctx.beginPath();
+            ctx.moveTo(p.l, p.t); ctx.lineTo(p.r, p.t);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(p.r, p.t); ctx.lineTo(p.r, p.b);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(p.r, p.b); ctx.lineTo(p.l, p.b);
+            ctx.stroke();
+
+            // Battery on left side
+            drawBattery(p.l, p.t, p.b);
+
+            // Three resistors along top
+            const topLen = p.r - p.l;
+            const seg = topLen / 3;
+            drawResistor(p.l, p.t, p.l + seg, 'R1=' + v.R1 + 'Ω', v.V1.toFixed(2) + 'V');
+            drawResistor(p.l + seg, p.t, p.l + 2 * seg, 'R2=' + v.R2 + 'Ω', v.V2.toFixed(2) + 'V');
+            drawResistor(p.l + 2 * seg, p.t, p.r, 'R3=' + v.R3 + 'Ω', v.V3.toFixed(2) + 'V');
+
+            // Ammeter on bottom
+            drawAmmeter(p.l + topLen * 0.3, p.b, p.l + topLen * 0.7);
+
+            // Voltmeter indication
+            drawVoltmeter(p.mx, p.b + 32, v.V.toFixed(1) + 'V');
+
+            // Battery voltage label
+            ctx.font = "600 11px 'Outfit'";
+            ctx.fillStyle = '#637EA1';
+            ctx.textAlign = 'center';
+            ctx.fillText(v.V.toFixed(1) + ' V', p.l - 2, p.my + 1);
+
+            // Current direction arrow on right side
+            const arrowY = p.my;
+            ctx.fillStyle = '#F4D35E';
+            ctx.beginPath();
+            ctx.moveTo(p.r + 4, arrowY - 8);
+            ctx.lineTo(p.r + 12, arrowY);
+            ctx.lineTo(p.r + 4, arrowY + 8);
+            ctx.closePath();
+            ctx.fill();
+            ctx.font = "500 9px 'Outfit'";
+            ctx.fillStyle = '#4a5568';
+            ctx.textAlign = 'left';
+            ctx.fillText('I', p.r + 14, arrowY + 4);
+
+            // Animated dots
+            drawCurrentDots();
+        }
+
+        function animate() {
+            animTime += 1 / 60;
+            draw();
+            requestAnimationFrame(animate);
+        }
+
+        updateReadings();
+        animate();
+    </script>
+</body>
+</html>

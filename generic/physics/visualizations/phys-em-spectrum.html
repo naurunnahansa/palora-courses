@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electromagnetic Spectrum Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        .speed-note { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; background: #F5E6E8; padding: 6px 10px; border-radius: 5px; }
+        .speed-note strong { color: #637EA1; }
+        .spectrum-bar { display: flex; border-radius: 5px; overflow: hidden; cursor: pointer; margin-bottom: 10px; border: 1px solid #e5dfe0; }
+        .spectrum-segment { padding: 8px 2px; text-align: center; font-size: 0.6rem; font-weight: 600; color: #fff; transition: flex 0.3s ease, padding 0.3s ease; position: relative; min-width: 0; display: flex; align-items: center; justify-content: center; }
+        .spectrum-segment span { writing-mode: vertical-rl; text-orientation: mixed; font-size: 0.58rem; letter-spacing: 0.02em; white-space: nowrap; }
+        .spectrum-segment.active { flex: 3 !important; }
+        .spectrum-segment.active span { writing-mode: horizontal-tb; font-size: 0.72rem; }
+        .detail-panel { display: none; animation: fadeIn 0.2s ease; }
+        .detail-panel.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+        .detail-header { font-family: 'Oswald', sans-serif; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; padding: 6px 10px; border-radius: 4px; color: #fff; }
+        .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .detail-item { background: #fafbfc; border-radius: 4px; padding: 7px 9px; border: 1px solid #e5dfe0; }
+        .detail-item .dlabel { font-size: 0.68rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 2px; }
+        .detail-item .dvalue { font-size: 0.8rem; color: #1a1f2e; font-weight: 500; }
+        .detail-full { grid-column: 1 / -1; }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; }
+        .type-card { border-radius: 5px; border: 1px solid #e5dfe0; padding: 8px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; text-align: center; }
+        .type-card:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .type-card.active { border-color: #637EA1; box-shadow: 0 0 0 2px rgba(99,126,161,0.3); }
+        .type-card .dot { width: 24px; height: 24px; border-radius: 50%; margin: 0 auto 4px; }
+        .type-card .name { font-size: 0.72rem; font-weight: 600; color: #1a1f2e; }
+        .arrow-labels { display: flex; justify-content: space-between; font-size: 0.65rem; color: #4a5568; margin-bottom: 2px; padding: 0 2px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Electromagnetic Spectrum Explorer</h1>
+
+        <div class="speed-note">
+            All EM waves travel at the <strong>speed of light</strong> in vacuum: <strong>c = 3.0 &times; 10<sup>8</sup> m/s</strong>
+        </div>
+
+        <div class="card">
+            <div class="card-title">EM Spectrum</div>
+            <div class="arrow-labels">
+                <span>&larr; Longer wavelength / Lower frequency</span>
+                <span>Shorter wavelength / Higher frequency &rarr;</span>
+            </div>
+            <div class="spectrum-bar" id="spectrumBar"></div>
+        </div>
+
+        <div class="card" id="detailCard" style="display:none;">
+            <div class="detail-header" id="detailHeader">Radio Waves</div>
+            <div class="detail-grid" id="detailGrid"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Select a type to explore</div>
+            <div class="cards-grid" id="cardsGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        const emData = [
+            {
+                name: 'Radio',
+                color: '#8B4513',
+                wavelength: '> 0.1 m',
+                frequency: '< 3 GHz',
+                sources: 'Radio transmitters, stars, electronic circuits',
+                uses: 'Broadcasting (TV, radio), communication, MRI scans',
+                dangers: 'Generally considered safe at low power levels',
+                flex: 1
+            },
+            {
+                name: 'Microwave',
+                color: '#B8860B',
+                wavelength: '1 mm – 0.1 m',
+                frequency: '3 GHz – 300 GHz',
+                sources: 'Microwave ovens, radar, mobile phones, satellites',
+                uses: 'Cooking, satellite communication, Wi-Fi, Bluetooth',
+                dangers: 'Can cause internal heating of body tissue at high power',
+                flex: 1
+            },
+            {
+                name: 'Infrared',
+                color: '#CC3333',
+                wavelength: '700 nm – 1 mm',
+                frequency: '300 GHz – 430 THz',
+                sources: 'All warm objects, heaters, the Sun, remote controls',
+                uses: 'Thermal imaging, heating, remote controls, fibre optics',
+                dangers: 'Can cause skin burns at high intensities',
+                flex: 1
+            },
+            {
+                name: 'Visible',
+                color: 'linear-gradient(to right, #ff0000, #ff8800, #ffff00, #00cc00, #0066ff, #4400aa, #8800aa)',
+                isGradient: true,
+                textColor: '#1a1f2e',
+                wavelength: '400 nm – 700 nm',
+                frequency: '430 THz – 750 THz',
+                sources: 'The Sun, light bulbs, LEDs, lasers, fire',
+                uses: 'Vision, photography, illumination, fibre optic communication',
+                dangers: 'Intense visible light can damage the retina',
+                flex: 1
+            },
+            {
+                name: 'Ultra-violet',
+                color: '#6A0DAD',
+                wavelength: '10 nm – 400 nm',
+                frequency: '750 THz – 30 PHz',
+                sources: 'The Sun, UV lamps, very hot objects',
+                uses: 'Sterilisation, fluorescent lamps, detecting forged banknotes, tanning',
+                dangers: 'Can cause sunburn, premature skin ageing, skin cancer, eye damage',
+                flex: 1
+            },
+            {
+                name: 'X-ray',
+                color: '#1565C0',
+                wavelength: '0.01 nm – 10 nm',
+                frequency: '30 PHz – 30 EHz',
+                sources: 'X-ray tubes, synchrotrons, neutron stars',
+                uses: 'Medical imaging (bones, CT scans), airport security, studying crystal structure',
+                dangers: 'Can cause cell damage and mutations; cancer risk with high exposure',
+                flex: 1
+            },
+            {
+                name: 'Gamma',
+                color: '#263238',
+                wavelength: '< 0.01 nm',
+                frequency: '> 30 EHz',
+                sources: 'Radioactive decay, nuclear reactions, supernovae, pulsars',
+                uses: 'Cancer treatment (radiotherapy), sterilising medical equipment, food irradiation',
+                dangers: 'Very dangerous; causes cell damage, mutations, radiation sickness, cancer',
+                flex: 1
+            }
+        ];
+
+        let selectedIndex = -1;
+        const spectrumBar = document.getElementById('spectrumBar');
+        const cardsGrid = document.getElementById('cardsGrid');
+        const detailCard = document.getElementById('detailCard');
+
+        // Build spectrum bar
+        emData.forEach((d, i) => {
+            const seg = document.createElement('div');
+            seg.className = 'spectrum-segment';
+            seg.style.flex = d.flex;
+            if (d.isGradient) {
+                seg.style.background = d.color;
+                seg.style.color = d.textColor || '#fff';
+            } else {
+                seg.style.background = d.color;
+            }
+            seg.innerHTML = `<span>${d.name}</span>`;
+            seg.addEventListener('click', () => selectType(i));
+            spectrumBar.appendChild(seg);
+        });
+
+        // Build cards
+        emData.forEach((d, i) => {
+            const card = document.createElement('div');
+            card.className = 'type-card';
+            const dotStyle = d.isGradient
+                ? `background: ${d.color};`
+                : `background: ${d.color};`;
+            card.innerHTML = `<div class="dot" style="${dotStyle}"></div><div class="name">${d.name}</div>`;
+            card.addEventListener('click', () => selectType(i));
+            cardsGrid.appendChild(card);
+        });
+
+        function selectType(idx) {
+            if (selectedIndex === idx) {
+                // Deselect
+                selectedIndex = -1;
+                detailCard.style.display = 'none';
+                document.querySelectorAll('.spectrum-segment').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
+                return;
+            }
+
+            selectedIndex = idx;
+            const d = emData[idx];
+
+            // Update spectrum bar
+            document.querySelectorAll('.spectrum-segment').forEach((s, i) => {
+                s.classList.toggle('active', i === idx);
+            });
+
+            // Update cards
+            document.querySelectorAll('.type-card').forEach((c, i) => {
+                c.classList.toggle('active', i === idx);
+            });
+
+            // Update detail panel
+            const header = document.getElementById('detailHeader');
+            header.textContent = d.name + (d.name === 'Visible' ? ' Light' : d.name === 'Gamma' ? ' Rays' : d.name === 'Radio' ? ' Waves' : d.name === 'Microwave' ? 's' : d.name === 'X-ray' ? 's' : d.name === 'Infrared' ? ' Radiation' : ' (UV) Radiation');
+            if (d.isGradient) {
+                header.style.background = d.color;
+                header.style.color = d.textColor || '#fff';
+            } else {
+                header.style.background = d.color;
+                header.style.color = '#fff';
+            }
+
+            const grid = document.getElementById('detailGrid');
+            grid.innerHTML = `
+                <div class="detail-item">
+                    <div class="dlabel">Wavelength Range</div>
+                    <div class="dvalue">${d.wavelength}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="dlabel">Frequency Range</div>
+                    <div class="dvalue">${d.frequency}</div>
+                </div>
+                <div class="detail-item detail-full">
+                    <div class="dlabel">Sources</div>
+                    <div class="dvalue">${d.sources}</div>
+                </div>
+                <div class="detail-item detail-full">
+                    <div class="dlabel">Uses</div>
+                    <div class="dvalue">${d.uses}</div>
+                </div>
+                <div class="detail-item detail-full">
+                    <div class="dlabel">Dangers</div>
+                    <div class="dvalue">${d.dangers}</div>
+                </div>
+            `;
+
+            detailCard.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

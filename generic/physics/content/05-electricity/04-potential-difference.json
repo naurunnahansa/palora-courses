@@ -1,5 +1,2171 @@
 {
   "title": "Potential Difference",
-  "content": "# Potential Difference (Voltage)\n\n## Introduction\n\nWhy do electrons flow through circuits? What makes them move? The answer is potential difference—often called voltage. Just as water flows downhill due to a height difference, electrons flow through circuits due to a difference in electrical potential. Understanding potential difference is essential for analysing and designing electrical circuits.\n\n## Key Concepts\n\n### What is Potential Difference?\n\n**Potential difference (p.d.)** is the energy transferred per unit charge as charge flows between two points.\n\n$$V = \\frac{W}{Q}$$\n\nWhere:\n- $V$ = potential difference (volts, V)\n- $W$ = energy transferred (joules, J)\n- $Q$ = charge (coulombs, C)\n\n### The Volt\n\nOne **volt (V)** means one joule of energy is transferred per coulomb of charge:\n\n$$1 \\text{ V} = 1 \\text{ J/C}$$\n\nTypical voltages:\n| Source | Voltage |\n|--------|--------|\n| AA battery | 1.5 V |\n| Car battery | 12 V |\n| UK mains | 230 V |\n| Lightning | 100+ million V |\n\n### Potential Difference vs EMF\n\n**Electromotive force (EMF):**\n- Energy supplied per coulomb BY the power source\n- The 'push' that drives current around the circuit\n- Symbol: $\\varepsilon$ (epsilon)\n\n**Potential difference:**\n- Energy transferred per coulomb TO a component\n- The 'drop' across a component\n- Symbol: $V$\n\nIn an ideal circuit with no internal resistance: EMF = sum of p.d.s\n\n## Potential Difference in Circuits\n\n### Series Circuits\n\nIn a series circuit, the EMF is **shared** between components:\n\n$$\\varepsilon = V_1 + V_2 + V_3 + ...$$\n\nThe total p.d. across all components equals the supply EMF.\n\n[DIAGRAM: Series circuit showing voltages adding up to EMF]\n\n### Parallel Circuits\n\nIn a parallel circuit, the p.d. is the **same** across each branch:\n\n$$V_1 = V_2 = V_3 = ... = \\varepsilon$$\n\nEach branch has the full supply voltage across it.\n\n[DIAGRAM: Parallel circuit showing equal voltages across branches]\n\n### Energy Transfer\n\nAs charge flows through a component:\n- P.d. across the component tells us energy transferred\n- Higher p.d. = more energy transferred per coulomb\n- This energy might become heat, light, sound, kinetic, etc.\n\n## Measuring Potential Difference\n\n### The Voltmeter\n\nA **voltmeter** measures potential difference:\n\n- Connected in **parallel** with the component\n- Has very **high resistance** (ideally infinite)\n- Reads in volts (V) or millivolts (mV)\n\n[DIAGRAM: Voltmeter connected in parallel across a component]\n\n**Circuit symbol for voltmeter:** A circle with 'V' inside\n\n### Why Parallel?\n\nThe voltmeter measures the 'height difference' between two points:\n- Must be connected to both points\n- High resistance means almost no current flows through it\n- Doesn't affect the circuit being measured\n\n## Worked Examples\n\n**Example 1:** A lamp transfers 60 J of energy when 5 C of charge passes through it. Calculate the potential difference across the lamp.\n\n**Solution:**\n$$V = \\frac{W}{Q} = \\frac{60}{5} = 12 \\text{ V}$$\n\n**Example 2:** The p.d. across a resistor is 6 V. Calculate the energy transferred when 3 C of charge flows through it.\n\n**Solution:**\n$$W = QV = 3 \\times 6 = 18 \\text{ J}$$\n\n**Example 3:** In a series circuit with a 12 V battery, the p.d. across the first lamp is 7 V. What is the p.d. across the second lamp?\n\n**Solution:**\n$$V_{total} = V_1 + V_2$$\n$$12 = 7 + V_2$$\n$$V_2 = 12 - 7 = 5 \\text{ V}$$\n\n**Example 4:** A heater operates at 230 V. If 2 A of current flows for 5 minutes, how much energy is transferred?\n\n**Solution:**\nFirst find charge:\n$$Q = It = 2 \\times (5 \\times 60) = 600 \\text{ C}$$\nThen energy:\n$$W = QV = 600 \\times 230 = 138000 \\text{ J} = 138 \\text{ kJ}$$\n\n**Example 5:** Three resistors in series have p.d.s of 2 V, 5 V, and 8 V. What is the supply voltage?\n\n**Solution:**\n$$V_{supply} = V_1 + V_2 + V_3 = 2 + 5 + 8 = 15 \\text{ V}$$\n\n## The Water Analogy\n\nElectricity is often compared to water flowing:\n\n| Water System | Electrical Circuit |\n|--------------|-------------------|\n| Water | Charge (electrons) |\n| Flow rate | Current |\n| Pressure difference | Potential difference |\n| Pump | Battery/power supply |\n| Narrow pipe | Resistor |\n\nThe pump creates a pressure difference that pushes water around. Similarly, the battery creates a potential difference that pushes electrons around the circuit.\n\n## Energy Considerations\n\n### Energy Per Second (Power)\n\nCombining $V = W/Q$ with $I = Q/t$:\n\n$$P = IV$$\n\nWhere:\n- $P$ = power (W)\n- $I$ = current (A)\n- $V$ = potential difference (V)\n\n(This will be explored further in the lesson on electrical power.)\n\n### Kirchhoff's Voltage Law\n\nAround any closed loop in a circuit:\n- Sum of EMFs = Sum of p.d.s\n- Energy supplied = Energy transferred\n- Conservation of energy in electrical form\n\n## Common Misconceptions\n\n1. **\"Voltage flows through wires\"** — Voltage is a difference between two points, like height difference. Current flows; voltage is measured across.\n\n2. **\"Voltmeter should be in series\"** — Voltmeters go in parallel. Ammeters go in series.\n\n3. **\"Higher voltage means more current\"** — Only true if resistance stays constant. V, I, and R are related by Ohm's law.\n\n4. **\"The battery supplies voltage\"** — The battery supplies energy (EMF). Voltage is the energy per unit charge.\n\n5. **\"Voltage is used up\"** — The potential difference is 'dropped' across components as energy is transferred. Total p.d. dropped equals EMF supplied.\n\n6. **\"Zero volts means no electricity\"** — Zero p.d. across something just means no energy is transferred there. Current might still flow.\n\n## Practice Problems\n\n1. 30 J of energy is transferred when 6 C of charge passes through a bulb. Calculate the p.d. across the bulb.\n\n2. The p.d. across a motor is 12 V. How much energy is transferred when 15 C of charge flows?\n\n3. A 9 V battery is connected to two resistors in series. The p.d. across one resistor is 3.5 V. Find the p.d. across the other.\n\n4. In a parallel circuit, what is the p.d. across a lamp connected to a 6 V battery?\n\n5. Explain why a voltmeter must have very high resistance.\n\n6. A charge of 2 C flows through a 10 V potential difference. \n   a) Calculate the energy transferred.\n   b) If this takes 4 seconds, calculate the current.\n\n7. Three lamps in series have p.d.s of 4 V, 4 V, and 4 V. What is the EMF of the battery?\n\n## Summary\n\n- Potential difference: energy transferred per unit charge, $V = W/Q$\n- Unit: volt (V), where 1 V = 1 J/C\n- EMF: energy supplied by the source per coulomb\n- In series: p.d.s add up to equal the EMF\n- In parallel: p.d. is the same across each branch\n- Voltmeter: measures p.d., connected in parallel, high resistance\n- Energy transferred: $W = QV$\n- Voltage is measured across components, not through them",
-  "order": 4
+  "order": 4,
+  "pageType": "markdown",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Potential Difference (Voltage)"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Why do electrons flow through circuits? What makes them move? The answer is potential difference—often called voltage. Just as water flows downhill due to a height difference, electrons flow through circuits due to a difference in electrical potential. Understanding potential difference is essential for analysing and designing electrical circuits."
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concept: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "Potential difference (V) is the energy transferred per unit charge. The formula is V = E/Q, where E is energy in joules and Q is charge in coulombs. It is measured in volts (V)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "What is Potential Difference?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Potential difference (p.d.)",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is the energy transferred per unit charge as charge flows between two points."
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V = \\frac{W}{Q}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Where:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "V",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = potential difference (volts, V)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "W",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = energy transferred (joules, J)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Q",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = charge (coulombs, C)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The Volt"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "One "
+          },
+          {
+            "type": "text",
+            "text": "volt (V)",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " means one joule of energy is transferred per coulomb of charge:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "1 \\text{ V} = 1 \\text{ J/C}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Typical voltages:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "| Source | Voltage |\n|--------|--------|\n| AA battery | 1.5 V |\n| Car battery | 12 V |\n| UK mains | 230 V |\n| Lightning | 100+ million V |"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Potential Difference vs EMF"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Electromotive force (EMF):",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Energy supplied per coulomb BY the power source"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The 'push' that drives current around the circuit"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Symbol: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\varepsilon",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (epsilon)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Potential difference:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Energy transferred per coulomb TO a component"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The 'drop' across a component"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Symbol: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "V",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In an ideal circuit with no internal resistance: EMF = sum of p.d.s"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Potential Difference in Circuits"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Series Circuits"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In a series circuit, the EMF is "
+          },
+          {
+            "type": "text",
+            "text": "shared",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " between components:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\varepsilon = V_1 + V_2 + V_3 + ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The total p.d. across all components equals the supply EMF."
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "            V1          V2\n         +------+   +------+\n   + |---| R1   |---| R2   |---| -\n     |   +------+   +------+   |\n     |_________________________|\n\n   EMF = V1 + V2"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Parallel Circuits"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In a parallel circuit, the p.d. is the "
+          },
+          {
+            "type": "text",
+            "text": "same",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " across each branch:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_1 = V_2 = V_3 = ... = \\varepsilon"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Each branch has the full supply voltage across it."
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "         +---[R1]---+\n         |    V1    |\n   + |---+---[R2]---+---| -\n         |    V2    |\n         +---[R3]---+\n              V3\n\n   V1 = V2 = V3 = EMF"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Energy Transfer"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "As charge flows through a component:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "P.d. across the component tells us energy transferred"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Higher p.d. = more energy transferred per coulomb"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "This energy might become heat, light, sound, kinetic, etc."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-potential-difference"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Measuring Potential Difference"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The Voltmeter"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A "
+          },
+          {
+            "type": "text",
+            "text": "voltmeter",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " measures potential difference:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Connected in "
+                  },
+                  {
+                    "type": "text",
+                    "text": "parallel",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " with the component"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Has very "
+                  },
+                  {
+                    "type": "text",
+                    "text": "high resistance",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (ideally infinite)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Reads in volts (V) or millivolts (mV)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "   + |--------[LAMP]--------| -\n     |          |    |      |\n     |          +--[V]--+   |\n     |________________________|\n\n   Voltmeter (V) in PARALLEL across the lamp"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Circuit symbol for voltmeter:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A circle with 'V' inside"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Why Parallel?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The voltmeter measures the 'height difference' between two points:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Must be connected to both points"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "High resistance means almost no current flows through it"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Doesn't affect the circuit being measured"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A lamp transfers 60 J of energy when 5 C of charge passes through it. Calculate the potential difference across the lamp."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V = \\frac{W}{Q} = \\frac{60}{5} = 12 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " The p.d. across a resistor is 6 V. Calculate the energy transferred when 3 C of charge flows through it."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "W = QV = 3 \\times 6 = 18 \\text{ J}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 3:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " In a series circuit with a 12 V battery, the p.d. across the first lamp is 7 V. What is the p.d. across the second lamp?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{total} = V_1 + V_2"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "12 = 7 + V_2"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_2 = 12 - 7 = 5 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 4:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A heater operates at 230 V. If 2 A of current flows for 5 minutes, how much energy is transferred?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " First find charge:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Q = It = 2 \\times (5 \\times 60) = 600 \\text{ C}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Then energy:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "W = QV = 600 \\times 230 = 138000 \\text{ J} = 138 \\text{ kJ}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 5:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Three resistors in series have p.d.s of 2 V, 5 V, and 8 V. What is the supply voltage?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{supply} = V_1 + V_2 + V_3 = 2 + 5 + 8 = 15 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The Water Analogy"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Electricity is often compared to water flowing:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "| Water System | Electrical Circuit |\n|--------------|-------------------|\n| Water | Charge (electrons) |\n| Flow rate | Current |\n| Pressure difference | Potential difference |\n| Pump | Battery/power supply |\n| Narrow pipe | Resistor |"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The pump creates a pressure difference that pushes water around. Similarly, the battery creates a potential difference that pushes electrons around the circuit."
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Exam Tip: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "A voltmeter is always connected in parallel across a component. An ammeter is connected in series. Mixing these up is a common exam mistake."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Energy Considerations"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Energy Per Second (Power)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Combining "
+          },
+          {
+            "type": "text",
+            "text": "V = W/Q",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " with "
+          },
+          {
+            "type": "text",
+            "text": "I = Q/t",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ":"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "P = IV"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Where:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "P",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = power (W)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "I",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = current (A)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "V",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = potential difference (V)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(This will be explored further in the lesson on electrical power.)"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Kirchhoff's Voltage Law"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Around any closed loop in a circuit:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Sum of EMFs = Sum of p.d.s"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Energy supplied = Energy transferred"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Conservation of energy in electrical form"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Real-World Link: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "Mains electricity in the UK has a potential difference of 230 V, meaning each coulomb of charge transfers 230 J of energy. This is why mains electricity is far more dangerous than a 1.5 V battery."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-potential-difference-2"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Misconceptions"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Voltage flows through wires\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Voltage is a difference between two points, like height difference. Current flows; voltage is measured across."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Voltmeter should be in series\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Voltmeters go in parallel. Ammeters go in series."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Higher voltage means more current\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Only true if resistance stays constant. V, I, and R are related by Ohm's law."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"The battery supplies voltage\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — The battery supplies energy (EMF). Voltage is the energy per unit charge."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Voltage is used up\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — The potential difference is 'dropped' across components as energy is transferred. Total p.d. dropped equals EMF supplied."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Zero volts means no electricity\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Zero p.d. across something just means no energy is transferred there. Current might still flow."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Problems"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the potential difference across a bulb when 30 J of energy is transferred as 6 C of charge passes through it."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the energy transferred when 15 C of charge flows through a motor with a p.d. of 12 V."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the p.d. across the second resistor when a 9 V battery is connected to two resistors in series and the p.d. across the first is 3.5 V."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "State the p.d. across a lamp connected in parallel to a 6 V battery."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Explain why a voltmeter must have very high resistance for accurate measurements."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A charge of 2 C flows through a 10 V potential difference.  a) Calculate the energy transferred. b) If this takes 4 seconds, calculate the current."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the EMF of the battery when three lamps in series have p.d.s of 4 V, 4 V, and 4 V."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Potential difference: energy transferred per unit charge, "
+                  },
+                  {
+                    "type": "text",
+                    "text": "V = W/Q",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Unit: volt (V), where 1 V = 1 J/C"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "EMF: energy supplied by the source per coulomb"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In series: p.d.s add up to equal the EMF"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In parallel: p.d. is the same across each branch"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Voltmeter: measures p.d., connected in parallel, high resistance"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Energy transferred: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "W = QV",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Voltage is measured across components, not through them"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer Key"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "V = W/Q = 30/6 = 5 V",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "W = QV = 15 x 12 = 180 J",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "V2 = 9 - 3.5 = 5.5 V",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " -- In series, p.d.s add to equal the EMF. (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "6 V.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " In a parallel circuit, the p.d. across each branch equals the supply voltage. (recall)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A voltmeter is connected in parallel with a component. If it had low resistance, a significant current would flow through it, diverting current from the component and altering the circuit. High resistance ensures negligible current flows through the voltmeter, so it measures the true p.d. without affecting the circuit.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (reasoning)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) W = QV = 2 x 10 = 20 J",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " -- "
+                  },
+                  {
+                    "type": "text",
+                    "text": "(b) I = Q/t = 2/4 = 0.5 A",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "EMF = V1 + V2 + V3 = 4 + 4 + 4 = 12 V",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

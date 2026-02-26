@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lens Ray Diagram</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .toggle-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 8px; }
+        .toggle-btn { background: #fff; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px 14px; font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .toggle-btn:hover { border-color: #637EA1; }
+        .toggle-btn.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #e5dfe0; border-radius: 5px; cursor: ew-resize; }
+        .info-desc { text-align: center; font-size: 0.72rem; color: #4a5568; margin-bottom: 8px; }
+        .props { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+        .prop { flex: 1; min-width: 80px; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px; text-align: center; }
+        .prop .label { font-size: 0.62rem; color: #4a5568; }
+        .prop .value { font-size: 0.82rem; font-weight: 700; color: #637EA1; }
+        .legend { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; font-size: 0.68rem; color: #4a5568; margin-bottom: 8px; }
+        .legend-item { display: flex; align-items: center; gap: 3px; }
+        .legend-line { width: 16px; height: 3px; border-radius: 1px; }
+        .note { background: #F5E6E8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #637EA1; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Lens Ray Diagram</h1>
+    <div class="toggle-row">
+        <button class="toggle-btn active" id="convBtn" onclick="setLens('converging')">Converging</button>
+        <button class="toggle-btn" id="divBtn" onclick="setLens('diverging')">Diverging</button>
+    </div>
+    <p class="info-desc">Drag the object arrow left/right to change its distance from the lens</p>
+    <canvas id="lensCanvas" width="530" height="280"></canvas>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-line" style="background:#dc3545"></div>Ray 1: Parallel then through F</div>
+        <div class="legend-item"><div class="legend-line" style="background:#28a745"></div>Ray 2: Through centre</div>
+        <div class="legend-item"><div class="legend-line" style="background:#3498db"></div>Ray 3: Through F then parallel</div>
+    </div>
+    <div class="props">
+        <div class="prop"><div class="label">Image Type</div><div class="value" id="imgType">Real</div></div>
+        <div class="prop"><div class="label">Orientation</div><div class="value" id="imgOrient">Inverted</div></div>
+        <div class="prop"><div class="label">Size</div><div class="value" id="imgSize">Same</div></div>
+        <div class="prop"><div class="label">Object dist</div><div class="value" id="objDist">2F</div></div>
+    </div>
+    <div class="note" id="noteText">
+        <strong>Converging lens:</strong> Brings parallel rays to a focus. Image properties depend on object position relative to F and 2F.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('lensCanvas');
+const ctx = canvas.getContext('2d');
+
+let lensType = 'converging'; // converging or diverging
+let objX = -160; // object x relative to lens centre (negative = left)
+const objH = 60; // object height
+let focalLen = 80; // focal length in px
+let dragging = false;
+
+function setLens(type) {
+    lensType = type;
+    document.getElementById('convBtn').classList.toggle('active', type === 'converging');
+    document.getElementById('divBtn').classList.toggle('active', type === 'diverging');
+    if (type === 'diverging') {
+        document.getElementById('noteText').innerHTML = '<strong>Diverging lens:</strong> Spreads parallel rays apart. Always produces a virtual, upright, diminished image.';
+    } else {
+        document.getElementById('noteText').innerHTML = '<strong>Converging lens:</strong> Brings parallel rays to a focus. Image properties depend on object position relative to F and 2F.';
+    }
+    draw();
+}
+
+function draw() {
+    const w = canvas.width, h = canvas.height;
+    const cx = w / 2, cy = h / 2; // lens centre
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(0, 0, w, h);
+
+    // Principal axis
+    ctx.strokeStyle = '#ccc';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(w, cy); ctx.stroke();
+
+    // Focal points and 2F markers
+    const f = focalLen;
+    const markers = [
+        { x: cx - 2*f, label: '2F' }, { x: cx - f, label: 'F' },
+        { x: cx + f, label: 'F' }, { x: cx + 2*f, label: '2F' }
+    ];
+    markers.forEach(m => {
+        ctx.fillStyle = '#637EA1';
+        ctx.beginPath(); ctx.arc(m.x, cy, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.font = 'bold 10px Outfit';
+        ctx.textAlign = 'center';
+        ctx.fillText(m.label, m.x, cy + 16);
+    });
+
+    // Lens
+    ctx.strokeStyle = '#637EA1';
+    ctx.lineWidth = 2.5;
+    if (lensType === 'converging') {
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, 8, 100, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        // arrows on lens
+        drawArrow(cx, cy - 100, cx - 6, cy - 90, '#637EA1', 1.5);
+        drawArrow(cx, cy + 100, cx + 6, cy + 90, '#637EA1', 1.5);
+    } else {
+        ctx.beginPath();
+        ctx.moveTo(cx - 8, cy - 100);
+        ctx.quadraticCurveTo(cx + 4, cy, cx - 8, cy + 100);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(cx + 8, cy - 100);
+        ctx.quadraticCurveTo(cx - 4, cy, cx + 8, cy + 100);
+        ctx.stroke();
+    }
+
+    // Object
+    const oX = cx + objX;
+    const oTop = cy - objH;
+    ctx.strokeStyle = '#1a1f2e';
+    ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(oX, cy); ctx.lineTo(oX, oTop); ctx.stroke();
+    drawArrow(oX, cy, oX, oTop, '#1a1f2e', 3);
+
+    // Calculate image position using thin lens equation: 1/f = 1/v - 1/u (sign convention)
+    const u = objX; // negative (object on left)
+    let v, imgH;
+
+    if (lensType === 'converging') {
+        // 1/v = 1/f + 1/u (real-is-positive convention adapted)
+        // Using: 1/v = 1/f - 1/|u|  where |u| is positive object distance
+        const uAbs = Math.abs(u);
+        if (Math.abs(uAbs - f) < 2) {
+            // At focal point - image at infinity
+            v = 5000;
+            imgH = -objH * v / uAbs;
+        } else {
+            v = (f * uAbs) / (uAbs - f);
+            imgH = -objH * v / uAbs;
+        }
+    } else {
+        // Diverging: f is negative
+        const fNeg = -f;
+        const uAbs = Math.abs(u);
+        v = (fNeg * uAbs) / (uAbs + fNeg); // always negative (virtual)
+        v = -Math.abs(v); // ensure virtual
+        imgH = -objH * v / uAbs; // positive = upright
+    }
+
+    const iX = cx + v;
+    const iTop = cy - imgH;
+    const isVirtual = v < 0;
+
+    // Draw 3 standard rays
+    const tipX = oX, tipY = oTop;
+
+    if (lensType === 'converging') {
+        // Ray 1: Parallel to axis, then through F (or appears to come from F if virtual)
+        ctx.strokeStyle = '#dc3545';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath(); ctx.moveTo(tipX, tipY); ctx.lineTo(cx, tipY); ctx.stroke();
+        if (!isVirtual) {
+            ctx.beginPath(); ctx.moveTo(cx, tipY); ctx.lineTo(Math.min(w, iX + 50), cy + (tipY - cy) * (-(Math.min(w, iX + 50) - cx)) / (-v + (cx - iX)) || cy); ctx.stroke();
+            // Properly: ray from lens at tipY goes through focal point on right
+            const ray1EndX = w;
+            const ray1Slope = (cy - tipY) / f; // slope toward F
+            const ray1EndY = tipY + ray1Slope * (ray1EndX - cx);
+            ctx.beginPath(); ctx.moveTo(cx, tipY); ctx.lineTo(ray1EndX, ray1EndY); ctx.stroke();
+        } else {
+            // Virtual: ray refracts away, extend back through -F
+            const ray1Slope = (tipY - cy) / f;
+            const ray1EndX = w;
+            const ray1EndY = tipY - ray1Slope * (ray1EndX - cx);
+            ctx.beginPath(); ctx.moveTo(cx, tipY); ctx.lineTo(ray1EndX, ray1EndY); ctx.stroke();
+            // Virtual extension (dashed) back to image
+            ctx.setLineDash([4, 3]);
+            ctx.beginPath(); ctx.moveTo(cx, tipY); ctx.lineTo(iX, iTop); ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        // Ray 2: Through optical centre (straight through)
+        ctx.strokeStyle = '#28a745';
+        ctx.lineWidth = 1.8;
+        const r2slope = (tipY - cy) / (tipX - cx);
+        const r2x1 = 0, r2y1 = cy + r2slope * (0 - cx);
+        const r2x2 = w, r2y2 = cy + r2slope * (w - cx);
+        ctx.beginPath(); ctx.moveTo(Math.max(tipX, 0), tipY); ctx.lineTo(r2x2, r2y2); ctx.stroke();
+
+        // Ray 3: Through F on object side, then parallel after lens
+        ctx.strokeStyle = '#3498db';
+        ctx.lineWidth = 1.8;
+        const fObjX = cx - f;
+        const r3slope = (tipY - cy) / (tipX - fObjX);
+        const r3yAtLens = cy + r3slope * (cx - fObjX);
+        ctx.beginPath(); ctx.moveTo(tipX, tipY); ctx.lineTo(cx, r3yAtLens); ctx.stroke();
+        if (!isVirtual) {
+            ctx.beginPath(); ctx.moveTo(cx, r3yAtLens); ctx.lineTo(w, r3yAtLens); ctx.stroke();
+        } else {
+            ctx.beginPath(); ctx.moveTo(cx, r3yAtLens); ctx.lineTo(w, r3yAtLens); ctx.stroke();
+            ctx.setLineDash([4, 3]);
+            ctx.beginPath(); ctx.moveTo(cx, r3yAtLens); ctx.lineTo(iX, iTop); ctx.stroke();
+            ctx.setLineDash([]);
+        }
+    } else {
+        // DIVERGING LENS
+        // Ray 1: Parallel, then diverges as if from F on same side
+        ctx.strokeStyle = '#dc3545';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath(); ctx.moveTo(tipX, tipY); ctx.lineTo(cx, tipY); ctx.stroke();
+        // Diverges: appears to come from F on left
+        const fLeft = cx - f;
+        const r1slope = (tipY - cy) / (cx - fLeft);
+        ctx.beginPath(); ctx.moveTo(cx, tipY); ctx.lineTo(w, tipY + r1slope * (w - cx)); ctx.stroke();
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath(); ctx.moveTo(cx, tipY); ctx.lineTo(fLeft, cy); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Ray 2: Through centre
+        ctx.strokeStyle = '#28a745';
+        ctx.lineWidth = 1.8;
+        ctx.setLineDash([]);
+        const r2slope = (tipY - cy) / (tipX - cx);
+        ctx.beginPath(); ctx.moveTo(tipX, tipY); ctx.lineTo(w, cy + r2slope * (w - cx)); ctx.stroke();
+
+        // Ray 3: Aimed at F on far side, emerges parallel
+        ctx.strokeStyle = '#3498db';
+        ctx.lineWidth = 1.8;
+        const fRight = cx + f;
+        const r3slope2 = (tipY - cy) / (tipX - fRight);
+        const r3yLens = cy + r3slope2 * (cx - fRight);
+        ctx.beginPath(); ctx.moveTo(tipX, tipY); ctx.lineTo(cx, r3yLens); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx, r3yLens); ctx.lineTo(w, r3yLens); ctx.stroke();
+        // Virtual extensions
+        ctx.setLineDash([4, 3]);
+        ctx.strokeStyle = '#3498db';
+        ctx.beginPath(); ctx.moveTo(cx, r3yLens); ctx.lineTo(0, r3yLens); ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    // Image arrow
+    if (Math.abs(v) < 2000) {
+        ctx.strokeStyle = isVirtual ? '#637EA1' : '#1a1f2e';
+        ctx.lineWidth = 3;
+        if (isVirtual) ctx.setLineDash([5, 4]);
+        ctx.beginPath(); ctx.moveTo(iX, cy); ctx.lineTo(iX, iTop); ctx.stroke();
+        drawArrow(iX, cy, iX, iTop, isVirtual ? '#637EA1' : '#1a1f2e', 3);
+        ctx.setLineDash([]);
+        // Image label
+        ctx.fillStyle = isVirtual ? '#637EA1' : '#1a1f2e';
+        ctx.font = 'bold 10px Outfit';
+        ctx.textAlign = 'center';
+        ctx.fillText(isVirtual ? 'Virtual Image' : 'Real Image', iX, Math.min(iTop, oTop) - 8);
+    }
+
+    // Update properties
+    const uAbs = Math.abs(u);
+    const ratio = uAbs / f;
+    document.getElementById('imgType').textContent = isVirtual ? 'Virtual' : 'Real';
+    document.getElementById('imgOrient').textContent = imgH > 0 ? 'Upright' : 'Inverted';
+    const mag = Math.abs(imgH / objH);
+    document.getElementById('imgSize').textContent = mag > 1.1 ? 'Magnified' : mag < 0.9 ? 'Diminished' : 'Same size';
+    if (ratio > 2.3) document.getElementById('objDist').textContent = 'Beyond 2F';
+    else if (ratio > 1.8) document.getElementById('objDist').textContent = 'At 2F';
+    else if (ratio > 1.1) document.getElementById('objDist').textContent = 'Between F & 2F';
+    else if (ratio > 0.9) document.getElementById('objDist').textContent = 'At F';
+    else document.getElementById('objDist').textContent = 'Inside F';
+}
+
+function drawArrow(x1, y1, x2, y2, color, lineW) {
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.sqrt(dx*dx + dy*dy);
+    if (len < 2) return;
+    const headLen = Math.min(10, len * 0.3);
+    const angle = Math.atan2(dy, dx);
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - headLen * Math.cos(angle - 0.4), y2 - headLen * Math.sin(angle - 0.4));
+    ctx.lineTo(x2 - headLen * Math.cos(angle + 0.4), y2 - headLen * Math.sin(angle + 0.4));
+    ctx.closePath();
+    ctx.fill();
+}
+
+// Drag object
+canvas.addEventListener('mousedown', e => {
+    const r = canvas.getBoundingClientRect();
+    const mx = e.clientX - r.left;
+    const oX = canvas.width/2 + objX;
+    if (Math.abs(mx - oX) < 30) dragging = true;
+});
+canvas.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const r = canvas.getBoundingClientRect();
+    const mx = e.clientX - r.left;
+    objX = mx - canvas.width/2;
+    objX = Math.min(-20, Math.max(-canvas.width/2 + 20, objX));
+    draw();
+});
+canvas.addEventListener('mouseup', () => dragging = false);
+canvas.addEventListener('mouseleave', () => dragging = false);
+// Touch
+canvas.addEventListener('touchstart', e => {
+    e.preventDefault();
+    const r = canvas.getBoundingClientRect();
+    const mx = e.touches[0].clientX - r.left;
+    const oX = canvas.width/2 + objX;
+    if (Math.abs(mx - oX) < 40) dragging = true;
+});
+canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    if (!dragging) return;
+    const r = canvas.getBoundingClientRect();
+    const mx = e.touches[0].clientX - r.left;
+    objX = mx - canvas.width/2;
+    objX = Math.min(-20, Math.max(-canvas.width/2 + 20, objX));
+    draw();
+});
+canvas.addEventListener('touchend', e => { e.preventDefault(); dragging = false; });
+
+function resize() {
+    canvas.width = Math.min(530, document.querySelector('.container').clientWidth - 4);
+    focalLen = canvas.width * 0.15;
+    draw();
+}
+resize();
+window.addEventListener('resize', resize);
+</script>
+</body>
+</html>

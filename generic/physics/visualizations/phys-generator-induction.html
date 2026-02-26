@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator & Electromagnetic Induction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .views { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
+        .view-box { background: #f8f9fa; border-radius: 8px; overflow: hidden; }
+        .view-label { font-family: 'Oswald', sans-serif; font-size: 0.65rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; padding: 4px; background: #f0f4f8; }
+        canvas { width: 100%; display: block; }
+        .controls { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; background: #f8f9fa; border-radius: 8px; padding: 8px 10px; }
+        .controls label { font-size: 0.7rem; font-weight: 600; color: #4a5568; white-space: nowrap; }
+        .controls .val { font-weight: 700; color: #637EA1; }
+        .controls input[type=range] { flex: 1; accent-color: #637EA1; }
+        .controls button { padding: 5px 12px; border: 2px solid #637EA1; background: white; color: #637EA1; border-radius: 6px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.7rem; cursor: pointer; }
+        .controls button.active { background: #637EA1; color: white; }
+        .graphs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
+        .graph-box { background: #f8f9fa; border-radius: 8px; overflow: hidden; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 8px; }
+        .stat { background: #f8f9fa; border-radius: 6px; padding: 5px; text-align: center; }
+        .stat .lbl { font-size: 0.55rem; color: #4a5568; text-transform: uppercase; }
+        .stat .val { font-size: 0.85rem; font-weight: 700; color: #637EA1; }
+        .rule-box { background: #f0f4f8; border-radius: 8px; padding: 8px; }
+        .rule-box h3 { font-family: 'Oswald', sans-serif; font-size: 0.7rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .rule-box p { font-size: 0.65rem; color: #4a5568; line-height: 1.4; }
+        .rule-box .fingers { display: flex; gap: 8px; margin-top: 4px; }
+        .rule-box .finger { background: white; border-radius: 4px; padding: 3px 8px; font-size: 0.6rem; font-weight: 600; }
+        .finger.motion { color: #e53e3e; }
+        .finger.field { color: #637EA1; }
+        .finger.current { color: #F4D35E; border: 1px solid #F4D35E; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Generator & Electromagnetic Induction</h1>
+    <div class="views">
+        <div class="view-box">
+            <div class="view-label">Rotating Coil in Magnetic Field</div>
+            <canvas id="genCanvas" height="170"></canvas>
+        </div>
+        <div class="view-box">
+            <div class="view-label">Coil Cross-Section</div>
+            <canvas id="crossCanvas" height="170"></canvas>
+        </div>
+    </div>
+    <div class="controls">
+        <label>Speed: <span class="val" id="speedVal">1.0x</span></label>
+        <input type="range" id="speedSlider" min="0.2" max="4" value="1" step="0.1" oninput="document.getElementById('speedVal').textContent=this.value+'x'">
+        <button id="pauseBtn" onclick="togglePause()">Pause</button>
+    </div>
+    <div class="graphs">
+        <div class="graph-box">
+            <div class="view-label">EMF Output (AC)</div>
+            <canvas id="emfCanvas" height="110"></canvas>
+        </div>
+        <div class="graph-box">
+            <div class="view-label">Flux Linkage</div>
+            <canvas id="fluxCanvas" height="110"></canvas>
+        </div>
+    </div>
+    <div class="stats">
+        <div class="stat">
+            <div class="lbl">Angle</div>
+            <div class="val" id="angleVal">0°</div>
+        </div>
+        <div class="stat">
+            <div class="lbl">EMF</div>
+            <div class="val" id="emfVal">0 V</div>
+        </div>
+        <div class="stat">
+            <div class="lbl">Flux Linkage</div>
+            <div class="val" id="fluxVal">1.0 Wb</div>
+        </div>
+    </div>
+    <div class="rule-box">
+        <h3>Fleming's Right-Hand Rule (Generators)</h3>
+        <p>For a conductor moving in a magnetic field, use your right hand:</p>
+        <div class="fingers">
+            <div class="finger motion">Thumb = Motion</div>
+            <div class="finger field">First finger = Field (N→S)</div>
+            <div class="finger current">Second finger = Current</div>
+        </div>
+    </div>
+</div>
+<script>
+const genC = document.getElementById('genCanvas');
+const crossC = document.getElementById('crossCanvas');
+const emfC = document.getElementById('emfCanvas');
+const fluxC = document.getElementById('fluxCanvas');
+
+function initC(c, h) {
+    const r = c.getBoundingClientRect();
+    c.width = r.width * 2; c.height = h * 2;
+    c.getContext('2d').scale(2, 2);
+    return { w: r.width, h, ctx: c.getContext('2d') };
+}
+
+let gS, cS, eS, fS;
+setTimeout(() => {
+    gS = initC(genC, 170);
+    cS = initC(crossC, 170);
+    eS = initC(emfC, 110);
+    fS = initC(fluxC, 110);
+    animate();
+}, 50);
+
+let angle = 0;
+let paused = false;
+let emfHistory = [];
+let fluxHistory = [];
+
+function togglePause() {
+    paused = !paused;
+    document.getElementById('pauseBtn').textContent = paused ? 'Play' : 'Pause';
+    document.getElementById('pauseBtn').classList.toggle('active', paused);
+}
+
+function animate() {
+    if (!paused) {
+        const speed = parseFloat(document.getElementById('speedSlider').value);
+        angle += 0.02 * speed;
+    }
+
+    const emf = Math.sin(angle); // Normalized EMF = -d(flux)/dt; flux = cos(angle), emf = sin(angle)
+    const flux = Math.cos(angle);
+    const angleDeg = ((angle * 180 / Math.PI) % 360 + 360) % 360;
+
+    emfHistory.push(emf);
+    fluxHistory.push(flux);
+    if (emfHistory.length > 200) emfHistory.shift();
+    if (fluxHistory.length > 200) fluxHistory.shift();
+
+    document.getElementById('angleVal').textContent = angleDeg.toFixed(0) + '°';
+    document.getElementById('emfVal').textContent = emf.toFixed(2) + ' V';
+    document.getElementById('fluxVal').textContent = flux.toFixed(2) + ' Wb';
+
+    drawGenerator(emf, flux);
+    drawCrossSection();
+    drawGraph(eS, emfHistory, '#637EA1', 'EMF');
+    drawGraph(fS, fluxHistory, '#F4D35E', 'Flux');
+
+    requestAnimationFrame(animate);
+}
+
+function drawGenerator(emf, flux) {
+    const ctx = gS.ctx;
+    const W = gS.w, H = gS.h;
+    ctx.clearRect(0, 0, W, H);
+
+    const cx = W / 2, cy = H / 2;
+
+    // Magnets
+    ctx.fillStyle = '#e53e3e';
+    ctx.beginPath(); ctx.roundRect(10, cy - 50, 25, 100, 4); ctx.fill();
+    ctx.fillStyle = 'white'; ctx.font = '700 14px Oswald'; ctx.textAlign = 'center';
+    ctx.fillText('N', 22, cy + 5);
+
+    ctx.fillStyle = '#4299e1';
+    ctx.beginPath(); ctx.roundRect(W - 35, cy - 50, 25, 100, 4); ctx.fill();
+    ctx.fillStyle = 'white';
+    ctx.fillText('S', W - 22, cy + 5);
+
+    // Field lines
+    ctx.strokeStyle = 'rgba(99,126,161,0.2)';
+    ctx.lineWidth = 1;
+    for (let i = -2; i <= 2; i++) {
+        const y = cy + i * 18;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(35, y); ctx.lineTo(W - 35, y); ctx.stroke();
+        // Arrow
+        ctx.fillStyle = 'rgba(99,126,161,0.3)';
+        ctx.beginPath();
+        ctx.moveTo(cx + 5, y - 3); ctx.lineTo(cx + 10, y); ctx.lineTo(cx + 5, y + 3); ctx.fill();
+    }
+    ctx.setLineDash([]);
+
+    // Coil (rectangle rotating)
+    const coilW = 50, coilH = 40;
+    const cos = Math.cos(angle), sin = Math.sin(angle);
+    const projW = coilW * Math.abs(cos);
+
+    ctx.strokeStyle = '#1a1f2e';
+    ctx.lineWidth = 3;
+
+    // Draw coil as projected rectangle
+    ctx.beginPath();
+    ctx.moveTo(cx - projW / 2, cy - coilH / 2);
+    ctx.lineTo(cx + projW / 2, cy - coilH / 2);
+    ctx.lineTo(cx + projW / 2, cy + coilH / 2);
+    ctx.lineTo(cx - projW / 2, cy + coilH / 2);
+    ctx.closePath();
+    ctx.strokeStyle = cos > 0 ? '#1a1f2e' : '#888';
+    ctx.stroke();
+
+    // Coil fill (slight transparency to show field)
+    ctx.fillStyle = `rgba(244,211,94,${0.1 + Math.abs(flux) * 0.15})`;
+    ctx.fill();
+
+    // Axle
+    ctx.fillStyle = '#4a5568';
+    ctx.fillRect(cx - 2, cy - 60, 4, 20);
+    ctx.fillRect(cx - 2, cy + 40, 4, 20);
+
+    // Slip rings at bottom
+    ctx.strokeStyle = '#4a5568';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(cx - 8, cy + 65, 5, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx + 8, cy + 65, 5, 0, Math.PI * 2); ctx.stroke();
+
+    // Brushes
+    ctx.fillStyle = '#888';
+    ctx.fillRect(cx - 14, cy + 72, 6, 8);
+    ctx.fillRect(cx + 8, cy + 72, 6, 8);
+
+    // Rotation arrow
+    ctx.strokeStyle = '#F4D35E';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(cx, cy - 60, 10, -Math.PI * 0.8, Math.PI * 0.2);
+    ctx.stroke();
+    ctx.fillStyle = '#F4D35E';
+    const ax = cx + 10 * Math.cos(Math.PI * 0.2);
+    const ay = cy - 60 + 10 * Math.sin(Math.PI * 0.2);
+    ctx.beginPath(); ctx.moveTo(ax - 3, ay - 4); ctx.lineTo(ax + 3, ay); ctx.lineTo(ax - 3, ay + 2); ctx.fill();
+}
+
+function drawCrossSection() {
+    const ctx = cS.ctx;
+    const W = cS.w, H = cS.h;
+    ctx.clearRect(0, 0, W, H);
+
+    const cx = W / 2, cy = H / 2 - 10;
+    const radius = 50;
+
+    // Magnetic field direction (into page / out of page markers)
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '8px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('Magnetic field: N → S (left to right)', cx, 14);
+
+    // Field arrows
+    ctx.strokeStyle = 'rgba(99,126,161,0.3)';
+    ctx.lineWidth = 1;
+    for (let y = -1; y <= 1; y++) {
+        ctx.beginPath();
+        ctx.moveTo(cx - 70, cy + y * 25);
+        ctx.lineTo(cx + 70, cy + y * 25);
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(99,126,161,0.3)';
+        ctx.beginPath();
+        ctx.moveTo(cx + 65, cy + y * 25 - 3);
+        ctx.lineTo(cx + 70, cy + y * 25);
+        ctx.lineTo(cx + 65, cy + y * 25 + 3);
+        ctx.fill();
+    }
+
+    // Coil circle
+    ctx.strokeStyle = '#aaa';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Coil sides (2 conductors on opposite sides)
+    const cos = Math.cos(angle), sin = Math.sin(angle);
+    const x1 = cx + radius * cos, y1 = cy + radius * sin;
+    const x2 = cx - radius * cos, y2 = cy - radius * sin;
+
+    // Side 1 (current direction indicator)
+    ctx.fillStyle = '#637EA1';
+    ctx.beginPath(); ctx.arc(x1, y1, 8, 0, Math.PI * 2); ctx.fill();
+    // Current direction: dot or cross
+    ctx.fillStyle = 'white';
+    ctx.font = '700 10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    if (sin > 0) {
+        ctx.fillText('×', x1, y1); // into page
+    } else {
+        ctx.beginPath(); ctx.arc(x1, y1, 3, 0, Math.PI * 2); ctx.fill(); // out of page
+    }
+
+    // Side 2
+    ctx.fillStyle = '#F4D35E';
+    ctx.beginPath(); ctx.arc(x2, y2, 8, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#1a1f2e';
+    if (sin < 0) {
+        ctx.fillText('×', x2, y2);
+    } else {
+        ctx.beginPath(); ctx.arc(x2, y2, 3, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.textBaseline = 'alphabetic';
+
+    // Coil line connecting them
+    ctx.strokeStyle = '#1a1f2e';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+
+    // Normal vector (flux direction)
+    const nx = -sin * 35, ny = cos * 35;
+    ctx.strokeStyle = '#e53e3e';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + nx, cy + ny); ctx.stroke();
+    ctx.fillStyle = '#e53e3e';
+    ctx.beginPath();
+    const na = Math.atan2(ny, nx);
+    ctx.moveTo(cx + nx, cy + ny);
+    ctx.lineTo(cx + nx - 6 * Math.cos(na - 0.4), cy + ny - 6 * Math.sin(na - 0.4));
+    ctx.lineTo(cx + nx - 6 * Math.cos(na + 0.4), cy + ny - 6 * Math.sin(na + 0.4));
+    ctx.fill();
+    ctx.font = '600 8px Outfit';
+    ctx.textAlign = 'left';
+    ctx.fillText('n (normal)', cx + nx + 4, cy + ny - 2);
+
+    // Angle arc
+    ctx.strokeStyle = '#F4D35E';
+    ctx.lineWidth = 1;
+    const startAngle = 0;
+    const endAngle = Math.atan2(ny, nx);
+    ctx.beginPath(); ctx.arc(cx, cy, 18, startAngle, endAngle, ny < 0); ctx.stroke();
+    ctx.fillStyle = '#F4D35E';
+    ctx.font = '600 8px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('θ', cx + 22, cy - 4);
+
+    // Legend
+    ctx.font = '8px Outfit';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#637EA1';
+    ctx.beginPath(); ctx.arc(15, H - 24, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#4a5568';
+    ctx.fillText('Side A', 22, H - 21);
+    ctx.fillStyle = '#F4D35E';
+    ctx.beginPath(); ctx.arc(15, H - 12, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#4a5568';
+    ctx.fillText('Side B', 22, H - 9);
+}
+
+function drawGraph(s, data, color, label) {
+    const ctx = s.ctx;
+    const W = s.w, H = s.h;
+    ctx.clearRect(0, 0, W, H);
+
+    const margin = { l: 8, r: 8, t: 8, b: 15 };
+    const gW = W - margin.l - margin.r;
+    const gH = H - margin.t - margin.b;
+    const midY = margin.t + gH / 2;
+
+    // Grid
+    ctx.strokeStyle = '#e2e8f0';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(margin.l, midY); ctx.lineTo(W - margin.r, midY); ctx.stroke();
+    ctx.setLineDash([2, 2]);
+    ctx.beginPath(); ctx.moveTo(margin.l, margin.t + 5); ctx.lineTo(W - margin.r, margin.t + 5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(margin.l, H - margin.b - 5); ctx.lineTo(W - margin.r, H - margin.b - 5); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Data
+    if (data.length < 2) return;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for (let i = 0; i < data.length; i++) {
+        const x = margin.l + (i / 200) * gW;
+        const y = midY - data[i] * (gH / 2 - 5);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Current value marker
+    if (data.length > 0) {
+        const lastX = margin.l + ((data.length - 1) / 200) * gW;
+        const lastY = midY - data[data.length - 1] * (gH / 2 - 5);
+        ctx.fillStyle = color;
+        ctx.beginPath(); ctx.arc(lastX, lastY, 3, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // Labels
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '7px Outfit';
+    ctx.textAlign = 'left';
+    ctx.fillText('+1', margin.l, margin.t + 4);
+    ctx.fillText('−1', margin.l, H - margin.b);
+    ctx.textAlign = 'center';
+    ctx.fillText('Time →', W / 2, H - 3);
+}
+</script>
+</body>
+</html>

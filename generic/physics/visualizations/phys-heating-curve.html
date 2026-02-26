@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heating Curve</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; font-size: 0.75rem; color: #4a5568; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #e5dfe0; border-radius: 5px; cursor: crosshair; }
+        .controls { display: flex; gap: 6px; justify-content: center; margin-bottom: 10px; }
+        .btn { background: #637EA1; color: #fff; border: none; border-radius: 5px; padding: 6px 14px; font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { background: #506a8a; }
+        .btn.active { background: #F4D35E; color: #1a1f2e; }
+        .readout { display: flex; gap: 6px; margin-bottom: 8px; }
+        .readout-card { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px 8px; text-align: center; }
+        .readout-card .label { font-size: 0.65rem; color: #4a5568; font-weight: 500; }
+        .readout-card .value { font-size: 1rem; font-weight: 700; color: #637EA1; }
+        .readout-card .unit { font-size: 0.65rem; color: #4a5568; }
+        .legend { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 8px; }
+        .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.68rem; color: #4a5568; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+        .explanation { border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px 10px; font-size: 0.72rem; color: #4a5568; }
+        .explanation strong { color: #637EA1; }
+        .explanation p { margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Heating Curve of Water</h1>
+    <p class="desc">Click the Play button to animate, or hover over the graph to read values</p>
+    <div class="readout">
+        <div class="readout-card"><div class="label">Temperature</div><div class="value" id="tempRead">-20</div><div class="unit">&deg;C</div></div>
+        <div class="readout-card"><div class="label">State</div><div class="value" id="stateRead">Ice</div><div class="unit">(solid)</div></div>
+        <div class="readout-card"><div class="label">Time</div><div class="value" id="timeRead">0</div><div class="unit">min</div></div>
+    </div>
+    <canvas id="curveCanvas" width="530" height="300"></canvas>
+    <div class="controls">
+        <button class="btn" id="playBtn" onclick="togglePlay()">Play Animation</button>
+        <button class="btn" onclick="resetAnim()">Reset</button>
+    </div>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#3498db"></div>Ice (solid)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#F4D35E"></div>Melting (latent heat)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div>Water (liquid)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>Boiling (latent heat)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>Steam (gas)</div>
+    </div>
+    <div class="explanation" id="explanation">
+        <p><strong>Heating curve:</strong> Shows how the temperature of water changes as heat energy is steadily added.</p>
+        <p><strong>Plateaus:</strong> At 0&deg;C and 100&deg;C, temperature stays constant while the substance changes state. The energy supplied is used to break intermolecular bonds (latent heat), not to increase temperature.</p>
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('curveCanvas');
+const ctx = canvas.getContext('2d');
+
+// Heating curve data points (time in arbitrary units, temp in C)
+// Segments: ice heating, melting plateau, water heating, boiling plateau, steam heating
+const segments = [
+    { t0: 0, t1: 3, T0: -20, T1: 0, color: '#3498db', label: 'Ice heating', state: 'Ice (solid)' },
+    { t0: 3, t1: 7, T0: 0, T1: 0, color: '#F4D35E', label: 'Melting (0°C)', state: 'Melting (solid+liquid)', plateau: true },
+    { t0: 7, t1: 15, T0: 0, T1: 100, color: '#2ecc71', label: 'Water heating', state: 'Water (liquid)' },
+    { t0: 15, t1: 24, T0: 100, T1: 100, color: '#e67e22', label: 'Boiling (100°C)', state: 'Boiling (liquid+gas)', plateau: true },
+    { t0: 24, t1: 28, T0: 100, T1: 130, color: '#e74c3c', label: 'Steam heating', state: 'Steam (gas)' }
+];
+const totalTime = 28;
+const minT = -30, maxT = 140;
+
+let animTime = 0;
+let playing = false;
+let animId = null;
+let hoverTime = null;
+
+function timeToTemp(t) {
+    for (const seg of segments) {
+        if (t >= seg.t0 && t <= seg.t1) {
+            const frac = (t - seg.t0) / (seg.t1 - seg.t0);
+            return seg.T0 + frac * (seg.T1 - seg.T0);
+        }
+    }
+    return segments[segments.length - 1].T1;
+}
+
+function getState(t) {
+    for (const seg of segments) {
+        if (t >= seg.t0 && t <= seg.t1) return seg;
+    }
+    return segments[segments.length - 1];
+}
+
+function tToX(t, pad, cw) { return pad.left + (t / totalTime) * cw; }
+function TToY(T, pad, ch) { return pad.top + ch - ((T - minT) / (maxT - minT)) * ch; }
+
+function draw() {
+    const w = canvas.width, h = canvas.height;
+    const pad = { top: 15, right: 15, bottom: 35, left: 50 };
+    const cw = w - pad.left - pad.right;
+    const ch = h - pad.top - pad.bottom;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(0, 0, w, h);
+
+    // grid
+    ctx.strokeStyle = '#eee';
+    ctx.lineWidth = 0.5;
+    for (let T = -20; T <= 130; T += 20) {
+        const y = TToY(T, pad, ch);
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cw, y); ctx.stroke();
+    }
+
+    // axes
+    ctx.strokeStyle = '#4a5568';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, pad.top + ch);
+    ctx.lineTo(pad.left + cw, pad.top + ch);
+    ctx.stroke();
+
+    // axis labels
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '10px Outfit';
+    ctx.textAlign = 'right';
+    for (let T = -20; T <= 130; T += 20) {
+        ctx.fillText(T + '°C', pad.left - 4, TToY(T, pad, ch) + 3);
+    }
+    ctx.textAlign = 'center';
+    ctx.fillText('Time (min)', pad.left + cw / 2, h - 4);
+    ctx.save();
+    ctx.translate(12, pad.top + ch / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Temperature (°C)', 0, 0);
+    ctx.restore();
+
+    // 0°C and 100°C reference lines
+    ctx.setLineDash([4, 3]);
+    ctx.strokeStyle = 'rgba(99,126,161,0.3)';
+    ctx.lineWidth = 1;
+    let y0 = TToY(0, pad, ch);
+    ctx.beginPath(); ctx.moveTo(pad.left, y0); ctx.lineTo(pad.left + cw, y0); ctx.stroke();
+    let y100 = TToY(100, pad, ch);
+    ctx.beginPath(); ctx.moveTo(pad.left, y100); ctx.lineTo(pad.left + cw, y100); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // labels for reference lines
+    ctx.fillStyle = '#637EA1';
+    ctx.font = 'bold 9px Outfit';
+    ctx.textAlign = 'left';
+    ctx.fillText('Melting Point (0°C)', pad.left + cw - 100, y0 - 4);
+    ctx.fillText('Boiling Point (100°C)', pad.left + cw - 110, y100 - 4);
+
+    // draw curve segments
+    const drawT = hoverTime !== null ? totalTime : animTime;
+    segments.forEach(seg => {
+        if (seg.t0 > drawT) return;
+        const endT = Math.min(seg.t1, drawT);
+        ctx.beginPath();
+        ctx.strokeStyle = seg.color;
+        ctx.lineWidth = 3;
+        const steps = 40;
+        for (let i = 0; i <= steps; i++) {
+            const t = seg.t0 + (endT - seg.t0) * (i / steps);
+            const T = seg.T0 + ((t - seg.t0) / (seg.t1 - seg.t0)) * (seg.T1 - seg.T0);
+            const x = tToX(t, pad, cw);
+            const y = TToY(T, pad, ch);
+            i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        // plateau shading
+        if (seg.plateau && endT > seg.t0) {
+            ctx.fillStyle = seg.color + '15';
+            const x0 = tToX(seg.t0, pad, cw);
+            const x1 = tToX(Math.min(endT, seg.t1), pad, cw);
+            const y = TToY(seg.T0, pad, ch);
+            ctx.fillRect(x0, y, x1 - x0, pad.top + ch - y);
+        }
+    });
+
+    // current position marker
+    const displayT = hoverTime !== null ? hoverTime : animTime;
+    if (displayT > 0) {
+        const temp = timeToTemp(displayT);
+        const x = tToX(displayT, pad, cw);
+        const y = TToY(temp, pad, ch);
+        // vertical/horizontal guide
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = 'rgba(99,126,161,0.4)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(x, pad.top + ch); ctx.lineTo(x, y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(x, y); ctx.stroke();
+        ctx.setLineDash([]);
+        // dot
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#637EA1';
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        // update readouts
+        const seg = getState(displayT);
+        document.getElementById('tempRead').textContent = temp.toFixed(0);
+        document.getElementById('stateRead').textContent = seg.state.split('(')[0].trim();
+        document.getElementById('timeRead').textContent = displayT.toFixed(1);
+    }
+}
+
+function togglePlay() {
+    playing = !playing;
+    document.getElementById('playBtn').textContent = playing ? 'Pause' : 'Play Animation';
+    document.getElementById('playBtn').classList.toggle('active', playing);
+    if (playing) animate();
+}
+
+function animate() {
+    if (!playing) return;
+    animTime += 0.08;
+    if (animTime > totalTime) { animTime = totalTime; playing = false; document.getElementById('playBtn').textContent = 'Play Animation'; document.getElementById('playBtn').classList.remove('active'); }
+    hoverTime = null;
+    draw();
+    if (playing) animId = requestAnimationFrame(animate);
+}
+
+function resetAnim() {
+    playing = false;
+    animTime = 0;
+    hoverTime = null;
+    document.getElementById('playBtn').textContent = 'Play Animation';
+    document.getElementById('playBtn').classList.remove('active');
+    document.getElementById('tempRead').textContent = '-20';
+    document.getElementById('stateRead').textContent = 'Ice';
+    document.getElementById('timeRead').textContent = '0';
+    draw();
+}
+
+canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    const mx = e.clientX - r.left;
+    const pad = { top: 15, right: 15, bottom: 35, left: 50 };
+    const cw = canvas.width - pad.left - pad.right;
+    const t = Math.max(0, Math.min(totalTime, ((mx - pad.left) / cw) * totalTime));
+    hoverTime = t;
+    draw();
+});
+canvas.addEventListener('mouseleave', () => { hoverTime = null; draw(); });
+
+function resize() {
+    canvas.width = Math.min(530, document.querySelector('.container').clientWidth - 4);
+    draw();
+}
+resize();
+window.addEventListener('resize', resize);
+</script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parallel Circuit Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        canvas { display: block; width: 100%; border-radius: 8px; border: 1px solid #e2e8f0; background: #fafbfc; margin-bottom: 10px; }
+        .controls { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+        .slider-row { display: flex; align-items: center; gap: 8px; }
+        .slider-row label { font-size: 0.82rem; font-weight: 600; color: #4a5568; min-width: 90px; }
+        .slider-row input[type="range"] { flex: 1; accent-color: #637EA1; height: 6px; }
+        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #637EA1; min-width: 48px; text-align: right; }
+        .readings { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .reading-card { background: #F5E6E8; border-radius: 6px; padding: 8px 10px; text-align: center; }
+        .reading-card .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 1.05rem; color: #637EA1; margin-top: 2px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Parallel Circuit Builder</h1>
+        <canvas id="circuitCanvas" width="550" height="380"></canvas>
+        <div class="controls">
+            <div class="slider-row">
+                <label>Battery (V)</label>
+                <input type="range" id="voltage" min="1" max="12" step="0.5" value="6">
+                <span class="val" id="voltageVal">6.0 V</span>
+            </div>
+            <div class="slider-row">
+                <label>R1 (&Omega;)</label>
+                <input type="range" id="r1" min="1" max="20" step="1" value="6">
+                <span class="val" id="r1Val">6 &Omega;</span>
+            </div>
+            <div class="slider-row">
+                <label>R2 (&Omega;)</label>
+                <input type="range" id="r2" min="1" max="20" step="1" value="12">
+                <span class="val" id="r2Val">12 &Omega;</span>
+            </div>
+            <div class="slider-row">
+                <label>R3 (&Omega;)</label>
+                <input type="range" id="r3" min="1" max="20" step="1" value="4">
+                <span class="val" id="r3Val">4 &Omega;</span>
+            </div>
+        </div>
+        <div class="readings">
+            <div class="reading-card"><div class="label">Total Resistance</div><div class="value" id="rTotal">--</div></div>
+            <div class="reading-card"><div class="label">Total Current</div><div class="value" id="iTotal">--</div></div>
+            <div class="reading-card"><div class="label">I through R1</div><div class="value" id="i1">--</div></div>
+            <div class="reading-card"><div class="label">I through R2</div><div class="value" id="i2">--</div></div>
+            <div class="reading-card"><div class="label">I through R3</div><div class="value" id="i3">--</div></div>
+            <div class="reading-card"><div class="label">V across all</div><div class="value" id="vAll">--</div></div>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('circuitCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width;
+            H = 380;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const sliders = { voltage: document.getElementById('voltage'), r1: document.getElementById('r1'), r2: document.getElementById('r2'), r3: document.getElementById('r3') };
+        const valSpans = { voltage: document.getElementById('voltageVal'), r1: document.getElementById('r1Val'), r2: document.getElementById('r2Val'), r3: document.getElementById('r3Val') };
+
+        let animTime = 0;
+
+        function getValues() {
+            const V = parseFloat(sliders.voltage.value);
+            const R1 = parseFloat(sliders.r1.value);
+            const R2 = parseFloat(sliders.r2.value);
+            const R3 = parseFloat(sliders.r3.value);
+            const Rt = 1 / (1/R1 + 1/R2 + 1/R3);
+            const It = V / Rt;
+            const I1 = V / R1, I2 = V / R2, I3 = V / R3;
+            return { V, R1, R2, R3, Rt, It, I1, I2, I3 };
+        }
+
+        function updateReadings() {
+            const v = getValues();
+            valSpans.voltage.textContent = v.V.toFixed(1) + ' V';
+            valSpans.r1.innerHTML = v.R1 + ' &Omega;';
+            valSpans.r2.innerHTML = v.R2 + ' &Omega;';
+            valSpans.r3.innerHTML = v.R3 + ' &Omega;';
+            document.getElementById('rTotal').innerHTML = v.Rt.toFixed(2) + ' &Omega;';
+            document.getElementById('iTotal').textContent = v.It.toFixed(3) + ' A';
+            document.getElementById('i1').textContent = v.I1.toFixed(3) + ' A';
+            document.getElementById('i2').textContent = v.I2.toFixed(3) + ' A';
+            document.getElementById('i3').textContent = v.I3.toFixed(3) + ' A';
+            document.getElementById('vAll').textContent = v.V.toFixed(1) + ' V';
+        }
+
+        Object.values(sliders).forEach(s => s.addEventListener('input', updateReadings));
+
+        function drawResistorH(cx, cy, label) {
+            const rw = 22, amp = 7, segs = 6;
+            ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(cx - rw, cy);
+            for (let i = 0; i <= segs; i++) {
+                const px = cx - rw + (2 * rw) * (i / segs);
+                const py = cy + (i % 2 === 0 ? 0 : (i % 4 === 1 ? -amp : amp));
+                ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+            ctx.font = "600 10px 'Outfit'";
+            ctx.fillStyle = '#637EA1';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, cx, cy - 14);
+        }
+
+        function drawAmmeter(cx, cy, label) {
+            ctx.beginPath(); ctx.arc(cx, cy, 12, 0, Math.PI * 2);
+            ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 1.5; ctx.stroke();
+            ctx.fillStyle = '#fff'; ctx.fill();
+            ctx.font = "700 10px 'Oswald'"; ctx.fillStyle = '#e74c3c';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText('A', cx, cy + 1);
+            ctx.textBaseline = 'alphabetic';
+        }
+
+        function drawBatteryVert(x, y1, y2) {
+            const cy = (y1 + y2) / 2;
+            ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(x, y1); ctx.lineTo(x, cy - 14); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x, cy + 14); ctx.lineTo(x, y2); ctx.stroke();
+            ctx.lineWidth = 2.5;
+            ctx.beginPath(); ctx.moveTo(x - 12, cy - 14); ctx.lineTo(x + 12, cy - 14); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x - 6, cy - 6); ctx.lineTo(x + 6, cy - 6); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x - 12, cy + 6); ctx.lineTo(x + 12, cy + 6); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x - 6, cy + 14); ctx.lineTo(x + 6, cy + 14); ctx.stroke();
+            ctx.lineWidth = 2;
+            ctx.font = "600 11px 'Outfit'";
+            ctx.fillStyle = '#e74c3c'; ctx.textAlign = 'right';
+            ctx.fillText('+', x - 15, cy - 8);
+            ctx.fillStyle = '#3498db';
+            ctx.fillText('−', x - 15, cy + 18);
+        }
+
+        // Build paths for each branch and main loop for animation
+        function getLayout() {
+            const mx = W / 2;
+            const left = 40, right = W - 40;
+            const top = 50, bot = H - 50;
+            const jLeft = left + 60;  // junction left
+            const jRight = right - 60; // junction right
+            const branchY = [top + 60, (top + bot) / 2, bot - 60]; // 3 branch y positions
+            return { left, right, top, bot, jLeft, jRight, mx, branchY };
+        }
+
+        function drawCircuit() {
+            const v = getValues();
+            const L = getLayout();
+
+            ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 2;
+
+            // Top main wire
+            ctx.beginPath(); ctx.moveTo(L.left, L.top); ctx.lineTo(L.right, L.top); ctx.stroke();
+            // Bottom main wire
+            ctx.beginPath(); ctx.moveTo(L.left, L.bot); ctx.lineTo(L.right, L.bot); ctx.stroke();
+
+            // Battery on left side
+            drawBatteryVert(L.left, L.top, L.bot);
+            ctx.font = "600 11px 'Outfit'"; ctx.fillStyle = '#637EA1'; ctx.textAlign = 'center';
+            ctx.fillText(v.V.toFixed(1) + ' V', L.left, L.bot + 18);
+
+            // Left vertical wires to junction
+            ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 2;
+            // From top wire down to junction splits
+            ctx.beginPath(); ctx.moveTo(L.jLeft, L.top); ctx.lineTo(L.jLeft, L.branchY[0]); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(L.jLeft, L.branchY[0]); ctx.lineTo(L.jLeft, L.branchY[1]); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(L.jLeft, L.branchY[1]); ctx.lineTo(L.jLeft, L.branchY[2]); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(L.jLeft, L.branchY[2]); ctx.lineTo(L.jLeft, L.bot); ctx.stroke();
+
+            // Right vertical wires from junction
+            ctx.beginPath(); ctx.moveTo(L.jRight, L.top); ctx.lineTo(L.jRight, L.branchY[0]); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(L.jRight, L.branchY[0]); ctx.lineTo(L.jRight, L.branchY[1]); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(L.jRight, L.branchY[1]); ctx.lineTo(L.jRight, L.branchY[2]); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(L.jRight, L.branchY[2]); ctx.lineTo(L.jRight, L.bot); ctx.stroke();
+
+            // Draw 3 branch wires + resistors
+            const labels = ['R1=' + v.R1 + 'Ω', 'R2=' + v.R2 + 'Ω', 'R3=' + v.R3 + 'Ω'];
+            const currents = [v.I1, v.I2, v.I3];
+            const rcx = (L.jLeft + L.jRight) / 2;
+
+            for (let i = 0; i < 3; i++) {
+                const by = L.branchY[i];
+                ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(L.jLeft, by); ctx.lineTo(rcx - 24, by); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(rcx + 24, by); ctx.lineTo(L.jRight, by); ctx.stroke();
+                drawResistorH(rcx, by, labels[i]);
+                // Current label
+                ctx.font = "500 9px 'Outfit'"; ctx.fillStyle = '#e74c3c'; ctx.textAlign = 'left';
+                ctx.fillText('I=' + currents[i].toFixed(3) + 'A', L.jRight + 6, by + 4);
+            }
+
+            // Junction dots
+            ctx.fillStyle = '#1a1f2e';
+            for (let i = 0; i < 3; i++) {
+                ctx.beginPath(); ctx.arc(L.jLeft, L.branchY[i], 4, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(L.jRight, L.branchY[i], 4, 0, Math.PI * 2); ctx.fill();
+            }
+
+            // Ammeter on top wire
+            const ammX = (L.left + L.jLeft) / 2 + 10;
+            ctx.beginPath(); ctx.moveTo(L.left, L.top); ctx.lineTo(ammX - 14, L.top); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(ammX + 14, L.top); ctx.lineTo(L.jLeft, L.top); ctx.stroke();
+            drawAmmeter(ammX, L.top, 'A');
+            ctx.font = "500 9px 'Outfit'"; ctx.fillStyle = '#e74c3c'; ctx.textAlign = 'center';
+            ctx.fillText(v.It.toFixed(3) + ' A', ammX, L.top - 16);
+
+            // Voltmeter indicator
+            ctx.beginPath(); ctx.arc(L.mx, L.bot + 26, 12, 0, Math.PI * 2);
+            ctx.strokeStyle = '#3498db'; ctx.lineWidth = 1.5; ctx.stroke();
+            ctx.fillStyle = '#fff'; ctx.fill();
+            ctx.font = "700 10px 'Oswald'"; ctx.fillStyle = '#3498db';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText('V', L.mx, L.bot + 27);
+            ctx.textBaseline = 'alphabetic';
+            ctx.setLineDash([3, 3]); ctx.strokeStyle = '#3498db'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(L.mx, L.bot + 14); ctx.lineTo(L.mx, L.bot); ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function drawCurrentDots() {
+            const v = getValues();
+            const L = getLayout();
+            ctx.fillStyle = '#F4D35E';
+
+            // Animate dots along each branch path
+            // Main path: top wire left->jLeft, branches, jRight->right wire, bottom wire right->left, battery
+            const branches = [
+                { y: L.branchY[0], I: v.I1 },
+                { y: L.branchY[1], I: v.I2 },
+                { y: L.branchY[2], I: v.I3 }
+            ];
+
+            // Main loop dots (top and bottom wires + battery side)
+            const mainSpeed = Math.max(0.3, Math.min(3, v.It * 1.5));
+            const mainPath = [
+                { x1: L.left, y1: L.top, x2: L.jLeft, y2: L.top },
+                { x1: L.jRight, y1: L.top, x2: L.right, y2: L.top },
+                { x1: L.right, y1: L.top, x2: L.right, y2: L.bot },
+                { x1: L.right, y1: L.bot, x2: L.left, y2: L.bot },
+                { x1: L.left, y1: L.bot, x2: L.left, y2: L.top }
+            ];
+            let mainLen = 0;
+            const mainSegLens = mainPath.map(s => {
+                const l = Math.sqrt((s.x2 - s.x1) ** 2 + (s.y2 - s.y1) ** 2);
+                mainLen += l;
+                return l;
+            });
+            const mainDots = 14;
+            const mainSpacing = mainLen / mainDots;
+            for (let i = 0; i < mainDots; i++) {
+                let dist = ((animTime * mainSpeed * 60 + i * mainSpacing) % mainLen + mainLen) % mainLen;
+                let acc = 0;
+                for (let s = 0; s < mainPath.length; s++) {
+                    if (acc + mainSegLens[s] >= dist) {
+                        const t = (dist - acc) / mainSegLens[s];
+                        const x = mainPath[s].x1 + (mainPath[s].x2 - mainPath[s].x1) * t;
+                        const y = mainPath[s].y1 + (mainPath[s].y2 - mainPath[s].y1) * t;
+                        ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
+                        break;
+                    }
+                    acc += mainSegLens[s];
+                }
+            }
+
+            // Branch dots
+            for (let b = 0; b < 3; b++) {
+                const by = branches[b].y;
+                const speed = Math.max(0.2, Math.min(3, branches[b].I * 2));
+                const branchPath = [
+                    { x1: L.jLeft, y1: L.top, x2: L.jLeft, y2: by },
+                    { x1: L.jLeft, y1: by, x2: L.jRight, y2: by },
+                    { x1: L.jRight, y1: by, x2: L.jRight, y2: L.top }
+                ];
+                let bLen = 0;
+                const bSegLens = branchPath.map(s => {
+                    const l = Math.sqrt((s.x2 - s.x1) ** 2 + (s.y2 - s.y1) ** 2);
+                    bLen += l;
+                    return l;
+                });
+                const nDots = Math.max(3, Math.round(branches[b].I / v.It * 8));
+                const bSpacing = bLen / nDots;
+                for (let i = 0; i < nDots; i++) {
+                    let dist = ((animTime * speed * 50 + i * bSpacing) % bLen + bLen) % bLen;
+                    let acc = 0;
+                    for (let s = 0; s < branchPath.length; s++) {
+                        if (acc + bSegLens[s] >= dist) {
+                            const t = (dist - acc) / bSegLens[s];
+                            const x = branchPath[s].x1 + (branchPath[s].x2 - branchPath[s].x1) * t;
+                            const y = branchPath[s].y1 + (branchPath[s].y2 - branchPath[s].y1) * t;
+                            ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
+                            break;
+                        }
+                        acc += bSegLens[s];
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            animTime += 1 / 60;
+            ctx.clearRect(0, 0, W, H);
+            drawCircuit();
+            drawCurrentDots();
+            requestAnimationFrame(animate);
+        }
+
+        updateReadings();
+        animate();
+    </script>
+</body>
+</html>

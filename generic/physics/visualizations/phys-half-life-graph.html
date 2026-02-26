@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Half-Life Graph</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .formula-box { text-align: center; background: #F5E6E8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #637EA1; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #e5dfe0; border-radius: 5px; cursor: crosshair; }
+        .slider-group { border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px 10px; margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; }
+        .slider-label .val { color: #637EA1; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #e5dfe0; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #637EA1; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .readout { display: flex; gap: 6px; margin-bottom: 8px; }
+        .readout-card { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px; text-align: center; }
+        .readout-card .label { font-size: 0.62rem; color: #4a5568; }
+        .readout-card .value { font-size: 0.9rem; font-weight: 700; color: #637EA1; }
+        .table-wrap { border: 1px solid #e5dfe0; border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.72rem; }
+        th { background: #637EA1; color: #fff; padding: 5px 6px; font-family: 'Oswald', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; font-size: 0.68rem; }
+        td { padding: 4px 6px; text-align: center; border-bottom: 1px solid #e5dfe0; }
+        tr:nth-child(even) { background: #fafafa; }
+        .note { background: #F5E6E8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #637EA1; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Radioactive Decay & Half-Life</h1>
+    <div class="formula-box">N = N<sub>0</sub> &times; (1/2)<sup>t/t<sub>&frac12;</sub></sup></div>
+    <canvas id="decayCanvas" width="530" height="260"></canvas>
+    <div class="slider-group">
+        <div class="slider-label"><span>Half-life (t<sub>&frac12;</sub>)</span><span class="val" id="hlVal">10 seconds</span></div>
+        <input type="range" id="hlSlider" min="1" max="60" value="10" oninput="update()">
+    </div>
+    <div class="readout">
+        <div class="readout-card"><div class="label">Time</div><div class="value" id="timeRead">0 s</div></div>
+        <div class="readout-card"><div class="label">Remaining</div><div class="value" id="remainRead">1000</div></div>
+        <div class="readout-card"><div class="label">Fraction</div><div class="value" id="fracRead">1/1</div></div>
+        <div class="readout-card"><div class="label">Half-lives elapsed</div><div class="value" id="hlElapsed">0</div></div>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Half-lives</th><th>Time</th><th>Remaining</th><th>Fraction</th><th>% Left</th></tr></thead>
+            <tbody id="decayTable"></tbody>
+        </table>
+    </div>
+    <div class="note">
+        <strong>Half-life</strong> is the time taken for half of the radioactive nuclei in a sample to decay. It is constant for a given isotope and cannot be changed by temperature, pressure, or chemical reactions.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('decayCanvas');
+const ctx = canvas.getContext('2d');
+const N0 = 1000;
+let halfLife = 10;
+let hoverTime = null;
+
+function update() {
+    halfLife = parseInt(document.getElementById('hlSlider').value);
+    document.getElementById('hlVal').textContent = halfLife + ' seconds';
+    buildTable();
+    draw();
+}
+
+function buildTable() {
+    const tbody = document.getElementById('decayTable');
+    let html = '';
+    for (let n = 0; n <= 6; n++) {
+        const t = n * halfLife;
+        const remaining = N0 / Math.pow(2, n);
+        const denom = Math.pow(2, n);
+        const pct = (100 / denom).toFixed(1);
+        html += `<tr><td>${n}</td><td>${t} s</td><td>${remaining.toFixed(0)}</td><td>1/${denom}</td><td>${pct}%</td></tr>`;
+    }
+    tbody.innerHTML = html;
+}
+
+function draw() {
+    const w = canvas.width, h = canvas.height;
+    const pad = { top: 15, right: 15, bottom: 35, left: 55 };
+    const cw = w - pad.left - pad.right;
+    const ch = h - pad.top - pad.bottom;
+    const maxTime = halfLife * 6;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(0, 0, w, h);
+
+    // Grid
+    ctx.strokeStyle = '#eee';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i <= 5; i++) {
+        const y = pad.top + (i / 5) * ch;
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cw, y); ctx.stroke();
+    }
+
+    // Half-life vertical markers
+    ctx.setLineDash([4, 3]);
+    ctx.strokeStyle = 'rgba(244,211,94,0.4)';
+    ctx.lineWidth = 1;
+    for (let n = 1; n <= 6; n++) {
+        const x = pad.left + (n * halfLife / maxTime) * cw;
+        ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + ch); ctx.stroke();
+        ctx.fillStyle = '#F4D35E';
+        ctx.font = '9px Outfit';
+        ctx.textAlign = 'center';
+        ctx.fillText(n + 't½', x, pad.top + ch + 12);
+    }
+    ctx.setLineDash([]);
+
+    // 50% horizontal line
+    ctx.setLineDash([4, 3]);
+    ctx.strokeStyle = 'rgba(99,126,161,0.3)';
+    const y50 = pad.top + ch * 0.5;
+    ctx.beginPath(); ctx.moveTo(pad.left, y50); ctx.lineTo(pad.left + cw, y50); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Decay curve
+    ctx.beginPath();
+    ctx.strokeStyle = '#637EA1';
+    ctx.lineWidth = 2.5;
+    for (let px = 0; px <= cw; px++) {
+        const t = (px / cw) * maxTime;
+        const N = N0 * Math.pow(0.5, t / halfLife);
+        const y = pad.top + ch - (N / N0) * ch;
+        px === 0 ? ctx.moveTo(pad.left + px, y) : ctx.lineTo(pad.left + px, y);
+    }
+    ctx.stroke();
+
+    // Fill under curve
+    ctx.lineTo(pad.left + cw, pad.top + ch);
+    ctx.lineTo(pad.left, pad.top + ch);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(99,126,161,0.06)';
+    ctx.fill();
+
+    // Step markers at each half-life
+    for (let n = 0; n <= 6; n++) {
+        const t = n * halfLife;
+        const N = N0 / Math.pow(2, n);
+        const x = pad.left + (t / maxTime) * cw;
+        const y = pad.top + ch - (N / N0) * ch;
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#F4D35E';
+        ctx.fill();
+        ctx.strokeStyle = '#637EA1';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+    }
+
+    // Axes
+    ctx.strokeStyle = '#4a5568';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, pad.top + ch);
+    ctx.lineTo(pad.left + cw, pad.top + ch);
+    ctx.stroke();
+
+    // Y axis labels
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '10px Outfit';
+    ctx.textAlign = 'right';
+    for (let i = 0; i <= 5; i++) {
+        const v = (i / 5) * N0;
+        const y = pad.top + ch - (i / 5) * ch;
+        ctx.fillText(v.toFixed(0), pad.left - 4, y + 3);
+    }
+
+    // X axis labels
+    ctx.textAlign = 'center';
+    ctx.fillText('Time (s)', pad.left + cw / 2, h - 3);
+    for (let n = 0; n <= 6; n++) {
+        const t = n * halfLife;
+        const x = pad.left + (t / maxTime) * cw;
+        ctx.fillText(t + '', x, pad.top + ch + 24);
+    }
+
+    // Y axis title
+    ctx.save();
+    ctx.translate(12, pad.top + ch / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = 'center';
+    ctx.fillText('Nuclei remaining', 0, 0);
+    ctx.restore();
+
+    // Hover readout
+    if (hoverTime !== null) {
+        const t = Math.max(0, Math.min(maxTime, hoverTime));
+        const N = N0 * Math.pow(0.5, t / halfLife);
+        const x = pad.left + (t / maxTime) * cw;
+        const y = pad.top + ch - (N / N0) * ch;
+
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = 'rgba(99,126,161,0.4)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(x, pad.top + ch); ctx.lineTo(x, y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(x, y); ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.beginPath();
+        ctx.arc(x, y, 7, 0, Math.PI * 2);
+        ctx.fillStyle = '#637EA1';
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        const hlElapsed = t / halfLife;
+        const denom = Math.pow(2, Math.round(hlElapsed));
+        document.getElementById('timeRead').textContent = t.toFixed(1) + ' s';
+        document.getElementById('remainRead').textContent = N.toFixed(0);
+        document.getElementById('hlElapsed').textContent = hlElapsed.toFixed(1);
+        const fracNum = Math.round(hlElapsed);
+        if (fracNum <= 6 && Math.abs(hlElapsed - fracNum) < 0.1) {
+            document.getElementById('fracRead').textContent = '1/' + Math.pow(2, fracNum);
+        } else {
+            document.getElementById('fracRead').textContent = (N / N0 * 100).toFixed(1) + '%';
+        }
+    }
+}
+
+canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    const mx = e.clientX - r.left;
+    const pad = { left: 55, right: 15 };
+    const cw = canvas.width - pad.left - pad.right;
+    const maxTime = halfLife * 6;
+    hoverTime = ((mx - pad.left) / cw) * maxTime;
+    draw();
+});
+canvas.addEventListener('mouseleave', () => { hoverTime = null; draw(); });
+
+function resize() {
+    canvas.width = Math.min(530, document.querySelector('.container').clientWidth - 4);
+    draw();
+}
+
+update();
+resize();
+window.addEventListener('resize', resize);
+</script>
+</body>
+</html>

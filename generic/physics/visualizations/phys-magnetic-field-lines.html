@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnetic Field Lines Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        canvas { display: block; width: 100%; border-radius: 8px; border: 1px solid #e2e8f0; background: #fafbfc; margin-bottom: 10px; cursor: pointer; }
+        .toggle-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+        .toggle-btn { font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600; padding: 5px 12px; border-radius: 5px; border: 2px solid #637EA1; background: #fff; color: #637EA1; cursor: pointer; transition: all 0.15s; }
+        .toggle-btn.active { background: #637EA1; color: #fff; }
+        .options-row { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
+        .options-row label { font-size: 0.78rem; font-weight: 600; color: #4a5568; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+        .options-row input[type="checkbox"] { accent-color: #637EA1; }
+        .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
+        .orient-btn { font-family: 'Outfit', sans-serif; font-size: 0.74rem; font-weight: 600; padding: 4px 10px; border-radius: 5px; border: 2px solid #F4D35E; background: #fff; color: #1a1f2e; cursor: pointer; }
+        .orient-btn.active { background: #F4D35E; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Magnetic Field Lines</h1>
+        <canvas id="fieldCanvas" width="550" height="420"></canvas>
+        <div class="toggle-row">
+            <button class="toggle-btn active" id="btnBar">Bar Magnet</button>
+            <button class="toggle-btn" id="btnSolenoid">Solenoid</button>
+        </div>
+        <div class="options-row">
+            <label><input type="checkbox" id="twoMagnets"> Two Magnets</label>
+            <button class="orient-btn" id="orientBtn" style="display:none;">Flip 2nd Magnet (Attract)</button>
+        </div>
+        <p class="hint">Click anywhere on the canvas to place a compass needle</p>
+    </div>
+    <script>
+        const canvas = document.getElementById('fieldCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width; H = 420;
+            canvas.width = W * dpr; canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); draw(); });
+
+        let viewMode = 'bar'; // 'bar' or 'solenoid'
+        let twoMagnets = false;
+        let attract = true; // attract = N-S facing, repel = N-N facing
+        let compassPos = null; // {x, y}
+
+        document.getElementById('btnBar').addEventListener('click', () => { viewMode = 'bar'; updateButtons(); draw(); });
+        document.getElementById('btnSolenoid').addEventListener('click', () => { viewMode = 'solenoid'; updateButtons(); draw(); });
+        document.getElementById('twoMagnets').addEventListener('change', (e) => {
+            twoMagnets = e.target.checked;
+            document.getElementById('orientBtn').style.display = twoMagnets ? 'inline-block' : 'none';
+            draw();
+        });
+        document.getElementById('orientBtn').addEventListener('click', () => {
+            attract = !attract;
+            document.getElementById('orientBtn').textContent = attract ? 'Flip 2nd Magnet (Attract)' : 'Flip 2nd Magnet (Repel)';
+            if (attract) { document.getElementById('orientBtn').classList.remove('active'); }
+            else { document.getElementById('orientBtn').classList.add('active'); }
+            draw();
+        });
+
+        function updateButtons() {
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(viewMode === 'bar' ? 'btnBar' : 'btnSolenoid').classList.add('active');
+        }
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            compassPos = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+            draw();
+        });
+
+        // Magnetic dipole field calculation
+        function dipoleField(px, py, mx, my, m, angle) {
+            // m = magnetic moment magnitude, angle = direction of N pole
+            const dx = px - mx, dy = py - my;
+            const r2 = dx * dx + dy * dy;
+            if (r2 < 100) return { bx: 0, by: 0 };
+            const r = Math.sqrt(r2);
+            const r5 = r2 * r2 * r;
+            // Dipole moment direction
+            const mxc = m * Math.cos(angle);
+            const myc = m * Math.sin(angle);
+            // B field of dipole: B = (3(m.r)r - m*r^2) / r^5
+            const mdotr = mxc * dx + myc * dy;
+            const bx = (3 * mdotr * dx - mxc * r2) / r5;
+            const by = (3 * mdotr * dy - myc * r2) / r5;
+            return { bx, by };
+        }
+
+        function totalField(px, py) {
+            const cx = W / 2, cy = H / 2;
+            let bx = 0, by = 0;
+            const m = 50000;
+
+            if (viewMode === 'bar') {
+                if (!twoMagnets) {
+                    const f = dipoleField(px, py, cx, cy, m, 0);
+                    bx += f.bx; by += f.by;
+                } else {
+                    // Two magnets
+                    const sep = 120;
+                    const f1 = dipoleField(px, py, cx - sep, cy, m, 0);
+                    bx += f1.bx; by += f1.by;
+                    if (attract) {
+                        // Second magnet with N facing left (towards first magnet S)
+                        const f2 = dipoleField(px, py, cx + sep, cy, m, Math.PI);
+                        bx += f2.bx; by += f2.by;
+                    } else {
+                        // Second magnet with N facing right (repel, N-N facing)
+                        const f2 = dipoleField(px, py, cx + sep, cy, m, 0);
+                        bx += f2.bx; by += f2.by;
+                    }
+                }
+            } else {
+                // Solenoid: approximate as a line of dipoles
+                const nCoils = 8;
+                const solenoidLen = 140;
+                const startX = cx - solenoidLen / 2;
+                for (let i = 0; i < nCoils; i++) {
+                    const sx = startX + (solenoidLen / (nCoils - 1)) * i;
+                    const f = dipoleField(px, py, sx, cy, m / nCoils * 2, 0);
+                    bx += f.bx; by += f.by;
+                }
+            }
+            return { bx, by };
+        }
+
+        function traceFieldLine(startX, startY, forward) {
+            const points = [{ x: startX, y: startY }];
+            let x = startX, y = startY;
+            const step = 3;
+            const maxSteps = 500;
+            for (let i = 0; i < maxSteps; i++) {
+                const f = totalField(x, y);
+                const mag = Math.sqrt(f.bx * f.bx + f.by * f.by);
+                if (mag < 1e-12) break;
+                const dir = forward ? 1 : -1;
+                const dx = dir * f.bx / mag * step;
+                const dy = dir * f.by / mag * step;
+                x += dx; y += dy;
+                if (x < -20 || x > W + 20 || y < -20 || y > H + 20) break;
+                points.push({ x, y });
+            }
+            return points;
+        }
+
+        function drawArrowOnLine(points, color) {
+            if (points.length < 2) return;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                ctx.lineTo(points[i].x, points[i].y);
+            }
+            ctx.stroke();
+
+            // Arrow at midpoint
+            const mid = Math.floor(points.length / 3);
+            if (mid < points.length - 1) {
+                const p1 = points[mid], p2 = points[mid + 1];
+                const angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(p1.x + Math.cos(angle) * 6, p1.y + Math.sin(angle) * 6);
+                ctx.lineTo(p1.x + Math.cos(angle + 2.5) * 5, p1.y + Math.sin(angle + 2.5) * 5);
+                ctx.lineTo(p1.x + Math.cos(angle - 2.5) * 5, p1.y + Math.sin(angle - 2.5) * 5);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function drawBarMagnet(cx, cy, angle, flipPoles) {
+            const w = 80, h = 30;
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(angle || 0);
+            // N pole (red)
+            const nColor = flipPoles ? '#3498db' : '#e74c3c';
+            const sColor = flipPoles ? '#e74c3c' : '#3498db';
+            const nLabel = flipPoles ? 'S' : 'N';
+            const sLabel = flipPoles ? 'N' : 'S';
+
+            ctx.fillStyle = nColor;
+            ctx.fillRect(0, -h/2, w/2, h);
+            ctx.fillStyle = sColor;
+            ctx.fillRect(-w/2, -h/2, w/2, h);
+            ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 1.5;
+            ctx.strokeRect(-w/2, -h/2, w, h);
+            // Line in middle
+            ctx.beginPath(); ctx.moveTo(0, -h/2); ctx.lineTo(0, h/2); ctx.stroke();
+
+            ctx.font = "700 14px 'Oswald'"; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#fff';
+            ctx.fillText(nLabel, w/4, 1);
+            ctx.fillText(sLabel, -w/4, 1);
+            ctx.restore();
+        }
+
+        function drawSolenoid(cx, cy) {
+            const len = 140, h = 40;
+            const nCoils = 10;
+            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2.5;
+            // Draw coils
+            for (let i = 0; i < nCoils; i++) {
+                const x = cx - len/2 + (len / nCoils) * i;
+                const nw = len / nCoils;
+                ctx.beginPath();
+                ctx.ellipse(x + nw/2, cy, nw/2, h/2, 0, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+            // Core line
+            ctx.strokeStyle = '#4a5568'; ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath(); ctx.moveTo(cx - len/2, cy); ctx.lineTo(cx + len/2, cy); ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Labels
+            ctx.font = "700 13px 'Oswald'"; ctx.textAlign = 'center';
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillText('N', cx + len/2 + 16, cy + 4);
+            ctx.fillStyle = '#3498db';
+            ctx.fillText('S', cx - len/2 - 16, cy + 4);
+        }
+
+        function drawCompass(x, y) {
+            const f = totalField(x, y);
+            const angle = Math.atan2(f.by, f.bx);
+            const r = 12;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            // Circle
+            ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
+            ctx.fillStyle = '#fff'; ctx.fill();
+            ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 1.5; ctx.stroke();
+            // Needle - red points in field direction (N-seeking end)
+            ctx.beginPath();
+            ctx.moveTo(r - 2, 0);
+            ctx.lineTo(-2, -3);
+            ctx.lineTo(-2, 3);
+            ctx.closePath();
+            ctx.fillStyle = '#e74c3c'; ctx.fill();
+            // Other half
+            ctx.beginPath();
+            ctx.moveTo(-r + 2, 0);
+            ctx.lineTo(2, -3);
+            ctx.lineTo(2, 3);
+            ctx.closePath();
+            ctx.fillStyle = '#3498db'; ctx.fill();
+            ctx.restore();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+            const cx = W / 2, cy = H / 2;
+
+            // Draw field lines
+            const lineColor = '#a0b4cc';
+
+            if (viewMode === 'bar') {
+                if (!twoMagnets) {
+                    // Single bar magnet field lines
+                    const offsets = [-12, -8, -4, 0, 4, 8, 12];
+                    for (const oy of offsets) {
+                        // Start from N pole
+                        const pts = traceFieldLine(cx + 42, cy + oy, true);
+                        drawArrowOnLine(pts, lineColor);
+                    }
+                    // Also some from sides
+                    for (const oy of [-20, -14, 14, 20]) {
+                        const pts = traceFieldLine(cx + 30, cy + oy, true);
+                        drawArrowOnLine(pts, lineColor);
+                    }
+                    drawBarMagnet(cx, cy);
+                } else {
+                    const sep = 120;
+                    // Field lines from first magnet N pole
+                    const offsets = [-10, -5, 0, 5, 10];
+                    for (const oy of offsets) {
+                        const pts = traceFieldLine(cx - sep + 42, cy + oy, true);
+                        drawArrowOnLine(pts, lineColor);
+                    }
+                    for (const oy of [-18, -12, 12, 18]) {
+                        const pts = traceFieldLine(cx - sep + 30, cy + oy, true);
+                        drawArrowOnLine(pts, lineColor);
+                    }
+                    if (!attract) {
+                        // Repelling: also draw from second magnet N pole
+                        for (const oy of offsets) {
+                            const pts = traceFieldLine(cx + sep + 42, cy + oy, true);
+                            drawArrowOnLine(pts, lineColor);
+                        }
+                        for (const oy of [-18, -12, 12, 18]) {
+                            const pts = traceFieldLine(cx + sep + 30, cy + oy, true);
+                            drawArrowOnLine(pts, lineColor);
+                        }
+                    }
+                    drawBarMagnet(cx - sep, cy);
+                    if (attract) {
+                        drawBarMagnet(cx + sep, cy, Math.PI, false);
+                    } else {
+                        drawBarMagnet(cx + sep, cy, 0, false);
+                    }
+                }
+            } else {
+                // Solenoid
+                const offsets = [-6, -3, 0, 3, 6];
+                const solenoidLen = 140;
+                for (const oy of offsets) {
+                    const pts = traceFieldLine(cx + solenoidLen/2 + 5, cy + oy, true);
+                    drawArrowOnLine(pts, lineColor);
+                }
+                for (const oy of [-15, -10, 10, 15]) {
+                    const pts = traceFieldLine(cx + solenoidLen/2, cy + oy, true);
+                    drawArrowOnLine(pts, lineColor);
+                }
+                // Internal field lines (uniform)
+                ctx.strokeStyle = '#637EA180'; ctx.lineWidth = 1;
+                for (const oy of [-10, -3, 3, 10]) {
+                    ctx.beginPath();
+                    ctx.moveTo(cx - solenoidLen/2 + 10, cy + oy);
+                    ctx.lineTo(cx + solenoidLen/2 - 10, cy + oy);
+                    ctx.stroke();
+                    // Arrow
+                    const ax = cx + 10;
+                    ctx.fillStyle = '#637EA180';
+                    ctx.beginPath();
+                    ctx.moveTo(ax + 5, cy + oy);
+                    ctx.lineTo(ax - 3, cy + oy - 3);
+                    ctx.lineTo(ax - 3, cy + oy + 3);
+                    ctx.closePath(); ctx.fill();
+                }
+                drawSolenoid(cx, cy);
+            }
+
+            // Draw compass if clicked
+            if (compassPos) {
+                drawCompass(compassPos.x, compassPos.y);
+            }
+        }
+
+        draw();
+    </script>
+</body>
+</html>

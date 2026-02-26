@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Lifecycle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .subtitle { text-align: center; font-size: 0.68rem; color: #4a5568; margin-bottom: 10px; }
+        .flowchart { position: relative; }
+        .stage { border-radius: 10px; padding: 8px 10px; cursor: pointer; transition: all 0.3s; border: 2px solid transparent; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+        .stage:hover { transform: translateX(3px); }
+        .stage.active { border-color: #F4D35E; }
+        .stage .icon { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .stage .info { flex: 1; }
+        .stage .name { font-family: 'Oswald', sans-serif; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        .stage .brief { font-size: 0.6rem; color: #4a5568; }
+        .stage .detail { font-size: 0.62rem; color: #4a5568; line-height: 1.4; margin-top: 4px; display: none; padding-top: 4px; border-top: 1px solid rgba(0,0,0,0.08); }
+        .stage.active .detail { display: block; }
+        .arrow { text-align: center; color: #637EA1; font-size: 0.8rem; margin: 0 0 2px 18px; }
+        .path-label { font-family: 'Oswald', sans-serif; font-size: 0.72rem; color: white; padding: 4px 12px; border-radius: 20px; text-align: center; margin: 8px 0 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .path-split { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .path-col { }
+        .nebula { background: #f0f4f8; }
+        .protostar { background: #fff8e6; }
+        .ms { background: #f0f4f8; }
+        .rg { background: #fff0f0; }
+        .rsg { background: #ffe8e0; }
+        .wd { background: #f0f8ff; }
+        .sn { background: #fff3e0; }
+        .ns { background: #f0f0ff; }
+        .bh { background: #f5f0ff; }
+        .pn { background: #f0fff8; }
+        .icon-nebula { background: radial-gradient(circle, #a0aec0, #637EA1); }
+        .icon-proto { background: radial-gradient(circle, #F4D35E, #ed8936); }
+        .icon-ms { background: radial-gradient(circle, #F4D35E, #ecc94b); }
+        .icon-rg { background: radial-gradient(circle, #fc8181, #e53e3e); }
+        .icon-rsg { background: radial-gradient(circle, #e53e3e, #9b2c2c); }
+        .icon-pn { background: radial-gradient(circle, rgba(99,126,161,0.3), #637EA1); }
+        .icon-wd { background: radial-gradient(circle, white, #bee3f8); }
+        .icon-sn { background: radial-gradient(circle, #F4D35E, #e53e3e, #F4D35E); }
+        .icon-ns { background: radial-gradient(circle, #a0aec0, #4a5568); }
+        .icon-bh { background: radial-gradient(circle, #1a1f2e, #000); }
+        .expand-hint { font-size: 0.55rem; color: #aaa; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Star Lifecycle</h1>
+    <p class="subtitle">Click each stage to learn more. Two paths depend on stellar mass.</p>
+
+    <div class="flowchart">
+        <div class="stage nebula" onclick="toggle(this)">
+            <div class="icon icon-nebula"></div>
+            <div class="info">
+                <div class="name" style="color:#637EA1;">Nebula (Stellar Nursery)</div>
+                <div class="brief">A vast cloud of gas (mainly hydrogen) and dust</div>
+                <div class="detail">
+                    Nebulae are enormous clouds of gas and dust, sometimes light-years across. Gravity causes regions of higher density to begin collapsing inward. Triggers can include shockwaves from nearby supernovae. Temperature: ~10-50 K. Composition: ~75% hydrogen, ~25% helium.
+                </div>
+            </div>
+            <span class="expand-hint">tap</span>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="stage protostar" onclick="toggle(this)">
+            <div class="icon icon-proto"></div>
+            <div class="info">
+                <div class="name" style="color:#ed8936;">Protostar</div>
+                <div class="brief">Collapsing gas cloud heats up from gravitational energy</div>
+                <div class="detail">
+                    As the gas collapses, gravitational potential energy converts to thermal energy. The core temperature rises to millions of degrees. This stage lasts ~100,000 years. When the core reaches ~15 million K, hydrogen fusion ignites and the star enters the main sequence.
+                </div>
+            </div>
+            <span class="expand-hint">tap</span>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="stage ms" onclick="toggle(this)">
+            <div class="icon icon-ms"></div>
+            <div class="info">
+                <div class="name" style="color:#d69e2e;">Main Sequence Star</div>
+                <div class="brief">Stable star: fusion radiation pressure balances gravity</div>
+                <div class="detail">
+                    The star is in equilibrium: outward radiation pressure from hydrogen fusion balances inward gravitational collapse. Our Sun has been on the main sequence for ~4.6 billion years. Low-mass stars (like the Sun) can last 10+ billion years. High-mass stars burn through fuel in just millions of years. Energy: 4H -> He + energy (E = mc²).
+                </div>
+            </div>
+            <span class="expand-hint">tap</span>
+        </div>
+        <div class="arrow">&#8595; Mass determines the path &#8595;</div>
+
+        <div class="path-split">
+            <div class="path-col">
+                <div class="path-label" style="background:#637EA1;">Low Mass (like our Sun)</div>
+
+                <div class="stage rg" onclick="toggle(this)">
+                    <div class="icon icon-rg" style="width:30px;height:30px;"></div>
+                    <div class="info">
+                        <div class="name" style="color:#e53e3e;">Red Giant</div>
+                        <div class="brief">Outer layers expand, core contracts</div>
+                        <div class="detail">Hydrogen fuel in the core runs out. The core contracts and heats up, while outer layers expand and cool (turning red). Helium fusion begins in the core. The star can expand to 100x its original size. Surface temp drops to ~3,000-4,000 K.</div>
+                    </div>
+                </div>
+                <div class="arrow">&#8595;</div>
+
+                <div class="stage pn" onclick="toggle(this)">
+                    <div class="icon icon-pn" style="width:30px;height:30px;"></div>
+                    <div class="info">
+                        <div class="name" style="color:#637EA1;">Planetary Nebula</div>
+                        <div class="brief">Outer layers gently ejected into space</div>
+                        <div class="detail">The outer layers are shed, creating a beautiful glowing shell of gas. The hot core is exposed. These nebulae have nothing to do with planets, the name is historical. They disperse over ~10,000 years, enriching space with heavier elements.</div>
+                    </div>
+                </div>
+                <div class="arrow">&#8595;</div>
+
+                <div class="stage wd" onclick="toggle(this)">
+                    <div class="icon icon-wd" style="width:30px;height:30px;"></div>
+                    <div class="info">
+                        <div class="name" style="color:#4299e1;">White Dwarf</div>
+                        <div class="brief">Dense remnant, slowly cools over billions of years</div>
+                        <div class="detail">The remaining core is incredibly dense (a teaspoon would weigh tonnes). About the size of Earth but with the mass of the Sun. No fusion occurs; it slowly radiates remaining heat. Eventually becomes a cold black dwarf (none exist yet, the universe is not old enough).</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="path-col">
+                <div class="path-label" style="background:#e53e3e;">High Mass (> 8 Solar masses)</div>
+
+                <div class="stage rsg" onclick="toggle(this)">
+                    <div class="icon icon-rsg" style="width:30px;height:30px;"></div>
+                    <div class="info">
+                        <div class="name" style="color:#c53030;">Red Supergiant</div>
+                        <div class="brief">Massive expansion, fuses heavier elements</div>
+                        <div class="detail">Massive stars fuse heavier elements in layers: He, C, O, Ne, Si, up to iron. Iron cannot release energy by fusion. The core develops an "onion" structure of fusion shells. Stars like Betelgeuse are red supergiants, up to 1000x the Sun's radius.</div>
+                    </div>
+                </div>
+                <div class="arrow">&#8595;</div>
+
+                <div class="stage sn" onclick="toggle(this)">
+                    <div class="icon icon-sn" style="width:30px;height:30px;"></div>
+                    <div class="info">
+                        <div class="name" style="color:#dd6b20;">Supernova</div>
+                        <div class="brief">Catastrophic explosion, outshines entire galaxies</div>
+                        <div class="detail">When the iron core can no longer support itself, it collapses in milliseconds. The resulting shockwave blows the outer layers into space at ~10% the speed of light. Creates elements heavier than iron. For a few weeks, a supernova can outshine an entire galaxy. Seed material for new stars and planets.</div>
+                    </div>
+                </div>
+                <div class="arrow">&#8595;</div>
+
+                <div class="stage ns" onclick="toggle(this)" style="margin-bottom:4px;">
+                    <div class="icon icon-ns" style="width:30px;height:30px;"></div>
+                    <div class="info">
+                        <div class="name" style="color:#4a5568;">Neutron Star</div>
+                        <div class="brief">If core < 3 solar masses</div>
+                        <div class="detail">Protons and electrons are crushed into neutrons. A city-sized object with more mass than the Sun. Density: ~10^17 kg/m³. Can spin hundreds of times per second (pulsars). Has an incredibly strong magnetic field.</div>
+                    </div>
+                </div>
+
+                <div class="stage bh" onclick="toggle(this)">
+                    <div class="icon icon-bh" style="width:30px;height:30px;"></div>
+                    <div class="info">
+                        <div class="name" style="color:#553c9a;">Black Hole</div>
+                        <div class="brief">If core > 3 solar masses</div>
+                        <div class="detail">If the remaining core exceeds ~3 solar masses, nothing can stop the collapse. A singularity forms, surrounded by an event horizon from which not even light can escape. Space and time are severely warped. Detected by their effects on nearby matter and gravitational waves.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function toggle(el) {
+    const wasActive = el.classList.contains('active');
+    // Close all
+    document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+    if (!wasActive) {
+        el.classList.add('active');
+        el.querySelector('.expand-hint')?.remove();
+    }
+}
+
+// Add subtle pulsing glow to icons
+const icons = document.querySelectorAll('.icon');
+let t = 0;
+function pulseIcons() {
+    t += 0.03;
+    icons.forEach((icon, i) => {
+        const scale = 1 + Math.sin(t + i * 0.5) * 0.05;
+        icon.style.transform = `scale(${scale})`;
+    });
+    requestAnimationFrame(pulseIcons);
+}
+pulseIcons();
+</script>
+</body>
+</html>

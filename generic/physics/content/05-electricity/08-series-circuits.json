@@ -1,5 +1,2317 @@
 {
   "title": "Series Circuits",
-  "content": "# Series Circuits\n\n## Introduction\n\nIn a series circuit, all components are connected in a single loop—there's only one path for current to flow. Old-fashioned Christmas lights were often wired in series: if one bulb blew, the whole string went out! Understanding series circuits is essential for analysing more complex electrical systems.\n\n## Key Concepts\n\n### What is a Series Circuit?\n\nIn a **series circuit**, components are connected end-to-end in a single path.\n\n- All current flows through every component\n- Only one route from positive to negative terminal\n- If one component breaks, the whole circuit stops\n\n[DIAGRAM: Simple series circuit with battery and three components]\n\n## Rules for Series Circuits\n\n### Current\n\n**Current is the SAME at all points in a series circuit.**\n\n$$I_1 = I_2 = I_3 = ... = I_{total}$$\n\nWhy? There's only one path for charge to flow. What goes in must come out—charge is conserved.\n\nAn ammeter placed anywhere in the circuit reads the same value.\n\n### Potential Difference\n\n**The total p.d. equals the SUM of p.d.s across each component.**\n\n$$V_{total} = V_1 + V_2 + V_3 + ...$$\n\nThe supply voltage is shared between all components. Each component gets a 'share' of the voltage.\n\n### Resistance\n\n**Total resistance is the SUM of individual resistances.**\n\n$$R_{total} = R_1 + R_2 + R_3 + ...$$\n\nAdding resistors in series increases the total resistance because current must pass through all of them.\n\n## Analysing Series Circuits\n\n### Step-by-Step Method\n\n1. Find total resistance: $R_T = R_1 + R_2 + ...$\n2. Use Ohm's Law to find current: $I = V_{supply}/R_T$\n3. Current is the same throughout\n4. Find p.d. across each component: $V = IR$\n5. Check: p.d.s should add up to supply voltage\n\n### Voltage Division\n\nThe voltage divides in proportion to resistance:\n\n$$\\frac{V_1}{V_2} = \\frac{R_1}{R_2}$$\n\nLarger resistance → larger share of voltage\n\nFor any component in series:\n\n$$V_1 = V_{total} \\times \\frac{R_1}{R_{total}}$$\n\n## Worked Examples\n\n**Example 1:** Two resistors of 4 Ω and 8 Ω are connected in series to a 6 V battery. Calculate:\na) The total resistance\nb) The current in the circuit\nc) The p.d. across each resistor\n\n**Solution:**\na) $R_{total} = 4 + 8 = 12$ Ω\n\nb) $I = \\frac{V}{R} = \\frac{6}{12} = 0.5$ A\n\nc) $V_1 = IR_1 = 0.5 \\times 4 = 2$ V\n   $V_2 = IR_2 = 0.5 \\times 8 = 4$ V\n\nCheck: $2 + 4 = 6$ V ✓\n\n**Example 2:** Three identical lamps are connected in series to a 12 V supply. If the current is 2 A, find:\na) The resistance of each lamp\nb) The p.d. across each lamp\n\n**Solution:**\na) Total resistance: $R_T = V/I = 12/2 = 6$ Ω\n   Each lamp: $R = 6/3 = 2$ Ω\n\nb) Each lamp gets equal share (identical resistances):\n   $V = 12/3 = 4$ V each\n\n**Example 3:** A 3 Ω resistor, 6 Ω resistor, and a lamp are connected in series to a 15 V supply. The current is 1 A. Find:\na) The p.d. across each resistor\nb) The p.d. across the lamp\nc) The resistance of the lamp\n\n**Solution:**\na) $V_{3Ω} = IR = 1 \\times 3 = 3$ V\n   $V_{6Ω} = IR = 1 \\times 6 = 6$ V\n\nb) $V_{lamp} = 15 - 3 - 6 = 6$ V\n\nc) $R_{lamp} = V/I = 6/1 = 6$ Ω\n\n**Example 4:** A 12 V battery is connected to a 100 Ω resistor and an LED in series. The LED requires 2 V to operate. Calculate:\na) The p.d. across the resistor\nb) The current through the circuit\n\n**Solution:**\na) $V_{resistor} = 12 - 2 = 10$ V\n\nb) $I = V/R = 10/100 = 0.1$ A = 100 mA\n\n## Advantages and Disadvantages\n\n### Advantages\n\n- Simple to wire\n- Same current through all components\n- Adding components increases total resistance (can limit current)\n\n### Disadvantages\n\n- If one component fails, all stop working\n- Components must share the voltage\n- Higher resistance means less current for given voltage\n\n## Applications\n\n### Voltage Dividers (Potential Dividers)\n\nTwo resistors in series can divide a voltage:\n\n$$V_{out} = V_{in} \\times \\frac{R_2}{R_1 + R_2}$$\n\nUsed in:\n- Volume controls\n- Sensor circuits with thermistors/LDRs\n- Reference voltage generation\n\n### Current Limiting\n\nResistors in series with LEDs limit current:\n- LED has low resistance when on\n- Resistor prevents excessive current\n- Protects LED from burning out\n\n### Battery Packs\n\nCells in series:\n- Voltages add up\n- 4 × 1.5 V cells = 6 V battery\n- Current capacity stays the same\n\n## Common Misconceptions\n\n1. **\"Current is used up as it goes through components\"** — Current is the SAME throughout. Energy is transferred, not charge lost.\n\n2. **\"The first component gets more voltage\"** — Voltage divides by resistance, not position. The largest resistor gets the most voltage.\n\n3. **\"Series is always worse than parallel\"** — Each has advantages. Series is simpler and shares current; parallel provides backup if one component fails.\n\n4. **\"Adding a resistor always reduces current\"** — True for series, but adding resistors in parallel can increase total current.\n\n5. **\"Identical components always share voltage equally\"** — Only if they have equal resistance. A hot filament lamp has different resistance than a cold one.\n\n## Practical Investigation\n\n### Investigating Series Circuits\n\n**Aim:** To verify the rules for current and voltage in series circuits.\n\n**Equipment:**\n- Power supply (variable)\n- Three resistors of known values\n- Ammeter, voltmeter\n- Connecting wires\n\n**Method:**\n1. Connect resistors in series with power supply\n2. Measure current at different points using ammeter\n3. Measure p.d. across each resistor using voltmeter\n4. Measure total p.d. across all resistors\n5. Compare measurements with calculations\n\n**Expected Results:**\n- Current the same at all points\n- Individual p.d.s add to give total p.d.\n- $V = IR$ applies to each component\n\n## Practice Problems\n\n1. Three resistors of 5 Ω, 10 Ω, and 15 Ω are connected in series to a 12 V supply. Calculate:\n   a) The total resistance\n   b) The current\n   c) The p.d. across each resistor\n\n2. Two lamps are connected in series to a 6 V battery. The current is 0.2 A and the p.d. across one lamp is 4 V. Find:\n   a) The p.d. across the other lamp\n   b) The resistance of each lamp\n\n3. A circuit contains a 6 V battery, a 20 Ω resistor, and an unknown resistor in series. The current is 0.2 A. Find the unknown resistance.\n\n4. Explain why old Christmas tree lights (wired in series) would all go out when one bulb failed.\n\n5. A potential divider uses a 3 kΩ and 6 kΩ resistor with a 9 V supply. Calculate the output voltage taken across the 6 kΩ resistor.\n\n6. An LED needs 20 mA of current and has a p.d. of 1.8 V across it. Calculate the resistor needed to connect it to a 5 V supply in series.\n\n7. Four 1.5 V cells are connected in series. What is the total EMF?\n\n## Summary\n\n| Property | Series Rule |\n|----------|-------------|\n| Current | Same throughout: $I_1 = I_2 = I_3$ |\n| Voltage | Adds up: $V_T = V_1 + V_2 + V_3$ |\n| Resistance | Adds up: $R_T = R_1 + R_2 + R_3$ |\n\n- Only one path for current\n- All current flows through every component\n- Voltage divides in proportion to resistance\n- If one component fails, circuit breaks\n- Applications: voltage dividers, current limiting, battery packs",
-  "order": 8
+  "order": 8,
+  "pageType": "markdown",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Series Circuits"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In a series circuit, all components are connected in a single loop—there's only one path for current to flow. Old-fashioned Christmas lights were often wired in series: if one bulb blew, the whole string went out! Understanding series circuits is essential for analysing more complex electrical systems."
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concept: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "In a series circuit: current is the same everywhere, potential differences add up to the supply voltage, and total resistance is the sum of all individual resistances."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "What is a Series Circuit?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In a "
+          },
+          {
+            "type": "text",
+            "text": "series circuit",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", components are connected end-to-end in a single path."
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "All current flows through every component"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Only one route from positive to negative terminal"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If one component breaks, the whole circuit stops"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "   + |---[R1]---[R2]---[R3]---| -\n     |                        |\n     |________________________|\n\n   One single loop -- all components\n   connected end to end"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Rules for Series Circuits"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Current"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Current is the SAME at all points in a series circuit.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "I_1 = I_2 = I_3 = ... = I_{total}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Why? There's only one path for charge to flow. What goes in must come out—charge is conserved."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "An ammeter placed anywhere in the circuit reads the same value."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Potential Difference"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The total p.d. equals the SUM of p.d.s across each component.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{total} = V_1 + V_2 + V_3 + ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The supply voltage is shared between all components. Each component gets a 'share' of the voltage."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Resistance"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Total resistance is the SUM of individual resistances.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "R_{total} = R_1 + R_2 + R_3 + ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Adding resistors in series increases the total resistance because current must pass through all of them."
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-series-circuits"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Analysing Series Circuits"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Step-by-Step Method"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Find total resistance: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "R_T = R_1 + R_2 + ...",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Use Ohm's Law to find current: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "I = V_{supply}/R_T",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current is the same throughout"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Find p.d. across each component: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "V = IR",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Check: p.d.s should add up to supply voltage"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Voltage Division"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The voltage divides in proportion to resistance:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\frac{V_1}{V_2} = \\frac{R_1}{R_2}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Larger resistance → larger share of voltage"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "For any component in series:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_1 = V_{total} \\times \\frac{R_1}{R_{total}}"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Two resistors of 4 Ω and 8 Ω are connected in series to a 6 V battery. Calculate: a) The total resistance b) The current in the circuit c) The p.d. across each resistor"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " a) "
+          },
+          {
+            "type": "text",
+            "text": "R_{total} = 4 + 8 = 12",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Ω"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "b) "
+          },
+          {
+            "type": "text",
+            "text": "I = \\frac{V}{R} = \\frac{6}{12} = 0.5",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "c) "
+          },
+          {
+            "type": "text",
+            "text": "V_1 = IR_1 = 0.5 \\times 4 = 2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " V    "
+          },
+          {
+            "type": "text",
+            "text": "V_2 = IR_2 = 0.5 \\times 8 = 4",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " V"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Check: "
+          },
+          {
+            "type": "text",
+            "text": "2 + 4 = 6",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " V ✓"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Three identical lamps are connected in series to a 12 V supply. If the current is 2 A, find: a) The resistance of each lamp b) The p.d. across each lamp"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " a) Total resistance: "
+          },
+          {
+            "type": "text",
+            "text": "R_T = V/I = 12/2 = 6",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Ω    Each lamp: "
+          },
+          {
+            "type": "text",
+            "text": "R = 6/3 = 2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Ω"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "b) Each lamp gets equal share (identical resistances):    "
+          },
+          {
+            "type": "text",
+            "text": "V = 12/3 = 4",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " V each"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 3:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A 3 Ω resistor, 6 Ω resistor, and a lamp are connected in series to a 15 V supply. The current is 1 A. Find: a) The p.d. across each resistor b) The p.d. across the lamp c) The resistance of the lamp"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " a) "
+          },
+          {
+            "type": "text",
+            "text": "V_{3Ω} = IR = 1 \\times 3 = 3",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " V    "
+          },
+          {
+            "type": "text",
+            "text": "V_{6Ω} = IR = 1 \\times 6 = 6",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " V"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "b) "
+          },
+          {
+            "type": "text",
+            "text": "V_{lamp} = 15 - 3 - 6 = 6",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " V"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "c) "
+          },
+          {
+            "type": "text",
+            "text": "R_{lamp} = V/I = 6/1 = 6",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Ω"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 4:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A 12 V battery is connected to a 100 Ω resistor and an LED in series. The LED requires 2 V to operate. Calculate: a) The p.d. across the resistor b) The current through the circuit"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " a) "
+          },
+          {
+            "type": "text",
+            "text": "V_{resistor} = 12 - 2 = 10",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " V"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "b) "
+          },
+          {
+            "type": "text",
+            "text": "I = V/R = 10/100 = 0.1",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A = 100 mA"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Advantages and Disadvantages"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Advantages"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Simple to wire"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Same current through all components"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Adding components increases total resistance (can limit current)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Disadvantages"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If one component fails, all stop working"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Components must share the voltage"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Higher resistance means less current for given voltage"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Exam Tip: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "In series circuits, the voltage is shared between components in proportion to their resistance. The component with the highest resistance gets the largest share of the voltage."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "comparisonTable",
+        "attrs": {
+          "title": "Series vs Parallel Circuits",
+          "leftHeader": "Series Circuit",
+          "rightHeader": "Parallel Circuit",
+          "leftColor": "neutral",
+          "rightColor": "neutral",
+          "rows": [
+            {
+              "label": "Current",
+              "left": "Same through all components",
+              "right": "Splits between branches"
+            },
+            {
+              "label": "Potential Difference",
+              "left": "Shared between components (adds up to supply)",
+              "right": "Same across each branch"
+            },
+            {
+              "label": "Total Resistance",
+              "left": "Sum of all resistances (R_total = R1 + R2 + ...)",
+              "right": "Less than the smallest individual resistance"
+            },
+            {
+              "label": "If One Component Fails",
+              "left": "Entire circuit breaks — all components stop",
+              "right": "Other branches continue to work"
+            },
+            {
+              "label": "Adding Components",
+              "left": "Increases total resistance, reduces current",
+              "right": "Decreases total resistance, increases total current"
+            },
+            {
+              "label": "Common Uses",
+              "left": "Simple switches, fuses, fairy lights",
+              "right": "Household wiring, car electrics"
+            }
+          ]
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Applications"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Voltage Dividers (Potential Dividers)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Two resistors in series can divide a voltage:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{out} = V_{in} \\times \\frac{R_2}{R_1 + R_2}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Used in:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Volume controls"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Sensor circuits with thermistors/LDRs"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Reference voltage generation"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Current Limiting"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Resistors in series with LEDs limit current:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "LED has low resistance when on"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Resistor prevents excessive current"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Protects LED from burning out"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Battery Packs"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Cells in series:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Voltages add up"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "4 × 1.5 V cells = 6 V battery"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current capacity stays the same"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Real-World Link: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "Modern Christmas lights use a shunt resistor across each bulb so that if one bulb fails, the circuit remains complete and the other bulbs stay lit."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-series-circuits-2"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Misconceptions"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Current is used up as it goes through components\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Current is the SAME throughout. Energy is transferred, not charge lost."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"The first component gets more voltage\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Voltage divides by resistance, not position. The largest resistor gets the most voltage."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Series is always worse than parallel\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Each has advantages. Series is simpler and shares current; parallel provides backup if one component fails."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Adding a resistor always reduces current\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — True for series, but adding resistors in parallel can increase total current."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Identical components always share voltage equally\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Only if they have equal resistance. A hot filament lamp has different resistance than a cold one."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practical Investigation"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Investigating Series Circuits"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Aim:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " To verify the rules for current and voltage in series circuits."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Equipment:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Power supply (variable)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Three resistors of known values"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Ammeter, voltmeter"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Connecting wires"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Method:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Connect resistors in series with power supply"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Measure current at different points using ammeter"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Measure p.d. across each resistor using voltmeter"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Measure total p.d. across all resistors"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Compare measurements with calculations"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Expected Results:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Current the same at all points"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Individual p.d.s add to give total p.d."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "V = IR",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " applies to each component"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Problems"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Three resistors of 5 Ω, 10 Ω, and 15 Ω are connected in series to a 12 V supply. Calculate: a) The total resistance b) The current c) The p.d. across each resistor"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Two lamps are connected in series to a 6 V battery. The current is 0.2 A and the p.d. across one lamp is 4 V. Calculate: a) The p.d. across the other lamp b) The resistance of each lamp"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the unknown resistance in a series circuit containing a 6 V battery, a 20 Ω resistor, and an unknown resistor, given that the current is 0.2 A."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Explain why old Christmas tree lights wired in series would all go out when one bulb failed."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the output voltage across the 6 kΩ resistor in a potential divider using 3 kΩ and 6 kΩ resistors with a 9 V supply."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the series resistor needed when an LED requiring 20 mA and 1.8 V is connected to a 5 V supply."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "State the total EMF when four 1.5 V cells are connected in series."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "| Property | Series Rule |\n|----------|-------------|\n| Current | Same throughout: $I_1 = I_2 = I_3$ |\n| Voltage | Adds up: $V_T = V_1 + V_2 + V_3$ |\n| Resistance | Adds up: $R_T = R_1 + R_2 + R_3$ |"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Only one path for current"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "All current flows through every component"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Voltage divides in proportion to resistance"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If one component fails, circuit breaks"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Applications: voltage dividers, current limiting, battery packs"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer Key"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) R_total = 5 + 10 + 15 = 30 Ohm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " -- "
+                  },
+                  {
+                    "type": "text",
+                    "text": "(b) I = V/R = 12/30 = 0.4 A",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " -- "
+                  },
+                  {
+                    "type": "text",
+                    "text": "(c) V_5 = 0.4 x 5 = 2 V; V_10 = 0.4 x 10 = 4 V; V_15 = 0.4 x 15 = 6 V. Check: 2 + 4 + 6 = 12 V.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) V2 = 6 - 4 = 2 V",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " -- "
+                  },
+                  {
+                    "type": "text",
+                    "text": "(b) R_lamp1 = V/I = 4/0.2 = 20 Ohm; R_lamp2 = 2/0.2 = 10 Ohm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "R_total = V/I = 6/0.2 = 30 Ohm; R_unknown = 30 - 20 = 10 Ohm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In a series circuit there is only one path for current. If one bulb fails (its filament breaks), the circuit is broken and current cannot flow through any of the remaining bulbs, so they all go out.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (reasoning)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "V_out = V_in x R2/(R1 + R2) = 9 x 6/(3 + 6) = 9 x 6/9 = 6 V",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "V_resistor = 5 - 1.8 = 3.2 V; R = V/I = 3.2 / 0.020 = 160 Ohm",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "visualizationEmbed",
+        "attrs": {
+          "visualizationId": "phys-circuit-builder-series",
+          "displayMode": "expanded",
+          "customHeight": 500
+        }
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "EMF = 4 x 1.5 = 6 V.",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " In series, cell voltages add up. (recall)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

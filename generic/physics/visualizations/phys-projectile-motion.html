@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projectile Motion Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card {
+            border-radius: 5px;
+            border: 1px solid #e5dfe0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99,126,161,0.15);
+        }
+        canvas {
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #e5dfe0;
+            display: block;
+            background: #fafafa;
+        }
+        .controls { display: flex; flex-direction: column; gap: 8px; }
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .slider-row label {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: #4a5568;
+            min-width: 110px;
+        }
+        .slider-row input[type="range"] {
+            flex: 1;
+            accent-color: #637EA1;
+            height: 6px;
+        }
+        .slider-row .val {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #637EA1;
+            min-width: 50px;
+            text-align: right;
+        }
+        .btn-row { display: flex; gap: 8px; margin-top: 4px; }
+        .btn {
+            flex: 1;
+            padding: 7px 0;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(99,126,161,0.2); }
+        .btn-primary { background: #637EA1; color: #fff; }
+        .btn-secondary { background: #F4D35E; color: #1a1f2e; }
+        .btn-outline { background: #fff; color: #637EA1; border: 1px solid #637EA1; }
+        .results {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .result-item {
+            text-align: center;
+            padding: 8px 4px;
+            background: #F5E6E8;
+            border-radius: 5px;
+        }
+        .result-item .label {
+            font-size: 0.7rem;
+            color: #4a5568;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: 2px;
+        }
+        .result-item .value {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.05rem;
+            color: #637EA1;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Projectile Motion Simulator</h1>
+        <div class="card">
+            <canvas id="canvas" width="526" height="300"></canvas>
+        </div>
+        <div class="card controls">
+            <div class="slider-row">
+                <label>Launch Angle</label>
+                <input type="range" id="angle" min="0" max="90" value="45" step="1">
+                <span class="val" id="angleVal">45°</span>
+            </div>
+            <div class="slider-row">
+                <label>Initial Velocity</label>
+                <input type="range" id="velocity" min="5" max="50" value="25" step="1">
+                <span class="val" id="velVal">25 m/s</span>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-primary" id="launchBtn">Launch</button>
+                <button class="btn btn-secondary" id="drawBtn">Draw Path</button>
+                <button class="btn btn-outline" id="resetBtn">Reset</button>
+            </div>
+        </div>
+        <div class="results">
+            <div class="result-item">
+                <div class="label">Max Height</div>
+                <div class="value" id="maxH">0.00 m</div>
+            </div>
+            <div class="result-item">
+                <div class="label">Range</div>
+                <div class="value" id="range">0.00 m</div>
+            </div>
+            <div class="result-item">
+                <div class="label">Flight Time</div>
+                <div class="value" id="time">0.00 s</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const g = 9.81;
+
+        const angleSlider = document.getElementById('angle');
+        const velSlider = document.getElementById('velocity');
+        const angleVal = document.getElementById('angleVal');
+        const velVal = document.getElementById('velVal');
+
+        let animId = null;
+        let isAnimating = false;
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = (rect.width - 24) * 2;
+            canvas.height = 300 * 2;
+            canvas.style.height = '300px';
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); drawScene(); });
+
+        const pad = { left: 60, right: 30, top: 30, bottom: 50 };
+
+        function getPhysics() {
+            const angle = parseFloat(angleSlider.value) * Math.PI / 180;
+            const v0 = parseFloat(velSlider.value);
+            const vx = v0 * Math.cos(angle);
+            const vy = v0 * Math.sin(angle);
+            const tFlight = 2 * vy / g;
+            const maxH = (vy * vy) / (2 * g);
+            const range = vx * tFlight;
+            return { angle, v0, vx, vy, tFlight, maxH, range };
+        }
+
+        function worldToCanvas(x, y, maxX, maxY) {
+            const plotW = canvas.width - pad.left - pad.right;
+            const plotH = canvas.height - pad.top - pad.bottom;
+            const scaleX = maxX > 0 ? plotW / maxX : 1;
+            const scaleY = maxY > 0 ? plotH / maxY : 1;
+            return {
+                cx: pad.left + x * scaleX,
+                cy: canvas.height - pad.bottom - y * scaleY
+            };
+        }
+
+        function drawAxes(maxX, maxY) {
+            ctx.strokeStyle = '#4a5568';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(pad.left, pad.top);
+            ctx.lineTo(pad.left, canvas.height - pad.bottom);
+            ctx.lineTo(canvas.width - pad.right, canvas.height - pad.bottom);
+            ctx.stroke();
+
+            ctx.fillStyle = '#4a5568';
+            ctx.font = '600 22px Outfit, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Distance (m)', canvas.width / 2, canvas.height - 8);
+            ctx.save();
+            ctx.translate(18, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Height (m)', 0, 0);
+            ctx.restore();
+
+            ctx.font = '400 20px Outfit, sans-serif';
+            const xTicks = 5;
+            for (let i = 0; i <= xTicks; i++) {
+                const val = (maxX * i / xTicks);
+                const { cx, cy } = worldToCanvas(val, 0, maxX, maxY);
+                ctx.fillText(val.toFixed(0), cx, cy + 28);
+                ctx.strokeStyle = '#e5dfe0';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(cx, pad.top);
+                ctx.lineTo(cx, canvas.height - pad.bottom);
+                ctx.stroke();
+            }
+            const yTicks = 4;
+            for (let i = 0; i <= yTicks; i++) {
+                const val = (maxY * i / yTicks);
+                const { cx, cy } = worldToCanvas(0, val, maxX, maxY);
+                ctx.textAlign = 'right';
+                ctx.fillText(val.toFixed(0), pad.left - 10, cy + 6);
+                ctx.strokeStyle = '#e5dfe0';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(pad.left, cy);
+                ctx.lineTo(canvas.width - pad.right, cy);
+                ctx.stroke();
+            }
+        }
+
+        function drawTrajectory(phys, progress) {
+            const { vx, vy, tFlight, maxH, range } = phys;
+            const maxX = Math.max(range * 1.15, 10);
+            const maxY = Math.max(maxH * 1.3, 5);
+
+            drawAxes(maxX, maxY);
+
+            const steps = 200;
+            const tMax = tFlight * (progress || 1);
+            ctx.beginPath();
+            ctx.setLineDash([8, 6]);
+            ctx.strokeStyle = '#637EA1';
+            ctx.lineWidth = 3;
+            for (let i = 0; i <= steps; i++) {
+                const t = (tMax * i) / steps;
+                const x = vx * t;
+                const y = vy * t - 0.5 * g * t * t;
+                if (y < 0) break;
+                const { cx, cy } = worldToCanvas(x, Math.max(y, 0), maxX, maxY);
+                if (i === 0) ctx.moveTo(cx, cy);
+                else ctx.lineTo(cx, cy);
+            }
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // max height marker
+            const tPeak = vy / g;
+            if (tPeak <= tMax) {
+                const peakX = vx * tPeak;
+                const { cx, cy } = worldToCanvas(peakX, maxH, maxX, maxY);
+                ctx.beginPath();
+                ctx.arc(cx, cy, 7, 0, Math.PI * 2);
+                ctx.fillStyle = '#F4D35E';
+                ctx.fill();
+                ctx.strokeStyle = '#637EA1';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            return { maxX, maxY };
+        }
+
+        function drawBall(phys, t, scales) {
+            const { vx, vy } = phys;
+            const x = vx * t;
+            const y = vy * t - 0.5 * g * t * t;
+            const { cx, cy } = worldToCanvas(x, Math.max(y, 0), scales.maxX, scales.maxY);
+            ctx.beginPath();
+            ctx.arc(cx, cy, 12, 0, Math.PI * 2);
+            ctx.fillStyle = '#637EA1';
+            ctx.fill();
+            ctx.strokeStyle = '#F4D35E';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+
+        function drawScene(progress) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const phys = getPhysics();
+            return drawTrajectory(phys, progress);
+        }
+
+        function updateValues() {
+            const phys = getPhysics();
+            angleVal.textContent = angleSlider.value + '°';
+            velVal.textContent = velSlider.value + ' m/s';
+            document.getElementById('maxH').textContent = phys.maxH.toFixed(2) + ' m';
+            document.getElementById('range').textContent = phys.range.toFixed(2) + ' m';
+            document.getElementById('time').textContent = phys.tFlight.toFixed(2) + ' s';
+        }
+
+        angleSlider.addEventListener('input', () => { updateValues(); if (!isAnimating) drawScene(1); });
+        velSlider.addEventListener('input', () => { updateValues(); if (!isAnimating) drawScene(1); });
+
+        document.getElementById('drawBtn').addEventListener('click', () => {
+            stopAnim();
+            updateValues();
+            drawScene(1);
+        });
+
+        function stopAnim() {
+            if (animId) cancelAnimationFrame(animId);
+            isAnimating = false;
+            animId = null;
+        }
+
+        document.getElementById('launchBtn').addEventListener('click', () => {
+            stopAnim();
+            updateValues();
+            const phys = getPhysics();
+            const startTime = performance.now();
+            const duration = phys.tFlight * 400;
+            isAnimating = true;
+
+            function frame(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const t = progress * phys.tFlight;
+                const scales = drawScene(progress);
+                drawBall(phys, t, scales);
+                if (progress < 1) {
+                    animId = requestAnimationFrame(frame);
+                } else {
+                    isAnimating = false;
+                }
+            }
+            animId = requestAnimationFrame(frame);
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            stopAnim();
+            angleSlider.value = 45;
+            velSlider.value = 25;
+            updateValues();
+            drawScene(1);
+        });
+
+        updateValues();
+        drawScene(1);
+    </script>
+</body>
+</html>

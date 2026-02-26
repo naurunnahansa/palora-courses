@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moments & Balance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .info { text-align: center; font-size: 0.75rem; color: #4a5568; margin-bottom: 8px; }
+        .formula { text-align: center; font-size: 0.8rem; font-weight: 600; color: #637EA1; background: #F5E6E8; border-radius: 5px; padding: 6px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border-radius: 5px; }
+        .controls { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+        .btn { background: #637EA1; color: #fff; border: none; border-radius: 5px; padding: 6px 12px; font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { background: #506a8a; }
+        .btn.secondary { background: #F4D35E; color: #1a1f2e; }
+        .btn.secondary:hover { background: #e5c44f; }
+        .moments-display { display: flex; gap: 8px; margin-top: 10px; }
+        .moment-card { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px; text-align: center; }
+        .moment-card h3 { font-family: 'Oswald', sans-serif; font-size: 0.75rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .moment-card .val { font-size: 1.1rem; font-weight: 700; }
+        .moment-card.cw .val { color: #dc3545; }
+        .moment-card.ccw .val { color: #28a745; }
+        .moment-card.result .val { color: #637EA1; }
+        .moment-card .unit { font-size: 0.65rem; color: #4a5568; }
+        .weight-list { margin-top: 8px; font-size: 0.7rem; color: #4a5568; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px 8px; }
+        .weight-list strong { color: #1a1f2e; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Moments & Balance</h1>
+    <p class="info">Drag weights along the beam. Add or remove weights to explore balance.</p>
+    <div class="formula">Moment = Force × Distance from pivot (Nm)</div>
+    <canvas id="beamCanvas" width="530" height="260"></canvas>
+    <div class="controls">
+        <button class="btn" onclick="addWeight(5)">+ 5N Weight</button>
+        <button class="btn" onclick="addWeight(10)">+ 10N Weight</button>
+        <button class="btn" onclick="addWeight(20)">+ 20N Weight</button>
+        <button class="btn secondary" onclick="removeLastWeight()">Remove Last</button>
+        <button class="btn secondary" onclick="resetBeam()">Reset</button>
+    </div>
+    <div class="moments-display">
+        <div class="moment-card ccw"><h3>Anticlockwise</h3><div class="val" id="ccwMoment">0</div><div class="unit">Nm</div></div>
+        <div class="moment-card result"><h3>Status</h3><div class="val" id="balanceStatus">Balanced</div><div class="unit" id="netMoment">Net: 0 Nm</div></div>
+        <div class="moment-card cw"><h3>Clockwise</h3><div class="val" id="cwMoment">0</div><div class="unit">Nm</div></div>
+    </div>
+    <div class="weight-list" id="weightList">No weights on beam</div>
+</div>
+<script>
+const canvas = document.getElementById('beamCanvas');
+const ctx = canvas.getContext('2d');
+const BEAM_Y = 130, BEAM_LEN = 440, PIVOT_X = 265, BEAM_LEFT = 45;
+const BEAM_RIGHT = BEAM_LEFT + BEAM_LEN;
+const PX_PER_M = BEAM_LEN / 4; // 4m beam total, 2m each side
+
+let weights = [];
+let dragIdx = -1, dragOffsetX = 0;
+let beamAngle = 0, targetAngle = 0;
+
+function addWeight(force) {
+    const side = Math.random() > 0.5 ? 1 : -1;
+    weights.push({ x: PIVOT_X + side * 60, force });
+    updatePhysics();
+    draw();
+}
+
+function removeLastWeight() {
+    weights.pop();
+    updatePhysics();
+    draw();
+}
+
+function resetBeam() {
+    weights = [];
+    beamAngle = 0;
+    targetAngle = 0;
+    updatePhysics();
+    draw();
+}
+
+function updatePhysics() {
+    let cwM = 0, ccwM = 0;
+    weights.forEach(w => {
+        const distPx = w.x - PIVOT_X;
+        const distM = distPx / PX_PER_M;
+        const moment = Math.abs(w.force * distM);
+        if (distPx > 0) cwM += moment;
+        else if (distPx < 0) ccwM += moment;
+    });
+    document.getElementById('cwMoment').textContent = cwM.toFixed(1);
+    document.getElementById('ccwMoment').textContent = ccwM.toFixed(1);
+    const net = cwM - ccwM;
+    const absNet = Math.abs(net);
+    document.getElementById('netMoment').textContent = `Net: ${absNet.toFixed(1)} Nm`;
+    if (absNet < 0.05) {
+        document.getElementById('balanceStatus').textContent = 'Balanced!';
+        document.getElementById('balanceStatus').style.color = '#28a745';
+        targetAngle = 0;
+    } else if (net > 0) {
+        document.getElementById('balanceStatus').textContent = 'Tilts Right';
+        document.getElementById('balanceStatus').style.color = '#dc3545';
+        targetAngle = Math.min(net * 0.8, 15);
+    } else {
+        document.getElementById('balanceStatus').textContent = 'Tilts Left';
+        document.getElementById('balanceStatus').style.color = '#dc3545';
+        targetAngle = Math.max(net * 0.8, -15);
+    }
+    // weight list
+    const listEl = document.getElementById('weightList');
+    if (weights.length === 0) { listEl.innerHTML = 'No weights on beam'; return; }
+    let html = '<strong>Weights:</strong> ';
+    weights.forEach((w, i) => {
+        const distM = (w.x - PIVOT_X) / PX_PER_M;
+        const side = distM >= 0 ? 'right' : 'left';
+        const moment = Math.abs(w.force * distM);
+        html += `${w.force}N @ ${Math.abs(distM).toFixed(2)}m ${side} (${moment.toFixed(1)} Nm)`;
+        if (i < weights.length - 1) html += ' | ';
+    });
+    listEl.innerHTML = html;
+}
+
+function draw() {
+    beamAngle += (targetAngle - beamAngle) * 0.15;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // background
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // pivot triangle
+    ctx.beginPath();
+    ctx.moveTo(PIVOT_X, BEAM_Y + 8);
+    ctx.lineTo(PIVOT_X - 18, BEAM_Y + 50);
+    ctx.lineTo(PIVOT_X + 18, BEAM_Y + 50);
+    ctx.closePath();
+    ctx.fillStyle = '#637EA1';
+    ctx.fill();
+    // ground
+    ctx.fillStyle = '#e5dfe0';
+    ctx.fillRect(20, BEAM_Y + 48, canvas.width - 40, 4);
+    // beam with rotation
+    ctx.save();
+    ctx.translate(PIVOT_X, BEAM_Y);
+    const rad = beamAngle * Math.PI / 180;
+    ctx.rotate(rad);
+    // beam body
+    ctx.fillStyle = '#8B7355';
+    ctx.fillRect(-BEAM_LEN / 2, -6, BEAM_LEN, 12);
+    ctx.strokeStyle = '#6B5335';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(-BEAM_LEN / 2, -6, BEAM_LEN, 12);
+    // distance markers
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '10px Outfit';
+    ctx.textAlign = 'center';
+    for (let m = -2; m <= 2; m += 0.5) {
+        const px = m * PX_PER_M;
+        ctx.beginPath();
+        ctx.moveTo(px, -6);
+        ctx.lineTo(px, m % 1 === 0 ? -14 : -10);
+        ctx.strokeStyle = '#4a5568';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        if (m % 1 === 0) {
+            ctx.fillText(Math.abs(m) + 'm', px, -17);
+        }
+    }
+    // pivot marker
+    ctx.beginPath();
+    ctx.arc(0, 0, 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#F4D35E';
+    ctx.fill();
+    ctx.strokeStyle = '#637EA1';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    // weights
+    weights.forEach((w, i) => {
+        const wx = w.x - PIVOT_X;
+        const wh = 10 + w.force * 1.2;
+        const ww = 22 + w.force * 0.5;
+        // string
+        ctx.beginPath();
+        ctx.moveTo(wx, 6);
+        ctx.lineTo(wx, 20);
+        ctx.strokeStyle = '#4a5568';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        // weight block
+        const gradient = ctx.createLinearGradient(wx - ww/2, 20, wx + ww/2, 20 + wh);
+        gradient.addColorStop(0, w.force === 5 ? '#F4D35E' : w.force === 10 ? '#637EA1' : '#dc3545');
+        gradient.addColorStop(1, w.force === 5 ? '#e5c44f' : w.force === 10 ? '#506a8a' : '#b02a37');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.roundRect(wx - ww/2, 20, ww, wh, 3);
+        ctx.fill();
+        // label
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 11px Outfit';
+        ctx.textAlign = 'center';
+        ctx.fillText(w.force + 'N', wx, 20 + wh / 2 + 4);
+        // force arrow
+        ctx.beginPath();
+        ctx.moveTo(wx, 20 + wh + 2);
+        ctx.lineTo(wx, 20 + wh + 16);
+        ctx.strokeStyle = '#dc3545';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(wx, 20 + wh + 16);
+        ctx.lineTo(wx - 4, 20 + wh + 10);
+        ctx.lineTo(wx + 4, 20 + wh + 10);
+        ctx.closePath();
+        ctx.fillStyle = '#dc3545';
+        ctx.fill();
+    });
+    ctx.restore();
+    // labels
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '11px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('Pivot', PIVOT_X, BEAM_Y + 66);
+    if (Math.abs(beamAngle - targetAngle) > 0.1) requestAnimationFrame(draw);
+}
+
+// Drag interaction
+canvas.addEventListener('mousedown', e => {
+    const r = canvas.getBoundingClientRect();
+    const mx = e.clientX - r.left, my = e.clientY - r.top;
+    const rad = beamAngle * Math.PI / 180;
+    for (let i = weights.length - 1; i >= 0; i--) {
+        const wx = weights[i].x - PIVOT_X;
+        const rotX = PIVOT_X + wx * Math.cos(rad);
+        const rotY = BEAM_Y + wx * Math.sin(rad);
+        if (Math.abs(mx - rotX) < 20 && Math.abs(my - rotY) < 40) {
+            dragIdx = i;
+            dragOffsetX = mx - rotX;
+            break;
+        }
+    }
+});
+
+canvas.addEventListener('mousemove', e => {
+    if (dragIdx < 0) return;
+    const r = canvas.getBoundingClientRect();
+    const mx = e.clientX - r.left - dragOffsetX;
+    weights[dragIdx].x = Math.max(BEAM_LEFT + 10, Math.min(BEAM_RIGHT - 10, mx));
+    updatePhysics();
+    draw();
+});
+
+canvas.addEventListener('mouseup', () => { dragIdx = -1; });
+canvas.addEventListener('mouseleave', () => { dragIdx = -1; });
+
+// Touch
+canvas.addEventListener('touchstart', e => {
+    e.preventDefault();
+    const r = canvas.getBoundingClientRect();
+    const t = e.touches[0];
+    const mx = t.clientX - r.left, my = t.clientY - r.top;
+    const rad = beamAngle * Math.PI / 180;
+    for (let i = weights.length - 1; i >= 0; i--) {
+        const wx = weights[i].x - PIVOT_X;
+        const rotX = PIVOT_X + wx * Math.cos(rad);
+        const rotY = BEAM_Y + wx * Math.sin(rad);
+        if (Math.abs(mx - rotX) < 25 && Math.abs(my - rotY) < 50) {
+            dragIdx = i;
+            dragOffsetX = mx - rotX;
+            break;
+        }
+    }
+});
+canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    if (dragIdx < 0) return;
+    const r = canvas.getBoundingClientRect();
+    const t = e.touches[0];
+    const mx = t.clientX - r.left - dragOffsetX;
+    weights[dragIdx].x = Math.max(BEAM_LEFT + 10, Math.min(BEAM_RIGHT - 10, mx));
+    updatePhysics();
+    draw();
+});
+canvas.addEventListener('touchend', e => { e.preventDefault(); dragIdx = -1; });
+
+function resizeCanvas() {
+    const w = Math.min(530, document.querySelector('.container').clientWidth - 4);
+    canvas.width = w;
+    draw();
+}
+
+// Init with demo weights
+weights = [
+    { x: PIVOT_X - 110, force: 10 },
+    { x: PIVOT_X + 110, force: 10 }
+];
+updatePhysics();
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+setInterval(() => { if (Math.abs(beamAngle - targetAngle) > 0.1) draw(); }, 30);
+draw();
+</script>
+</body>
+</html>

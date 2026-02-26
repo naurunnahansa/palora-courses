@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Particle Model</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .state-toggle { display: flex; gap: 4px; margin-bottom: 10px; justify-content: center; }
+        .state-btn { flex: 1; max-width: 140px; background: #fff; border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px 6px; text-align: center; cursor: pointer; transition: all 0.2s; font-family: 'Outfit', sans-serif; }
+        .state-btn:hover { border-color: #637EA1; }
+        .state-btn.active { background: #637EA1; border-color: #637EA1; color: #fff; }
+        .state-btn .icon { font-size: 1.2rem; }
+        .state-btn .label { font-size: 0.72rem; font-weight: 600; }
+        canvas { display: block; margin: 0 auto 10px; border: 1px solid #e5dfe0; border-radius: 5px; }
+        .slider-group { border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px 10px; margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; }
+        .slider-label .val { color: #637EA1; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #e5dfe0; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #637EA1; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .info-cards { display: flex; gap: 6px; }
+        .info-card { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px; text-align: center; }
+        .info-card h3 { font-family: 'Oswald', sans-serif; font-size: 0.7rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+        .info-card p { font-size: 0.68rem; color: #4a5568; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Particle Model of Matter</h1>
+    <div class="state-toggle">
+        <div class="state-btn active" onclick="setState('solid')"><div class="icon">&#9632;</div><div class="label">Solid</div></div>
+        <div class="state-btn" onclick="setState('liquid')"><div class="icon">&#9679;</div><div class="label">Liquid</div></div>
+        <div class="state-btn" onclick="setState('gas')"><div class="icon">&#8226;</div><div class="label">Gas</div></div>
+    </div>
+    <canvas id="particleCanvas" width="530" height="300"></canvas>
+    <div class="slider-group">
+        <div class="slider-label"><span>Temperature</span><span class="val" id="tempVal">300 K</span></div>
+        <input type="range" id="tempSlider" min="50" max="800" value="300" oninput="setTemp(this.value)">
+    </div>
+    <div class="info-cards">
+        <div class="info-card"><h3>Arrangement</h3><p id="infoArrangement">Regular, fixed pattern</p></div>
+        <div class="info-card"><h3>Movement</h3><p id="infoMovement">Vibrate about fixed positions</p></div>
+        <div class="info-card"><h3>Spacing</h3><p id="infoSpacing">Very close together</p></div>
+        <div class="info-card"><h3>Energy</h3><p id="infoEnergy">Low kinetic energy</p></div>
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+let state = 'solid';
+let temp = 300;
+let particles = [];
+const NUM = 60;
+const R = 8;
+
+const stateInfo = {
+    solid: { arrangement: 'Regular, fixed pattern', movement: 'Vibrate about fixed positions', spacing: 'Very close together', energy: 'Low kinetic energy' },
+    liquid: { arrangement: 'Random, close together', movement: 'Slide past each other', spacing: 'Close but irregular', energy: 'Medium kinetic energy' },
+    gas: { arrangement: 'Random, spread out', movement: 'Move freely in all directions', spacing: 'Far apart', energy: 'High kinetic energy' }
+};
+
+function initParticles() {
+    particles = [];
+    const cw = canvas.width, ch = canvas.height;
+    if (state === 'solid') {
+        const cols = 10, rows = 6;
+        const spacingX = 22, spacingY = 22;
+        const startX = cw / 2 - (cols * spacingX) / 2;
+        const startY = ch / 2 - (rows * spacingY) / 2 + 20;
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                if (particles.length >= NUM) break;
+                const offsetX = (r % 2) * spacingX * 0.5;
+                particles.push({
+                    homeX: startX + c * spacingX + offsetX,
+                    homeY: startY + r * spacingY,
+                    x: startX + c * spacingX + offsetX,
+                    y: startY + r * spacingY,
+                    vx: 0, vy: 0
+                });
+            }
+        }
+    } else if (state === 'liquid') {
+        const cx = cw / 2, bottom = ch - 30;
+        for (let i = 0; i < NUM; i++) {
+            const x = cx + (Math.random() - 0.5) * 200;
+            const y = bottom - Math.random() * 140;
+            particles.push({ x, y, vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 2, homeX: x, homeY: y });
+        }
+    } else {
+        for (let i = 0; i < NUM; i++) {
+            particles.push({
+                x: Math.random() * (cw - 40) + 20,
+                y: Math.random() * (ch - 40) + 20,
+                vx: (Math.random() - 0.5) * 4,
+                vy: (Math.random() - 0.5) * 4,
+                homeX: 0, homeY: 0
+            });
+        }
+    }
+}
+
+function setState(s) {
+    state = s;
+    document.querySelectorAll('.state-btn').forEach((b, i) => {
+        b.classList.toggle('active', ['solid','liquid','gas'][i] === s);
+    });
+    const info = stateInfo[s];
+    document.getElementById('infoArrangement').textContent = info.arrangement;
+    document.getElementById('infoMovement').textContent = info.movement;
+    document.getElementById('infoSpacing').textContent = info.spacing;
+    document.getElementById('infoEnergy').textContent = info.energy;
+    initParticles();
+}
+
+function setTemp(v) {
+    temp = parseFloat(v);
+    document.getElementById('tempVal').textContent = temp.toFixed(0) + ' K';
+}
+
+function update() {
+    const speed = temp / 300;
+    const cw = canvas.width, ch = canvas.height;
+    particles.forEach(p => {
+        if (state === 'solid') {
+            const amp = speed * 3;
+            p.x = p.homeX + (Math.random() - 0.5) * amp * 2;
+            p.y = p.homeY + (Math.random() - 0.5) * amp * 2;
+        } else if (state === 'liquid') {
+            p.vx += (Math.random() - 0.5) * speed * 0.5;
+            p.vy += (Math.random() - 0.5) * speed * 0.5 + 0.05;
+            p.vx *= 0.98; p.vy *= 0.98;
+            const maxSpd = speed * 2.5;
+            const spd = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+            if (spd > maxSpd) { p.vx *= maxSpd/spd; p.vy *= maxSpd/spd; }
+            p.x += p.vx; p.y += p.vy;
+            // contain to bottom half
+            const leftWall = cw/2 - 120, rightWall = cw/2 + 120, bottom = ch - 20, top = ch - 180;
+            if (p.x < leftWall + R) { p.x = leftWall + R; p.vx *= -0.5; }
+            if (p.x > rightWall - R) { p.x = rightWall - R; p.vx *= -0.5; }
+            if (p.y > bottom - R) { p.y = bottom - R; p.vy *= -0.5; }
+            if (p.y < top + R) { p.y = top + R; p.vy *= -0.5; }
+        } else {
+            p.vx += (Math.random() - 0.5) * speed * 0.3;
+            p.vy += (Math.random() - 0.5) * speed * 0.3;
+            const maxSpd = speed * 4;
+            const spd = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+            if (spd > maxSpd) { p.vx *= maxSpd/spd; p.vy *= maxSpd/spd; }
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < R) { p.x = R; p.vx *= -1; }
+            if (p.x > cw - R) { p.x = cw - R; p.vx *= -1; }
+            if (p.y < R) { p.y = R; p.vy *= -1; }
+            if (p.y > ch - R) { p.y = ch - R; p.vy *= -1; }
+        }
+    });
+    // simple collision for liquid/gas
+    if (state !== 'solid') {
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[j].x - particles[i].x;
+                const dy = particles[j].y - particles[i].y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                const minDist = R * 2;
+                if (dist < minDist && dist > 0) {
+                    const nx = dx/dist, ny = dy/dist;
+                    const overlap = minDist - dist;
+                    particles[i].x -= nx * overlap * 0.5;
+                    particles[i].y -= ny * overlap * 0.5;
+                    particles[j].x += nx * overlap * 0.5;
+                    particles[j].y += ny * overlap * 0.5;
+                    // exchange velocities
+                    const dvx = particles[i].vx - particles[j].vx;
+                    const dvy = particles[i].vy - particles[j].vy;
+                    const dot = dvx * nx + dvy * ny;
+                    particles[i].vx -= dot * nx * 0.5;
+                    particles[i].vy -= dot * ny * 0.5;
+                    particles[j].vx += dot * nx * 0.5;
+                    particles[j].vy += dot * ny * 0.5;
+                }
+            }
+        }
+    }
+}
+
+function draw() {
+    const cw = canvas.width, ch = canvas.height;
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(0, 0, cw, ch);
+    // container for liquid
+    if (state === 'liquid') {
+        ctx.strokeStyle = '#637EA1';
+        ctx.lineWidth = 2;
+        const lw = cw/2 - 120, rw = cw/2 + 120, bt = ch - 20, tp = ch - 180;
+        ctx.beginPath();
+        ctx.moveTo(lw, tp); ctx.lineTo(lw, bt); ctx.lineTo(rw, bt); ctx.lineTo(rw, tp);
+        ctx.stroke();
+    }
+    // box for gas
+    if (state === 'gas') {
+        ctx.strokeStyle = '#637EA1';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(4, 4, cw - 8, ch - 8);
+    }
+    // particles
+    particles.forEach(p => {
+        const spd = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+        const hue = state === 'solid' ? 215 : state === 'liquid' ? 215 : 215;
+        const light = Math.max(35, 55 - spd * 3);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, R, 0, Math.PI * 2);
+        const gradient = ctx.createRadialGradient(p.x - 2, p.y - 2, 1, p.x, p.y, R);
+        gradient.addColorStop(0, `hsl(${hue}, 40%, ${light + 25}%)`);
+        gradient.addColorStop(1, `hsl(${hue}, 40%, ${light}%)`);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        ctx.strokeStyle = `hsl(${hue}, 40%, ${light - 10}%)`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    });
+    // bonds for solid
+    if (state === 'solid') {
+        ctx.strokeStyle = 'rgba(99,126,161,0.15)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[j].x - particles[i].x;
+                const dy = particles[j].y - particles[i].y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 30) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+    // state label
+    ctx.fillStyle = '#637EA1';
+    ctx.font = 'bold 12px Oswald';
+    ctx.textAlign = 'center';
+    ctx.fillText(state.toUpperCase(), cw/2, 20);
+}
+
+function animate() {
+    update();
+    draw();
+    requestAnimationFrame(animate);
+}
+
+function resize() {
+    canvas.width = Math.min(530, document.querySelector('.container').clientWidth - 4);
+    canvas.height = 300;
+    initParticles();
+}
+
+resize();
+window.addEventListener('resize', resize);
+animate();
+</script>
+</body>
+</html>

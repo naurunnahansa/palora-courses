@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Wave Visualization</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .view-label { font-family: 'Oswald', sans-serif; font-size: 0.7rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; margin: 4px 0 2px; }
+        canvas { width: 100%; display: block; border-radius: 8px; background: #f8f9fa; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
+        .control-group { background: #f8f9fa; border-radius: 8px; padding: 8px 10px; }
+        .control-group label { font-size: 0.7rem; font-weight: 600; color: #4a5568; display: block; margin-bottom: 3px; }
+        .control-group .val { font-weight: 700; color: #637EA1; }
+        .control-group input[type=range] { width: 100%; accent-color: #637EA1; }
+        .btn-row { display: flex; gap: 6px; margin-bottom: 8px; }
+        .btn { flex: 1; padding: 7px; border: 2px solid #637EA1; background: white; color: #637EA1; border-radius: 8px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.75rem; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .btn.active { background: #637EA1; color: white; }
+        .btn:hover { background: #f0f4f8; }
+        .btn.active:hover { background: #4f6a8a; }
+        .info-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 6px; }
+        .info-box { background: #f8f9fa; border-radius: 6px; padding: 5px; text-align: center; }
+        .info-box .lbl { font-size: 0.55rem; color: #4a5568; text-transform: uppercase; }
+        .info-box .val { font-size: 0.8rem; font-weight: 700; color: #637EA1; }
+        .annotations { display: flex; gap: 8px; justify-content: center; margin-top: 6px; }
+        .anno { display: flex; align-items: center; gap: 4px; font-size: 0.6rem; color: #4a5568; }
+        .anno-dot { width: 8px; height: 8px; border-radius: 50%; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Sound Wave Visualization</h1>
+    <div class="view-label">Particle View (Compressions & Rarefactions)</div>
+    <canvas id="particleCanvas" height="110"></canvas>
+    <div class="view-label">Waveform View</div>
+    <canvas id="waveCanvas" height="100"></canvas>
+    <div class="controls">
+        <div class="control-group">
+            <label>Frequency (Pitch): <span class="val" id="freqVal">440 Hz</span></label>
+            <input type="range" id="freqSlider" min="100" max="1000" value="440">
+        </div>
+        <div class="control-group">
+            <label>Amplitude (Volume): <span class="val" id="ampVal">70%</span></label>
+            <input type="range" id="ampSlider" min="10" max="100" value="70">
+        </div>
+    </div>
+    <div class="btn-row">
+        <button class="btn" id="playBtn" onclick="toggleSound()">Play Tone</button>
+        <button class="btn" id="pauseBtn" onclick="togglePause()">Pause Animation</button>
+    </div>
+    <div class="info-row">
+        <div class="info-box">
+            <div class="lbl">Frequency</div>
+            <div class="val" id="infoFreq">440 Hz</div>
+        </div>
+        <div class="info-box">
+            <div class="lbl">Period</div>
+            <div class="val" id="infoPeriod">2.27 ms</div>
+        </div>
+        <div class="info-box">
+            <div class="lbl">Wavelength</div>
+            <div class="val" id="infoWave">0.78 m</div>
+        </div>
+        <div class="info-box">
+            <div class="lbl">Speed</div>
+            <div class="val">343 m/s</div>
+        </div>
+    </div>
+    <div class="annotations">
+        <div class="anno"><div class="anno-dot" style="background:#637EA1;"></div> Compression (high pressure)</div>
+        <div class="anno"><div class="anno-dot" style="background:#F5E6E8;"></div> Rarefaction (low pressure)</div>
+    </div>
+</div>
+<script>
+// Canvases
+const pCanvas = document.getElementById('particleCanvas');
+const wCanvas = document.getElementById('waveCanvas');
+const pCtx = pCanvas.getContext('2d');
+const wCtx = wCanvas.getContext('2d');
+
+function initC(c, h) {
+    const r = c.getBoundingClientRect();
+    c.width = r.width * 2;
+    c.height = h * 2;
+    c.getContext('2d').scale(2, 2);
+    return { w: r.width, h: h };
+}
+const pSize = initC(pCanvas, 110);
+const wSize = initC(wCanvas, 100);
+
+let audioCtx = null, oscillator = null, gainNode = null;
+let isPlaying = false;
+let isPaused = false;
+let time = 0;
+
+function toggleSound() {
+    if (isPlaying) {
+        oscillator.stop();
+        oscillator = null;
+        isPlaying = false;
+        document.getElementById('playBtn').textContent = 'Play Tone';
+        document.getElementById('playBtn').classList.remove('active');
+        return;
+    }
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        oscillator = audioCtx.createOscillator();
+        gainNode = audioCtx.createGain();
+        oscillator.type = 'sine';
+        oscillator.frequency.value = parseInt(document.getElementById('freqSlider').value);
+        gainNode.gain.value = parseInt(document.getElementById('ampSlider').value) / 200;
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.start();
+        isPlaying = true;
+        document.getElementById('playBtn').textContent = 'Stop Tone';
+        document.getElementById('playBtn').classList.add('active');
+    } catch(e) {
+        console.log('Audio not supported');
+    }
+}
+
+function togglePause() {
+    isPaused = !isPaused;
+    document.getElementById('pauseBtn').textContent = isPaused ? 'Resume' : 'Pause Animation';
+    document.getElementById('pauseBtn').classList.toggle('active', isPaused);
+}
+
+// Particle positions
+const particleRows = 6;
+const particleCols = 40;
+const particles = [];
+for (let r = 0; r < particleRows; r++) {
+    for (let c = 0; c < particleCols; c++) {
+        particles.push({
+            baseX: 15 + c * ((pSize.w - 30) / particleCols),
+            baseY: 15 + r * ((pSize.h - 30) / particleRows),
+            x: 0, y: 0
+        });
+    }
+}
+
+document.getElementById('freqSlider').addEventListener('input', updateAudio);
+document.getElementById('ampSlider').addEventListener('input', updateAudio);
+
+function updateAudio() {
+    const freq = parseInt(document.getElementById('freqSlider').value);
+    const amp = parseInt(document.getElementById('ampSlider').value);
+    document.getElementById('freqVal').textContent = freq + ' Hz';
+    document.getElementById('ampVal').textContent = amp + '%';
+    document.getElementById('infoFreq').textContent = freq + ' Hz';
+    document.getElementById('infoPeriod').textContent = (1000 / freq).toFixed(2) + ' ms';
+    document.getElementById('infoWave').textContent = (343 / freq).toFixed(2) + ' m';
+    if (isPlaying && oscillator) {
+        oscillator.frequency.value = freq;
+        gainNode.gain.value = amp / 200;
+    }
+}
+
+function animate() {
+    if (!isPaused) time += 0.03;
+
+    const freq = parseInt(document.getElementById('freqSlider').value);
+    const amp = parseInt(document.getElementById('ampSlider').value) / 100;
+    const normFreq = freq / 440;
+    const waveSpeed = normFreq * 3;
+
+    // Particle view
+    pCtx.clearRect(0, 0, pSize.w, pSize.h);
+
+    particles.forEach(p => {
+        const phase = p.baseX * 0.04 * normFreq - time * waveSpeed;
+        const displacement = Math.sin(phase) * amp * 12;
+        p.x = p.baseX + displacement;
+        p.y = p.baseY;
+
+        // Density coloring
+        const density = -Math.cos(phase); // +1 = compression, -1 = rarefaction
+        const alpha = 0.4 + Math.abs(density) * 0.5;
+        if (density > 0) {
+            pCtx.fillStyle = `rgba(99,126,161,${alpha})`;
+        } else {
+            pCtx.fillStyle = `rgba(245,230,232,${0.6 + Math.abs(density) * 0.4})`;
+        }
+        pCtx.beginPath();
+        pCtx.arc(p.x, p.y, 2.5 + density * 0.5, 0, Math.PI * 2);
+        pCtx.fill();
+    });
+
+    // Compression/rarefaction labels
+    for (let i = 0; i < 3; i++) {
+        const phase = (i + 0.5) / normFreq * Math.PI * 2 / 0.04;
+        const compX = 15 + ((phase / (pSize.w - 30) + time * waveSpeed / (0.04 * normFreq) / (2 * Math.PI)) % 1) * (pSize.w - 30);
+        if (compX > 20 && compX < pSize.w - 40) {
+            pCtx.fillStyle = 'rgba(99,126,161,0.6)';
+            pCtx.font = '600 7px Outfit';
+            pCtx.textAlign = 'center';
+            pCtx.fillText('C', compX, pSize.h - 3);
+        }
+    }
+
+    // Speaker icon
+    pCtx.fillStyle = '#637EA1';
+    pCtx.fillRect(2, pSize.h / 2 - 8, 6, 16);
+    pCtx.beginPath();
+    pCtx.moveTo(8, pSize.h / 2 - 8);
+    pCtx.lineTo(14, pSize.h / 2 - 14);
+    pCtx.lineTo(14, pSize.h / 2 + 14);
+    pCtx.lineTo(8, pSize.h / 2 + 8);
+    pCtx.fill();
+
+    // Waveform view
+    wCtx.clearRect(0, 0, wSize.w, wSize.h);
+
+    // Grid lines
+    wCtx.strokeStyle = '#e2e8f0';
+    wCtx.lineWidth = 0.5;
+    const midY = wSize.h / 2;
+    wCtx.beginPath(); wCtx.moveTo(20, midY); wCtx.lineTo(wSize.w - 10, midY); wCtx.stroke();
+    wCtx.setLineDash([2, 2]);
+    wCtx.beginPath(); wCtx.moveTo(20, midY - 30); wCtx.lineTo(wSize.w - 10, midY - 30); wCtx.stroke();
+    wCtx.beginPath(); wCtx.moveTo(20, midY + 30); wCtx.lineTo(wSize.w - 10, midY + 30); wCtx.stroke();
+    wCtx.setLineDash([]);
+
+    // Axis labels
+    wCtx.fillStyle = '#4a5568';
+    wCtx.font = '8px Outfit';
+    wCtx.textAlign = 'right';
+    wCtx.fillText('+', 16, midY - 26);
+    wCtx.fillText('0', 16, midY + 3);
+    wCtx.fillText('−', 16, midY + 33);
+
+    // Waveform
+    wCtx.strokeStyle = '#637EA1';
+    wCtx.lineWidth = 2;
+    wCtx.beginPath();
+    for (let x = 20; x < wSize.w - 10; x++) {
+        const phase = (x - 20) * 0.02 * normFreq - time * waveSpeed;
+        const y = midY - Math.sin(phase) * amp * 35;
+        if (x === 20) wCtx.moveTo(x, y);
+        else wCtx.lineTo(x, y);
+    }
+    wCtx.stroke();
+
+    // Fill under curve
+    wCtx.lineTo(wSize.w - 10, midY);
+    wCtx.lineTo(20, midY);
+    wCtx.closePath();
+    wCtx.fillStyle = 'rgba(99,126,161,0.08)';
+    wCtx.fill();
+
+    // Amplitude arrow
+    const arrowX = 30;
+    const peakY = midY - amp * 35;
+    if (amp > 0.2) {
+        wCtx.strokeStyle = '#F4D35E';
+        wCtx.lineWidth = 1.5;
+        wCtx.beginPath(); wCtx.moveTo(arrowX, midY); wCtx.lineTo(arrowX, peakY); wCtx.stroke();
+        wCtx.fillStyle = '#F4D35E';
+        wCtx.beginPath(); wCtx.moveTo(arrowX - 3, peakY + 5); wCtx.lineTo(arrowX, peakY); wCtx.lineTo(arrowX + 3, peakY + 5); wCtx.fill();
+        wCtx.font = '600 7px Outfit';
+        wCtx.textAlign = 'left';
+        wCtx.fillText('A', arrowX + 4, (midY + peakY) / 2 + 2);
+    }
+
+    // Wavelength arrow
+    const wlPixels = (2 * Math.PI) / (0.02 * normFreq);
+    if (wlPixels < wSize.w - 60) {
+        const startX = 60;
+        wCtx.strokeStyle = '#e53e3e';
+        wCtx.lineWidth = 1;
+        wCtx.setLineDash([3, 2]);
+        wCtx.beginPath(); wCtx.moveTo(startX, midY + 42); wCtx.lineTo(startX + wlPixels, midY + 42); wCtx.stroke();
+        wCtx.setLineDash([]);
+        wCtx.fillStyle = '#e53e3e';
+        wCtx.font = '600 7px Outfit';
+        wCtx.textAlign = 'center';
+        wCtx.fillText('λ', startX + wlPixels / 2, midY + 39);
+        // Ticks
+        wCtx.beginPath(); wCtx.moveTo(startX, midY + 38); wCtx.lineTo(startX, midY + 46); wCtx.stroke();
+        wCtx.beginPath(); wCtx.moveTo(startX + wlPixels, midY + 38); wCtx.lineTo(startX + wlPixels, midY + 46); wCtx.stroke();
+    }
+
+    requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>

@@ -1,5 +1,1783 @@
 {
   "title": "Scalars and Vectors",
-  "content": "# Scalars and Vectors\n\n## Introduction\n\nIn physics, we deal with many different quantities. Some quantities only have size (magnitude), while others have both size and direction. Understanding the difference between these two types is essential for solving physics problems correctly.\n\n## Key Concepts\n\n### Scalar Quantities\n\nA **scalar** is a quantity that has magnitude (size) only. It can be fully described by a single number with a unit.\n\n**Examples of scalars:**\n- Mass (5 kg)\n- Temperature (20°C)\n- Time (30 s)\n- Speed (10 m/s)\n- Distance (100 m)\n- Energy (500 J)\n- Power (60 W)\n\n### Vector Quantities\n\nA **vector** is a quantity that has both magnitude and direction. To fully describe a vector, you need to state both how big it is and which way it points.\n\n**Examples of vectors:**\n- Displacement (50 m north)\n- Velocity (20 m/s east)\n- Acceleration (9.8 m/s² downward)\n- Force (100 N upward)\n- Momentum (500 kg·m/s west)\n- Weight (600 N downward)\n\n### Representing Vectors\n\nVectors can be represented by arrows:\n- The **length** of the arrow represents the magnitude\n- The **direction** of the arrow shows which way the vector points\n\n[DIAGRAM: Arrow showing vector with magnitude and direction labelled]\n\n## Mathematical Relationships\n\n### Adding Vectors in the Same Direction\n\nWhen vectors point in the same direction, simply add their magnitudes:\n\n$$\\vec{R} = \\vec{A} + \\vec{B}$$\n\nExample: Two forces of 5 N and 3 N both pushing right:\n$$R = 5 + 3 = 8 \\text{ N (right)}$$\n\n### Adding Vectors in Opposite Directions\n\nWhen vectors point in opposite directions, subtract the smaller from the larger:\n\nExample: Force of 10 N right and 4 N left:\n$$R = 10 - 4 = 6 \\text{ N (right)}$$\n\n### Adding Perpendicular Vectors\n\nWhen vectors are at right angles, use Pythagoras' theorem:\n\n$$R = \\sqrt{A^2 + B^2}$$\n\nThe direction can be found using trigonometry:\n\n$$\\theta = \\tan^{-1}\\left(\\frac{B}{A}\\right)$$\n\n### Vector Components\n\nAny vector can be split into horizontal and vertical components:\n\n$$A_x = A \\cos\\theta$$\n$$A_y = A \\sin\\theta$$\n\nWhere:\n- $A_x$ = horizontal component\n- $A_y$ = vertical component\n- $A$ = magnitude of the vector\n- $\\theta$ = angle from the horizontal\n\n## Worked Examples\n\n**Example 1:** A person walks 4 km north, then 3 km east. What is their total displacement?\n\n**Solution:**\nUsing Pythagoras' theorem:\n$$R = \\sqrt{4^2 + 3^2} = \\sqrt{16 + 9} = \\sqrt{25} = 5 \\text{ km}$$\n\nDirection:\n$$\\theta = \\tan^{-1}\\left(\\frac{3}{4}\\right) = 36.9°$$\n\nDisplacement = 5 km at 36.9° east of north (or bearing 037°)\n\n**Example 2:** Two forces act on an object: 8 N to the right and 6 N upward. Find the resultant force.\n\n**Solution:**\n$$R = \\sqrt{8^2 + 6^2} = \\sqrt{64 + 36} = \\sqrt{100} = 10 \\text{ N}$$\n\n$$\\theta = \\tan^{-1}\\left(\\frac{6}{8}\\right) = 36.9°$$ above horizontal\n\n**Example 3:** A force of 50 N acts at 30° above the horizontal. Find the horizontal and vertical components.\n\n**Solution:**\nHorizontal component:\n$$F_x = 50 \\cos 30° = 50 \\times 0.866 = 43.3 \\text{ N}$$\n\nVertical component:\n$$F_y = 50 \\sin 30° = 50 \\times 0.5 = 25 \\text{ N}$$\n\n## Real-World Applications\n\n- **Navigation:** Pilots and sailors use vector addition to account for wind or current\n- **Sports:** Analysing the trajectory of a ball requires understanding velocity vectors\n- **Engineering:** Forces on bridges and buildings are analysed using vectors\n- **Video games:** Character movement and physics simulations use vector mathematics\n\n## Common Misconceptions\n\n1. **\"Speed and velocity are the same\"** — Speed is a scalar (magnitude only); velocity is a vector (magnitude and direction). A car going around a bend at constant speed has changing velocity.\n\n2. **\"Distance and displacement are the same\"** — Distance is the total path length (scalar); displacement is the straight-line distance from start to finish with direction (vector).\n\n3. **\"You can add vectors by just adding the numbers\"** — Only when vectors are in the same direction. Otherwise, you must account for direction.\n\n4. **\"Negative vectors are impossible\"** — Vectors can have negative components, which simply indicate the opposite direction.\n\n## Practice Problems\n\n1. Classify each quantity as a scalar or vector:\n   a) 50 joules of energy\n   b) 25 m/s northward\n   c) 100 grams\n   d) 30 N downward\n\n2. A boat travels 12 km east, then 5 km north. Calculate:\n   a) The total distance travelled\n   b) The displacement (magnitude and direction)\n\n3. Two forces of 12 N and 16 N act at right angles on an object. Calculate the resultant force.\n\n4. A force of 100 N acts at 45° to the horizontal. Find the horizontal and vertical components.\n\n5. An aircraft flies at 200 m/s on a bearing of 060°. Calculate the components of velocity in the north and east directions.\n\n## Summary\n\n- Scalars have magnitude only (e.g., mass, time, speed, energy)\n- Vectors have magnitude and direction (e.g., displacement, velocity, force)\n- Vectors are represented by arrows where length = magnitude and direction = orientation\n- Vectors in the same line: add or subtract magnitudes\n- Perpendicular vectors: use Pythagoras' theorem $R = \\sqrt{A^2 + B^2}$\n- Any vector can be resolved into components using $A_x = A\\cos\\theta$ and $A_y = A\\sin\\theta$",
-  "order": 2
+  "order": 2,
+  "pageType": "markdown",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Scalars and Vectors"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In physics, we deal with many different quantities. Some quantities only have size (magnitude), while others have both size and direction. Understanding the difference between these two types is essential for solving physics problems correctly."
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Remember: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "The simplest way to decide if a quantity is a scalar or vector: ask yourself 'Does direction matter?' If yes, it is a vector. If only the size matters, it is a scalar."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Scalar Quantities"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A "
+          },
+          {
+            "type": "text",
+            "text": "scalar",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is a quantity that has magnitude (size) only. It can be fully described by a single number with a unit."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Examples of scalars:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Mass (5 kg)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Temperature (20°C)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Time (30 s)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Speed (10 m/s)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Distance (100 m)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Energy (500 J)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Power (60 W)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Vector Quantities"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A "
+          },
+          {
+            "type": "text",
+            "text": "vector",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is a quantity that has both magnitude and direction. To fully describe a vector, you need to state both how big it is and which way it points."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Examples of vectors:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Displacement (50 m north)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Velocity (20 m/s east)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Acceleration (9.8 m/s² downward)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Force (100 N upward)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Momentum (500 kg·m/s west)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Weight (600 N downward)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Representing Vectors"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Vectors can be represented by arrows:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The "
+                  },
+                  {
+                    "type": "text",
+                    "text": "length",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " of the arrow represents the magnitude"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The "
+                  },
+                  {
+                    "type": "text",
+                    "text": "direction",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " of the arrow shows which way the vector points"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "         magnitude\n    |<--------------->|\n    \n    o================>  direction\n    (tail)            (head)\n    \n    The length of the arrow represents\n    the magnitude of the vector.\n    The arrowhead shows the direction."
+          }
+        ]
+      },
+      {
+        "type": "comparisonTable",
+        "attrs": {
+          "title": "Scalars vs Vectors",
+          "leftHeader": "Scalar Quantities",
+          "rightHeader": "Vector Quantities",
+          "leftColor": "neutral",
+          "rightColor": "neutral",
+          "rows": [
+            {
+              "label": "Definition",
+              "left": "Have magnitude (size) only",
+              "right": "Have both magnitude AND direction"
+            },
+            {
+              "label": "Examples",
+              "left": "Mass, time, speed, energy, temperature",
+              "right": "Displacement, velocity, acceleration, force"
+            },
+            {
+              "label": "Representation",
+              "left": "A single number with a unit",
+              "right": "An arrow (length = magnitude, direction = orientation)"
+            },
+            {
+              "label": "Addition",
+              "left": "Simple arithmetic addition",
+              "right": "Must account for direction (vector addition)"
+            },
+            {
+              "label": "Can be negative?",
+              "left": "Temperature can be negative, but magnitude is always positive",
+              "right": "Components can be negative to indicate opposite direction"
+            }
+          ],
+          "footer": "Remember: If a quantity needs a direction to be fully described, it is a vector."
+        }
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concept: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "Speed and velocity are a classic scalar-vector pair. Speed tells you how fast something moves; velocity tells you how fast AND in which direction. A car travelling at 30 m/s around a bend has constant speed but changing velocity."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-scalars-and-vectors"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Mathematical Relationships"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Adding Vectors in the Same Direction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "When vectors point in the same direction, simply add their magnitudes:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\vec{R} = \\vec{A} + \\vec{B}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example: Two forces of 5 N and 3 N both pushing right:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "R = 5 + 3 = 8 \\text{ N (right)}"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Adding Vectors in Opposite Directions"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "When vectors point in opposite directions, subtract the smaller from the larger:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example: Force of 10 N right and 4 N left:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "R = 10 - 4 = 6 \\text{ N (right)}"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Adding Perpendicular Vectors"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "When vectors are at right angles, use Pythagoras' theorem:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "R = \\sqrt{A^2 + B^2}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The direction can be found using trigonometry:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\theta = \\tan^{-1}\\left(\\frac{B}{A}\\right)"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Vector Components"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Any vector can be split into horizontal and vertical components:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "A_x = A \\cos\\theta"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "A_y = A \\sin\\theta"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Where:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A_x",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = horizontal component"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A_y",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = vertical component"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = magnitude of the vector"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\\theta",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = angle from the horizontal"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A person walks 4 km north, then 3 km east. What is their total displacement?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Using Pythagoras' theorem:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "R = \\sqrt{4^2 + 3^2} = \\sqrt{16 + 9} = \\sqrt{25} = 5 \\text{ km}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Direction:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\theta = \\tan^{-1}\\left(\\frac{3}{4}\\right) = 36.9°"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Displacement = 5 km at 36.9° east of north (or bearing 037°)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Two forces act on an object: 8 N to the right and 6 N upward. Find the resultant force."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "R = \\sqrt{8^2 + 6^2} = \\sqrt{64 + 36} = \\sqrt{100} = 10 \\text{ N}"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\theta = \\tan^{-1}\\left(\\frac{6}{8}\\right) = 36.9°$$ above horizontal\n\n**Example 3:** A force of 50 N acts at 30° above the horizontal. Find the horizontal and vertical components.\n\n**Solution:**\nHorizontal component:\n$$F_x = 50 \\cos 30° = 50 \\times 0.866 = 43.3 \\text{ N}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Vertical component:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "F_y = 50 \\sin 30° = 50 \\times 0.5 = 25 \\text{ N}"
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Common Mistake: ",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "When adding vectors at right angles, do not simply add the magnitudes. You must use Pythagoras' theorem to find the resultant. For example, 3 N and 4 N at right angles give 5 N, not 7 N."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-scalars-and-vectors-2"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Real-World Applications"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Navigation:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Pilots and sailors use vector addition to account for wind or current"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Sports:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Analysing the trajectory of a ball requires understanding velocity vectors"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Engineering:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Forces on bridges and buildings are analysed using vectors"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Video games:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Character movement and physics simulations use vector mathematics"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Misconceptions"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Speed and velocity are the same\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Speed is a scalar (magnitude only); velocity is a vector (magnitude and direction). A car going around a bend at constant speed has changing velocity."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Distance and displacement are the same\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Distance is the total path length (scalar); displacement is the straight-line distance from start to finish with direction (vector)."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"You can add vectors by just adding the numbers\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Only when vectors are in the same direction. Otherwise, you must account for direction."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Negative vectors are impossible\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Vectors can have negative components, which simply indicate the opposite direction."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Problems"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "State whether each quantity is a scalar or a vector: a) 50 joules of energy b) 25 m/s northward c) 100 grams d) 30 N downward"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A boat travels 12 km east, then 5 km north. Calculate: a) the total distance travelled b) the magnitude and direction of the displacement"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the magnitude of the resultant force when two forces of 12 N and 16 N act at right angles on an object."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the horizontal and vertical components of a 100 N force acting at 45° to the horizontal."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the components of velocity in the north and east directions for an aircraft flying at 200 m/s on a bearing of 060°."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Scalars have magnitude only (e.g., mass, time, speed, energy)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Vectors have magnitude and direction (e.g., displacement, velocity, force)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Vectors are represented by arrows where length = magnitude and direction = orientation"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Vectors in the same line: add or subtract magnitudes"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Perpendicular vectors: use Pythagoras' theorem "
+                  },
+                  {
+                    "type": "text",
+                    "text": "R = \\sqrt{A^2 + B^2}",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Any vector can be resolved into components using "
+                  },
+                  {
+                    "type": "text",
+                    "text": "A_x = A\\cos\\theta",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " and "
+                  },
+                  {
+                    "type": "text",
+                    "text": "A_y = A\\sin\\theta",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer Key"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "a) Scalar, b) Vector, c) Scalar, d) Vector",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Quantities with direction stated (northward, downward) are vectors; those with magnitude only are scalars (explanation with physics reasoning)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "a) 17 km",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — "
+                  },
+                  {
+                    "type": "text",
+                    "text": "12 + 5 = 17",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " km (calculation) "
+                  },
+                  {
+                    "type": "text",
+                    "text": "b) 13 km at 22.6° north of east",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — "
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\sqrt{12^2 + 5^2} = \\sqrt{169} = 13",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " km; "
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\theta = \\tan^{-1}(5/12) = 22.6°",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "20 N",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — "
+                  },
+                  {
+                    "type": "text",
+                    "text": "R = \\sqrt{12^2 + 16^2} = \\sqrt{144 + 256} = \\sqrt{400} = 20",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " N (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$F_x = 70.7$ N, $F_y = 70.7$ N",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — "
+                  },
+                  {
+                    "type": "text",
+                    "text": "100 \\cos 45° = 100 \\times 0.707 = 70.7",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " N; "
+                  },
+                  {
+                    "type": "text",
+                    "text": "100 \\sin 45° = 70.7",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " N (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "visualizationEmbed",
+        "attrs": {
+          "visualizationId": "phys-scalars-vectors",
+          "displayMode": "expanded",
+          "customHeight": 500
+        }
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "North component: 100 m/s, East component: 173 m/s",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — Bearing 060° is 60° from north, so north = "
+                  },
+                  {
+                    "type": "text",
+                    "text": "200 \\cos 60° = 100",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " m/s; east = "
+                  },
+                  {
+                    "type": "text",
+                    "text": "200 \\sin 60° = 173",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " m/s (calculation)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

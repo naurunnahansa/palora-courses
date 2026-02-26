@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newton's Second Law - F=ma</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card {
+            border-radius: 5px;
+            border: 1px solid #e5dfe0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99,126,161,0.15);
+        }
+        canvas {
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #e5dfe0;
+            display: block;
+            background: #fafafa;
+        }
+        .controls { display: flex; flex-direction: column; gap: 8px; }
+        .slider-row {
+            display: flex; align-items: center; gap: 10px;
+        }
+        .slider-row label {
+            font-size: 0.82rem; font-weight: 500; color: #4a5568; min-width: 80px;
+        }
+        .slider-row input[type="range"] { flex: 1; accent-color: #637EA1; height: 6px; }
+        .slider-row .val {
+            font-size: 0.82rem; font-weight: 600; color: #637EA1; min-width: 55px; text-align: right;
+        }
+        .equation {
+            text-align: center;
+            padding: 10px;
+            background: #F5E6E8;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .equation .formula {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.3rem;
+            color: #637EA1;
+            font-weight: 600;
+        }
+        .equation .values {
+            font-size: 0.85rem;
+            color: #4a5568;
+            margin-top: 4px;
+        }
+        .results {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+        .result-item {
+            text-align: center;
+            padding: 8px 4px;
+            background: #F5E6E8;
+            border-radius: 5px;
+        }
+        .result-item .label {
+            font-size: 0.7rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 2px;
+        }
+        .result-item .value {
+            font-family: 'Oswald', sans-serif; font-size: 1.05rem; color: #637EA1; font-weight: 600;
+        }
+        .btn-row { display: flex; gap: 8px; margin-top: 4px; }
+        .btn {
+            flex: 1; padding: 7px 0; border: none; border-radius: 5px;
+            font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 600;
+            cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(99,126,161,0.2); }
+        .btn-primary { background: #637EA1; color: #fff; }
+        .btn-outline { background: #fff; color: #637EA1; border: 1px solid #637EA1; }
+        .info {
+            font-size: 0.75rem; color: #4a5568; line-height: 1.5;
+            margin-top: 8px; padding: 8px; background: #F5E6E8; border-radius: 5px;
+        }
+        .info strong { color: #637EA1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Newton's Second Law: F = ma</h1>
+        <div class="card">
+            <canvas id="canvas" width="526" height="200"></canvas>
+        </div>
+        <div class="equation">
+            <div class="formula">F = m &times; a</div>
+            <div class="values" id="eqText">100 N = 10 kg &times; 10.00 m/s&sup2;</div>
+        </div>
+        <div class="card controls">
+            <div class="slider-row">
+                <label>Force (F)</label>
+                <input type="range" id="force" min="1" max="100" value="50" step="1">
+                <span class="val" id="forceVal">50 N</span>
+            </div>
+            <div class="slider-row">
+                <label>Mass (m)</label>
+                <input type="range" id="mass" min="1" max="20" value="10" step="0.5">
+                <span class="val" id="massVal">10 kg</span>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-primary" id="animBtn">Animate</button>
+                <button class="btn btn-outline" id="resetBtn">Reset</button>
+            </div>
+        </div>
+        <div class="results">
+            <div class="result-item">
+                <div class="label">Force</div>
+                <div class="value" id="fDisp">50 N</div>
+            </div>
+            <div class="result-item">
+                <div class="label">Mass</div>
+                <div class="value" id="mDisp">10 kg</div>
+            </div>
+            <div class="result-item">
+                <div class="label">Acceleration</div>
+                <div class="value" id="aDisp">5.00 m/s&sup2;</div>
+            </div>
+        </div>
+        <div class="info">
+            <strong>More force</strong> on the same mass = <strong>more acceleration</strong>.<br>
+            <strong>More mass</strong> with the same force = <strong>less acceleration</strong>.<br>
+            Try adjusting the sliders to see how force and mass affect acceleration.
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const forceSlider = document.getElementById('force');
+        const massSlider = document.getElementById('mass');
+
+        let animId = null;
+        let isAnimating = false;
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = (rect.width - 24) * 2;
+            canvas.height = 200 * 2;
+            canvas.style.height = '200px';
+        }
+        resizeCanvas();
+
+        function getValues() {
+            const F = parseFloat(forceSlider.value);
+            const m = parseFloat(massSlider.value);
+            const a = F / m;
+            return { F, m, a };
+        }
+
+        function drawScene(boxX) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const { F, m, a } = getValues();
+
+            // Ground
+            const groundY = canvas.height - 60;
+            ctx.fillStyle = '#e5dfe0';
+            ctx.fillRect(0, groundY, canvas.width, 60);
+            ctx.strokeStyle = '#4a5568';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, groundY);
+            ctx.lineTo(canvas.width, groundY);
+            ctx.stroke();
+
+            // Ground hash marks
+            ctx.strokeStyle = '#c0b8ba';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < canvas.width; x += 30) {
+                ctx.beginPath();
+                ctx.moveTo(x, groundY);
+                ctx.lineTo(x - 15, groundY + 30);
+                ctx.stroke();
+            }
+
+            // Box
+            const boxSize = 40 + m * 4; // size proportional to mass
+            const bx = boxX || 80;
+            const by = groundY - boxSize;
+
+            // Box shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.06)';
+            ctx.fillRect(bx + 4, by + 4, boxSize, boxSize);
+
+            // Box
+            ctx.fillStyle = '#637EA1';
+            ctx.fillRect(bx, by, boxSize, boxSize);
+            ctx.strokeStyle = '#4a5568';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(bx, by, boxSize, boxSize);
+
+            // Mass label on box
+            ctx.fillStyle = '#fff';
+            ctx.font = '700 ' + Math.max(20, boxSize * 0.35) + 'px Oswald, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(m + ' kg', bx + boxSize / 2, by + boxSize / 2);
+
+            // Force arrow
+            const arrowLen = Math.max(30, F * 2);
+            const arrowY = by + boxSize / 2;
+            const arrowStart = bx + boxSize + 10;
+            const arrowEnd = arrowStart + arrowLen;
+
+            // Arrow shaft
+            ctx.strokeStyle = '#F4D35E';
+            ctx.lineWidth = Math.max(4, F * 0.12);
+            ctx.beginPath();
+            ctx.moveTo(arrowStart, arrowY);
+            ctx.lineTo(arrowEnd - 15, arrowY);
+            ctx.stroke();
+
+            // Arrow head
+            ctx.fillStyle = '#F4D35E';
+            ctx.beginPath();
+            ctx.moveTo(arrowEnd, arrowY);
+            ctx.lineTo(arrowEnd - 20, arrowY - 14);
+            ctx.lineTo(arrowEnd - 20, arrowY + 14);
+            ctx.closePath();
+            ctx.fill();
+
+            // Force label
+            ctx.fillStyle = '#1a1f2e';
+            ctx.font = '600 24px Outfit, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText('F = ' + F + ' N', arrowStart + arrowLen / 2, arrowY - 18);
+
+            return bx;
+        }
+
+        function update() {
+            const { F, m, a } = getValues();
+            document.getElementById('forceVal').textContent = F + ' N';
+            document.getElementById('massVal').textContent = m + ' kg';
+            document.getElementById('fDisp').textContent = F + ' N';
+            document.getElementById('mDisp').textContent = m + ' kg';
+            document.getElementById('aDisp').textContent = a.toFixed(2) + ' m/s\u00B2';
+            document.getElementById('eqText').textContent = F + ' N = ' + m + ' kg \u00D7 ' + a.toFixed(2) + ' m/s\u00B2';
+        }
+
+        forceSlider.addEventListener('input', () => { update(); if (!isAnimating) drawScene(80); });
+        massSlider.addEventListener('input', () => { update(); if (!isAnimating) drawScene(80); });
+
+        function stopAnim() {
+            if (animId) cancelAnimationFrame(animId);
+            isAnimating = false;
+            animId = null;
+        }
+
+        document.getElementById('animBtn').addEventListener('click', () => {
+            stopAnim();
+            const { a } = getValues();
+            let t = 0;
+            let v = 0;
+            let x = 80;
+            let lastTime = null;
+            isAnimating = true;
+
+            function frame(now) {
+                if (!lastTime) lastTime = now;
+                const dt = (now - lastTime) / 1000;
+                lastTime = now;
+                t += dt;
+                v += a * dt * 30; // scaled for visual
+                x += v * dt;
+
+                if (x > canvas.width - 100) {
+                    x = 80;
+                    v = 0;
+                    t = 0;
+                }
+
+                drawScene(x);
+
+                // Speed indicator
+                ctx.fillStyle = '#4a5568';
+                ctx.font = '500 22px Outfit, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'top';
+                ctx.fillText('v = ' + (v / 30).toFixed(1) + ' m/s   t = ' + t.toFixed(1) + ' s', 20, 20);
+
+                animId = requestAnimationFrame(frame);
+            }
+            animId = requestAnimationFrame(frame);
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            stopAnim();
+            forceSlider.value = 50;
+            massSlider.value = 10;
+            update();
+            drawScene(80);
+        });
+
+        update();
+        drawScene(80);
+        window.addEventListener('resize', () => { resizeCanvas(); if (!isAnimating) drawScene(80); });
+    </script>
+</body>
+</html>
