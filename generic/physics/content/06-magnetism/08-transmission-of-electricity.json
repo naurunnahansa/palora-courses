@@ -206,16 +206,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "  National Grid Overview:\n\n  Power      Step-up       Transmission    Step-down     Homes /\n  Station    Transformer    Lines (pylons)  Substations   Businesses\n  ~25 kV  →  275-400 kV  →  ─────────── →  33/11 kV  →  230 V\n\n  ┌─────┐    ┌─┐  ┌─┐     _/\\_/\\_/\\_      ┌─┐  ┌─┐    ┌───┐\n  │~~~~~│───►│ │  │ │────►          ────►│ │  │ │───►│   │\n  │boiler│    │ │  │ │                    │ │  │ │    │ ⌂ │\n  └─────┘    └─┘  └─┘                    └─┘  └─┘    └───┘\n  generator  step-up    high-voltage     step-down    consumer\n             transformer  cables         transformer   230 V AC"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Electricity_grid_schema-_eng.svg",
+          "alt": "National grid showing power station, step-up transformer, transmission lines, step-down transformer, and consumers",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "heading",

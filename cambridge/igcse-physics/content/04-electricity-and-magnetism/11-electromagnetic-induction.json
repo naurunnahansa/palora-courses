@@ -5038,16 +5038,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "          N-pole                    S-pole\n          ┌───┐                    ┌───┐\n          │   │    ╭──────────╮    │   │\n          │   │    │  coil    │    │   │\n          │ N │    │  rotates │    │ S │\n          │   │    │    ↻     │    │   │\n          │   │    ╰────┬─────╯    │   │\n          └───┘         │          └───┘\n                        │ axle\n                   ┌────┴────┐\n                   │ slip    │\n                   │ rings   │\n                   ○    ○    │\n                   │    │    │\n                 brush brush\n                   │    │\n              to external circuit\n\n  - Coil rotates between magnet poles\n  - Slip rings: continuous rings (AC output)\n  - EMF is maximum when coil is parallel to field\n  - EMF is zero when coil is perpendicular to field\n  - One rotation = one complete AC cycle"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Faraday_emf_experiment.svg",
+          "alt": "Electromagnetic induction showing a magnet moving into a coil and inducing a current",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "heading",
@@ -5062,16 +5059,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "    Primary         Soft iron core        Secondary\n    coil (Np)     ╔══════════════╗       coil (Ns)\n                  ║              ║\n    ┌──╥──╥──╥──╥║              ║╥──╥──╥──┐\n    │  ║  ║  ║  ║║              ║║  ║  ║  │\n    │  ║  ║  ║  ║║              ║║  ║  ║  │\n    └──╨──╨──╨──╨║              ║╨──╨──╨──┘\n                  ║              ║\n    AC input ~    ╚══════════════╝    AC output ~\n\n    Vs/Vp = Ns/Np\n\n    Step-up:   Ns > Np  →  Vs > Vp\n    Step-down: Ns < Np  →  Vs < Vp\n\n    Core is laminated to reduce eddy currents.\n    Only works with AC (changing flux needed)."
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Transformer3d_col3.svg",
+          "alt": "Transformer showing primary coil, iron core, and secondary coil",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "horizontalRule"

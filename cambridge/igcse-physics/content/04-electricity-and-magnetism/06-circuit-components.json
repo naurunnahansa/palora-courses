@@ -3425,16 +3425,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "  CELL                    BATTERY (2 cells)\n   |   |                   |  | |  |\n   |   |                   |  | |  |\n  long short              long/short repeated\n  (+)  (−)                (+)      (−)\n\n    ─┤├─                  ─┤├┤├─\n\n\n  SWITCH (open)           SWITCH (closed)\n\n    ─o   o─                ─o───o─\n\n\n  RESISTOR (fixed)        VARIABLE RESISTOR\n\n    ─┤▭├─                  ─┤▭├─\n                              ↗\n                           (arrow through)\n\n\n  LAMP                    AMMETER\n\n      ╭─╮                    ╭─╮\n    ─┤ ✕ ├─                ─┤ A ├─\n      ╰─╯                    ╰─╯\n\n\n  VOLTMETER               DIODE\n\n      ╭─╮                  ─▷|─\n    ─┤ V ├─               (triangle + bar)\n      ╰─╯                 current flows →\n\n\n  LED                     LDR\n\n    ─▷|─                    ╭─╮\n     ↗ ↗                  ─┤▭├─  ← arrows IN\n   (arrows out             ╰─╯\n    = light                (light dependent)\n    emitted)\n\n\n  THERMISTOR              FUSE\n\n      ╭─╮\n    ─┤▭├─  (with −t°)     ─┤─├─\n      ╰─╯                  (thin wire\n   (temperature             in casing)\n    dependent)"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/6/63/Electrical_symbols_library.svg",
+          "alt": "Common electrical circuit component symbols including cell, battery, switch, lamp, resistor, and ammeter",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "horizontalRule"

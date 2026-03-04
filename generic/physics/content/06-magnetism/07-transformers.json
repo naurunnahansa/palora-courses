@@ -384,16 +384,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "  Transformer:\n\n   AC input                          output\n     │                                  │\n     │  Primary        Secondary        │\n     │   coil            coil           │\n     │   ┌──┐          ┌──┐             │\n     ├───┤  ├──┐  ┌────┤  ├─────────────┤\n     │   │  │  │  │    │  │             │\n     │   │  │  ╠══╣    │  │             │\n     │   │  │  ║  ║    │  │             │\n     │   │  │  ╠══╣    │  │             │\n     │   │  │  │  │    │  │             │\n     ├───┤  ├──┘  └────┤  ├─────────────┤\n     │   └──┘          └──┘             │\n     │       ║  iron  ║                 │\n     │       ║  core  ║                 │\n              (laminated)\n\n  np turns on primary, ns turns on secondary.\n  Vp/Vs = np/ns"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/b/b6/Transformer3d_col3.svg",
+          "alt": "Transformer showing primary coil, iron core, and secondary coil",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "heading",
