@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friction & Drag</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #637EA1; }
+        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: 'Oswald', sans-serif; font-size: 0.95rem; color: #637EA1; }
+        .status { text-align: center; font-size: 0.82rem; font-weight: 600; padding: 6px; border-radius: 5px; margin-top: 8px; }
+        .moving { background: #d4edda; color: #155724; }
+        .stationary { background: #F5E6E8; color: #637EA1; }
+        .btn { display: block; margin: 6px auto 0; background: #637EA1; color: #fff; border: none; border-radius: 5px; padding: 6px 16px; font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { background: #506a8a; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Friction & Drag</h1>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="400"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Applied Force</span><span class="val" id="fLabel">20 N</span></div>
+            <input type="range" id="fSlider" min="0" max="100" value="20">
+        </div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Mass</span><span class="val" id="mLabel">5 kg</span></div>
+            <input type="range" id="mSlider" min="1" max="30" value="5">
+        </div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Friction coefficient (μ)</span><span class="val" id="muLabel">0.40</span></div>
+            <input type="range" id="muSlider" min="1" max="10" value="4">
+        </div>
+    </div>
+    <div class="readouts">
+        <div class="readout">
+            <div class="label">Applied Force</div>
+            <div class="value" id="appVal">20 N</div>
+        </div>
+        <div class="readout">
+            <div class="label">Friction Force</div>
+            <div class="value" id="fricVal">19.6 N</div>
+        </div>
+        <div class="readout">
+            <div class="label">Net Force</div>
+            <div class="value" id="netVal">0.4 N</div>
+        </div>
+    </div>
+    <div class="status stationary" id="status">Object is stationary</div>
+    <button class="btn" onclick="vel=0;">Reset Velocity</button>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let pos = 200, vel = 0, lastTs = 0;
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 400 / 1060) + 'px';
+}
+
+function draw(ts) {
+    const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.05) : 0;
+    lastTs = ts;
+
+    const F = parseInt(document.getElementById('fSlider').value);
+    const m = parseInt(document.getElementById('mSlider').value);
+    const mu = parseInt(document.getElementById('muSlider').value) / 10;
+    const g = 9.8;
+    const maxFriction = mu * m * g;
+
+    let frictionF = 0;
+    if (vel > 0.01) {
+        frictionF = -maxFriction;
+    } else if (vel < -0.01) {
+        frictionF = maxFriction;
+    } else if (F <= maxFriction) {
+        frictionF = -F; vel = 0;
+    } else {
+        frictionF = -maxFriction;
+    }
+
+    const netF = F + frictionF;
+    const acc = netF / m;
+    vel += acc * dt;
+    if (vel < 0) vel = 0;
+    pos += vel * dt * 30;
+    if (pos > canvas.width - 60) pos = 100;
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    // Surface texture lines
+    const groundY = H * 0.65;
+    ctx.fillStyle = '#f0eded'; ctx.fillRect(0, groundY, W, H - groundY);
+    for (let x = 0; x < W; x += 8) {
+        ctx.strokeStyle = '#ddd'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(x, groundY); ctx.lineTo(x - 4, groundY + 6); ctx.stroke();
+    }
+    ctx.strokeStyle = '#ccc'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(W, groundY); ctx.stroke();
+
+    // Surface label showing roughness
+    ctx.fillStyle = '#4a5568'; ctx.font = '500 12px Outfit'; ctx.textAlign = 'right';
+    ctx.fillText(`Surface: μ = ${mu.toFixed(2)}`, W - 20, groundY + 20);
+
+    // Object
+    const boxW = 70 + m * 2, boxH = 50 + m;
+    const boxX = pos, boxY = groundY - boxH;
+    ctx.fillStyle = '#637EA1'; ctx.fillRect(boxX, boxY, boxW, boxH);
+    ctx.strokeStyle = '#506a8a'; ctx.lineWidth = 2; ctx.strokeRect(boxX, boxY, boxW, boxH);
+    ctx.fillStyle = '#fff'; ctx.font = '600 14px Oswald'; ctx.textAlign = 'center';
+    ctx.fillText(m + ' kg', boxX + boxW/2, boxY + boxH/2 + 5);
+
+    const midY = boxY + boxH / 2;
+    const cx = boxX + boxW / 2;
+
+    // Applied force arrow (green, right)
+    if (F > 0) {
+        const len = F * 1.5;
+        ctx.beginPath(); ctx.moveTo(boxX - 8, midY); ctx.lineTo(boxX - 8 - len, midY);
+        ctx.strokeStyle = '#28a745'; ctx.lineWidth = 5; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(boxX - 8, midY);
+        ctx.lineTo(boxX - 18, midY - 7); ctx.lineTo(boxX - 18, midY + 7);
+        ctx.closePath(); ctx.fillStyle = '#28a745'; ctx.fill();
+        ctx.fillStyle = '#28a745'; ctx.font = '600 12px Outfit'; ctx.textAlign = 'center';
+        ctx.fillText(`Applied: ${F} N`, boxX - 8 - len/2, midY - 14);
+    }
+
+    // Friction arrow (red, left)
+    const dispFric = Math.abs(frictionF);
+    if (dispFric > 0.1) {
+        const len = dispFric * 1.5;
+        ctx.beginPath(); ctx.moveTo(boxX + boxW + 8, midY); ctx.lineTo(boxX + boxW + 8 + len, midY);
+        ctx.strokeStyle = '#dc3545'; ctx.lineWidth = 4; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(boxX + boxW + 8, midY);
+        ctx.lineTo(boxX + boxW + 18, midY - 6); ctx.lineTo(boxX + boxW + 18, midY + 6);
+        ctx.closePath(); ctx.fillStyle = '#dc3545'; ctx.fill();
+        ctx.fillStyle = '#dc3545'; ctx.font = '600 12px Outfit'; ctx.textAlign = 'center';
+        ctx.fillText(`Friction: ${dispFric.toFixed(1)} N`, boxX + boxW + 8 + len/2, midY - 14);
+    }
+
+    // Weight & Normal
+    ctx.beginPath(); ctx.moveTo(cx, boxY + boxH); ctx.lineTo(cx, boxY + boxH + 40);
+    ctx.strokeStyle = '#4a5568'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#4a5568'; ctx.font = '500 10px Outfit'; ctx.textAlign = 'left';
+    ctx.fillText('W', cx + 4, boxY + boxH + 35);
+    ctx.beginPath(); ctx.moveTo(cx, boxY); ctx.lineTo(cx, boxY - 40);
+    ctx.strokeStyle = '#4a5568'; ctx.stroke();
+    ctx.fillText('N', cx + 4, boxY - 30);
+
+    // Update readouts
+    document.getElementById('fLabel').textContent = F + ' N';
+    document.getElementById('mLabel').textContent = m + ' kg';
+    document.getElementById('muLabel').textContent = mu.toFixed(2);
+    document.getElementById('appVal').textContent = F + ' N';
+    document.getElementById('fricVal').textContent = dispFric.toFixed(1) + ' N';
+    document.getElementById('netVal').textContent = netF.toFixed(1) + ' N';
+
+    const statusEl = document.getElementById('status');
+    if (vel > 0.1) {
+        statusEl.className = 'status moving';
+        statusEl.textContent = `Object is moving! v = ${vel.toFixed(1)} m/s`;
+    } else if (F > maxFriction) {
+        statusEl.className = 'status moving';
+        statusEl.textContent = 'Applied force exceeds friction — object accelerates!';
+    } else {
+        statusEl.className = 'status stationary';
+        statusEl.textContent = `Object stationary — need > ${maxFriction.toFixed(1)} N to move`;
+    }
+
+    requestAnimationFrame(draw);
+}
+
+resize(); window.addEventListener('resize', resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

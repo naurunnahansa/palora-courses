@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microphones & Speakers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.subtitle{text-align:center;font-size:.78rem;color:#4a5568;margin-bottom:10px}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.controls{display:flex;gap:6px;margin-bottom:8px}.ctrl-btn{flex:1;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:8px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#637EA1}.ctrl-btn.active{background:#637EA1;color:#fff}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Microphones & Speakers</h1>
+    <p class="subtitle">How sound is converted to electricity and back</p>
+    <div class="controls">
+        <button class="ctrl-btn active" id="micBtn" onclick="setMode(0)">Microphone</button>
+        <button class="ctrl-btn" id="spkBtn" onclick="setMode(1)">Speaker</button>
+    </div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="500"></canvas></div>
+    <div class="info" id="info"><strong>Microphone:</strong> Sound waves vibrate a diaphragm attached to a coil in a magnetic field. The moving coil induces a varying current (electromagnetic induction).</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let mode=0,lastTs=0,animT=0;
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*500/1060)+'px'}
+
+function setMode(m){
+    mode=m;
+    document.getElementById('micBtn').classList.toggle('active',m===0);
+    document.getElementById('spkBtn').classList.toggle('active',m===1);
+    document.getElementById('info').innerHTML=m===0?
+        '<strong>Microphone:</strong> Sound waves vibrate a diaphragm attached to a coil in a magnetic field. The moving coil induces a varying current (electromagnetic induction).':
+        '<strong>Speaker:</strong> A varying current flows through a coil in a magnetic field. The coil experiences a force (motor effect), pushing the cone to produce sound waves.';
+}
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    const diaphragmX=cx-50+Math.sin(animT*4)*15;
+
+    if(mode===0){
+        // MICROPHONE
+        ctx.fillStyle='#637EA1';ctx.font='600 16px Oswald';ctx.textAlign='center';
+        ctx.fillText('MICROPHONE',cx,30);
+
+        // Sound waves incoming
+        for(let i=0;i<4;i++){
+            const r=60+i*40+((animT*80)%40);
+            ctx.beginPath();ctx.arc(100,cy,r,-.4,.4);
+            ctx.strokeStyle=`rgba(99,126,161,${0.5-i*0.1})`;ctx.lineWidth=2;ctx.stroke();
+        }
+        ctx.fillStyle='#4a5568';ctx.font='500 12px Outfit';ctx.fillText('Sound waves',100,cy-110);
+
+        // Diaphragm
+        ctx.beginPath();ctx.moveTo(diaphragmX,cy-80);ctx.lineTo(diaphragmX,cy+80);
+        ctx.strokeStyle='#4a5568';ctx.lineWidth=4;ctx.stroke();
+        ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.textAlign='center';
+        ctx.fillText('Diaphragm',diaphragmX,cy+100);
+
+        // Coil attached to diaphragm
+        for(let i=0;i<5;i++){
+            ctx.beginPath();ctx.ellipse(diaphragmX+30+i*6,cy,4,30,0,0,Math.PI*2);
+            ctx.strokeStyle='#c87533';ctx.lineWidth=2;ctx.stroke();
+        }
+        ctx.fillStyle='#c87533';ctx.font='500 11px Outfit';ctx.fillText('Coil',diaphragmX+45,cy-40);
+
+        // Magnet
+        ctx.fillStyle='#dc3545';ctx.fillRect(cx+80,cy-60,30,55);
+        ctx.fillStyle='#4a90d9';ctx.fillRect(cx+80,cy+5,30,55);
+        ctx.fillStyle='#fff';ctx.font='700 14px Oswald';ctx.textAlign='center';
+        ctx.fillText('N',cx+95,cy-28);ctx.fillText('S',cx+95,cy+38);
+        ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.fillText('Magnet',cx+95,cy+80);
+
+        // Output signal
+        ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.beginPath();
+        for(let x=0;x<200;x++){
+            const sx=cx+160+x;const sy=cy+Math.sin(x*0.05+animT*4)*30;
+            x===0?ctx.moveTo(sx,sy):ctx.lineTo(sx,sy);
+        }
+        ctx.stroke();
+        ctx.fillStyle='#637EA1';ctx.font='500 12px Outfit';ctx.fillText('Electrical signal out',cx+260,cy-50);
+
+        // Arrow
+        ctx.beginPath();ctx.moveTo(cx+140,cy);ctx.lineTo(cx+155,cy);ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.stroke();
+        ctx.beginPath();ctx.moveTo(cx+155,cy);ctx.lineTo(cx+149,cy-5);ctx.lineTo(cx+149,cy+5);ctx.closePath();ctx.fillStyle='#637EA1';ctx.fill();
+
+    } else {
+        // SPEAKER
+        ctx.fillStyle='#637EA1';ctx.font='600 16px Oswald';ctx.textAlign='center';
+        ctx.fillText('SPEAKER',cx,30);
+
+        // Input signal
+        ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.beginPath();
+        for(let x=0;x<150;x++){
+            const sx=60+x;const sy=cy+Math.sin(x*0.05+animT*4)*30;
+            x===0?ctx.moveTo(sx,sy):ctx.lineTo(sx,sy);
+        }
+        ctx.stroke();
+        ctx.fillStyle='#637EA1';ctx.font='500 12px Outfit';ctx.fillText('Electrical signal in',135,cy-50);
+
+        // Arrow
+        ctx.beginPath();ctx.moveTo(220,cy);ctx.lineTo(240,cy);ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.stroke();
+        ctx.beginPath();ctx.moveTo(240,cy);ctx.lineTo(234,cy-5);ctx.lineTo(234,cy+5);ctx.closePath();ctx.fillStyle='#637EA1';ctx.fill();
+
+        // Magnet
+        ctx.fillStyle='#dc3545';ctx.fillRect(cx-100,cy-60,30,55);
+        ctx.fillStyle='#4a90d9';ctx.fillRect(cx-100,cy+5,30,55);
+        ctx.fillStyle='#fff';ctx.font='700 14px Oswald';ctx.textAlign='center';
+        ctx.fillText('N',cx-85,cy-28);ctx.fillText('S',cx-85,cy+38);
+
+        // Coil
+        for(let i=0;i<5;i++){
+            ctx.beginPath();ctx.ellipse(cx-40+i*6,cy,4,30,0,0,Math.PI*2);
+            ctx.strokeStyle='#c87533';ctx.lineWidth=2;ctx.stroke();
+        }
+
+        // Cone (diaphragm)
+        const coneX=cx+diaphragmX-cx+50;
+        ctx.beginPath();ctx.moveTo(cx,cy-30);ctx.lineTo(coneX+80,cy-90);ctx.lineTo(coneX+80,cy+90);ctx.lineTo(cx,cy+30);ctx.closePath();
+        ctx.fillStyle='#e5dfe0';ctx.fill();ctx.strokeStyle='#4a5568';ctx.lineWidth=2;ctx.stroke();
+        ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.fillText('Cone',coneX+40,cy+110);
+
+        // Sound waves output
+        for(let i=0;i<4;i++){
+            const r=40+i*35+((animT*80)%35);
+            ctx.beginPath();ctx.arc(coneX+100,cy,r,-.4,.4);
+            ctx.strokeStyle=`rgba(99,126,161,${0.5-i*0.1})`;ctx.lineWidth=2;ctx.stroke();
+        }
+        ctx.fillStyle='#4a5568';ctx.font='500 12px Outfit';ctx.fillText('Sound waves out',cx+260,cy-80);
+
+        ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';
+        ctx.fillText('Magnet',cx-85,cy+80);ctx.fillText('Coil',cx-20,cy-40);
+    }
+
+    requestAnimationFrame(draw);
+}
+resize();window.addEventListener('resize',resize);requestAnimationFrame(draw);
+</script>
+</body>
+</html>

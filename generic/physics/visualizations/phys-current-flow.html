@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Flow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.slider-row{margin-bottom:8px}.slider-label{display:flex;justify-content:space-between;font-size:.8rem;color:#4a5568;margin-bottom:2px}.slider-label .val{font-weight:600;color:#637EA1}input[type="range"]{width:100%;accent-color:#637EA1}.readouts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.readout{background:#F5E6E8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.68rem;color:#4a5568}.readout .value{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Electric Current</h1>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="450"></canvas></div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row"><div class="slider-label"><span>Voltage (V)</span><span class="val" id="vLabel">6 V</span></div><input type="range" id="vSlider" min="0" max="12" value="6"></div>
+        <div class="slider-row"><div class="slider-label"><span>Resistance (R)</span><span class="val" id="rLabel">3 Ω</span></div><input type="range" id="rSlider" min="1" max="20" value="3"></div>
+    </div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Voltage</div><div class="value" id="voltVal">6 V</div></div>
+        <div class="readout"><div class="label">Current</div><div class="value" id="curVal">2.0 A</div></div>
+        <div class="readout"><div class="label">Resistance</div><div class="value" id="resVal">3 Ω</div></div>
+    </div>
+    <div class="info"><strong>Conventional current</strong> flows from + to − (red arrows). <strong>Electrons</strong> actually flow from − to + (blue dots).</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let lastTs=0,animT=0;
+const electrons=[];for(let i=0;i<20;i++)electrons.push({t:i/20});
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*450/1060)+'px'}
+
+// Circuit path: battery top → right → bottom → resistor → left → back to battery
+function getPathPoint(t){
+    t=((t%1)+1)%1;
+    const W=canvas.width,H=canvas.height;
+    const l=120,r=W-120,top=100,bot=H-100;
+    const perimeter=2*(r-l)+2*(bot-top);
+    const d=t*perimeter;
+    if(d<r-l){return{x:l+d,y:top}} // top
+    if(d<r-l+bot-top){return{x:r,y:top+(d-(r-l))}} // right
+    if(d<2*(r-l)+bot-top){return{x:r-(d-(r-l)-(bot-top)),y:bot}} // bottom
+    return{x:l,y:bot-(d-2*(r-l)-(bot-top))}} // left
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;
+    const V=parseInt(document.getElementById('vSlider').value);
+    const R=parseInt(document.getElementById('rSlider').value);
+    const I=V/R;
+    animT+=dt*I*0.15;
+
+    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    const l=120,r=W-120,top=100,bot=H-100;
+
+    // Wires
+    ctx.strokeStyle='#4a5568';ctx.lineWidth=4;
+    ctx.beginPath();ctx.moveTo(l,top);ctx.lineTo(r,top);ctx.lineTo(r,bot);ctx.lineTo(l,bot);ctx.lineTo(l,top);ctx.stroke();
+
+    // Battery (left side, middle)
+    const batY=(top+bot)/2;
+    ctx.fillStyle='#fff';ctx.fillRect(l-20,batY-40,40,80);
+    ctx.strokeStyle='#4a5568';ctx.lineWidth=2;ctx.strokeRect(l-20,batY-40,40,80);
+    // + and -
+    ctx.fillStyle='#dc3545';ctx.font='700 20px Oswald';ctx.textAlign='center';ctx.fillText('+',l,batY-50);
+    ctx.fillStyle='#4a90d9';ctx.fillText('−',l,batY+60);
+    ctx.fillStyle='#4a5568';ctx.font='600 14px Outfit';ctx.fillText(V+'V',l,batY+5);
+
+    // Resistor (bottom, middle)
+    const resX=(l+r)/2;
+    ctx.fillStyle='#F5E6E8';ctx.fillRect(resX-40,bot-15,80,30);
+    ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.strokeRect(resX-40,bot-15,80,30);
+    ctx.fillStyle='#637EA1';ctx.font='600 13px Outfit';ctx.textAlign='center';ctx.fillText(R+'Ω',resX,bot+5);
+
+    // Ammeter (top, middle)
+    ctx.beginPath();ctx.arc((l+r)/2,top,22,0,Math.PI*2);
+    ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#637EA1';ctx.font='700 14px Oswald';ctx.fillText('A',(l+r)/2,top+5);
+    ctx.font='500 11px Outfit';ctx.fillText(I.toFixed(1)+' A',(l+r)/2,top+22);
+
+    // Conventional current arrows (red, clockwise from +)
+    const arrowPositions=[0.15,0.4,0.65,0.85];
+    arrowPositions.forEach(t=>{
+        const p1=getPathPoint(t),p2=getPathPoint(t+0.02);
+        const a=Math.atan2(p2.y-p1.y,p2.x-p1.x);
+        ctx.beginPath();ctx.moveTo(p1.x+10*Math.cos(a),p1.y+10*Math.sin(a));
+        ctx.lineTo(p1.x-8*Math.cos(a-.5),p1.y-8*Math.sin(a-.5));
+        ctx.lineTo(p1.x-8*Math.cos(a+.5),p1.y-8*Math.sin(a+.5));
+        ctx.closePath();ctx.fillStyle='#dc354580';ctx.fill();
+    });
+
+    // Electron dots (blue, counter-clockwise)
+    if(V>0){
+        electrons.forEach(e=>{
+            e.t=((e.t-dt*I*0.15)%1+1)%1;
+            const p=getPathPoint(e.t);
+            ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);
+            ctx.fillStyle='#4a90d9';ctx.fill();
+            ctx.fillStyle='#fff';ctx.font='bold 6px sans-serif';ctx.textAlign='center';
+            ctx.fillText('−',p.x,p.y+2);
+        });
+    }
+
+    // Labels
+    ctx.fillStyle='#dc3545';ctx.font='500 12px Outfit';ctx.textAlign='left';
+    ctx.fillText('Conventional current →',r-180,top-15);
+    ctx.fillStyle='#4a90d9';ctx.textAlign='right';
+    ctx.fillText('← Electron flow',l+180,bot+35);
+
+    document.getElementById('vLabel').textContent=V+' V';
+    document.getElementById('rLabel').textContent=R+' Ω';
+    document.getElementById('voltVal').textContent=V+' V';
+    document.getElementById('curVal').textContent=I.toFixed(1)+' A';
+    document.getElementById('resVal').textContent=R+' Ω';
+
+    requestAnimationFrame(draw);
+}
+
+resize();window.addEventListener('resize',resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

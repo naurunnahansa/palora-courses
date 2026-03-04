@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Energy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #637EA1; }
+        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; }
+        .info-box { background: #fafbfc; border-radius: 5px; padding: 8px; font-size: 0.78rem; color: #4a5568; text-align: center; margin-top: 8px; }
+        .info-box strong { color: #637EA1; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Internal Energy</h1>
+    <p class="subtitle">Internal energy = kinetic energy + potential energy of particles</p>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="400"></canvas>
+    </div>
+    <div class="card" style="padding:8px;">
+        <div class="card-title">Energy Breakdown</div>
+        <canvas id="barCanvas" width="1060" height="180"></canvas>
+    </div>
+    <div class="card">
+        <div class="slider-row">
+            <div class="slider-label"><span>Temperature</span><span class="val" id="tempLabel">50°C</span></div>
+            <input type="range" id="tempSlider" min="-50" max="300" value="50">
+        </div>
+    </div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Kinetic Energy</div><div class="value" id="keVal" style="color:#dc3545;">—</div></div>
+        <div class="readout"><div class="label">Potential Energy</div><div class="value" id="peVal" style="color:#28a745;">—</div></div>
+        <div class="readout"><div class="label">Internal Energy</div><div class="value" id="ieVal">—</div></div>
+    </div>
+    <div class="info-box" id="info"></div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const barCanvas = document.getElementById('barCanvas');
+const bCtx = barCanvas.getContext('2d');
+let lastTs = 0;
+const particles = [];
+const N = 30;
+
+for (let i = 0; i < N; i++) {
+    particles.push({
+        x: 100 + Math.random() * 860,
+        y: 50 + Math.random() * 300,
+        vx: (Math.random() - 0.5) * 4,
+        vy: (Math.random() - 0.5) * 4
+    });
+}
+
+function resize() {
+    [canvas, barCanvas].forEach(c => {
+        const w = Math.min(530, c.parentElement.clientWidth - 16);
+        c.style.width = w + 'px';
+        c.style.height = (w * c.height / c.width) + 'px';
+    });
+}
+
+function draw(ts) {
+    const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.03) : 0;
+    lastTs = ts;
+    const temp = parseInt(document.getElementById('tempSlider').value);
+    const T = temp + 273;
+    const energy = T / 300;
+    document.getElementById('tempLabel').textContent = temp + '°C';
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    // Container
+    ctx.strokeStyle = '#e5dfe0'; ctx.lineWidth = 3;
+    ctx.strokeRect(50, 30, W - 100, H - 60);
+
+    const speed = energy * 3;
+    particles.forEach(p => {
+        p.x += p.vx * speed;
+        p.y += p.vy * speed;
+        if (p.x < 62) { p.x = 62; p.vx *= -1; }
+        if (p.x > W - 62) { p.x = W - 62; p.vx *= -1; }
+        if (p.y < 42) { p.y = 42; p.vy *= -1; }
+        if (p.y > H - 42) { p.y = H - 42; p.vy *= -1; }
+
+        const v = Math.sqrt(p.vx * p.vx + p.vy * p.vy) * speed;
+        const heat = Math.min(1, v / 15);
+        const r = Math.round(99 + 160 * heat);
+        const g = Math.round(126 - 80 * heat);
+        const b = Math.round(161 - 130 * heat);
+        ctx.beginPath(); ctx.arc(p.x, p.y, 14, 0, Math.PI * 2);
+        ctx.fillStyle = `rgb(${r},${g},${b})`; ctx.fill();
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+
+        // Velocity arrow
+        if (v > 1) {
+            const aLen = Math.min(30, v * 3);
+            const ax = p.x + p.vx / Math.sqrt(p.vx**2+p.vy**2) * aLen * speed * 0.3;
+            const ay = p.y + p.vy / Math.sqrt(p.vx**2+p.vy**2) * aLen * speed * 0.3;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(ax, ay);
+            ctx.strokeStyle = `rgba(${r},${g},${b},0.5)`; ctx.lineWidth = 2; ctx.stroke();
+        }
+    });
+
+    // Energy bar
+    const keNorm = energy;
+    const peNorm = 0.3;
+    const totalNorm = keNorm + peNorm;
+
+    const bW = barCanvas.width, bH = barCanvas.height;
+    bCtx.clearRect(0, 0, bW, bH);
+    bCtx.fillStyle = '#fafbfc'; bCtx.fillRect(0, 0, bW, bH);
+
+    const barX = 80, barW = bW - 160, barH2 = 50;
+    // Total bar
+    bCtx.fillStyle = '#e5dfe0'; bCtx.fillRect(barX, 20, barW, barH2);
+    // KE portion
+    const keFrac = keNorm / totalNorm;
+    bCtx.fillStyle = '#dc354580'; bCtx.fillRect(barX, 20, barW * keFrac, barH2);
+    // PE portion
+    bCtx.fillStyle = '#28a74580'; bCtx.fillRect(barX + barW * keFrac, 20, barW * (1 - keFrac), barH2);
+    bCtx.strokeStyle = '#4a5568'; bCtx.lineWidth = 1; bCtx.strokeRect(barX, 20, barW, barH2);
+
+    // Labels
+    bCtx.font = '600 14px Outfit'; bCtx.textAlign = 'center';
+    bCtx.fillStyle = '#dc3545'; bCtx.fillText(`KE: ${(keFrac * 100).toFixed(0)}%`, barX + barW * keFrac / 2, 50);
+    bCtx.fillStyle = '#28a745'; bCtx.fillText(`PE: ${((1-keFrac) * 100).toFixed(0)}%`, barX + barW * keFrac + barW * (1-keFrac) / 2, 50);
+
+    bCtx.font = '600 13px Oswald'; bCtx.fillStyle = '#637EA1'; bCtx.textAlign = 'center';
+    bCtx.fillText('INTERNAL ENERGY', bW / 2, bH - 20);
+
+    // Labels below bar
+    bCtx.font = '500 11px Outfit'; bCtx.fillStyle = '#4a5568';
+    bCtx.textAlign = 'left'; bCtx.fillText('KE = particle movement energy', barX, 90);
+    bCtx.fillText('PE = particle bond energy', barX, 108);
+
+    document.getElementById('keVal').textContent = (keNorm * 100).toFixed(0) + ' units';
+    document.getElementById('peVal').textContent = (peNorm * 100).toFixed(0) + ' units';
+    document.getElementById('ieVal').textContent = (totalNorm * 100).toFixed(0) + ' units';
+    document.getElementById('info').innerHTML = `At <strong>${temp}°C</strong>: Higher temperature means particles move <strong>faster</strong>, so KE increases. PE stays roughly constant (same state).`;
+
+    requestAnimationFrame(draw);
+}
+
+resize(); window.addEventListener('resize', resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

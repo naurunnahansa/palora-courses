@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravitational Potential Energy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #637EA1; }
+        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.72rem; color: #4a5568; }
+        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: #637EA1; }
+        .readout .formula { font-size: 0.68rem; color: #4a5568; margin-top: 2px; }
+        .calc-box { background: #fafbfc; border-radius: 5px; padding: 8px; text-align: center; font-size: 0.82rem; margin-top: 8px; }
+        .calc-box strong { color: #637EA1; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Gravitational Potential Energy</h1>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="500"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Mass (m)</span><span class="val" id="mLabel">5 kg</span></div>
+            <input type="range" id="mSlider" min="1" max="50" value="5">
+        </div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Height (h)</span><span class="val" id="hLabel">10 m</span></div>
+            <input type="range" id="hSlider" min="1" max="50" value="10">
+        </div>
+        <div class="slider-row">
+            <div class="slider-label"><span>g (gravitational field strength)</span><span class="val" id="gLabel">9.8 N/kg</span></div>
+            <input type="range" id="gSlider" min="16" max="248" value="98">
+        </div>
+    </div>
+    <div class="readouts">
+        <div class="readout">
+            <div class="label">GPE</div>
+            <div class="value" id="gpeVal">490 J</div>
+            <div class="formula">GPE = m × g × h</div>
+        </div>
+        <div class="readout">
+            <div class="label">Height</div>
+            <div class="value" id="hVal">10 m</div>
+            <div class="formula">Above ground level</div>
+        </div>
+    </div>
+    <div class="calc-box" id="calcBox">GPE = 5 × 9.8 × 10 = <strong>490 J</strong></div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 500 / 1060) + 'px';
+}
+
+function draw() {
+    const m = parseInt(document.getElementById('mSlider').value);
+    const h = parseInt(document.getElementById('hSlider').value);
+    const g = parseInt(document.getElementById('gSlider').value) / 10;
+    const gpe = m * g * h;
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    // Ground
+    const groundY = H * 0.85;
+    ctx.fillStyle = '#e8e4e0'; ctx.fillRect(0, groundY, W, H - groundY);
+    ctx.strokeStyle = '#ccc'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(W, groundY); ctx.stroke();
+    ctx.fillStyle = '#4a5568'; ctx.font = '500 12px Outfit'; ctx.textAlign = 'center';
+    ctx.fillText('Ground level (h = 0)', W * 0.5, groundY + 20);
+
+    // Height scale
+    const maxH = 50;
+    const hFrac = h / maxH;
+    const objY = groundY - hFrac * (groundY - 60);
+    const objSize = 20 + m * 0.8;
+
+    // Height marker line
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(W * 0.15, objY + objSize); ctx.lineTo(W * 0.15, groundY); ctx.stroke();
+    ctx.setLineDash([]);
+    // Height arrow
+    ctx.beginPath(); ctx.moveTo(W * 0.15, groundY); ctx.lineTo(W * 0.15, objY + objSize);
+    ctx.strokeStyle = '#F4D35E'; ctx.lineWidth = 3; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W * 0.15, objY + objSize);
+    ctx.lineTo(W * 0.15 - 6, objY + objSize + 12); ctx.lineTo(W * 0.15 + 6, objY + objSize + 12);
+    ctx.closePath(); ctx.fillStyle = '#F4D35E'; ctx.fill();
+    ctx.fillStyle = '#c9a020'; ctx.font = '600 14px Outfit'; ctx.textAlign = 'right';
+    ctx.fillText(`h = ${h} m`, W * 0.13, (objY + objSize + groundY) / 2 + 5);
+
+    // Object
+    ctx.fillStyle = '#637EA1';
+    ctx.fillRect(W * 0.4 - objSize / 2, objY, objSize * 2, objSize);
+    ctx.strokeStyle = '#506a8a'; ctx.lineWidth = 2;
+    ctx.strokeRect(W * 0.4 - objSize / 2, objY, objSize * 2, objSize);
+    ctx.fillStyle = '#fff'; ctx.font = `600 ${Math.max(12, objSize * 0.4)}px Oswald`; ctx.textAlign = 'center';
+    ctx.fillText(m + ' kg', W * 0.4, objY + objSize / 2 + 4);
+
+    // Energy bar
+    const barX = W * 0.7, barW = 40, barMaxH = groundY - 80;
+    const barH = Math.min(barMaxH, gpe / 25000 * barMaxH + 10);
+    ctx.fillStyle = '#e5dfe0'; ctx.fillRect(barX, 60, barW, barMaxH);
+    ctx.fillStyle = '#637EA1'; ctx.fillRect(barX, 60 + barMaxH - barH, barW, barH);
+    ctx.strokeStyle = '#506a8a'; ctx.lineWidth = 1; ctx.strokeRect(barX, 60, barW, barMaxH);
+    ctx.fillStyle = '#637EA1'; ctx.font = '600 14px Oswald'; ctx.textAlign = 'center';
+    ctx.fillText('GPE', barX + barW / 2, 50);
+    ctx.fillStyle = '#fff'; ctx.font = '600 11px Outfit';
+    ctx.fillText(gpe.toFixed(0) + ' J', barX + barW / 2, 60 + barMaxH - barH / 2 + 4);
+
+    // Update readouts
+    document.getElementById('mLabel').textContent = m + ' kg';
+    document.getElementById('hLabel').textContent = h + ' m';
+    document.getElementById('gLabel').textContent = g.toFixed(1) + ' N/kg';
+    document.getElementById('gpeVal').textContent = gpe.toFixed(0) + ' J';
+    document.getElementById('hVal').textContent = h + ' m';
+    document.getElementById('calcBox').innerHTML = `GPE = ${m} × ${g.toFixed(1)} × ${h} = <strong>${gpe.toFixed(1)} J</strong>`;
+}
+
+['mSlider', 'hSlider', 'gSlider'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+resize(); draw();
+window.addEventListener('resize', () => { resize(); draw(); });
+</script>
+</body>
+</html>

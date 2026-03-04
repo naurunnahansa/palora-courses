@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circuit Components</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px}.comp{border:2px solid #e5dfe0;border-radius:5px;padding:8px;text-align:center;cursor:pointer;transition:all .2s;background:#fff}.comp:hover{border-color:#637EA1;transform:translateY(-1px)}.comp.active{border-color:#637EA1;background:#f0f4f8}.comp canvas{display:block;margin:0 auto 4px;background:#fafbfc;border-radius:3px}.comp .name{font-size:.7rem;font-weight:600;color:#1a1f2e}.detail{border:1px solid #e5dfe0;border-radius:5px;padding:12px;background:#F5E6E8;min-height:80px}.detail .title{font-family:'Oswald',sans-serif;font-size:.9rem;color:#637EA1;text-transform:uppercase;margin-bottom:4px}.detail .text{font-size:.78rem;color:#4a5568;line-height:1.5}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Circuit Components</h1>
+    <div class="grid" id="grid"></div>
+    <div class="detail" id="detail"><div class="title">Click a component above</div><div class="text">Learn about common circuit symbols and their functions.</div></div>
+</div>
+<script>
+const components=[
+    {name:'Cell',symbol:'cell',desc:'Provides a potential difference (voltage) to drive current around a circuit. Has a + and − terminal.'},
+    {name:'Battery',symbol:'battery',desc:'Two or more cells connected in series. Provides a higher voltage than a single cell.'},
+    {name:'Switch',symbol:'switch',desc:'Opens or closes a circuit. When open, no current flows. When closed, current can flow.'},
+    {name:'Resistor',symbol:'resistor',desc:'A component that resists the flow of current. Used to control current in a circuit. Fixed resistance value.'},
+    {name:'Variable Resistor',symbol:'variable',desc:'A resistor whose resistance can be changed. Used to vary current, e.g., dimmer switches.'},
+    {name:'Lamp',symbol:'lamp',desc:'Converts electrical energy to light (and heat). Resistance increases as it gets hotter.'},
+    {name:'Ammeter',symbol:'ammeter',desc:'Measures current in amps (A). Connected in SERIES with the component being measured.'},
+    {name:'Voltmeter',symbol:'voltmeter',desc:'Measures potential difference in volts (V). Connected in PARALLEL across a component.'},
+    {name:'LED',symbol:'led',desc:'Light Emitting Diode. Emits light when current flows through it. Only allows current in one direction.'},
+    {name:'Diode',symbol:'diode',desc:'Only allows current to flow in one direction (forward biased). Blocks current in the reverse direction.'},
+    {name:'Thermistor',symbol:'thermistor',desc:'Resistance DECREASES as temperature increases. Used in temperature sensors and thermostats.'},
+    {name:'LDR',symbol:'ldr',desc:'Light Dependent Resistor. Resistance DECREASES as light intensity increases. Used in automatic lights.'}
+];
+
+function drawSymbol(canvas,type){
+    const ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height;
+    ctx.clearRect(0,0,w,h);ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.fillStyle='#637EA1';
+    const cx=w/2,cy=h/2;
+    // wires
+    ctx.beginPath();ctx.moveTo(10,cy);ctx.lineTo(cx-20,cy);ctx.moveTo(cx+20,cy);ctx.lineTo(w-10,cy);ctx.stroke();
+
+    switch(type){
+        case'cell':ctx.beginPath();ctx.moveTo(cx-5,cy-15);ctx.lineTo(cx-5,cy+15);ctx.lineWidth=3;ctx.stroke();ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx+5,cy-8);ctx.lineTo(cx+5,cy+8);ctx.stroke();break;
+        case'battery':for(let i=-1;i<=1;i+=2){const x=cx+i*8;ctx.beginPath();ctx.moveTo(x-3,cy-15);ctx.lineTo(x-3,cy+15);ctx.lineWidth=3;ctx.stroke();ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x+3,cy-8);ctx.lineTo(x+3,cy+8);ctx.stroke()}break;
+        case'switch':ctx.beginPath();ctx.arc(cx-15,cy,3,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(cx+15,cy,3,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.moveTo(cx-15,cy);ctx.lineTo(cx+12,cy-12);ctx.stroke();break;
+        case'resistor':ctx.strokeRect(cx-20,cy-8,40,16);break;
+        case'variable':ctx.strokeRect(cx-20,cy-8,40,16);ctx.beginPath();ctx.moveTo(cx-15,cy+15);ctx.lineTo(cx+15,cy-15);ctx.stroke();ctx.beginPath();ctx.moveTo(cx+10,cy-15);ctx.lineTo(cx+15,cy-15);ctx.lineTo(cx+15,cy-10);ctx.stroke();break;
+        case'lamp':ctx.beginPath();ctx.arc(cx,cy,12,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.moveTo(cx-8,cy+8);ctx.lineTo(cx+8,cy-8);ctx.moveTo(cx-8,cy-8);ctx.lineTo(cx+8,cy+8);ctx.stroke();break;
+        case'ammeter':ctx.beginPath();ctx.arc(cx,cy,12,0,Math.PI*2);ctx.stroke();ctx.font='700 14px Oswald';ctx.textAlign='center';ctx.fillText('A',cx,cy+5);break;
+        case'voltmeter':ctx.beginPath();ctx.arc(cx,cy,12,0,Math.PI*2);ctx.stroke();ctx.font='700 14px Oswald';ctx.textAlign='center';ctx.fillText('V',cx,cy+5);break;
+        case'led':ctx.beginPath();ctx.moveTo(cx-10,cy-10);ctx.lineTo(cx-10,cy+10);ctx.lineTo(cx+10,cy);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(cx+10,cy-10);ctx.lineTo(cx+10,cy+10);ctx.stroke();ctx.beginPath();ctx.moveTo(cx+8,cy-14);ctx.lineTo(cx+16,cy-20);ctx.moveTo(cx+12,cy-12);ctx.lineTo(cx+20,cy-18);ctx.stroke();break;
+        case'diode':ctx.beginPath();ctx.moveTo(cx-10,cy-10);ctx.lineTo(cx-10,cy+10);ctx.lineTo(cx+10,cy);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(cx+10,cy-10);ctx.lineTo(cx+10,cy+10);ctx.stroke();break;
+        case'thermistor':ctx.strokeRect(cx-20,cy-8,40,16);ctx.font='500 10px Outfit';ctx.textAlign='center';ctx.fillText('θ',cx,cy+4);break;
+        case'ldr':ctx.strokeRect(cx-20,cy-8,40,16);ctx.beginPath();ctx.moveTo(cx-18,cy-16);ctx.lineTo(cx-8,cy-10);ctx.moveTo(cx-14,cy-18);ctx.lineTo(cx-4,cy-12);ctx.stroke();break;
+    }
+}
+
+const grid=document.getElementById('grid');
+components.forEach((c,i)=>{
+    const div=document.createElement('div');div.className='comp';
+    const cvs=document.createElement('canvas');cvs.width=100;cvs.height=50;
+    div.appendChild(cvs);
+    const nameEl=document.createElement('div');nameEl.className='name';nameEl.textContent=c.name;
+    div.appendChild(nameEl);
+    drawSymbol(cvs,c.symbol);
+    div.onclick=()=>{
+        document.querySelectorAll('.comp').forEach(d=>d.classList.remove('active'));
+        div.classList.add('active');
+        document.getElementById('detail').innerHTML=`<div class="title">${c.name}</div><div class="text">${c.desc}</div>`;
+    };
+    grid.appendChild(div);
+});
+</script>
+</body>
+</html>

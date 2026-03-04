@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuclear Equations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.controls{display:flex;gap:6px;margin-bottom:8px}.ctrl-btn{flex:1;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:8px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#637EA1}.ctrl-btn.active{background:#637EA1;color:#fff}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;margin-top:8px}.info strong{color:#637EA1}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Nuclear Equations & Radioactive Decay</h1>
+    <div class="controls">
+        <button class="ctrl-btn active" onclick="setDecay(0)">Alpha Decay</button>
+        <button class="ctrl-btn" onclick="setDecay(1)">Beta Decay</button>
+        <button class="ctrl-btn" onclick="setDecay(2)">Gamma</button>
+    </div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="450"></canvas></div>
+    <div class="info" id="info"><strong>Alpha decay (α):</strong> The nucleus emits an alpha particle (2 protons + 2 neutrons = helium nucleus). Mass number decreases by 4, atomic number decreases by 2.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let decay=0,lastTs=0,animT=0;
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*450/1060)+'px'}
+
+function setDecay(d){
+    decay=d;
+    document.querySelectorAll('.ctrl-btn').forEach((c,j)=>c.classList.toggle('active',j===d));
+    const infos=[
+        '<strong>Alpha decay (α):</strong> The nucleus emits an alpha particle (2 protons + 2 neutrons = helium nucleus). Mass number decreases by 4, atomic number decreases by 2.',
+        '<strong>Beta decay (β⁻):</strong> A neutron turns into a proton and emits a high-speed electron (beta particle) and an antineutrino. Mass number stays the same, atomic number increases by 1.',
+        '<strong>Gamma radiation (γ):</strong> The nucleus releases excess energy as a gamma ray (electromagnetic radiation). No change in mass number or atomic number.'
+    ];
+    document.getElementById('info').innerHTML=infos[d];
+}
+
+function drawNucleus(x,y,p,n,r,label){
+    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle='#F5E6E8';ctx.fill();ctx.strokeStyle='#e5dfe0';ctx.lineWidth=1;ctx.stroke();
+    const total=p+n;
+    for(let i=0;i<Math.min(total,20);i++){
+        const a=i*(Math.PI*2/Math.min(total,20))+animT*0.3;
+        const dr=r*0.55*(i>0?1:0);
+        const px=x+Math.cos(a)*dr,py=y+Math.sin(a)*dr;
+        ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);
+        ctx.fillStyle=i<p?'#dc3545':'#4a5568';ctx.fill();
+    }
+    if(label){ctx.fillStyle='#637EA1';ctx.font='600 14px Oswald';ctx.textAlign='center';ctx.fillText(label,x,y+r+20)}
+}
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    const progress=Math.min(1,(animT%4)/2);
+    const emitX=cx-100+progress*300;
+    const emitY=cy-progress*60*(decay===2?0:1);
+
+    if(decay===0){
+        // Alpha decay: U-238 → Th-234 + He-4
+        drawNucleus(cx-200,cy,92,146,45,'Uranium-238');
+        ctx.fillStyle='#637EA1';ctx.font='700 28px Oswald';ctx.textAlign='center';ctx.fillText('→',cx-80,cy+5);
+        drawNucleus(cx+80,cy,90,144,42,'Thorium-234');
+        ctx.fillStyle='#637EA1';ctx.font='700 20px Oswald';ctx.fillText('+',cx+180,cy+5);
+        // Alpha particle
+        const ax=cx+200+Math.sin(animT*3)*20;
+        ctx.beginPath();ctx.arc(ax,cy-40+Math.cos(animT*2)*10,12,0,Math.PI*2);ctx.fillStyle='#F4D35E';ctx.fill();ctx.strokeStyle='#c87533';ctx.lineWidth=2;ctx.stroke();
+        ctx.fillStyle='#1a1f2e';ctx.font='700 10px Oswald';ctx.fillText('α',ax,cy-36+Math.cos(animT*2)*10);
+        ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.fillText('Alpha particle',ax,cy-10);
+        ctx.fillText('(²He⁴)',ax,cy+5);
+        // Equation
+        ctx.fillStyle='#637EA1';ctx.font='600 18px Oswald';ctx.textAlign='center';
+        ctx.fillText('²³⁸U → ²³⁴Th + ⁴He',cx,40);
+        ctx.fillStyle='#4a5568';ctx.font='500 12px Outfit';
+        ctx.fillText('Mass number: 238 → 234 + 4    Atomic number: 92 → 90 + 2',cx,H-30);
+    } else if(decay===1){
+        // Beta decay: C-14 → N-14 + e
+        drawNucleus(cx-200,cy,6,8,35,'Carbon-14');
+        ctx.fillStyle='#637EA1';ctx.font='700 28px Oswald';ctx.textAlign='center';ctx.fillText('→',cx-80,cy+5);
+        drawNucleus(cx+80,cy,7,7,35,'Nitrogen-14');
+        ctx.fillStyle='#637EA1';ctx.font='700 20px Oswald';ctx.fillText('+',cx+180,cy+5);
+        // Beta particle (electron)
+        const bx=cx+220+Math.sin(animT*4)*15;
+        const by=cy-30+Math.cos(animT*3)*10;
+        ctx.beginPath();ctx.arc(bx,by,8,0,Math.PI*2);ctx.fillStyle='#4a90d9';ctx.fill();
+        ctx.fillStyle='#fff';ctx.font='700 10px Oswald';ctx.textAlign='center';ctx.fillText('β⁻',bx,by+4);
+        ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.fillText('Beta particle',bx,by+22);ctx.fillText('(electron)',bx,by+35);
+        // Equation
+        ctx.fillStyle='#637EA1';ctx.font='600 18px Oswald';ctx.textAlign='center';
+        ctx.fillText('¹⁴C → ¹⁴N + β⁻ + antineutrino',cx,40);
+        ctx.fillStyle='#4a5568';ctx.font='500 12px Outfit';
+        ctx.fillText('Mass number: 14 → 14 + 0    Atomic number: 6 → 7 + (-1)',cx,H-30);
+    } else {
+        // Gamma
+        drawNucleus(cx-150,cy,6,6,35,'Excited nucleus');
+        ctx.fillStyle='#637EA1';ctx.font='700 28px Oswald';ctx.textAlign='center';ctx.fillText('→',cx,cy+5);
+        drawNucleus(cx+150,cy,6,6,35,'Stable nucleus');
+        // Gamma ray
+        ctx.strokeStyle='#F4D35E';ctx.lineWidth=2;ctx.beginPath();
+        for(let x=0;x<120;x++){
+            const sx=cx-60+x;const sy=cy-80+Math.sin(x*0.3+animT*6)*10;
+            x===0?ctx.moveTo(sx,sy):ctx.lineTo(sx,sy);
+        }
+        ctx.stroke();
+        ctx.fillStyle='#F4D35E';ctx.font='700 16px Oswald';ctx.fillText('γ',cx,cy-100);
+        ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.fillText('Gamma ray (EM radiation)',cx,cy-110);
+        // Equation
+        ctx.fillStyle='#637EA1';ctx.font='600 18px Oswald';ctx.textAlign='center';
+        ctx.fillText('X* → X + γ',cx,40);
+        ctx.fillStyle='#4a5568';ctx.font='500 12px Outfit';
+        ctx.fillText('No change in mass number or atomic number — only energy is released',cx,H-30);
+    }
+
+    requestAnimationFrame(draw);
+}
+resize();window.addEventListener('resize',resize);requestAnimationFrame(draw);
+</script>
+</body>
+</html>

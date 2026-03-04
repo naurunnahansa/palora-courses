@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elastic Potential Energy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #637EA1; }
+        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; }
+        .readout .formula { font-size: 0.62rem; color: #4a5568; margin-top: 2px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Elastic Potential Energy</h1>
+    <div class="card" style="padding:8px;">
+        <canvas id="springCanvas" width="1060" height="300"></canvas>
+    </div>
+    <div class="card" style="padding:8px;">
+        <div class="card-title">Force-Extension Graph</div>
+        <canvas id="graphCanvas" width="1060" height="400"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Spring constant (k)</span><span class="val" id="kLabel">50 N/m</span></div>
+            <input type="range" id="kSlider" min="10" max="200" value="50">
+        </div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Extension (x)</span><span class="val" id="xLabel">0.20 m</span></div>
+            <input type="range" id="xSlider" min="0" max="100" value="20">
+        </div>
+    </div>
+    <div class="readouts">
+        <div class="readout">
+            <div class="label">Force</div>
+            <div class="value" id="fVal">10 N</div>
+            <div class="formula">F = k × x</div>
+        </div>
+        <div class="readout">
+            <div class="label">EPE</div>
+            <div class="value" id="epeVal">1.0 J</div>
+            <div class="formula">EPE = ½kx²</div>
+        </div>
+        <div class="readout">
+            <div class="label">Extension</div>
+            <div class="value" id="extVal">0.20 m</div>
+            <div class="formula">Stretch from rest</div>
+        </div>
+    </div>
+</div>
+<script>
+const sCanvas = document.getElementById('springCanvas');
+const sCtx = sCanvas.getContext('2d');
+const gCanvas = document.getElementById('graphCanvas');
+const gCtx = gCanvas.getContext('2d');
+
+function resize() {
+    [sCanvas, gCanvas].forEach(c => {
+        const w = Math.min(530, c.parentElement.clientWidth - 16);
+        c.style.width = w + 'px';
+        c.style.height = (w * c.height / c.width) + 'px';
+    });
+}
+
+function draw() {
+    const k = parseInt(document.getElementById('kSlider').value);
+    const x = parseInt(document.getElementById('xSlider').value) / 100;
+    const F = k * x;
+    const epe = 0.5 * k * x * x;
+
+    // Spring visualization
+    const W = sCanvas.width, H = sCanvas.height;
+    sCtx.clearRect(0, 0, W, H);
+    sCtx.fillStyle = '#fafbfc'; sCtx.fillRect(0, 0, W, H);
+
+    // Wall
+    sCtx.fillStyle = '#d0d0d0'; sCtx.fillRect(0, H*0.2, 30, H*0.6);
+    for (let y = H*0.2; y < H*0.8; y += 12) {
+        sCtx.beginPath(); sCtx.moveTo(30, y); sCtx.lineTo(15, y + 12);
+        sCtx.strokeStyle = '#aaa'; sCtx.lineWidth = 1; sCtx.stroke();
+    }
+
+    // Spring coils
+    const restLen = 200, extPx = x * 500;
+    const springEnd = 30 + restLen + extPx;
+    const coils = 12;
+    const midY = H * 0.5;
+    const coilAmp = 25;
+
+    sCtx.beginPath(); sCtx.moveTo(30, midY);
+    for (let i = 0; i <= coils; i++) {
+        const px = 30 + (i / coils) * (restLen + extPx);
+        const py = midY + (i % 2 === 0 ? -coilAmp : coilAmp);
+        if (i === 0) sCtx.lineTo(px, midY);
+        else sCtx.lineTo(px, py);
+    }
+    sCtx.lineTo(springEnd, midY);
+    const tension = Math.min(1, x * 3);
+    sCtx.strokeStyle = `rgb(${99 + 120*tension}, ${126 - 80*tension}, ${161 - 120*tension})`;
+    sCtx.lineWidth = 3; sCtx.stroke();
+
+    // Block
+    const blockW = 50, blockH = 60;
+    sCtx.fillStyle = '#637EA1';
+    sCtx.fillRect(springEnd, midY - blockH/2, blockW, blockH);
+    sCtx.strokeStyle = '#506a8a'; sCtx.lineWidth = 2;
+    sCtx.strokeRect(springEnd, midY - blockH/2, blockW, blockH);
+
+    // Extension marker
+    if (x > 0.01) {
+        const natEnd = 30 + restLen;
+        sCtx.setLineDash([3, 3]); sCtx.strokeStyle = '#F4D35E'; sCtx.lineWidth = 1;
+        sCtx.beginPath(); sCtx.moveTo(natEnd, midY - 50); sCtx.lineTo(natEnd, midY + 50); sCtx.stroke();
+        sCtx.setLineDash([]);
+        sCtx.beginPath(); sCtx.moveTo(natEnd, midY + 40); sCtx.lineTo(springEnd, midY + 40);
+        sCtx.strokeStyle = '#F4D35E'; sCtx.lineWidth = 2; sCtx.stroke();
+        sCtx.fillStyle = '#c9a020'; sCtx.font = '600 14px Outfit'; sCtx.textAlign = 'center';
+        sCtx.fillText(`x = ${x.toFixed(2)} m`, (natEnd + springEnd)/2, midY + 58);
+    }
+
+    // Force-Extension graph
+    const gW = gCanvas.width, gH = gCanvas.height;
+    gCtx.clearRect(0, 0, gW, gH);
+    gCtx.fillStyle = '#fafbfc'; gCtx.fillRect(0, 0, gW, gH);
+
+    const px = 80, py = 40, pw = gW - 120, ph = gH - 100;
+    // Axes
+    gCtx.strokeStyle = '#1a1f2e'; gCtx.lineWidth = 2;
+    gCtx.beginPath(); gCtx.moveTo(px, py); gCtx.lineTo(px, py + ph); gCtx.lineTo(px + pw, py + ph); gCtx.stroke();
+    gCtx.fillStyle = '#4a5568'; gCtx.font = '500 13px Outfit'; gCtx.textAlign = 'center';
+    gCtx.fillText('Extension (m)', px + pw/2, py + ph + 35);
+    gCtx.save(); gCtx.translate(25, py + ph/2); gCtx.rotate(-Math.PI/2);
+    gCtx.fillText('Force (N)', 0, 0); gCtx.restore();
+
+    // Line F = kx
+    const maxX = 1, maxF = k;
+    gCtx.beginPath(); gCtx.moveTo(px, py + ph);
+    gCtx.lineTo(px + pw, py + ph - (maxF / (k * 1.2)) * ph);
+    gCtx.strokeStyle = '#637EA1'; gCtx.lineWidth = 3; gCtx.stroke();
+
+    // Shaded area (EPE)
+    const curPx = px + (x / maxX) * pw;
+    const curFPx = py + ph - (F / (k * 1.2)) * ph;
+    gCtx.beginPath();
+    gCtx.moveTo(px, py + ph); gCtx.lineTo(curPx, curFPx); gCtx.lineTo(curPx, py + ph); gCtx.closePath();
+    gCtx.fillStyle = '#637EA140'; gCtx.fill();
+    gCtx.fillStyle = '#637EA1'; gCtx.font = '600 13px Outfit';
+    gCtx.fillText(`EPE = ${epe.toFixed(2)} J`, curPx - 30, py + ph - 20);
+
+    // Current point
+    gCtx.beginPath(); gCtx.arc(curPx, curFPx, 6, 0, Math.PI*2);
+    gCtx.fillStyle = '#dc3545'; gCtx.fill();
+
+    // Update labels
+    document.getElementById('kLabel').textContent = k + ' N/m';
+    document.getElementById('xLabel').textContent = x.toFixed(2) + ' m';
+    document.getElementById('fVal').textContent = F.toFixed(1) + ' N';
+    document.getElementById('epeVal').textContent = epe.toFixed(2) + ' J';
+    document.getElementById('extVal').textContent = x.toFixed(2) + ' m';
+}
+
+['kSlider', 'xSlider'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+resize(); draw();
+window.addEventListener('resize', () => { resize(); draw(); });
+</script>
+</body>
+</html>

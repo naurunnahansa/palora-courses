@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Solar System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#1a1f2e}.planet-info{background:#F5E6E8;border-radius:5px;padding:10px;margin-top:8px;text-align:center}.planet-info .name{font-family:'Oswald',sans-serif;font-size:1rem;color:#637EA1}.planet-info .details{font-size:.72rem;color:#4a5568;margin-top:4px}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+</head>
+<body>
+<div class="container">
+    <h1>The Solar System</h1>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="500"></canvas></div>
+    <div class="planet-info"><div class="name" id="pName">Click a planet to learn more</div><div class="details" id="pDetails">The solar system has 8 planets orbiting the Sun</div></div>
+    <div class="info">The inner planets (Mercury, Venus, Earth, Mars) are <strong>rocky</strong>. The outer planets (Jupiter, Saturn, Uranus, Neptune) are <strong>gas/ice giants</strong>.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let lastTs=0,animT=0,selPlanet=-1;
+
+const planets=[
+    {name:'Mercury',r:4,orbit:55,speed:4.1,color:'#a0a0a0',info:'Smallest planet. No atmosphere. Closest to the Sun. Orbital period: 88 days.'},
+    {name:'Venus',r:6,orbit:80,speed:3.2,color:'#e8c56d',info:'Similar size to Earth. Very thick atmosphere. Surface temperature ~460°C. Orbital period: 225 days.'},
+    {name:'Earth',r:6,orbit:110,speed:2.6,color:'#4a90d9',info:'Our home planet. Has liquid water and atmosphere. Orbital period: 365 days (1 year).'},
+    {name:'Mars',r:5,orbit:140,speed:2.1,color:'#dc3545',info:'The Red Planet. Thin atmosphere. Has polar ice caps. Orbital period: 687 days.'},
+    {name:'Jupiter',r:16,orbit:195,speed:1.1,color:'#c87533',info:'Largest planet (gas giant). Great Red Spot storm. 79+ moons. Orbital period: 12 years.'},
+    {name:'Saturn',r:13,orbit:260,speed:0.8,color:'#e8d5a0',info:'Famous for its rings (ice and rock). Gas giant. 83+ moons. Orbital period: 29 years.'},
+    {name:'Uranus',r:9,orbit:330,speed:0.5,color:'#6dd5ed',info:'Ice giant. Tilted on its side. Blue-green colour from methane. Orbital period: 84 years.'},
+    {name:'Neptune',r:8,orbit:390,speed:0.4,color:'#3b5998',info:'Furthest planet. Ice giant. Strongest winds in solar system. Orbital period: 165 years.'}
+];
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*500/1060)+'px'}
+
+canvas.addEventListener('click',e=>{
+    const rect=canvas.getBoundingClientRect();const sx=canvas.width/rect.width;
+    const mx=(e.clientX-rect.left)*sx,my=(e.clientY-rect.top)*sx;
+    const cx=canvas.width/2-100,cy=canvas.height/2;
+    planets.forEach((p,i)=>{
+        const a=animT*p.speed*0.3;
+        const px=cx+Math.cos(a)*p.orbit;const py=cy+Math.sin(a)*p.orbit*0.45;
+        if(Math.hypot(mx-px,my-py)<p.r+10){
+            selPlanet=i;
+            document.getElementById('pName').textContent=p.name;
+            document.getElementById('pDetails').textContent=p.info;
+        }
+    });
+});
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
+    const W=canvas.width,H=canvas.height;
+    const cx=W/2-100,cy=H/2;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#1a1f2e';ctx.fillRect(0,0,W,H);
+
+    // Stars
+    for(let i=0;i<50;i++){
+        const sx=(i*137.5)%W,sy=(i*97.3)%H;
+        ctx.beginPath();ctx.arc(sx,sy,0.8,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${0.3+Math.sin(animT+i)*0.2})`;ctx.fill();
+    }
+
+    // Sun
+    ctx.beginPath();ctx.arc(cx,cy,22,0,Math.PI*2);
+    const grd=ctx.createRadialGradient(cx,cy,5,cx,cy,30);grd.addColorStop(0,'#F4D35E');grd.addColorStop(1,'rgba(244,211,94,0)');
+    ctx.fillStyle=grd;ctx.fill();
+    ctx.beginPath();ctx.arc(cx,cy,18,0,Math.PI*2);ctx.fillStyle='#F4D35E';ctx.fill();
+    ctx.fillStyle='#1a1f2e';ctx.font='700 10px Oswald';ctx.textAlign='center';ctx.fillText('SUN',cx,cy+4);
+
+    // Orbits and planets
+    planets.forEach((p,i)=>{
+        // Orbit path
+        ctx.beginPath();ctx.ellipse(cx,cy,p.orbit,p.orbit*0.45,0,0,Math.PI*2);
+        ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=1;ctx.stroke();
+
+        // Planet
+        const a=animT*p.speed*0.3;
+        const px=cx+Math.cos(a)*p.orbit;
+        const py=cy+Math.sin(a)*p.orbit*0.45;
+
+        ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);
+        ctx.fillStyle=p.color;ctx.fill();
+
+        // Saturn rings
+        if(i===5){
+            ctx.beginPath();ctx.ellipse(px,py,p.r+8,p.r*0.3,0.3,0,Math.PI*2);
+            ctx.strokeStyle='#e8d5a0';ctx.lineWidth=2;ctx.stroke();
+        }
+
+        // Highlight selected
+        if(selPlanet===i){
+            ctx.beginPath();ctx.arc(px,py,p.r+5,0,Math.PI*2);
+            ctx.strokeStyle='#F4D35E';ctx.lineWidth=2;ctx.stroke();
+        }
+
+        // Label
+        ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font='500 9px Outfit';ctx.textAlign='center';
+        ctx.fillText(p.name,px,py+p.r+12);
+    });
+
+    // Scale note
+    ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='500 9px Outfit';ctx.textAlign='right';
+    ctx.fillText('Not to scale',W-20,H-10);
+
+    requestAnimationFrame(draw);
+}
+resize();window.addEventListener('resize',resize);requestAnimationFrame(draw);
+</script>
+</body>
+</html>

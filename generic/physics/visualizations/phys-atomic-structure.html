@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic Structure</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.controls{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.ctrl-btn{flex:1;min-width:80px;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#637EA1}.ctrl-btn.active{background:#637EA1;color:#fff}.readouts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.readout{background:#F5E6E8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.68rem;color:#4a5568}.readout .value{font-family:'Oswald',sans-serif;font-size:.95rem;color:#637EA1}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Atomic Structure</h1>
+    <div class="controls" id="elements"></div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="500"></canvas></div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Protons</div><div class="value" id="pVal">1</div></div>
+        <div class="readout"><div class="label">Neutrons</div><div class="value" id="nVal">0</div></div>
+        <div class="readout"><div class="label">Electrons</div><div class="value" id="eVal">1</div></div>
+    </div>
+    <div class="info">Atoms have a tiny, dense <strong>nucleus</strong> containing protons (+) and neutrons. <strong>Electrons</strong> (-) orbit in shells. The atom is mostly <strong>empty space</strong>.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let lastTs=0,animT=0,sel=0;
+
+const elements=[
+    {name:'Hydrogen',sym:'H',p:1,n:0,shells:[1]},
+    {name:'Helium',sym:'He',p:2,n:2,shells:[2]},
+    {name:'Lithium',sym:'Li',p:3,n:4,shells:[2,1]},
+    {name:'Carbon',sym:'C',p:6,n:6,shells:[2,4]},
+    {name:'Oxygen',sym:'O',p:8,n:8,shells:[2,6]},
+    {name:'Sodium',sym:'Na',p:11,n:12,shells:[2,8,1]}
+];
+
+const elDiv=document.getElementById('elements');
+elements.forEach((el,i)=>{
+    const b=document.createElement('button');b.className='ctrl-btn'+(i===0?' active':'');
+    b.textContent=el.sym+' — '+el.name;b.onclick=()=>{sel=i;document.querySelectorAll('.ctrl-btn').forEach((c,j)=>c.classList.toggle('active',j===i))};
+    elDiv.appendChild(b);
+});
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*500/1060)+'px'}
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
+    const el=elements[sel];
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Shell orbits
+    const shellRadii=[100,160,220];
+    el.shells.forEach((_,i)=>{
+        ctx.beginPath();ctx.arc(cx,cy,shellRadii[i],0,Math.PI*2);
+        ctx.strokeStyle='#e5dfe0';ctx.lineWidth=1;ctx.setLineDash([4,4]);ctx.stroke();ctx.setLineDash([]);
+    });
+
+    // Nucleus
+    const nucR=15+el.p*2;
+    ctx.beginPath();ctx.arc(cx,cy,nucR,0,Math.PI*2);ctx.fillStyle='#F5E6E8';ctx.fill();ctx.strokeStyle='#e5dfe0';ctx.lineWidth=1;ctx.stroke();
+
+    // Protons and neutrons in nucleus
+    for(let i=0;i<el.p;i++){
+        const a=i*(Math.PI*2/el.p)+animT*0.2;const r=nucR*0.5*(i>0?1:0);
+        ctx.beginPath();ctx.arc(cx+Math.cos(a)*r,cy+Math.sin(a)*r,6,0,Math.PI*2);
+        ctx.fillStyle='#dc3545';ctx.fill();
+        ctx.fillStyle='#fff';ctx.font='700 8px Oswald';ctx.textAlign='center';ctx.fillText('+',cx+Math.cos(a)*r,cy+Math.sin(a)*r+3);
+    }
+    for(let i=0;i<el.n;i++){
+        const a=i*(Math.PI*2/el.n)+Math.PI/el.n+animT*0.2;const r=nucR*0.5*(i>0?1:0);
+        ctx.beginPath();ctx.arc(cx+Math.cos(a)*r+3,cy+Math.sin(a)*r+3,5,0,Math.PI*2);
+        ctx.fillStyle='#4a5568';ctx.fill();
+    }
+
+    // Electrons in shells
+    let eCount=0;
+    el.shells.forEach((n,si)=>{
+        for(let i=0;i<n;i++){
+            const a=i*(Math.PI*2/n)+animT*(1.5-si*0.3);
+            const ex=cx+Math.cos(a)*shellRadii[si];
+            const ey=cy+Math.sin(a)*shellRadii[si];
+            ctx.beginPath();ctx.arc(ex,ey,6,0,Math.PI*2);ctx.fillStyle='#4a90d9';ctx.fill();
+            ctx.fillStyle='#fff';ctx.font='700 8px Oswald';ctx.textAlign='center';ctx.fillText('−',ex,ey+3);
+            eCount++;
+        }
+    });
+
+    // Labels
+    ctx.fillStyle='#637EA1';ctx.font='600 16px Oswald';ctx.textAlign='center';
+    ctx.fillText(el.name+' ('+el.sym+')',cx,35);
+    ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';
+    ctx.fillText('Mass number: '+(el.p+el.n),cx,55);
+    ctx.fillText('Atomic number: '+el.p,cx,70);
+
+    // Legend
+    ctx.fillStyle='#dc3545';ctx.beginPath();ctx.arc(W-120,H-60,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#4a5568';ctx.beginPath();ctx.arc(W-120,H-40,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#4a90d9';ctx.beginPath();ctx.arc(W-120,H-20,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.textAlign='left';
+    ctx.fillText('Proton (+1)',W-108,H-56);ctx.fillText('Neutron (0)',W-108,H-36);ctx.fillText('Electron (-1)',W-108,H-16);
+
+    document.getElementById('pVal').textContent=el.p;
+    document.getElementById('nVal').textContent=el.n;
+    document.getElementById('eVal').textContent=eCount;
+
+    requestAnimationFrame(draw);
+}
+resize();window.addEventListener('resize',resize);requestAnimationFrame(draw);
+</script>
+</body>
+</html>

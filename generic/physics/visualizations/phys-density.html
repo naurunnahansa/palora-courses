@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Density Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #637EA1; }
+        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; }
+        .readout .formula { font-size: 0.62rem; color: #4a5568; margin-top: 2px; }
+        .materials { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+        .mat-chip { background: #fff; border: 1px solid #e5dfe0; border-radius: 4px; padding: 3px 8px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .mat-chip:hover, .mat-chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Density Explorer</h1>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="500"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Mass (m)</span><span class="val" id="mLabel">100 g</span></div>
+            <input type="range" id="mSlider" min="10" max="500" value="100">
+        </div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Volume (V)</span><span class="val" id="vLabel">50 cm³</span></div>
+            <input type="range" id="vSlider" min="10" max="200" value="50">
+        </div>
+        <div class="card-title">Common Materials</div>
+        <div class="materials" id="materials"></div>
+    </div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Mass</div><div class="value" id="massVal">100 g</div></div>
+        <div class="readout"><div class="label">Volume</div><div class="value" id="volVal">50 cm³</div></div>
+        <div class="readout"><div class="label">Density</div><div class="value" id="densVal">2.0 g/cm³</div><div class="formula">ρ = m / V</div></div>
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+const materials = [
+    { name: 'Air', density: 0.001 }, { name: 'Wood', density: 0.6 },
+    { name: 'Ice', density: 0.92 }, { name: 'Water', density: 1.0 },
+    { name: 'Aluminium', density: 2.7 }, { name: 'Iron', density: 7.9 },
+    { name: 'Copper', density: 8.9 }, { name: 'Lead', density: 11.3 },
+    { name: 'Gold', density: 19.3 }
+];
+
+const matContainer = document.getElementById('materials');
+materials.forEach(m => {
+    const chip = document.createElement('div');
+    chip.className = 'mat-chip';
+    chip.textContent = `${m.name} (${m.density})`;
+    chip.onclick = () => {
+        document.querySelectorAll('.mat-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        const vol = parseInt(document.getElementById('vSlider').value);
+        const mass = Math.round(m.density * vol);
+        document.getElementById('mSlider').value = Math.min(500, Math.max(10, mass));
+        draw();
+    };
+    matContainer.appendChild(chip);
+});
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 500 / 1060) + 'px';
+}
+
+function draw() {
+    const mass = parseInt(document.getElementById('mSlider').value);
+    const vol = parseInt(document.getElementById('vSlider').value);
+    const density = mass / vol;
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    // Water container (right side)
+    const tankX = W * 0.55, tankW = W * 0.35, tankH = H * 0.65, tankY = H * 0.2;
+    ctx.fillStyle = '#4a90d920';
+    ctx.fillRect(tankX, tankY, tankW, tankH);
+    ctx.strokeStyle = '#4a90d9'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(tankX, tankY); ctx.lineTo(tankX, tankY + tankH);
+    ctx.lineTo(tankX + tankW, tankY + tankH); ctx.lineTo(tankX + tankW, tankY); ctx.stroke();
+    ctx.fillStyle = '#4a90d9'; ctx.font = '500 12px Outfit'; ctx.textAlign = 'center';
+    ctx.fillText('Water (ρ = 1.0 g/cm³)', tankX + tankW/2, tankY + tankH + 18);
+
+    // Object in water
+    const blockSize = 20 + vol * 0.3;
+    const waterDensity = 1.0;
+    const floats = density < waterDensity;
+    const submergedFrac = floats ? density / waterDensity : 1;
+    const waterLevel = tankY + 30;
+    const blockY = floats
+        ? waterLevel - blockSize * (1 - submergedFrac)
+        : tankY + tankH - blockSize - 10;
+    const blockX = tankX + tankW/2 - blockSize/2;
+
+    const heat = Math.min(1, density / 12);
+    const cr = Math.round(99 + 120 * heat);
+    const cg = Math.round(126 - 40 * heat);
+    const cb = Math.round(161 - 100 * heat);
+    ctx.fillStyle = `rgb(${cr},${cg},${cb})`;
+    ctx.fillRect(blockX, blockY, blockSize, blockSize);
+    ctx.strokeStyle = '#506a8a'; ctx.lineWidth = 2;
+    ctx.strokeRect(blockX, blockY, blockSize, blockSize);
+    ctx.fillStyle = '#fff'; ctx.font = `600 ${Math.max(10, blockSize*0.2)}px Outfit`; ctx.textAlign = 'center';
+    ctx.fillText(`${density.toFixed(1)}`, blockX + blockSize/2, blockY + blockSize/2 + 4);
+
+    // Float/sink label
+    ctx.fillStyle = floats ? '#28a745' : '#dc3545'; ctx.font = '700 16px Oswald'; ctx.textAlign = 'center';
+    ctx.fillText(floats ? 'FLOATS!' : 'SINKS!', tankX + tankW/2, tankY - 10);
+
+    // Block display (left side) - shows size relative to mass
+    const dispX = W * 0.08, dispY = H * 0.25;
+    const dispSize = 20 + vol * 0.4;
+    ctx.fillStyle = `rgb(${cr},${cg},${cb})40`;
+    ctx.fillRect(dispX, dispY + (200 - dispSize)/2, dispSize, dispSize);
+    ctx.strokeStyle = `rgb(${cr},${cg},${cb})`; ctx.lineWidth = 2;
+    ctx.strokeRect(dispX, dispY + (200 - dispSize)/2, dispSize, dispSize);
+    ctx.fillStyle = '#4a5568'; ctx.font = '500 12px Outfit'; ctx.textAlign = 'center';
+    ctx.fillText(`V = ${vol} cm³`, dispX + dispSize/2, dispY + (200 - dispSize)/2 + dispSize + 18);
+    ctx.fillText(`m = ${mass} g`, dispX + dispSize/2, dispY + (200 - dispSize)/2 - 8);
+
+    // Update labels
+    document.getElementById('mLabel').textContent = mass + ' g';
+    document.getElementById('vLabel').textContent = vol + ' cm³';
+    document.getElementById('massVal').textContent = mass + ' g';
+    document.getElementById('volVal').textContent = vol + ' cm³';
+    document.getElementById('densVal').textContent = density.toFixed(2) + ' g/cm³';
+}
+
+['mSlider', 'vSlider'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+resize(); draw();
+window.addEventListener('resize', () => { resize(); draw(); });
+</script>
+</body>
+</html>

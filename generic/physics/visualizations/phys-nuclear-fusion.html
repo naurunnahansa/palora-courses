@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuclear Fission & Fusion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.controls{display:flex;gap:6px;margin-bottom:8px}.ctrl-btn{flex:1;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:8px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#637EA1}.ctrl-btn.active{background:#637EA1;color:#fff}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;margin-top:8px}.info strong{color:#637EA1}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Nuclear Fission & Fusion</h1>
+    <div class="controls">
+        <button class="ctrl-btn active" onclick="setMode(0)">Fission</button>
+        <button class="ctrl-btn" onclick="setMode(1)">Fusion</button>
+        <button class="ctrl-btn" onclick="setMode(2)">Chain Reaction</button>
+    </div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="480"></canvas></div>
+    <div class="info" id="info"><strong>Nuclear Fission:</strong> A large, unstable nucleus (e.g. uranium-235) absorbs a neutron and splits into two smaller nuclei, releasing 2-3 neutrons and a large amount of energy. This is used in nuclear power stations.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let mode=0,lastTs=0,animT=0;
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*480/1060)+'px'}
+
+function setMode(m){
+    mode=m;animT=0;
+    document.querySelectorAll('.ctrl-btn').forEach((c,j)=>c.classList.toggle('active',j===m));
+    const infos=[
+        '<strong>Nuclear Fission:</strong> A large, unstable nucleus (e.g. uranium-235) absorbs a neutron and splits into two smaller nuclei, releasing 2-3 neutrons and a large amount of energy. This is used in nuclear power stations.',
+        '<strong>Nuclear Fusion:</strong> Two small nuclei (e.g. hydrogen isotopes) combine to form a larger nucleus, releasing enormous energy. This powers stars. It requires extremely high temperatures (millions of °C) to overcome electrostatic repulsion.',
+        '<strong>Chain Reaction:</strong> Each fission event releases 2-3 neutrons, which can cause further fission events. In a <strong>controlled</strong> chain reaction (reactor), control rods absorb excess neutrons. In an <strong>uncontrolled</strong> reaction (bomb), it leads to an explosion.'
+    ];
+    document.getElementById('info').innerHTML=infos[m];
+}
+
+function drawNucleus(x,y,r,np,nn){
+    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle='#F5E6E8';ctx.fill();
+    const total=np+nn;
+    for(let i=0;i<Math.min(total,16);i++){
+        const a=i*(Math.PI*2/Math.min(total,16))+animT*0.4;
+        const dr=r*0.5*(i>0?1:0);
+        ctx.beginPath();ctx.arc(x+Math.cos(a)*dr,y+Math.sin(a)*dr,4,0,Math.PI*2);
+        ctx.fillStyle=i<np?'#dc3545':'#4a5568';ctx.fill();
+    }
+}
+
+function drawNeutron(x,y){
+    ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fillStyle='#4a5568';ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='700 7px Oswald';ctx.textAlign='center';ctx.fillText('n',x,y+3);
+}
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    if(mode===0){
+        // Fission animation
+        const phase=animT%5;
+        ctx.fillStyle='#637EA1';ctx.font='600 16px Oswald';ctx.textAlign='center';
+        ctx.fillText('NUCLEAR FISSION',cx,30);
+
+        if(phase<1.5){
+            // Neutron approaching U-235
+            const nx=cx-250+phase/1.5*180;
+            drawNeutron(nx,cy);
+            drawNucleus(cx,cy,35,92,143);
+            ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.textAlign='center';
+            ctx.fillText('U-235',cx,cy+50);ctx.fillText('Neutron',nx,cy-12);
+        } else if(phase<2.5){
+            // Wobbling nucleus
+            const wobble=Math.sin((phase-1.5)*20)*((phase-1.5)*15);
+            drawNucleus(cx+wobble,cy,35+Math.abs(wobble)*0.5,92,143);
+            ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.textAlign='center';ctx.fillText('Unstable!',cx,cy-50);
+        } else {
+            // Split into two + neutrons + energy
+            const t=(phase-2.5)/2.5;
+            const d=t*180;
+            drawNucleus(cx-d,cy-t*30,25,56,80);
+            drawNucleus(cx+d,cy+t*30,25,36,60);
+            ctx.fillStyle='#4a5568';ctx.font='500 10px Outfit';ctx.textAlign='center';
+            ctx.fillText('Ba-141',cx-d,cy-t*30+35);ctx.fillText('Kr-92',cx+d,cy+t*30+35);
+            // Neutrons flying out
+            drawNeutron(cx+t*120,cy-t*100);
+            drawNeutron(cx-t*80,cy+t*120);
+            drawNeutron(cx+t*60,cy+t*90);
+            // Energy burst
+            ctx.beginPath();ctx.arc(cx,cy,t*60,0,Math.PI*2);
+            ctx.fillStyle=`rgba(244,211,94,${0.3*(1-t)})`;ctx.fill();
+            ctx.fillStyle='#F4D35E';ctx.font='600 14px Oswald';ctx.fillText('ENERGY',cx,cy+5);
+        }
+    } else if(mode===1){
+        // Fusion animation
+        const phase=animT%4;
+        ctx.fillStyle='#637EA1';ctx.font='600 16px Oswald';ctx.textAlign='center';
+        ctx.fillText('NUCLEAR FUSION',cx,30);
+        ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';
+        ctx.fillText('Temperature: ~15 million °C',cx,50);
+
+        if(phase<2){
+            // Two hydrogen nuclei approaching
+            const d=150-phase/2*150;
+            drawNucleus(cx-d,cy,15,1,1);
+            drawNucleus(cx+d,cy,15,1,1);
+            ctx.fillStyle='#4a5568';ctx.font='500 10px Outfit';ctx.textAlign='center';
+            ctx.fillText('H-2',cx-d,cy+25);ctx.fillText('H-3',cx+d,cy+25);
+        } else {
+            // Fused + neutron + energy
+            const t=(phase-2)/2;
+            drawNucleus(cx,cy,22,2,1);
+            ctx.fillStyle='#4a5568';ctx.font='500 10px Outfit';ctx.textAlign='center';
+            ctx.fillText('He-3',cx,cy+32);
+            drawNeutron(cx+t*150,cy-t*100);
+            ctx.fillText('Neutron',cx+t*150,cy-t*100-12);
+            // Energy
+            ctx.beginPath();ctx.arc(cx,cy,t*80,0,Math.PI*2);
+            ctx.fillStyle=`rgba(244,211,94,${0.3*(1-t)})`;ctx.fill();
+            ctx.fillStyle='#F4D35E';ctx.font='600 14px Oswald';ctx.fillText('ENERGY',cx,cy-50);
+        }
+    } else {
+        // Chain reaction
+        ctx.fillStyle='#637EA1';ctx.font='600 16px Oswald';ctx.textAlign='center';
+        ctx.fillText('CHAIN REACTION',cx,30);
+
+        // Draw branching fission tree
+        const nodes=[];
+        function addNode(x,y,gen,delay){
+            if(gen>3||x<30||x>W-30)return;
+            nodes.push({x,y,gen,delay});
+            const t=Math.max(0,animT-delay);
+            if(t>0.8){
+                addNode(x-80/(gen+1),y+80,gen+1,delay+0.8);
+                addNode(x+80/(gen+1),y+80,gen+1,delay+0.8);
+            }
+        }
+        addNode(cx,80,0,0);
+
+        nodes.forEach(n=>{
+            const t=Math.max(0,animT-n.delay);
+            if(t<=0)return;
+            const r=Math.min(1,t/0.8);
+            // Nucleus
+            const nr=12-n.gen*2;
+            ctx.beginPath();ctx.arc(n.x,n.y,nr,0,Math.PI*2);
+            ctx.fillStyle=r<1?'#F5E6E8':'#F4D35E';ctx.fill();
+            if(r>=1){
+                // Burst
+                ctx.beginPath();ctx.arc(n.x,n.y,nr+8,0,Math.PI*2);
+                ctx.fillStyle='rgba(244,211,94,0.2)';ctx.fill();
+            }
+            // Connecting lines
+            if(n.gen>0){
+                ctx.beginPath();ctx.moveTo(n.x,n.y-nr);ctx.lineTo(n.x,n.y-40);
+                ctx.strokeStyle='#4a5568';ctx.lineWidth=1;ctx.setLineDash([2,2]);ctx.stroke();ctx.setLineDash([]);
+            }
+        });
+
+        // Neutron arrows between generations
+        ctx.fillStyle='#4a5568';ctx.font='500 10px Outfit';ctx.textAlign='center';
+        ctx.fillText('Each fission releases 2-3 neutrons',cx,H-30);
+        ctx.fillText('triggering more fission events',cx,H-15);
+    }
+
+    requestAnimationFrame(draw);
+}
+resize();window.addEventListener('resize',resize);requestAnimationFrame(draw);
+</script>
+</body>
+</html>

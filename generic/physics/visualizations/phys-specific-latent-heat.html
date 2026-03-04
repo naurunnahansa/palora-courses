@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specific Latent Heat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #637EA1; }
+        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.72rem; color: #4a5568; }
+        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; }
+        .readout .formula { font-size: 0.68rem; color: #4a5568; margin-top: 2px; }
+        .info { background: #fafbfc; border-radius: 5px; padding: 8px; font-size: 0.78rem; color: #4a5568; text-align: center; margin-top: 8px; }
+        .info strong { color: #637EA1; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Specific Latent Heat</h1>
+    <p class="subtitle">Heating curve showing energy input vs temperature</p>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="500"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Energy input</span><span class="val" id="eLabel">0 kJ</span></div>
+            <input type="range" id="eSlider" min="0" max="1000" value="0">
+        </div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Mass</span><span class="val" id="mLabel">1.0 kg</span></div>
+            <input type="range" id="mSlider" min="5" max="50" value="10">
+        </div>
+    </div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Temperature</div><div class="value" id="tempVal">-20°C</div></div>
+        <div class="readout"><div class="label">State</div><div class="value" id="stateVal">Solid</div></div>
+    </div>
+    <div class="info" id="info"></div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// Water properties (simplified)
+const cSolid = 2100, cLiquid = 4200, cGas = 2000;
+const Lf = 334000; // latent heat of fusion J/kg
+const Lv = 2260000; // latent heat of vaporisation J/kg
+const meltT = 0, boilT = 100;
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 500 / 1060) + 'px';
+}
+
+function getState(energy, mass) {
+    let e = energy * 1000; // convert kJ to J
+    // Phase 1: Solid heating from -20 to 0
+    const solidE = mass * cSolid * 20;
+    if (e <= solidE) return { temp: -20 + e / (mass * cSolid), state: 'Solid', phase: 0 };
+    e -= solidE;
+    // Phase 2: Melting at 0°C
+    const meltE = mass * Lf;
+    if (e <= meltE) return { temp: 0, state: 'Melting (Solid→Liquid)', phase: 1, frac: e / meltE };
+    e -= meltE;
+    // Phase 3: Liquid heating 0 to 100
+    const liquidE = mass * cLiquid * 100;
+    if (e <= liquidE) return { temp: e / (mass * cLiquid), state: 'Liquid', phase: 2 };
+    e -= liquidE;
+    // Phase 4: Boiling at 100°C
+    const boilE = mass * Lv;
+    if (e <= boilE) return { temp: 100, state: 'Boiling (Liquid→Gas)', phase: 3, frac: e / boilE };
+    e -= boilE;
+    // Phase 5: Gas heating above 100
+    return { temp: 100 + e / (mass * cGas), state: 'Gas', phase: 4 };
+}
+
+function draw() {
+    const energy = parseInt(document.getElementById('eSlider').value);
+    const mass = parseInt(document.getElementById('mSlider').value) / 10;
+    const s = getState(energy, mass);
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    const px = 100, py = 40, pw = W - 150, ph = H - 100;
+    // Axes
+    ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px, py + ph); ctx.lineTo(px + pw, py + ph); ctx.stroke();
+    ctx.fillStyle = '#4a5568'; ctx.font = '500 14px Outfit'; ctx.textAlign = 'center';
+    ctx.fillText('Energy supplied (kJ)', px + pw / 2, py + ph + 40);
+    ctx.save(); ctx.translate(30, py + ph / 2); ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Temperature (°C)', 0, 0); ctx.restore();
+
+    // Draw full heating curve
+    const maxE = 1000;
+    const totalSolidE = mass * cSolid * 20 / 1000;
+    const totalMeltE = mass * Lf / 1000;
+    const totalLiquidE = mass * cLiquid * 100 / 1000;
+    const totalBoilE = mass * Lv / 1000;
+
+    const points = [];
+    for (let e = 0; e <= maxE; e += 2) {
+        const st = getState(e, mass);
+        const x = px + (e / maxE) * pw;
+        const y = py + ph - ((st.temp + 20) / 140) * ph;
+        points.push({ x, y });
+    }
+
+    // Shade melting region
+    const meltStart = totalSolidE, meltEnd = totalSolidE + totalMeltE;
+    const boilStart = totalSolidE + totalMeltE + totalLiquidE;
+    const boilEnd = boilStart + totalBoilE;
+
+    // Melting flat section highlight
+    ctx.fillStyle = '#4a90d920';
+    const mx1 = px + (meltStart / maxE) * pw, mx2 = px + (meltEnd / maxE) * pw;
+    const meltY = py + ph - (20 / 140) * ph;
+    ctx.fillRect(mx1, meltY - 10, mx2 - mx1, 20);
+
+    // Boiling flat section highlight
+    ctx.fillStyle = '#dc354520';
+    const bx1 = px + (boilStart / maxE) * pw, bx2 = px + (Math.min(boilEnd, maxE) / maxE) * pw;
+    const boilY = py + ph - (120 / 140) * ph;
+    if (bx1 < px + pw) ctx.fillRect(bx1, boilY - 10, bx2 - bx1, 20);
+
+    // Curve
+    ctx.beginPath();
+    points.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+    ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 3; ctx.stroke();
+
+    // Current point
+    const curX = px + (energy / maxE) * pw;
+    const curY = py + ph - ((s.temp + 20) / 140) * ph;
+    ctx.beginPath(); ctx.arc(curX, curY, 8, 0, Math.PI * 2);
+    ctx.fillStyle = '#dc3545'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+
+    // Labels
+    ctx.font = '500 12px Outfit'; ctx.fillStyle = '#4a90d9'; ctx.textAlign = 'center';
+    if (mx2 - mx1 > 30) ctx.fillText('Melting (Lf)', (mx1 + mx2) / 2, meltY - 16);
+    ctx.fillStyle = '#dc3545';
+    if (bx1 < px + pw) ctx.fillText('Boiling (Lv)', (bx1 + Math.min(bx2, px + pw)) / 2, boilY - 16);
+
+    // State labels on curve
+    ctx.font = '500 11px Outfit'; ctx.fillStyle = '#28a745';
+    ctx.fillText('Solid', px + (totalSolidE / 2 / maxE) * pw, meltY + 30);
+    ctx.fillStyle = '#4a90d9';
+    const liqMidE = meltEnd + totalLiquidE / 2;
+    if (liqMidE < maxE) ctx.fillText('Liquid', px + (liqMidE / maxE) * pw, (meltY + boilY) / 2);
+    ctx.fillStyle = '#dc3545';
+    if (boilEnd < maxE) ctx.fillText('Gas', px + (Math.min(boilEnd + 50, maxE) / maxE) * pw, boilY + 30);
+
+    // Temp axis labels
+    ctx.fillStyle = '#4a5568'; ctx.font = '500 11px Outfit'; ctx.textAlign = 'right';
+    [-20, 0, 50, 100].forEach(t => {
+        const y = py + ph - ((t + 20) / 140) * ph;
+        ctx.fillText(t + '°C', px - 8, y + 4);
+        ctx.beginPath(); ctx.moveTo(px - 3, y); ctx.lineTo(px + 3, y);
+        ctx.strokeStyle = '#ccc'; ctx.lineWidth = 1; ctx.stroke();
+    });
+
+    document.getElementById('eLabel').textContent = energy + ' kJ';
+    document.getElementById('mLabel').textContent = mass.toFixed(1) + ' kg';
+    document.getElementById('tempVal').textContent = s.temp.toFixed(1) + '°C';
+    document.getElementById('stateVal').textContent = s.state;
+
+    const infoEl = document.getElementById('info');
+    if (s.phase === 1) infoEl.innerHTML = `<strong>Melting:</strong> Temperature stays at 0°C. Energy breaks bonds (E = mLf = ${mass.toFixed(1)} × ${Lf} = <strong>${(mass * Lf / 1000).toFixed(0)} kJ</strong>)`;
+    else if (s.phase === 3) infoEl.innerHTML = `<strong>Boiling:</strong> Temperature stays at 100°C. Energy breaks bonds (E = mLv = ${mass.toFixed(1)} × ${Lv} = <strong>${(mass * Lv / 1000).toFixed(0)} kJ</strong>)`;
+    else infoEl.innerHTML = `Energy is <strong>increasing particle KE</strong>, so temperature rises. E = mcΔT`;
+}
+
+['eSlider', 'mSlider'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+resize(); draw();
+window.addEventListener('resize', () => { resize(); draw(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resistance Factors</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.slider-row{margin-bottom:8px}.slider-label{display:flex;justify-content:space-between;font-size:.8rem;color:#4a5568;margin-bottom:2px}.slider-label .val{font-weight:600;color:#637EA1}input[type="range"]{width:100%;accent-color:#637EA1}select{width:100%;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.82rem;margin-bottom:8px}.readouts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.readout{background:#F5E6E8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.72rem;color:#4a5568}.readout .value{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1}.readout .formula{font-size:.68rem;color:#4a5568;margin-top:2px}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Factors Affecting Resistance</h1>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="300"></canvas></div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row"><div class="slider-label"><span>Length (L)</span><span class="val" id="lLabel">1.0 m</span></div><input type="range" id="lSlider" min="1" max="50" value="10"></div>
+        <div class="slider-row"><div class="slider-label"><span>Cross-section area (A)</span><span class="val" id="aLabel">1.0 mm²</span></div><input type="range" id="aSlider" min="1" max="20" value="10"></div>
+        <select id="matSelect"><option value="17">Copper (ρ = 1.7×10⁻⁸)</option><option value="28">Aluminium (ρ = 2.8×10⁻⁸)</option><option value="100">Iron (ρ = 1.0×10⁻⁷)</option><option value="440">Nichrome (ρ = 1.1×10⁻⁶)</option></select>
+    </div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Resistance</div><div class="value" id="rVal">—</div><div class="formula">R = ρL / A</div></div>
+        <div class="readout"><div class="label">Effect</div><div class="value" id="effectVal" style="font-size:.78rem;">—</div></div>
+    </div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let lastTs=0,animT=0;
+const electrons=[];for(let i=0;i<15;i++)electrons.push({t:Math.random()});
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*300/1060)+'px'}
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
+    const L=parseInt(document.getElementById('lSlider').value)/10;
+    const A=parseInt(document.getElementById('aSlider').value)/10;
+    const rho=parseInt(document.getElementById('matSelect').value);
+    const R=rho*L/(A*10);
+
+    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Wire
+    const wireL=100+L*140;
+    const wireH=10+A*8;
+    const wireX=(W-wireL)/2,wireY=H/2-wireH/2;
+
+    // Wire body
+    const gradient=ctx.createLinearGradient(wireX,wireY,wireX,wireY+wireH);
+    gradient.addColorStop(0,'#c87533');gradient.addColorStop(0.5,'#e8a060');gradient.addColorStop(1,'#c87533');
+    ctx.fillStyle=gradient;ctx.fillRect(wireX,wireY,wireL,wireH);
+    ctx.strokeStyle='#a05a20';ctx.lineWidth=1;ctx.strokeRect(wireX,wireY,wireL,wireH);
+
+    // Electrons flowing through
+    const speed=1/(R+1)*2;
+    electrons.forEach(e=>{
+        e.t=(e.t+dt*speed)%1;
+        const ex=wireX+e.t*wireL;
+        const ey=wireY+wireH*0.3+Math.random()*wireH*0.4;
+        ctx.beginPath();ctx.arc(ex,ey,3,0,Math.PI*2);
+        ctx.fillStyle='#4a90d9';ctx.fill();
+    });
+
+    // Dimension labels
+    ctx.fillStyle='#637EA1';ctx.font='600 13px Outfit';ctx.textAlign='center';
+    ctx.fillText(`L = ${L.toFixed(1)} m`,W/2,wireY-15);
+    ctx.fillText(`A = ${A.toFixed(1)} mm²`,W/2,wireY+wireH+25);
+
+    // Arrows showing length
+    ctx.strokeStyle='#F4D35E';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(wireX,wireY-30);ctx.lineTo(wireX+wireL,wireY-30);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(wireX,wireY-35);ctx.lineTo(wireX,wireY-25);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(wireX+wireL,wireY-35);ctx.lineTo(wireX+wireL,wireY-25);ctx.stroke();
+
+    document.getElementById('lLabel').textContent=L.toFixed(1)+' m';
+    document.getElementById('aLabel').textContent=A.toFixed(1)+' mm²';
+    document.getElementById('rVal').textContent=R.toFixed(2)+' Ω';
+
+    let effect='';
+    if(L>2)effect+='Longer wire → more R. ';
+    if(A<0.5)effect+='Thinner wire → more R. ';
+    if(rho>100)effect+='High resistivity material. ';
+    if(!effect)effect='Moderate resistance.';
+    document.getElementById('effectVal').textContent=effect;
+
+    requestAnimationFrame(draw);
+}
+
+['lSlider','aSlider'].forEach(id=>document.getElementById(id).addEventListener('input',()=>{}));
+document.getElementById('matSelect').addEventListener('change',()=>{});
+resize();window.addEventListener('resize',resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>
