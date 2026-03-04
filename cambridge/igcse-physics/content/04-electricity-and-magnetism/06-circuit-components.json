@@ -1,0 +1,4371 @@
+{
+  "title": "Circuit Components",
+  "order": 6,
+  "pageType": "markdown",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Circuit Components"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Electrical circuits are made up of various components, each with a specific function. To design, build, and analyse circuits, you need to recognise the standard "
+          },
+          {
+            "type": "text",
+            "text": "circuit symbols",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " for each component and understand what each component does. Some components, such as LDRs and thermistors, change their behaviour in response to environmental conditions, making them extremely useful in sensing and control circuits."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In this lesson, we will learn the standard circuit symbols, the function of each component, and how special components like LDRs, thermistors, and potential dividers are used in practical circuits."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Standard Circuit Symbols and Functions"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Every component in a circuit diagram is represented by a standard symbol. Here are the essential components and their functions:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Cell",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: A long thin line (positive terminal) and a short thick line (negative terminal). Function: Provides a source of EMF by converting chemical energy into electrical energy. A single cell provides a fixed voltage (typically 1.5 V)."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Battery",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: Two or more cells drawn in series (alternating long and short lines). Function: A combination of cells that provides a larger EMF. Cells in series have their voltages added together."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Switch (Open and Closed)",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: A break in the line (open) or a connected line (closed). Function: Controls the flow of current. An open switch breaks the circuit (no current flows). A closed switch completes the circuit (current flows)."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Resistor (Fixed)",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: A rectangular box. Function: Opposes the flow of current. Used to limit or control the current in a circuit. Converts electrical energy into heat."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Variable Resistor (Rheostat)",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: A rectangular box with an arrow through it (or across it). Function: A resistor whose resistance can be changed. Used to vary the current in a circuit or to vary the potential difference across a component. Turning the control changes the length of resistance wire in the circuit."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Lamp (Filament Lamp)",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: A circle with a cross inside it. Function: Converts electrical energy into light (and heat). The thin tungsten filament glows white-hot when current passes through it."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Ammeter",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: A circle with the letter \"A\" inside. Function: Measures electric current. Connected in "
+          },
+          {
+            "type": "text",
+            "text": "series",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " with the component. Has very low resistance."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Voltmeter",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: A circle with the letter \"V\" inside. Function: Measures potential difference (voltage) across a component. Connected in "
+          },
+          {
+            "type": "text",
+            "text": "parallel",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " with the component. Has very high resistance."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Diode",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: A triangle pointing in the direction of conventional current flow, with a bar at the tip. Function: Allows current to flow in "
+          },
+          {
+            "type": "text",
+            "text": "one direction only",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " (the direction the triangle points). In the forward direction, it has very low resistance (above the threshold voltage of about 0.6-0.7 V for silicon). In the reverse direction, it has very high resistance and blocks current. Used for rectification (converting AC to DC)."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Light-Emitting Diode (LED)",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: Similar to a diode but with two small arrows pointing outward (representing emitted light). Function: A diode that emits light when current flows through it in the forward direction. LEDs are much more energy-efficient than filament lamps and last much longer. They operate at low voltages and currents and are available in many colours. LEDs are used in displays, indicators, lighting, and many electronic devices. A protective resistor is usually connected in series with an LED to limit the current and prevent damage."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Light-Dependent Resistor (LDR)",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: A resistor symbol (rectangle) enclosed in a circle, with two arrows pointing inward (representing light falling on it). Function: A resistor whose resistance changes with light intensity. In "
+          },
+          {
+            "type": "text",
+            "text": "darkness",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", the LDR has a "
+          },
+          {
+            "type": "text",
+            "text": "high resistance",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " (typically hundreds of kilohms). In "
+          },
+          {
+            "type": "text",
+            "text": "bright light",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", the LDR has a "
+          },
+          {
+            "type": "text",
+            "text": "low resistance",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " (typically a few hundred ohms). LDRs are used in light-sensing circuits, such as automatic street lights, camera exposure meters, and burglar alarms."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Thermistor (NTC type)",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: A resistor symbol (rectangle) enclosed in a circle, sometimes with a \"T\" or a line through it. Function: A resistor whose resistance changes with temperature. For a "
+          },
+          {
+            "type": "text",
+            "text": "negative temperature coefficient (NTC) thermistor",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", the resistance "
+          },
+          {
+            "type": "text",
+            "text": "decreases",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " as temperature "
+          },
+          {
+            "type": "text",
+            "text": "increases",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ". At low temperatures, the NTC thermistor has high resistance; at high temperatures, it has low resistance. NTC thermistors are used in temperature-sensing circuits, such as thermostats, fire alarms, and digital thermometers."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Note: There are also PTC (positive temperature coefficient) thermistors, whose resistance increases with temperature, but the NTC type is the most commonly encountered."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Fuse",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: A rectangular box with a line through the middle (or a thin wire symbol). Function: A safety device that melts and breaks the circuit if the current exceeds a certain value, protecting the circuit and appliances from damage due to excessive current."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Relay",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Symbol: Varies, but typically shown as an electromagnet (coil) near a switch. Function: An electromagnetic switch that allows a small current in one circuit to control a larger current in another circuit. When current flows through the coil of the relay, it creates a magnetic field that attracts a metal armature, closing (or opening) the switch contacts in the second circuit. Relays are used to control high-power devices (such as motors or heaters) using low-power control circuits (such as those from sensors or microcontrollers)."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Special Components in Detail"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The Light-Dependent Resistor (LDR)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The LDR is made from a semiconductor material (such as cadmium sulfide) whose electrical properties change when light falls on it."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "How it works:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " In darkness, the semiconductor has very few free charge carriers, so its resistance is high. When light shines on the LDR, photons (particles of light) give energy to electrons in the semiconductor, freeing them to conduct electricity. The brighter the light, the more free charge carriers are created, and the lower the resistance."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Characteristic behaviour:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Darkness: resistance is very high (e.g., "
+                  },
+                  {
+                    "type": "text",
+                    "text": "> 1 \\text{ M}\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ")"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Dim light: resistance is moderate (e.g., a few k"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ")"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Bright light: resistance is low (e.g., a few hundred "
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ")"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Applications:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Automatic street lights (switch on when it gets dark)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Camera light meters"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Automatic brightness control on screens"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Burglar alarm light beams"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The Thermistor (NTC)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "An NTC thermistor is made from semiconductor metal oxides."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "How it works:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " At low temperatures, the semiconductor has few free charge carriers, so its resistance is high. As the temperature increases, thermal energy frees more electrons (and holes) to conduct electricity. The higher the temperature, the more free charge carriers are available, and the lower the resistance."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Characteristic behaviour:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Low temperature (e.g., 0 degrees C): resistance is high (e.g., several k"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ")"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Room temperature (e.g., 25 degrees C): resistance is moderate"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "High temperature (e.g., 100 degrees C): resistance is low (e.g., a few hundred "
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ")"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Applications:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Digital thermometers"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Thermostats (temperature control systems)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Fire alarm sensors"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Temperature compensation in circuits"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Potential Divider Circuits"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "What is a Potential Divider?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A "
+          },
+          {
+            "type": "text",
+            "text": "potential divider",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " (also called a voltage divider) is a circuit that uses two or more resistors in series to produce an output voltage that is a fraction of the input voltage."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Consider two resistors, "
+          },
+          {
+            "type": "text",
+            "text": "R_1",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " and "
+          },
+          {
+            "type": "text",
+            "text": "R_2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", connected in series across a supply voltage "
+          },
+          {
+            "type": "text",
+            "text": "V_{\\text{in}}",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ". The output voltage "
+          },
+          {
+            "type": "text",
+            "text": "V_{\\text{out}}",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is taken across "
+          },
+          {
+            "type": "text",
+            "text": "R_2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ":"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{\\text{out}} = V_{\\text{in}} \\times \\frac{R_2}{R_1 + R_2}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "This equation shows that the output voltage depends on the ratio of the resistances. If "
+          },
+          {
+            "type": "text",
+            "text": "R_2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is much larger than "
+          },
+          {
+            "type": "text",
+            "text": "R_1",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", the output voltage is close to the input voltage. If "
+          },
+          {
+            "type": "text",
+            "text": "R_2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is much smaller than "
+          },
+          {
+            "type": "text",
+            "text": "R_1",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", the output voltage is small."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "How it Works"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The total potential difference across both resistors equals the supply voltage. The voltage is shared between the resistors in proportion to their resistances (since the same current flows through both in a series circuit):"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_1 = IR_1 \\qquad \\text{and} \\qquad V_2 = IR_2"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Since "
+          },
+          {
+            "type": "text",
+            "text": "I",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is the same for both:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "\\frac{V_1}{V_2} = \\frac{R_1}{R_2}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The resistor with the larger resistance gets the larger share of the voltage."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Potential Dividers with LDRs and Thermistors"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Potential dividers become especially useful when one of the resistors is replaced by a sensor such as an LDR or thermistor. This allows the output voltage to change automatically in response to changes in light or temperature."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1: LDR in a potential divider",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "If an LDR is used as "
+          },
+          {
+            "type": "text",
+            "text": "R_2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " (the bottom resistor) with a fixed resistor "
+          },
+          {
+            "type": "text",
+            "text": "R_1",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " (the top resistor) and the output is taken across the LDR:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In "
+                  },
+                  {
+                    "type": "text",
+                    "text": "bright light",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ": LDR resistance is low, so "
+                  },
+                  {
+                    "type": "text",
+                    "text": "R_2",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " is small compared to "
+                  },
+                  {
+                    "type": "text",
+                    "text": "R_1",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ". The output voltage ("
+                  },
+                  {
+                    "type": "text",
+                    "text": "V_{\\text{out}}",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ") is "
+                  },
+                  {
+                    "type": "text",
+                    "text": "low",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In "
+                  },
+                  {
+                    "type": "text",
+                    "text": "darkness",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ": LDR resistance is high, so "
+                  },
+                  {
+                    "type": "text",
+                    "text": "R_2",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " is large compared to "
+                  },
+                  {
+                    "type": "text",
+                    "text": "R_1",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ". The output voltage ("
+                  },
+                  {
+                    "type": "text",
+                    "text": "V_{\\text{out}}",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ") is "
+                  },
+                  {
+                    "type": "text",
+                    "text": "high",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "This circuit could be used to trigger an alarm or switch on a light when it gets dark (when the output voltage exceeds a certain threshold)."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "If the positions of the LDR and the fixed resistor are swapped (LDR as "
+          },
+          {
+            "type": "text",
+            "text": "R_1",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "), the behaviour reverses: the output voltage is high in bright light and low in darkness."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2: Thermistor in a potential divider",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "If an NTC thermistor is used as "
+          },
+          {
+            "type": "text",
+            "text": "R_2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " with a fixed resistor "
+          },
+          {
+            "type": "text",
+            "text": "R_1",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ":"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "At "
+                  },
+                  {
+                    "type": "text",
+                    "text": "high temperature",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ": thermistor resistance is low, so "
+                  },
+                  {
+                    "type": "text",
+                    "text": "V_{\\text{out}}",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " is "
+                  },
+                  {
+                    "type": "text",
+                    "text": "low",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "At "
+                  },
+                  {
+                    "type": "text",
+                    "text": "low temperature",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ": thermistor resistance is high, so "
+                  },
+                  {
+                    "type": "text",
+                    "text": "V_{\\text{out}}",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " is "
+                  },
+                  {
+                    "type": "text",
+                    "text": "high",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "This circuit could be connected to a warning system that activates when the temperature falls below a certain level (e.g., a frost warning)."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practical Applications of Potential Dividers"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Potential dividers are used in a wide range of applications:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Volume controls",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " on audio equipment (using a variable resistor as part of a potential divider)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Sensor circuits",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " for light, temperature, moisture, etc."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Bias circuits",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " in transistor amplifiers"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Setting reference voltages",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " in electronic circuits"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The Relay"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A "
+          },
+          {
+            "type": "text",
+            "text": "relay",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is an electromagnetically operated switch. It allows a small current in one circuit (the control circuit) to switch on or off a much larger current in a separate circuit (the controlled circuit)."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "How a Relay Works"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A small current flows through a coil of wire (the electromagnet) in the control circuit."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The coil produces a magnetic field that attracts a soft iron armature (a pivoted lever)."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The armature moves and closes (or opens) a switch in the second circuit."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "When the current in the coil is switched off, the magnetic field disappears, and a spring returns the armature to its original position."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Why Use a Relay?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Relays are used when:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A "
+                  },
+                  {
+                    "type": "text",
+                    "text": "small, low-voltage",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " signal (such as from a sensor, microcontroller, or logic circuit) needs to control a "
+                  },
+                  {
+                    "type": "text",
+                    "text": "large, high-voltage",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " or "
+                  },
+                  {
+                    "type": "text",
+                    "text": "high-current",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " circuit (such as a motor, heater, or mains appliance)."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "It is important to keep the control circuit "
+                  },
+                  {
+                    "type": "text",
+                    "text": "electrically isolated",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " from the high-power circuit for safety reasons."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "For example, a temperature sensor and a low-power control circuit could use a relay to switch on a powerful mains heater without the control circuit being directly connected to the mains supply."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Example 1: Potential Divider Calculation"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Two resistors, "
+          },
+          {
+            "type": "text",
+            "text": "R_1 = 4.0 \\text{ k}\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " and "
+          },
+          {
+            "type": "text",
+            "text": "R_2 = 6.0 \\text{ k}\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", are connected in series across a 10 V supply. Calculate the output voltage across "
+          },
+          {
+            "type": "text",
+            "text": "R_2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{\\text{out}} = V_{\\text{in}} \\times \\frac{R_2}{R_1 + R_2} = 10 \\times \\frac{6.0}{4.0 + 6.0} = 10 \\times \\frac{6.0}{10.0} = 6.0 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Example 2: Potential Divider with LDR"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A potential divider consists of a 10 k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " fixed resistor ("
+          },
+          {
+            "type": "text",
+            "text": "R_1",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ") in series with an LDR ("
+          },
+          {
+            "type": "text",
+            "text": "R_2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "). The supply voltage is 5.0 V. In bright light, the LDR has a resistance of 1.0 k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ". In darkness, the LDR has a resistance of 100 k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ". Calculate the output voltage across the LDR in each condition."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In bright light ("
+          },
+          {
+            "type": "text",
+            "text": "R_2 = 1.0 \\text{ k}\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "):"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{\\text{out}} = 5.0 \\times \\frac{1.0}{10 + 1.0} = 5.0 \\times \\frac{1.0}{11.0} = 0.45 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In darkness ("
+          },
+          {
+            "type": "text",
+            "text": "R_2 = 100 \\text{ k}\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "):"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{\\text{out}} = 5.0 \\times \\frac{100}{10 + 100} = 5.0 \\times \\frac{100}{110} = 4.5 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The output voltage changes from 0.45 V in bright light to 4.5 V in darkness — a significant change that could be used to trigger a switch or alarm."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Example 3: Current Through an LED"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " An LED requires a current of 20 mA and has a forward voltage drop of 2.0 V. It is to be connected to a 9.0 V supply. Calculate the resistance of the protective resistor that must be connected in series with the LED."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The voltage across the protective resistor:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_R = 9.0 - 2.0 = 7.0 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The current through the resistor (same as LED, since they are in series):"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "I = 20 \\text{ mA} = 0.020 \\text{ A}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The resistance:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "R = \\frac{V_R}{I} = \\frac{7.0}{0.020} = 350 \\text{ } \\Omega"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A 350 "
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " resistor (or the nearest standard value, such as 330 "
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " or 390 "
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ") should be used."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Example 4: Thermistor in a Sensing Circuit"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A potential divider consists of a 5.0 k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " fixed resistor ("
+          },
+          {
+            "type": "text",
+            "text": "R_1",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ") in series with an NTC thermistor ("
+          },
+          {
+            "type": "text",
+            "text": "R_2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "). The supply voltage is 6.0 V. At room temperature, the thermistor has a resistance of 5.0 k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ". When heated, the thermistor resistance drops to 1.0 k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ". Calculate the output voltage across the thermistor at each temperature."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "At room temperature ("
+          },
+          {
+            "type": "text",
+            "text": "R_2 = 5.0 \\text{ k}\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "):"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{\\text{out}} = 6.0 \\times \\frac{5.0}{5.0 + 5.0} = 6.0 \\times \\frac{5.0}{10.0} = 3.0 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "When heated ("
+          },
+          {
+            "type": "text",
+            "text": "R_2 = 1.0 \\text{ k}\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "):"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{\\text{out}} = 6.0 \\times \\frac{1.0}{5.0 + 1.0} = 6.0 \\times \\frac{1.0}{6.0} = 1.0 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The output voltage drops from 3.0 V to 1.0 V as the temperature rises."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Misconceptions"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"A diode has no resistance.\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " A diode has very low resistance in the forward direction (above its threshold voltage) and very high resistance in the reverse direction. It is not zero or infinite in either direction."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"An LDR's resistance increases with more light.\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " The opposite is true. More light means more free charge carriers, so the resistance "
+                  },
+                  {
+                    "type": "text",
+                    "text": "decreases",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " with increasing light intensity."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"All thermistors behave the same way.\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " There are two types: NTC (negative temperature coefficient), where resistance decreases as temperature increases, and PTC (positive temperature coefficient), where resistance increases as temperature increases. At this level, we primarily study NTC thermistors."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"A potential divider creates energy.\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " A potential divider does not create energy or voltage. It simply divides the existing supply voltage between the resistors in proportion to their resistances."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"The voltmeter draws no current.\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " An ideal voltmeter draws no current, but real voltmeters draw a very small current. This is usually negligible but can matter in high-resistance circuits."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"LEDs can be connected directly to a battery without a resistor.\"",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Without a series resistor, the current through the LED would be too large and would damage or destroy it. A protective series resistor is essential."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Problems"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Draw the circuit symbols for: cell, battery, switch (open), resistor, variable resistor, lamp, ammeter, voltmeter, diode, LED, LDR, thermistor, and fuse."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Describe the function of each of the following: (a) variable resistor, (b) diode, (c) LDR, (d) fuse, (e) relay."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "An LDR has a resistance of 200 "
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " in bright light and 500 k"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " in darkness. Calculate the current through the LDR in each condition if a p.d. of 6.0 V is applied across it."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Two resistors of 3.3 k"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " and 6.7 k"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " are connected as a potential divider across a 12 V supply. Calculate the output voltage across the 6.7 k"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " resistor."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A potential divider uses a 4.7 k"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " fixed resistor and an NTC thermistor. The supply is 9.0 V. The output is taken across the thermistor. At 20 degrees C, the thermistor has a resistance of 10 k"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ". At 80 degrees C, it has a resistance of 500 "
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ". Calculate the output voltage at each temperature."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "An LED has a forward voltage of 1.8 V and requires 15 mA of current. It is connected to a 5.0 V supply with a series resistor. Calculate the required resistance."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Explain how a relay allows a small current to control a large current. Give a practical example."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Describe a circuit using an LDR and a potential divider that could automatically switch on a light when it gets dark. Explain how the circuit works."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Explain why a thermistor (NTC) is suitable for use in a fire alarm circuit."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A potential divider consists of a 2.0 k"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " resistor and a 3.0 k"
+                  },
+                  {
+                    "type": "text",
+                    "text": "\\Omega",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " resistor in series across a 10 V supply. Calculate the potential difference across each resistor."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Each circuit component has a standard symbol and a specific function."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A "
+                  },
+                  {
+                    "type": "text",
+                    "text": "diode",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " allows current in one direction only. An "
+                  },
+                  {
+                    "type": "text",
+                    "text": "LED",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " emits light when forward-biased."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "An "
+                  },
+                  {
+                    "type": "text",
+                    "text": "LDR",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " has high resistance in the dark and low resistance in bright light."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "An "
+                  },
+                  {
+                    "type": "text",
+                    "text": "NTC thermistor",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " has high resistance at low temperatures and low resistance at high temperatures."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A "
+                  },
+                  {
+                    "type": "text",
+                    "text": "potential divider",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " uses two resistors in series to produce a fraction of the supply voltage: "
+                  },
+                  {
+                    "type": "text",
+                    "text": "V_{\\text{out}} = V_{\\text{in}} \\times R_2 / (R_1 + R_2)",
+                    "marks": [
+                      {
+                        "type": "code"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Combining an LDR or thermistor with a fixed resistor in a potential divider creates a sensor circuit whose output voltage changes with light or temperature."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A "
+                  },
+                  {
+                    "type": "text",
+                    "text": "relay",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " uses a small current to control a larger current in a separate circuit via an electromagnet."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "LEDs always require a "
+                  },
+                  {
+                    "type": "text",
+                    "text": "series protective resistor",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " to limit the current."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Ammeters are connected in "
+                  },
+                  {
+                    "type": "text",
+                    "text": "series",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (low resistance); voltmeters are connected in "
+                  },
+                  {
+                    "type": "text",
+                    "text": "parallel",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (high resistance)."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "ASCII Diagrams: Common Circuit Symbols"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "text"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "  CELL                    BATTERY (2 cells)\n   |   |                   |  | |  |\n   |   |                   |  | |  |\n  long short              long/short repeated\n  (+)  (−)                (+)      (−)\n\n    ─┤├─                  ─┤├┤├─\n\n\n  SWITCH (open)           SWITCH (closed)\n\n    ─o   o─                ─o───o─\n\n\n  RESISTOR (fixed)        VARIABLE RESISTOR\n\n    ─┤▭├─                  ─┤▭├─\n                              ↗\n                           (arrow through)\n\n\n  LAMP                    AMMETER\n\n      ╭─╮                    ╭─╮\n    ─┤ ✕ ├─                ─┤ A ├─\n      ╰─╯                    ╰─╯\n\n\n  VOLTMETER               DIODE\n\n      ╭─╮                  ─▷|─\n    ─┤ V ├─               (triangle + bar)\n      ╰─╯                 current flows →\n\n\n  LED                     LDR\n\n    ─▷|─                    ╭─╮\n     ↗ ↗                  ─┤▭├─  ← arrows IN\n   (arrows out             ╰─╯\n    = light                (light dependent)\n    emitted)\n\n\n  THERMISTOR              FUSE\n\n      ╭─╮\n    ─┤▭├─  (with −t°)     ─┤─├─\n      ╰─╯                  (thin wire\n   (temperature             in casing)\n    dependent)"
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer Key"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "1.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Draw the circuit symbols for: cell, battery, switch (open), resistor, variable resistor, lamp, ammeter, voltmeter, diode, LED, LDR, thermistor, and fuse."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "See the ASCII diagram section above for standard representations of each symbol. "
+          },
+          {
+            "type": "text",
+            "text": "(explanation with physics reasoning)",
+            "marks": [
+              {
+                "type": "italic"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "2.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Describe the function of each component."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(a) "
+          },
+          {
+            "type": "text",
+            "text": "Variable resistor:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A resistor whose resistance can be changed, used to vary the current in a circuit or the p.d. across a component."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(b) "
+          },
+          {
+            "type": "text",
+            "text": "Diode:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Allows current to flow in one direction only (forward bias, above ~0.6 V for silicon). Blocks current in reverse bias. Used for rectification."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(c) "
+          },
+          {
+            "type": "text",
+            "text": "LDR:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A resistor whose resistance decreases as light intensity increases. Used in light-sensing circuits."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(d) "
+          },
+          {
+            "type": "text",
+            "text": "Fuse:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A safety device containing a thin wire that melts and breaks the circuit when current exceeds its rated value."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(e) "
+          },
+          {
+            "type": "text",
+            "text": "Relay:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " An electromagnetic switch that uses a small current in one circuit to control a larger current in a separate circuit. "
+          },
+          {
+            "type": "text",
+            "text": "(explanation with physics reasoning)",
+            "marks": [
+              {
+                "type": "italic"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "3.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Calculate the current through the LDR in each condition at 6.0 V."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Bright light ("
+          },
+          {
+            "type": "text",
+            "text": "R = 200 \\text{ }\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "):"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "I = \\frac{V}{R} = \\frac{6.0}{200} = 0.030 \\text{ A} = 30 \\text{ mA}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Darkness ("
+          },
+          {
+            "type": "text",
+            "text": "R = 500 \\text{ k}\\Omega = 500{,}000 \\text{ }\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "):"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "I = \\frac{6.0}{500{,}000} = 1.2 \\times 10^{-5} \\text{ A} = 0.012 \\text{ mA}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(calculation)",
+            "marks": [
+              {
+                "type": "italic"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "4.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Calculate the output voltage across the 6.7 k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " resistor in a potential divider with 3.3 k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " and 12 V supply."
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{\\text{out}} = 12 \\times \\frac{6.7}{3.3 + 6.7} = 12 \\times \\frac{6.7}{10.0} = 8.04 \\text{ V} \\approx 8.0 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(calculation)",
+            "marks": [
+              {
+                "type": "italic"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "5.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Calculate "
+          },
+          {
+            "type": "text",
+            "text": "V_{\\text{out}}",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " across the thermistor at each temperature ("
+          },
+          {
+            "type": "text",
+            "text": "R_1 = 4.7",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", supply = 9.0 V)."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "At 20°C ("
+          },
+          {
+            "type": "text",
+            "text": "R_2 = 10",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "):"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{\\text{out}} = 9.0 \\times \\frac{10}{4.7 + 10} = 9.0 \\times \\frac{10}{14.7} = 6.1 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "At 80°C ("
+          },
+          {
+            "type": "text",
+            "text": "R_2 = 500 \\text{ }\\Omega = 0.50",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "):"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_{\\text{out}} = 9.0 \\times \\frac{0.50}{4.7 + 0.50} = 9.0 \\times \\frac{0.50}{5.2} = 0.87 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(calculation)",
+            "marks": [
+              {
+                "type": "italic"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "6.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Calculate the required series resistance for the LED ("
+          },
+          {
+            "type": "text",
+            "text": "V_{\\text{LED}} = 1.8",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " V, "
+          },
+          {
+            "type": "text",
+            "text": "I = 15",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " mA, supply = 5.0 V)."
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_R = 5.0 - 1.8 = 3.2 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "R = \\frac{V_R}{I} = \\frac{3.2}{0.015} = 213 \\text{ }\\Omega \\approx 220 \\text{ }\\Omega \\text{ (nearest standard value)}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(calculation)",
+            "marks": [
+              {
+                "type": "italic"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "7.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Explain how a relay allows a small current to control a large current."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A small current flows through the coil (electromagnet) in the control circuit. This magnetises the soft iron core, which attracts a soft iron armature. The armature moves and closes a switch in a separate high-power circuit, allowing a large current to flow through the high-power device. When the small current is switched off, the core demagnetises, a spring returns the armature, and the switch opens. "
+          },
+          {
+            "type": "text",
+            "text": "Example:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A temperature sensor circuit (low power) uses a relay to switch on a mains heater (high power). "
+          },
+          {
+            "type": "text",
+            "text": "(explanation with physics reasoning)",
+            "marks": [
+              {
+                "type": "italic"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "8.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Describe a circuit using an LDR to switch on a light when it gets dark."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Connect a fixed resistor ("
+          },
+          {
+            "type": "text",
+            "text": "R_1",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ") in series with an LDR ("
+          },
+          {
+            "type": "text",
+            "text": "R_2",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ") across a power supply. Take the output voltage across the LDR. In "
+          },
+          {
+            "type": "text",
+            "text": "darkness",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", the LDR resistance is high, so the output voltage across it is high. This high voltage can be used to trigger a switch (e.g., via a relay or transistor) that turns on a lamp."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In "
+          },
+          {
+            "type": "text",
+            "text": "bright light",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", the LDR resistance is low, the output voltage is low, and the lamp stays off. The circuit automatically detects the change from light to dark. "
+          },
+          {
+            "type": "text",
+            "text": "(explanation with physics reasoning)",
+            "marks": [
+              {
+                "type": "italic"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "9.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Explain why an NTC thermistor is suitable for a fire alarm."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "An NTC thermistor has a high resistance at low (normal room) temperatures and a low resistance at high temperatures. In a potential divider circuit, a rise in temperature (e.g., from a fire) causes the thermistor's resistance to drop significantly. This changes the output voltage, which can trigger an alarm circuit. The large change in resistance for a temperature increase makes it a sensitive detector of fire conditions. "
+          },
+          {
+            "type": "text",
+            "text": "(explanation with physics reasoning)",
+            "marks": [
+              {
+                "type": "italic"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "10.",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Calculate the p.d. across each resistor in a potential divider (2.0 k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " and 3.0 k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", 10 V supply)."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Across the 2.0 k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " resistor:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_1 = 10 \\times \\frac{2.0}{2.0 + 3.0} = 10 \\times 0.40 = 4.0 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Across the 3.0 k"
+          },
+          {
+            "type": "text",
+            "text": "\\Omega",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " resistor:"
+          }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": {
+          "language": "math"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "V_2 = 10 \\times \\frac{3.0}{2.0 + 3.0} = 10 \\times 0.60 = 6.0 \\text{ V}"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Check: "
+          },
+          {
+            "type": "text",
+            "text": "4.0 + 6.0 = 10",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " V. Confirmed. "
+          },
+          {
+            "type": "text",
+            "text": "(calculation)",
+            "marks": [
+              {
+                "type": "italic"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
