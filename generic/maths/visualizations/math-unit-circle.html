@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Circle Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; cursor: crosshair; }
+        .slider-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .slider-row label { font-size: 0.82rem; font-weight: 600; color: #4a5568; min-width: 80px; }
+        .slider-row input[type="range"] { flex: 1; accent-color: #637EA1; height: 6px; }
+        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #637EA1; min-width: 52px; text-align: right; }
+        .readings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .reading-card { background: #F5E6E8; border-radius: 5px; padding: 8px 10px; text-align: center; }
+        .reading-card .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; margin-top: 2px; }
+        .reading-card.sin-card { border-left: 3px solid #e74c3c; }
+        .reading-card.cos-card { border-left: 3px solid #27ae60; }
+        .reading-card.tan-card { border-left: 3px solid #8e44ad; }
+        .exact-val { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; font-size: 0.9rem; color: #637EA1; margin-bottom: 8px; min-height: 32px; }
+        .special-angles { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; }
+        .special-btn { font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 600; padding: 4px 8px; border-radius: 5px; border: 1px solid #e5dfe0; background: #F5E6E8; color: #637EA1; cursor: pointer; transition: all 0.15s; }
+        .special-btn:hover { background: #637EA1; color: #fff; }
+        .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Unit Circle Explorer</h1>
+
+        <canvas id="circleCanvas" width="550" height="440"></canvas>
+
+        <div class="card">
+            <div class="card-title">Angle</div>
+            <div class="slider-row">
+                <label>Angle (&theta;)</label>
+                <input type="range" id="angleSlider" min="0" max="360" step="1" value="45">
+                <span class="val" id="angleVal">45&deg;</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Special Angles</div>
+            <div class="special-angles" id="specialBtns"></div>
+        </div>
+
+        <div class="readings">
+            <div class="reading-card sin-card">
+                <div class="label">sin &theta;</div>
+                <div class="value" id="sinVal">0.7071</div>
+            </div>
+            <div class="reading-card cos-card">
+                <div class="label">cos &theta;</div>
+                <div class="value" id="cosVal">0.7071</div>
+            </div>
+            <div class="reading-card tan-card">
+                <div class="label">tan &theta;</div>
+                <div class="value" id="tanVal">1.0000</div>
+            </div>
+        </div>
+
+        <div class="exact-val" id="exactVal"></div>
+
+        <p class="hint">Click on the circle or use the slider to set the angle. Try the special angle buttons.</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('circleCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+        const CHT = 440;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width; H = CHT;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); draw(); });
+
+        const specialAngles = [0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360];
+        const exactValues = {
+            0:   { sin: '0', cos: '1', tan: '0' },
+            30:  { sin: '1/2', cos: '\u221A3/2', tan: '1/\u221A3' },
+            45:  { sin: '\u221A2/2', cos: '\u221A2/2', tan: '1' },
+            60:  { sin: '\u221A3/2', cos: '1/2', tan: '\u221A3' },
+            90:  { sin: '1', cos: '0', tan: 'undefined' },
+            120: { sin: '\u221A3/2', cos: '\u22121/2', tan: '\u2212\u221A3' },
+            135: { sin: '\u221A2/2', cos: '\u2212\u221A2/2', tan: '\u22121' },
+            150: { sin: '1/2', cos: '\u2212\u221A3/2', tan: '\u22121/\u221A3' },
+            180: { sin: '0', cos: '\u22121', tan: '0' },
+            210: { sin: '\u22121/2', cos: '\u2212\u221A3/2', tan: '1/\u221A3' },
+            225: { sin: '\u2212\u221A2/2', cos: '\u2212\u221A2/2', tan: '1' },
+            240: { sin: '\u2212\u221A3/2', cos: '\u22121/2', tan: '\u221A3' },
+            270: { sin: '\u22121', cos: '0', tan: 'undefined' },
+            300: { sin: '\u2212\u221A3/2', cos: '1/2', tan: '\u2212\u221A3' },
+            315: { sin: '\u2212\u221A2/2', cos: '\u221A2/2', tan: '\u22121' },
+            330: { sin: '\u22121/2', cos: '\u221A3/2', tan: '\u22121/\u221A3' },
+            360: { sin: '0', cos: '1', tan: '0' }
+        };
+
+        const btnsContainer = document.getElementById('specialBtns');
+        specialAngles.forEach(a => {
+            const btn = document.createElement('button');
+            btn.className = 'special-btn';
+            btn.textContent = a + '\u00B0';
+            btn.onclick = () => { document.getElementById('angleSlider').value = a; draw(); };
+            btnsContainer.appendChild(btn);
+        });
+
+        const angleSlider = document.getElementById('angleSlider');
+        angleSlider.addEventListener('input', draw);
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+            const cx = W / 2, cy = H / 2;
+            let angle = Math.atan2(-(my - cy), mx - cx) * 180 / Math.PI;
+            if (angle < 0) angle += 360;
+            angleSlider.value = Math.round(angle);
+            draw();
+        });
+
+        function draw() {
+            const angleDeg = parseFloat(angleSlider.value);
+            const angleRad = angleDeg * Math.PI / 180;
+            document.getElementById('angleVal').innerHTML = angleDeg + '&deg;';
+
+            const sinV = Math.sin(angleRad);
+            const cosV = Math.cos(angleRad);
+            const tanV = Math.tan(angleRad);
+
+            document.getElementById('sinVal').textContent = sinV.toFixed(4);
+            document.getElementById('cosVal').textContent = cosV.toFixed(4);
+            document.getElementById('tanVal').textContent = (angleDeg === 90 || angleDeg === 270) ? 'undef' : tanV.toFixed(4);
+
+            const ev = exactValues[angleDeg];
+            if (ev) {
+                document.getElementById('exactVal').textContent =
+                    'Exact: sin = ' + ev.sin + '  |  cos = ' + ev.cos + '  |  tan = ' + ev.tan;
+            } else {
+                document.getElementById('exactVal').textContent = '';
+            }
+
+            ctx.clearRect(0, 0, W, H);
+            const cx = W / 2;
+            const cy = H / 2;
+            const r = Math.min(W, H) / 2 - 50;
+
+            // Grid
+            ctx.strokeStyle = '#e5dfe0';
+            ctx.lineWidth = 1;
+            // Horizontal axis
+            ctx.beginPath(); ctx.moveTo(cx - r - 20, cy); ctx.lineTo(cx + r + 20, cy); ctx.stroke();
+            // Vertical axis
+            ctx.beginPath(); ctx.moveTo(cx, cy - r - 20); ctx.lineTo(cx, cy + r + 20); ctx.stroke();
+
+            // Axis labels
+            ctx.font = '500 11px Outfit, sans-serif';
+            ctx.fillStyle = '#4a5568';
+            ctx.textAlign = 'center';
+            ctx.fillText('1', cx + r + 8, cy + 14);
+            ctx.fillText('\u22121', cx - r - 8, cy + 14);
+            ctx.fillText('1', cx + 12, cy - r - 5);
+            ctx.fillText('\u22121', cx + 12, cy + r + 14);
+
+            // Unit circle
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#637EA1';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Point on circle
+            const px = cx + r * cosV;
+            const py = cy - r * sinV;
+
+            // Radius line
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(px, py);
+            ctx.strokeStyle = '#637EA1';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // cos line (x-projection) - green
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(px, cy);
+            ctx.strokeStyle = '#27ae60';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // sin line (y-projection) - red
+            ctx.beginPath();
+            ctx.moveTo(px, cy);
+            ctx.lineTo(px, py);
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // tan line - purple
+            if (angleDeg !== 90 && angleDeg !== 270) {
+                const tanLen = r * tanV;
+                const tanEndY = cy - tanLen;
+                if (Math.abs(tanLen) < r * 4) {
+                    ctx.beginPath();
+                    ctx.moveTo(cx + r, cy);
+                    ctx.lineTo(cx + r, tanEndY);
+                    ctx.strokeStyle = 'rgba(142, 68, 173, 0.4)';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([4, 4]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+
+                    // Dashed line from origin to tan point
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.lineTo(cx + r, tanEndY);
+                    ctx.strokeStyle = 'rgba(142, 68, 173, 0.2)';
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([3, 3]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+            }
+
+            // Angle arc
+            ctx.beginPath();
+            ctx.arc(cx, cy, 25, 0, -angleRad, true);
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Angle label
+            const labelAngle = -angleRad / 2;
+            ctx.font = '600 12px Oswald, sans-serif';
+            ctx.fillStyle = '#e74c3c';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('\u03B8', cx + 38 * Math.cos(labelAngle), cy + 38 * Math.sin(labelAngle));
+            ctx.textBaseline = 'alphabetic';
+
+            // Point dot
+            ctx.beginPath();
+            ctx.arc(px, py, 5, 0, 2 * Math.PI);
+            ctx.fillStyle = '#637EA1';
+            ctx.fill();
+
+            // Coordinate label
+            ctx.font = '500 11px Outfit, sans-serif';
+            ctx.fillStyle = '#1a1f2e';
+            ctx.textAlign = 'left';
+            const coordX = cosV.toFixed(3);
+            const coordY = sinV.toFixed(3);
+            ctx.fillText('(' + coordX + ', ' + coordY + ')', px + 8, py - 8);
+
+            // Legend
+            ctx.font = '600 11px Outfit, sans-serif';
+            const legendX = 12, legendY = 20;
+            ctx.fillStyle = '#27ae60';
+            ctx.textAlign = 'left';
+            ctx.fillText('\u2014 cos \u03B8 (x)', legendX, legendY);
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillText('\u2014 sin \u03B8 (y)', legendX, legendY + 16);
+            ctx.fillStyle = '#8e44ad';
+            ctx.fillText('--- tan \u03B8', legendX, legendY + 32);
+
+            // Quadrant label
+            let quad = '';
+            if (angleDeg >= 0 && angleDeg < 90) quad = 'Quadrant I';
+            else if (angleDeg >= 90 && angleDeg < 180) quad = 'Quadrant II';
+            else if (angleDeg >= 180 && angleDeg < 270) quad = 'Quadrant III';
+            else quad = 'Quadrant IV';
+            ctx.font = '500 11px Outfit, sans-serif';
+            ctx.fillStyle = '#4a5568';
+            ctx.textAlign = 'right';
+            ctx.fillText(quad, W - 12, 20);
+        }
+
+        draw();
+    </script>
+</body>
+</html>

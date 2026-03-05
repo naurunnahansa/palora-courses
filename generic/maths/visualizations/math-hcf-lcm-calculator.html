@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HCF &amp; LCM Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
+.container{max-width:550px;margin:0 auto}
+h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.input-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.input-row label{font-size:.78rem;font-weight:500;min-width:60px}
+.input-row input{flex:1;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none}
+.input-row input:focus{border-color:#637EA1}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center}
+.result-box .value{font-family:'Oswald',sans-serif;font-size:1.1rem;color:#637EA1}
+.result-box .label{font-size:.7rem;color:#4a5568;margin-top:2px}
+.venn{display:flex;align-items:center;justify-content:center;gap:0;margin:10px 0;position:relative;min-height:100px}
+.venn-circle{border:2px solid;border-radius:50%;width:140px;height:100px;display:flex;align-items:center;justify-content:center;padding:8px;font-size:.7rem;font-weight:600;text-align:center;position:absolute}
+.venn-left{border-color:#637EA1;left:calc(50% - 150px)}
+.venn-right{border-color:#c27878;left:calc(50% + 10px)}
+.venn-center{position:absolute;left:50%;transform:translateX(-50%);font-size:.7rem;font-weight:700;color:#637EA1;text-align:center;z-index:2}
+.venn-label-l{position:absolute;left:calc(50% - 140px);top:-2px;font-family:'Oswald',sans-serif;font-size:.7rem;color:#637EA1}
+.venn-label-r{position:absolute;right:calc(50% - 140px);top:-2px;font-family:'Oswald',sans-serif;font-size:.7rem;color:#c27878}
+.tree{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;font-family:'Outfit',monospace;white-space:pre;line-height:1.4;overflow-x:auto}
+.step{background:#F5E6E8;border-radius:5px;padding:8px;margin-top:6px;font-size:.78rem}
+.step .step-label{font-family:'Oswald',sans-serif;font-size:.75rem;color:#637EA1;text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
+.step .step-math{font-weight:600;color:#1a1f2e}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#637EA1}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>HCF &amp; LCM Calculator</h1>
+
+    <div class="card">
+        <div class="card-title">Enter Two Numbers</div>
+        <div class="input-row">
+            <label>Number A</label>
+            <input type="number" id="numA" value="36" min="1" max="9999">
+        </div>
+        <div class="input-row">
+            <label>Number B</label>
+            <input type="number" id="numB" value="48" min="1" max="9999">
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Results</div>
+        <div class="results">
+            <div class="result-box"><div class="label">HCF (Highest Common Factor)</div><div class="value" id="hcfVal">12</div></div>
+            <div class="result-box"><div class="label">LCM (Lowest Common Multiple)</div><div class="value" id="lcmVal">144</div></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Prime Factor Venn Diagram</div>
+        <div style="position:relative;min-height:110px">
+            <span class="venn-label-l" id="vennLblA"></span>
+            <span class="venn-label-r" id="vennLblB"></span>
+            <div class="venn-circle venn-left" id="vennLeft"></div>
+            <div class="venn-circle venn-right" id="vennRight"></div>
+            <div class="venn-center" id="vennCenter"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Prime Factorisation</div>
+        <div class="tree" id="treeA"></div>
+        <div style="height:6px"></div>
+        <div class="tree" id="treeB"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Working</div>
+        <div id="steps"></div>
+    </div>
+
+    <div class="info"><strong>HCF</strong> = product of shared prime factors. <strong>LCM</strong> = product of all prime factors (using highest powers).</div>
+</div>
+<script>
+const numA=document.getElementById('numA'),numB=document.getElementById('numB'),
+      hcfVal=document.getElementById('hcfVal'),lcmVal=document.getElementById('lcmVal'),
+      treeA=document.getElementById('treeA'),treeB=document.getElementById('treeB'),
+      stepsDiv=document.getElementById('steps'),
+      vennLeft=document.getElementById('vennLeft'),vennRight=document.getElementById('vennRight'),
+      vennCenter=document.getElementById('vennCenter'),
+      vennLblA=document.getElementById('vennLblA'),vennLblB=document.getElementById('vennLblB');
+
+[numA,numB].forEach(el=>el.addEventListener('input',calc));
+
+function primeFactors(n){
+    const factors=[];
+    let d=2;
+    while(d*d<=n){while(n%d===0){factors.push(d);n/=d;}d++;}
+    if(n>1) factors.push(n);
+    return factors;
+}
+
+function factorTree(n){
+    if(n<2) return n.toString();
+    let lines=[n.toString()];
+    let current=n;
+    while(current>1){
+        let d=2;
+        while(d<=current){
+            if(current%d===0 && d<current){
+                let other=current/d;
+                lines.push('  '+d+' \u00d7 '+other);
+                current=other;
+                break;
+            } else if(d===current){
+                current=1;
+                break;
+            }
+            d++;
+        }
+    }
+    return lines.join('\n');
+}
+
+function gcd(a,b){while(b){let t=b;b=a%b;a=t;}return a;}
+function lcmCalc(a,b){return(a*b)/gcd(a,b);}
+
+function calc(){
+    const a=parseInt(numA.value)||1, b=parseInt(numB.value)||1;
+    if(a<1||b<1){hcfVal.textContent='?';lcmVal.textContent='?';return;}
+
+    const fa=primeFactors(a), fb=primeFactors(b);
+    const h=gcd(a,b), l=lcmCalc(a,b);
+
+    hcfVal.textContent=h;
+    lcmVal.textContent=l;
+
+    treeA.textContent=a+' = '+factorTree(a)+'\nPrime factors: '+fa.join(' \u00d7 ');
+    treeB.textContent=b+' = '+factorTree(b)+'\nPrime factors: '+fb.join(' \u00d7 ');
+
+    // Venn diagram
+    let faCopy=[...fa], fbCopy=[...fb];
+    let shared=[];
+    for(let f of faCopy){
+        let idx=fbCopy.indexOf(f);
+        if(idx!==-1){shared.push(f);fbCopy.splice(idx,1);}
+    }
+    let onlyA=[];
+    let faCopy2=[...fa],sharedCopy=[...shared];
+    for(let f of faCopy2){
+        let idx=sharedCopy.indexOf(f);
+        if(idx!==-1){sharedCopy.splice(idx,1);}
+        else{onlyA.push(f);}
+    }
+    let onlyB=fbCopy;
+
+    vennLblA.textContent=a;
+    vennLblB.textContent=b;
+    vennLeft.textContent=onlyA.length?onlyA.join(', '):'(none)';
+    vennRight.textContent=onlyB.length?onlyB.join(', '):'(none)';
+    vennCenter.textContent=shared.length?shared.join(', '):'(none)';
+
+    let steps=[];
+    steps.push({label:'Prime Factorisation of '+a, math: a+' = '+fa.join(' \u00d7 ')});
+    steps.push({label:'Prime Factorisation of '+b, math: b+' = '+fb.join(' \u00d7 ')});
+    steps.push({label:'Shared Factors', math: shared.length?shared.join(' \u00d7 ')+' = '+shared.reduce((x,y)=>x*y,1):'None'});
+    steps.push({label:'HCF', math: 'Product of shared factors = '+h});
+    steps.push({label:'LCM', math: '('+a+' \u00d7 '+b+') \u00f7 HCF = ('+(a*b)+') \u00f7 '+h+' = '+l});
+
+    stepsDiv.innerHTML=steps.map(s=>'<div class="step"><div class="step-label">'+s.label+'</div><div class="step-math">'+s.math+'</div></div>').join('');
+}
+calc();
+</script>
+</body>
+</html>

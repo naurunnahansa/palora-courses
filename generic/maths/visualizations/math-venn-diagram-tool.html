@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venn Diagram Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; }
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .input-item { display: flex; align-items: center; gap: 6px; }
+        .input-item label { font-size: 0.78rem; font-weight: 600; color: #4a5568; min-width: 80px; }
+        .input-item input { width: 70px; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; text-align: center; }
+        .readings { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .reading-card { background: #F5E6E8; border-radius: 5px; padding: 8px 10px; text-align: center; }
+        .reading-card .label { font-size: 0.72rem; color: #4a5568; letter-spacing: 0.04em; }
+        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 0.95rem; color: #637EA1; margin-top: 2px; }
+        .notation { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; font-size: 0.82rem; line-height: 1.8; }
+        .notation .item { display: flex; justify-content: space-between; align-items: center; }
+        .notation .sym { font-family: 'Oswald', sans-serif; color: #637EA1; font-weight: 600; }
+        .notation .desc { color: #4a5568; font-size: 0.75rem; }
+        .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Venn Diagram Tool</h1>
+
+        <canvas id="vennCanvas" width="550" height="320"></canvas>
+
+        <div class="card">
+            <div class="card-title">Enter Values</div>
+            <div class="input-grid">
+                <div class="input-item">
+                    <label>A only</label>
+                    <input type="number" id="aOnly" value="5" min="0" oninput="update()">
+                </div>
+                <div class="input-item">
+                    <label>B only</label>
+                    <input type="number" id="bOnly" value="3" min="0" oninput="update()">
+                </div>
+                <div class="input-item">
+                    <label>A &cap; B</label>
+                    <input type="number" id="aAndB" value="4" min="0" oninput="update()">
+                </div>
+                <div class="input-item">
+                    <label>Neither</label>
+                    <input type="number" id="neither" value="2" min="0" oninput="update()">
+                </div>
+            </div>
+        </div>
+
+        <div class="readings">
+            <div class="reading-card"><div class="label">n(A)</div><div class="value" id="nA">9</div></div>
+            <div class="reading-card"><div class="label">n(B)</div><div class="value" id="nB">7</div></div>
+            <div class="reading-card"><div class="label">n(A &cup; B)</div><div class="value" id="nAuB">12</div></div>
+            <div class="reading-card"><div class="label">Total n(&xi;)</div><div class="value" id="nTotal">14</div></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Probabilities &amp; Set Notation</div>
+            <div class="notation" id="probDisplay"></div>
+        </div>
+
+        <p class="hint">Enter the number of elements in each region of the Venn diagram</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('vennCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+        const CH = 320;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width; H = CH;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); update(); });
+
+        function update() {
+            const aOnly = parseInt(document.getElementById('aOnly').value) || 0;
+            const bOnly = parseInt(document.getElementById('bOnly').value) || 0;
+            const both = parseInt(document.getElementById('aAndB').value) || 0;
+            const neither = parseInt(document.getElementById('neither').value) || 0;
+
+            const nA = aOnly + both;
+            const nB = bOnly + both;
+            const nAuB = aOnly + bOnly + both;
+            const total = aOnly + bOnly + both + neither;
+
+            document.getElementById('nA').textContent = nA;
+            document.getElementById('nB').textContent = nB;
+            document.getElementById('nAuB').textContent = nAuB;
+            document.getElementById('nTotal').textContent = total;
+
+            const probDisplay = document.getElementById('probDisplay');
+            if (total > 0) {
+                const pA = nA / total;
+                const pB = nB / total;
+                const pAuB = nAuB / total;
+                const pAnB = both / total;
+                const pAc = 1 - pA;
+                const pBc = 1 - pB;
+                probDisplay.innerHTML =
+                    '<div class="item"><span class="sym">P(A) = ' + nA + '/' + total + ' = ' + pA.toFixed(4) + '</span><span class="desc">Probability of A</span></div>' +
+                    '<div class="item"><span class="sym">P(B) = ' + nB + '/' + total + ' = ' + pB.toFixed(4) + '</span><span class="desc">Probability of B</span></div>' +
+                    '<div class="item"><span class="sym">P(A \u222A B) = ' + nAuB + '/' + total + ' = ' + pAuB.toFixed(4) + '</span><span class="desc">A or B (union)</span></div>' +
+                    '<div class="item"><span class="sym">P(A \u2229 B) = ' + both + '/' + total + ' = ' + pAnB.toFixed(4) + '</span><span class="desc">A and B (intersection)</span></div>' +
+                    '<div class="item"><span class="sym">P(A\') = ' + (total - nA) + '/' + total + ' = ' + pAc.toFixed(4) + '</span><span class="desc">Not A (complement)</span></div>' +
+                    '<div class="item"><span class="sym">P(B\') = ' + (total - nB) + '/' + total + ' = ' + pBc.toFixed(4) + '</span><span class="desc">Not B (complement)</span></div>';
+            } else {
+                probDisplay.innerHTML = '<div class="item"><span class="desc">Enter values to see probabilities</span></div>';
+            }
+
+            drawVenn(aOnly, bOnly, both, neither);
+        }
+
+        function drawVenn(aOnly, bOnly, both, neither) {
+            ctx.clearRect(0, 0, W, H);
+
+            const cx = W / 2;
+            const cy = H / 2 + 10;
+            const r = Math.min(W, H) / 3.2;
+            const offset = r * 0.55;
+
+            // Universal set rectangle
+            ctx.strokeStyle = '#e5dfe0';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.strokeRect(20, 20, W - 40, H - 40);
+            ctx.setLineDash([]);
+
+            // Label universal set
+            ctx.font = '600 12px Oswald, sans-serif';
+            ctx.fillStyle = '#4a5568';
+            ctx.textAlign = 'right';
+            ctx.fillText('\u03BE', W - 28, 38);
+
+            // Circle A (left)
+            ctx.beginPath();
+            ctx.arc(cx - offset, cy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(99, 126, 161, 0.15)';
+            ctx.fill();
+            ctx.strokeStyle = '#637EA1';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+
+            // Circle B (right)
+            ctx.beginPath();
+            ctx.arc(cx + offset, cy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(231, 76, 60, 0.12)';
+            ctx.fill();
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+
+            // Intersection fill
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(cx - offset, cy, r, 0, 2 * Math.PI);
+            ctx.clip();
+            ctx.beginPath();
+            ctx.arc(cx + offset, cy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(142, 68, 173, 0.2)';
+            ctx.fill();
+            ctx.restore();
+
+            // Numbers
+            ctx.font = '700 20px Oswald, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // A only
+            ctx.fillStyle = '#637EA1';
+            ctx.fillText(aOnly, cx - offset - r * 0.4, cy);
+
+            // B only
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillText(bOnly, cx + offset + r * 0.4, cy);
+
+            // Intersection
+            ctx.fillStyle = '#8e44ad';
+            ctx.fillText(both, cx, cy);
+
+            // Neither
+            ctx.fillStyle = '#4a5568';
+            ctx.font = '600 16px Oswald, sans-serif';
+            ctx.fillText(neither, W - 50, H - 50);
+
+            // Labels A and B
+            ctx.font = '700 16px Oswald, sans-serif';
+            ctx.fillStyle = '#637EA1';
+            ctx.fillText('A', cx - offset, cy - r - 12);
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillText('B', cx + offset, cy - r - 12);
+
+            ctx.textBaseline = 'alphabetic';
+        }
+
+        update();
+    </script>
+</body>
+</html>

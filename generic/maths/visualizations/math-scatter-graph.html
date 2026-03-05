@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scatter Graph Plotter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; cursor: crosshair; }
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+        .data-table th { font-family: 'Oswald', sans-serif; font-size: 0.78rem; color: #637EA1; text-transform: uppercase; padding: 4px; text-align: center; border-bottom: 2px solid #e5dfe0; }
+        .data-table td { padding: 3px; text-align: center; }
+        .data-table input { width: 60px; padding: 4px 6px; border: 1px solid #e5dfe0; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 0.82rem; text-align: center; }
+        .btn-row { display: flex; gap: 6px; margin-bottom: 8px; }
+        .btn { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 10px; border-radius: 5px; border: 1px solid #e5dfe0; background: #F5E6E8; color: #637EA1; cursor: pointer; }
+        .btn:hover { background: #637EA1; color: #fff; }
+        .toggle-btn { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 10px; border-radius: 5px; border: 2px solid #637EA1; background: #fff; color: #637EA1; cursor: pointer; }
+        .toggle-btn.active { background: #637EA1; color: #fff; }
+        .readings { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .reading-card { background: #F5E6E8; border-radius: 5px; padding: 8px 10px; text-align: center; }
+        .reading-card .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 0.95rem; color: #637EA1; margin-top: 2px; }
+        .result-box { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; margin-bottom: 8px; }
+        .result-box .value { font-size: 1.0rem; color: #637EA1; }
+        .result-box .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
+        .slider-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .slider-row label { font-size: 0.82rem; font-weight: 600; color: #4a5568; min-width: 100px; }
+        .slider-row input[type="range"] { flex: 1; accent-color: #637EA1; height: 6px; }
+        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #637EA1; min-width: 40px; text-align: right; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Scatter Graph Plotter</h1>
+
+        <canvas id="graphCanvas" width="550" height="400"></canvas>
+
+        <div class="card">
+            <div class="card-title">Controls</div>
+            <div class="btn-row">
+                <button class="toggle-btn active" id="lobfBtn" onclick="toggleLOBF()">Line of Best Fit</button>
+                <button class="btn" onclick="addRow()">+ Add Point</button>
+                <button class="btn" onclick="removeRow()">- Remove Point</button>
+                <button class="btn" onclick="loadSample()">Sample Data</button>
+            </div>
+            <div class="slider-row" id="predictRow" style="display:none;">
+                <label>Predict x =</label>
+                <input type="range" id="predictSlider" min="0" max="100" step="0.5" value="50">
+                <span class="val" id="predictVal">50</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Data Points</div>
+            <table class="data-table">
+                <thead><tr><th>#</th><th>X</th><th>Y</th></tr></thead>
+                <tbody id="dataBody"></tbody>
+            </table>
+        </div>
+
+        <div class="readings">
+            <div class="reading-card">
+                <div class="label">Correlation</div>
+                <div class="value" id="corrType">--</div>
+            </div>
+            <div class="reading-card">
+                <div class="label">r value</div>
+                <div class="value" id="corrVal">--</div>
+            </div>
+        </div>
+
+        <div class="result-box" id="predictionBox" style="display:none;">
+            <div class="label">Prediction from Line of Best Fit</div>
+            <div class="value" id="predictionVal">--</div>
+        </div>
+
+        <p class="hint">Enter data points in the table. Toggle line of best fit and use the slider to interpolate/extrapolate.</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+        const CH = 400;
+        const PAD = { left: 50, right: 20, top: 20, bottom: 42 };
+
+        let data = [
+            { x: 2, y: 4 }, { x: 4, y: 7 }, { x: 6, y: 8 }, { x: 8, y: 13 },
+            { x: 10, y: 14 }, { x: 12, y: 16 }, { x: 14, y: 19 }, { x: 16, y: 21 }
+        ];
+        let showLOBF = true;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width; H = CH;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); draw(); });
+
+        function buildTable() {
+            const tbody = document.getElementById('dataBody');
+            tbody.innerHTML = '';
+            data.forEach((d, i) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td style="font-size:0.75rem;color:#999;">' + (i + 1) + '</td>' +
+                    '<td><input type="number" value="' + d.x + '" onchange="data[' + i + '].x=parseFloat(this.value);draw()"></td>' +
+                    '<td><input type="number" value="' + d.y + '" onchange="data[' + i + '].y=parseFloat(this.value);draw()"></td>';
+                tbody.appendChild(tr);
+            });
+        }
+
+        function addRow() { data.push({ x: 0, y: 0 }); buildTable(); draw(); }
+        function removeRow() { if (data.length > 2) { data.pop(); buildTable(); draw(); } }
+        function loadSample() {
+            data = [{ x: 2, y: 4 }, { x: 4, y: 7 }, { x: 6, y: 8 }, { x: 8, y: 13 }, { x: 10, y: 14 }, { x: 12, y: 16 }, { x: 14, y: 19 }, { x: 16, y: 21 }];
+            buildTable(); draw();
+        }
+
+        function toggleLOBF() {
+            showLOBF = !showLOBF;
+            document.getElementById('lobfBtn').classList.toggle('active', showLOBF);
+            document.getElementById('predictRow').style.display = showLOBF ? 'flex' : 'none';
+            document.getElementById('predictionBox').style.display = showLOBF ? 'block' : 'none';
+            draw();
+        }
+
+        function linearRegression(pts) {
+            const n = pts.length;
+            let sx = 0, sy = 0, sxy = 0, sx2 = 0, sy2 = 0;
+            pts.forEach(p => { sx += p.x; sy += p.y; sxy += p.x * p.y; sx2 += p.x * p.x; sy2 += p.y * p.y; });
+            const denom = n * sx2 - sx * sx;
+            if (denom === 0) return { m: 0, b: sy / n, r: 0 };
+            const m = (n * sxy - sx * sy) / denom;
+            const b = (sy - m * sx) / n;
+            const rNum = n * sxy - sx * sy;
+            const rDen = Math.sqrt((n * sx2 - sx * sx) * (n * sy2 - sy * sy));
+            const r = rDen === 0 ? 0 : rNum / rDen;
+            return { m, b, r };
+        }
+
+        const predictSlider = document.getElementById('predictSlider');
+        predictSlider.addEventListener('input', draw);
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+            const valid = data.filter(d => !isNaN(d.x) && !isNaN(d.y));
+            if (valid.length < 2) return;
+
+            const xs = valid.map(d => d.x);
+            const ys = valid.map(d => d.y);
+            let minX = Math.min(...xs), maxX = Math.max(...xs);
+            let minY = Math.min(...ys), maxY = Math.max(...ys);
+            const padX = (maxX - minX) * 0.1 || 1;
+            const padY = (maxY - minY) * 0.1 || 1;
+            minX -= padX; maxX += padX;
+            minY -= padY; maxY += padY;
+            if (minX > 0) minX = 0;
+            if (minY > 0) minY = 0;
+
+            // Update predict slider range
+            predictSlider.min = minX;
+            predictSlider.max = maxX;
+
+            const gW = W - PAD.left - PAD.right;
+            const gH = H - PAD.top - PAD.bottom;
+            const toSX = x => PAD.left + (x - minX) / (maxX - minX) * gW;
+            const toSY = y => PAD.top + gH - (y - minY) / (maxY - minY) * gH;
+
+            // Grid
+            ctx.strokeStyle = '#eee';
+            ctx.lineWidth = 1;
+            const nTicksX = 8, nTicksY = 6;
+            for (let i = 0; i <= nTicksX; i++) {
+                const x = PAD.left + (i / nTicksX) * gW;
+                ctx.beginPath(); ctx.moveTo(x, PAD.top); ctx.lineTo(x, PAD.top + gH); ctx.stroke();
+            }
+            for (let i = 0; i <= nTicksY; i++) {
+                const y = PAD.top + (i / nTicksY) * gH;
+                ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + gW, y); ctx.stroke();
+            }
+
+            // Axes
+            ctx.strokeStyle = '#1a1f2e';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(PAD.left, PAD.top); ctx.lineTo(PAD.left, PAD.top + gH); ctx.lineTo(PAD.left + gW, PAD.top + gH); ctx.stroke();
+
+            // Tick labels
+            ctx.font = '400 10px Outfit, sans-serif';
+            ctx.fillStyle = '#4a5568';
+            ctx.textAlign = 'center';
+            for (let i = 0; i <= nTicksX; i++) {
+                const val = minX + (i / nTicksX) * (maxX - minX);
+                const x = PAD.left + (i / nTicksX) * gW;
+                ctx.fillText(val.toFixed(1), x, PAD.top + gH + 16);
+            }
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= nTicksY; i++) {
+                const val = minY + (i / nTicksY) * (maxY - minY);
+                const y = PAD.top + gH - (i / nTicksY) * gH;
+                ctx.fillText(val.toFixed(1), PAD.left - 6, y + 3);
+            }
+
+            // LOBF
+            const reg = linearRegression(valid);
+            const corrType = document.getElementById('corrType');
+            const corrVal = document.getElementById('corrVal');
+            corrVal.textContent = reg.r.toFixed(4);
+
+            if (Math.abs(reg.r) < 0.3) corrType.textContent = 'No correlation';
+            else if (reg.r > 0.7) corrType.textContent = 'Strong positive';
+            else if (reg.r > 0.3) corrType.textContent = 'Weak positive';
+            else if (reg.r < -0.7) corrType.textContent = 'Strong negative';
+            else corrType.textContent = 'Weak negative';
+
+            if (showLOBF) {
+                ctx.beginPath();
+                ctx.moveTo(toSX(minX), toSY(reg.m * minX + reg.b));
+                ctx.lineTo(toSX(maxX), toSY(reg.m * maxX + reg.b));
+                ctx.strokeStyle = 'rgba(231, 76, 60, 0.6)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([6, 4]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Prediction
+                const px = parseFloat(predictSlider.value);
+                document.getElementById('predictVal').textContent = px.toFixed(1);
+                const py = reg.m * px + reg.b;
+                document.getElementById('predictionVal').textContent = 'When x = ' + px.toFixed(1) + ', y \u2248 ' + py.toFixed(2);
+
+                // Prediction lines
+                ctx.setLineDash([3, 3]);
+                ctx.strokeStyle = 'rgba(142, 68, 173, 0.5)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(toSX(px), toSY(minY));
+                ctx.lineTo(toSX(px), toSY(py));
+                ctx.lineTo(toSX(minX), toSY(py));
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.beginPath();
+                ctx.arc(toSX(px), toSY(py), 5, 0, 2 * Math.PI);
+                ctx.fillStyle = '#8e44ad';
+                ctx.fill();
+            }
+
+            // Points
+            valid.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(toSX(p.x), toSY(p.y), 5, 0, 2 * Math.PI);
+                ctx.fillStyle = '#637EA1';
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            });
+
+            // Equation label
+            if (showLOBF) {
+                ctx.font = '500 11px Outfit, sans-serif';
+                ctx.fillStyle = '#e74c3c';
+                ctx.textAlign = 'left';
+                ctx.fillText('y = ' + reg.m.toFixed(2) + 'x + ' + reg.b.toFixed(2), PAD.left + 10, PAD.top + 16);
+            }
+        }
+
+        buildTable();
+        draw();
+        document.getElementById('predictRow').style.display = 'flex';
+        document.getElementById('predictionBox').style.display = 'block';
+    </script>
+</body>
+</html>

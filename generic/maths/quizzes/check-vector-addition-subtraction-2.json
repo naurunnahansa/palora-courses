@@ -1,0 +1,34 @@
+{
+  "id": "check-vector-addition-subtraction-2",
+  "title": "Check: Vector Addition and Subtraction",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In a triangle $OAB$, $\\overrightarrow{OA} = \\mathbf{a}$ and $\\overrightarrow{OB} = \\mathbf{b}$. Express $\\overrightarrow{AB}$ in terms of $\\mathbf{a}$ and $\\mathbf{b}$.",
+      "options": [
+        { "id": "a", "text": "$\\mathbf{a} + \\mathbf{b}$" },
+        { "id": "b", "text": "$\\mathbf{a} - \\mathbf{b}$" },
+        { "id": "c", "text": "$\\mathbf{b} - \\mathbf{a}$" },
+        { "id": "d", "text": "$-\\mathbf{a} - \\mathbf{b}$" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "To go from $A$ to $B$, first go from $A$ to $O$ (which is $-\\mathbf{a}$) and then from $O$ to $B$ (which is $\\mathbf{b}$). So $\\overrightarrow{AB} = -\\mathbf{a} + \\mathbf{b} = \\mathbf{b} - \\mathbf{a}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $\\mathbf{a} + \\mathbf{b} = \\begin{pmatrix} 7 \\\\ 2 \\end{pmatrix}$ and $\\mathbf{a} = \\begin{pmatrix} 3 \\\\ -1 \\end{pmatrix}$, what is $\\mathbf{b}$?",
+      "options": [
+        { "id": "a", "text": "$\\begin{pmatrix} 10 \\\\ 1 \\end{pmatrix}$" },
+        { "id": "b", "text": "$\\begin{pmatrix} 4 \\\\ 3 \\end{pmatrix}$" },
+        { "id": "c", "text": "$\\begin{pmatrix} 4 \\\\ -3 \\end{pmatrix}$" },
+        { "id": "d", "text": "$\\begin{pmatrix} -4 \\\\ 3 \\end{pmatrix}$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "$\\mathbf{b} = \\begin{pmatrix} 7 \\\\ 2 \\end{pmatrix} - \\begin{pmatrix} 3 \\\\ -1 \\end{pmatrix} = \\begin{pmatrix} 4 \\\\ 3 \\end{pmatrix}$."
+    }
+  ]
+}

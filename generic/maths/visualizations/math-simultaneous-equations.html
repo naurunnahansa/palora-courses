@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simultaneous Equations Solver</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
+.container{max-width:550px;margin:0 auto}
+h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.eq-row{display:flex;gap:4px;align-items:center;justify-content:center;margin-bottom:6px;flex-wrap:wrap}
+.eq-row input{width:44px;padding:6px 4px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.85rem;text-align:center;outline:none}
+.eq-row input:focus{border-color:#637EA1}
+.eq-row span{font-weight:600;font-size:.8rem}
+.eq-label{font-family:'Oswald',sans-serif;font-size:.72rem;color:#637EA1;margin-right:4px}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center}
+.result-box .value{font-family:'Oswald',sans-serif;font-size:1.1rem;color:#637EA1}
+.result-box .label{font-size:.7rem;color:#4a5568;margin-top:2px}
+.step{background:#F5E6E8;border-radius:5px;padding:8px;margin-top:6px;font-size:.78rem}
+.step .step-label{font-family:'Oswald',sans-serif;font-size:.75rem;color:#637EA1;text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
+.step .step-math{font-weight:600;color:#1a1f2e}
+.step .step-reason{font-size:.7rem;color:#4a5568;font-style:italic;margin-top:2px}
+.step.highlight{background:#637EA1}
+.step.highlight .step-label,.step.highlight .step-math{color:#fff}
+.step.highlight .step-reason{color:rgba(255,255,255,.8)}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#637EA1}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Simultaneous Equations Solver</h1>
+
+    <div class="card">
+        <div class="card-title">Enter Two Equations</div>
+        <div class="eq-row">
+            <span class="eq-label">EQ1:</span>
+            <input type="number" id="a1" value="2" step="any">
+            <span>x +</span>
+            <input type="number" id="b1" value="3" step="any">
+            <span>y =</span>
+            <input type="number" id="c1" value="7" step="any">
+        </div>
+        <div class="eq-row">
+            <span class="eq-label">EQ2:</span>
+            <input type="number" id="a2" value="5" step="any">
+            <span>x +</span>
+            <input type="number" id="b2" value="-1" step="any">
+            <span>y =</span>
+            <input type="number" id="c2" value="9" step="any">
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Solution</div>
+        <div class="results">
+            <div class="result-box"><div class="label">x =</div><div class="value" id="xVal"></div></div>
+            <div class="result-box"><div class="label">y =</div><div class="value" id="yVal"></div></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Solution by Elimination</div>
+        <div id="steps"></div>
+    </div>
+
+    <div class="info">Enter coefficients for two linear equations. The solver uses the <strong>elimination method</strong> to find x and y.</div>
+</div>
+<script>
+const a1=document.getElementById('a1'),b1=document.getElementById('b1'),c1=document.getElementById('c1'),
+      a2=document.getElementById('a2'),b2=document.getElementById('b2'),c2=document.getElementById('c2'),
+      xValEl=document.getElementById('xVal'),yValEl=document.getElementById('yVal'),
+      stepsDiv=document.getElementById('steps');
+
+[a1,b1,c1,a2,b2,c2].forEach(el=>el.addEventListener('input',calc));
+
+function fmt(n){return parseFloat(n.toFixed(6));}
+function fmtEq(a,b,c){
+    let s='';
+    if(a!==0) s+=(a===1?'':a===-1?'-':a)+'x';
+    if(b!==0){
+        if(s.length>0) s+=b>0?' + ':' - ';
+        else if(b<0) s+='-';
+        s+=(Math.abs(b)===1?'':Math.abs(b))+'y';
+    }
+    if(s.length===0) s='0';
+    return s+' = '+c;
+}
+
+function calc(){
+    const A1=parseFloat(a1.value)||0,B1=parseFloat(b1.value)||0,C1=parseFloat(c1.value)||0,
+          A2=parseFloat(a2.value)||0,B2=parseFloat(b2.value)||0,C2=parseFloat(c2.value)||0;
+
+    const det=A1*B2-A2*B1;
+    let steps=[];
+
+    steps.push({label:'Equation 1',math:fmtEq(A1,B1,C1)});
+    steps.push({label:'Equation 2',math:fmtEq(A2,B2,C2)});
+
+    if(det===0){
+        if(A1*C2===A2*C1 && B1*C2===B2*C1){
+            xValEl.textContent='\u221e';yValEl.textContent='\u221e';
+            steps.push({label:'Result',math:'The equations are identical - infinitely many solutions',reason:'Both equations represent the same line'});
+        } else {
+            xValEl.textContent='None';yValEl.textContent='None';
+            steps.push({label:'Result',math:'No solution - the lines are parallel',reason:'The determinant is zero and equations are inconsistent'});
+        }
+        stepsDiv.innerHTML=steps.map(s=>'<div class="step"><div class="step-label">'+s.label+'</div><div class="step-math">'+s.math+'</div>'+(s.reason?'<div class="step-reason">'+s.reason+'</div>':'')+'</div>').join('');
+        return;
+    }
+
+    // Eliminate y: multiply eq1 by B2, eq2 by B1
+    const m1=Math.abs(B2), m2=Math.abs(B1);
+    const sign=(B1*B2>0)?'subtract':'add';
+
+    steps.push({label:'Multiply Eq1 by '+fmt(m1),
+        math:fmtEq(fmt(A1*m1),fmt(B1*m1),fmt(C1*m1)),
+        reason:'To make y coefficients match'});
+    steps.push({label:'Multiply Eq2 by '+fmt(m2),
+        math:fmtEq(fmt(A2*m2),fmt(B2*m2),fmt(C2*m2)),
+        reason:'To make y coefficients match'});
+
+    const newA1=A1*m1,newB1=B1*m1,newC1=C1*m1;
+    const newA2=A2*m2,newB2=B2*m2,newC2=C2*m2;
+
+    let elimA,elimC;
+    if(sign==='subtract'){
+        elimA=newA1-newA2; elimC=newC1-newC2;
+        steps.push({label:'Subtract the equations',
+            math:fmt(elimA)+'x = '+fmt(elimC),
+            reason:'y terms cancel out'});
+    } else {
+        elimA=newA1+newA2; elimC=newC1+newC2;
+        steps.push({label:'Add the equations',
+            math:fmt(elimA)+'x = '+fmt(elimC),
+            reason:'y terms cancel out'});
+    }
+
+    const x=elimC/elimA;
+    steps.push({label:'Solve for x',
+        math:'x = '+fmt(elimC)+' \u00f7 '+fmt(elimA)+' = '+fmt(x),
+        reason:'Divide both sides by '+fmt(elimA)});
+
+    // Substitute back
+    const y=(C1-A1*x)/B1;
+    steps.push({label:'Substitute x into Eq1',
+        math:fmt(A1)+'\u00d7'+fmt(x)+' + '+fmt(B1)+'y = '+fmt(C1),
+        reason:'Substitute x = '+fmt(x)});
+    steps.push({label:'Solve for y',
+        math:fmt(B1)+'y = '+fmt(C1-A1*x)+', so y = '+fmt(y)});
+
+    steps.push({label:'Solution',math:'x = '+fmt(x)+', y = '+fmt(y),highlight:true});
+
+    // Verify
+    const check1=A1*x+B1*y, check2=A2*x+B2*y;
+    steps.push({label:'Verify',
+        math:'Eq1: '+fmt(check1)+' = '+fmt(C1)+' \u2713  |  Eq2: '+fmt(check2)+' = '+fmt(C2)+' \u2713',
+        reason:'Both equations satisfied'});
+
+    xValEl.textContent=fmt(x);
+    yValEl.textContent=fmt(y);
+
+    stepsDiv.innerHTML=steps.map(s=>'<div class="step'+(s.highlight?' highlight':'')+'"><div class="step-label">'+s.label+'</div><div class="step-math">'+s.math+'</div>'+(s.reason?'<div class="step-reason">'+s.reason+'</div>':'')+'</div>').join('');
+}
+calc();
+</script>
+</body>
+</html>

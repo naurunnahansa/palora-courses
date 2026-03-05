@@ -1,0 +1,48 @@
+{
+  "id": "check-sine-rule-2",
+  "title": "Check: Sine Rule",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In triangle $PQR$, $p = 8\\text{ cm}$, $q = 12\\text{ cm}$, and $P = 35°$. Which expression finds angle $Q$?",
+      "options": [
+        { "id": "a", "text": "$\\sin Q = \\frac{12 \\sin 35°}{8}$" },
+        { "id": "b", "text": "$\\sin Q = \\frac{8 \\sin 35°}{12}$" },
+        { "id": "c", "text": "$\\cos Q = \\frac{12 \\sin 35°}{8}$" },
+        { "id": "d", "text": "$\\sin Q = \\frac{8}{12 \\sin 35°}$" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Using the sine rule for finding angles: $\\frac{\\sin Q}{q} = \\frac{\\sin P}{p}$, so $\\sin Q = \\frac{q \\sin P}{p} = \\frac{12 \\sin 35°}{8}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "When can the sine rule be used?",
+      "options": [
+        { "id": "a", "text": "Only in right-angled triangles" },
+        { "id": "b", "text": "When you know all three sides" },
+        { "id": "c", "text": "When you know at least one side and its opposite angle, plus one other piece of information" },
+        { "id": "d", "text": "Only when all angles are known" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The sine rule requires a known pair of a side and its opposite angle, plus at least one other side or angle to find the unknown."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In triangle $ABC$, $A = 30°$, $C = 80°$, and $c = 15\\text{ cm}$. What is the value of $B$, and which expression gives side $a$?",
+      "options": [
+        { "id": "a", "text": "$B = 70°$; $a = \\frac{15 \\sin 30°}{\\sin 80°}$" },
+        { "id": "b", "text": "$B = 70°$; $a = \\frac{15 \\sin 80°}{\\sin 30°}$" },
+        { "id": "c", "text": "$B = 110°$; $a = \\frac{15 \\sin 30°}{\\sin 80°}$" },
+        { "id": "d", "text": "$B = 60°$; $a = \\frac{15 \\sin 30°}{\\sin 80°}$" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "$B = 180° - 30° - 80° = 70°$. By the sine rule: $a = \\frac{c \\sin A}{\\sin C} = \\frac{15 \\sin 30°}{\\sin 80°}$."
+    }
+  ]
+}

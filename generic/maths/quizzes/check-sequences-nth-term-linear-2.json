@@ -1,0 +1,48 @@
+{
+  "id": "check-sequences-nth-term-linear-2",
+  "title": "Check: Sequences: nth Term (Linear)",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the $n$th term of $10, 7, 4, 1, ...$.",
+      "options": [
+        { "id": "a", "text": "$-3n + 10$" },
+        { "id": "b", "text": "$-3n + 13$" },
+        { "id": "c", "text": "$3n + 7$" },
+        { "id": "d", "text": "$10 - n$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The common difference is $-3$, so the $n$th term starts with $-3n$. When $n = 1$: $-3(1) = -3$, but the first term is $10$, so we add $13$. The $n$th term is $-3n + 13$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Is $100$ a term in the sequence with $n$th term $7n + 2$?",
+      "options": [
+        { "id": "a", "text": "Yes, it is the $14$th term" },
+        { "id": "b", "text": "No, because $n$ would not be a whole number" },
+        { "id": "c", "text": "Yes, it is the $15$th term" },
+        { "id": "d", "text": "Yes, it is the $13$th term" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Set $7n + 2 = 100$. Then $7n = 98$, so $n = 14$. Since $14$ is a whole number, $100$ is the $14$th term of the sequence."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Is $50$ a term in the sequence with $n$th term $4n + 1$?",
+      "options": [
+        { "id": "a", "text": "Yes, it is the $12$th term" },
+        { "id": "b", "text": "Yes, it is the $13$th term" },
+        { "id": "c", "text": "No, because $n$ would not be a whole number" },
+        { "id": "d", "text": "Yes, it is the $10$th term" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Set $4n + 1 = 50$. Then $4n = 49$, so $n = 12.25$. Since this is not a whole number, $50$ is not a term in the sequence."
+    }
+  ]
+}

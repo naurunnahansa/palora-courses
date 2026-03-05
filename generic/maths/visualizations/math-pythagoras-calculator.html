@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pythagoras' Theorem Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; }
+        .toggle-row { display: flex; gap: 6px; margin-bottom: 10px; }
+        .toggle-btn { font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600; padding: 5px 12px; border-radius: 5px; border: 2px solid #637EA1; background: #fff; color: #637EA1; cursor: pointer; transition: all 0.15s; flex: 1; text-align: center; }
+        .toggle-btn.active { background: #637EA1; color: #fff; }
+        .input-group { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+        .input-group label { font-size: 0.82rem; font-weight: 600; color: #4a5568; min-width: 80px; }
+        .input-group input { flex: 1; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; }
+        .input-group input:disabled { background: #f0f0f0; color: #999; }
+        .result-box { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; margin-bottom: 8px; }
+        .result-box .value { font-size: 1.1rem; color: #637EA1; }
+        .result-box .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .working { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; font-size: 0.82rem; line-height: 1.6; }
+        .working .step { margin-bottom: 4px; }
+        .working .highlight { color: #637EA1; font-weight: 700; }
+        .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pythagoras' Theorem Calculator</h1>
+
+        <canvas id="triCanvas" width="550" height="300"></canvas>
+
+        <div class="card">
+            <div class="card-title">Mode</div>
+            <div class="toggle-row">
+                <button class="toggle-btn active" id="btnHyp" onclick="setMode('hyp')">Find Hypotenuse (c)</button>
+                <button class="toggle-btn" id="btnSide" onclick="setMode('side')">Find Shorter Side</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Enter Known Sides</div>
+            <div class="input-group">
+                <label>Side a</label>
+                <input type="number" id="sideA" min="0.1" step="0.1" value="3" oninput="calculate()">
+            </div>
+            <div class="input-group">
+                <label>Side b</label>
+                <input type="number" id="sideB" min="0.1" step="0.1" value="4" oninput="calculate()">
+            </div>
+            <div class="input-group">
+                <label>Hypotenuse c</label>
+                <input type="number" id="sideC" min="0.1" step="0.1" value="" disabled oninput="calculate()">
+            </div>
+        </div>
+
+        <div class="result-box">
+            <div class="label">Result</div>
+            <div class="value" id="resultVal">c = 5</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Working</div>
+            <div class="working" id="workingArea"></div>
+        </div>
+
+        <p class="hint">Enter any two sides to calculate the missing side</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('triCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+        let mode = 'hyp';
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width;
+            H = 300;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); drawTriangle(); });
+
+        function setMode(m) {
+            mode = m;
+            document.getElementById('btnHyp').classList.toggle('active', m === 'hyp');
+            document.getElementById('btnSide').classList.toggle('active', m === 'side');
+            const inputA = document.getElementById('sideA');
+            const inputB = document.getElementById('sideB');
+            const inputC = document.getElementById('sideC');
+            if (m === 'hyp') {
+                inputA.disabled = false;
+                inputB.disabled = false;
+                inputC.disabled = true;
+                inputC.value = '';
+            } else {
+                inputA.disabled = false;
+                inputB.disabled = true;
+                inputB.value = '';
+                inputC.disabled = false;
+                if (!inputC.value) inputC.value = '5';
+            }
+            calculate();
+        }
+
+        function calculate() {
+            const a = parseFloat(document.getElementById('sideA').value);
+            const b = parseFloat(document.getElementById('sideB').value);
+            const c = parseFloat(document.getElementById('sideC').value);
+            const resultEl = document.getElementById('resultVal');
+            const workEl = document.getElementById('workingArea');
+
+            if (mode === 'hyp') {
+                if (isNaN(a) || isNaN(b) || a <= 0 || b <= 0) {
+                    resultEl.textContent = 'Enter values for a and b';
+                    workEl.innerHTML = '';
+                    return;
+                }
+                const cCalc = Math.sqrt(a * a + b * b);
+                resultEl.textContent = 'c = ' + cCalc.toFixed(4);
+                workEl.innerHTML =
+                    '<div class="step"><span class="highlight">Formula:</span> a\u00B2 + b\u00B2 = c\u00B2</div>' +
+                    '<div class="step">' + a + '\u00B2 + ' + b + '\u00B2 = c\u00B2</div>' +
+                    '<div class="step">' + (a*a).toFixed(2) + ' + ' + (b*b).toFixed(2) + ' = c\u00B2</div>' +
+                    '<div class="step">c\u00B2 = ' + (a*a + b*b).toFixed(2) + '</div>' +
+                    '<div class="step"><span class="highlight">c = \u221A' + (a*a + b*b).toFixed(2) + ' = ' + cCalc.toFixed(4) + '</span></div>';
+                drawTriangle(a, b, cCalc);
+            } else {
+                if (isNaN(a) || isNaN(c) || a <= 0 || c <= 0) {
+                    resultEl.textContent = 'Enter values for a and c';
+                    workEl.innerHTML = '';
+                    return;
+                }
+                if (a >= c) {
+                    resultEl.textContent = 'Side a must be less than hypotenuse c';
+                    workEl.innerHTML = '';
+                    return;
+                }
+                const bCalc = Math.sqrt(c * c - a * a);
+                resultEl.textContent = 'b = ' + bCalc.toFixed(4);
+                workEl.innerHTML =
+                    '<div class="step"><span class="highlight">Formula:</span> a\u00B2 + b\u00B2 = c\u00B2</div>' +
+                    '<div class="step">b\u00B2 = c\u00B2 \u2212 a\u00B2</div>' +
+                    '<div class="step">b\u00B2 = ' + c + '\u00B2 \u2212 ' + a + '\u00B2</div>' +
+                    '<div class="step">b\u00B2 = ' + (c*c).toFixed(2) + ' \u2212 ' + (a*a).toFixed(2) + '</div>' +
+                    '<div class="step">b\u00B2 = ' + (c*c - a*a).toFixed(2) + '</div>' +
+                    '<div class="step"><span class="highlight">b = \u221A' + (c*c - a*a).toFixed(2) + ' = ' + bCalc.toFixed(4) + '</span></div>';
+                drawTriangle(a, bCalc, c);
+            }
+        }
+
+        function drawTriangle(a, b, c) {
+            if (!a || !b || !c) { ctx.clearRect(0, 0, W, H); return; }
+            ctx.clearRect(0, 0, W, H);
+            const pad = 60;
+            const maxSide = Math.max(a, b);
+            const scale = Math.min((W - 2 * pad) / b, (H - 2 * pad) / a);
+            const drawA = a * scale;
+            const drawB = b * scale;
+
+            const ox = (W - drawB) / 2;
+            const oy = (H + drawA) / 2 - 10;
+
+            // Triangle
+            ctx.beginPath();
+            ctx.moveTo(ox, oy);
+            ctx.lineTo(ox + drawB, oy);
+            ctx.lineTo(ox, oy - drawA);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(99, 126, 161, 0.08)';
+            ctx.fill();
+            ctx.strokeStyle = '#637EA1';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Right angle square
+            const sq = 15;
+            ctx.beginPath();
+            ctx.moveTo(ox + sq, oy);
+            ctx.lineTo(ox + sq, oy - sq);
+            ctx.lineTo(ox, oy - sq);
+            ctx.strokeStyle = '#637EA1';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            ctx.font = '600 14px Oswald, sans-serif';
+            ctx.textAlign = 'center';
+
+            // Label a (vertical side)
+            ctx.fillStyle = '#e74c3c';
+            ctx.save();
+            ctx.translate(ox - 18, oy - drawA / 2);
+            ctx.fillText('a = ' + a.toFixed(1), 0, 0);
+            ctx.restore();
+
+            // Label b (horizontal side)
+            ctx.fillStyle = '#27ae60';
+            ctx.fillText('b = ' + b.toFixed(1), ox + drawB / 2, oy + 22);
+
+            // Label c (hypotenuse)
+            ctx.fillStyle = '#637EA1';
+            const midX = ox + drawB / 2;
+            const midY = oy - drawA / 2;
+            ctx.save();
+            ctx.translate(midX + 18, midY);
+            const angle = -Math.atan2(drawA, drawB);
+            ctx.rotate(angle);
+            ctx.fillText('c = ' + c.toFixed(1), 0, 0);
+            ctx.restore();
+
+            // Formula
+            ctx.font = '500 13px Outfit, sans-serif';
+            ctx.fillStyle = '#4a5568';
+            ctx.fillText('a\u00B2 + b\u00B2 = c\u00B2', W / 2, 22);
+        }
+
+        calculate();
+    </script>
+</body>
+</html>

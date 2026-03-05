@@ -1,0 +1,34 @@
+{
+  "id": "check-box-plots-2",
+  "title": "Check: Box Plots",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Box plot A has a longer box than box plot B. What does this tell you?",
+      "options": [
+        { "id": "a", "text": "Data set A has a higher median" },
+        { "id": "b", "text": "Data set A has a larger IQR, so the middle $50\\%$ of data is more spread out" },
+        { "id": "c", "text": "Data set A has more data values" },
+        { "id": "d", "text": "Data set A has a higher maximum" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The length of the box represents the IQR ($Q_3 - Q_1$). A longer box means the middle $50\\%$ of the data is more spread out."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A box plot has min $= 5$, $Q_1 = 12$, median $= 18$, $Q_3 = 25$, max $= 40$. The median line is closer to $Q_1$ than $Q_3$. What does this suggest?",
+      "options": [
+        { "id": "a", "text": "The data is symmetric" },
+        { "id": "b", "text": "The data has a positive skew (skewed right)" },
+        { "id": "c", "text": "The data has a negative skew (skewed left)" },
+        { "id": "d", "text": "The data has no outliers" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "When the median is closer to $Q_1$, the upper half of the box is longer, and the upper whisker tends to be longer too. This indicates a positive (right) skew — data is stretched out towards higher values."
+    }
+  ]
+}

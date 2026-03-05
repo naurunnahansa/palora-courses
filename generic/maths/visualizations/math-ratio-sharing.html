@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ratio Sharing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
+.container{max-width:550px;margin:0 auto}
+h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.input-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.input-row label{font-size:.78rem;font-weight:500;min-width:55px}
+.input-row input{flex:1;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none;min-width:80px}
+.input-row input:focus{border-color:#637EA1}
+.mode-btns{display:flex;gap:6px;margin-bottom:10px}
+.mode-btn{flex:1;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}
+.mode-btn:hover{border-color:#637EA1}
+.mode-btn.active{background:#637EA1;color:#fff}
+.bar-container{margin:10px 0;border-radius:5px;overflow:hidden;display:flex;height:36px;border:1px solid #e5dfe0}
+.bar-seg{display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-size:.8rem;color:#fff;transition:all .3s}
+.shares{display:grid;gap:6px;margin-top:8px}
+.share-item{background:#F5E6E8;border-radius:5px;padding:8px;display:flex;justify-content:space-between;align-items:center}
+.share-item .share-label{font-size:.78rem;font-weight:500}
+.share-item .share-value{font-family:'Oswald',sans-serif;font-size:.95rem;color:#637EA1}
+.step{background:#F5E6E8;border-radius:5px;padding:8px;margin-top:6px;font-size:.78rem}
+.step .step-label{font-family:'Oswald',sans-serif;font-size:.75rem;color:#637EA1;text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
+.step .step-math{font-weight:600;color:#1a1f2e}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#637EA1}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Ratio Sharing</h1>
+
+    <div class="card">
+        <div class="card-title">Setup</div>
+        <div class="mode-btns">
+            <button class="mode-btn active" data-parts="2">2 Parts (a : b)</button>
+            <button class="mode-btn" data-parts="3">3 Parts (a : b : c)</button>
+        </div>
+        <div class="input-row">
+            <label>Total</label>
+            <input type="number" id="total" value="120" min="0" step="any">
+        </div>
+        <div class="input-row">
+            <label>Ratio</label>
+            <input type="number" id="r1" value="3" min="0" max="999" style="flex:.5">
+            <span style="font-weight:700">:</span>
+            <input type="number" id="r2" value="5" min="0" max="999" style="flex:.5">
+            <span id="sep3" style="font-weight:700;display:none">:</span>
+            <input type="number" id="r3" value="2" min="0" max="999" style="flex:.5;display:none">
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Visual Share</div>
+        <div class="bar-container" id="bar"></div>
+        <div class="shares" id="shares"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Working</div>
+        <div id="steps"></div>
+    </div>
+
+    <div class="info">Enter a <strong>total amount</strong> and a <strong>ratio</strong>. The bar shows each share proportionally and the working shows how to calculate each part.</div>
+</div>
+<script>
+const colors=['#637EA1','#c27878','#7aab7a'];
+let parts=2;
+const total=document.getElementById('total'),
+      r1=document.getElementById('r1'),r2=document.getElementById('r2'),r3=document.getElementById('r3'),
+      sep3=document.getElementById('sep3'),
+      bar=document.getElementById('bar'),shares=document.getElementById('shares'),stepsDiv=document.getElementById('steps');
+
+document.querySelectorAll('.mode-btn').forEach(b=>{
+    b.addEventListener('click',()=>{
+        document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        parts=parseInt(b.dataset.parts);
+        r3.style.display=parts===3?'':'none';
+        sep3.style.display=parts===3?'':'none';
+        calc();
+    });
+});
+[total,r1,r2,r3].forEach(el=>el.addEventListener('input',calc));
+
+function calc(){
+    const t=parseFloat(total.value)||0;
+    const ratios=[parseInt(r1.value)||0, parseInt(r2.value)||0];
+    if(parts===3) ratios.push(parseInt(r3.value)||0);
+    const sum=ratios.reduce((a,b)=>a+b,0);
+
+    if(sum===0){
+        bar.innerHTML='<div style="flex:1;background:#e5dfe0;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#4a5568">Enter ratio values</div>';
+        shares.innerHTML='';stepsDiv.innerHTML='';return;
+    }
+
+    const labels=parts===3?['A','B','C']:['A','B'];
+    const amounts=ratios.map(r=>(r/sum)*t);
+
+    bar.innerHTML=ratios.map((r,i)=>{
+        const pct=(r/sum)*100;
+        return '<div class="bar-seg" style="flex:'+r+';background:'+colors[i]+'">'+labels[i]+': '+parseFloat(amounts[i].toFixed(4))+'</div>';
+    }).join('');
+
+    shares.style.gridTemplateColumns=parts===3?'1fr 1fr 1fr':'1fr 1fr';
+    shares.innerHTML=ratios.map((r,i)=>'<div class="share-item"><span class="share-label">'+labels[i]+' ('+r+' part'+(r!==1?'s':'')+')</span><span class="share-value">'+parseFloat(amounts[i].toFixed(4))+'</span></div>').join('');
+
+    const ratioStr=ratios.join(' : ');
+    let steps=[];
+    steps.push({label:'Total Parts',math:ratioStr+' = '+ratios.join(' + ')+' = '+sum+' parts'});
+    steps.push({label:'Value Per Part',math:t+' \u00f7 '+sum+' = '+parseFloat((t/sum).toFixed(6))});
+    ratios.forEach((r,i)=>{
+        steps.push({label:labels[i]+'\'s Share',math:r+' \u00d7 '+parseFloat((t/sum).toFixed(6))+' = '+parseFloat(amounts[i].toFixed(4))});
+    });
+    steps.push({label:'Check',math:amounts.map(a=>parseFloat(a.toFixed(4))).join(' + ')+' = '+parseFloat(amounts.reduce((a,b)=>a+b,0).toFixed(4))});
+
+    stepsDiv.innerHTML=steps.map(s=>'<div class="step"><div class="step-label">'+s.label+'</div><div class="step-math">'+s.math+'</div></div>').join('');
+}
+calc();
+</script>
+</body>
+</html>

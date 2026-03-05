@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadratic Graph Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
+.container{max-width:550px;margin:0 auto}
+h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;width:100%}
+.slider-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.slider-row label{font-size:.78rem;font-weight:600;min-width:30px;font-family:'Oswald',sans-serif;color:#637EA1}
+.slider-row input[type=range]{flex:1;accent-color:#637EA1}
+.slider-row .val{font-family:'Oswald',sans-serif;font-size:.85rem;min-width:32px;text-align:right;color:#637EA1}
+.readouts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.readout{background:#F5E6E8;border-radius:5px;padding:6px 8px;text-align:center}
+.readout .label{font-size:.65rem;color:#4a5568}
+.readout .value{font-family:'Oswald',sans-serif;font-size:.82rem;color:#637EA1}
+.equation-display{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;margin-bottom:8px}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#637EA1}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Quadratic Graph Explorer</h1>
+
+    <div class="card">
+        <div class="card-title">Equation: y = ax&sup2; + bx + c</div>
+        <div class="equation-display" id="eqDisplay">y = x&sup2;</div>
+        <div class="slider-row">
+            <label>a</label>
+            <input type="range" id="slA" min="-5" max="5" step="0.1" value="1">
+            <span class="val" id="valA">1</span>
+        </div>
+        <div class="slider-row">
+            <label>b</label>
+            <input type="range" id="slB" min="-10" max="10" step="0.5" value="0">
+            <span class="val" id="valB">0</span>
+        </div>
+        <div class="slider-row">
+            <label>c</label>
+            <input type="range" id="slC" min="-10" max="10" step="0.5" value="0">
+            <span class="val" id="valC">0</span>
+        </div>
+    </div>
+
+    <div class="card" style="padding:8px">
+        <canvas id="canvas" width="1060" height="1060"></canvas>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Key Features</div>
+        <div class="readouts">
+            <div class="readout"><div class="label">Vertex</div><div class="value" id="vertex"></div></div>
+            <div class="readout"><div class="label">Axis of Symmetry</div><div class="value" id="axis"></div></div>
+            <div class="readout"><div class="label">y-Intercept</div><div class="value" id="yint"></div></div>
+            <div class="readout"><div class="label">Roots</div><div class="value" id="roots"></div></div>
+        </div>
+    </div>
+
+    <div class="info">Drag the sliders to see how <strong>a</strong>, <strong>b</strong>, and <strong>c</strong> change the shape and position of the parabola.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const slA=document.getElementById('slA'),slB=document.getElementById('slB'),slC=document.getElementById('slC');
+const valAEl=document.getElementById('valA'),valBEl=document.getElementById('valB'),valCEl=document.getElementById('valC');
+const eqDisplay=document.getElementById('eqDisplay');
+const vertexEl=document.getElementById('vertex'),axisEl=document.getElementById('axis'),
+      yintEl=document.getElementById('yint'),rootsEl=document.getElementById('roots');
+
+const W=canvas.width,H=canvas.height;
+const scale=50; // pixels per unit
+const cx=W/2,cy=H/2;
+
+[slA,slB,slC].forEach(s=>s.addEventListener('input',draw));
+
+function toCanvas(x,y){return [cx+x*scale, cy-y*scale];}
+
+function draw(){
+    const a=parseFloat(slA.value),b=parseFloat(slB.value),c=parseFloat(slC.value);
+    valAEl.textContent=a;valBEl.textContent=b;valCEl.textContent=c;
+
+    // Equation display
+    let eq='y = ';
+    if(a!==0) eq+=(a===1?'':a===-1?'-':a)+'x\u00b2';
+    if(b!==0) eq+=(b>0&&a!==0?' + ':b<0?' - ':'')+(Math.abs(b)===1?'':Math.abs(b))+'x';
+    if(c!==0) eq+=(c>0&&(a!==0||b!==0)?' + ':c<0?' - ':'')+Math.abs(c);
+    if(a===0&&b===0&&c===0) eq+='0';
+    eqDisplay.textContent=eq;
+
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle='#f0eeef';ctx.lineWidth=1;
+    const range=Math.ceil(W/(2*scale));
+    for(let i=-range;i<=range;i++){
+        const px=cx+i*scale;
+        ctx.beginPath();ctx.moveTo(px,0);ctx.lineTo(px,H);ctx.stroke();
+        const py=cy+i*scale;
+        ctx.beginPath();ctx.moveTo(0,py);ctx.lineTo(W,py);ctx.stroke();
+    }
+
+    // Axes
+    ctx.strokeStyle='#ccc';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
+
+    // Axis labels
+    ctx.fillStyle='#999';ctx.font='500 20px Outfit';ctx.textAlign='center';
+    for(let i=-range;i<=range;i++){
+        if(i===0) continue;
+        ctx.fillText(i,cx+i*scale,cy+20);
+        ctx.fillText(i,cx-25,cy-i*scale+6);
+    }
+    ctx.fillText('0',cx-15,cy+20);
+
+    // Draw parabola
+    if(a!==0||b!==0){
+        ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.beginPath();
+        let first=true;
+        for(let px=0;px<=W;px+=2){
+            const x=(px-cx)/scale;
+            const y=a*x*x+b*x+c;
+            const py=cy-y*scale;
+            if(py<-500||py>H+500){first=true;continue;}
+            if(first){ctx.moveTo(px,py);first=false;}
+            else ctx.lineTo(px,py);
+        }
+        ctx.stroke();
+    } else {
+        // horizontal line y=c
+        const py=cy-c*scale;
+        ctx.strokeStyle='#637EA1';ctx.lineWidth=3;
+        ctx.beginPath();ctx.moveTo(0,py);ctx.lineTo(W,py);ctx.stroke();
+    }
+
+    // Vertex
+    let vx,vy;
+    if(a!==0){
+        vx=-b/(2*a);vy=a*vx*vx+b*vx+c;
+        const [pvx,pvy]=toCanvas(vx,vy);
+        ctx.beginPath();ctx.arc(pvx,pvy,7,0,Math.PI*2);ctx.fillStyle='#c27878';ctx.fill();
+        ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+
+        // Axis of symmetry
+        ctx.setLineDash([6,4]);ctx.strokeStyle='rgba(194,120,120,.5)';ctx.lineWidth=1.5;
+        ctx.beginPath();ctx.moveTo(pvx,0);ctx.lineTo(pvx,H);ctx.stroke();ctx.setLineDash([]);
+
+        vertexEl.textContent='('+parseFloat(vx.toFixed(2))+', '+parseFloat(vy.toFixed(2))+')';
+        axisEl.textContent='x = '+parseFloat(vx.toFixed(2));
+    } else {
+        vertexEl.textContent='N/A';axisEl.textContent='N/A';
+    }
+
+    // y-intercept
+    const yInt=c;
+    const [yix,yiy]=toCanvas(0,yInt);
+    ctx.beginPath();ctx.arc(yix,yiy,6,0,Math.PI*2);ctx.fillStyle='#7aab7a';ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    yintEl.textContent='(0, '+c+')';
+
+    // Roots
+    if(a!==0){
+        const disc=b*b-4*a*c;
+        if(disc>0){
+            const r1=(-b+Math.sqrt(disc))/(2*a),r2=(-b-Math.sqrt(disc))/(2*a);
+            [r1,r2].forEach(r=>{
+                const [rx,ry]=toCanvas(r,0);
+                ctx.beginPath();ctx.arc(rx,ry,6,0,Math.PI*2);ctx.fillStyle='#d4a843';ctx.fill();
+                ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+            });
+            rootsEl.textContent=parseFloat(r1.toFixed(3))+', '+parseFloat(r2.toFixed(3));
+        } else if(disc===0){
+            const r=-b/(2*a);
+            const [rx,ry]=toCanvas(r,0);
+            ctx.beginPath();ctx.arc(rx,ry,6,0,Math.PI*2);ctx.fillStyle='#d4a843';ctx.fill();
+            rootsEl.textContent=parseFloat(r.toFixed(3))+' (repeated)';
+        } else {
+            rootsEl.textContent='No real roots';
+        }
+    } else if(b!==0){
+        const r=-c/b;
+        rootsEl.textContent=parseFloat(r.toFixed(3));
+    } else {
+        rootsEl.textContent=c===0?'All x':'None';
+    }
+}
+draw();
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=w+'px';}
+window.addEventListener('resize',resize);resize();
+</script>
+</body>
+</html>

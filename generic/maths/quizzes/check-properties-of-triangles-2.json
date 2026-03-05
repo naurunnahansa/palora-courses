@@ -1,0 +1,48 @@
+{
+  "id": "check-properties-of-triangles-2",
+  "title": "Check: Properties of Triangles",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "An equilateral triangle has a perimeter of $18\\text{ cm}$. What is the length of each side?",
+      "options": [
+        { "id": "a", "text": "$4\\text{ cm}$" },
+        { "id": "b", "text": "$6\\text{ cm}$" },
+        { "id": "c", "text": "$9\\text{ cm}$" },
+        { "id": "d", "text": "$12\\text{ cm}$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "An equilateral triangle has three equal sides. Each side is $\\frac{18}{3} = 6\\text{ cm}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A triangle has sides of length $5\\text{ cm}$, $12\\text{ cm}$, and $13\\text{ cm}$. What type of triangle is it?",
+      "options": [
+        { "id": "a", "text": "Acute scalene" },
+        { "id": "b", "text": "Right-angled" },
+        { "id": "c", "text": "Obtuse scalene" },
+        { "id": "d", "text": "Isosceles" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Check using Pythagoras' theorem: $5^2 + 12^2 = 25 + 144 = 169 = 13^2$. Since the sum of the squares of the two shorter sides equals the square of the longest side, it is a right-angled triangle."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which of the following sets of side lengths cannot form a triangle?",
+      "options": [
+        { "id": "a", "text": "$3, 4, 5$" },
+        { "id": "b", "text": "$5, 5, 8$" },
+        { "id": "c", "text": "$2, 3, 6$" },
+        { "id": "d", "text": "$7, 7, 7$" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "By the triangle inequality, the sum of any two sides must be greater than the third. For $2, 3, 6$: $2 + 3 = 5 < 6$, so these lengths cannot form a triangle."
+    }
+  ]
+}

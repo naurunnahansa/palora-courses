@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentage Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
+.container{max-width:550px;margin:0 auto}
+h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.mode-btns{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.mode-btn{flex:1;min-width:120px;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:8px 6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}
+.mode-btn:hover{border-color:#637EA1}
+.mode-btn.active{background:#637EA1;color:#fff}
+.input-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.input-row label{font-size:.78rem;font-weight:500;min-width:40px}
+.input-row input{flex:1;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none;min-width:80px}
+.input-row input:focus{border-color:#637EA1}
+.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;margin-top:8px}
+.result-box .value{font-family:'Oswald',sans-serif;font-size:1.1rem;color:#637EA1}
+.result-box .label{font-size:.7rem;color:#4a5568;margin-top:2px}
+.step{background:#F5E6E8;border-radius:5px;padding:8px;margin-top:6px;font-size:.78rem}
+.step .step-label{font-family:'Oswald',sans-serif;font-size:.75rem;color:#637EA1;text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
+.step .step-math{font-weight:600;color:#1a1f2e}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#637EA1}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Percentage Calculator</h1>
+
+    <div class="card">
+        <div class="card-title">Choose Mode</div>
+        <div class="mode-btns">
+            <button class="mode-btn active" data-mode="of">X% of Y</button>
+            <button class="mode-btn" data-mode="what">X is what % of Y</button>
+            <button class="mode-btn" data-mode="change">% Change X to Y</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Input Values</div>
+        <div class="input-row">
+            <label id="labelA">X%</label>
+            <input type="number" id="valA" value="25" step="any">
+        </div>
+        <div class="input-row">
+            <label id="labelB">Y</label>
+            <input type="number" id="valB" value="200" step="any">
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Result</div>
+        <div class="result-box">
+            <div class="value" id="result">50</div>
+            <div class="label" id="resultLabel"></div>
+        </div>
+        <div id="working"></div>
+    </div>
+
+    <div class="info">Choose a mode and enter your values. The calculator shows the <strong>formula</strong> and <strong>working</strong> in real time.</div>
+</div>
+<script>
+let mode='of';
+const valA=document.getElementById('valA'),valB=document.getElementById('valB'),
+      labelA=document.getElementById('labelA'),labelB=document.getElementById('labelB'),
+      result=document.getElementById('result'),resultLabel=document.getElementById('resultLabel'),
+      working=document.getElementById('working');
+
+document.querySelectorAll('.mode-btn').forEach(b=>{
+    b.addEventListener('click',()=>{
+        document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        mode=b.dataset.mode;
+        updateLabels();
+        calc();
+    });
+});
+[valA,valB].forEach(el=>el.addEventListener('input',calc));
+
+function updateLabels(){
+    if(mode==='of'){
+        labelA.textContent='X%'; labelB.textContent='Y';
+        valA.value='25'; valB.value='200';
+    } else if(mode==='what'){
+        labelA.textContent='X'; labelB.textContent='Y';
+        valA.value='30'; valB.value='150';
+    } else {
+        labelA.textContent='From'; labelB.textContent='To';
+        valA.value='80'; valB.value='100';
+    }
+    calc();
+}
+
+function calc(){
+    const a=parseFloat(valA.value), b=parseFloat(valB.value);
+    if(isNaN(a)||isNaN(b)){result.textContent='?';working.innerHTML='';return;}
+
+    let res,steps=[];
+    if(mode==='of'){
+        res=(a/100)*b;
+        steps.push({label:'Formula',math:a+'% of '+b+' = ('+a+' / 100) \u00d7 '+b});
+        steps.push({label:'Calculate',math:'= '+(a/100)+' \u00d7 '+b+' = '+parseFloat(res.toFixed(8))});
+        result.textContent=parseFloat(res.toFixed(8));
+        resultLabel.textContent=a+'% of '+b;
+    } else if(mode==='what'){
+        if(b===0){result.textContent='Undefined';resultLabel.textContent='Cannot divide by zero';working.innerHTML='';return;}
+        res=(a/b)*100;
+        steps.push({label:'Formula',math:'(X / Y) \u00d7 100 = ('+a+' / '+b+') \u00d7 100'});
+        steps.push({label:'Calculate',math:'= '+parseFloat((a/b).toFixed(8))+' \u00d7 100 = '+parseFloat(res.toFixed(4))+'%'});
+        result.textContent=parseFloat(res.toFixed(4))+'%';
+        resultLabel.textContent=a+' is '+parseFloat(res.toFixed(4))+'% of '+b;
+    } else {
+        if(a===0){result.textContent='Undefined';resultLabel.textContent='Original value cannot be zero';working.innerHTML='';return;}
+        res=((b-a)/a)*100;
+        let dir=res>0?'increase':res<0?'decrease':'no change';
+        steps.push({label:'Formula',math:'((New \u2212 Old) / Old) \u00d7 100'});
+        steps.push({label:'Difference',math: b+' \u2212 '+a+' = '+(b-a)});
+        steps.push({label:'Calculate',math:'('+( b-a)+' / '+a+') \u00d7 100 = '+parseFloat(res.toFixed(4))+'%'});
+        result.textContent=parseFloat(res.toFixed(4))+'%';
+        resultLabel.textContent='A '+dir+' from '+a+' to '+b;
+    }
+
+    working.innerHTML=steps.map(s=>'<div class="step"><div class="step-label">'+s.label+'</div><div class="step-math">'+s.math+'</div></div>').join('');
+}
+calc();
+</script>
+</body>
+</html>

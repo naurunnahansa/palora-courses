@@ -1,0 +1,34 @@
+{
+  "id": "check-vector-geometry",
+  "title": "Check: Vector Geometry",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In triangle $OAB$, $\\overrightarrow{OA} = \\mathbf{a}$ and $\\overrightarrow{OB} = \\mathbf{b}$. $M$ is the midpoint of $AB$. Express $\\overrightarrow{OM}$ in terms of $\\mathbf{a}$ and $\\mathbf{b}$.",
+      "options": [
+        { "id": "a", "text": "$\\mathbf{a} + \\mathbf{b}$" },
+        { "id": "b", "text": "$\\frac{1}{2}\\mathbf{a} + \\frac{1}{2}\\mathbf{b}$" },
+        { "id": "c", "text": "$\\mathbf{b} - \\mathbf{a}$" },
+        { "id": "d", "text": "$\\frac{1}{2}(\\mathbf{b} - \\mathbf{a})$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "$\\overrightarrow{OM} = \\overrightarrow{OA} + \\overrightarrow{AM} = \\mathbf{a} + \\frac{1}{2}\\overrightarrow{AB} = \\mathbf{a} + \\frac{1}{2}(\\mathbf{b} - \\mathbf{a}) = \\frac{1}{2}\\mathbf{a} + \\frac{1}{2}\\mathbf{b}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $\\overrightarrow{PQ} = 3\\mathbf{a}$ and $\\overrightarrow{PR} = 6\\mathbf{a}$, what can you conclude about the points $P$, $Q$, and $R$?",
+      "options": [
+        { "id": "a", "text": "They form an equilateral triangle" },
+        { "id": "b", "text": "They are collinear (lie on the same straight line)" },
+        { "id": "c", "text": "$Q$ is the midpoint of $PR$" },
+        { "id": "d", "text": "Both B and C" }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Since $\\overrightarrow{PR} = 6\\mathbf{a} = 2 \\times 3\\mathbf{a} = 2\\overrightarrow{PQ}$, the vectors $\\overrightarrow{PQ}$ and $\\overrightarrow{PR}$ are parallel and share point $P$, so $P$, $Q$, $R$ are collinear. Also $\\overrightarrow{PQ} = \\frac{1}{2}\\overrightarrow{PR}$, so $Q$ is the midpoint of $PR$."
+    }
+  ]
+}

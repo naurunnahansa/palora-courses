@@ -1,0 +1,48 @@
+{
+  "id": "check-quadratic-formula-2",
+  "title": "Check: Quadratic Formula",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What does the discriminant $b^2 - 4ac$ tell us about a quadratic equation?",
+      "options": [
+        { "id": "a", "text": "The value of the roots" },
+        { "id": "b", "text": "The number and type of roots" },
+        { "id": "c", "text": "The vertex of the parabola" },
+        { "id": "d", "text": "Whether the parabola opens up or down" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "If $b^2 - 4ac > 0$, there are two distinct real roots. If $b^2 - 4ac = 0$, there is one repeated root. If $b^2 - 4ac < 0$, there are no real roots."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "How many real solutions does $2x^2 + x + 5 = 0$ have?",
+      "options": [
+        { "id": "a", "text": "Two" },
+        { "id": "b", "text": "One (repeated)" },
+        { "id": "c", "text": "None" },
+        { "id": "d", "text": "Cannot be determined" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Calculate the discriminant: $b^2 - 4ac = 1 - 4(2)(5) = 1 - 40 = -39$. Since $-39 < 0$, there are no real solutions."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Solve $2x^2 - 3x - 5 = 0$ using the quadratic formula.",
+      "options": [
+        { "id": "a", "text": "$x = 2.5$ or $x = -1$" },
+        { "id": "b", "text": "$x = 5$ or $x = -0.5$" },
+        { "id": "c", "text": "$x = -2.5$ or $x = 1$" },
+        { "id": "d", "text": "$x = 1$ or $x = -2.5$" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "$x = \\frac{3 \\pm \\sqrt{9 + 40}}{4} = \\frac{3 \\pm \\sqrt{49}}{4} = \\frac{3 \\pm 7}{4}$. So $x = \\frac{10}{4} = 2.5$ or $x = \\frac{-4}{4} = -1$."
+    }
+  ]
+}

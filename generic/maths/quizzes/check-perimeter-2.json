@@ -1,0 +1,34 @@
+{
+  "id": "check-perimeter-2",
+  "title": "Check: Perimeter",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A rectangle has a perimeter of $36\\text{ cm}$ and a length of $11\\text{ cm}$. What is its width?",
+      "options": [
+        { "id": "a", "text": "$7\\text{ cm}$" },
+        { "id": "b", "text": "$14\\text{ cm}$" },
+        { "id": "c", "text": "$25\\text{ cm}$" },
+        { "id": "d", "text": "$18\\text{ cm}$" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Perimeter $= 2(l + w)$, so $36 = 2(11 + w)$, giving $18 = 11 + w$, hence $w = 7\\text{ cm}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "An L-shaped figure is made by removing a $2\\text{ cm} \\times 3\\text{ cm}$ rectangle from the corner of a $6\\text{ cm} \\times 5\\text{ cm}$ rectangle. What is the perimeter of the L-shape?",
+      "options": [
+        { "id": "a", "text": "$22\\text{ cm}$" },
+        { "id": "b", "text": "$26\\text{ cm}$" },
+        { "id": "c", "text": "$32\\text{ cm}$" },
+        { "id": "d", "text": "$12\\text{ cm}$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Removing a rectangle from a corner adds the two interior edges while removing the corner portion. The outer perimeter $2(6+5) = 22\\text{ cm}$, plus the two extra inner edges $2 + 3 - (\\text{removed corner edges overlap}) = 2 + 2 = 4\\text{ cm}$ extra, giving $22 + 4 = 26\\text{ cm}$."
+    }
+  ]
+}

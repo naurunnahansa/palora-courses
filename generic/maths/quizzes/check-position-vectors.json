@@ -1,0 +1,34 @@
+{
+  "id": "check-position-vectors",
+  "title": "Check: Position Vectors",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Point $A$ has coordinates $(3, 7)$. What is the position vector of $A$?",
+      "options": [
+        { "id": "a", "text": "$\\begin{pmatrix} 7 \\\\ 3 \\end{pmatrix}$" },
+        { "id": "b", "text": "$\\begin{pmatrix} 3 \\\\ 7 \\end{pmatrix}$" },
+        { "id": "c", "text": "$\\begin{pmatrix} 3 \\\\ -7 \\end{pmatrix}$" },
+        { "id": "d", "text": "$\\begin{pmatrix} 10 \\\\ 10 \\end{pmatrix}$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The position vector of a point is the vector from the origin $O$ to that point. For $A(3, 7)$, the position vector is $\\overrightarrow{OA} = \\begin{pmatrix} 3 \\\\ 7 \\end{pmatrix}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "$A$ has position vector $\\begin{pmatrix} 1 \\\\ 4 \\end{pmatrix}$ and $B$ has position vector $\\begin{pmatrix} 5 \\\\ -2 \\end{pmatrix}$. What is $\\overrightarrow{AB}$?",
+      "options": [
+        { "id": "a", "text": "$\\begin{pmatrix} 6 \\\\ 2 \\end{pmatrix}$" },
+        { "id": "b", "text": "$\\begin{pmatrix} -4 \\\\ 6 \\end{pmatrix}$" },
+        { "id": "c", "text": "$\\begin{pmatrix} 4 \\\\ -6 \\end{pmatrix}$" },
+        { "id": "d", "text": "$\\begin{pmatrix} -4 \\\\ -6 \\end{pmatrix}$" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "$\\overrightarrow{AB} = \\overrightarrow{OB} - \\overrightarrow{OA} = \\begin{pmatrix} 5 \\\\ -2 \\end{pmatrix} - \\begin{pmatrix} 1 \\\\ 4 \\end{pmatrix} = \\begin{pmatrix} 4 \\\\ -6 \\end{pmatrix}$."
+    }
+  ]
+}

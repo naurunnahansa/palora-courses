@@ -1,0 +1,34 @@
+{
+  "id": "check-venn-diagrams-2",
+  "title": "Check: Venn Diagrams",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In a group of $40$ people, $18$ like chocolate, $22$ like vanilla, and $8$ like both. A person is chosen at random. What is $P(\\text{chocolate or vanilla})$?",
+      "options": [
+        { "id": "a", "text": "$\\frac{40}{40}$" },
+        { "id": "b", "text": "$\\frac{32}{40}$" },
+        { "id": "c", "text": "$\\frac{30}{40}$" },
+        { "id": "d", "text": "$\\frac{48}{40}$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "$P(C \\cup V) = P(C) + P(V) - P(C \\cap V) = \\frac{18}{40} + \\frac{22}{40} - \\frac{8}{40} = \\frac{32}{40} = \\frac{4}{5}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "From the same group, what is the probability a randomly chosen person likes neither chocolate nor vanilla?",
+      "options": [
+        { "id": "a", "text": "$\\frac{0}{40}$" },
+        { "id": "b", "text": "$\\frac{8}{40}$" },
+        { "id": "c", "text": "$\\frac{10}{40}$" },
+        { "id": "d", "text": "$\\frac{32}{40}$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "People who like at least one $= 32$. Neither $= 40 - 32 = 8$. $P(\\text{neither}) = \\frac{8}{40} = \\frac{1}{5}$."
+    }
+  ]
+}

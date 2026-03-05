@@ -1,0 +1,48 @@
+{
+  "id": "check-approximation-estimation",
+  "title": "Check: Approximation and Estimation",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Round $3.456$ to $2$ decimal places.",
+      "options": [
+        { "id": "a", "text": "$3.45$" },
+        { "id": "b", "text": "$3.46$" },
+        { "id": "c", "text": "$3.50$" },
+        { "id": "d", "text": "$3.4$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Look at the third decimal place: $6 \\geq 5$, so round up. $3.456 \\approx 3.46$ (to $2$ d.p.)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Round $0.004372$ to $2$ significant figures.",
+      "options": [
+        { "id": "a", "text": "$0.004$" },
+        { "id": "b", "text": "$0.0044$" },
+        { "id": "c", "text": "$0.0043$" },
+        { "id": "d", "text": "$0.00437$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Leading zeros are not significant. The first significant figure is $4$, the second is $3$. The next digit is $7 \\geq 5$, so round up: $0.0044$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Estimate the value of $\\frac{19.8 \\times 3.1}{0.52}$ by rounding each number to $1$ significant figure.",
+      "options": [
+        { "id": "a", "text": "$60$" },
+        { "id": "b", "text": "$100$" },
+        { "id": "c", "text": "$120$" },
+        { "id": "d", "text": "$12$" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Round: $19.8 \\approx 20$, $3.1 \\approx 3$, $0.52 \\approx 0.5$. Estimate $= \\frac{20 \\times 3}{0.5} = \\frac{60}{0.5} = 120$."
+    }
+  ]
+}

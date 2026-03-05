@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standard Form Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
+.container{max-width:550px;margin:0 auto}
+h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.mode-btns{display:flex;gap:6px;margin-bottom:10px}
+.mode-btn{flex:1;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:8px 6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}
+.mode-btn:hover{border-color:#637EA1}
+.mode-btn.active{background:#637EA1;color:#fff}
+.input-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.input-row label{font-size:.78rem;font-weight:500;min-width:55px}
+.input-row input{flex:1;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none;min-width:80px}
+.input-row input:focus{border-color:#637EA1}
+.sf-display{display:flex;align-items:baseline;gap:4px;font-size:.9rem;font-weight:600}
+.sf-display sup{font-size:.65rem}
+.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;margin-top:8px}
+.result-box .value{font-family:'Oswald',sans-serif;font-size:1.1rem;color:#637EA1}
+.result-box .label{font-size:.7rem;color:#4a5568;margin-top:2px}
+.step{background:#F5E6E8;border-radius:5px;padding:8px;margin-top:6px;font-size:.78rem}
+.step .step-label{font-family:'Oswald',sans-serif;font-size:.75rem;color:#637EA1;text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
+.step .step-math{font-weight:600;color:#1a1f2e}
+.prefix-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.prefix-chip{background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:5px 10px;font-family:'Outfit',sans-serif;font-size:.7rem;cursor:pointer;transition:all .2s}
+.prefix-chip:hover{border-color:#637EA1}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#637EA1}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Standard Form Converter</h1>
+
+    <div class="card">
+        <div class="card-title">Mode</div>
+        <div class="mode-btns">
+            <button class="mode-btn active" data-mode="toSF">Number &rarr; Standard Form</button>
+            <button class="mode-btn" data-mode="toNum">Standard Form &rarr; Number</button>
+        </div>
+    </div>
+
+    <div class="card" id="toSFcard">
+        <div class="card-title">Enter a Number</div>
+        <div class="input-row">
+            <label>Number</label>
+            <input type="text" id="numInput" value="45600" placeholder="e.g. 45600 or 0.0032">
+        </div>
+    </div>
+
+    <div class="card" id="toNumCard" style="display:none">
+        <div class="card-title">Enter Standard Form</div>
+        <div class="input-row">
+            <label>a</label>
+            <input type="number" id="sfA" value="4.56" step="any" style="flex:.6">
+            <span style="font-weight:600">&times; 10</span>
+            <label style="min-width:20px">n</label>
+            <input type="number" id="sfN" value="4" step="1" style="flex:.4">
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Result</div>
+        <div class="result-box">
+            <div class="value" id="result"></div>
+            <div class="label" id="resultLabel"></div>
+        </div>
+        <div id="steps"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Common Prefixes</div>
+        <div class="prefix-chips" id="prefixes"></div>
+    </div>
+
+    <div class="info"><strong>Standard form</strong> writes numbers as a &times; 10<sup>n</sup> where 1 &le; a &lt; 10 and n is an integer.</div>
+</div>
+<script>
+let mode='toSF';
+const numInput=document.getElementById('numInput'),
+      sfA=document.getElementById('sfA'),sfN=document.getElementById('sfN'),
+      result=document.getElementById('result'),resultLabel=document.getElementById('resultLabel'),
+      stepsDiv=document.getElementById('steps'),
+      toSFcard=document.getElementById('toSFcard'),toNumCard=document.getElementById('toNumCard');
+
+const prefixes=[
+    {name:'Tera',sym:'T',pow:12},{name:'Giga',sym:'G',pow:9},{name:'Mega',sym:'M',pow:6},
+    {name:'Kilo',sym:'k',pow:3},{name:'Milli',sym:'m',pow:-3},{name:'Micro',sym:'\u00b5',pow:-6},
+    {name:'Nano',sym:'n',pow:-9},{name:'Pico',sym:'p',pow:-12}
+];
+
+const prefDiv=document.getElementById('prefixes');
+prefixes.forEach(p=>{
+    const c=document.createElement('div');c.className='prefix-chip';
+    c.textContent=p.name+' ('+p.sym+') = 10^'+p.pow;
+    c.addEventListener('click',()=>{
+        if(mode==='toSF'){numInput.value=Math.pow(10,p.pow);calc();}
+        else{sfA.value=1;sfN.value=p.pow;calc();}
+    });
+    prefDiv.appendChild(c);
+});
+
+document.querySelectorAll('.mode-btn').forEach(b=>{
+    b.addEventListener('click',()=>{
+        document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        mode=b.dataset.mode;
+        toSFcard.style.display=mode==='toSF'?'':'none';
+        toNumCard.style.display=mode==='toNum'?'':'none';
+        calc();
+    });
+});
+[numInput,sfA,sfN].forEach(el=>el.addEventListener('input',calc));
+
+function toStandardForm(num){
+    if(num===0) return {a:0,n:0};
+    let n=Math.floor(Math.log10(Math.abs(num)));
+    let a=num/Math.pow(10,n);
+    // handle floating point
+    a=parseFloat(a.toPrecision(12));
+    return {a,n};
+}
+
+function calc(){
+    let steps=[];
+    if(mode==='toSF'){
+        const raw=numInput.value.trim();
+        const num=parseFloat(raw);
+        if(isNaN(num)||raw===''){result.textContent='?';resultLabel.textContent='Enter a valid number';stepsDiv.innerHTML='';return;}
+        if(num===0){result.textContent='0';resultLabel.textContent='Zero is just zero';stepsDiv.innerHTML='';return;}
+
+        const sf=toStandardForm(num);
+        const sign=num<0?'-':'';
+        const absStr=Math.abs(num).toString();
+
+        steps.push({label:'Original Number',math:raw});
+        if(Math.abs(num)>=1){
+            steps.push({label:'Move Decimal Left',math:'Move the decimal point '+sf.n+' place'+(Math.abs(sf.n)!==1?'s':'')+' to the left'});
+        } else {
+            steps.push({label:'Move Decimal Right',math:'Move the decimal point '+Math.abs(sf.n)+' place'+(Math.abs(sf.n)!==1?'s':'')+' to the right'});
+        }
+        steps.push({label:'Result',math: sf.a+' \u00d7 10^'+sf.n});
+
+        result.textContent=sf.a+' \u00d7 10^'+sf.n;
+        resultLabel.textContent='Standard form of '+raw;
+    } else {
+        const a=parseFloat(sfA.value), n=parseInt(sfN.value);
+        if(isNaN(a)||isNaN(n)){result.textContent='?';resultLabel.textContent='Enter valid values';stepsDiv.innerHTML='';return;}
+
+        if(a!==0 && (Math.abs(a)<1||Math.abs(a)>=10)){
+            steps.push({label:'Warning',math:'a should be between 1 and 10 for proper standard form'});
+        }
+
+        const val=a*Math.pow(10,n);
+        steps.push({label:'Expression',math:a+' \u00d7 10^'+n});
+        steps.push({label:'Calculate 10^'+n,math:'10^'+n+' = '+Math.pow(10,n)});
+        steps.push({label:'Multiply',math:a+' \u00d7 '+Math.pow(10,n)+' = '+val});
+
+        result.textContent=val;
+        resultLabel.textContent='Ordinary number';
+    }
+    stepsDiv.innerHTML=steps.map(s=>'<div class="step"><div class="step-label">'+s.label+'</div><div class="step-math">'+s.math+'</div></div>').join('');
+}
+calc();
+</script>
+</body>
+</html>

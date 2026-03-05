@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle Theorems</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}select{padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.82rem;width:100%;background:#F5E6E8;cursor:pointer}.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;margin-top:8px}.theorem-text{background:#fafbfc;border-radius:5px;padding:10px;font-size:.78rem;color:#4a5568;margin-top:8px;line-height:1.6;text-align:center}.theorem-text strong{color:#637EA1}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Circle Theorems</h1>
+    <div class="card">
+        <div class="card-title">Select Theorem</div>
+        <select id="theoremSelect">
+            <option value="0">Angle at Centre (twice angle at circumference)</option>
+            <option value="1">Angle in a Semicircle (= 90 degrees)</option>
+            <option value="2">Angles in Same Segment (are equal)</option>
+            <option value="3">Cyclic Quadrilateral (opposite angles = 180 degrees)</option>
+            <option value="4">Tangent-Radius (meet at 90 degrees)</option>
+            <option value="5">Alternate Segment Theorem</option>
+        </select>
+    </div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="1060"></canvas></div>
+    <div class="result-box" id="resultBox"></div>
+    <div class="theorem-text" id="theoremText"></div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const sel=document.getElementById('theoremSelect');
+const R=320; // circle radius in canvas units
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=w+'px'}
+resize();window.addEventListener('resize',resize);
+
+function ptOnCircle(cx,cy,angle){return{x:cx+R*Math.cos(angle),y:cy+R*Math.sin(angle)}}
+function drawPoint(x,y,label,color){
+    ctx.beginPath();ctx.arc(x,y,10,0,Math.PI*2);ctx.fillStyle=color||'#637EA1';ctx.fill();
+    ctx.fillStyle='#1a1f2e';ctx.font='700 24px Oswald';ctx.textAlign='center';ctx.textBaseline='middle';
+    const dx=x>canvas.width/2?16:-16,dy=y>canvas.height/2?20:-20;
+    ctx.fillText(label,x+dx,y+dy);
+}
+function drawLine(x1,y1,x2,y2,color,w){ctx.strokeStyle=color||'#1a1f2e';ctx.lineWidth=w||2;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()}
+function drawAngleArc(cx,cy,a1,a2,r,color,label){
+    ctx.strokeStyle=color;ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,r,a1,a2);ctx.stroke();
+    const mid=(a1+a2)/2;
+    ctx.fillStyle=color;ctx.font='700 26px Oswald';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(label,cx+Math.cos(mid)*(r+22),cy+Math.sin(mid)*(r+22));
+}
+function angleBetween(cx,cy,px,py){return Math.atan2(py-cy,px-cx)}
+
+function draw(){
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    const mode=parseInt(sel.value);
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Circle
+    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.stroke();
+    // Centre dot
+    ctx.beginPath();ctx.arc(cx,cy,4,0,Math.PI*2);ctx.fillStyle='#637EA1';ctx.fill();
+
+    if(mode===0){
+        // Angle at centre = 2x angle at circumference
+        const A=ptOnCircle(cx,cy,-2.5),B=ptOnCircle(cx,cy,-0.5),C=ptOnCircle(cx,cy,Math.PI*0.6);
+        drawLine(A.x,A.y,C.x,C.y,'#637EA1',2);drawLine(B.x,B.y,C.x,C.y,'#637EA1',2);
+        drawLine(A.x,A.y,cx,cy,'#dc3545',2);drawLine(B.x,B.y,cx,cy,'#dc3545',2);
+        const angC=Math.atan2(A.y-C.y,A.x-C.x)-Math.atan2(B.y-C.y,B.x-C.x);
+        const angO=Math.atan2(A.y-cy,A.x-cx)-Math.atan2(B.y-cy,B.x-cx);
+        const cDeg=Math.round(Math.abs(angC)*180/Math.PI);
+        const oDeg=Math.round(Math.abs(angO)*180/Math.PI);
+        drawAngleArc(C.x,C.y,angleBetween(C.x,C.y,B.x,B.y),angleBetween(C.x,C.y,A.x,A.y),50,'#637EA1',cDeg+'\u00B0');
+        drawAngleArc(cx,cy,angleBetween(cx,cy,B.x,B.y),angleBetween(cx,cy,A.x,A.y),50,'#dc3545',oDeg+'\u00B0');
+        drawPoint(A.x,A.y,'A');drawPoint(B.x,B.y,'B');drawPoint(C.x,C.y,'C');drawPoint(cx,cy,'O','#dc3545');
+        document.getElementById('resultBox').textContent='Angle at centre ('+oDeg+'\u00B0) = 2 \u00D7 angle at circumference ('+cDeg+'\u00B0)';
+        document.getElementById('theoremText').innerHTML='<strong>Theorem:</strong> The angle at the centre of a circle is twice the angle at the circumference, when both are subtended by the same arc.';
+    } else if(mode===1){
+        // Angle in semicircle
+        const A=ptOnCircle(cx,cy,Math.PI),B=ptOnCircle(cx,cy,0),C=ptOnCircle(cx,cy,-Math.PI*0.65);
+        drawLine(A.x,A.y,B.x,B.y,'#4a5568',2);
+        drawLine(A.x,A.y,C.x,C.y,'#637EA1',2);drawLine(B.x,B.y,C.x,C.y,'#637EA1',2);
+        // Right angle symbol at C
+        const sz=30;
+        const aCA=angleBetween(C.x,C.y,A.x,A.y),aCB=angleBetween(C.x,C.y,B.x,B.y);
+        ctx.strokeStyle='#dc3545';ctx.lineWidth=3;
+        ctx.beginPath();
+        ctx.moveTo(C.x+Math.cos(aCA)*sz,C.y+Math.sin(aCA)*sz);
+        ctx.lineTo(C.x+Math.cos(aCA)*sz+Math.cos(aCB)*sz,C.y+Math.sin(aCA)*sz+Math.sin(aCB)*sz);
+        ctx.lineTo(C.x+Math.cos(aCB)*sz,C.y+Math.sin(aCB)*sz);
+        ctx.stroke();
+        ctx.fillStyle='#dc3545';ctx.font='700 28px Oswald';ctx.textAlign='center';
+        ctx.fillText('90\u00B0',C.x+Math.cos((aCA+aCB)/2)*60,C.y+Math.sin((aCA+aCB)/2)*60);
+        drawPoint(A.x,A.y,'A');drawPoint(B.x,B.y,'B');drawPoint(C.x,C.y,'C');drawPoint(cx,cy,'O','#dc3545');
+        // Diameter label
+        ctx.fillStyle='#4a5568';ctx.font='500 22px Outfit';ctx.textAlign='center';ctx.fillText('diameter',cx,cy+20);
+        document.getElementById('resultBox').textContent='Angle ACB = 90\u00B0 (angle in a semicircle)';
+        document.getElementById('theoremText').innerHTML='<strong>Theorem:</strong> The angle in a semicircle is always a right angle (90\u00B0). Any angle subtended by a diameter at the circumference equals 90\u00B0.';
+    } else if(mode===2){
+        // Same segment
+        const A=ptOnCircle(cx,cy,-2.5),B=ptOnCircle(cx,cy,-0.5);
+        const C=ptOnCircle(cx,cy,Math.PI*0.45),D=ptOnCircle(cx,cy,Math.PI*0.8);
+        drawLine(A.x,A.y,C.x,C.y,'#637EA1',2);drawLine(B.x,B.y,C.x,C.y,'#637EA1',2);
+        drawLine(A.x,A.y,D.x,D.y,'#dc3545',2);drawLine(B.x,B.y,D.x,D.y,'#dc3545',2);
+        const angC=Math.abs(Math.atan2(A.y-C.y,A.x-C.x)-Math.atan2(B.y-C.y,B.x-C.x))*180/Math.PI;
+        const angD=Math.abs(Math.atan2(A.y-D.y,A.x-D.x)-Math.atan2(B.y-D.y,B.x-D.x))*180/Math.PI;
+        drawAngleArc(C.x,C.y,angleBetween(C.x,C.y,B.x,B.y),angleBetween(C.x,C.y,A.x,A.y),45,'#637EA1',Math.round(angC)+'\u00B0');
+        drawAngleArc(D.x,D.y,angleBetween(D.x,D.y,B.x,B.y),angleBetween(D.x,D.y,A.x,A.y),45,'#dc3545',Math.round(angD)+'\u00B0');
+        drawPoint(A.x,A.y,'A');drawPoint(B.x,B.y,'B');drawPoint(C.x,C.y,'C');drawPoint(D.x,D.y,'D');
+        document.getElementById('resultBox').textContent='Angle ACB = '+Math.round(angC)+'\u00B0 = Angle ADB = '+Math.round(angD)+'\u00B0';
+        document.getElementById('theoremText').innerHTML='<strong>Theorem:</strong> Angles subtended by the same arc at the circumference are equal. Points C and D are in the same segment, so angle ACB = angle ADB.';
+    } else if(mode===3){
+        // Cyclic quadrilateral
+        const A=ptOnCircle(cx,cy,-1.8),B=ptOnCircle(cx,cy,-0.3),C=ptOnCircle(cx,cy,0.9),D=ptOnCircle(cx,cy,2.2);
+        const pts=[A,B,C,D];
+        ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.beginPath();
+        pts.forEach((p,i)=>{i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y)});ctx.closePath();ctx.stroke();
+        ctx.fillStyle='#637EA1';ctx.globalAlpha=0.08;ctx.fill();ctx.globalAlpha=1;
+        // Calculate angles
+        function quadAngle(prev,curr,next){return Math.abs(Math.atan2(prev.y-curr.y,prev.x-curr.x)-Math.atan2(next.y-curr.y,next.x-curr.x))*180/Math.PI}
+        const angles=[quadAngle(D,A,B),quadAngle(A,B,C),quadAngle(B,C,D),quadAngle(C,D,A)];
+        const labels=['A','B','C','D'];
+        pts.forEach((p,i)=>{
+            drawPoint(p.x,p.y,labels[i]);
+            const prev=pts[(i+3)%4],next=pts[(i+1)%4];
+            drawAngleArc(p.x,p.y,angleBetween(p.x,p.y,next.x,next.y),angleBetween(p.x,p.y,prev.x,prev.y),35,[colors[0],colors[1],colors[0],colors[1]][i],Math.round(angles[i])+'\u00B0');
+        });
+        document.getElementById('resultBox').textContent='A+C = '+Math.round(angles[0]+angles[2])+'\u00B0, B+D = '+Math.round(angles[1]+angles[3])+'\u00B0';
+        document.getElementById('theoremText').innerHTML='<strong>Theorem:</strong> Opposite angles of a cyclic quadrilateral add up to 180\u00B0. Here: A ('+Math.round(angles[0])+'\u00B0) + C ('+Math.round(angles[2])+'\u00B0) = '+Math.round(angles[0]+angles[2])+'\u00B0';
+    } else if(mode===4){
+        // Tangent-radius
+        const P=ptOnCircle(cx,cy,-0.8);
+        drawLine(cx,cy,P.x,P.y,'#dc3545',2);
+        // Tangent at P (perpendicular to radius)
+        const radAngle=Math.atan2(P.y-cy,P.x-cx);
+        const tangAngle=radAngle+Math.PI/2;
+        const tLen=250;
+        drawLine(P.x-Math.cos(tangAngle)*tLen,P.y-Math.sin(tangAngle)*tLen,P.x+Math.cos(tangAngle)*tLen,P.y+Math.sin(tangAngle)*tLen,'#637EA1',3);
+        // Right angle
+        const sz=30;
+        ctx.strokeStyle='#28a745';ctx.lineWidth=3;
+        ctx.beginPath();
+        ctx.moveTo(P.x+Math.cos(radAngle+Math.PI)*sz,P.y+Math.sin(radAngle+Math.PI)*sz);
+        ctx.lineTo(P.x+Math.cos(radAngle+Math.PI)*sz+Math.cos(tangAngle)*sz,P.y+Math.sin(radAngle+Math.PI)*sz+Math.sin(tangAngle)*sz);
+        ctx.lineTo(P.x+Math.cos(tangAngle)*sz,P.y+Math.sin(tangAngle)*sz);
+        ctx.stroke();
+        ctx.fillStyle='#28a745';ctx.font='700 28px Oswald';ctx.textAlign='center';
+        ctx.fillText('90\u00B0',P.x+Math.cos(radAngle+Math.PI)*50+Math.cos(tangAngle)*30,P.y+Math.sin(radAngle+Math.PI)*50+Math.sin(tangAngle)*30);
+        drawPoint(P.x,P.y,'P');drawPoint(cx,cy,'O','#dc3545');
+        ctx.fillStyle='#637EA1';ctx.font='500 22px Outfit';ctx.textAlign='left';ctx.fillText('tangent',P.x+Math.cos(tangAngle)*tLen*0.6+10,P.y+Math.sin(tangAngle)*tLen*0.6-10);
+        ctx.fillStyle='#dc3545';ctx.font='500 22px Outfit';ctx.textAlign='center';
+        const midRX=(cx+P.x)/2,midRY=(cy+P.y)/2;
+        ctx.fillText('radius',midRX-20,midRY+20);
+        document.getElementById('resultBox').textContent='Tangent meets radius at 90\u00B0';
+        document.getElementById('theoremText').innerHTML='<strong>Theorem:</strong> A tangent to a circle is perpendicular to the radius at the point of contact. The angle between the tangent and radius is always 90\u00B0.';
+    } else {
+        // Alternate segment
+        const P=ptOnCircle(cx,cy,Math.PI/2);
+        const tangAngle=0; // horizontal tangent at top
+        const tLen=280;
+        drawLine(P.x-tLen,P.y,P.x+tLen,P.y,'#4a5568',3);
+        const A=ptOnCircle(cx,cy,-0.6),B=ptOnCircle(cx,cy,Math.PI+0.8);
+        drawLine(P.x,P.y,A.x,A.y,'#637EA1',2);drawLine(P.x,P.y,B.x,B.y,'#dc3545',2);
+        drawLine(A.x,A.y,B.x,B.y,'#aaa',2);
+        // Angle between tangent and chord PA
+        const angTangChordA=Math.abs(angleBetween(P.x,P.y,A.x,A.y))*180/Math.PI;
+        const angInSeg=Math.abs(Math.atan2(P.y-B.y,P.x-B.x)-Math.atan2(A.y-B.y,A.x-B.x))*180/Math.PI;
+        drawAngleArc(P.x,P.y,angleBetween(P.x,P.y,A.x,A.y),0,50,'#637EA1',Math.round(angTangChordA)+'\u00B0');
+        drawAngleArc(B.x,B.y,angleBetween(B.x,B.y,A.x,A.y),angleBetween(B.x,B.y,P.x,P.y),50,'#dc3545',Math.round(angInSeg)+'\u00B0');
+        drawPoint(P.x,P.y,'P');drawPoint(A.x,A.y,'A');drawPoint(B.x,B.y,'B');
+        ctx.fillStyle='#4a5568';ctx.font='500 20px Outfit';ctx.textAlign='right';ctx.fillText('tangent',P.x+tLen-5,P.y-10);
+        document.getElementById('resultBox').textContent='Angle between tangent and chord = '+Math.round(angTangChordA)+'\u00B0 = angle in alternate segment = '+Math.round(angInSeg)+'\u00B0';
+        document.getElementById('theoremText').innerHTML='<strong>Theorem:</strong> The angle between a tangent and a chord equals the angle in the alternate segment. The angle between the tangent at P and chord PA equals angle PBA.';
+    }
+}
+
+const colors=['#637EA1','#dc3545','#28a745','#e67e22'];
+sel.addEventListener('change',draw);
+draw();
+</script>
+</body>
+</html>

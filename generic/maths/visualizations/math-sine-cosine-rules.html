@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sine &amp; Cosine Rule</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; }
+        .toggle-row { display: flex; gap: 6px; margin-bottom: 10px; }
+        .toggle-btn { font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600; padding: 5px 12px; border-radius: 5px; border: 2px solid #637EA1; background: #fff; color: #637EA1; cursor: pointer; transition: all 0.15s; flex: 1; text-align: center; }
+        .toggle-btn.active { background: #637EA1; color: #fff; }
+        .input-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .input-col { flex: 1; }
+        .input-col label { font-size: 0.75rem; font-weight: 600; color: #4a5568; display: block; margin-bottom: 3px; }
+        .input-col input, .input-col select { width: 100%; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; }
+        .result-box { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; margin-bottom: 8px; }
+        .result-box .value { font-size: 1.1rem; color: #637EA1; }
+        .result-box .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .working { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; font-size: 0.82rem; line-height: 1.6; }
+        .working .step { margin-bottom: 4px; }
+        .working .highlight { color: #637EA1; font-weight: 700; }
+        .formula-ref { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; margin-bottom: 8px; }
+        .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
+        select { padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; width: 100%; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sine &amp; Cosine Rule</h1>
+
+        <canvas id="triCanvas" width="550" height="280"></canvas>
+
+        <div class="card">
+            <div class="card-title">Select Rule &amp; Scenario</div>
+            <select id="ruleSelect" onchange="updateInputs()">
+                <option value="sine-side">Sine Rule: Find a side (given 2 angles + 1 side)</option>
+                <option value="sine-angle">Sine Rule: Find an angle (given 2 sides + 1 angle)</option>
+                <option value="cosine-side">Cosine Rule: Find a side (given 2 sides + included angle)</option>
+                <option value="cosine-angle">Cosine Rule: Find an angle (given 3 sides)</option>
+            </select>
+        </div>
+
+        <div class="card" id="inputCard">
+            <div class="card-title">Known Values</div>
+            <div id="inputFields"></div>
+        </div>
+
+        <div class="formula-ref" id="formulaRef"></div>
+
+        <div class="result-box">
+            <div class="label">Result</div>
+            <div class="value" id="resultVal">--</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Step-by-step Working</div>
+            <div class="working" id="workingArea">Enter known values above to see working.</div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('triCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width; H = 280;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); calculate(); });
+
+        const scenarios = {
+            'sine-side': {
+                fields: [
+                    { id: 'angleA', label: 'Angle A (\u00B0)', val: 40 },
+                    { id: 'angleB', label: 'Angle B (\u00B0)', val: 60 },
+                    { id: 'sideA', label: 'Side a', val: 8 }
+                ],
+                formula: 'a / sin A = b / sin B'
+            },
+            'sine-angle': {
+                fields: [
+                    { id: 'sideA', label: 'Side a', val: 8 },
+                    { id: 'sideB', label: 'Side b', val: 10 },
+                    { id: 'angleA', label: 'Angle A (\u00B0)', val: 40 }
+                ],
+                formula: 'sin A / a = sin B / b'
+            },
+            'cosine-side': {
+                fields: [
+                    { id: 'sideA', label: 'Side a', val: 8 },
+                    { id: 'sideB', label: 'Side b', val: 6 },
+                    { id: 'angleC', label: 'Angle C (\u00B0)', val: 50 }
+                ],
+                formula: 'c\u00B2 = a\u00B2 + b\u00B2 \u2212 2ab cos C'
+            },
+            'cosine-angle': {
+                fields: [
+                    { id: 'sideA', label: 'Side a', val: 8 },
+                    { id: 'sideB', label: 'Side b', val: 6 },
+                    { id: 'sideC', label: 'Side c', val: 7 }
+                ],
+                formula: 'cos A = (b\u00B2 + c\u00B2 \u2212 a\u00B2) / 2bc'
+            }
+        };
+
+        function updateInputs() {
+            const rule = document.getElementById('ruleSelect').value;
+            const sc = scenarios[rule];
+            const container = document.getElementById('inputFields');
+            container.innerHTML = '';
+            const row = document.createElement('div');
+            row.className = 'input-row';
+            sc.fields.forEach(f => {
+                const col = document.createElement('div');
+                col.className = 'input-col';
+                col.innerHTML = '<label>' + f.label + '</label><input type="number" id="' + f.id + '" value="' + f.val + '" step="0.1" min="0.1" oninput="calculate()">';
+                row.appendChild(col);
+            });
+            container.appendChild(row);
+            document.getElementById('formulaRef').textContent = sc.formula;
+            calculate();
+        }
+
+        function getVal(id) { const el = document.getElementById(id); return el ? parseFloat(el.value) : NaN; }
+
+        function calculate() {
+            const rule = document.getElementById('ruleSelect').value;
+            const resultEl = document.getElementById('resultVal');
+            const workEl = document.getElementById('workingArea');
+            let triSides = null;
+
+            if (rule === 'sine-side') {
+                const A = getVal('angleA'), B = getVal('angleB'), a = getVal('sideA');
+                if (isNaN(A) || isNaN(B) || isNaN(a) || A + B >= 180) { resultEl.textContent = '--'; return; }
+                const Ar = A * Math.PI / 180, Br = B * Math.PI / 180;
+                const b = a * Math.sin(Br) / Math.sin(Ar);
+                const C = 180 - A - B;
+                const c = a * Math.sin(C * Math.PI / 180) / Math.sin(Ar);
+                resultEl.textContent = 'b = ' + b.toFixed(4);
+                workEl.innerHTML =
+                    '<div class="step"><span class="highlight">Sine Rule:</span> a / sin A = b / sin B</div>' +
+                    '<div class="step">' + a + ' / sin ' + A + '\u00B0 = b / sin ' + B + '\u00B0</div>' +
+                    '<div class="step">' + a + ' / ' + Math.sin(Ar).toFixed(4) + ' = b / ' + Math.sin(Br).toFixed(4) + '</div>' +
+                    '<div class="step">b = ' + a + ' \u00D7 ' + Math.sin(Br).toFixed(4) + ' / ' + Math.sin(Ar).toFixed(4) + '</div>' +
+                    '<div class="step"><span class="highlight">b = ' + b.toFixed(4) + '</span></div>';
+                triSides = { a, b, c, A, B, C };
+            } else if (rule === 'sine-angle') {
+                const a = getVal('sideA'), b = getVal('sideB'), A = getVal('angleA');
+                if (isNaN(a) || isNaN(b) || isNaN(A)) { resultEl.textContent = '--'; return; }
+                const Ar = A * Math.PI / 180;
+                const sinB = b * Math.sin(Ar) / a;
+                if (sinB > 1 || sinB < -1) { resultEl.textContent = 'No solution'; return; }
+                const B = Math.asin(sinB) * 180 / Math.PI;
+                const C = 180 - A - B;
+                const c = a * Math.sin(C * Math.PI / 180) / Math.sin(Ar);
+                resultEl.textContent = 'B = ' + B.toFixed(2) + '\u00B0';
+                workEl.innerHTML =
+                    '<div class="step"><span class="highlight">Sine Rule:</span> sin B / b = sin A / a</div>' +
+                    '<div class="step">sin B = b \u00D7 sin A / a</div>' +
+                    '<div class="step">sin B = ' + b + ' \u00D7 sin ' + A + '\u00B0 / ' + a + '</div>' +
+                    '<div class="step">sin B = ' + b + ' \u00D7 ' + Math.sin(Ar).toFixed(4) + ' / ' + a + '</div>' +
+                    '<div class="step">sin B = ' + sinB.toFixed(4) + '</div>' +
+                    '<div class="step"><span class="highlight">B = sin\u207B\u00B9(' + sinB.toFixed(4) + ') = ' + B.toFixed(2) + '\u00B0</span></div>';
+                triSides = { a, b, c, A, B, C };
+            } else if (rule === 'cosine-side') {
+                const a = getVal('sideA'), b = getVal('sideB'), C = getVal('angleC');
+                if (isNaN(a) || isNaN(b) || isNaN(C)) { resultEl.textContent = '--'; return; }
+                const Cr = C * Math.PI / 180;
+                const c2 = a * a + b * b - 2 * a * b * Math.cos(Cr);
+                if (c2 < 0) { resultEl.textContent = 'No solution'; return; }
+                const c = Math.sqrt(c2);
+                const cosA = (b * b + c * c - a * a) / (2 * b * c);
+                const A = Math.acos(cosA) * 180 / Math.PI;
+                const B = 180 - A - C;
+                resultEl.textContent = 'c = ' + c.toFixed(4);
+                workEl.innerHTML =
+                    '<div class="step"><span class="highlight">Cosine Rule:</span> c\u00B2 = a\u00B2 + b\u00B2 \u2212 2ab cos C</div>' +
+                    '<div class="step">c\u00B2 = ' + a + '\u00B2 + ' + b + '\u00B2 \u2212 2(' + a + ')(' + b + ')cos ' + C + '\u00B0</div>' +
+                    '<div class="step">c\u00B2 = ' + (a*a).toFixed(2) + ' + ' + (b*b).toFixed(2) + ' \u2212 ' + (2*a*b).toFixed(2) + ' \u00D7 ' + Math.cos(Cr).toFixed(4) + '</div>' +
+                    '<div class="step">c\u00B2 = ' + c2.toFixed(4) + '</div>' +
+                    '<div class="step"><span class="highlight">c = ' + c.toFixed(4) + '</span></div>';
+                triSides = { a, b, c, A, B, C };
+            } else if (rule === 'cosine-angle') {
+                const a = getVal('sideA'), b = getVal('sideB'), c = getVal('sideC');
+                if (isNaN(a) || isNaN(b) || isNaN(c)) { resultEl.textContent = '--'; return; }
+                const cosA = (b * b + c * c - a * a) / (2 * b * c);
+                if (cosA < -1 || cosA > 1) { resultEl.textContent = 'Invalid triangle'; return; }
+                const A = Math.acos(cosA) * 180 / Math.PI;
+                const cosB = (a * a + c * c - b * b) / (2 * a * c);
+                const B = Math.acos(Math.min(1, Math.max(-1, cosB))) * 180 / Math.PI;
+                const C = 180 - A - B;
+                resultEl.textContent = 'A = ' + A.toFixed(2) + '\u00B0';
+                workEl.innerHTML =
+                    '<div class="step"><span class="highlight">Cosine Rule (rearranged):</span></div>' +
+                    '<div class="step">cos A = (b\u00B2 + c\u00B2 \u2212 a\u00B2) / 2bc</div>' +
+                    '<div class="step">cos A = (' + (b*b).toFixed(2) + ' + ' + (c*c).toFixed(2) + ' \u2212 ' + (a*a).toFixed(2) + ') / (2 \u00D7 ' + b + ' \u00D7 ' + c + ')</div>' +
+                    '<div class="step">cos A = ' + (b*b + c*c - a*a).toFixed(2) + ' / ' + (2*b*c).toFixed(2) + '</div>' +
+                    '<div class="step">cos A = ' + cosA.toFixed(4) + '</div>' +
+                    '<div class="step"><span class="highlight">A = cos\u207B\u00B9(' + cosA.toFixed(4) + ') = ' + A.toFixed(2) + '\u00B0</span></div>';
+                triSides = { a, b, c, A, B, C };
+            }
+
+            if (triSides) drawTriangle(triSides);
+        }
+
+        function drawTriangle(t) {
+            ctx.clearRect(0, 0, W, H);
+            if (!t || isNaN(t.A) || isNaN(t.B) || isNaN(t.C) || isNaN(t.a) || isNaN(t.b) || isNaN(t.c)) return;
+
+            const pad = 60;
+            const Ar = t.A * Math.PI / 180;
+            const Br = t.B * Math.PI / 180;
+
+            // Place triangle: C at origin bottom-left, B at bottom-right, A at top
+            const scale = Math.min((W - 2 * pad) / t.c, (H - 2 * pad) / (t.a * Math.sin(Br)));
+
+            const Cx = pad;
+            const Cy = H - pad;
+            const Bx = Cx + t.c * scale;
+            const By = Cy;
+            const Ax = Cx + t.b * scale * Math.cos(t.C * Math.PI / 180);
+            const Ay = Cy - t.b * scale * Math.sin(t.C * Math.PI / 180);
+
+            ctx.beginPath();
+            ctx.moveTo(Ax, Ay);
+            ctx.lineTo(Bx, By);
+            ctx.lineTo(Cx, Cy);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(99, 126, 161, 0.06)';
+            ctx.fill();
+            ctx.strokeStyle = '#637EA1';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.font = '600 13px Oswald, sans-serif';
+            ctx.textAlign = 'center';
+
+            // Labels for vertices
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillText('A (' + t.A.toFixed(1) + '\u00B0)', Ax, Ay - 10);
+            ctx.fillText('B (' + t.B.toFixed(1) + '\u00B0)', Bx + 5, By + 18);
+            ctx.fillText('C (' + t.C.toFixed(1) + '\u00B0)', Cx - 5, Cy + 18);
+
+            // Labels for sides
+            ctx.fillStyle = '#27ae60';
+            ctx.fillText('a = ' + t.a.toFixed(2), (Bx + Cx) / 2, (By + Cy) / 2 + 18);
+            ctx.fillText('b = ' + t.b.toFixed(2), (Ax + Cx) / 2 - 20, (Ay + Cy) / 2);
+            ctx.fillText('c = ' + t.c.toFixed(2), (Ax + Bx) / 2 + 20, (Ay + By) / 2);
+        }
+
+        updateInputs();
+    </script>
+</body>
+</html>

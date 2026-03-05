@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.input-group{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;align-items:center}.input-group label{font-size:.78rem;font-weight:600}.input-group input{width:60px;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.82rem;text-align:center}.point-row{background:#F5E6E8;border-radius:5px;padding:8px;margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.point-label{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;min-width:60px}.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;font-family:'Oswald',sans-serif;font-size:.95rem;color:#637EA1;margin-top:8px}.calc-steps{background:#fafbfc;border-radius:5px;padding:8px 12px;font-size:.78rem;color:#4a5568;margin-top:8px;line-height:1.6}.calc-steps strong{color:#637EA1}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Gradient Calculator</h1>
+    <div class="card">
+        <div class="card-title">Enter Two Points</div>
+        <div class="point-row">
+            <span class="point-label">Point 1</span>
+            <label>x&#8321;</label><input type="number" id="x1" value="1" min="-5" max="5">
+            <label>y&#8321;</label><input type="number" id="y1" value="1" min="-5" max="5">
+        </div>
+        <div class="point-row">
+            <span class="point-label">Point 2</span>
+            <label>x&#8322;</label><input type="number" id="x2" value="4" min="-5" max="5">
+            <label>y&#8322;</label><input type="number" id="y2" value="3" min="-5" max="5">
+        </div>
+    </div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="1060"></canvas></div>
+    <div class="result-box" id="gradResult">Gradient = 2/3</div>
+    <div class="calc-steps" id="calcSteps"></div>
+    <div class="info">The <strong>gradient</strong> measures how steep a line is. It equals the <strong>rise</strong> (change in y) divided by the <strong>run</strong> (change in x).</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const inputs={x1:document.getElementById('x1'),y1:document.getElementById('y1'),x2:document.getElementById('x2'),y2:document.getElementById('y2')};
+const gradResult=document.getElementById('gradResult'),calcSteps=document.getElementById('calcSteps');
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=w+'px'}
+resize();window.addEventListener('resize',resize);
+
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){let t=b;b=a%b;a=t}return a}
+
+function draw(){
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    const scale=W/12;
+    const x1=parseFloat(inputs.x1.value)||0,y1=parseFloat(inputs.y1.value)||0;
+    const x2=parseFloat(inputs.x2.value)||0,y2=parseFloat(inputs.y2.value)||0;
+    const rise=y2-y1,run=x2-x1;
+
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle='#e5dfe0';ctx.lineWidth=1;
+    for(let i=-6;i<=6;i++){
+        ctx.beginPath();ctx.moveTo(cx+i*scale,0);ctx.lineTo(cx+i*scale,H);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(0,cy-i*scale);ctx.lineTo(W,cy-i*scale);ctx.stroke();
+    }
+    // Axes
+    ctx.strokeStyle='#1a1f2e';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
+    // Numbers
+    ctx.fillStyle='#4a5568';ctx.font='500 22px Oswald';ctx.textAlign='center';ctx.textBaseline='top';
+    for(let i=-5;i<=5;i++){if(i===0)continue;ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(i,cx+i*scale,cy+6);ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillText(i,cx-8,cy-i*scale)}
+
+    // Extended line through both points
+    if(run!==0){
+        const m=rise/run,c2=y1-m*x1;
+        const lx1=-7,lx2=7;
+        ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.globalAlpha=0.3;
+        ctx.beginPath();ctx.moveTo(cx+lx1*scale,cy-(m*lx1+c2)*scale);ctx.lineTo(cx+lx2*scale,cy-(m*lx2+c2)*scale);ctx.stroke();
+        ctx.globalAlpha=1;
+    }
+
+    // Line segment between points
+    ctx.strokeStyle='#637EA1';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(cx+x1*scale,cy-y1*scale);ctx.lineTo(cx+x2*scale,cy-y2*scale);ctx.stroke();
+
+    // Rise/run triangle
+    if(run!==0&&rise!==0){
+        ctx.setLineDash([6,4]);ctx.strokeStyle='#dc3545';ctx.lineWidth=2;
+        ctx.beginPath();
+        ctx.moveTo(cx+x1*scale,cy-y1*scale);
+        ctx.lineTo(cx+x2*scale,cy-y1*scale); // horizontal (run)
+        ctx.lineTo(cx+x2*scale,cy-y2*scale); // vertical (rise)
+        ctx.stroke();ctx.setLineDash([]);
+
+        // Run label
+        ctx.fillStyle='#dc3545';ctx.font='600 22px Outfit';ctx.textAlign='center';
+        ctx.textBaseline=rise>0?'top':'bottom';
+        ctx.fillText('run = '+run,cx+(x1+x2)/2*scale,cy-y1*scale+(rise>0?8:-8));
+        // Rise label
+        ctx.textAlign='left';ctx.textBaseline='middle';
+        ctx.fillText('rise = '+rise,cx+x2*scale+8,cy-(y1+y2)/2*scale);
+    }
+
+    // Points
+    [[x1,y1,'1'],[x2,y2,'2']].forEach(([px,py,lbl])=>{
+        ctx.beginPath();ctx.arc(cx+px*scale,cy-py*scale,10,0,Math.PI*2);ctx.fillStyle='#637EA1';ctx.fill();
+        ctx.fillStyle='#fff';ctx.font='700 16px Oswald';ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(lbl,cx+px*scale,cy-py*scale);
+        ctx.fillStyle='#1a1f2e';ctx.font='500 20px Outfit';ctx.textAlign='left';
+        ctx.fillText('('+px+', '+py+')',cx+px*scale+14,cy-py*scale-14);
+    });
+
+    // Calculate gradient
+    if(run===0){
+        gradResult.textContent='Gradient = undefined (vertical line)';
+        calcSteps.innerHTML='<strong>x\u2082 - x\u2081 = 0</strong>, so the line is vertical and the gradient is undefined.';
+    } else {
+        const g=gcd(Math.abs(rise),Math.abs(run));
+        const nr=rise/g,dr=run/g;
+        const sign=(nr<0)!==(dr<0)?'-':'';
+        const gradStr=Math.abs(dr)===1?(sign+Math.abs(nr)):(sign+Math.abs(nr)+'/'+Math.abs(dr));
+        const decimal=Math.round(rise/run*1000)/1000;
+        gradResult.textContent='Gradient = '+gradStr+(Math.abs(dr)!==1?' = '+decimal:'');
+        calcSteps.innerHTML='<strong>Gradient = (y\u2082 - y\u2081) / (x\u2082 - x\u2081)</strong><br>= ('+y2+' - '+y1+') / ('+x2+' - '+x1+')<br>= '+rise+' / '+run+(Math.abs(g)>1?'<br>= '+gradStr:'')+'<br>= <strong>'+decimal+'</strong>';
+    }
+}
+
+Object.values(inputs).forEach(inp=>inp.addEventListener('input',draw));
+draw();
+</script>
+</body>
+</html>

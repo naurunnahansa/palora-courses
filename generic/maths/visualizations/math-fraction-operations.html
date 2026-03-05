@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fraction Operations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
+.container{max-width:550px;margin:0 auto}
+h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.fraction-row{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap}
+.fraction-input{display:flex;flex-direction:column;align-items:center;gap:2px}
+.fraction-input input{width:52px;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.85rem;text-align:center;outline:none;transition:border-color .2s}
+.fraction-input input:focus{border-color:#637EA1}
+.fraction-line{width:52px;height:2px;background:#1a1f2e}
+.op-btns{display:flex;gap:6px}
+.op-btn{background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:8px 14px;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s}
+.op-btn:hover{border-color:#637EA1}
+.op-btn.active{background:#637EA1;color:#fff}
+.equals{font-family:'Oswald',sans-serif;font-size:1.2rem;color:#637EA1}
+.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;margin-top:8px}
+.result-box .value{font-family:'Oswald',sans-serif;font-size:1.1rem;color:#637EA1}
+.result-box .label{font-size:.7rem;color:#4a5568;margin-top:2px}
+.steps{margin-top:8px}
+.step{background:#F5E6E8;border-radius:5px;padding:8px;margin-bottom:6px;font-size:.78rem}
+.step .step-label{font-family:'Oswald',sans-serif;font-size:.75rem;color:#637EA1;text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
+.step .step-math{font-weight:600;color:#1a1f2e}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#637EA1}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Fraction Operations</h1>
+
+    <div class="card">
+        <div class="card-title">Enter Fractions</div>
+        <div class="fraction-row">
+            <div class="fraction-input">
+                <input type="number" id="n1" value="2" min="-99" max="99">
+                <div class="fraction-line"></div>
+                <input type="number" id="d1" value="3" min="1" max="99">
+            </div>
+            <div class="op-btns">
+                <button class="op-btn active" data-op="+">+</button>
+                <button class="op-btn" data-op="-">&minus;</button>
+                <button class="op-btn" data-op="*">&times;</button>
+                <button class="op-btn" data-op="/">&divide;</button>
+            </div>
+            <div class="fraction-input">
+                <input type="number" id="n2" value="1" min="-99" max="99">
+                <div class="fraction-line"></div>
+                <input type="number" id="d2" value="4" min="1" max="99">
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Result</div>
+        <div class="result-box">
+            <div class="value" id="resultFrac"></div>
+            <div class="label" id="resultDec"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Step-by-Step Solution</div>
+        <div id="steps" class="steps"></div>
+    </div>
+
+    <div class="info">Enter two fractions and choose an operation. The solution shows each step including <strong>finding common denominators</strong> and <strong>simplifying</strong> the result.</div>
+</div>
+<script>
+const n1=document.getElementById('n1'),d1=document.getElementById('d1'),
+      n2=document.getElementById('n2'),d2=document.getElementById('d2'),
+      stepsDiv=document.getElementById('steps'),
+      resultFrac=document.getElementById('resultFrac'),
+      resultDec=document.getElementById('resultDec');
+
+let op='+';
+
+document.querySelectorAll('.op-btn').forEach(b=>{
+    b.addEventListener('click',()=>{
+        document.querySelectorAll('.op-btn').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        op=b.dataset.op;
+        calc();
+    });
+});
+
+[n1,d1,n2,d2].forEach(el=>el.addEventListener('input',calc));
+
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){let t=b;b=a%b;a=t;}return a;}
+function lcm(a,b){return Math.abs(a*b)/gcd(a,b);}
+
+function fmtFrac(n,d){
+    if(d===0) return '?';
+    if(n===0) return '0';
+    let sign = (n<0)!==(d<0)?'-':'';
+    n=Math.abs(n);d=Math.abs(d);
+    let g=gcd(n,d);n/=g;d/=g;
+    if(d===1) return sign+n;
+    return sign+n+'/'+d;
+}
+
+function calc(){
+    let a=parseInt(n1.value)||0, b=parseInt(d1.value)||1,
+        c=parseInt(n2.value)||0, d=parseInt(d2.value)||1;
+    if(b===0) b=1; if(d===0) d=1;
+
+    let steps=[];
+    let rn,rd;
+    const opSym = op==='+'?'+':op==='-'?'\u2212':op==='*'?'\u00d7':'\u00f7';
+
+    steps.push({label:'Starting Expression', math: fmtFrac(a,b)+' '+opSym+' '+fmtFrac(c,d)});
+
+    if(op==='+'||op==='-'){
+        let lcd=lcm(b,d);
+        let m1=lcd/b, m2=lcd/d;
+        let na=a*m1, nc=c*m2;
+        steps.push({label:'Find Common Denominator', math:'LCD of '+b+' and '+d+' = '+lcd});
+        steps.push({label:'Convert Fractions', math: fmtFrac(a,b)+' = '+na+'/'+lcd+'    '+fmtFrac(c,d)+' = '+nc+'/'+lcd});
+        if(op==='+'){
+            rn=na+nc; rd=lcd;
+            steps.push({label:'Add Numerators', math: na+' + '+nc+' = '+rn+', over '+rd});
+        } else {
+            rn=na-nc; rd=lcd;
+            steps.push({label:'Subtract Numerators', math: na+' \u2212 '+nc+' = '+rn+', over '+rd});
+        }
+    } else if(op==='*'){
+        rn=a*c; rd=b*d;
+        steps.push({label:'Multiply Numerators', math: a+' \u00d7 '+c+' = '+rn});
+        steps.push({label:'Multiply Denominators', math: b+' \u00d7 '+d+' = '+rd});
+        steps.push({label:'Unsimplified', math: rn+'/'+rd});
+    } else {
+        rn=a*d; rd=b*c;
+        steps.push({label:'Flip Second Fraction', math: fmtFrac(a,b)+' \u00d7 '+fmtFrac(d,c)});
+        steps.push({label:'Multiply Numerators', math: a+' \u00d7 '+d+' = '+rn});
+        steps.push({label:'Multiply Denominators', math: b+' \u00d7 '+c+' = '+rd});
+    }
+
+    if(rd!==0){
+        let g=gcd(Math.abs(rn),Math.abs(rd));
+        if(g>1){
+            steps.push({label:'Simplify', math: 'Divide both by '+g+': '+fmtFrac(rn,rd)+' = '+fmtFrac(rn/g,rd/g)});
+            rn/=g; rd/=g;
+        } else {
+            steps.push({label:'Simplify', math: 'Already in simplest form'});
+        }
+        resultFrac.textContent=fmtFrac(rn,rd);
+        resultDec.textContent='= '+(rn/rd).toFixed(6).replace(/\.?0+$/,'');
+    } else {
+        resultFrac.textContent='Undefined';
+        resultDec.textContent='Cannot divide by zero';
+    }
+
+    stepsDiv.innerHTML=steps.map(s=>'<div class="step"><div class="step-label">'+s.label+'</div><div class="step-math">'+s.math+'</div></div>').join('');
+}
+calc();
+</script>
+</body>
+</html>

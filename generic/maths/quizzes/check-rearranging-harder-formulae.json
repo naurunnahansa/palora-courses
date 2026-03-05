@@ -1,0 +1,34 @@
+{
+  "id": "check-rearranging-harder-formulae",
+  "title": "Check: Rearranging Harder Formulae",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Make $x$ the subject of $y = \\frac{x + 3}{x - 1}$.",
+      "options": [
+        { "id": "a", "text": "$x = \\frac{y + 3}{y - 1}$" },
+        { "id": "b", "text": "$x = \\frac{y + 3}{y + 1}$" },
+        { "id": "c", "text": "$x = \\frac{3 + y}{y - 1}$" },
+        { "id": "d", "text": "$x = \\frac{3 - y}{y - 1}$" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Multiply by $(x-1)$: $y(x-1) = x + 3$. Expand: $yx - y = x + 3$. Collect $x$ terms: $yx - x = y + 3$. Factor: $x(y-1) = y + 3$. Divide: $x = \\frac{y+3}{y-1}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Make $a$ the subject of $s = ut + \\frac{1}{2}at^2$.",
+      "options": [
+        { "id": "a", "text": "$a = \\frac{s - ut}{2t^2}$" },
+        { "id": "b", "text": "$a = \\frac{2(s - ut)}{t^2}$" },
+        { "id": "c", "text": "$a = \\frac{2s - ut}{t^2}$" },
+        { "id": "d", "text": "$a = \\frac{s - ut}{t^2}$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Subtract $ut$: $s - ut = \\frac{1}{2}at^2$. Multiply by $2$: $2(s - ut) = at^2$. Divide by $t^2$: $a = \\frac{2(s - ut)}{t^2}$."
+    }
+  ]
+}

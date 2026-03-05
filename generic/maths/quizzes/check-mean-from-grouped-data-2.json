@@ -1,0 +1,34 @@
+{
+  "id": "check-mean-from-grouped-data-2",
+  "title": "Check: Mean from Grouped Data",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A grouped table shows: $0 \\leq h < 5$ (freq $3$), $5 \\leq h < 10$ (freq $12$), $10 \\leq h < 15$ (freq $5$). What is $\\sum fx$?",
+      "options": [
+        { "id": "a", "text": "$125$" },
+        { "id": "b", "text": "$152.5$" },
+        { "id": "c", "text": "$155$" },
+        { "id": "d", "text": "$160$" }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Midpoints: $2.5, 7.5, 12.5$. $\\sum fx = (2.5 \\times 3) + (7.5 \\times 12) + (12.5 \\times 5) = 7.5 + 90 + 62.5 = 160$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The estimated mean from grouped data is $23.5$, but the true mean (from raw data) is $24.1$. Why are they different?",
+      "options": [
+        { "id": "a", "text": "A calculation error was made" },
+        { "id": "b", "text": "The midpoint does not perfectly represent each class, so the estimated mean is approximate" },
+        { "id": "c", "text": "Grouped data always gives a higher answer" },
+        { "id": "d", "text": "The total frequency was wrong" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using midpoints assumes data is evenly distributed within each class, which is rarely exactly true. This is why the result is called an estimate."
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "id": "check-vectors-introduction",
+  "title": "Check: Vectors Introduction",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the key difference between a vector and a scalar?",
+      "options": [
+        { "id": "a", "text": "A vector has magnitude only; a scalar has direction only" },
+        { "id": "b", "text": "A vector has both magnitude and direction; a scalar has magnitude only" },
+        { "id": "c", "text": "A scalar can be negative; a vector cannot" },
+        { "id": "d", "text": "There is no difference" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A vector quantity has both magnitude (size) and direction, whereas a scalar quantity has only magnitude. For example, velocity is a vector but speed is a scalar."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The vector $\\mathbf{a} = \\begin{pmatrix} 3 \\\\ 4 \\end{pmatrix}$. What is the magnitude $|\\mathbf{a}|$?",
+      "options": [
+        { "id": "a", "text": "$7$" },
+        { "id": "b", "text": "$5$" },
+        { "id": "c", "text": "$\\sqrt{7}$" },
+        { "id": "d", "text": "$25$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The magnitude of a column vector is found using Pythagoras: $|\\mathbf{a}| = \\sqrt{3^2 + 4^2} = \\sqrt{9 + 16} = \\sqrt{25} = 5$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which notation correctly represents the vector from point $A$ to point $B$?",
+      "options": [
+        { "id": "a", "text": "$\\overrightarrow{BA}$" },
+        { "id": "b", "text": "$\\overrightarrow{AB}$" },
+        { "id": "c", "text": "$|AB|$" },
+        { "id": "d", "text": "$AB^2$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "$\\overrightarrow{AB}$ represents the vector from $A$ to $B$. The arrow goes from the start point to the end point. $\\overrightarrow{BA}$ would be the vector from $B$ to $A$, which is the opposite direction."
+    }
+  ]
+}

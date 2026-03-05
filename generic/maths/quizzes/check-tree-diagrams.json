@@ -1,0 +1,34 @@
+{
+  "id": "check-tree-diagrams",
+  "title": "Check: Tree Diagrams",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "On a tree diagram, you find the probability of a combined outcome by:",
+      "options": [
+        { "id": "a", "text": "Adding the probabilities along the branches" },
+        { "id": "b", "text": "Multiplying the probabilities along the branches" },
+        { "id": "c", "text": "Subtracting the probabilities along the branches" },
+        { "id": "d", "text": "Dividing the probabilities along the branches" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "To find the probability of a specific path through a tree diagram, you multiply the probabilities along each branch of that path (the AND rule)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A coin is flipped twice. Using a tree diagram, what is $P(\\text{exactly one head})$?",
+      "options": [
+        { "id": "a", "text": "$\\frac{1}{4}$" },
+        { "id": "b", "text": "$\\frac{1}{2}$" },
+        { "id": "c", "text": "$\\frac{3}{4}$" },
+        { "id": "d", "text": "$\\frac{1}{3}$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The outcomes with exactly one head are HT and TH. $P(HT) = \\frac{1}{2} \\times \\frac{1}{2} = \\frac{1}{4}$ and $P(TH) = \\frac{1}{4}$. Since these are mutually exclusive, $P(\\text{exactly one head}) = \\frac{1}{4} + \\frac{1}{4} = \\frac{1}{2}$."
+    }
+  ]
+}

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bounds Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
+.container{max-width:550px;margin:0 auto}
+h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.input-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.input-row label{font-size:.78rem;font-weight:500;min-width:65px}
+.input-row input,.input-row select{flex:1;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none;min-width:80px}
+.input-row input:focus,.input-row select:focus{border-color:#637EA1}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center}
+.result-box .value{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1}
+.result-box .label{font-size:.7rem;color:#4a5568;margin-top:2px}
+.number-line{position:relative;margin:16px 20px;height:40px}
+.nl-line{position:absolute;top:18px;left:0;right:0;height:2px;background:#e5dfe0}
+.nl-range{position:absolute;top:14px;height:10px;background:rgba(99,126,161,.25);border:1px solid #637EA1;border-radius:2px}
+.nl-tick{position:absolute;top:10px;width:1px;height:16px;background:#1a1f2e}
+.nl-label{position:absolute;top:28px;font-size:.65rem;transform:translateX(-50%);white-space:nowrap}
+.nl-center{position:absolute;top:28px;font-size:.65rem;font-weight:700;color:#637EA1;transform:translateX(-50%)}
+.mode-btns{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.mode-btn{flex:1;min-width:60px;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}
+.mode-btn:hover{border-color:#637EA1}
+.mode-btn.active{background:#637EA1;color:#fff}
+.step{background:#F5E6E8;border-radius:5px;padding:8px;margin-top:6px;font-size:.78rem}
+.step .step-label{font-family:'Oswald',sans-serif;font-size:.75rem;color:#637EA1;text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
+.step .step-math{font-weight:600;color:#1a1f2e}
+.expr-card{display:none}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#637EA1}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Bounds Calculator</h1>
+
+    <div class="card">
+        <div class="card-title">Value A</div>
+        <div class="input-row">
+            <label>Rounded</label>
+            <input type="number" id="valA" value="5.4" step="any">
+        </div>
+        <div class="input-row">
+            <label>Accuracy</label>
+            <select id="accA">
+                <option value="1">Nearest 1</option>
+                <option value="0.1" selected>Nearest 0.1 (1 d.p.)</option>
+                <option value="0.01">Nearest 0.01 (2 d.p.)</option>
+                <option value="0.001">Nearest 0.001 (3 d.p.)</option>
+                <option value="10">Nearest 10</option>
+                <option value="100">Nearest 100</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Bounds of A</div>
+        <div class="results">
+            <div class="result-box"><div class="label">Lower Bound</div><div class="value" id="lbA">5.35</div></div>
+            <div class="result-box"><div class="label">Upper Bound</div><div class="value" id="ubA">5.45</div></div>
+        </div>
+        <div class="number-line" id="nlA"></div>
+    </div>
+
+    <div class="card expr-card" id="exprCard">
+        <div class="card-title">Expression Bounds (A op B)</div>
+        <div class="input-row">
+            <label>Value B</label>
+            <input type="number" id="valB" value="2.1" step="any">
+        </div>
+        <div class="input-row">
+            <label>Accuracy</label>
+            <select id="accB">
+                <option value="1">Nearest 1</option>
+                <option value="0.1" selected>Nearest 0.1 (1 d.p.)</option>
+                <option value="0.01">Nearest 0.01 (2 d.p.)</option>
+                <option value="0.001">Nearest 0.001 (3 d.p.)</option>
+                <option value="10">Nearest 10</option>
+                <option value="100">Nearest 100</option>
+            </select>
+        </div>
+        <div class="mode-btns">
+            <button class="mode-btn active" data-op="+">A + B</button>
+            <button class="mode-btn" data-op="-">A &minus; B</button>
+            <button class="mode-btn" data-op="*">A &times; B</button>
+            <button class="mode-btn" data-op="/">A &divide; B</button>
+        </div>
+        <div class="results">
+            <div class="result-box"><div class="label">Lower Bound of Expression</div><div class="value" id="lbE"></div></div>
+            <div class="result-box"><div class="label">Upper Bound of Expression</div><div class="value" id="ubE"></div></div>
+        </div>
+        <div id="exprSteps"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Mode</div>
+        <div class="mode-btns">
+            <button class="mode-btn active" data-mode="single" id="singleBtn">Single Value</button>
+            <button class="mode-btn" data-mode="expr" id="exprBtn">Expression (A op B)</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Working</div>
+        <div id="steps"></div>
+    </div>
+
+    <div class="info"><strong>Error interval:</strong> LB &le; x &lt; UB. Bounds = rounded value &plusmn; half the degree of accuracy.</div>
+</div>
+<script>
+let exprOp='+';
+const valA=document.getElementById('valA'),accA=document.getElementById('accA'),
+      valB=document.getElementById('valB'),accB=document.getElementById('accB'),
+      lbAEl=document.getElementById('lbA'),ubAEl=document.getElementById('ubA'),
+      lbEEl=document.getElementById('lbE'),ubEEl=document.getElementById('ubE'),
+      nlA=document.getElementById('nlA'),stepsDiv=document.getElementById('steps'),
+      exprSteps=document.getElementById('exprSteps'),
+      exprCard=document.getElementById('exprCard');
+
+document.getElementById('singleBtn').addEventListener('click',function(){
+    document.getElementById('singleBtn').classList.add('active');
+    document.getElementById('exprBtn').classList.remove('active');
+    exprCard.style.display='none';calc();
+});
+document.getElementById('exprBtn').addEventListener('click',function(){
+    document.getElementById('exprBtn').classList.add('active');
+    document.getElementById('singleBtn').classList.remove('active');
+    exprCard.style.display='';calc();
+});
+
+document.querySelectorAll('.expr-card .mode-btn').forEach(b=>{
+    if(!b.dataset.op) return;
+    b.addEventListener('click',()=>{
+        document.querySelectorAll('.expr-card .mode-btn').forEach(x=>{if(x.dataset.op) x.classList.remove('active');});
+        b.classList.add('active');
+        exprOp=b.dataset.op;
+        calc();
+    });
+});
+
+[valA,accA,valB,accB].forEach(el=>el.addEventListener('input',calc));
+[valA,accA,valB,accB].forEach(el=>el.addEventListener('change',calc));
+
+function getBounds(val,acc){
+    const half=acc/2;
+    return {lb:val-half, ub:val+half};
+}
+
+function drawNL(container,lb,ub,val){
+    container.innerHTML='';
+    const line=document.createElement('div');line.className='nl-line';container.appendChild(line);
+    const range=document.createElement('div');range.className='nl-range';
+    const span=ub-lb;
+    const margin=span*0.5;
+    const totalSpan=span+2*margin;
+    const leftPct=((lb-(lb-margin))/totalSpan)*100;
+    const widthPct=(span/totalSpan)*100;
+    range.style.left=leftPct+'%';range.style.width=widthPct+'%';
+    container.appendChild(range);
+
+    [{v:lb,label:lb,cls:'nl-label'},{v:ub,label:ub,cls:'nl-label'},{v:val,label:val,cls:'nl-center'}].forEach(item=>{
+        const pct=((item.v-(lb-margin))/totalSpan)*100;
+        const tick=document.createElement('div');tick.className='nl-tick';tick.style.left=pct+'%';container.appendChild(tick);
+        const lbl=document.createElement('div');lbl.className=item.cls;lbl.style.left=pct+'%';lbl.textContent=item.label;container.appendChild(lbl);
+    });
+}
+
+function calc(){
+    const a=parseFloat(valA.value), accAVal=parseFloat(accA.value);
+    if(isNaN(a)){lbAEl.textContent='?';ubAEl.textContent='?';return;}
+
+    const boundsA=getBounds(a,accAVal);
+    lbAEl.textContent=boundsA.lb;
+    ubAEl.textContent=boundsA.ub;
+    drawNL(nlA,boundsA.lb,boundsA.ub,a);
+
+    let steps=[];
+    steps.push({label:'Degree of Accuracy',math:'Rounded to nearest '+accAVal});
+    steps.push({label:'Half the Accuracy',math:accAVal+' \u00f7 2 = '+(accAVal/2)});
+    steps.push({label:'Lower Bound',math:a+' \u2212 '+(accAVal/2)+' = '+boundsA.lb});
+    steps.push({label:'Upper Bound',math:a+' + '+(accAVal/2)+' = '+boundsA.ub});
+    steps.push({label:'Error Interval',math:boundsA.lb+' \u2264 A < '+boundsA.ub});
+
+    stepsDiv.innerHTML=steps.map(s=>'<div class="step"><div class="step-label">'+s.label+'</div><div class="step-math">'+s.math+'</div></div>').join('');
+
+    if(exprCard.style.display!=='none'){
+        const b=parseFloat(valB.value),accBVal=parseFloat(accB.value);
+        if(isNaN(b)) return;
+        const boundsB=getBounds(b,accBVal);
+        let lbE,ubE,eSteps=[];
+        const opSym=exprOp==='+'?'+':exprOp==='-'?'\u2212':exprOp==='*'?'\u00d7':'\u00f7';
+
+        eSteps.push({label:'Bounds of B',math:boundsB.lb+' \u2264 B < '+boundsB.ub});
+
+        if(exprOp==='+'){
+            lbE=boundsA.lb+boundsB.lb; ubE=boundsA.ub+boundsB.ub;
+            eSteps.push({label:'For A + B',math:'LB = LB(A) + LB(B) = '+boundsA.lb+' + '+boundsB.lb+' = '+lbE});
+            eSteps.push({label:'',math:'UB = UB(A) + UB(B) = '+boundsA.ub+' + '+boundsB.ub+' = '+ubE});
+        } else if(exprOp==='-'){
+            lbE=boundsA.lb-boundsB.ub; ubE=boundsA.ub-boundsB.lb;
+            eSteps.push({label:'For A \u2212 B',math:'LB = LB(A) \u2212 UB(B) = '+boundsA.lb+' \u2212 '+boundsB.ub+' = '+lbE});
+            eSteps.push({label:'',math:'UB = UB(A) \u2212 LB(B) = '+boundsA.ub+' \u2212 '+boundsB.lb+' = '+ubE});
+        } else if(exprOp==='*'){
+            lbE=boundsA.lb*boundsB.lb; ubE=boundsA.ub*boundsB.ub;
+            eSteps.push({label:'For A \u00d7 B',math:'LB = LB(A) \u00d7 LB(B) = '+boundsA.lb+' \u00d7 '+boundsB.lb+' = '+parseFloat(lbE.toFixed(8))});
+            eSteps.push({label:'',math:'UB = UB(A) \u00d7 UB(B) = '+boundsA.ub+' \u00d7 '+boundsB.ub+' = '+parseFloat(ubE.toFixed(8))});
+        } else {
+            if(boundsB.lb===0){lbEEl.textContent='Undef';ubEEl.textContent='Undef';return;}
+            lbE=boundsA.lb/boundsB.ub; ubE=boundsA.ub/boundsB.lb;
+            eSteps.push({label:'For A \u00f7 B',math:'LB = LB(A) \u00f7 UB(B) = '+boundsA.lb+' \u00f7 '+boundsB.ub+' = '+parseFloat(lbE.toFixed(8))});
+            eSteps.push({label:'',math:'UB = UB(A) \u00f7 LB(B) = '+boundsA.ub+' \u00f7 '+boundsB.lb+' = '+parseFloat(ubE.toFixed(8))});
+        }
+        lbEEl.textContent=parseFloat(lbE.toFixed(8));
+        ubEEl.textContent=parseFloat(ubE.toFixed(8));
+        exprSteps.innerHTML=eSteps.map(s=>'<div class="step"><div class="step-label">'+s.label+'</div><div class="step-math">'+s.math+'</div></div>').join('');
+    }
+}
+calc();
+</script>
+</body>
+</html>

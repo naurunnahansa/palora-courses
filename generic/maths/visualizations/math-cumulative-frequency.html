@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cumulative Frequency Graph</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; cursor: crosshair; }
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 0.82rem; }
+        .data-table th { font-family: 'Oswald', sans-serif; font-size: 0.75rem; color: #637EA1; text-transform: uppercase; padding: 4px; text-align: center; border-bottom: 2px solid #e5dfe0; }
+        .data-table td { padding: 3px; text-align: center; font-size: 0.8rem; }
+        .data-table input { width: 55px; padding: 4px 4px; border: 1px solid #e5dfe0; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 0.8rem; text-align: center; }
+        .data-table .cf { font-weight: 600; color: #637EA1; }
+        .btn-row { display: flex; gap: 6px; margin-bottom: 8px; }
+        .btn { font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 600; padding: 5px 8px; border-radius: 5px; border: 1px solid #e5dfe0; background: #F5E6E8; color: #637EA1; cursor: pointer; }
+        .btn:hover { background: #637EA1; color: #fff; }
+        .readings { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .reading-card { background: #F5E6E8; border-radius: 5px; padding: 8px 6px; text-align: center; }
+        .reading-card .label { font-size: 0.68rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 0.95rem; color: #637EA1; margin-top: 2px; }
+        .result-box { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; margin-bottom: 8px; }
+        .result-box .value { font-size: 0.9rem; color: #637EA1; }
+        .result-box .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cumulative Frequency Graph</h1>
+
+        <canvas id="graphCanvas" width="550" height="400"></canvas>
+
+        <div class="result-box" id="clickResult">
+            <div class="label">Click on graph to read values</div>
+            <div class="value" id="clickVal">--</div>
+        </div>
+
+        <div class="readings">
+            <div class="reading-card"><div class="label">Median (Q2)</div><div class="value" id="medianVal">--</div></div>
+            <div class="reading-card"><div class="label">Q1</div><div class="value" id="q1Val">--</div></div>
+            <div class="reading-card"><div class="label">Q3</div><div class="value" id="q3Val">--</div></div>
+            <div class="reading-card"><div class="label">IQR</div><div class="value" id="iqrVal">--</div></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Grouped Frequency Table</div>
+            <div class="btn-row">
+                <button class="btn" onclick="addGroup()">+ Add Group</button>
+                <button class="btn" onclick="removeGroup()">- Remove</button>
+                <button class="btn" onclick="loadSample()">Sample Data</button>
+            </div>
+            <table class="data-table">
+                <thead><tr><th>Lower</th><th>Upper</th><th>Freq</th><th>CF</th></tr></thead>
+                <tbody id="dataBody"></tbody>
+            </table>
+        </div>
+
+        <p class="hint">Click on the cumulative frequency curve to read off values. Dashed lines show Q1, median, and Q3.</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+        const CH = 400;
+        const PAD = { left: 50, right: 20, top: 20, bottom: 42 };
+
+        let groups = [
+            { lower: 0, upper: 10, freq: 3 },
+            { lower: 10, upper: 20, freq: 7 },
+            { lower: 20, upper: 30, freq: 12 },
+            { lower: 30, upper: 40, freq: 15 },
+            { lower: 40, upper: 50, freq: 10 },
+            { lower: 50, upper: 60, freq: 5 },
+            { lower: 60, upper: 70, freq: 2 }
+        ];
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width; H = CH;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); draw(); });
+
+        function addGroup() {
+            const last = groups[groups.length - 1];
+            const step = last ? last.upper - last.lower : 10;
+            groups.push({ lower: last ? last.upper : 0, upper: (last ? last.upper : 0) + step, freq: 0 });
+            buildTable(); draw();
+        }
+        function removeGroup() { if (groups.length > 2) { groups.pop(); buildTable(); draw(); } }
+        function loadSample() {
+            groups = [
+                { lower: 0, upper: 10, freq: 3 }, { lower: 10, upper: 20, freq: 7 },
+                { lower: 20, upper: 30, freq: 12 }, { lower: 30, upper: 40, freq: 15 },
+                { lower: 40, upper: 50, freq: 10 }, { lower: 50, upper: 60, freq: 5 },
+                { lower: 60, upper: 70, freq: 2 }
+            ];
+            buildTable(); draw();
+        }
+
+        function buildTable() {
+            const tbody = document.getElementById('dataBody');
+            tbody.innerHTML = '';
+            let cf = 0;
+            groups.forEach((g, i) => {
+                cf += g.freq;
+                const tr = document.createElement('tr');
+                tr.innerHTML =
+                    '<td><input type="number" value="' + g.lower + '" onchange="groups[' + i + '].lower=parseFloat(this.value);buildTable();draw()"></td>' +
+                    '<td><input type="number" value="' + g.upper + '" onchange="groups[' + i + '].upper=parseFloat(this.value);buildTable();draw()"></td>' +
+                    '<td><input type="number" value="' + g.freq + '" min="0" onchange="groups[' + i + '].freq=parseInt(this.value)||0;buildTable();draw()"></td>' +
+                    '<td class="cf">' + cf + '</td>';
+                tbody.appendChild(tr);
+            });
+        }
+
+        function getCFPoints() {
+            let cf = 0;
+            const points = [{ x: groups[0].lower, y: 0 }];
+            groups.forEach(g => {
+                cf += g.freq;
+                points.push({ x: g.upper, y: cf });
+            });
+            return points;
+        }
+
+        function interpolateX(points, targetY) {
+            for (let i = 1; i < points.length; i++) {
+                if (points[i].y >= targetY) {
+                    const p0 = points[i - 1], p1 = points[i];
+                    if (p1.y === p0.y) return p0.x;
+                    return p0.x + (targetY - p0.y) / (p1.y - p0.y) * (p1.x - p0.x);
+                }
+            }
+            return points[points.length - 1].x;
+        }
+
+        function interpolateY(points, targetX) {
+            for (let i = 1; i < points.length; i++) {
+                if (points[i].x >= targetX) {
+                    const p0 = points[i - 1], p1 = points[i];
+                    if (p1.x === p0.x) return p0.y;
+                    return p0.y + (targetX - p0.x) / (p1.x - p0.x) * (p1.y - p0.y);
+                }
+            }
+            return points[points.length - 1].y;
+        }
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+            const points = getCFPoints();
+            const totalCF = points[points.length - 1].y;
+            const minX = points[0].x, maxX = points[points.length - 1].x;
+            const gW = W - PAD.left - PAD.right;
+            const gH = H - PAD.top - PAD.bottom;
+            const dataX = minX + (mx - PAD.left) / gW * (maxX - minX);
+            const dataY = totalCF - (my - PAD.top) / gH * totalCF;
+            if (dataX >= minX && dataX <= maxX && dataY >= 0 && dataY <= totalCF) {
+                const cfAtX = interpolateY(points, dataX);
+                document.getElementById('clickVal').textContent =
+                    'At x = ' + dataX.toFixed(1) + ', CF = ' + cfAtX.toFixed(1);
+            }
+            draw();
+        });
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+            const points = getCFPoints();
+            if (points.length < 2) return;
+
+            const totalCF = points[points.length - 1].y;
+            if (totalCF === 0) return;
+
+            const minX = points[0].x;
+            const maxX = points[points.length - 1].x;
+            const gW = W - PAD.left - PAD.right;
+            const gH = H - PAD.top - PAD.bottom;
+            const toSX = x => PAD.left + (x - minX) / (maxX - minX) * gW;
+            const toSY = y => PAD.top + gH - (y / totalCF) * gH;
+
+            // Grid
+            ctx.strokeStyle = '#eee'; ctx.lineWidth = 1;
+            for (let i = 0; i <= 10; i++) {
+                const y = PAD.top + (i / 10) * gH;
+                ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + gW, y); ctx.stroke();
+            }
+            for (let i = 0; i <= 10; i++) {
+                const x = PAD.left + (i / 10) * gW;
+                ctx.beginPath(); ctx.moveTo(x, PAD.top); ctx.lineTo(x, PAD.top + gH); ctx.stroke();
+            }
+
+            // Axes
+            ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(PAD.left, PAD.top); ctx.lineTo(PAD.left, PAD.top + gH); ctx.lineTo(PAD.left + gW, PAD.top + gH); ctx.stroke();
+
+            // Tick labels
+            ctx.font = '400 10px Outfit, sans-serif'; ctx.fillStyle = '#4a5568';
+            ctx.textAlign = 'center';
+            for (let i = 0; i <= 8; i++) {
+                const val = minX + (i / 8) * (maxX - minX);
+                ctx.fillText(val.toFixed(0), PAD.left + (i / 8) * gW, PAD.top + gH + 16);
+            }
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= 5; i++) {
+                const val = (i / 5) * totalCF;
+                ctx.fillText(val.toFixed(0), PAD.left - 6, toSY(val) + 3);
+            }
+
+            // Y-axis label
+            ctx.save();
+            ctx.translate(12, PAD.top + gH / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.font = '500 11px Outfit, sans-serif';
+            ctx.fillStyle = '#4a5568';
+            ctx.textAlign = 'center';
+            ctx.fillText('Cumulative Frequency', 0, 0);
+            ctx.restore();
+
+            // Curve
+            ctx.beginPath();
+            ctx.moveTo(toSX(points[0].x), toSY(points[0].y));
+            for (let i = 1; i < points.length; i++) {
+                if (i < points.length - 1) {
+                    const xc = (toSX(points[i].x) + toSX(points[i + 1].x)) / 2;
+                    const yc = (toSY(points[i].y) + toSY(points[i + 1].y)) / 2;
+                    ctx.quadraticCurveTo(toSX(points[i].x), toSY(points[i].y), xc, yc);
+                } else {
+                    ctx.lineTo(toSX(points[i].x), toSY(points[i].y));
+                }
+            }
+            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2.5; ctx.stroke();
+
+            // Data points
+            points.forEach(p => {
+                ctx.beginPath(); ctx.arc(toSX(p.x), toSY(p.y), 4, 0, 2 * Math.PI);
+                ctx.fillStyle = '#637EA1'; ctx.fill();
+                ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+            });
+
+            // Quartile lines
+            const q1Y = totalCF / 4;
+            const medY = totalCF / 2;
+            const q3Y = 3 * totalCF / 4;
+
+            const q1X = interpolateX(points, q1Y);
+            const medX = interpolateX(points, medY);
+            const q3X = interpolateX(points, q3Y);
+
+            document.getElementById('q1Val').textContent = q1X.toFixed(1);
+            document.getElementById('medianVal').textContent = medX.toFixed(1);
+            document.getElementById('q3Val').textContent = q3X.toFixed(1);
+            document.getElementById('iqrVal').textContent = (q3X - q1X).toFixed(1);
+
+            // Draw quartile lines
+            const drawQuartile = (val, cfVal, color, label) => {
+                ctx.setLineDash([5, 5]);
+                ctx.strokeStyle = color; ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(PAD.left, toSY(cfVal));
+                ctx.lineTo(toSX(val), toSY(cfVal));
+                ctx.lineTo(toSX(val), toSY(0));
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.font = '600 10px Oswald, sans-serif'; ctx.fillStyle = color; ctx.textAlign = 'center';
+                ctx.fillText(label + ' = ' + val.toFixed(1), toSX(val), toSY(0) + 32);
+            };
+
+            drawQuartile(q1X, q1Y, '#e67e22', 'Q1');
+            drawQuartile(medX, medY, '#e74c3c', 'Med');
+            drawQuartile(q3X, q3Y, '#8e44ad', 'Q3');
+        }
+
+        buildTable();
+        draw();
+    </script>
+</body>
+</html>

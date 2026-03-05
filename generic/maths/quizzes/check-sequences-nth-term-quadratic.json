@@ -1,0 +1,34 @@
+{
+  "id": "check-sequences-nth-term-quadratic",
+  "title": "Check: Sequences: nth Term (Quadratic)",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A quadratic sequence has second differences that are constant. What are the second differences of $3, 8, 15, 24, 35$?",
+      "options": [
+        { "id": "a", "text": "$5, 7, 9, 11$" },
+        { "id": "b", "text": "$2$" },
+        { "id": "c", "text": "$3$" },
+        { "id": "d", "text": "$4$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "First differences: $5, 7, 9, 11$. Second differences: $7-5 = 2$, $9-7 = 2$, $11-9 = 2$. The constant second difference is $2$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If the second difference of a quadratic sequence is $6$, the $n$th term begins with:",
+      "options": [
+        { "id": "a", "text": "$6n^2$" },
+        { "id": "b", "text": "$3n^2$" },
+        { "id": "c", "text": "$n^2$" },
+        { "id": "d", "text": "$12n^2$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "For a quadratic $n$th term $an^2 + bn + c$, the second difference equals $2a$. So $2a = 6$, giving $a = 3$. The $n$th term starts with $3n^2$."
+    }
+  ]
+}

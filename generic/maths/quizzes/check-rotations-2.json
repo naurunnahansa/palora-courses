@@ -1,0 +1,34 @@
+{
+  "id": "check-rotations-2",
+  "title": "Check: Rotations",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A point $(-1, 4)$ is rotated $90°$ anticlockwise about the origin. What are the coordinates of the image?",
+      "options": [
+        { "id": "a", "text": "$(4, 1)$" },
+        { "id": "b", "text": "$(-4, -1)$" },
+        { "id": "c", "text": "$(-4, 1)$" },
+        { "id": "d", "text": "$(1, -4)$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A $90°$ anticlockwise rotation about the origin maps $(x, y) \\to (-y, x)$. So $(-1, 4) \\to (-4, -1)$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A shape is rotated $90°$ clockwise about a point, then rotated $90°$ clockwise about the same point again. What single transformation is this equivalent to?",
+      "options": [
+        { "id": "a", "text": "A rotation of $90°$ anticlockwise" },
+        { "id": "b", "text": "A rotation of $180°$" },
+        { "id": "c", "text": "A reflection" },
+        { "id": "d", "text": "A translation" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Two successive $90°$ clockwise rotations about the same centre combine to give a $180°$ rotation about that centre ($90° + 90° = 180°$)."
+    }
+  ]
+}

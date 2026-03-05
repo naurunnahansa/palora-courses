@@ -1,0 +1,34 @@
+{
+  "id": "check-area-under-curve-2",
+  "title": "Check: Area Under a Curve",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Using the trapezium rule with $4$ strips of equal width $h = 1$ and $y$-values $2, 5, 10, 17, 26$, the estimated area is:",
+      "options": [
+        { "id": "a", "text": "$\\frac{1}{2}(2 + 26) + 5 + 10 + 17 = 46$" },
+        { "id": "b", "text": "$\\frac{1}{2} \\times 1 \\times [(2 + 26) + 2(5 + 10 + 17)] = 46$" },
+        { "id": "c", "text": "$1 \\times (2 + 5 + 10 + 17 + 26) = 60$" },
+        { "id": "d", "text": "$4 \\times (2 + 26) = 112$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The trapezium rule is $A \\approx \\frac{h}{2}[(y_0 + y_n) + 2(y_1 + y_2 + \\cdots + y_{n-1})]$. With $h = 1$: $A = \\frac{1}{2}[(2 + 26) + 2(5 + 10 + 17)] = \\frac{1}{2}[28 + 64] = 46$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "How can you improve the accuracy of an area estimate under a curve?",
+      "options": [
+        { "id": "a", "text": "Use fewer, wider strips" },
+        { "id": "b", "text": "Use more, narrower strips" },
+        { "id": "c", "text": "Use tangent lines instead" },
+        { "id": "d", "text": "Round all values to the nearest integer" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using more strips of smaller width gives a better approximation because the tops of the trapeziums follow the curve more closely."
+    }
+  ]
+}

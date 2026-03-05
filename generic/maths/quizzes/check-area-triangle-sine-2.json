@@ -1,0 +1,48 @@
+{
+  "id": "check-area-triangle-sine-2",
+  "title": "Check: Area of a Triangle Using Sine",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A triangle has sides $a = 10\\text{ cm}$ and $b = 14\\text{ cm}$ with an included angle of $45°$. What is its exact area?",
+      "options": [
+        { "id": "a", "text": "$35\\text{ cm}^2$" },
+        { "id": "b", "text": "$35\\sqrt{2}\\text{ cm}^2$" },
+        { "id": "c", "text": "$70\\text{ cm}^2$" },
+        { "id": "d", "text": "$70\\sqrt{2}\\text{ cm}^2$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Area $= \\frac{1}{2} \\times 10 \\times 14 \\times \\sin 45° = 70 \\times \\frac{\\sqrt{2}}{2} = 35\\sqrt{2}\\text{ cm}^2$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A triangle has an area of $30\\text{ cm}^2$, one side of $10\\text{ cm}$, and an adjacent side of $12\\text{ cm}$. What is the included angle?",
+      "options": [
+        { "id": "a", "text": "$30°$" },
+        { "id": "b", "text": "$45°$" },
+        { "id": "c", "text": "$60°$" },
+        { "id": "d", "text": "$90°$" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "$30 = \\frac{1}{2} \\times 10 \\times 12 \\times \\sin C$, so $\\sin C = \\frac{30}{60} = 0.5$, giving $C = 30°$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "When is the formula $\\frac{1}{2}ab\\sin C$ most useful compared to $\\frac{1}{2} \\times \\text{base} \\times \\text{height}$?",
+      "options": [
+        { "id": "a", "text": "When the triangle is right-angled" },
+        { "id": "b", "text": "When you know the perpendicular height" },
+        { "id": "c", "text": "When you know two sides and the included angle but not the height" },
+        { "id": "d", "text": "When you only know one side" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The sine area formula is most useful when you know two sides and the included angle, making it unnecessary to calculate the perpendicular height."
+    }
+  ]
+}

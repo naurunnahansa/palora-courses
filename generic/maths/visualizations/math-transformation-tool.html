@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformation Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.controls{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.ctrl-btn{flex:1;min-width:70px;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#637EA1}.ctrl-btn.active{background:#637EA1;color:#fff}.param-row{display:flex;align-items:center;gap:8px;background:#F5E6E8;border-radius:5px;padding:8px;margin-bottom:6px;flex-wrap:wrap;font-size:.78rem}.param-row label{font-weight:600;min-width:50px}.param-row input,.param-row select{padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.82rem;width:60px;text-align:center}.param-row select{width:auto}.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;margin-top:8px}.legend{display:flex;gap:12px;justify-content:center;margin-top:8px;font-size:.75rem}.legend span{display:flex;align-items:center;gap:4px}.leg-line{width:20px;height:3px;display:inline-block;border-radius:2px}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}.hidden{display:none}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Transformation Tool</h1>
+    <div class="card">
+        <div class="card-title">Transformation Type</div>
+        <div class="controls" id="typeBtns"></div>
+    </div>
+    <div class="card" id="paramCard">
+        <div class="card-title">Parameters</div>
+        <div id="translateParams" class="param-row">
+            <label>Vector:</label> <label>a =</label><input type="number" id="ta" value="3" min="-8" max="8"> <label>b =</label><input type="number" id="tb" value="2" min="-8" max="8">
+        </div>
+        <div id="reflectParams" class="param-row hidden">
+            <label>Axis:</label><select id="reflAxis"><option value="x">x-axis</option><option value="y">y-axis</option><option value="yx">y = x</option><option value="ynx">y = -x</option></select>
+        </div>
+        <div id="rotateParams" class="param-row hidden">
+            <label>Angle:</label><select id="rotAngle"><option value="90">90\u00B0</option><option value="180">180\u00B0</option><option value="270">270\u00B0</option></select>
+            <label>Centre:</label><input type="number" id="rcx" value="0" min="-5" max="5" style="width:45px"><input type="number" id="rcy" value="0" min="-5" max="5" style="width:45px">
+        </div>
+        <div id="enlargeParams" class="param-row hidden">
+            <label>Scale:</label><input type="number" id="sf" value="2" min="-3" max="3" step="0.5" style="width:55px">
+            <label>Centre:</label><input type="number" id="ecx" value="0" min="-5" max="5" style="width:45px"><input type="number" id="ecy" value="0" min="-5" max="5" style="width:45px">
+        </div>
+    </div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="1060"></canvas></div>
+    <div class="result-box" id="resultBox"></div>
+    <div class="legend">
+        <span><span class="leg-line" style="background:#aaa;border-top:2px dashed #aaa"></span> Original</span>
+        <span><span class="leg-line" style="background:#637EA1"></span> Transformed</span>
+    </div>
+    <div class="info">Select a transformation and adjust parameters. The original triangle is shown dashed, the transformed shape is solid.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const types=['Translate','Reflect','Rotate','Enlarge'];
+let selType=0;
+const paramDivs=['translateParams','reflectParams','rotateParams','enlargeParams'];
+
+const btnDiv=document.getElementById('typeBtns');
+types.forEach((t,i)=>{
+    const b=document.createElement('button');b.className='ctrl-btn'+(i===0?' active':'');b.textContent=t;
+    b.onclick=()=>{selType=i;document.querySelectorAll('#typeBtns .ctrl-btn').forEach((c,j)=>c.classList.toggle('active',j===i));paramDivs.forEach((d,j)=>document.getElementById(d).classList.toggle('hidden',j!==i));draw()};
+    btnDiv.appendChild(b);
+});
+
+// Original triangle vertices (in graph coords)
+const origShape=[{x:1,y:1},{x:3,y:1},{x:2,y:3}];
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=w+'px'}
+resize();window.addEventListener('resize',resize);
+
+function transformPoint(p){
+    let x=p.x,y=p.y;
+    if(selType===0){
+        const a=parseFloat(document.getElementById('ta').value)||0;
+        const b=parseFloat(document.getElementById('tb').value)||0;
+        return{x:x+a,y:y+b};
+    } else if(selType===1){
+        const axis=document.getElementById('reflAxis').value;
+        if(axis==='x') return{x:x,y:-y};
+        if(axis==='y') return{x:-x,y:y};
+        if(axis==='yx') return{x:y,y:x};
+        return{x:-y,y:-x};
+    } else if(selType===2){
+        const ang=parseInt(document.getElementById('rotAngle').value);
+        const ocx=parseFloat(document.getElementById('rcx').value)||0;
+        const ocy=parseFloat(document.getElementById('rcy').value)||0;
+        const dx=x-ocx,dy=y-ocy;
+        const rad=-ang*Math.PI/180;
+        return{x:ocx+dx*Math.cos(rad)-dy*Math.sin(rad),y:ocy+dx*Math.sin(rad)+dy*Math.cos(rad)};
+    } else {
+        const sf=parseFloat(document.getElementById('sf').value)||1;
+        const ocx=parseFloat(document.getElementById('ecx').value)||0;
+        const ocy=parseFloat(document.getElementById('ecy').value)||0;
+        return{x:ocx+sf*(x-ocx),y:ocy+sf*(y-ocy)};
+    }
+}
+
+function drawShape(pts,color,dashed){
+    const W=canvas.width,H=canvas.height,cxC=W/2,cyC=H/2,scale=W/16;
+    ctx.strokeStyle=color;ctx.lineWidth=3;
+    if(dashed)ctx.setLineDash([8,6]);else ctx.setLineDash([]);
+    ctx.beginPath();
+    pts.forEach((p,i)=>{const sx=cxC+p.x*scale,sy=cyC-p.y*scale;i===0?ctx.moveTo(sx,sy):ctx.lineTo(sx,sy)});
+    ctx.closePath();ctx.stroke();
+    if(!dashed){ctx.fillStyle=color;ctx.globalAlpha=0.12;ctx.fill();ctx.globalAlpha=1}
+    ctx.setLineDash([]);
+    // Vertex labels
+    pts.forEach((p,i)=>{
+        const sx=cxC+p.x*scale,sy=cyC-p.y*scale;
+        ctx.beginPath();ctx.arc(sx,sy,6,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
+        ctx.fillStyle=color;ctx.font='600 20px Outfit';ctx.textAlign='center';ctx.textBaseline='bottom';
+        ctx.fillText('('+Math.round(p.x*10)/10+','+Math.round(p.y*10)/10+')',sx,sy-10);
+    });
+}
+
+function draw(){
+    const W=canvas.width,H=canvas.height,cxC=W/2,cyC=H/2,scale=W/16;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle='#e5dfe0';ctx.lineWidth=1;
+    for(let i=-8;i<=8;i++){ctx.beginPath();ctx.moveTo(cxC+i*scale,0);ctx.lineTo(cxC+i*scale,H);ctx.stroke();ctx.beginPath();ctx.moveTo(0,cyC-i*scale);ctx.lineTo(W,cyC-i*scale);ctx.stroke()}
+    ctx.strokeStyle='#1a1f2e';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(0,cyC);ctx.lineTo(W,cyC);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cxC,0);ctx.lineTo(cxC,H);ctx.stroke();
+    ctx.fillStyle='#4a5568';ctx.font='500 20px Oswald';
+    for(let i=-7;i<=7;i++){if(i===0)continue;ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(i,cxC+i*scale,cyC+4);ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillText(i,cxC-6,cyC-i*scale)}
+
+    // Reflection line
+    if(selType===1){
+        const axis=document.getElementById('reflAxis').value;
+        ctx.setLineDash([6,4]);ctx.strokeStyle='#e67e22';ctx.lineWidth=2;
+        if(axis==='x'){ctx.beginPath();ctx.moveTo(0,cyC);ctx.lineTo(W,cyC);ctx.stroke()}
+        else if(axis==='y'){ctx.beginPath();ctx.moveTo(cxC,0);ctx.lineTo(cxC,H);ctx.stroke()}
+        else if(axis==='yx'){ctx.beginPath();ctx.moveTo(0,H);ctx.lineTo(W,0);ctx.stroke()}
+        else{ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(W,H);ctx.stroke()}
+        ctx.setLineDash([]);
+    }
+
+    // Centre of rotation/enlargement
+    if(selType===2){
+        const ocx=parseFloat(document.getElementById('rcx').value)||0,ocy=parseFloat(document.getElementById('rcy').value)||0;
+        ctx.beginPath();ctx.arc(cxC+ocx*scale,cyC-ocy*scale,8,0,Math.PI*2);ctx.fillStyle='#e67e22';ctx.fill();
+        ctx.fillStyle='#e67e22';ctx.font='600 18px Outfit';ctx.textAlign='left';ctx.fillText('centre',cxC+ocx*scale+12,cyC-ocy*scale);
+    }
+    if(selType===3){
+        const ocx=parseFloat(document.getElementById('ecx').value)||0,ocy=parseFloat(document.getElementById('ecy').value)||0;
+        ctx.beginPath();ctx.arc(cxC+ocx*scale,cyC-ocy*scale,8,0,Math.PI*2);ctx.fillStyle='#e67e22';ctx.fill();
+        ctx.fillStyle='#e67e22';ctx.font='600 18px Outfit';ctx.textAlign='left';ctx.fillText('centre',cxC+ocx*scale+12,cyC-ocy*scale);
+    }
+
+    // Original
+    drawShape(origShape,'#aaa',true);
+    // Transformed
+    const transformed=origShape.map(transformPoint);
+    drawShape(transformed,'#637EA1',false);
+
+    // Result description
+    const descs=['Translation by vector ('+((document.getElementById('ta').value)||0)+', '+((document.getElementById('tb').value)||0)+')',
+        'Reflection in '+(document.getElementById('reflAxis').value==='x'?'x-axis':document.getElementById('reflAxis').value==='y'?'y-axis':document.getElementById('reflAxis').value==='yx'?'y = x':'y = -x'),
+        'Rotation '+document.getElementById('rotAngle').value+'\u00B0 anticlockwise about ('+((document.getElementById('rcx').value)||0)+', '+((document.getElementById('rcy').value)||0)+')',
+        'Enlargement scale factor '+((document.getElementById('sf').value)||1)+' about ('+((document.getElementById('ecx').value)||0)+', '+((document.getElementById('ecy').value)||0)+')'];
+    document.getElementById('resultBox').textContent=descs[selType];
+}
+
+document.querySelectorAll('#paramCard input, #paramCard select').forEach(el=>el.addEventListener('input',draw));
+draw();
+</script>
+</body>
+</html>

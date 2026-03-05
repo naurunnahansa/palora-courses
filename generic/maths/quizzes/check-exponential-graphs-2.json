@@ -1,0 +1,48 @@
+{
+  "id": "check-exponential-graphs-2",
+  "title": "Check: Exponential Graphs",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which of these represents exponential decay?",
+      "options": [
+        { "id": "a", "text": "$y = 2^x$" },
+        { "id": "b", "text": "$y = \\left(\\frac{1}{2}\\right)^x$" },
+        { "id": "c", "text": "$y = x^2$" },
+        { "id": "d", "text": "$y = 2x$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Exponential decay occurs when the base is between $0$ and $1$. Here $\\frac{1}{2} < 1$, so $y = \\left(\\frac{1}{2}\\right)^x$ decreases as $x$ increases."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The graphs of $y = 2^x$ and $y = 3^x$ both pass through $(0, 1)$. For $x > 0$, which graph is higher?",
+      "options": [
+        { "id": "a", "text": "$y = 2^x$" },
+        { "id": "b", "text": "$y = 3^x$" },
+        { "id": "c", "text": "They are the same" },
+        { "id": "d", "text": "It depends on the value of $x$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "For $x > 0$, $3^x > 2^x$ because $3 > 2$. A larger base produces faster exponential growth for positive $x$ values."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the horizontal asymptote of $y = 5^x + 3$?",
+      "options": [
+        { "id": "a", "text": "$y = 0$" },
+        { "id": "b", "text": "$y = 5$" },
+        { "id": "c", "text": "$y = 3$" },
+        { "id": "d", "text": "$y = -3$" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "As $x \\to -\\infty$, $5^x \\to 0$, so $y \\to 0 + 3 = 3$. The graph of $y = 5^x$ has been shifted up by $3$, moving the asymptote from $y = 0$ to $y = 3$."
+    }
+  ]
+}

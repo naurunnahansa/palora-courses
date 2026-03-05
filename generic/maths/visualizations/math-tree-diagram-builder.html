@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree Diagram Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; cursor: pointer; }
+        .input-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+        .input-row label { font-size: 0.78rem; font-weight: 600; color: #4a5568; min-width: 90px; }
+        .input-row input { flex: 1; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; }
+        .input-row select { flex: 1; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; }
+        .event-section { background: #F5E6E8; border-radius: 5px; padding: 8px; margin-bottom: 8px; }
+        .event-section .event-title { font-family: 'Oswald', sans-serif; font-size: 0.8rem; color: #637EA1; margin-bottom: 6px; }
+        .outcome-row { display: flex; gap: 6px; margin-bottom: 4px; align-items: center; }
+        .outcome-row input { flex: 1; padding: 4px 6px; border: 1px solid #e5dfe0; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 0.8rem; }
+        .outcome-row .olabel { font-size: 0.75rem; color: #4a5568; min-width: 70px; }
+        .result-box { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; margin-bottom: 8px; }
+        .result-box .value { font-size: 0.95rem; color: #637EA1; }
+        .result-box .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
+        .toggle-row { display: flex; gap: 6px; margin-bottom: 8px; }
+        .toggle-btn { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 10px; border-radius: 5px; border: 2px solid #637EA1; background: #fff; color: #637EA1; cursor: pointer; transition: all 0.15s; flex: 1; text-align: center; }
+        .toggle-btn.active { background: #637EA1; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tree Diagram Builder</h1>
+
+        <canvas id="treeCanvas" width="550" height="380"></canvas>
+
+        <div class="card">
+            <div class="card-title">Preset Scenarios</div>
+            <div class="toggle-row">
+                <button class="toggle-btn active" onclick="loadPreset('coin')">Two Coins</button>
+                <button class="toggle-btn" onclick="loadPreset('dice')">Dice + Coin</button>
+                <button class="toggle-btn" onclick="loadPreset('cards')">Two Cards</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Event 1</div>
+            <div class="event-section" id="event1Inputs"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Event 2</div>
+            <div class="event-section" id="event2Inputs"></div>
+        </div>
+
+        <div class="result-box">
+            <div class="label">Click an endpoint on the tree to see its probability</div>
+            <div class="value" id="resultVal">P(A and B) = P(A) x P(B)</div>
+        </div>
+
+        <p class="hint">Click on any endpoint (right side) of the tree diagram to calculate combined probability</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('treeCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+        const CH = 380;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width; H = CH;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); drawTree(); });
+
+        let event1 = [{ name: 'H', prob: 0.5 }, { name: 'T', prob: 0.5 }];
+        let event2 = [{ name: 'H', prob: 0.5 }, { name: 'T', prob: 0.5 }];
+        let selectedEndpoint = null;
+        let endpointPositions = [];
+
+        const presets = {
+            coin: {
+                e1: [{ name: 'H', prob: 0.5 }, { name: 'T', prob: 0.5 }],
+                e2: [{ name: 'H', prob: 0.5 }, { name: 'T', prob: 0.5 }]
+            },
+            dice: {
+                e1: [{ name: '6', prob: 1/6 }, { name: 'Not 6', prob: 5/6 }],
+                e2: [{ name: 'H', prob: 0.5 }, { name: 'T', prob: 0.5 }]
+            },
+            cards: {
+                e1: [{ name: 'Red', prob: 0.5 }, { name: 'Black', prob: 0.5 }],
+                e2: [{ name: 'Red', prob: 0.5 }, { name: 'Black', prob: 0.5 }]
+            }
+        };
+
+        function loadPreset(key) {
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            const p = presets[key];
+            event1 = JSON.parse(JSON.stringify(p.e1));
+            event2 = JSON.parse(JSON.stringify(p.e2));
+            selectedEndpoint = null;
+            buildInputs();
+            drawTree();
+        }
+
+        function buildInputs() {
+            const e1 = document.getElementById('event1Inputs');
+            const e2 = document.getElementById('event2Inputs');
+            e1.innerHTML = '';
+            e2.innerHTML = '';
+            event1.forEach((o, i) => {
+                e1.innerHTML += '<div class="outcome-row"><span class="olabel">Outcome ' + (i+1) + ':</span><input type="text" value="' + o.name + '" onchange="event1[' + i + '].name=this.value;drawTree()"><span class="olabel">P =</span><input type="number" step="0.01" min="0" max="1" value="' + o.prob.toFixed(4) + '" onchange="event1[' + i + '].prob=parseFloat(this.value);drawTree()"></div>';
+            });
+            event2.forEach((o, i) => {
+                e2.innerHTML += '<div class="outcome-row"><span class="olabel">Outcome ' + (i+1) + ':</span><input type="text" value="' + o.name + '" onchange="event2[' + i + '].name=this.value;drawTree()"><span class="olabel">P =</span><input type="number" step="0.01" min="0" max="1" value="' + o.prob.toFixed(4) + '" onchange="event2[' + i + '].prob=parseFloat(this.value);drawTree()"></div>';
+            });
+        }
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+            let closest = null;
+            let minDist = 25;
+            endpointPositions.forEach(ep => {
+                const d = Math.sqrt((mx - ep.x) ** 2 + (my - ep.y) ** 2);
+                if (d < minDist) { minDist = d; closest = ep; }
+            });
+            selectedEndpoint = closest;
+            drawTree();
+            if (closest) {
+                const combined = closest.p1 * closest.p2;
+                document.getElementById('resultVal').textContent =
+                    'P(' + closest.n1 + ' and ' + closest.n2 + ') = ' + closest.p1.toFixed(4) + ' \u00D7 ' + closest.p2.toFixed(4) + ' = ' + combined.toFixed(4);
+            }
+        });
+
+        function drawTree() {
+            ctx.clearRect(0, 0, W, H);
+            endpointPositions = [];
+            const startX = 40;
+            const midX = W * 0.4;
+            const endX = W - 80;
+            const startY = H / 2;
+
+            const n1 = event1.length;
+            const n2 = event2.length;
+            const totalEndpoints = n1 * n2;
+            const spacing1 = H / (n1 + 1);
+            const verticalRange = H - 40;
+
+            // Draw from start
+            ctx.fillStyle = '#637EA1';
+            ctx.beginPath();
+            ctx.arc(startX, startY, 6, 0, 2 * Math.PI);
+            ctx.fill();
+
+            event1.forEach((o1, i) => {
+                const y1 = spacing1 * (i + 1);
+
+                // Branch from start to event1 outcomes
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(midX, y1);
+                ctx.strokeStyle = '#637EA1';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Probability label on branch
+                ctx.font = '500 10px Outfit, sans-serif';
+                ctx.fillStyle = '#e74c3c';
+                ctx.textAlign = 'center';
+                const bMidX = (startX + midX) / 2;
+                const bMidY = (startY + y1) / 2;
+                ctx.fillText(o1.prob.toFixed(2), bMidX, bMidY - 6);
+
+                // Event1 outcome node
+                ctx.fillStyle = '#637EA1';
+                ctx.beginPath();
+                ctx.arc(midX, y1, 5, 0, 2 * Math.PI);
+                ctx.fill();
+
+                // Label
+                ctx.font = '600 12px Oswald, sans-serif';
+                ctx.fillStyle = '#1a1f2e';
+                ctx.textAlign = 'right';
+                ctx.fillText(o1.name, midX - 10, y1 + 4);
+
+                // Event2 branches
+                const subSpacing = spacing1 / (n2 + 1);
+                const subStart = y1 - spacing1 / 2 + subSpacing;
+
+                event2.forEach((o2, j) => {
+                    const y2 = subStart + j * subSpacing;
+
+                    ctx.beginPath();
+                    ctx.moveTo(midX, y1);
+                    ctx.lineTo(endX, y2);
+                    const isSelected = selectedEndpoint && selectedEndpoint.i === i && selectedEndpoint.j === j;
+                    ctx.strokeStyle = isSelected ? '#e74c3c' : '#637EA1';
+                    ctx.lineWidth = isSelected ? 3 : 1.5;
+                    ctx.stroke();
+
+                    // Probability on branch
+                    ctx.font = '500 10px Outfit, sans-serif';
+                    ctx.fillStyle = '#27ae60';
+                    ctx.textAlign = 'center';
+                    const b2MidX = (midX + endX) / 2;
+                    const b2MidY = (y1 + y2) / 2;
+                    ctx.fillText(o2.prob.toFixed(2), b2MidX, b2MidY - 6);
+
+                    // Endpoint
+                    ctx.beginPath();
+                    ctx.arc(endX, y2, isSelected ? 7 : 4, 0, 2 * Math.PI);
+                    ctx.fillStyle = isSelected ? '#e74c3c' : '#637EA1';
+                    ctx.fill();
+
+                    // Endpoint label
+                    const combined = o1.prob * o2.prob;
+                    ctx.font = '500 10px Outfit, sans-serif';
+                    ctx.fillStyle = '#1a1f2e';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(o1.name + ', ' + o2.name, endX + 10, y2 - 4);
+                    ctx.fillStyle = '#637EA1';
+                    ctx.font = '600 10px Oswald, sans-serif';
+                    ctx.fillText(combined.toFixed(4), endX + 10, y2 + 10);
+
+                    endpointPositions.push({ x: endX, y: y2, i, j, n1: o1.name, n2: o2.name, p1: o1.prob, p2: o2.prob });
+                });
+            });
+
+            // If selected, highlight the path
+            if (selectedEndpoint) {
+                const ep = selectedEndpoint;
+                const y1 = spacing1 * (ep.i + 1);
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(midX, y1);
+                ctx.strokeStyle = 'rgba(231,76,60,0.4)';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+            }
+
+            // Column headers
+            ctx.font = '600 11px Oswald, sans-serif';
+            ctx.fillStyle = '#637EA1';
+            ctx.textAlign = 'center';
+            ctx.fillText('START', startX, 16);
+            ctx.fillText('EVENT 1', midX, 16);
+            ctx.fillText('EVENT 2', endX, 16);
+            ctx.fillText('OUTCOME', endX + 30, 16);
+        }
+
+        buildInputs();
+        drawTree();
+    </script>
+</body>
+</html>

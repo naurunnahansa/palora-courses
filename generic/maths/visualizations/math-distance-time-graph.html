@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distance-Time Graph Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;cursor:grab}.controls{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.ctrl-btn{flex:1;min-width:90px;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#637EA1}.ctrl-btn.danger{background:#fce4ec}.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;margin-top:8px}.segment-info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;margin-top:8px;line-height:1.8}.segment-info strong{color:#637EA1}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Distance-Time Graph Builder</h1>
+    <div class="card">
+        <div class="card-title">Add Segments</div>
+        <div class="controls">
+            <button class="ctrl-btn" onclick="addSegment('stationary')">Stationary</button>
+            <button class="ctrl-btn" onclick="addSegment('forward')">Move Forward</button>
+            <button class="ctrl-btn" onclick="addSegment('return')">Return</button>
+            <button class="ctrl-btn danger" onclick="resetGraph()">Reset</button>
+        </div>
+    </div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="800"></canvas></div>
+    <div class="segment-info" id="segInfo">Click a button above to add journey segments. Drag points to adjust.</div>
+    <div class="info">The <strong>gradient</strong> of a distance-time graph equals the <strong>speed</strong>. A steeper line = faster speed. A flat line = stationary.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+// Points define the graph: [{t, d}] in graph units
+let points=[{t:0,d:0}];
+let dragging=-1;
+
+const margin={l:80,r:40,t:30,b:60};
+const maxT=20,maxD=100;
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*800/1060)+'px'}
+resize();window.addEventListener('resize',resize);
+
+function toCanvas(t,d){
+    const plotW=canvas.width-margin.l-margin.r,plotH=canvas.height-margin.t-margin.b;
+    return{x:margin.l+t/maxT*plotW,y:margin.t+plotH-d/maxD*plotH};
+}
+function toGraph(cx,cy){
+    const plotW=canvas.width-margin.l-margin.r,plotH=canvas.height-margin.t-margin.b;
+    return{t:Math.max(0,Math.min(maxT,(cx-margin.l)/plotW*maxT)),d:Math.max(0,Math.min(maxD,(plotH-(cy-margin.t))/plotH*maxD))};
+}
+
+function addSegment(type){
+    const last=points[points.length-1];
+    const dt=3;
+    if(last.t+dt>maxT)return;
+    if(type==='stationary') points.push({t:last.t+dt,d:last.d});
+    else if(type==='forward') points.push({t:last.t+dt,d:Math.min(maxD,last.d+20)});
+    else if(type==='return') points.push({t:last.t+dt,d:Math.max(0,last.d-20)});
+    draw();
+}
+
+function resetGraph(){points=[{t:0,d:0}];draw()}
+
+function draw(){
+    const W=canvas.width,H=canvas.height;
+    const plotW=W-margin.l-margin.r,plotH=H-margin.t-margin.b;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle='#e5dfe0';ctx.lineWidth=1;
+    for(let t=0;t<=maxT;t+=2){const p=toCanvas(t,0);ctx.beginPath();ctx.moveTo(p.x,margin.t);ctx.lineTo(p.x,margin.t+plotH);ctx.stroke()}
+    for(let d=0;d<=maxD;d+=10){const p=toCanvas(0,d);ctx.beginPath();ctx.moveTo(margin.l,p.y);ctx.lineTo(margin.l+plotW,p.y);ctx.stroke()}
+
+    // Axes
+    ctx.strokeStyle='#1a1f2e';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(margin.l,margin.t);ctx.lineTo(margin.l,margin.t+plotH);ctx.lineTo(margin.l+plotW,margin.t+plotH);ctx.stroke();
+
+    // Labels
+    ctx.fillStyle='#4a5568';ctx.font='500 22px Oswald';ctx.textAlign='center';ctx.textBaseline='top';
+    for(let t=0;t<=maxT;t+=2){const p=toCanvas(t,0);ctx.fillText(t,p.x,p.y+8)}
+    ctx.textAlign='right';ctx.textBaseline='middle';
+    for(let d=0;d<=maxD;d+=10){const p=toCanvas(0,d);ctx.fillText(d,margin.l-10,p.y)}
+
+    ctx.font='600 24px Oswald';ctx.fillStyle='#1a1f2e';ctx.textAlign='center';
+    ctx.fillText('Time (s)',margin.l+plotW/2,H-12);
+    ctx.save();ctx.translate(22,margin.t+plotH/2);ctx.rotate(-Math.PI/2);ctx.fillText('Distance (m)',0,0);ctx.restore();
+
+    // Plot line
+    if(points.length>1){
+        ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.beginPath();
+        points.forEach((p,i)=>{const cp=toCanvas(p.t,p.d);i===0?ctx.moveTo(cp.x,cp.y):ctx.lineTo(cp.x,cp.y)});
+        ctx.stroke();
+    }
+
+    // Points
+    points.forEach((p,i)=>{
+        const cp=toCanvas(p.t,p.d);
+        ctx.beginPath();ctx.arc(cp.x,cp.y,10,0,Math.PI*2);
+        ctx.fillStyle=i===dragging?'#dc3545':'#637EA1';ctx.fill();
+        ctx.fillStyle='#fff';ctx.font='700 14px Oswald';ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(i,cp.x,cp.y);
+    });
+
+    // Segment info
+    let info='';
+    for(let i=1;i<points.length;i++){
+        const dt=points[i].t-points[i-1].t;
+        const dd=points[i].d-points[i-1].d;
+        const speed=dt>0?Math.abs(dd/dt):0;
+        const type=dd===0?'Stationary':dd>0?'Moving forward':'Returning';
+        info+=`<strong>Segment ${i}:</strong> ${type} | \u0394t = ${Math.round(dt*10)/10}s, \u0394d = ${Math.round(dd*10)/10}m, Speed = ${Math.round(speed*10)/10} m/s<br>`;
+    }
+    document.getElementById('segInfo').innerHTML=info||'Click a button above to add journey segments. Drag points to adjust.';
+}
+
+// Dragging
+function getMousePos(e){
+    const rect=canvas.getBoundingClientRect();
+    const scaleX=canvas.width/rect.width,scaleY=canvas.height/rect.height;
+    const cx=(e.clientX||e.touches[0].clientX);
+    const cy=(e.clientY||e.touches[0].clientY);
+    return{x:(cx-rect.left)*scaleX,y:(cy-rect.top)*scaleY};
+}
+
+function findPoint(mx,my){
+    for(let i=0;i<points.length;i++){
+        const cp=toCanvas(points[i].t,points[i].d);
+        if(Math.hypot(cp.x-mx,cp.y-my)<20)return i;
+    }
+    return-1;
+}
+
+canvas.addEventListener('mousedown',e=>{const p=getMousePos(e);dragging=findPoint(p.x,p.y);if(dragging>=0)canvas.style.cursor='grabbing'});
+canvas.addEventListener('mousemove',e=>{
+    const p=getMousePos(e);
+    if(dragging>0){
+        const g=toGraph(p.x,p.y);
+        const minT=points[dragging-1].t+0.5;
+        const maxTp=dragging<points.length-1?points[dragging+1].t-0.5:maxT;
+        points[dragging].t=Math.round(Math.max(minT,Math.min(maxTp,g.t))*2)/2;
+        points[dragging].d=Math.round(Math.max(0,Math.min(maxD,g.d))/5)*5;
+        draw();
+    } else {
+        canvas.style.cursor=findPoint(p.x,p.y)>=0?'grab':'default';
+    }
+});
+canvas.addEventListener('mouseup',()=>{dragging=-1;canvas.style.cursor='grab'});
+canvas.addEventListener('touchstart',e=>{e.preventDefault();const p=getMousePos(e);dragging=findPoint(p.x,p.y)},{passive:false});
+canvas.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    if(dragging>0){const p=getMousePos(e);const g=toGraph(p.x,p.y);const minT=points[dragging-1].t+0.5;const maxTp=dragging<points.length-1?points[dragging+1].t-0.5:maxT;points[dragging].t=Math.round(Math.max(minT,Math.min(maxTp,g.t))*2)/2;points[dragging].d=Math.round(Math.max(0,Math.min(maxD,g.d))/5)*5;draw()}
+},{passive:false});
+canvas.addEventListener('touchend',()=>{dragging=-1});
+
+draw();
+</script>
+</body>
+</html>

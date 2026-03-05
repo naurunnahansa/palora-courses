@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angle Facts Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.controls{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.ctrl-btn{flex:1;min-width:100px;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#637EA1}.ctrl-btn.active{background:#637EA1;color:#fff}.input-row{display:flex;align-items:center;gap:8px;background:#F5E6E8;border-radius:5px;padding:8px;margin-bottom:8px;flex-wrap:wrap}.input-row label{font-size:.78rem;font-weight:600}.input-row input{width:60px;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.82rem;text-align:center}.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;font-family:'Oswald',sans-serif;font-size:.9rem;color:#637EA1;margin-top:8px}.rule-box{background:#fafbfc;border-radius:5px;padding:8px;font-size:.78rem;color:#4a5568;text-align:center;margin-top:8px;line-height:1.6}.rule-box strong{color:#637EA1}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Angle Facts Explorer</h1>
+    <div class="card">
+        <div class="card-title">Select Configuration</div>
+        <div class="controls" id="modeBtns"></div>
+    </div>
+    <div class="card">
+        <div class="card-title">Enter Known Angle</div>
+        <div class="input-row">
+            <label>Angle (degrees):</label>
+            <input type="number" id="angleInput" value="70" min="1" max="179">
+            <button class="ctrl-btn" style="flex:0;min-width:70px" onclick="draw()">Calculate</button>
+        </div>
+    </div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="700"></canvas></div>
+    <div class="result-box" id="resultBox">Missing angle = 110 degrees</div>
+    <div class="rule-box" id="ruleBox"></div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const modes=[
+    {name:'Angles on a Line',rule:'Angles on a straight line add up to 180\u00B0'},
+    {name:'Angles at a Point',rule:'Angles around a point add up to 360\u00B0'},
+    {name:'Vertically Opposite',rule:'Vertically opposite angles are equal'}
+];
+let selMode=0;
+const btnDiv=document.getElementById('modeBtns');
+modes.forEach((m,i)=>{
+    const b=document.createElement('button');b.className='ctrl-btn'+(i===0?' active':'');b.textContent=m.name;
+    b.onclick=()=>{selMode=i;document.querySelectorAll('#modeBtns .ctrl-btn').forEach((c,j)=>c.classList.toggle('active',j===i));draw()};
+    btnDiv.appendChild(b);
+});
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*700/1060)+'px'}
+resize();window.addEventListener('resize',resize);
+
+const colors=['#637EA1','#dc3545','#28a745','#e67e22'];
+
+function drawArc(cx,cy,r,startDeg,endDeg,color,label){
+    const s=startDeg*Math.PI/180,e=endDeg*Math.PI/180;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();
+    ctx.fillStyle=color;ctx.globalAlpha=0.2;ctx.fill();ctx.globalAlpha=1;
+    ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx,cy,r,s,e);ctx.stroke();
+    // Label
+    const mid=(s+e)/2;
+    const lr=r+30;
+    ctx.fillStyle=color;ctx.font='700 28px Oswald';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(label,cx+Math.cos(mid)*lr,cy+Math.sin(mid)*lr);
+}
+
+function draw(){
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    const ang=parseFloat(document.getElementById('angleInput').value)||70;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    const lineLen=220;
+    ctx.lineWidth=3;ctx.strokeStyle='#1a1f2e';
+
+    if(selMode===0){
+        // Angles on a straight line
+        const missing=180-ang;
+        // Straight line
+        ctx.beginPath();ctx.moveTo(cx-300,cy);ctx.lineTo(cx+300,cy);ctx.stroke();
+        // Angled line going up
+        const rad=ang*Math.PI/180;
+        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(Math.PI+rad)*lineLen,cy-Math.sin(rad)*lineLen);ctx.stroke();
+        // Arcs (angles measured from the positive x-axis going counter-clockwise, but canvas y is flipped)
+        // In canvas: 0 rad = right, angles go clockwise
+        // Angle 'ang' is between left ray and the angled line (above the line)
+        drawArc(cx,cy,80,-(ang),0,colors[0],ang+'\u00B0');
+        drawArc(cx,cy,80,-180,-(ang),colors[1],Math.round(missing)+'\u00B0');
+        document.getElementById('resultBox').textContent='Missing angle = '+Math.round(missing)+'\u00B0';
+        document.getElementById('ruleBox').innerHTML='<strong>Rule:</strong> '+ang+'\u00B0 + '+Math.round(missing)+'\u00B0 = 180\u00B0<br>'+modes[0].rule;
+    } else if(selMode===1){
+        // Angles around a point
+        const missing=360-ang*3;
+        const angles=[ang,ang,ang,missing>0?missing:0];
+        let cumulative=0;
+        angles.forEach((a,i)=>{
+            const s=cumulative;cumulative+=a;
+            const sRad=-s*Math.PI/180,eRad=-cumulative*Math.PI/180;
+            // Ray
+            ctx.strokeStyle='#1a1f2e';ctx.lineWidth=3;
+            ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(sRad)*lineLen,cy+Math.sin(sRad)*lineLen);ctx.stroke();
+            drawArc(cx,cy,60+i*25,-cumulative,-s,colors[i],Math.round(a)+'\u00B0');
+        });
+        document.getElementById('resultBox').textContent='Missing angle = '+Math.round(Math.max(0,missing))+'\u00B0';
+        document.getElementById('ruleBox').innerHTML='<strong>Rule:</strong> '+ang+'\u00B0 \u00D7 3 + '+Math.round(Math.max(0,missing))+'\u00B0 = 360\u00B0<br>'+modes[1].rule;
+    } else {
+        // Vertically opposite
+        const opp=ang,adj=180-ang;
+        // Two crossing lines
+        const rad=ang*Math.PI/180;
+        ctx.beginPath();ctx.moveTo(cx-300,cy);ctx.lineTo(cx+300,cy);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(cx-Math.cos(rad)*250,cy+Math.sin(rad)*250);ctx.lineTo(cx+Math.cos(rad)*250,cy-Math.sin(rad)*250);ctx.stroke();
+
+        drawArc(cx,cy,80,-(ang),0,colors[0],ang+'\u00B0');
+        drawArc(cx,cy,60,-180,-(ang),colors[1],Math.round(adj)+'\u00B0');
+        drawArc(cx,cy,80,-180-ang,-180,colors[0],ang+'\u00B0');
+        drawArc(cx,cy,60,-(360),-(180+ang),colors[1],Math.round(adj)+'\u00B0');
+
+        document.getElementById('resultBox').textContent='Vertically opposite angle = '+ang+'\u00B0, Adjacent angles = '+Math.round(adj)+'\u00B0';
+        document.getElementById('ruleBox').innerHTML='<strong>Rule:</strong> Vertically opposite angles are equal: '+ang+'\u00B0 = '+ang+'\u00B0<br>Adjacent angles: '+ang+'\u00B0 + '+Math.round(adj)+'\u00B0 = 180\u00B0';
+    }
+}
+
+document.getElementById('angleInput').addEventListener('input',draw);
+draw();
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "id": "check-bounds-2",
+  "title": "Check: Bounds",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A rectangle has length $8.2\\,\\text{cm}$ and width $3.5\\,\\text{cm}$, both measured to $1$ decimal place. What is the upper bound of the area?",
+      "options": [
+        { "id": "a", "text": "$8.25 \\times 3.55 = 29.2875\\,\\text{cm}^2$" },
+        { "id": "b", "text": "$8.2 \\times 3.5 = 28.7\\,\\text{cm}^2$" },
+        { "id": "c", "text": "$8.15 \\times 3.45 = 28.1175\\,\\text{cm}^2$" },
+        { "id": "d", "text": "$8.3 \\times 3.6 = 29.88\\,\\text{cm}^2$" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "For the maximum area, use the upper bound of both measurements. Upper bound of length $= 8.25$, upper bound of width $= 3.55$. Maximum area $= 8.25 \\times 3.55 = 29.2875\\,\\text{cm}^2$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "To find the upper bound of $\\frac{a}{b}$, you should use:",
+      "options": [
+        { "id": "a", "text": "Upper bound of $a$ divided by upper bound of $b$" },
+        { "id": "b", "text": "Lower bound of $a$ divided by lower bound of $b$" },
+        { "id": "c", "text": "Upper bound of $a$ divided by lower bound of $b$" },
+        { "id": "d", "text": "Lower bound of $a$ divided by upper bound of $b$" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "To maximise a fraction, make the numerator as large as possible and the denominator as small as possible. So use the upper bound of $a$ and the lower bound of $b$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A distance is $100\\,\\text{m}$ to the nearest $10\\,\\text{m}$. A time is $12.5\\,\\text{s}$ to $3$ significant figures. What is the lower bound of speed $\\left(\\frac{\\text{distance}}{\\text{time}}\\right)$?",
+      "options": [
+        { "id": "a", "text": "$\\frac{95}{12.55}$" },
+        { "id": "b", "text": "$\\frac{105}{12.45}$" },
+        { "id": "c", "text": "$\\frac{95}{12.45}$" },
+        { "id": "d", "text": "$\\frac{105}{12.55}$" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "For the minimum speed, use the smallest distance and the largest time. Lower bound of distance $= 95\\,\\text{m}$, upper bound of time $= 12.55\\,\\text{s}$. Minimum speed $= \\frac{95}{12.55}$."
+    }
+  ]
+}

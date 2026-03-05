@@ -1,0 +1,34 @@
+{
+  "id": "check-mutually-exclusive-events-2",
+  "title": "Check: Mutually Exclusive Events",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A spinner has sections coloured red, blue, green, and yellow. $P(\\text{red}) = 0.2$, $P(\\text{blue}) = 0.35$, $P(\\text{green}) = 0.15$. What is $P(\\text{yellow})$?",
+      "options": [
+        { "id": "a", "text": "$0.2$" },
+        { "id": "b", "text": "$0.25$" },
+        { "id": "c", "text": "$0.3$" },
+        { "id": "d", "text": "$0.7$" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The outcomes are mutually exclusive and exhaustive, so their probabilities sum to $1$. $P(\\text{yellow}) = 1 - 0.2 - 0.35 - 0.15 = 0.3$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which pair of events is NOT mutually exclusive when drawing a single card from a standard deck?",
+      "options": [
+        { "id": "a", "text": "Drawing a king and drawing a queen" },
+        { "id": "b", "text": "Drawing a heart and drawing a diamond" },
+        { "id": "c", "text": "Drawing a red card and drawing a king" },
+        { "id": "d", "text": "Drawing a $7$ and drawing a $10$" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A card can be both red and a king (e.g. king of hearts, king of diamonds). These events can happen simultaneously, so they are not mutually exclusive."
+    }
+  ]
+}

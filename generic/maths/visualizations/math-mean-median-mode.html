@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Averages Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; }
+        .input-group { margin-bottom: 8px; }
+        .input-group label { font-size: 0.82rem; font-weight: 600; color: #4a5568; display: block; margin-bottom: 4px; }
+        .input-group input { width: 100%; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; }
+        .readings { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .reading-card { background: #F5E6E8; border-radius: 5px; padding: 8px 6px; text-align: center; }
+        .reading-card .label { font-size: 0.68rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; margin-top: 2px; }
+        .reading-card.mean-card { border-top: 3px solid #e74c3c; }
+        .reading-card.median-card { border-top: 3px solid #27ae60; }
+        .reading-card.mode-card { border-top: 3px solid #8e44ad; }
+        .reading-card.range-card { border-top: 3px solid #e67e22; }
+        .working { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; font-size: 0.82rem; line-height: 1.6; }
+        .working .step { margin-bottom: 4px; }
+        .working .highlight { color: #637EA1; font-weight: 700; }
+        .working .section-title { font-family: 'Oswald', sans-serif; font-size: 0.8rem; color: #637EA1; text-transform: uppercase; margin-top: 6px; margin-bottom: 2px; }
+        .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
+        .presets { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+        .preset-btn { font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 600; padding: 4px 8px; border-radius: 5px; border: 1px solid #e5dfe0; background: #F5E6E8; color: #637EA1; cursor: pointer; }
+        .preset-btn:hover { background: #637EA1; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Averages Calculator</h1>
+
+        <canvas id="dataCanvas" width="550" height="200"></canvas>
+
+        <div class="card">
+            <div class="card-title">Data Set</div>
+            <div class="input-group">
+                <label>Enter numbers (comma-separated)</label>
+                <input type="text" id="dataInput" value="3, 7, 5, 3, 8, 5, 3, 9, 2, 6" oninput="calculate()">
+            </div>
+            <div class="presets">
+                <button class="preset-btn" onclick="setData('3, 7, 5, 3, 8, 5, 3, 9, 2, 6')">Sample 1</button>
+                <button class="preset-btn" onclick="setData('12, 15, 18, 12, 20, 15, 22, 12')">Sample 2</button>
+                <button class="preset-btn" onclick="setData('1, 1, 2, 3, 5, 8, 13, 21')">Fibonacci</button>
+                <button class="preset-btn" onclick="setData('50, 55, 60, 65, 70, 75, 80')">Test scores</button>
+            </div>
+        </div>
+
+        <div class="readings">
+            <div class="reading-card mean-card">
+                <div class="label">Mean</div>
+                <div class="value" id="meanVal">--</div>
+            </div>
+            <div class="reading-card median-card">
+                <div class="label">Median</div>
+                <div class="value" id="medianVal">--</div>
+            </div>
+            <div class="reading-card mode-card">
+                <div class="label">Mode</div>
+                <div class="value" id="modeVal">--</div>
+            </div>
+            <div class="reading-card range-card">
+                <div class="label">Range</div>
+                <div class="value" id="rangeVal">--</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Working</div>
+            <div class="working" id="workingArea"></div>
+        </div>
+
+        <p class="hint">Enter your own data set or use a preset. The visual shows sorted data with median highlighted and mode circled.</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('dataCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+        const CH = 200;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width; H = CH;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); calculate(); });
+
+        function setData(str) {
+            document.getElementById('dataInput').value = str;
+            calculate();
+        }
+
+        function calculate() {
+            const raw = document.getElementById('dataInput').value;
+            const nums = raw.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+            if (nums.length === 0) {
+                ['meanVal', 'medianVal', 'modeVal', 'rangeVal'].forEach(id => document.getElementById(id).textContent = '--');
+                document.getElementById('workingArea').innerHTML = 'Enter some numbers to begin.';
+                ctx.clearRect(0, 0, W, H);
+                return;
+            }
+
+            const sorted = [...nums].sort((a, b) => a - b);
+            const n = sorted.length;
+            const sum = sorted.reduce((a, b) => a + b, 0);
+            const mean = sum / n;
+
+            let median;
+            if (n % 2 === 1) {
+                median = sorted[Math.floor(n / 2)];
+            } else {
+                median = (sorted[n / 2 - 1] + sorted[n / 2]) / 2;
+            }
+
+            // Mode
+            const freq = {};
+            sorted.forEach(v => { freq[v] = (freq[v] || 0) + 1; });
+            const maxFreq = Math.max(...Object.values(freq));
+            const modes = Object.keys(freq).filter(k => freq[k] === maxFreq).map(Number);
+            let modeStr;
+            if (maxFreq === 1) modeStr = 'None';
+            else modeStr = modes.join(', ');
+
+            const range = sorted[n - 1] - sorted[0];
+
+            document.getElementById('meanVal').textContent = mean.toFixed(2);
+            document.getElementById('medianVal').textContent = median % 1 === 0 ? median : median.toFixed(2);
+            document.getElementById('modeVal').textContent = modeStr;
+            document.getElementById('rangeVal').textContent = range % 1 === 0 ? range : range.toFixed(2);
+
+            // Working
+            let work = '';
+            work += '<div class="section-title">Sorted Data</div>';
+            work += '<div class="step">' + sorted.join(', ') + '</div>';
+            work += '<div class="section-title">Mean</div>';
+            work += '<div class="step">Sum = ' + sorted.join(' + ') + ' = ' + sum + '</div>';
+            work += '<div class="step"><span class="highlight">Mean = ' + sum + ' \u00F7 ' + n + ' = ' + mean.toFixed(2) + '</span></div>';
+            work += '<div class="section-title">Median</div>';
+            if (n % 2 === 1) {
+                work += '<div class="step">' + n + ' values \u2192 middle value is position ' + Math.ceil(n / 2) + '</div>';
+                work += '<div class="step"><span class="highlight">Median = ' + median + '</span></div>';
+            } else {
+                work += '<div class="step">' + n + ' values \u2192 average of positions ' + (n / 2) + ' and ' + (n / 2 + 1) + '</div>';
+                work += '<div class="step">(' + sorted[n / 2 - 1] + ' + ' + sorted[n / 2] + ') \u00F7 2</div>';
+                work += '<div class="step"><span class="highlight">Median = ' + median + '</span></div>';
+            }
+            work += '<div class="section-title">Mode</div>';
+            if (maxFreq === 1) {
+                work += '<div class="step">All values appear once \u2192 <span class="highlight">no mode</span></div>';
+            } else {
+                work += '<div class="step">' + modes.join(', ') + ' appears ' + maxFreq + ' times (most frequent)</div>';
+                work += '<div class="step"><span class="highlight">Mode = ' + modeStr + '</span></div>';
+            }
+            work += '<div class="section-title">Range</div>';
+            work += '<div class="step"><span class="highlight">Range = ' + sorted[n - 1] + ' \u2212 ' + sorted[0] + ' = ' + range + '</span></div>';
+
+            document.getElementById('workingArea').innerHTML = work;
+
+            // Draw visualization
+            drawData(sorted, mean, median, modes, maxFreq);
+        }
+
+        function drawData(sorted, mean, median, modes, maxFreq) {
+            ctx.clearRect(0, 0, W, H);
+            const n = sorted.length;
+            const pad = 30;
+            const boxW = Math.min(40, (W - 2 * pad) / n - 4);
+            const totalW = n * (boxW + 4) - 4;
+            const startX = (W - totalW) / 2;
+            const y = H / 2;
+
+            const minVal = sorted[0];
+            const maxVal = sorted[n - 1];
+            const valRange = maxVal - minVal || 1;
+
+            sorted.forEach((v, i) => {
+                const x = startX + i * (boxW + 4);
+                const isMedianPos = (n % 2 === 1 && i === Math.floor(n / 2)) ||
+                    (n % 2 === 0 && (i === n / 2 - 1 || i === n / 2));
+                const isMode = modes.includes(v) && maxFreq > 1;
+
+                // Box
+                ctx.fillStyle = isMedianPos ? 'rgba(39, 174, 96, 0.2)' : 'rgba(99, 126, 161, 0.08)';
+                ctx.fillRect(x, y - boxW / 2, boxW, boxW);
+
+                if (isMedianPos) {
+                    ctx.strokeStyle = '#27ae60';
+                    ctx.lineWidth = 2.5;
+                    ctx.strokeRect(x, y - boxW / 2, boxW, boxW);
+                }
+
+                if (isMode) {
+                    ctx.beginPath();
+                    ctx.arc(x + boxW / 2, y, boxW / 2 + 4, 0, 2 * Math.PI);
+                    ctx.strokeStyle = '#8e44ad';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+
+                ctx.strokeStyle = '#e5dfe0';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, y - boxW / 2, boxW, boxW);
+
+                // Value
+                ctx.font = '600 ' + Math.min(12, boxW * 0.4) + 'px Oswald, sans-serif';
+                ctx.fillStyle = '#1a1f2e';
+                ctx.textAlign = 'center';
+                ctx.fillText(v, x + boxW / 2, y + 4);
+
+                // Index
+                ctx.font = '400 9px Outfit, sans-serif';
+                ctx.fillStyle = '#999';
+                ctx.fillText(i + 1, x + boxW / 2, y + boxW / 2 + 14);
+            });
+
+            // Mean line
+            const meanPos = startX + ((mean - minVal) / valRange) * totalW;
+            if (n > 1) {
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(meanPos, y - boxW / 2 - 20);
+                ctx.lineTo(meanPos, y + boxW / 2 + 4);
+                ctx.strokeStyle = '#e74c3c';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.font = '500 10px Outfit, sans-serif';
+                ctx.fillStyle = '#e74c3c';
+                ctx.textAlign = 'center';
+                ctx.fillText('Mean', meanPos, y - boxW / 2 - 24);
+            }
+
+            // Legend
+            ctx.font = '500 10px Outfit, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#27ae60';
+            ctx.fillText('\u25A0 Median position', 10, H - 10);
+            ctx.fillStyle = '#8e44ad';
+            ctx.fillText('\u25CB Mode value', W / 3, H - 10);
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillText('--- Mean line', 2 * W / 3, H - 10);
+
+            // Title
+            ctx.font = '500 11px Outfit, sans-serif';
+            ctx.fillStyle = '#4a5568';
+            ctx.textAlign = 'center';
+            ctx.fillText('Sorted Data Visualization', W / 2, 16);
+        }
+
+        calculate();
+    </script>
+</body>
+</html>

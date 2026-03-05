@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Equation Solver</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
+.container{max-width:550px;margin:0 auto}
+h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.eq-row{display:flex;gap:4px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.eq-row input{width:48px;padding:6px 4px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.85rem;text-align:center;outline:none}
+.eq-row input:focus{border-color:#637EA1}
+.eq-row span{font-weight:600;font-size:.85rem}
+.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center}
+.result-box .value{font-family:'Oswald',sans-serif;font-size:1.2rem;color:#637EA1}
+.result-box .label{font-size:.7rem;color:#4a5568;margin-top:2px}
+.step{background:#F5E6E8;border-radius:5px;padding:8px;margin-top:6px;font-size:.78rem}
+.step .step-label{font-family:'Oswald',sans-serif;font-size:.75rem;color:#637EA1;text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
+.step .step-math{font-weight:600;color:#1a1f2e}
+.step .step-reason{font-size:.7rem;color:#4a5568;font-style:italic;margin-top:2px}
+.step.highlight{background:#637EA1;color:#fff}
+.step.highlight .step-label{color:#F5E6E8}
+.step.highlight .step-math{color:#fff}
+.step.highlight .step-reason{color:rgba(255,255,255,.8)}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#637EA1}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Linear Equation Solver</h1>
+
+    <div class="card">
+        <div class="card-title">Enter Equation: ax + b = cx + d</div>
+        <div class="eq-row">
+            <input type="number" id="a" value="5" step="any">
+            <span>x +</span>
+            <input type="number" id="b" value="3" step="any">
+            <span>=</span>
+            <input type="number" id="c" value="2" step="any">
+            <span>x +</span>
+            <input type="number" id="d" value="12" step="any">
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Solution</div>
+        <div class="result-box">
+            <div class="value" id="result"></div>
+            <div class="label" id="resultLabel"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Step-by-Step</div>
+        <div id="steps"></div>
+    </div>
+
+    <div class="info">Enter coefficients for <strong>ax + b = cx + d</strong>. Each step shows what operation is performed and why.</div>
+</div>
+<script>
+const aEl=document.getElementById('a'),bEl=document.getElementById('b'),
+      cEl=document.getElementById('c'),dEl=document.getElementById('d'),
+      resultEl=document.getElementById('result'),resultLabel=document.getElementById('resultLabel'),
+      stepsDiv=document.getElementById('steps');
+
+[aEl,bEl,cEl,dEl].forEach(el=>el.addEventListener('input',calc));
+
+function fmtNum(n){return parseFloat(n.toFixed(8));}
+function fmtCoeff(n,showPlus){
+    if(n===1) return showPlus?'+ ':' ';
+    if(n===-1) return '- ';
+    if(n<0) return '- '+Math.abs(n);
+    return (showPlus?'+ ':'')+n;
+}
+function fmtTerm(coeff,variable,constant){
+    let parts=[];
+    if(coeff!==0){
+        if(coeff===1) parts.push(variable);
+        else if(coeff===-1) parts.push('-'+variable);
+        else parts.push(fmtNum(coeff)+variable);
+    }
+    if(constant!==0){
+        if(parts.length>0){
+            parts.push(constant>0?' + '+fmtNum(constant):' - '+fmtNum(Math.abs(constant)));
+        } else {
+            parts.push(fmtNum(constant).toString());
+        }
+    }
+    if(parts.length===0) return '0';
+    return parts.join('');
+}
+
+function calc(){
+    const a=parseFloat(aEl.value)||0, b=parseFloat(bEl.value)||0,
+          c=parseFloat(cEl.value)||0, d=parseFloat(dEl.value)||0;
+
+    let steps=[];
+    steps.push({label:'Original Equation',math:fmtTerm(a,'x',b)+' = '+fmtTerm(c,'x',d),reason:'Given equation'});
+
+    const xCoeff=a-c;
+    const constant=d-b;
+
+    // Step: collect x terms
+    if(c!==0){
+        steps.push({label:'Subtract '+fmtNum(c)+'x from both sides',
+            math:fmtTerm(a-c,'x',b)+' = '+fmtNum(d-b+b).toString()+(c!==0?' ('+fmtNum(c)+'x cancels on right)':''),
+            reason:'Collect x terms on the left side'});
+        // More precise
+        steps.push({label:'Simplify',
+            math:fmtTerm(xCoeff,'x',b)+' = '+fmtNum(d),
+            reason:fmtNum(a)+'x - '+fmtNum(c)+'x = '+fmtNum(xCoeff)+'x'});
+    }
+
+    if(b!==0){
+        steps.push({label:'Subtract '+fmtNum(b)+' from both sides',
+            math:fmtTerm(xCoeff,'x',0)+' = '+fmtNum(constant),
+            reason:'Isolate the x term'});
+    }
+
+    if(xCoeff===0){
+        if(constant===0){
+            resultEl.textContent='Infinite solutions';
+            resultLabel.textContent='The equation is always true (identity)';
+            steps.push({label:'Result',math:'0 = 0 (true for all x)',reason:'This is an identity'});
+        } else {
+            resultEl.textContent='No solution';
+            resultLabel.textContent='The equation is a contradiction';
+            steps.push({label:'Result',math:'0 = '+fmtNum(constant)+' (impossible)',reason:'This is a contradiction'});
+        }
+    } else {
+        const x=constant/xCoeff;
+        if(xCoeff!==1){
+            steps.push({label:'Divide both sides by '+fmtNum(xCoeff),
+                math:'x = '+fmtNum(constant)+' \u00f7 '+fmtNum(xCoeff)+' = '+fmtNum(x),
+                reason:'Solve for x'});
+        }
+        steps.push({label:'Solution',math:'x = '+fmtNum(x),reason:'',highlight:true});
+
+        // Verify
+        const lhs=a*x+b, rhs=c*x+d;
+        steps.push({label:'Check',math:fmtNum(a)+'\u00d7'+fmtNum(x)+' + '+fmtNum(b)+' = '+fmtNum(lhs)+'    '+fmtNum(c)+'\u00d7'+fmtNum(x)+' + '+fmtNum(d)+' = '+fmtNum(rhs),reason:fmtNum(lhs)+' = '+fmtNum(rhs)+' \u2713'});
+
+        resultEl.textContent='x = '+fmtNum(x);
+        resultLabel.textContent='Solution verified';
+    }
+
+    stepsDiv.innerHTML=steps.map(s=>'<div class="step'+(s.highlight?' highlight':'')+'"><div class="step-label">'+s.label+'</div><div class="step-math">'+s.math+'</div>'+(s.reason?'<div class="step-reason">'+s.reason+'</div>':'')+'</div>').join('');
+}
+calc();
+</script>
+</body>
+</html>

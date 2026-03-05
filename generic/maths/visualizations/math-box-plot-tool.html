@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Plot Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; }
+        .toggle-row { display: flex; gap: 6px; margin-bottom: 10px; }
+        .toggle-btn { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 10px; border-radius: 5px; border: 2px solid #637EA1; background: #fff; color: #637EA1; cursor: pointer; flex: 1; text-align: center; }
+        .toggle-btn.active { background: #637EA1; color: #fff; }
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .input-item { display: flex; align-items: center; gap: 6px; }
+        .input-item label { font-size: 0.78rem; font-weight: 600; color: #4a5568; min-width: 65px; }
+        .input-item input { width: 70px; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; text-align: center; }
+        .input-group { margin-bottom: 8px; }
+        .input-group label { font-size: 0.82rem; font-weight: 600; color: #4a5568; display: block; margin-bottom: 4px; }
+        .input-group input { width: 100%; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; }
+        .readings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .reading-card { background: #F5E6E8; border-radius: 5px; padding: 8px 6px; text-align: center; }
+        .reading-card .label { font-size: 0.68rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 0.95rem; color: #637EA1; margin-top: 2px; }
+        .outlier-box { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; font-size: 0.82rem; text-align: center; margin-bottom: 8px; }
+        .outlier-box .value { font-family: 'Oswald', sans-serif; color: #637EA1; }
+        .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
+        .btn { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 12px; border-radius: 5px; border: 1px solid #e5dfe0; background: #F5E6E8; color: #637EA1; cursor: pointer; display: block; width: 100%; margin-top: 6px; }
+        .btn:hover { background: #637EA1; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Box Plot Builder</h1>
+
+        <canvas id="boxCanvas" width="550" height="220"></canvas>
+
+        <div class="card">
+            <div class="card-title">Input Mode</div>
+            <div class="toggle-row">
+                <button class="toggle-btn active" id="btnManual" onclick="setMode('manual')">Enter 5-Number Summary</button>
+                <button class="toggle-btn" id="btnRaw" onclick="setMode('raw')">Enter Raw Data</button>
+            </div>
+        </div>
+
+        <div class="card" id="manualCard">
+            <div class="card-title">Five-Number Summary</div>
+            <div class="input-grid">
+                <div class="input-item"><label>Min</label><input type="number" id="inMin" value="2" oninput="drawManual()"></div>
+                <div class="input-item"><label>Q1</label><input type="number" id="inQ1" value="5" oninput="drawManual()"></div>
+                <div class="input-item"><label>Median</label><input type="number" id="inMed" value="8" oninput="drawManual()"></div>
+                <div class="input-item"><label>Q3</label><input type="number" id="inQ3" value="12" oninput="drawManual()"></div>
+                <div class="input-item"><label>Max</label><input type="number" id="inMax" value="15" oninput="drawManual()"></div>
+            </div>
+        </div>
+
+        <div class="card" id="rawCard" style="display:none;">
+            <div class="card-title">Raw Data</div>
+            <div class="input-group">
+                <label>Enter numbers (comma-separated)</label>
+                <input type="text" id="rawInput" value="2, 3, 5, 5, 7, 8, 9, 10, 12, 13, 15" oninput="processRaw()">
+            </div>
+            <button class="btn" onclick="loadSample()">Load Sample Data</button>
+        </div>
+
+        <div class="readings">
+            <div class="reading-card"><div class="label">IQR</div><div class="value" id="iqrVal">7</div></div>
+            <div class="reading-card"><div class="label">Range</div><div class="value" id="rangeVal">13</div></div>
+            <div class="reading-card"><div class="label">Data Spread</div><div class="value" id="spreadVal">--</div></div>
+        </div>
+
+        <div class="outlier-box" id="outlierBox">
+            <div class="label" style="font-size:0.72rem;color:#4a5568;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px;">Outlier Boundaries</div>
+            <div class="value" id="outlierVal">--</div>
+        </div>
+
+        <p class="hint">Enter five-number summary directly or input raw data to auto-calculate the box plot.</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('boxCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+        const CH = 220;
+        const PAD = { left: 40, right: 40, top: 50, bottom: 50 };
+        let mode = 'manual';
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width; H = CH;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); mode === 'manual' ? drawManual() : processRaw(); });
+
+        function setMode(m) {
+            mode = m;
+            document.getElementById('btnManual').classList.toggle('active', m === 'manual');
+            document.getElementById('btnRaw').classList.toggle('active', m === 'raw');
+            document.getElementById('manualCard').style.display = m === 'manual' ? 'block' : 'none';
+            document.getElementById('rawCard').style.display = m === 'raw' ? 'block' : 'none';
+            if (m === 'manual') drawManual(); else processRaw();
+        }
+
+        function loadSample() {
+            document.getElementById('rawInput').value = '2, 3, 4, 5, 5, 6, 7, 8, 8, 9, 10, 11, 12, 13, 14, 15, 25';
+            processRaw();
+        }
+
+        function quartile(sorted, q) {
+            const pos = (sorted.length - 1) * q;
+            const base = Math.floor(pos);
+            const rest = pos - base;
+            if (sorted[base + 1] !== undefined) {
+                return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+            }
+            return sorted[base];
+        }
+
+        function processRaw() {
+            const nums = document.getElementById('rawInput').value
+                .split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+            if (nums.length < 3) return;
+            const sorted = [...nums].sort((a, b) => a - b);
+            const min = sorted[0];
+            const max = sorted[sorted.length - 1];
+            const q1 = quartile(sorted, 0.25);
+            const med = quartile(sorted, 0.5);
+            const q3 = quartile(sorted, 0.75);
+
+            document.getElementById('inMin').value = min;
+            document.getElementById('inQ1').value = q1;
+            document.getElementById('inMed').value = med;
+            document.getElementById('inQ3').value = q3;
+            document.getElementById('inMax').value = max;
+
+            drawBox(min, q1, med, q3, max, sorted);
+        }
+
+        function drawManual() {
+            const min = parseFloat(document.getElementById('inMin').value);
+            const q1 = parseFloat(document.getElementById('inQ1').value);
+            const med = parseFloat(document.getElementById('inMed').value);
+            const q3 = parseFloat(document.getElementById('inQ3').value);
+            const max = parseFloat(document.getElementById('inMax').value);
+            if ([min, q1, med, q3, max].some(isNaN)) return;
+            drawBox(min, q1, med, q3, max, null);
+        }
+
+        function drawBox(min, q1, med, q3, max, rawData) {
+            ctx.clearRect(0, 0, W, H);
+            const iqr = q3 - q1;
+            const range = max - min;
+
+            document.getElementById('iqrVal').textContent = iqr.toFixed(1);
+            document.getElementById('rangeVal').textContent = range.toFixed(1);
+
+            const lowerFence = q1 - 1.5 * iqr;
+            const upperFence = q3 + 1.5 * iqr;
+            document.getElementById('outlierVal').textContent =
+                'Lower: < ' + lowerFence.toFixed(1) + '  |  Upper: > ' + upperFence.toFixed(1);
+
+            // Identify outliers from raw data
+            let outliers = [];
+            let whiskerMin = min, whiskerMax = max;
+            if (rawData) {
+                outliers = rawData.filter(v => v < lowerFence || v > upperFence);
+                const inliers = rawData.filter(v => v >= lowerFence && v <= upperFence);
+                if (inliers.length > 0) {
+                    whiskerMin = Math.min(...inliers);
+                    whiskerMax = Math.max(...inliers);
+                }
+                document.getElementById('spreadVal').textContent = outliers.length + ' outlier' + (outliers.length !== 1 ? 's' : '');
+            } else {
+                document.getElementById('spreadVal').textContent = 'n/a';
+                whiskerMin = min;
+                whiskerMax = max;
+            }
+
+            const gW = W - PAD.left - PAD.right;
+            const dataMin = Math.min(min, lowerFence) - range * 0.05;
+            const dataMax = Math.max(max, upperFence) + range * 0.05;
+            const dataRange = dataMax - dataMin;
+            const toX = v => PAD.left + ((v - dataMin) / dataRange) * gW;
+
+            const cy = H / 2;
+            const boxH = 50;
+
+            // Number line
+            ctx.strokeStyle = '#e5dfe0'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(PAD.left, cy + boxH / 2 + 20); ctx.lineTo(PAD.left + gW, cy + boxH / 2 + 20); ctx.stroke();
+
+            // Ticks on number line
+            ctx.font = '400 10px Outfit, sans-serif'; ctx.fillStyle = '#4a5568'; ctx.textAlign = 'center';
+            const step = Math.pow(10, Math.floor(Math.log10(dataRange)));
+            const niceStep = dataRange / step > 10 ? step * 2 : dataRange / step < 3 ? step / 2 : step;
+            let tick = Math.ceil(dataMin / niceStep) * niceStep;
+            while (tick <= dataMax) {
+                const x = toX(tick);
+                ctx.beginPath(); ctx.moveTo(x, cy + boxH / 2 + 16); ctx.lineTo(x, cy + boxH / 2 + 24); ctx.strokeStyle = '#999'; ctx.stroke();
+                ctx.fillText(tick.toFixed(0), x, cy + boxH / 2 + 36);
+                tick += niceStep;
+            }
+
+            // Whiskers
+            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2;
+            // Left whisker
+            ctx.beginPath(); ctx.moveTo(toX(whiskerMin), cy); ctx.lineTo(toX(q1), cy); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(toX(whiskerMin), cy - boxH / 3); ctx.lineTo(toX(whiskerMin), cy + boxH / 3); ctx.stroke();
+            // Right whisker
+            ctx.beginPath(); ctx.moveTo(toX(q3), cy); ctx.lineTo(toX(whiskerMax), cy); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(toX(whiskerMax), cy - boxH / 3); ctx.lineTo(toX(whiskerMax), cy + boxH / 3); ctx.stroke();
+
+            // Box
+            const bx = toX(q1), bw = toX(q3) - toX(q1);
+            ctx.fillStyle = 'rgba(99, 126, 161, 0.12)';
+            ctx.fillRect(bx, cy - boxH / 2, bw, boxH);
+            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2;
+            ctx.strokeRect(bx, cy - boxH / 2, bw, boxH);
+
+            // Median line
+            ctx.beginPath();
+            ctx.moveTo(toX(med), cy - boxH / 2);
+            ctx.lineTo(toX(med), cy + boxH / 2);
+            ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Outlier dots
+            outliers.forEach(v => {
+                ctx.beginPath(); ctx.arc(toX(v), cy, 5, 0, 2 * Math.PI);
+                ctx.fillStyle = '#e74c3c'; ctx.fill();
+                ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+            });
+
+            // Labels
+            ctx.font = '600 11px Oswald, sans-serif'; ctx.textAlign = 'center';
+            ctx.fillStyle = '#637EA1';
+            ctx.fillText('Min: ' + whiskerMin, toX(whiskerMin), cy - boxH / 2 - 22);
+            ctx.fillText('Q1: ' + q1, toX(q1), cy - boxH / 2 - 8);
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillText('Med: ' + med, toX(med), cy - boxH / 2 - 22);
+            ctx.fillStyle = '#637EA1';
+            ctx.fillText('Q3: ' + q3, toX(q3), cy - boxH / 2 - 8);
+            ctx.fillText('Max: ' + whiskerMax, toX(whiskerMax), cy - boxH / 2 - 22);
+
+            // IQR bracket
+            ctx.font = '500 10px Outfit, sans-serif'; ctx.fillStyle = '#8e44ad'; ctx.textAlign = 'center';
+            ctx.fillText('IQR = ' + iqr.toFixed(1), (toX(q1) + toX(q3)) / 2, cy + boxH / 2 + 14);
+            ctx.beginPath();
+            ctx.moveTo(toX(q1), cy + boxH / 2 + 4);
+            ctx.lineTo(toX(q3), cy + boxH / 2 + 4);
+            ctx.strokeStyle = '#8e44ad'; ctx.lineWidth = 1.5; ctx.stroke();
+        }
+
+        drawManual();
+    </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.controls{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.ctrl-btn{flex:1;min-width:80px;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#637EA1}.ctrl-btn.active{background:#637EA1;color:#fff}.param-row{display:flex;align-items:center;gap:8px;background:#F5E6E8;border-radius:5px;padding:8px;margin-bottom:6px;flex-wrap:wrap;font-size:.78rem}.param-row label{font-weight:600;min-width:60px}.param-row input{width:70px;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.82rem;text-align:center}.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;font-family:'Oswald',sans-serif;font-size:.95rem;color:#637EA1;margin-top:8px}.working{background:#fafbfc;border-radius:5px;padding:8px 12px;font-size:.78rem;color:#4a5568;margin-top:8px;line-height:1.8;text-align:center}.working strong{color:#637EA1}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Area Calculator</h1>
+    <div class="card">
+        <div class="card-title">Select Shape</div>
+        <div class="controls" id="shapeBtns"></div>
+    </div>
+    <div class="card" id="inputCard">
+        <div class="card-title">Dimensions</div>
+        <div id="inputFields"></div>
+    </div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="700"></canvas></div>
+    <div class="result-box" id="resultBox">Area = 0</div>
+    <div class="working" id="workingBox"></div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const shapes=[
+    {name:'Rectangle',params:['Length','Width'],formula:'A = length \u00D7 width',calc:(v)=>v[0]*v[1],defaults:[8,5]},
+    {name:'Triangle',params:['Base','Height'],formula:'A = \u00BD \u00D7 base \u00D7 height',calc:(v)=>0.5*v[0]*v[1],defaults:[8,6]},
+    {name:'Parallelogram',params:['Base','Height'],formula:'A = base \u00D7 height',calc:(v)=>v[0]*v[1],defaults:[8,5]},
+    {name:'Trapezium',params:['Side a','Side b','Height'],formula:'A = \u00BD(a + b) \u00D7 h',calc:(v)=>0.5*(v[0]+v[1])*v[2],defaults:[6,10,5]},
+    {name:'Circle',params:['Radius'],formula:'A = \u03C0r\u00B2',calc:(v)=>Math.PI*v[0]*v[0],defaults:[5]}
+];
+let selShape=0;
+
+const btnDiv=document.getElementById('shapeBtns');
+shapes.forEach((s,i)=>{
+    const b=document.createElement('button');b.className='ctrl-btn'+(i===0?' active':'');b.textContent=s.name;
+    b.onclick=()=>{selShape=i;document.querySelectorAll('#shapeBtns .ctrl-btn').forEach((c,j)=>c.classList.toggle('active',j===i));buildInputs();draw()};
+    btnDiv.appendChild(b);
+});
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*700/1060)+'px'}
+resize();window.addEventListener('resize',resize);
+
+function buildInputs(){
+    const s=shapes[selShape];
+    const div=document.getElementById('inputFields');
+    div.innerHTML='';
+    s.params.forEach((p,i)=>{
+        const row=document.createElement('div');row.className='param-row';
+        row.innerHTML='<label>'+p+':</label><input type="number" class="dim-input" value="'+s.defaults[i]+'" min="0.1" max="20" step="0.5">';
+        div.appendChild(row);
+    });
+    document.querySelectorAll('.dim-input').forEach(inp=>inp.addEventListener('input',draw));
+}
+
+function getValues(){return Array.from(document.querySelectorAll('.dim-input')).map(inp=>parseFloat(inp.value)||0)}
+
+function draw(){
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    const vals=getValues();const s=shapes[selShape];
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    const sc=40; // pixels per unit
+    ctx.fillStyle='#637EA1';ctx.globalAlpha=0.12;ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.globalAlpha=1;
+
+    if(selShape===0){
+        // Rectangle
+        const w=vals[0]*sc,h=vals[1]*sc;
+        const x=cx-w/2,y=cy-h/2;
+        ctx.fillStyle='#637EA1';ctx.globalAlpha=0.12;ctx.fillRect(x,y,w,h);ctx.globalAlpha=1;
+        ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.strokeRect(x,y,w,h);
+        // Labels
+        ctx.fillStyle='#1a1f2e';ctx.font='600 26px Oswald';ctx.textAlign='center';ctx.textBaseline='top';
+        ctx.fillText(vals[0]+' cm',cx,y+h+12);
+        ctx.save();ctx.translate(x-16,cy);ctx.rotate(-Math.PI/2);ctx.fillText(vals[1]+' cm',0,0);ctx.restore();
+        // Dimension arrows
+        drawArrow(x,y+h+8,x+w,y+h+8);
+        drawArrowV(x-8,y,x-8,y+h);
+    } else if(selShape===1){
+        // Triangle
+        const b=vals[0]*sc,h=vals[1]*sc;
+        const x1=cx-b/2,x2=cx+b/2,yt=cy+h/2,yp=cy-h/2;
+        ctx.beginPath();ctx.moveTo(x1,yt);ctx.lineTo(x2,yt);ctx.lineTo(cx,yp);ctx.closePath();
+        ctx.fillStyle='#637EA1';ctx.globalAlpha=0.12;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.stroke();
+        // Height dashed
+        ctx.setLineDash([6,4]);ctx.strokeStyle='#dc3545';ctx.lineWidth=2;
+        ctx.beginPath();ctx.moveTo(cx,yp);ctx.lineTo(cx,yt);ctx.stroke();ctx.setLineDash([]);
+        ctx.fillStyle='#1a1f2e';ctx.font='600 26px Oswald';ctx.textAlign='center';ctx.textBaseline='top';
+        ctx.fillText(vals[0]+' cm',cx,yt+12);
+        ctx.fillStyle='#dc3545';ctx.textAlign='left';ctx.fillText(vals[1]+' cm',cx+8,(yp+yt)/2);
+    } else if(selShape===2){
+        // Parallelogram
+        const b=vals[0]*sc,h=vals[1]*sc;
+        const offset=h*0.4;
+        const x=cx-b/2,y=cy-h/2;
+        ctx.beginPath();ctx.moveTo(x+offset,y);ctx.lineTo(x+b+offset,y);ctx.lineTo(x+b-offset,y+h);ctx.lineTo(x-offset,y+h);ctx.closePath();
+        ctx.fillStyle='#637EA1';ctx.globalAlpha=0.12;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.stroke();
+        // Height
+        ctx.setLineDash([6,4]);ctx.strokeStyle='#dc3545';ctx.lineWidth=2;
+        ctx.beginPath();ctx.moveTo(x+offset,y);ctx.lineTo(x+offset,y+h);ctx.stroke();ctx.setLineDash([]);
+        ctx.fillStyle='#1a1f2e';ctx.font='600 26px Oswald';ctx.textAlign='center';ctx.textBaseline='top';
+        ctx.fillText(vals[0]+' cm',cx,y+h+12);
+        ctx.fillStyle='#dc3545';ctx.textAlign='right';ctx.fillText(vals[1]+' cm',x+offset-8,(y+y+h)/2);
+    } else if(selShape===3){
+        // Trapezium
+        const a=vals[0]*sc,b=vals[1]*sc,h=vals[2]*sc;
+        const y1=cy-h/2,y2=cy+h/2;
+        ctx.beginPath();ctx.moveTo(cx-a/2,y1);ctx.lineTo(cx+a/2,y1);ctx.lineTo(cx+b/2,y2);ctx.lineTo(cx-b/2,y2);ctx.closePath();
+        ctx.fillStyle='#637EA1';ctx.globalAlpha=0.12;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.stroke();
+        ctx.setLineDash([6,4]);ctx.strokeStyle='#dc3545';ctx.lineWidth=2;
+        ctx.beginPath();ctx.moveTo(cx-a/2,y1);ctx.lineTo(cx-a/2,y2);ctx.stroke();ctx.setLineDash([]);
+        ctx.fillStyle='#1a1f2e';ctx.font='600 26px Oswald';ctx.textAlign='center';
+        ctx.textBaseline='bottom';ctx.fillText('a = '+vals[0]+' cm',cx,y1-8);
+        ctx.textBaseline='top';ctx.fillText('b = '+vals[1]+' cm',cx,y2+8);
+        ctx.fillStyle='#dc3545';ctx.textAlign='right';ctx.textBaseline='middle';
+        ctx.fillText('h = '+vals[2]+' cm',cx-a/2-12,cy);
+    } else {
+        // Circle
+        const r=vals[0]*sc;
+        ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+        ctx.fillStyle='#637EA1';ctx.globalAlpha=0.12;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.stroke();
+        ctx.strokeStyle='#dc3545';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r,cy);ctx.stroke();
+        ctx.beginPath();ctx.arc(cx,cy,4,0,Math.PI*2);ctx.fillStyle='#dc3545';ctx.fill();
+        ctx.fillStyle='#dc3545';ctx.font='600 26px Oswald';ctx.textAlign='center';ctx.textBaseline='bottom';
+        ctx.fillText('r = '+vals[0]+' cm',cx+r/2,cy-8);
+    }
+
+    const area=s.calc(vals);
+    const r2=Math.round(area*100)/100;
+    document.getElementById('resultBox').textContent='Area = '+r2+' cm\u00B2';
+
+    // Working
+    let work='<strong>Formula:</strong> '+s.formula+'<br>';
+    if(selShape===0) work+='A = '+vals[0]+' \u00D7 '+vals[1]+' = <strong>'+r2+' cm\u00B2</strong>';
+    else if(selShape===1) work+='A = \u00BD \u00D7 '+vals[0]+' \u00D7 '+vals[1]+' = <strong>'+r2+' cm\u00B2</strong>';
+    else if(selShape===2) work+='A = '+vals[0]+' \u00D7 '+vals[1]+' = <strong>'+r2+' cm\u00B2</strong>';
+    else if(selShape===3) work+='A = \u00BD('+vals[0]+' + '+vals[1]+') \u00D7 '+vals[2]+' = \u00BD \u00D7 '+(vals[0]+vals[1])+' \u00D7 '+vals[2]+' = <strong>'+r2+' cm\u00B2</strong>';
+    else work+='A = \u03C0 \u00D7 '+vals[0]+'\u00B2 = \u03C0 \u00D7 '+(vals[0]*vals[0])+' = <strong>'+r2+' cm\u00B2</strong>';
+    document.getElementById('workingBox').innerHTML=work;
+}
+
+function drawArrow(x1,y,x2,y2){
+    ctx.strokeStyle='#4a5568';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y2);ctx.stroke();
+    const sz=6;
+    ctx.beginPath();ctx.moveTo(x1+sz,y-sz);ctx.lineTo(x1,y);ctx.lineTo(x1+sz,y+sz);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x2-sz,y2-sz);ctx.lineTo(x2,y2);ctx.lineTo(x2-sz,y2+sz);ctx.stroke();
+}
+function drawArrowV(x,y1,x2,y2){
+    ctx.strokeStyle='#4a5568';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    const sz=6;
+    ctx.beginPath();ctx.moveTo(x-sz,y1+sz);ctx.lineTo(x,y1);ctx.lineTo(x+sz,y1+sz);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x2-sz,y2-sz);ctx.lineTo(x2,y2);ctx.lineTo(x2+sz,y2-sz);ctx.stroke();
+}
+
+buildInputs();draw();
+</script>
+</body>
+</html>

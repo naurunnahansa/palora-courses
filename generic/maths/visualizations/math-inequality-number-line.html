@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inequality Number Line</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
+.container{max-width:550px;margin:0 auto}
+h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.mode-btns{display:flex;gap:6px;margin-bottom:10px}
+.mode-btn{flex:1;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:8px 6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}
+.mode-btn:hover{border-color:#637EA1}
+.mode-btn.active{background:#637EA1;color:#fff}
+.input-row{display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.input-row label{font-size:.78rem;font-weight:500;min-width:30px}
+.input-row input{width:60px;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none;text-align:center}
+.input-row input:focus{border-color:#637EA1}
+.input-row select{padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.82rem;outline:none;background:#fff}
+.input-row select:focus{border-color:#637EA1}
+canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;width:100%}
+.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;margin-top:8px}
+.result-box .value{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1}
+.result-box .label{font-size:.7rem;color:#4a5568;margin-top:2px}
+.notations{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.notation{background:#F5E6E8;border-radius:5px;padding:8px;text-align:center}
+.notation .label{font-size:.65rem;color:#4a5568;margin-bottom:2px}
+.notation .value{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#637EA1}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Inequality Number Line</h1>
+
+    <div class="card">
+        <div class="card-title">Type</div>
+        <div class="mode-btns">
+            <button class="mode-btn active" data-mode="single">Single Inequality</button>
+            <button class="mode-btn" data-mode="compound">Compound Inequality</button>
+        </div>
+    </div>
+
+    <div class="card" id="singleCard">
+        <div class="card-title">Single: x [op] a</div>
+        <div class="input-row">
+            <label>x</label>
+            <select id="op1">
+                <option value="gt">&gt;</option>
+                <option value="gte">&ge;</option>
+                <option value="lt">&lt;</option>
+                <option value="lte">&le;</option>
+            </select>
+            <input type="number" id="val1" value="3" step="any">
+        </div>
+    </div>
+
+    <div class="card" id="compoundCard" style="display:none">
+        <div class="card-title">Compound: a [op] x [op] b</div>
+        <div class="input-row">
+            <input type="number" id="valL" value="-2" step="any" style="width:50px">
+            <select id="opL">
+                <option value="lt">&lt;</option>
+                <option value="lte" selected>&le;</option>
+            </select>
+            <label>x</label>
+            <select id="opR">
+                <option value="lt" selected>&lt;</option>
+                <option value="lte">&le;</option>
+            </select>
+            <input type="number" id="valR" value="5" step="any" style="width:50px">
+        </div>
+    </div>
+
+    <div class="card" style="padding:8px">
+        <canvas id="canvas" width="1060" height="200"></canvas>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Notation</div>
+        <div class="notations">
+            <div class="notation"><div class="label">Inequality</div><div class="value" id="ineqNotation"></div></div>
+            <div class="notation"><div class="label">Set Notation</div><div class="value" id="setNotation"></div></div>
+        </div>
+    </div>
+
+    <div class="info"><strong>Open circles</strong> (&lt; or &gt;) mean the value is NOT included. <strong>Filled circles</strong> (&le; or &ge;) mean it IS included.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let mode='single';
+const W=canvas.width,H=canvas.height;
+
+const op1=document.getElementById('op1'),val1=document.getElementById('val1'),
+      opL=document.getElementById('opL'),valL=document.getElementById('valL'),
+      opR=document.getElementById('opR'),valR=document.getElementById('valR'),
+      ineqNotation=document.getElementById('ineqNotation'),setNotation=document.getElementById('setNotation'),
+      singleCard=document.getElementById('singleCard'),compoundCard=document.getElementById('compoundCard');
+
+document.querySelectorAll('[data-mode]').forEach(b=>{
+    b.addEventListener('click',()=>{
+        document.querySelectorAll('[data-mode]').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        mode=b.dataset.mode;
+        singleCard.style.display=mode==='single'?'':'none';
+        compoundCard.style.display=mode==='compound'?'':'none';
+        draw();
+    });
+});
+
+[op1,val1,opL,valL,opR,valR].forEach(el=>el.addEventListener('input',draw));
+[op1,val1,opL,valL,opR,valR].forEach(el=>el.addEventListener('change',draw));
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*200/1060)+'px';}
+window.addEventListener('resize',resize);resize();
+
+function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    const midY=H/2;
+    const pad=60;
+    const lineLeft=pad,lineRight=W-pad;
+    const lineW=lineRight-lineLeft;
+
+    if(mode==='single'){
+        const v=parseFloat(val1.value)||0;
+        const op=op1.value;
+        const inclusive=(op==='gte'||op==='lte');
+        const goRight=(op==='gt'||op==='gte');
+
+        // Determine range
+        const rangeMin=v-6, rangeMax=v+6;
+        const scale=lineW/(rangeMax-rangeMin);
+        const vx=lineLeft+(v-rangeMin)*scale;
+
+        // Number line
+        drawNumberLine(rangeMin,rangeMax,scale,lineLeft,midY);
+
+        // Shading
+        ctx.fillStyle='rgba(99,126,161,0.2)';
+        if(goRight){
+            ctx.fillRect(vx,midY-15,lineRight-vx,30);
+            // Arrow
+            drawArrow(lineRight,midY,'right');
+        } else {
+            ctx.fillRect(lineLeft,midY-15,vx-lineLeft,30);
+            drawArrow(lineLeft,midY,'left');
+        }
+
+        // Circle
+        drawCircle(vx,midY,inclusive);
+
+        // Notation
+        const opSym=op==='gt'?'>':op==='gte'?'\u2265':op==='lt'?'<':'\u2264';
+        ineqNotation.textContent='x '+opSym+' '+v;
+        if(goRight) setNotation.textContent='{x : x '+opSym+' '+v+'}';
+        else setNotation.textContent='{x : x '+opSym+' '+v+'}';
+
+    } else {
+        const vl=parseFloat(valL.value)||0, vr=parseFloat(valR.value)||0;
+        const oL=opL.value, oR=opR.value;
+        const inclL=(oL==='lte'), inclR=(oR==='lte');
+        const lo=Math.min(vl,vr), hi=Math.max(vl,vr);
+
+        const rangeMin=lo-3, rangeMax=hi+3;
+        const span=rangeMax-rangeMin;
+        const scale=lineW/span;
+
+        const vlx=lineLeft+(vl-rangeMin)*scale;
+        const vrx=lineLeft+(vr-rangeMin)*scale;
+
+        drawNumberLine(rangeMin,rangeMax,scale,lineLeft,midY);
+
+        // Shading
+        ctx.fillStyle='rgba(99,126,161,0.2)';
+        ctx.fillRect(Math.min(vlx,vrx),midY-15,Math.abs(vrx-vlx),30);
+
+        drawCircle(vlx,midY,inclL);
+        drawCircle(vrx,midY,inclR);
+
+        const opLSym=oL==='lt'?'<':'\u2264';
+        const opRSym=oR==='lt'?'<':'\u2264';
+        ineqNotation.textContent=vl+' '+opLSym+' x '+opRSym+' '+vr;
+        const brL=inclL?'[':'(', brR=inclR?']':')';
+        setNotation.textContent='{x : x \u2208 '+brL+vl+', '+vr+brR+'}';
+    }
+}
+
+function drawNumberLine(rangeMin,rangeMax,scale,lineLeft,midY){
+    ctx.strokeStyle='#ccc';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(lineLeft-10,midY);ctx.lineTo(lineLeft+scale*(rangeMax-rangeMin)+10,midY);ctx.stroke();
+
+    ctx.fillStyle='#999';ctx.font='500 22px Outfit';ctx.textAlign='center';
+    const step=Math.max(1,Math.round((rangeMax-rangeMin)/12));
+    for(let i=Math.ceil(rangeMin);i<=Math.floor(rangeMax);i+=step){
+        const x=lineLeft+(i-rangeMin)*scale;
+        ctx.beginPath();ctx.moveTo(x,midY-6);ctx.lineTo(x,midY+6);ctx.strokeStyle='#999';ctx.lineWidth=1;ctx.stroke();
+        ctx.fillText(i,x,midY+28);
+    }
+}
+
+function drawCircle(x,y,filled){
+    ctx.beginPath();ctx.arc(x,y,8,0,Math.PI*2);
+    if(filled){ctx.fillStyle='#637EA1';ctx.fill();}
+    else{ctx.fillStyle='#fafbfc';ctx.fill();ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.stroke();}
+}
+
+function drawArrow(x,y,dir){
+    ctx.fillStyle='rgba(99,126,161,0.5)';
+    ctx.beginPath();
+    if(dir==='right'){
+        ctx.moveTo(x,y-12);ctx.lineTo(x+15,y);ctx.lineTo(x,y+12);
+    } else {
+        ctx.moveTo(x,y-12);ctx.lineTo(x-15,y);ctx.lineTo(x,y+12);
+    }
+    ctx.fill();
+}
+
+draw();
+</script>
+</body>
+</html>

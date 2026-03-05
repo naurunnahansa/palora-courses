@@ -1,0 +1,34 @@
+{
+  "id": "check-lines-of-best-fit-2",
+  "title": "Check: Lines of Best Fit",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Why is extrapolation (predicting beyond the range of the data) unreliable?",
+      "options": [
+        { "id": "a", "text": "Because the line of best fit is always curved outside the data range" },
+        { "id": "b", "text": "Because the pattern may not continue outside the range of the data" },
+        { "id": "c", "text": "Because you cannot draw a line beyond the graph" },
+        { "id": "d", "text": "Because there are always outliers beyond the data range" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The relationship observed within the data range may not hold outside it. For example, increasing temperature might increase ice cream sales up to a point, but at extremely high temperatures people may stay indoors."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A line of best fit passes through the point $(20, 35)$ and $(40, 55)$. Use it to estimate the $y$-value when $x = 30$.",
+      "options": [
+        { "id": "a", "text": "$40$" },
+        { "id": "b", "text": "$45$" },
+        { "id": "c", "text": "$50$" },
+        { "id": "d", "text": "$42.5$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The gradient is $\\frac{55-35}{40-20} = \\frac{20}{20} = 1$. At $x = 30$ (halfway between $20$ and $40$), $y = 35 + 1 \\times (30 - 20) = 35 + 10 = 45$."
+    }
+  ]
+}

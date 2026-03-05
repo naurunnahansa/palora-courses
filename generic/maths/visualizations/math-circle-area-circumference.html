@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.slider-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;background:#F5E6E8;border-radius:5px;padding:8px}.slider-row label{font-size:.78rem;font-weight:600;min-width:60px}.slider-row input[type=range]{flex:1;accent-color:#637EA1}.slider-row .val{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;min-width:40px;text-align:center}.param-row{display:flex;align-items:center;gap:8px;background:#F5E6E8;border-radius:5px;padding:8px;margin-bottom:6px;flex-wrap:wrap;font-size:.78rem}.param-row label{font-weight:600;min-width:70px}.param-row input{width:80px;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.82rem;text-align:center}.readouts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px}.readout{background:#F5E6E8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.68rem;color:#4a5568}.readout .value{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1}.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;font-family:'Oswald',sans-serif;font-size:.9rem;color:#637EA1;margin-top:8px}.working{background:#fafbfc;border-radius:5px;padding:8px 12px;font-size:.78rem;color:#4a5568;margin-top:8px;line-height:1.8;text-align:center}.working strong{color:#637EA1}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Circle Calculator</h1>
+    <div class="card">
+        <div class="card-title">Input</div>
+        <div class="slider-row">
+            <label>Radius</label>
+            <input type="range" id="rSlider" min="0.5" max="10" step="0.5" value="5">
+            <span class="val" id="rSliderVal">5</span>
+        </div>
+        <div class="param-row">
+            <label>Radius:</label><input type="number" id="rInput" value="5" min="0.1" max="50" step="0.1">
+            <label>Diameter:</label><input type="number" id="dInput" value="10" min="0.2" max="100" step="0.2">
+        </div>
+    </div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="1060"></canvas></div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Diameter</div><div class="value" id="dVal">10 cm</div></div>
+        <div class="readout"><div class="label">Circumference</div><div class="value" id="cVal">31.42 cm</div></div>
+        <div class="readout"><div class="label">Area</div><div class="value" id="aVal">78.54 cm&#178;</div></div>
+    </div>
+    <div class="working" id="workingBox"></div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const rSlider=document.getElementById('rSlider'),rInput=document.getElementById('rInput'),dInput=document.getElementById('dInput');
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=w+'px'}
+resize();window.addEventListener('resize',resize);
+
+let updatingFrom='';
+
+function draw(){
+    const r=parseFloat(rInput.value)||1;
+    const d=r*2;
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    const maxR=Math.min(W,H)/2-80;
+    const sc=maxR/10; // scale so max radius 10 fills canvas
+    const pr=r*sc;
+
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Circle fill
+    ctx.beginPath();ctx.arc(cx,cy,pr,0,Math.PI*2);
+    ctx.fillStyle='#637EA1';ctx.globalAlpha=0.1;ctx.fill();ctx.globalAlpha=1;
+    ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.stroke();
+
+    // Centre dot
+    ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);ctx.fillStyle='#637EA1';ctx.fill();
+
+    // Radius line
+    ctx.strokeStyle='#dc3545';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+pr,cy);ctx.stroke();
+    ctx.fillStyle='#dc3545';ctx.font='700 28px Oswald';ctx.textAlign='center';ctx.textBaseline='bottom';
+    ctx.fillText('r = '+r+' cm',cx+pr/2,cy-10);
+
+    // Diameter line (dashed, vertical)
+    ctx.setLineDash([8,5]);ctx.strokeStyle='#28a745';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(cx,cy-pr);ctx.lineTo(cx,cy+pr);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='#28a745';ctx.font='600 24px Oswald';ctx.textAlign='left';ctx.textBaseline='middle';
+    ctx.fillText('d = '+d+' cm',cx+10,cy+pr/2);
+
+    // Circumference arc indicator
+    ctx.strokeStyle='#e67e22';ctx.lineWidth=5;ctx.globalAlpha=0.5;
+    ctx.beginPath();ctx.arc(cx,cy,pr+10,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
+    ctx.fillStyle='#e67e22';ctx.font='600 22px Oswald';ctx.textAlign='center';ctx.textBaseline='middle';
+    const circ=2*Math.PI*r;
+    ctx.fillText('C = '+Math.round(circ*100)/100+' cm',cx,cy-pr-30);
+
+    // Area text inside
+    const area=Math.PI*r*r;
+    ctx.fillStyle='#637EA1';ctx.font='600 28px Oswald';ctx.textAlign='center';ctx.textBaseline='middle';
+    if(pr>60) ctx.fillText('A = '+Math.round(area*100)/100+' cm\u00B2',cx,cy+40);
+
+    // Update displays
+    document.getElementById('dVal').textContent=d+' cm';
+    document.getElementById('cVal').textContent=Math.round(circ*100)/100+' cm';
+    document.getElementById('aVal').textContent=Math.round(area*100)/100+' cm\u00B2';
+    document.getElementById('rSliderVal').textContent=r;
+
+    // Working
+    document.getElementById('workingBox').innerHTML=
+        '<strong>Diameter:</strong> d = 2r = 2 \u00D7 '+r+' = '+d+' cm<br>'+
+        '<strong>Circumference:</strong> C = 2\u03C0r = 2 \u00D7 \u03C0 \u00D7 '+r+' = <strong>'+Math.round(circ*100)/100+' cm</strong><br>'+
+        '<strong>Area:</strong> A = \u03C0r\u00B2 = \u03C0 \u00D7 '+r+'\u00B2 = \u03C0 \u00D7 '+(r*r)+' = <strong>'+Math.round(area*100)/100+' cm\u00B2</strong>';
+}
+
+rSlider.addEventListener('input',()=>{
+    rInput.value=rSlider.value;
+    dInput.value=rSlider.value*2;
+    draw();
+});
+rInput.addEventListener('input',()=>{
+    const r=parseFloat(rInput.value)||1;
+    dInput.value=r*2;
+    if(r>=0.5&&r<=10) rSlider.value=r;
+    draw();
+});
+dInput.addEventListener('input',()=>{
+    const d=parseFloat(dInput.value)||2;
+    rInput.value=d/2;
+    if(d/2>=0.5&&d/2<=10) rSlider.value=d/2;
+    draw();
+});
+
+draw();
+</script>
+</body>
+</html>

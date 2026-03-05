@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sequence Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
+.container{max-width:550px;margin:0 auto}
+h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.mode-btns{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.mode-btn{flex:1;min-width:90px;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:8px 6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}
+.mode-btn:hover{border-color:#637EA1}
+.mode-btn.active{background:#637EA1;color:#fff}
+.slider-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.slider-row label{font-size:.78rem;font-weight:600;min-width:24px;font-family:'Oswald',sans-serif;color:#637EA1}
+.slider-row input[type=range]{flex:1;accent-color:#637EA1}
+.slider-row .val{font-family:'Oswald',sans-serif;font-size:.85rem;min-width:32px;text-align:right;color:#637EA1}
+.terms-row{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
+.term{background:#F5E6E8;border-radius:5px;padding:6px 8px;text-align:center;min-width:44px}
+.term .n{font-size:.6rem;color:#4a5568}
+.term .v{font-family:'Oswald',sans-serif;font-size:.82rem;color:#637EA1}
+.formula-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;margin-top:8px}
+.formula-box .value{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1}
+.formula-box .label{font-size:.7rem;color:#4a5568;margin-top:2px}
+.diff-table{width:100%;font-size:.72rem;margin-top:8px;border-collapse:collapse}
+.diff-table td{padding:3px 6px;text-align:center;border-bottom:1px solid #f0eeef}
+.diff-table .diff-label{font-family:'Oswald',sans-serif;color:#637EA1;font-size:.68rem;text-align:left}
+.diff-table .diff-val{font-weight:600}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#637EA1}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Sequence Explorer</h1>
+
+    <div class="card">
+        <div class="card-title">Sequence Type</div>
+        <div class="mode-btns">
+            <button class="mode-btn active" data-type="linear">Linear (an + b)</button>
+            <button class="mode-btn" data-type="quadratic">Quadratic (an&sup2; + bn + c)</button>
+            <button class="mode-btn" data-type="geometric">Geometric (ar^(n-1))</button>
+        </div>
+    </div>
+
+    <div class="card" id="paramsCard">
+        <div class="card-title">Parameters</div>
+        <div id="sliders"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Nth Term Formula</div>
+        <div class="formula-box">
+            <div class="value" id="formula"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">First 10 Terms</div>
+        <div class="terms-row" id="terms"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Differences</div>
+        <table class="diff-table" id="diffTable"></table>
+    </div>
+
+    <div class="info">Choose a <strong>sequence type</strong> and adjust parameters. The differences table helps identify the type of sequence.</div>
+</div>
+<script>
+let seqType='linear';
+const slidersDiv=document.getElementById('sliders'),termsDiv=document.getElementById('terms'),
+      formulaEl=document.getElementById('formula'),diffTable=document.getElementById('diffTable');
+
+const params={
+    linear:{a:{min:-10,max:10,step:1,val:3,label:'a'},b:{min:-10,max:10,step:1,val:2,label:'b'}},
+    quadratic:{a:{min:-5,max:5,step:1,val:1,label:'a'},b:{min:-10,max:10,step:1,val:0,label:'b'},c:{min:-10,max:10,step:1,val:0,label:'c'}},
+    geometric:{a:{min:-10,max:10,step:1,val:2,label:'a'},r:{min:-5,max:5,step:0.5,val:3,label:'r'}}
+};
+
+document.querySelectorAll('.mode-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+        document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
+        btn.classList.add('active');
+        seqType=btn.dataset.type;
+        buildSliders();calc();
+    });
+});
+
+function buildSliders(){
+    const p=params[seqType];
+    slidersDiv.innerHTML='';
+    Object.keys(p).forEach(key=>{
+        const s=p[key];
+        const row=document.createElement('div');row.className='slider-row';
+        row.innerHTML='<label>'+s.label+'</label><input type="range" min="'+s.min+'" max="'+s.max+'" step="'+s.step+'" value="'+s.val+'" data-key="'+key+'"><span class="val" id="pv_'+key+'">'+s.val+'</span>';
+        slidersDiv.appendChild(row);
+        row.querySelector('input').addEventListener('input',function(){
+            p[key].val=parseFloat(this.value);
+            document.getElementById('pv_'+key).textContent=this.value;
+            calc();
+        });
+    });
+}
+
+function getTerm(n){
+    const p=params[seqType];
+    if(seqType==='linear') return p.a.val*n+p.b.val;
+    if(seqType==='quadratic') return p.a.val*n*n+p.b.val*n+p.c.val;
+    return p.a.val*Math.pow(p.r.val,n-1);
+}
+
+function calc(){
+    const terms=[];
+    for(let i=1;i<=10;i++) terms.push(getTerm(i));
+
+    termsDiv.innerHTML=terms.map((t,i)=>'<div class="term"><div class="n">n='+(i+1)+'</div><div class="v">'+parseFloat(t.toFixed(4))+'</div></div>').join('');
+
+    // Formula
+    const p=params[seqType];
+    if(seqType==='linear'){
+        let f='T(n) = ';
+        if(p.a.val!==0) f+=(p.a.val===1?'':p.a.val===-1?'-':p.a.val)+'n';
+        if(p.b.val!==0) f+=(p.b.val>0&&p.a.val!==0?' + ':p.b.val<0?' - ':'')+Math.abs(p.b.val);
+        if(p.a.val===0&&p.b.val===0) f+='0';
+        formulaEl.textContent=f;
+    } else if(seqType==='quadratic'){
+        let f='T(n) = ';
+        if(p.a.val!==0) f+=(p.a.val===1?'':p.a.val===-1?'-':p.a.val)+'n\u00b2';
+        if(p.b.val!==0) f+=(p.b.val>0&&p.a.val!==0?' + ':p.b.val<0?' - ':'')+(Math.abs(p.b.val)===1?'':Math.abs(p.b.val))+'n';
+        if(p.c.val!==0) f+=(p.c.val>0&&(p.a.val!==0||p.b.val!==0)?' + ':p.c.val<0?' - ':'')+Math.abs(p.c.val);
+        if(p.a.val===0&&p.b.val===0&&p.c.val===0) f+='0';
+        formulaEl.textContent=f;
+    } else {
+        formulaEl.textContent='T(n) = '+p.a.val+' \u00d7 '+p.r.val+'^(n-1)';
+    }
+
+    // Differences table
+    const d1=[],d2=[];
+    for(let i=0;i<terms.length-1;i++) d1.push(parseFloat((terms[i+1]-terms[i]).toFixed(6)));
+    for(let i=0;i<d1.length-1;i++) d2.push(parseFloat((d1[i+1]-d1[i]).toFixed(6)));
+
+    let html='<tr><td class="diff-label">Terms</td>';
+    terms.forEach(t=>{html+='<td class="diff-val">'+parseFloat(t.toFixed(2))+'</td>';});
+    html+='</tr><tr><td class="diff-label">1st Diff</td>';
+    d1.forEach(d=>{html+='<td>'+parseFloat(d.toFixed(2))+'</td>';});
+    html+='<td></td></tr>';
+
+    if(seqType==='quadratic'){
+        html+='<tr><td class="diff-label">2nd Diff</td>';
+        d2.forEach(d=>{html+='<td>'+parseFloat(d.toFixed(2))+'</td>';});
+        html+='<td></td><td></td></tr>';
+    }
+
+    if(seqType==='geometric'){
+        const ratios=[];
+        for(let i=0;i<terms.length-1;i++){
+            if(terms[i]!==0) ratios.push(parseFloat((terms[i+1]/terms[i]).toFixed(4)));
+            else ratios.push('--');
+        }
+        html+='<tr><td class="diff-label">Ratio</td>';
+        ratios.forEach(r=>{html+='<td>'+r+'</td>';});
+        html+='<td></td></tr>';
+    }
+
+    diffTable.innerHTML=html;
+}
+buildSliders();calc();
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{
+  "id": "check-two-way-tables-2",
+  "title": "Check: Two-Way Tables",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A two-way table shows: $20$ males like cats, $15$ males like dogs, $25$ females like cats, $?$ females like dogs. The total number of people is $80$. How many females like dogs?",
+      "options": [
+        { "id": "a", "text": "$15$" },
+        { "id": "b", "text": "$20$" },
+        { "id": "c", "text": "$25$" },
+        { "id": "d", "text": "$30$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Females who like dogs $= 80 - 20 - 15 - 25 = 20$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "From the same table ($20$ males-cats, $15$ males-dogs, $25$ females-cats, $20$ females-dogs, total $80$), a person is chosen at random. Given the person is female, what is the probability she likes cats?",
+      "options": [
+        { "id": "a", "text": "$\\frac{25}{80}$" },
+        { "id": "b", "text": "$\\frac{25}{45}$" },
+        { "id": "c", "text": "$\\frac{25}{35}$" },
+        { "id": "d", "text": "$\\frac{20}{45}$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Total females $= 25 + 20 = 45$. Given the person is female, $P(\\text{cats}\\,|\\,\\text{female}) = \\frac{25}{45} = \\frac{5}{9}$."
+    }
+  ]
+}

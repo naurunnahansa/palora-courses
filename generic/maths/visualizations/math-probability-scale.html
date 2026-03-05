@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probability Scale</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; cursor: pointer; }
+        .readings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .reading-card { background: #F5E6E8; border-radius: 5px; padding: 8px 10px; text-align: center; }
+        .reading-card .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 1.05rem; color: #637EA1; margin-top: 2px; }
+        .result-box { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; margin-bottom: 8px; }
+        .result-box .value { font-size: 1.0rem; color: #637EA1; }
+        .result-box .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .presets { display: flex; flex-wrap: wrap; gap: 6px; }
+        .preset-btn { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; padding: 6px 10px; border-radius: 5px; border: 1px solid #e5dfe0; background: #F5E6E8; color: #637EA1; cursor: pointer; transition: all 0.15s; }
+        .preset-btn:hover { background: #637EA1; color: #fff; }
+        .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Probability Scale</h1>
+
+        <canvas id="scaleCanvas" width="550" height="200"></canvas>
+
+        <div class="readings">
+            <div class="reading-card">
+                <div class="label">Decimal</div>
+                <div class="value" id="decVal">0.50</div>
+            </div>
+            <div class="reading-card">
+                <div class="label">Fraction</div>
+                <div class="value" id="fracVal">1/2</div>
+            </div>
+            <div class="reading-card">
+                <div class="label">Percentage</div>
+                <div class="value" id="pctVal">50%</div>
+            </div>
+        </div>
+
+        <div class="result-box">
+            <div class="label">Likelihood</div>
+            <div class="value" id="likelihoodVal">Even Chance</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Preset Events</div>
+            <div class="presets">
+                <button class="preset-btn" onclick="setProb(0.5)">Coin lands heads</button>
+                <button class="preset-btn" onclick="setProb(1/6)">Rolling a 6</button>
+                <button class="preset-btn" onclick="setProb(1)">Sun rises tomorrow</button>
+                <button class="preset-btn" onclick="setProb(0)">Rolling a 7 on a die</button>
+                <button class="preset-btn" onclick="setProb(1/52)">Drawing ace of spades</button>
+                <button class="preset-btn" onclick="setProb(1/4)">Drawing a heart</button>
+                <button class="preset-btn" onclick="setProb(5/6)">Not rolling a 6</button>
+                <button class="preset-btn" onclick="setProb(1/2)">Baby is a girl</button>
+                <button class="preset-btn" onclick="setProb(1/13)">Drawing an ace</button>
+                <button class="preset-btn" onclick="setProb(3/8)">3 heads in a row</button>
+            </div>
+        </div>
+
+        <p class="hint">Click and drag the marker on the scale, or use the preset event buttons</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('scaleCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+        let prob = 0.5;
+        let dragging = false;
+
+        const PAD = { left: 30, right: 30, top: 50, bottom: 60 };
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width; H = 200;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); draw(); });
+
+        function getScaleX(p) { return PAD.left + p * (W - PAD.left - PAD.right); }
+        function getProbFromX(x) { return Math.max(0, Math.min(1, (x - PAD.left) / (W - PAD.left - PAD.right))); }
+
+        canvas.addEventListener('mousedown', (e) => { dragging = true; updateFromMouse(e); });
+        canvas.addEventListener('mousemove', (e) => { if (dragging) updateFromMouse(e); });
+        canvas.addEventListener('mouseup', () => { dragging = false; });
+        canvas.addEventListener('mouseleave', () => { dragging = false; });
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); dragging = true; updateFromTouch(e); });
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); if (dragging) updateFromTouch(e); });
+        canvas.addEventListener('touchend', () => { dragging = false; });
+
+        function updateFromMouse(e) {
+            const rect = canvas.getBoundingClientRect();
+            prob = getProbFromX(e.clientX - rect.left);
+            draw();
+        }
+        function updateFromTouch(e) {
+            const rect = canvas.getBoundingClientRect();
+            prob = getProbFromX(e.touches[0].clientX - rect.left);
+            draw();
+        }
+
+        function setProb(p) { prob = p; draw(); }
+
+        function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+        function toFraction(dec) {
+            if (dec === 0) return '0';
+            if (dec === 1) return '1';
+            const precision = 1000000;
+            let num = Math.round(dec * precision);
+            let den = precision;
+            const g = gcd(num, den);
+            num /= g; den /= g;
+            if (den === 1) return '' + num;
+            return num + '/' + den;
+        }
+
+        function getLikelihood(p) {
+            if (p === 0) return 'Impossible';
+            if (p < 0.2) return 'Very Unlikely';
+            if (p < 0.4) return 'Unlikely';
+            if (Math.abs(p - 0.5) < 0.05) return 'Even Chance';
+            if (p < 0.6) return 'Slightly Likely';
+            if (p < 0.8) return 'Likely';
+            if (p < 1) return 'Very Likely';
+            return 'Certain';
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+            const scaleY = 90;
+            const barH = 24;
+
+            // Gradient bar
+            const grd = ctx.createLinearGradient(PAD.left, 0, W - PAD.right, 0);
+            grd.addColorStop(0, '#e74c3c');
+            grd.addColorStop(0.25, '#e67e22');
+            grd.addColorStop(0.5, '#f1c40f');
+            grd.addColorStop(0.75, '#2ecc71');
+            grd.addColorStop(1, '#27ae60');
+            ctx.fillStyle = grd;
+            ctx.beginPath();
+            ctx.roundRect(PAD.left, scaleY - barH / 2, W - PAD.left - PAD.right, barH, 5);
+            ctx.fill();
+
+            // Tick marks
+            ctx.strokeStyle = '#1a1f2e';
+            ctx.lineWidth = 1;
+            ctx.font = '600 11px Oswald, sans-serif';
+            ctx.fillStyle = '#1a1f2e';
+            ctx.textAlign = 'center';
+            for (let i = 0; i <= 10; i++) {
+                const x = getScaleX(i / 10);
+                const tickH = (i % 5 === 0) ? 10 : 5;
+                ctx.beginPath();
+                ctx.moveTo(x, scaleY + barH / 2);
+                ctx.lineTo(x, scaleY + barH / 2 + tickH);
+                ctx.stroke();
+                if (i % 2 === 0) {
+                    ctx.fillText((i / 10).toFixed(1), x, scaleY + barH / 2 + 22);
+                }
+            }
+
+            // Region labels
+            ctx.font = '500 9px Outfit, sans-serif';
+            ctx.fillStyle = '#4a5568';
+            const regions = [
+                { p: 0, label: 'Impossible' },
+                { p: 0.2, label: 'Unlikely' },
+                { p: 0.5, label: 'Even Chance' },
+                { p: 0.8, label: 'Likely' },
+                { p: 1.0, label: 'Certain' }
+            ];
+            regions.forEach(r => {
+                ctx.fillText(r.label, getScaleX(r.p), scaleY - barH / 2 - 28);
+                ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+                ctx.beginPath();
+                ctx.moveTo(getScaleX(r.p), scaleY - barH / 2 - 18);
+                ctx.lineTo(getScaleX(r.p), scaleY - barH / 2 - 4);
+                ctx.stroke();
+            });
+
+            // Marker
+            const mx = getScaleX(prob);
+            ctx.beginPath();
+            ctx.moveTo(mx, scaleY - barH / 2 - 4);
+            ctx.lineTo(mx - 8, scaleY - barH / 2 - 18);
+            ctx.lineTo(mx + 8, scaleY - barH / 2 - 18);
+            ctx.closePath();
+            ctx.fillStyle = '#637EA1';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(mx, scaleY, 8, 0, 2 * Math.PI);
+            ctx.fillStyle = '#fff';
+            ctx.fill();
+            ctx.strokeStyle = '#637EA1';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Update readouts
+            document.getElementById('decVal').textContent = prob.toFixed(4);
+            document.getElementById('fracVal').textContent = toFraction(prob);
+            document.getElementById('pctVal').textContent = (prob * 100).toFixed(1) + '%';
+            document.getElementById('likelihoodVal').textContent = getLikelihood(prob);
+        }
+
+        draw();
+    </script>
+</body>
+</html>

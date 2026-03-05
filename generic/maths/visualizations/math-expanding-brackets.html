@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expanding Brackets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
+.container{max-width:550px;margin:0 auto}
+h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.eq-row{display:flex;gap:4px;align-items:center;justify-content:center;margin-bottom:6px;flex-wrap:wrap}
+.eq-row input{width:44px;padding:6px 4px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.85rem;text-align:center;outline:none}
+.eq-row input:focus{border-color:#637EA1}
+.eq-row span{font-weight:600;font-size:.85rem}
+.expression{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;margin-bottom:8px}
+.grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:0;margin:10px auto;max-width:320px;border:1px solid #e5dfe0;border-radius:5px;overflow:hidden}
+.grid-cell{padding:10px;text-align:center;font-size:.82rem;font-weight:600;border:1px solid #f0eeef}
+.grid-header{background:#637EA1;color:#fff;font-family:'Oswald',sans-serif;font-size:.78rem}
+.grid-label{background:#637EA1;color:#fff;font-family:'Oswald',sans-serif;font-size:.78rem;display:flex;align-items:center;justify-content:center}
+.grid-product{background:#F5E6E8}
+.foil-label{font-size:.6rem;color:#4a5568;display:block;margin-top:2px}
+.step{background:#F5E6E8;border-radius:5px;padding:8px;margin-top:6px;font-size:.78rem}
+.step .step-label{font-family:'Oswald',sans-serif;font-size:.75rem;color:#637EA1;text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
+.step .step-math{font-weight:600;color:#1a1f2e}
+.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;margin-top:8px}
+.result-box .value{font-family:'Oswald',sans-serif;font-size:1.1rem;color:#637EA1}
+.result-box .label{font-size:.7rem;color:#4a5568;margin-top:2px}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#637EA1}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Expanding Brackets</h1>
+
+    <div class="card">
+        <div class="card-title">Enter Expression: (ax + b)(cx + d)</div>
+        <div class="eq-row">
+            <span>(</span>
+            <input type="number" id="a" value="1" step="any">
+            <span>x +</span>
+            <input type="number" id="b" value="3" step="any">
+            <span>)(</span>
+            <input type="number" id="c" value="1" step="any">
+            <span>x +</span>
+            <input type="number" id="d" value="-2" step="any">
+            <span>)</span>
+        </div>
+        <div class="expression" id="expr"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">FOIL / Grid Method</div>
+        <div class="grid" id="grid"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Step-by-Step Expansion</div>
+        <div id="steps"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Simplified Result</div>
+        <div class="result-box">
+            <div class="value" id="result"></div>
+            <div class="label">Expanded and simplified</div>
+        </div>
+    </div>
+
+    <div class="info">Enter coefficients for <strong>(ax + b)(cx + d)</strong>. The grid shows each multiplication and FOIL labels.</div>
+</div>
+<script>
+const aEl=document.getElementById('a'),bEl=document.getElementById('b'),
+      cEl=document.getElementById('c'),dEl=document.getElementById('d'),
+      exprEl=document.getElementById('expr'),gridEl=document.getElementById('grid'),
+      stepsDiv=document.getElementById('steps'),resultEl=document.getElementById('result');
+
+[aEl,bEl,cEl,dEl].forEach(el=>el.addEventListener('input',calc));
+
+function fmtTerm(coeff,power){
+    if(coeff===0) return '0';
+    let s='';
+    if(power===2){
+        if(coeff===1) s='x\u00b2';
+        else if(coeff===-1) s='-x\u00b2';
+        else s=coeff+'x\u00b2';
+    } else if(power===1){
+        if(coeff===1) s='x';
+        else if(coeff===-1) s='-x';
+        else s=coeff+'x';
+    } else {
+        s=coeff.toString();
+    }
+    return s;
+}
+
+function fmtBracket(coeff,constant){
+    let s='(';
+    if(coeff===1) s+='x';
+    else if(coeff===-1) s+='-x';
+    else if(coeff===0) s+='';
+    else s+=coeff+'x';
+
+    if(constant>0 && coeff!==0) s+=' + '+constant;
+    else if(constant<0) s+=' - '+Math.abs(constant);
+    else if(constant!==0 && coeff===0) s+=constant;
+    s+=')';
+    return s;
+}
+
+function fmtPoly(x2,x1,x0){
+    let parts=[];
+    if(x2!==0) parts.push(fmtTerm(x2,2));
+    if(x1!==0){
+        if(parts.length>0) parts.push(x1>0?' + ':' - ');
+        parts.push(parts.length>0?fmtTerm(Math.abs(x1),1):fmtTerm(x1,1));
+    }
+    if(x0!==0){
+        if(parts.length>0) parts.push(x0>0?' + ':' - ');
+        parts.push(parts.length>0?Math.abs(x0).toString():x0.toString());
+    }
+    if(parts.length===0) return '0';
+    return parts.join('');
+}
+
+function calc(){
+    const a=parseFloat(aEl.value)||0,b=parseFloat(bEl.value)||0,
+          c=parseFloat(cEl.value)||0,d=parseFloat(dEl.value)||0;
+
+    exprEl.textContent=fmtBracket(a,b)+fmtBracket(c,d);
+
+    // FOIL products
+    const F=a*c; // x^2 - First
+    const O=a*d; // x - Outer
+    const I=b*c; // x - Inner
+    const L=b*d; // constant - Last
+
+    // Grid
+    const topLeft=fmtTerm(a,1);
+    const topRight=b>=0?'+'+b:b.toString();
+    const leftTop=fmtTerm(c,1);
+    const leftBottom=d>=0?'+'+d:d.toString();
+
+    gridEl.innerHTML=
+        '<div class="grid-cell grid-header">\u00d7</div>'+
+        '<div class="grid-cell grid-header">'+topLeft+'</div>'+
+        '<div class="grid-cell grid-header">'+topRight+'</div>'+
+        '<div class="grid-cell grid-label">'+leftTop+'</div>'+
+        '<div class="grid-cell grid-product">'+fmtTerm(F,2)+'<span class="foil-label">First</span></div>'+
+        '<div class="grid-cell grid-product">'+fmtTerm(I,1)+'<span class="foil-label">Inner</span></div>'+
+        '<div class="grid-cell grid-label">'+leftBottom+'</div>'+
+        '<div class="grid-cell grid-product">'+fmtTerm(O,1)+'<span class="foil-label">Outer</span></div>'+
+        '<div class="grid-cell grid-product">'+L+'<span class="foil-label">Last</span></div>';
+
+    let steps=[];
+    steps.push({label:'First (F)',math:fmtTerm(a,1)+' \u00d7 '+fmtTerm(c,1)+' = '+fmtTerm(F,2)});
+    steps.push({label:'Outer (O)',math:fmtTerm(a,1)+' \u00d7 '+d+' = '+fmtTerm(O,1)});
+    steps.push({label:'Inner (I)',math:b+' \u00d7 '+fmtTerm(c,1)+' = '+fmtTerm(I,1)});
+    steps.push({label:'Last (L)',math:b+' \u00d7 '+d+' = '+L});
+
+    const midCoeff=O+I;
+    steps.push({label:'Collect Like Terms',math:fmtTerm(O,1)+' + '+fmtTerm(I,1)+' = '+fmtTerm(midCoeff,1)});
+    steps.push({label:'Final',math:fmtPoly(F,midCoeff,L)});
+
+    stepsDiv.innerHTML=steps.map(s=>'<div class="step"><div class="step-label">'+s.label+'</div><div class="step-math">'+s.math+'</div></div>').join('');
+
+    resultEl.textContent=fmtPoly(F,midCoeff,L);
+}
+calc();
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "id": "check-translations",
+  "title": "Check: Translations",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A shape is translated by the vector $\\begin{pmatrix} 3 \\\\ -2 \\end{pmatrix}$. What happens to each point?",
+      "options": [
+        { "id": "a", "text": "3 left and 2 up" },
+        { "id": "b", "text": "3 right and 2 down" },
+        { "id": "c", "text": "3 right and 2 up" },
+        { "id": "d", "text": "3 down and 2 right" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "In the column vector $\\begin{pmatrix} 3 \\\\ -2 \\end{pmatrix}$, the top number gives the horizontal movement (positive = right) and the bottom number gives the vertical movement (negative = down). So each point moves 3 right and 2 down."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A point $P(1, 4)$ is translated by $\\begin{pmatrix} -5 \\\\ 3 \\end{pmatrix}$. What are the coordinates of the image $P'$?",
+      "options": [
+        { "id": "a", "text": "$(6, 7)$" },
+        { "id": "b", "text": "$(-4, 7)$" },
+        { "id": "c", "text": "$(6, 1)$" },
+        { "id": "d", "text": "$(-4, 1)$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Add the vector components to the coordinates: $x' = 1 + (-5) = -4$ and $y' = 4 + 3 = 7$. So $P' = (-4, 7)$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which property is always preserved under a translation?",
+      "options": [
+        { "id": "a", "text": "The position of the shape" },
+        { "id": "b", "text": "The orientation and size of the shape" },
+        { "id": "c", "text": "Only the area but not the side lengths" },
+        { "id": "d", "text": "The distance from the origin" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A translation slides every point of a shape by the same amount in the same direction. The shape keeps its size, angles, and orientation. Only the position changes."
+    }
+  ]
+}

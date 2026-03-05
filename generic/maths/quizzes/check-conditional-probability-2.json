@@ -1,0 +1,48 @@
+{
+  "id": "check-conditional-probability-2",
+  "title": "Check: Conditional Probability",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A bag has $6$ red and $4$ blue balls. Two are drawn without replacement. What is $P(\\text{2nd is red}\\,|\\,\\text{1st is red})$?",
+      "options": [
+        { "id": "a", "text": "$\\frac{6}{10}$" },
+        { "id": "b", "text": "$\\frac{5}{9}$" },
+        { "id": "c", "text": "$\\frac{6}{9}$" },
+        { "id": "d", "text": "$\\frac{5}{10}$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Given the first ball drawn is red, there are now $5$ red and $4$ blue balls left ($9$ total). $P(\\text{2nd red}\\,|\\,\\text{1st red}) = \\frac{5}{9}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Events $A$ and $B$ are independent. $P(A) = 0.6$ and $P(B) = 0.3$. What is $P(A\\,|\\,B)$?",
+      "options": [
+        { "id": "a", "text": "$0.18$" },
+        { "id": "b", "text": "$0.6$" },
+        { "id": "c", "text": "$0.3$" },
+        { "id": "d", "text": "$0.9$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "If events are independent, knowing $B$ has occurred does not change the probability of $A$. So $P(A\\,|\\,B) = P(A) = 0.6$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "From a Venn diagram: $n(A \\cap B) = 6$, $n(B) = 15$, $n(\\xi) = 40$. What is $P(A\\,|\\,B)$?",
+      "options": [
+        { "id": "a", "text": "$\\frac{6}{40}$" },
+        { "id": "b", "text": "$\\frac{6}{15}$" },
+        { "id": "c", "text": "$\\frac{15}{40}$" },
+        { "id": "d", "text": "$\\frac{15}{6}$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "$P(A\\,|\\,B) = \\frac{P(A \\cap B)}{P(B)} = \\frac{n(A \\cap B)}{n(B)} = \\frac{6}{15} = \\frac{2}{5}$."
+    }
+  ]
+}

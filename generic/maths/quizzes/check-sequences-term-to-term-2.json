@@ -1,0 +1,48 @@
+{
+  "id": "check-sequences-term-to-term-2",
+  "title": "Check: Sequences: Term-to-Term",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The Fibonacci-type sequence starts $1, 1, 2, 3, 5, ...$. What is the term-to-term rule?",
+      "options": [
+        { "id": "a", "text": "Add the previous two terms" },
+        { "id": "b", "text": "Multiply by $2$ then subtract $1$" },
+        { "id": "c", "text": "Add consecutive integers" },
+        { "id": "d", "text": "Double the previous term" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Each term is found by adding the two previous terms: $1+1=2$, $1+2=3$, $2+3=5$, and so on."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A sequence has the rule 'multiply by $2$ and subtract $1$', starting at $3$. What are the first four terms?",
+      "options": [
+        { "id": "a", "text": "$3, 5, 9, 17$" },
+        { "id": "b", "text": "$3, 6, 12, 24$" },
+        { "id": "c", "text": "$3, 5, 7, 9$" },
+        { "id": "d", "text": "$3, 5, 10, 19$" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Start with $3$. Then $3 \\times 2 - 1 = 5$. Then $5 \\times 2 - 1 = 9$. Then $9 \\times 2 - 1 = 17$. So the first four terms are $3, 5, 9, 17$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is a limitation of the term-to-term rule compared to a position-to-term rule?",
+      "options": [
+        { "id": "a", "text": "It only works for arithmetic sequences" },
+        { "id": "b", "text": "You need to know all previous terms to find a specific term" },
+        { "id": "c", "text": "It cannot describe geometric sequences" },
+        { "id": "d", "text": "It always gives the same answer as the position-to-term rule" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "With a term-to-term rule, you must calculate every term from the start to reach a particular term. A position-to-term (nth term) rule lets you jump directly to any term."
+    }
+  ]
+}

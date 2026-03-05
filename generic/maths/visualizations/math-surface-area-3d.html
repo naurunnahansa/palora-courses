@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Surface Area Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; }
+        .toggle-row { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+        .toggle-btn { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 10px; border-radius: 5px; border: 2px solid #637EA1; background: #fff; color: #637EA1; cursor: pointer; transition: all 0.15s; }
+        .toggle-btn.active { background: #637EA1; color: #fff; }
+        .input-group { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+        .input-group label { font-size: 0.82rem; font-weight: 600; color: #4a5568; min-width: 100px; }
+        .input-group input { flex: 1; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; }
+        .result-box { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; margin-bottom: 8px; }
+        .result-box .value { font-size: 1.1rem; color: #637EA1; }
+        .result-box .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .working { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; font-size: 0.82rem; line-height: 1.6; }
+        .working .step { margin-bottom: 4px; }
+        .working .highlight { color: #637EA1; font-weight: 700; }
+        .formula-ref { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>3D Surface Area Calculator</h1>
+
+        <canvas id="netCanvas" width="550" height="300"></canvas>
+
+        <div class="card">
+            <div class="card-title">Select Shape</div>
+            <div class="toggle-row">
+                <button class="toggle-btn active" onclick="setShape('cube')">Cube</button>
+                <button class="toggle-btn" onclick="setShape('cuboid')">Cuboid</button>
+                <button class="toggle-btn" onclick="setShape('cylinder')">Cylinder</button>
+                <button class="toggle-btn" onclick="setShape('cone')">Cone</button>
+                <button class="toggle-btn" onclick="setShape('sphere')">Sphere</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Dimensions</div>
+            <div id="inputFields"></div>
+        </div>
+
+        <div class="formula-ref" id="formulaRef"></div>
+
+        <div class="result-box">
+            <div class="label">Total Surface Area</div>
+            <div class="value" id="resultVal">--</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Working</div>
+            <div class="working" id="workingArea"></div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('netCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+        let shape = 'cube';
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width; H = 300;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); calculate(); });
+
+        const shapes = {
+            cube: { fields: [{ id: 'side', label: 'Side length (a)', val: 5 }], formula: 'SA = 6a\u00B2' },
+            cuboid: { fields: [{ id: 'length', label: 'Length (l)', val: 6 }, { id: 'width', label: 'Width (w)', val: 4 }, { id: 'height', label: 'Height (h)', val: 3 }], formula: 'SA = 2(lw + lh + wh)' },
+            cylinder: { fields: [{ id: 'radius', label: 'Radius (r)', val: 4 }, { id: 'height', label: 'Height (h)', val: 8 }], formula: 'SA = 2\u03C0r\u00B2 + 2\u03C0rh' },
+            cone: { fields: [{ id: 'radius', label: 'Radius (r)', val: 4 }, { id: 'slant', label: 'Slant height (l)', val: 7 }], formula: 'SA = \u03C0r\u00B2 + \u03C0rl' },
+            sphere: { fields: [{ id: 'radius', label: 'Radius (r)', val: 5 }], formula: 'SA = 4\u03C0r\u00B2' }
+        };
+
+        function setShape(s) {
+            shape = s;
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            const sh = shapes[s];
+            const container = document.getElementById('inputFields');
+            container.innerHTML = '';
+            sh.fields.forEach(f => {
+                const div = document.createElement('div');
+                div.className = 'input-group';
+                div.innerHTML = '<label>' + f.label + '</label><input type="number" id="' + f.id + '" value="' + f.val + '" step="0.1" min="0.1" oninput="calculate()">';
+                container.appendChild(div);
+            });
+            document.getElementById('formulaRef').textContent = sh.formula;
+            calculate();
+        }
+
+        function gv(id) { const el = document.getElementById(id); return el ? parseFloat(el.value) : NaN; }
+
+        function calculate() {
+            const resultEl = document.getElementById('resultVal');
+            const workEl = document.getElementById('workingArea');
+            ctx.clearRect(0, 0, W, H);
+
+            if (shape === 'cube') {
+                const a = gv('side');
+                if (isNaN(a) || a <= 0) return;
+                const sa = 6 * a * a;
+                resultEl.textContent = sa.toFixed(2) + ' units\u00B2';
+                workEl.innerHTML = '<div class="step"><span class="highlight">SA = 6a\u00B2</span></div><div class="step">SA = 6 \u00D7 ' + a + '\u00B2</div><div class="step">SA = 6 \u00D7 ' + (a*a).toFixed(2) + '</div><div class="step"><span class="highlight">SA = ' + sa.toFixed(2) + ' units\u00B2</span></div>';
+                drawCubeNet(a);
+            } else if (shape === 'cuboid') {
+                const l = gv('length'), w = gv('width'), h = gv('height');
+                if (isNaN(l) || isNaN(w) || isNaN(h)) return;
+                const sa = 2 * (l*w + l*h + w*h);
+                resultEl.textContent = sa.toFixed(2) + ' units\u00B2';
+                workEl.innerHTML = '<div class="step"><span class="highlight">SA = 2(lw + lh + wh)</span></div><div class="step">SA = 2(' + l + '\u00D7' + w + ' + ' + l + '\u00D7' + h + ' + ' + w + '\u00D7' + h + ')</div><div class="step">SA = 2(' + (l*w).toFixed(2) + ' + ' + (l*h).toFixed(2) + ' + ' + (w*h).toFixed(2) + ')</div><div class="step">SA = 2 \u00D7 ' + (l*w+l*h+w*h).toFixed(2) + '</div><div class="step"><span class="highlight">SA = ' + sa.toFixed(2) + ' units\u00B2</span></div>';
+                drawCuboidNet(l, w, h);
+            } else if (shape === 'cylinder') {
+                const r = gv('radius'), h = gv('height');
+                if (isNaN(r) || isNaN(h)) return;
+                const sa = 2 * Math.PI * r * r + 2 * Math.PI * r * h;
+                resultEl.textContent = sa.toFixed(2) + ' units\u00B2';
+                workEl.innerHTML = '<div class="step"><span class="highlight">SA = 2\u03C0r\u00B2 + 2\u03C0rh</span></div><div class="step">SA = 2\u03C0(' + r + ')\u00B2 + 2\u03C0(' + r + ')(' + h + ')</div><div class="step">SA = ' + (2*Math.PI*r*r).toFixed(2) + ' + ' + (2*Math.PI*r*h).toFixed(2) + '</div><div class="step"><span class="highlight">SA = ' + sa.toFixed(2) + ' units\u00B2</span></div>';
+                drawCylinderNet(r, h);
+            } else if (shape === 'cone') {
+                const r = gv('radius'), l = gv('slant');
+                if (isNaN(r) || isNaN(l)) return;
+                const sa = Math.PI * r * r + Math.PI * r * l;
+                resultEl.textContent = sa.toFixed(2) + ' units\u00B2';
+                workEl.innerHTML = '<div class="step"><span class="highlight">SA = \u03C0r\u00B2 + \u03C0rl</span></div><div class="step">SA = \u03C0(' + r + ')\u00B2 + \u03C0(' + r + ')(' + l + ')</div><div class="step">SA = ' + (Math.PI*r*r).toFixed(2) + ' + ' + (Math.PI*r*l).toFixed(2) + '</div><div class="step"><span class="highlight">SA = ' + sa.toFixed(2) + ' units\u00B2</span></div>';
+                drawConeNet(r, l);
+            } else if (shape === 'sphere') {
+                const r = gv('radius');
+                if (isNaN(r)) return;
+                const sa = 4 * Math.PI * r * r;
+                resultEl.textContent = sa.toFixed(2) + ' units\u00B2';
+                workEl.innerHTML = '<div class="step"><span class="highlight">SA = 4\u03C0r\u00B2</span></div><div class="step">SA = 4\u03C0(' + r + ')\u00B2</div><div class="step">SA = 4 \u00D7 ' + Math.PI.toFixed(4) + ' \u00D7 ' + (r*r).toFixed(2) + '</div><div class="step"><span class="highlight">SA = ' + sa.toFixed(2) + ' units\u00B2</span></div>';
+                drawSphereNet(r);
+            }
+        }
+
+        function drawCubeNet(a) {
+            const s = Math.min((W - 40) / 4, (H - 40) / 3);
+            const ox = (W - 4 * s) / 2;
+            const oy = (H - 3 * s) / 2;
+            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
+            // Cross shape: top, left, center, right, bottom (center col), far right
+            const faces = [[1,0],[0,1],[1,1],[2,1],[3,1],[1,2]];
+            faces.forEach(([c,r]) => {
+                ctx.fillRect(ox + c * s, oy + r * s, s, s);
+                ctx.strokeRect(ox + c * s, oy + r * s, s, s);
+            });
+            ctx.font = '500 11px Outfit, sans-serif'; ctx.fillStyle = '#637EA1'; ctx.textAlign = 'center';
+            faces.forEach(([c,r]) => {
+                ctx.fillText(a + '\u00D7' + a, ox + c * s + s/2, oy + r * s + s/2 + 4);
+            });
+            ctx.fillStyle = '#4a5568'; ctx.fillText('Net of Cube (6 faces)', W/2, H - 8);
+        }
+
+        function drawCuboidNet(l, w, h) {
+            const maxDim = Math.max(l, w, h);
+            const totalW = 2 * h + 2 * w;
+            const totalH = 2 * h + l;
+            const sc = Math.min((W - 40) / totalW, (H - 40) / totalH);
+            const ox = (W - totalW * sc) / 2;
+            const oy = (H - totalH * sc) / 2;
+            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
+            // Top
+            ctx.fillRect(ox + h * sc, oy, w * sc, h * sc);
+            ctx.strokeRect(ox + h * sc, oy, w * sc, h * sc);
+            // Left
+            ctx.fillRect(ox, oy + h * sc, h * sc, l * sc);
+            ctx.strokeRect(ox, oy + h * sc, h * sc, l * sc);
+            // Front
+            ctx.fillRect(ox + h * sc, oy + h * sc, w * sc, l * sc);
+            ctx.strokeRect(ox + h * sc, oy + h * sc, w * sc, l * sc);
+            // Right
+            ctx.fillRect(ox + (h + w) * sc, oy + h * sc, h * sc, l * sc);
+            ctx.strokeRect(ox + (h + w) * sc, oy + h * sc, h * sc, l * sc);
+            // Back
+            ctx.fillRect(ox + (2 * h + w) * sc, oy + h * sc, w * sc, l * sc);
+            ctx.strokeRect(ox + (2 * h + w) * sc, oy + h * sc, w * sc, l * sc);
+            // Bottom
+            ctx.fillRect(ox + h * sc, oy + (h + l) * sc, w * sc, h * sc);
+            ctx.strokeRect(ox + h * sc, oy + (h + l) * sc, w * sc, h * sc);
+            ctx.font = '500 10px Outfit, sans-serif'; ctx.fillStyle = '#4a5568'; ctx.textAlign = 'center';
+            ctx.fillText('Net of Cuboid', W/2, H - 8);
+        }
+
+        function drawCylinderNet(r, h) {
+            const circR = Math.min(50, (H - 40) / 4);
+            const rectW = 2 * Math.PI * circR;
+            const rectH = Math.min(h / r * circR, H / 3);
+            const ox = (W - rectW) / 2;
+            const oy = (H - rectH) / 2;
+            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
+            // Rectangle
+            ctx.fillRect(ox, oy, rectW, rectH);
+            ctx.strokeRect(ox, oy, rectW, rectH);
+            // Top circle
+            ctx.beginPath(); ctx.ellipse(ox + rectW / 2, oy - circR - 5, circR, circR, 0, 0, 2 * Math.PI);
+            ctx.fill(); ctx.stroke();
+            // Bottom circle
+            ctx.beginPath(); ctx.ellipse(ox + rectW / 2, oy + rectH + circR + 5, circR, circR, 0, 0, 2 * Math.PI);
+            ctx.fill(); ctx.stroke();
+            ctx.font = '500 10px Outfit, sans-serif'; ctx.fillStyle = '#637EA1'; ctx.textAlign = 'center';
+            ctx.fillText('2\u03C0r = ' + (2 * Math.PI * r).toFixed(1), ox + rectW / 2, oy + rectH + 14);
+            ctx.fillText('h = ' + h, ox - 14, oy + rectH / 2);
+            ctx.fillStyle = '#4a5568'; ctx.fillText('Net of Cylinder', W/2, H - 8);
+        }
+
+        function drawConeNet(r, l) {
+            const maxR = Math.min(W / 2 - 30, H / 2 - 30);
+            const cx = W / 2, cy = H / 2 - 10;
+            const sectorAngle = (r / l) * 2 * Math.PI;
+            const drawR = maxR * 0.8;
+            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
+            // Sector
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, drawR, -sectorAngle / 2 - Math.PI / 2, sectorAngle / 2 - Math.PI / 2);
+            ctx.closePath();
+            ctx.fill(); ctx.stroke();
+            // Base circle
+            const baseR = Math.min(drawR * r / l, 30);
+            ctx.beginPath();
+            ctx.arc(cx, cy + drawR + baseR + 8, baseR, 0, 2 * Math.PI);
+            ctx.fill(); ctx.stroke();
+            ctx.font = '500 10px Outfit, sans-serif'; ctx.fillStyle = '#637EA1'; ctx.textAlign = 'center';
+            ctx.fillText('l = ' + l, cx + drawR / 2 + 10, cy);
+            ctx.fillStyle = '#4a5568'; ctx.fillText('Net of Cone', W/2, H - 8);
+        }
+
+        function drawSphereNet(r) {
+            const cx = W / 2, cy = H / 2;
+            const drawR = Math.min(W / 2 - 40, H / 2 - 30);
+            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
+            ctx.beginPath(); ctx.arc(cx, cy, drawR, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
+            // Latitude lines
+            ctx.strokeStyle = 'rgba(99,126,161,0.3)'; ctx.lineWidth = 1;
+            for (let i = -2; i <= 2; i++) {
+                const y = cy + i * drawR * 0.3;
+                const rx = drawR * Math.cos(Math.asin(i * 0.3));
+                ctx.beginPath(); ctx.ellipse(cx, y, rx, rx * 0.25, 0, 0, 2 * Math.PI); ctx.stroke();
+            }
+            // Longitude lines
+            for (let i = 0; i < 4; i++) {
+                const angle = i * Math.PI / 4;
+                ctx.beginPath(); ctx.ellipse(cx, cy, drawR * Math.cos(angle), drawR, Math.PI / 2, 0, 2 * Math.PI); ctx.stroke();
+            }
+            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + drawR, cy); ctx.stroke();
+            ctx.font = '600 12px Oswald, sans-serif'; ctx.fillStyle = '#637EA1'; ctx.textAlign = 'center';
+            ctx.fillText('r = ' + r, cx + drawR / 2, cy - 10);
+            ctx.font = '500 10px Outfit, sans-serif'; ctx.fillStyle = '#4a5568';
+            ctx.fillText('Sphere (no flat net possible)', W/2, H - 8);
+        }
+
+        setShape('cube');
+    </script>
+</body>
+</html>

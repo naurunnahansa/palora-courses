@@ -1,0 +1,48 @@
+{
+  "id": "check-graph-transformations-2",
+  "title": "Check: Graph Transformations",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The graph of $y = 2f(x)$ compared to $y = f(x)$ is:",
+      "options": [
+        { "id": "a", "text": "Stretched vertically by a factor of $2$" },
+        { "id": "b", "text": "Stretched horizontally by a factor of $2$" },
+        { "id": "c", "text": "Translated $2$ units up" },
+        { "id": "d", "text": "Compressed vertically by a factor of $2$" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Multiplying $f(x)$ by $2$ doubles every $y$-value, which stretches the graph vertically by a scale factor of $2$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The point $(4, 7)$ lies on $y = f(x)$. What are the coordinates of the corresponding point on $y = f(x + 3) - 1$?",
+      "options": [
+        { "id": "a", "text": "$(7, 6)$" },
+        { "id": "b", "text": "$(1, 6)$" },
+        { "id": "c", "text": "$(1, 8)$" },
+        { "id": "d", "text": "$(7, 8)$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "$f(x + 3)$ translates the graph $3$ units left, and $-1$ translates it $1$ unit down. So $(4, 7)$ becomes $(4 - 3,\\, 7 - 1) = (1, 6)$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The graph of $y = f(-x)$ is the graph of $y = f(x)$:",
+      "options": [
+        { "id": "a", "text": "Reflected in the $x$-axis" },
+        { "id": "b", "text": "Rotated $180°$" },
+        { "id": "c", "text": "Reflected in the $y$-axis" },
+        { "id": "d", "text": "Translated to the left" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Replacing $x$ with $-x$ reflects the graph in the $y$-axis. Each point $(a, b)$ maps to $(-a, b)$."
+    }
+  ]
+}

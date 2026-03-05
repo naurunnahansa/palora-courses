@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadratic Function Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.slider-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;background:#F5E6E8;border-radius:5px;padding:8px}.slider-row label{font-size:.78rem;font-weight:600;min-width:30px}.slider-row input[type=range]{flex:1;accent-color:#637EA1}.slider-row .val{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;min-width:36px;text-align:center}.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;font-family:'Oswald',sans-serif;font-size:.9rem;color:#637EA1;margin-top:8px}.readouts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.readout{background:#F5E6E8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.68rem;color:#4a5568}.readout .value{font-family:'Oswald',sans-serif;font-size:.82rem;color:#637EA1}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Quadratic Function Explorer</h1>
+    <div class="card">
+        <div class="card-title">y = ax&#178; + bx + c</div>
+        <div class="slider-row"><label>a</label><input type="range" id="aSlider" min="-5" max="5" step="0.5" value="1"><span class="val" id="aVal">1</span></div>
+        <div class="slider-row"><label>b</label><input type="range" id="bSlider" min="-5" max="5" step="0.5" value="0"><span class="val" id="bVal">0</span></div>
+        <div class="slider-row"><label>c</label><input type="range" id="cSlider" min="-5" max="5" step="0.5" value="-1"><span class="val" id="cVal">-1</span></div>
+    </div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="1060"></canvas></div>
+    <div class="result-box" id="eqDisplay">y = x&#178; - 1</div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Vertex</div><div class="value" id="vertexVal">(0, -1)</div></div>
+        <div class="readout"><div class="label">Axis of Symmetry</div><div class="value" id="axisVal">x = 0</div></div>
+        <div class="readout"><div class="label">Discriminant</div><div class="value" id="discVal">4</div></div>
+        <div class="readout"><div class="label">Roots</div><div class="value" id="rootsVal">x = -1, 1</div></div>
+    </div>
+    <div class="info">The <strong>discriminant</strong> (b&#178;-4ac) tells us about roots: positive = 2 real roots, zero = 1 repeated root, negative = no real roots.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const aS=document.getElementById('aSlider'),bS=document.getElementById('bSlider'),cS=document.getElementById('cSlider');
+const aV=document.getElementById('aVal'),bV=document.getElementById('bVal'),cV=document.getElementById('cVal');
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=w+'px'}
+resize();window.addEventListener('resize',resize);
+
+function r2(v){return Math.round(v*100)/100}
+
+function draw(){
+    const W=canvas.width,H=canvas.height,cxC=W/2,cyC=H/2;
+    const scale=W/12;
+    const a=parseFloat(aS.value),b=parseFloat(bS.value),c=parseFloat(cS.value);
+    aV.textContent=a;bV.textContent=b;cV.textContent=c;
+
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle='#e5dfe0';ctx.lineWidth=1;
+    for(let i=-6;i<=6;i++){ctx.beginPath();ctx.moveTo(cxC+i*scale,0);ctx.lineTo(cxC+i*scale,H);ctx.stroke();ctx.beginPath();ctx.moveTo(0,cyC-i*scale);ctx.lineTo(W,cyC-i*scale);ctx.stroke()}
+    // Axes
+    ctx.strokeStyle='#1a1f2e';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(0,cyC);ctx.lineTo(W,cyC);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cxC,0);ctx.lineTo(cxC,H);ctx.stroke();
+    ctx.fillStyle='#4a5568';ctx.font='500 22px Oswald';
+    for(let i=-5;i<=5;i++){if(i===0)continue;ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(i,cxC+i*scale,cyC+6);ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillText(i,cxC-8,cyC-i*scale)}
+
+    // Axis of symmetry
+    const vx=a!==0?-b/(2*a):0;
+    const vy=a!==0?a*vx*vx+b*vx+c:b*0+c;
+    if(a!==0){
+        ctx.setLineDash([6,4]);ctx.strokeStyle='#637EA1';ctx.lineWidth=1;ctx.globalAlpha=0.4;
+        ctx.beginPath();ctx.moveTo(cxC+vx*scale,0);ctx.lineTo(cxC+vx*scale,H);ctx.stroke();
+        ctx.setLineDash([]);ctx.globalAlpha=1;
+    }
+
+    // Plot parabola
+    if(a!==0){
+        ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.beginPath();
+        let first=true;
+        for(let px=-6.5;px<=6.5;px+=0.05){
+            const py=a*px*px+b*px+c;
+            const sx=cxC+px*scale,sy=cyC-py*scale;
+            if(sy<-200||sy>H+200){first=true;continue}
+            if(first){ctx.moveTo(sx,sy);first=false}else ctx.lineTo(sx,sy);
+        }
+        ctx.stroke();
+    } else {
+        // Linear fallback
+        ctx.strokeStyle='#637EA1';ctx.lineWidth=3;
+        ctx.beginPath();ctx.moveTo(cxC-6.5*scale,cyC-(b*-6.5+c)*scale);ctx.lineTo(cxC+6.5*scale,cyC-(b*6.5+c)*scale);ctx.stroke();
+    }
+
+    // Y-intercept
+    if(Math.abs(c)<=6){
+        ctx.beginPath();ctx.arc(cxC,cyC-c*scale,8,0,Math.PI*2);ctx.fillStyle='#e67e22';ctx.fill();
+        ctx.fillStyle='#1a1f2e';ctx.font='500 18px Outfit';ctx.textAlign='left';ctx.fillText('(0, '+c+')',cxC+12,cyC-c*scale-10);
+    }
+
+    // Vertex
+    if(a!==0&&Math.abs(vx)<=6&&Math.abs(vy)<=6){
+        ctx.beginPath();ctx.arc(cxC+vx*scale,cyC-vy*scale,8,0,Math.PI*2);ctx.fillStyle='#dc3545';ctx.fill();
+        ctx.fillStyle='#dc3545';ctx.font='600 18px Outfit';ctx.textAlign='center';ctx.textBaseline='bottom';
+        const labelY=a>0?cyC-vy*scale-14:cyC-vy*scale+24;
+        ctx.fillText('vertex ('+r2(vx)+', '+r2(vy)+')',cxC+vx*scale,labelY);
+    }
+
+    // Roots
+    const disc=b*b-4*a*c;
+    if(a!==0&&disc>=0){
+        const sqD=Math.sqrt(disc);
+        const r1=(-b+sqD)/(2*a),r2v=(-b-sqD)/(2*a);
+        [r1,r2v].forEach(rx=>{
+            if(Math.abs(rx)<=6){
+                ctx.beginPath();ctx.arc(cxC+rx*scale,cyC,8,0,Math.PI*2);ctx.fillStyle='#28a745';ctx.fill();
+            }
+        });
+    }
+
+    // Equation display
+    let eq='y = ';
+    if(a!==0){eq+=(a===1?'':a===-1?'-':a)+'x\u00B2'}
+    if(b>0) eq+=(a!==0?' + ':'')+( b===1?'':b)+'x';
+    else if(b<0) eq+=' - '+(b===-1?'':Math.abs(b))+'x';
+    else if(a===0) eq+='0x';
+    if(c>0) eq+=' + '+c;else if(c<0) eq+=' - '+Math.abs(c);
+    if(a===0&&b===0) eq='y = '+c;
+    document.getElementById('eqDisplay').textContent=eq;
+    document.getElementById('vertexVal').textContent=a!==0?'('+r2(vx)+', '+r2(vy)+')':'N/A (linear)';
+    document.getElementById('axisVal').textContent=a!==0?'x = '+r2(vx):'N/A';
+    document.getElementById('discVal').textContent=r2(disc)+(disc>0?' (2 roots)':disc===0?' (1 root)':' (no real roots)');
+    if(a===0){document.getElementById('rootsVal').textContent=b!==0?'x = '+r2(-c/b):'N/A';}
+    else if(disc>0){const s=Math.sqrt(disc);document.getElementById('rootsVal').textContent='x = '+r2((-b-s)/(2*a))+', '+r2((-b+s)/(2*a));}
+    else if(disc===0){document.getElementById('rootsVal').textContent='x = '+r2(-b/(2*a))+' (repeated)';}
+    else{document.getElementById('rootsVal').textContent='No real roots';}
+}
+
+[aS,bS,cS].forEach(s=>s.addEventListener('input',draw));
+draw();
+</script>
+</body>
+</html>

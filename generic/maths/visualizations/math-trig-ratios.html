@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trigonometric Ratios Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; }
+        .slider-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .slider-row label { font-size: 0.82rem; font-weight: 600; color: #4a5568; min-width: 80px; }
+        .slider-row input[type="range"] { flex: 1; accent-color: #637EA1; height: 6px; }
+        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #637EA1; min-width: 52px; text-align: right; }
+        .readings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .reading-card { background: #F5E6E8; border-radius: 5px; padding: 8px 10px; text-align: center; }
+        .reading-card .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
+        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 1.05rem; color: #637EA1; margin-top: 2px; }
+        .sohcahtoa { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; }
+        .sohcahtoa-row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+        .sohcahtoa-item { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; padding: 4px 10px; background: #fff; border-radius: 4px; text-align: center; }
+        .sohcahtoa-item span { font-weight: 700; }
+        .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Trigonometric Ratios Explorer</h1>
+
+        <canvas id="triCanvas" width="550" height="320"></canvas>
+
+        <div class="card">
+            <div class="card-title">Angle</div>
+            <div class="slider-row">
+                <label>Angle (&theta;)</label>
+                <input type="range" id="angleSlider" min="5" max="85" step="1" value="37">
+                <span class="val" id="angleVal">37&deg;</span>
+            </div>
+        </div>
+
+        <div class="readings">
+            <div class="reading-card">
+                <div class="label">sin &theta;</div>
+                <div class="value" id="sinVal">0.6018</div>
+            </div>
+            <div class="reading-card">
+                <div class="label">cos &theta;</div>
+                <div class="value" id="cosVal">0.7986</div>
+            </div>
+            <div class="reading-card">
+                <div class="label">tan &theta;</div>
+                <div class="value" id="tanVal">0.7536</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">SOH CAH TOA</div>
+            <div class="sohcahtoa">
+                <div class="sohcahtoa-row">
+                    <div class="sohcahtoa-item"><span>S</span>in = <span>O</span>pp / <span>H</span>yp</div>
+                    <div class="sohcahtoa-item"><span>C</span>os = <span>A</span>dj / <span>H</span>yp</div>
+                    <div class="sohcahtoa-item"><span>T</span>an = <span>O</span>pp / <span>A</span>dj</div>
+                </div>
+            </div>
+        </div>
+
+        <p class="hint">Move the slider to explore how trig ratios change with the angle</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('triCanvas');
+        const ctx = canvas.getContext('2d');
+        let dpr = window.devicePixelRatio || 1;
+        let W, H;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            W = rect.width; H = 320;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', () => { resizeCanvas(); draw(); });
+
+        const angleSlider = document.getElementById('angleSlider');
+        angleSlider.addEventListener('input', draw);
+
+        function draw() {
+            const angle = parseFloat(angleSlider.value);
+            const rad = angle * Math.PI / 180;
+            document.getElementById('angleVal').innerHTML = angle + '&deg;';
+
+            const sinV = Math.sin(rad);
+            const cosV = Math.cos(rad);
+            const tanV = Math.tan(rad);
+
+            document.getElementById('sinVal').textContent = sinV.toFixed(4);
+            document.getElementById('cosVal').textContent = cosV.toFixed(4);
+            document.getElementById('tanVal').textContent = angle === 90 ? 'undef' : tanV.toFixed(4);
+
+            ctx.clearRect(0, 0, W, H);
+
+            const pad = 70;
+            const hyp = Math.min(W - 2 * pad, H - 2 * pad) * 0.85;
+            const adj = hyp * cosV;
+            const opp = hyp * sinV;
+
+            const ox = (W - adj) / 2;
+            const oy = H - pad;
+
+            // Triangle
+            ctx.beginPath();
+            ctx.moveTo(ox, oy);
+            ctx.lineTo(ox + adj, oy);
+            ctx.lineTo(ox + adj, oy - opp);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(99, 126, 161, 0.06)';
+            ctx.fill();
+            ctx.strokeStyle = '#637EA1';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Right angle marker
+            const sq = 12;
+            ctx.beginPath();
+            ctx.moveTo(ox + adj - sq, oy);
+            ctx.lineTo(ox + adj - sq, oy - sq);
+            ctx.lineTo(ox + adj, oy - sq);
+            ctx.strokeStyle = '#637EA1';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // Angle arc
+            ctx.beginPath();
+            ctx.arc(ox, oy, 30, -rad, 0);
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Angle label
+            ctx.font = '600 13px Oswald, sans-serif';
+            ctx.fillStyle = '#e74c3c';
+            ctx.textAlign = 'center';
+            ctx.fillText('\u03B8 = ' + angle + '\u00B0', ox + 42, oy - 12);
+
+            // Side labels
+            ctx.font = '600 13px Oswald, sans-serif';
+
+            // Adjacent (bottom)
+            ctx.fillStyle = '#27ae60';
+            ctx.textAlign = 'center';
+            ctx.fillText('Adjacent = ' + cosV.toFixed(3), ox + adj / 2, oy + 22);
+
+            // Opposite (right side)
+            ctx.fillStyle = '#e74c3c';
+            ctx.textAlign = 'left';
+            ctx.fillText('Opposite = ' + sinV.toFixed(3), ox + adj + 8, oy - opp / 2);
+
+            // Hypotenuse
+            ctx.fillStyle = '#637EA1';
+            ctx.save();
+            const midX = ox + adj / 2;
+            const midY = oy - opp / 2;
+            ctx.translate(midX - 15, midY - 8);
+            ctx.rotate(-rad);
+            ctx.textAlign = 'center';
+            ctx.fillText('Hypotenuse = 1', 0, 0);
+            ctx.restore();
+
+            // Ratios on canvas
+            ctx.font = '500 12px Outfit, sans-serif';
+            ctx.fillStyle = '#4a5568';
+            ctx.textAlign = 'center';
+            ctx.fillText('Unit triangle (hypotenuse = 1)', W / 2, 20);
+        }
+
+        draw();
+    </script>
+</body>
+</html>

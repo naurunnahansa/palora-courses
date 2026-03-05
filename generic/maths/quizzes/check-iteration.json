@@ -1,0 +1,34 @@
+{
+  "id": "check-iteration",
+  "title": "Check: Iteration",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The iterative formula $x_{n+1} = \\frac{x_n^2 + 3}{4}$ with $x_0 = 1$. What is $x_1$?",
+      "options": [
+        { "id": "a", "text": "$0.5$" },
+        { "id": "b", "text": "$1$" },
+        { "id": "c", "text": "$4$" },
+        { "id": "d", "text": "$1.5$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Substitute $x_0 = 1$: $x_1 = \\frac{1^2 + 3}{4} = \\frac{4}{4} = 1$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What does it mean when an iterative formula 'converges'?",
+      "options": [
+        { "id": "a", "text": "The values increase without limit" },
+        { "id": "b", "text": "The values alternate between two numbers" },
+        { "id": "c", "text": "Successive values get closer and closer to a fixed value" },
+        { "id": "d", "text": "The formula stops working after a few iterations" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "An iterative formula converges when successive iterations approach a fixed value (the limit). This limit is a solution to the equation formed by setting $x_{n+1} = x_n$."
+    }
+  ]
+}

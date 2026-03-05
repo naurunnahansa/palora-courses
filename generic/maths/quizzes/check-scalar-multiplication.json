@@ -1,0 +1,48 @@
+{
+  "id": "check-scalar-multiplication",
+  "title": "Check: Scalar Multiplication",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $\\mathbf{v} = \\begin{pmatrix} 3 \\\\ -2 \\end{pmatrix}$, what is $4\\mathbf{v}$?",
+      "options": [
+        { "id": "a", "text": "$\\begin{pmatrix} 7 \\\\ 2 \\end{pmatrix}$" },
+        { "id": "b", "text": "$\\begin{pmatrix} 12 \\\\ -8 \\end{pmatrix}$" },
+        { "id": "c", "text": "$\\begin{pmatrix} 12 \\\\ 8 \\end{pmatrix}$" },
+        { "id": "d", "text": "$\\begin{pmatrix} 3 \\\\ -8 \\end{pmatrix}$" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Multiply each component by the scalar: $4\\begin{pmatrix} 3 \\\\ -2 \\end{pmatrix} = \\begin{pmatrix} 12 \\\\ -8 \\end{pmatrix}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $\\mathbf{a}$ and $\\mathbf{b}$ are parallel vectors, which of the following must be true?",
+      "options": [
+        { "id": "a", "text": "$\\mathbf{a} + \\mathbf{b} = \\mathbf{0}$" },
+        { "id": "b", "text": "$\\mathbf{a} = \\mathbf{b}$" },
+        { "id": "c", "text": "$\\mathbf{b} = k\\mathbf{a}$ for some scalar $k$" },
+        { "id": "d", "text": "$|\\mathbf{a}| = |\\mathbf{b}|$" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Two vectors are parallel if one is a scalar multiple of the other: $\\mathbf{b} = k\\mathbf{a}$ for some non-zero scalar $k$. They do not need to have the same magnitude or be equal."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is $-2\\begin{pmatrix} -1 \\\\ 5 \\end{pmatrix}$?",
+      "options": [
+        { "id": "a", "text": "$\\begin{pmatrix} 2 \\\\ -10 \\end{pmatrix}$" },
+        { "id": "b", "text": "$\\begin{pmatrix} -2 \\\\ 10 \\end{pmatrix}$" },
+        { "id": "c", "text": "$\\begin{pmatrix} 2 \\\\ 10 \\end{pmatrix}$" },
+        { "id": "d", "text": "$\\begin{pmatrix} -2 \\\\ -10 \\end{pmatrix}$" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "$-2\\begin{pmatrix} -1 \\\\ 5 \\end{pmatrix} = \\begin{pmatrix} (-2)(-1) \\\\ (-2)(5) \\end{pmatrix} = \\begin{pmatrix} 2 \\\\ -10 \\end{pmatrix}$."
+    }
+  ]
+}
