@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Exploration</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.timeline{position:relative;padding-left:20px}.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:#d4d8e5}.event{position:relative;margin-bottom:12px;padding:10px;background:#fff;border:1px solid #d4d8e5;border-radius:5px;box-shadow:0 1px 3px rgba(0,0,0,.06);cursor:pointer;transition:all .2s}.event:hover{border-color:#1835b4;transform:translateX(3px)}.event.active{border-color:#1835b4;background:#e8ecf8}.event::before{content:'';position:absolute;left:-16px;top:14px;width:10px;height:10px;border-radius:50%;background:#1835b4}.event .year{font-family: system-ui, -apple-system, sans-serif;font-size:.8rem;color:#1835b4}.event .title{font-size:.78rem;font-weight:600;margin-top:2px}.event .desc{font-size:.68rem;color:#4a5568;margin-top:3px;display:none}.event.active .desc{display:block}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#1a2747}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Space Exploration Timeline</h1>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="300"></canvas></div>
+    <div class="timeline" id="timeline"></div>
+    <div class="info">Space exploration uses <strong>rockets</strong> (Newton's Third Law), <strong>satellites</strong>, and <strong>space probes</strong>. Key challenges include radiation, microgravity, cost, and communication delays.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let lastTs=0,animT=0;
+
+const events=[
+    {year:'1957',title:'Sputnik 1',desc:'First artificial satellite launched by the Soviet Union. Orbited Earth for 3 months, proving space travel was possible.'},
+    {year:'1961',title:'Yuri Gagarin',desc:'First human in space (Soviet Union). Completed one orbit of Earth aboard Vostok 1 in 108 minutes.'},
+    {year:'1969',title:'Apollo 11 Moon Landing',desc:'Neil Armstrong and Buzz Aldrin became the first humans to walk on the Moon (NASA). "One small step for man..."'},
+    {year:'1971',title:'First Space Station (Salyut 1)',desc:'Soviet Union launched the first space station. Allowed extended stays in space for scientific research.'},
+    {year:'1990',title:'Hubble Space Telescope',desc:'Launched into orbit by NASA. Has captured stunning images and helped measure the expansion rate of the universe.'},
+    {year:'1998',title:'International Space Station (ISS)',desc:'A collaborative project between NASA, ESA, Roscosmos, JAXA, and CSA. Continuously occupied since 2000.'},
+    {year:'2012',title:'Curiosity Mars Rover',desc:'NASA rover landed on Mars. Has been exploring the Martian surface, analysing soil and rocks for signs of past water.'},
+    {year:'2021',title:'James Webb Space Telescope',desc:'Most powerful space telescope. Observes infrared light from the earliest galaxies formed after the Big Bang.'}
+];
+
+const tl=document.getElementById('timeline');
+events.forEach((ev,i)=>{
+    const d=document.createElement('div');d.className='event'+(i===0?' active':'');
+    d.innerHTML=`<div class="year">${ev.year}</div><div class="title">${ev.title}</div><div class="desc">${ev.desc}</div>`;
+    d.onclick=()=>{document.querySelectorAll('.event').forEach(e=>e.classList.remove('active'));d.classList.add('active')};
+    tl.appendChild(d);
+});
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*300/1060)+'px'}
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
+    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#1a2747';ctx.fillRect(0,0,W,H);
+
+    // Stars
+    for(let i=0;i<60;i++){
+        const sx=(i*137.5+animT*2)%W,sy=(i*97.3)%H;
+        ctx.beginPath();ctx.arc(sx,sy,0.7,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${0.2+Math.sin(animT+i)*0.15})`;ctx.fill();
+    }
+
+    // Rocket
+    const rx=150+((animT*30)%200),ry=H/2-30;
+    // Body
+    ctx.fillStyle='#d4d8e5';ctx.beginPath();ctx.moveTo(rx+30,ry);ctx.lineTo(rx-15,ry-12);ctx.lineTo(rx-15,ry+12);ctx.closePath();ctx.fill();
+    ctx.fillRect(rx-15,ry-10,30,20);
+    // Window
+    ctx.beginPath();ctx.arc(rx+5,ry,5,0,Math.PI*2);ctx.fillStyle='#4a90d9';ctx.fill();
+    // Fins
+    ctx.fillStyle='#dc3545';ctx.beginPath();ctx.moveTo(rx-15,ry-10);ctx.lineTo(rx-22,ry-18);ctx.lineTo(rx-15,ry);ctx.closePath();ctx.fill();
+    ctx.beginPath();ctx.moveTo(rx-15,ry+10);ctx.lineTo(rx-22,ry+18);ctx.lineTo(rx-15,ry);ctx.closePath();ctx.fill();
+    // Exhaust
+    for(let i=0;i<5;i++){
+        const ex=rx-20-i*8-Math.random()*5;
+        ctx.beginPath();ctx.arc(ex,ry+Math.sin(animT*10+i)*4,3+Math.random()*3,0,Math.PI*2);
+        ctx.fillStyle=i<2?'#4a3fc2':'rgba(244,211,94,0.3)';ctx.fill();
+    }
+
+    // Earth on left
+    ctx.beginPath();ctx.arc(-30,H,100,0,Math.PI*2);
+    ctx.fillStyle='#4a90d9';ctx.fill();
+    ctx.fillStyle='#28a745';ctx.beginPath();ctx.arc(-10,H-30,30,0,Math.PI*2);ctx.fill();
+
+    // Moon on right
+    ctx.beginPath();ctx.arc(W-80,80,30,0,Math.PI*2);ctx.fillStyle='#c0c0c0';ctx.fill();
+    // Craters
+    ctx.beginPath();ctx.arc(W-90,75,5,0,Math.PI*2);ctx.fillStyle='#a0a0a0';ctx.fill();
+    ctx.beginPath();ctx.arc(W-72,85,4,0,Math.PI*2);ctx.fill();
+
+    // ISS
+    const issX=W*0.65,issY=H*0.7;
+    ctx.fillStyle='#d4d8e5';ctx.fillRect(issX-5,issY-3,10,6);
+    ctx.fillStyle='#4a90d9';ctx.fillRect(issX-25,issY-1,20,2);ctx.fillRect(issX+5,issY-1,20,2);
+    ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='500 9px Outfit';ctx.textAlign='center';ctx.fillText('ISS',issX,issY+15);
+
+    // Title
+    ctx.fillStyle='rgba(255,255,255,0.8)';ctx.font='600 16px Oswald';ctx.textAlign='center';
+    ctx.fillText('EXPLORING SPACE',W/2,30);
+
+    requestAnimationFrame(draw);
+}
+resize();window.addEventListener('resize',resize);requestAnimationFrame(draw);
+</script>
+</body>
+</html>

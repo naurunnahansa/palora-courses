@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newton's First Law</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .controls { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+        .ctrl-btn { background: #e8ecf8; border: 2px solid transparent; border-radius: 5px; padding: 6px 12px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .ctrl-btn:hover { border-color: #1835b4; }
+        .ctrl-btn.active { background: #1835b4; color: #fff; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; }
+        .status { text-align: center; font-size: 0.82rem; font-weight: 600; padding: 6px; border-radius: 5px; margin-top: 8px; }
+        .status.balanced { background: #d4edda; color: #155724; }
+        .status.unbalanced { background: #f8d7da; color: #721c24; }
+        .btn { background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 16px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; margin-top: 6px; }
+        .btn:hover { background: #506a8a; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Newton's First Law</h1>
+    <p class="subtitle">An object stays at rest or in constant motion unless acted on by an unbalanced force</p>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="400"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Applied Force</span><span class="val" id="forceLabel">0 N</span></div>
+            <input type="range" id="forceSlider" min="-100" max="100" value="0">
+        </div>
+        <div class="controls">
+            <button class="ctrl-btn" id="frictionBtn" onclick="toggleFriction()">Friction: OFF</button>
+            <button class="ctrl-btn" onclick="resetSim()">Reset</button>
+        </div>
+        <div class="slider-row" id="frictionRow" style="display:none;">
+            <div class="slider-label"><span>Friction coefficient</span><span class="val" id="fricLabel">0.3</span></div>
+            <input type="range" id="fricSlider" min="1" max="10" value="3">
+        </div>
+    </div>
+    <div class="readouts">
+        <div class="readout">
+            <div class="label">Net Force</div>
+            <div class="value" id="netVal">0 N</div>
+        </div>
+        <div class="readout">
+            <div class="label">Velocity</div>
+            <div class="value" id="velVal">0 m/s</div>
+        </div>
+        <div class="readout">
+            <div class="label">Acceleration</div>
+            <div class="value" id="accVal">0 m/s²</div>
+        </div>
+    </div>
+    <div class="status balanced" id="status">Forces are balanced — object stays at rest</div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let pos = 400, vel = 0, friction = false, lastTs = 0;
+const mass = 10;
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 400 / 1060) + 'px';
+}
+
+function toggleFriction() {
+    friction = !friction;
+    const btn = document.getElementById('frictionBtn');
+    btn.textContent = 'Friction: ' + (friction ? 'ON' : 'OFF');
+    btn.classList.toggle('active', friction);
+    document.getElementById('frictionRow').style.display = friction ? 'block' : 'none';
+}
+
+function resetSim() { pos = 400; vel = 0; document.getElementById('forceSlider').value = 0; }
+
+function draw(ts) {
+    const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.05) : 0;
+    lastTs = ts;
+
+    const appliedForce = parseInt(document.getElementById('forceSlider').value);
+    const fricCoeff = parseInt(document.getElementById('fricSlider').value) / 10;
+
+    let frictionForce = 0;
+    if (friction && Math.abs(vel) > 0.01) {
+        frictionForce = -Math.sign(vel) * fricCoeff * mass * 9.8;
+    } else if (friction && Math.abs(vel) <= 0.01 && Math.abs(appliedForce) < fricCoeff * mass * 9.8) {
+        frictionForce = -appliedForce;
+        vel = 0;
+    }
+
+    const netForce = appliedForce + frictionForce;
+    const acc = netForce / mass;
+    vel += acc * dt;
+    pos += vel * dt * 60;
+
+    if (pos < 50) { pos = 50; vel = 0; }
+    if (pos > canvas.width - 50) { pos = canvas.width - 50; vel = 0; }
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    // Ground
+    const groundY = H * 0.65;
+    ctx.fillStyle = '#f0eded'; ctx.fillRect(0, groundY, W, H - groundY);
+    ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(W, groundY); ctx.stroke();
+
+    // Object
+    const boxW = 80, boxH = 60;
+    const boxX = pos - boxW / 2, boxY = groundY - boxH;
+    ctx.fillStyle = '#1835b4'; ctx.fillRect(boxX, boxY, boxW, boxH);
+    ctx.strokeStyle = '#506a8a'; ctx.lineWidth = 2; ctx.strokeRect(boxX, boxY, boxW, boxH);
+    ctx.fillStyle = '#fff'; ctx.font = '600 14px Oswald'; ctx.textAlign = 'center';
+    ctx.fillText(mass + ' kg', pos, boxY + boxH / 2 + 5);
+
+    // Applied force arrow
+    if (Math.abs(appliedForce) > 0.5) {
+        const arrLen = Math.abs(appliedForce) * 1.5;
+        const dir = Math.sign(appliedForce);
+        const arrY = boxY + boxH / 2;
+        const startX = dir > 0 ? boxX - 10 : boxX + boxW + 10;
+        const endX = startX + dir * arrLen;
+
+        ctx.beginPath(); ctx.moveTo(startX, arrY);
+        ctx.lineTo(startX + dir * arrLen, arrY);
+        ctx.strokeStyle = '#28a745'; ctx.lineWidth = 5; ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(endX, arrY);
+        ctx.lineTo(endX - dir * 12, arrY - 8);
+        ctx.lineTo(endX - dir * 12, arrY + 8);
+        ctx.closePath(); ctx.fillStyle = '#28a745'; ctx.fill();
+        ctx.fillStyle = '#28a745'; ctx.font = '500 13px Outfit'; ctx.textAlign = 'center';
+        ctx.fillText(`Applied: ${Math.abs(appliedForce)} N`, (startX + endX) / 2, arrY - 14);
+    }
+
+    // Friction force arrow
+    if (friction && Math.abs(frictionForce) > 0.5) {
+        const arrLen = Math.abs(frictionForce) * 1.5;
+        const dir = Math.sign(frictionForce);
+        const arrY = groundY - 5;
+        const startX = dir > 0 ? boxX + boxW + 5 : boxX - 5;
+        ctx.beginPath(); ctx.moveTo(pos, arrY);
+        ctx.lineTo(pos + dir * arrLen, arrY);
+        ctx.strokeStyle = '#dc3545'; ctx.lineWidth = 4; ctx.stroke();
+        ctx.beginPath();
+        const ex = pos + dir * arrLen;
+        ctx.moveTo(ex, arrY); ctx.lineTo(ex - dir * 10, arrY - 6); ctx.lineTo(ex - dir * 10, arrY + 6);
+        ctx.closePath(); ctx.fillStyle = '#dc3545'; ctx.fill();
+        ctx.fillStyle = '#dc3545'; ctx.font = '500 12px Outfit'; ctx.textAlign = 'center';
+        ctx.fillText(`Friction: ${Math.abs(frictionForce).toFixed(1)} N`, (pos + ex) / 2, arrY + 18);
+    }
+
+    // Update labels
+    document.getElementById('forceLabel').textContent = appliedForce + ' N';
+    document.getElementById('fricLabel').textContent = fricCoeff.toFixed(1);
+    document.getElementById('netVal').textContent = netForce.toFixed(1) + ' N';
+    document.getElementById('velVal').textContent = vel.toFixed(1) + ' m/s';
+    document.getElementById('accVal').textContent = acc.toFixed(1) + ' m/s²';
+
+    const statusEl = document.getElementById('status');
+    if (Math.abs(netForce) < 0.5) {
+        statusEl.className = 'status balanced';
+        statusEl.textContent = Math.abs(vel) < 0.1 ? 'Forces balanced — object stays at rest' : 'Forces balanced — object continues at constant velocity';
+    } else {
+        statusEl.className = 'status unbalanced';
+        statusEl.textContent = 'Unbalanced force — object accelerates!';
+    }
+
+    requestAnimationFrame(draw);
+}
+
+resize();
+window.addEventListener('resize', resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

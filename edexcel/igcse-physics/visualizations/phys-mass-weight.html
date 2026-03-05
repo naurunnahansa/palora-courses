@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mass vs Weight</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .planet-btns { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+        .planet-btn { background: #e8ecf8; border: 2px solid transparent; border-radius: 5px; padding: 5px 10px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .planet-btn:hover { border-color: #1835b4; }
+        .planet-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; }
+        .readout .formula { font-size: 0.62rem; color: #4a5568; margin-top: 2px; }
+        .compare { font-size: 0.78rem; color: #4a5568; text-align: center; margin-top: 8px; padding: 6px; background: #fafbfc; border-radius: 5px; }
+        .compare strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Mass vs Weight Explorer</h1>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="500"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Mass</span><span class="val" id="massLabel">50 kg</span></div>
+            <input type="range" id="massSlider" min="1" max="200" value="50">
+        </div>
+        <div class="card-title">Select Location</div>
+        <div class="planet-btns" id="planetBtns"></div>
+    </div>
+    <div class="readouts">
+        <div class="readout">
+            <div class="label">Mass</div>
+            <div class="value" id="massVal">50 kg</div>
+            <div class="formula">Constant everywhere</div>
+        </div>
+        <div class="readout">
+            <div class="label">Weight</div>
+            <div class="value" id="weightVal">490 N</div>
+            <div class="formula">W = m × g</div>
+        </div>
+        <div class="readout">
+            <div class="label">g</div>
+            <div class="value" id="gVal">9.8 N/kg</div>
+            <div class="formula">Gravitational field</div>
+        </div>
+    </div>
+    <div class="compare" id="compare"></div>
+</div>
+<script>
+const planets = [
+    { name: 'Mercury', g: 3.7, color: '#a0a0a0', icon: '☿' },
+    { name: 'Venus', g: 8.9, color: '#e8c56d', icon: '♀' },
+    { name: 'Earth', g: 9.8, color: '#4a90d9', icon: '🌍' },
+    { name: 'Moon', g: 1.6, color: '#d0d0d0', icon: '🌙' },
+    { name: 'Mars', g: 3.7, color: '#c1440e', icon: '♂' },
+    { name: 'Jupiter', g: 24.8, color: '#c88b3a', icon: '♃' },
+    { name: 'Saturn', g: 10.4, color: '#e8d5a3', icon: '♄' },
+    { name: 'Neptune', g: 11.2, color: '#3f54ba', icon: '♆' }
+];
+
+let selectedPlanet = 2;
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const massSlider = document.getElementById('massSlider');
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 500 / 1060) + 'px';
+}
+
+// Planet buttons
+const btnContainer = document.getElementById('planetBtns');
+planets.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'planet-btn' + (i === selectedPlanet ? ' active' : '');
+    btn.textContent = `${p.icon} ${p.name}`;
+    btn.onclick = () => {
+        selectedPlanet = i;
+        document.querySelectorAll('.planet-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        draw();
+    };
+    btnContainer.appendChild(btn);
+});
+
+function draw() {
+    const W = canvas.width, H = canvas.height;
+    const mass = parseInt(massSlider.value);
+    const planet = planets[selectedPlanet];
+    const weight = mass * planet.g;
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    // Ground
+    ctx.fillStyle = planet.color + '33';
+    ctx.fillRect(0, H * 0.7, W, H * 0.3);
+    ctx.strokeStyle = planet.color; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, H * 0.7); ctx.lineTo(W, H * 0.7); ctx.stroke();
+
+    // Object (box)
+    const boxW = 60 + mass * 0.5;
+    const boxH = 40 + mass * 0.3;
+    const boxX = W * 0.5 - boxW / 2;
+    const boxY = H * 0.7 - boxH;
+
+    ctx.fillStyle = '#1835b4';
+    ctx.fillRect(boxX, boxY, boxW, boxH);
+    ctx.strokeStyle = '#506a8a'; ctx.lineWidth = 2;
+    ctx.strokeRect(boxX, boxY, boxW, boxH);
+
+    // Mass label on box
+    ctx.fillStyle = '#fff'; ctx.font = `600 ${Math.max(14, boxW * 0.18)}px Oswald`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(mass + ' kg', boxX + boxW/2, boxY + boxH/2);
+
+    // Weight arrow (downward)
+    const arrowLen = Math.min(weight * 0.3, H * 0.25);
+    const arrowX = boxX + boxW / 2;
+    const arrowY1 = boxY + boxH;
+    const arrowY2 = arrowY1 + arrowLen;
+
+    ctx.beginPath(); ctx.moveTo(arrowX, arrowY1); ctx.lineTo(arrowX, arrowY2);
+    ctx.strokeStyle = '#dc3545'; ctx.lineWidth = 4; ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(arrowX, arrowY2);
+    ctx.lineTo(arrowX - 8, arrowY2 - 14);
+    ctx.lineTo(arrowX + 8, arrowY2 - 14);
+    ctx.closePath(); ctx.fillStyle = '#dc3545'; ctx.fill();
+
+    // Weight label
+    ctx.fillStyle = '#dc3545'; ctx.font = '600 16px Outfit'; ctx.textAlign = 'left';
+    ctx.fillText(`W = ${weight.toFixed(1)} N`, arrowX + 14, arrowY1 + arrowLen / 2);
+
+    // Planet name
+    ctx.fillStyle = planet.color; ctx.font = '700 24px Oswald'; ctx.textAlign = 'center';
+    ctx.fillText(planet.icon + ' ' + planet.name, W * 0.5, 40);
+    ctx.font = '500 14px Outfit'; ctx.fillStyle = '#4a5568';
+    ctx.fillText(`g = ${planet.g} N/kg`, W * 0.5, 62);
+
+    // Formula
+    ctx.font = '500 15px Outfit'; ctx.fillStyle = '#1a2747'; ctx.textAlign = 'left';
+    ctx.fillText(`W = m × g = ${mass} × ${planet.g} = ${weight.toFixed(1)} N`, 30, H - 30);
+
+    // Update readouts
+    document.getElementById('massLabel').textContent = mass + ' kg';
+    document.getElementById('massVal').textContent = mass + ' kg';
+    document.getElementById('weightVal').textContent = weight.toFixed(1) + ' N';
+    document.getElementById('gVal').textContent = planet.g + ' N/kg';
+
+    const earthWeight = mass * 9.8;
+    document.getElementById('compare').innerHTML = `On <strong>${planet.name}</strong>, you weigh <strong>${(weight/earthWeight*100).toFixed(0)}%</strong> of your Earth weight (${earthWeight.toFixed(0)} N on Earth vs ${weight.toFixed(0)} N here)`;
+}
+
+massSlider.addEventListener('input', draw);
+resize(); draw();
+window.addEventListener('resize', () => { resize(); draw(); });
+</script>
+</body>
+</html>

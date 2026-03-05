@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed vs Velocity</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.72rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.1rem; color: #1835b4; }
+        .readout .formula { font-size: 0.68rem; color: #4a5568; margin-top: 2px; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .btn { display: block; margin: 8px auto 0; background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 18px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { background: #506a8a; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Speed vs Velocity</h1>
+    <p class="subtitle">Watch the car travel a circular track</p>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="600"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Car Speed</span><span class="val" id="spdLabel">3.0 m/s</span></div>
+            <input type="range" id="spdSlider" min="10" max="60" value="30">
+        </div>
+    </div>
+    <div class="readouts">
+        <div class="readout">
+            <div class="label">Speed (scalar)</div>
+            <div class="value" id="speedVal">3.0 m/s</div>
+            <div class="formula">|distance / time|</div>
+        </div>
+        <div class="readout">
+            <div class="label">Velocity (vector)</div>
+            <div class="value" id="velVal">3.0 m/s →</div>
+            <div class="formula">displacement / time</div>
+        </div>
+    </div>
+    <div class="readouts" style="margin-top:8px;">
+        <div class="readout">
+            <div class="label">Distance Travelled</div>
+            <div class="value" id="distVal">0 m</div>
+        </div>
+        <div class="readout">
+            <div class="label">Displacement</div>
+            <div class="value" id="dispVal">0 m</div>
+        </div>
+    </div>
+    <button class="btn" onclick="resetAnim()">Reset</button>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const spdSlider = document.getElementById('spdSlider');
+
+let angle = 0, time = 0, lastTs = 0;
+const cx = 530, cy = 300, radius = 200;
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 600 / 1060) + 'px';
+}
+
+function getSpeed() { return parseInt(spdSlider.value) / 10; }
+
+function draw(ts) {
+    const dt = lastTs ? (ts - lastTs) / 1000 : 0;
+    lastTs = ts;
+    const speed = getSpeed();
+    const angularV = speed / radius;
+    angle += angularV * dt * 60;
+    time += dt;
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    // Track
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 30; ctx.stroke();
+    ctx.strokeStyle = '#ddd'; ctx.lineWidth = 1;
+    ctx.setLineDash([8, 8]); ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Start marker
+    ctx.beginPath(); ctx.arc(cx + radius, cy, 6, 0, Math.PI * 2);
+    ctx.fillStyle = '#28a745'; ctx.fill();
+    ctx.fillStyle = '#4a5568'; ctx.font = '500 12px Outfit'; ctx.textAlign = 'left';
+    ctx.fillText('Start', cx + radius + 10, cy + 4);
+
+    // Car position
+    const carX = cx + radius * Math.cos(angle);
+    const carY = cy + radius * Math.sin(angle);
+
+    // Displacement arrow from start to car
+    ctx.beginPath(); ctx.moveTo(cx + radius, cy); ctx.lineTo(carX, carY);
+    ctx.strokeStyle = '#4a3fc2'; ctx.lineWidth = 3; ctx.stroke();
+    const da = Math.atan2(carY - cy, carX - (cx + radius));
+    const dispMag = Math.sqrt((carX - cx - radius)**2 + (carY - cy)**2);
+    if (dispMag > 10) {
+        ctx.beginPath();
+        ctx.moveTo(carX, carY);
+        ctx.lineTo(carX - 12*Math.cos(da-0.4), carY - 12*Math.sin(da-0.4));
+        ctx.lineTo(carX - 12*Math.cos(da+0.4), carY - 12*Math.sin(da+0.4));
+        ctx.closePath(); ctx.fillStyle = '#4a3fc2'; ctx.fill();
+    }
+
+    // Velocity arrow (tangent)
+    const tangentAngle = angle + Math.PI / 2;
+    const velLen = speed * 15;
+    ctx.beginPath();
+    ctx.moveTo(carX, carY);
+    ctx.lineTo(carX + velLen * Math.cos(tangentAngle), carY + velLen * Math.sin(tangentAngle));
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 3; ctx.stroke();
+    const va = tangentAngle;
+    ctx.beginPath();
+    ctx.moveTo(carX + velLen*Math.cos(va), carY + velLen*Math.sin(va));
+    ctx.lineTo(carX + velLen*Math.cos(va) - 12*Math.cos(va-0.4), carY + velLen*Math.sin(va) - 12*Math.sin(va-0.4));
+    ctx.lineTo(carX + velLen*Math.cos(va) - 12*Math.cos(va+0.4), carY + velLen*Math.sin(va) - 12*Math.sin(va+0.4));
+    ctx.closePath(); ctx.fillStyle = '#1835b4'; ctx.fill();
+
+    // Car
+    ctx.beginPath(); ctx.arc(carX, carY, 12, 0, Math.PI * 2);
+    ctx.fillStyle = '#dc3545'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+
+    // Labels
+    ctx.font = '600 13px Outfit';
+    ctx.fillStyle = '#1835b4'; ctx.textAlign = 'center';
+    ctx.fillText('Velocity (tangent)', carX + velLen*0.5*Math.cos(va) - 20*Math.sin(va), carY + velLen*0.5*Math.sin(va) + 20*Math.cos(va));
+    ctx.fillStyle = '#c9a020';
+    ctx.fillText('Displacement', (cx + radius + carX)/2, (cy + carY)/2 - 10);
+
+    // Update readouts
+    const distanceTravelled = Math.abs(angle) * radius * 0.5;
+    const disp = dispMag * 0.5;
+    const dirs = ['→','↘','↓','↙','←','↖','↑','↗'];
+    const dirIdx = Math.round(((tangentAngle % (Math.PI*2)) + Math.PI*2) % (Math.PI*2) / (Math.PI/4)) % 8;
+
+    document.getElementById('spdLabel').textContent = speed.toFixed(1) + ' m/s';
+    document.getElementById('speedVal').textContent = speed.toFixed(1) + ' m/s';
+    document.getElementById('velVal').textContent = speed.toFixed(1) + ' m/s ' + dirs[dirIdx];
+    document.getElementById('distVal').textContent = distanceTravelled.toFixed(1) + ' m';
+    document.getElementById('dispVal').textContent = disp.toFixed(1) + ' m';
+
+    requestAnimationFrame(draw);
+}
+
+function resetAnim() { angle = 0; time = 0; }
+
+resize();
+window.addEventListener('resize', resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

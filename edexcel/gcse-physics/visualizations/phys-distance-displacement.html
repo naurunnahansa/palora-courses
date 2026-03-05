@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distance vs Displacement</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; cursor: crosshair; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.72rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.1rem; color: #1835b4; }
+        .readout .formula { font-size: 0.68rem; color: #4a5568; margin-top: 2px; }
+        .btn-row { display: flex; gap: 6px; margin-top: 8px; justify-content: center; }
+        .btn { background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 16px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { background: #506a8a; }
+        .btn.secondary { background: #d4d8e5; color: #1a2747; }
+        .btn.secondary:hover { background: #d5cfd0; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Distance vs Displacement</h1>
+    <p class="subtitle">Click on the canvas to add waypoints for the path</p>
+    <div class="card">
+        <canvas id="canvas" width="1060" height="600"></canvas>
+    </div>
+    <div class="readouts">
+        <div class="readout">
+            <div class="label">Distance (scalar)</div>
+            <div class="value" id="distVal">0 m</div>
+            <div class="formula">Total path length</div>
+        </div>
+        <div class="readout">
+            <div class="label">Displacement (vector)</div>
+            <div class="value" id="dispVal">0 m</div>
+            <div class="formula">Start → End straight line</div>
+        </div>
+    </div>
+    <div class="btn-row">
+        <button class="btn" onclick="animate()">Animate</button>
+        <button class="btn secondary" onclick="resetAll()">Reset</button>
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let points = [{x: 100, y: 300}];
+let animPos = 0, animating = false, dragIdx = -1;
+const SCALE = 0.5; // px to m
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 600 / 1060) + 'px';
+}
+
+function dist(a, b) { return Math.sqrt((b.x-a.x)**2 + (b.y-a.y)**2); }
+
+function totalDist() {
+    let d = 0;
+    for (let i = 1; i < points.length; i++) d += dist(points[i-1], points[i]);
+    return d * SCALE;
+}
+
+function displacement() {
+    if (points.length < 2) return 0;
+    return dist(points[0], points[points.length-1]) * SCALE;
+}
+
+function draw() {
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+    // Grid
+    ctx.strokeStyle = '#eee'; ctx.lineWidth = 0.5;
+    for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+    if (points.length < 2) {
+        // Draw start point
+        ctx.beginPath(); ctx.arc(points[0].x, points[0].y, 8, 0, Math.PI*2);
+        ctx.fillStyle = '#28a745'; ctx.fill(); ctx.strokeStyle = '#1a6e31'; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = '#1a2747'; ctx.font = '600 14px Outfit'; ctx.textAlign = 'left';
+        ctx.fillText('Start', points[0].x + 12, points[0].y + 5);
+        update(); return;
+    }
+
+    // Path (distance - blue dashed)
+    ctx.beginPath(); ctx.setLineDash([6,4]); ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 3;
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) ctx.lineTo(points[i].x, points[i].y);
+    ctx.stroke(); ctx.setLineDash([]);
+
+    // Displacement arrow (yellow solid)
+    const s = points[0], e = points[points.length-1];
+    ctx.beginPath(); ctx.strokeStyle = '#4a3fc2'; ctx.lineWidth = 4;
+    ctx.moveTo(s.x, s.y); ctx.lineTo(e.x, e.y); ctx.stroke();
+    // Arrowhead
+    const a = Math.atan2(e.y-s.y, e.x-s.x);
+    ctx.beginPath(); ctx.moveTo(e.x, e.y);
+    ctx.lineTo(e.x - 16*Math.cos(a-0.4), e.y - 16*Math.sin(a-0.4));
+    ctx.lineTo(e.x - 16*Math.cos(a+0.4), e.y - 16*Math.sin(a+0.4));
+    ctx.closePath(); ctx.fillStyle = '#4a3fc2'; ctx.fill();
+
+    // Points
+    points.forEach((p, i) => {
+        ctx.beginPath(); ctx.arc(p.x, p.y, 7, 0, Math.PI*2);
+        ctx.fillStyle = i === 0 ? '#28a745' : i === points.length-1 ? '#dc3545' : '#1835b4';
+        ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+    });
+
+    // Labels
+    ctx.fillStyle = '#1a2747'; ctx.font = '600 13px Outfit'; ctx.textAlign = 'left';
+    ctx.fillText('Start', s.x + 12, s.y - 8);
+    ctx.fillText('End', e.x + 12, e.y - 8);
+
+    // Animated dot
+    if (animating && animPos > 0) {
+        const pos = getAnimPoint(animPos);
+        ctx.beginPath(); ctx.arc(pos.x, pos.y, 9, 0, Math.PI*2);
+        ctx.fillStyle = '#4a3fc2'; ctx.fill(); ctx.strokeStyle = '#c9a020'; ctx.lineWidth = 2; ctx.stroke();
+    }
+
+    // Legend
+    ctx.font = '500 12px Outfit';
+    ctx.fillStyle = '#1835b4'; ctx.fillRect(W-180, 10, 12, 12); ctx.fillStyle = '#4a5568';
+    ctx.fillText('Distance (path)', W-164, 21);
+    ctx.fillStyle = '#4a3fc2'; ctx.fillRect(W-180, 28, 12, 12); ctx.fillStyle = '#4a5568';
+    ctx.fillText('Displacement', W-164, 39);
+
+    update();
+}
+
+function getAnimPoint(t) {
+    let totalD = 0;
+    const segLens = [];
+    for (let i = 1; i < points.length; i++) { const d = dist(points[i-1], points[i]); segLens.push(d); totalD += d; }
+    let target = t * totalD, acc = 0;
+    for (let i = 0; i < segLens.length; i++) {
+        if (acc + segLens[i] >= target) {
+            const frac = (target - acc) / segLens[i];
+            return { x: points[i].x + (points[i+1].x - points[i].x) * frac, y: points[i].y + (points[i+1].y - points[i].y) * frac };
+        }
+        acc += segLens[i];
+    }
+    return points[points.length-1];
+}
+
+function update() {
+    document.getElementById('distVal').textContent = totalDist().toFixed(1) + ' m';
+    document.getElementById('dispVal').textContent = displacement().toFixed(1) + ' m';
+}
+
+function animate() {
+    if (points.length < 2 || animating) return;
+    animating = true; animPos = 0;
+    function step() {
+        animPos += 0.008;
+        if (animPos > 1) { animPos = 0; animating = false; draw(); return; }
+        draw();
+        requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+}
+
+function resetAll() {
+    points = [{x: 100, y: 300}]; animating = false; animPos = 0; draw();
+}
+
+function getCanvasPos(e) {
+    const r = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / r.width, scaleY = canvas.height / r.height;
+    const cx = ((e.touches ? e.touches[0].clientX : e.clientX) - r.left) * scaleX;
+    const cy = ((e.touches ? e.touches[0].clientY : e.clientY) - r.top) * scaleY;
+    return {x: cx, y: cy};
+}
+
+canvas.addEventListener('mousedown', e => {
+    const p = getCanvasPos(e);
+    dragIdx = points.findIndex(pt => dist(pt, p) < 20);
+    if (dragIdx === -1) { points.push(p); draw(); }
+});
+canvas.addEventListener('mousemove', e => {
+    if (dragIdx === -1) return;
+    const p = getCanvasPos(e);
+    points[dragIdx] = p; draw();
+});
+canvas.addEventListener('mouseup', () => dragIdx = -1);
+canvas.addEventListener('touchstart', e => { e.preventDefault(); const p = getCanvasPos(e); dragIdx = points.findIndex(pt => dist(pt, p) < 30); if (dragIdx === -1) { points.push(p); draw(); } });
+canvas.addEventListener('touchmove', e => { e.preventDefault(); if (dragIdx === -1) return; points[dragIdx] = getCanvasPos(e); draw(); });
+canvas.addEventListener('touchend', e => { e.preventDefault(); dragIdx = -1; });
+
+resize(); draw();
+window.addEventListener('resize', () => { resize(); draw(); });
+</script>
+</body>
+</html>

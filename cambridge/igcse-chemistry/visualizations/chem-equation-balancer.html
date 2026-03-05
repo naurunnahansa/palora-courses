@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equation Balancer</title>
+    <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fafbfc; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .btn { background: #1835b4; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  .btn:hover { background: #506a8a; }
+  .chip { display: inline-block; background: #e8ecf8; color: #1a2747; border: 1px solid #d4d8e5; border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin: 4px; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  .subtitle { color: #1835b4; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+
+  .eq-select { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+
+  .equation-display { text-align: center; margin: 20px 0 10px; }
+  .equation-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; }
+  .compound { display: flex; align-items: center; gap: 4px; }
+  .coeff-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #d4d8e5; background: #fafbfc; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; color: #1a2747; }
+  .coeff-btn:hover { background: #1835b4; color: #fff; border-color: #1835b4; }
+  .coeff-val { font-family: system-ui, -apple-system, sans-serif; font-size: 24px; min-width: 24px; text-align: center; color: #1835b4; }
+  .formula-text { font-family: system-ui, -apple-system, sans-serif; font-size: 20px; }
+  .arrow { font-size: 22px; color: #1835b4; margin: 0 6px; }
+
+  .atom-counts { margin-top: 18px; }
+  .atom-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 10px; margin-bottom: 6px; font-size: 14px; font-weight: 500; }
+  .atom-row.balanced { background: #e6f7e9; }
+  .atom-row.unbalanced { background: #fde8e8; }
+  .atom-el { font-family: system-ui, -apple-system, sans-serif; font-size: 18px; width: 40px; }
+  .atom-side { font-family: system-ui, -apple-system, sans-serif; font-size: 16px; }
+  .check { color: #2ecc71; font-weight: 700; }
+  .cross { color: #e74c3c; font-weight: 700; }
+
+  .result-banner { text-align: center; padding: 14px; border-radius: 12px; margin-top: 14px; font-weight: 600; font-size: 16px; }
+  .result-banner.balanced { background: #e6f7e9; color: #27ae60; }
+  .result-banner.unbalanced { background: #e8ecf8; color: #1835b4; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Equation Balancer</h1>
+    <p class="subtitle">Adjust coefficients to balance each equation</p>
+    <div class="eq-select" id="eqSelect"></div>
+  </div>
+
+  <div class="card">
+    <div class="equation-display" id="eqDisplay"></div>
+    <div class="atom-counts" id="atomCounts"></div>
+    <div id="resultBanner"></div>
+  </div>
+</div>
+
+<script>
+const equations = [
+  {
+    name: 'Fe + O\u2082 \u2192 Fe\u2082O\u2083',
+    reactants: [
+      { formula: 'Fe', display: 'Fe', atoms: { Fe: 1 } },
+      { formula: 'O2', display: 'O\u2082', atoms: { O: 2 } }
+    ],
+    products: [
+      { formula: 'Fe2O3', display: 'Fe\u2082O\u2083', atoms: { Fe: 2, O: 3 } }
+    ],
+    answer: [4, 3, 2]
+  },
+  {
+    name: 'CH\u2084 + O\u2082 \u2192 CO\u2082 + H\u2082O',
+    reactants: [
+      { formula: 'CH4', display: 'CH\u2084', atoms: { C: 1, H: 4 } },
+      { formula: 'O2', display: 'O\u2082', atoms: { O: 2 } }
+    ],
+    products: [
+      { formula: 'CO2', display: 'CO\u2082', atoms: { C: 1, O: 2 } },
+      { formula: 'H2O', display: 'H\u2082O', atoms: { H: 2, O: 1 } }
+    ],
+    answer: [1, 2, 1, 2]
+  },
+  {
+    name: 'N\u2082 + H\u2082 \u2192 NH\u2083',
+    reactants: [
+      { formula: 'N2', display: 'N\u2082', atoms: { N: 2 } },
+      { formula: 'H2', display: 'H\u2082', atoms: { H: 2 } }
+    ],
+    products: [
+      { formula: 'NH3', display: 'NH\u2083', atoms: { N: 1, H: 3 } }
+    ],
+    answer: [1, 3, 2]
+  },
+  {
+    name: 'Na + H\u2082O \u2192 NaOH + H\u2082',
+    reactants: [
+      { formula: 'Na', display: 'Na', atoms: { Na: 1 } },
+      { formula: 'H2O', display: 'H\u2082O', atoms: { H: 2, O: 1 } }
+    ],
+    products: [
+      { formula: 'NaOH', display: 'NaOH', atoms: { Na: 1, O: 1, H: 1 } },
+      { formula: 'H2', display: 'H\u2082', atoms: { H: 2 } }
+    ],
+    answer: [2, 2, 2, 1]
+  }
+];
+
+let currentEq = 0;
+let coefficients = [];
+
+const eqSelect = document.getElementById('eqSelect');
+equations.forEach((eq, i) => {
+  const c = document.createElement('span');
+  c.className = 'chip' + (i === 0 ? ' active' : '');
+  c.textContent = eq.name;
+  c.onclick = () => { currentEq = i; init(); };
+  eqSelect.appendChild(c);
+});
+
+function init() {
+  document.querySelectorAll('.chip').forEach((c, i) => c.classList.toggle('active', i === currentEq));
+  const eq = equations[currentEq];
+  const total = eq.reactants.length + eq.products.length;
+  coefficients = new Array(total).fill(1);
+  render();
+}
+
+function render() {
+  const eq = equations[currentEq];
+  const display = document.getElementById('eqDisplay');
+  let html = '<div class="equation-row">';
+
+  let idx = 0;
+  eq.reactants.forEach((r, i) => {
+    if (i > 0) html += '<span class="arrow">+</span>';
+    html += compoundHTML(idx, r.display);
+    idx++;
+  });
+  html += '<span class="arrow">\u2192</span>';
+  eq.products.forEach((p, i) => {
+    if (i > 0) html += '<span class="arrow">+</span>';
+    html += compoundHTML(idx, p.display);
+    idx++;
+  });
+  html += '</div>';
+  display.innerHTML = html;
+
+  // Atom counts
+  const elements = new Set();
+  eq.reactants.forEach(r => Object.keys(r.atoms).forEach(e => elements.add(e)));
+  eq.products.forEach(p => Object.keys(p.atoms).forEach(e => elements.add(e)));
+
+  let lhs = {}, rhs = {};
+  eq.reactants.forEach((r, i) => {
+    for (const [el, cnt] of Object.entries(r.atoms)) {
+      lhs[el] = (lhs[el] || 0) + cnt * coefficients[i];
+    }
+  });
+  eq.products.forEach((p, i) => {
+    const ci = i + eq.reactants.length;
+    for (const [el, cnt] of Object.entries(p.atoms)) {
+      rhs[el] = (rhs[el] || 0) + cnt * coefficients[ci];
+    }
+  });
+
+  let allBalanced = true;
+  let countsHTML = '';
+  for (const el of elements) {
+    const l = lhs[el] || 0, r = rhs[el] || 0;
+    const bal = l === r;
+    if (!bal) allBalanced = false;
+    countsHTML += `<div class="atom-row ${bal ? 'balanced' : 'unbalanced'}">
+      <span class="atom-el">${el}</span>
+      <span class="atom-side">Left: ${l}</span>
+      <span class="atom-side">Right: ${r}</span>
+      <span class="${bal ? 'check' : 'cross'}">${bal ? '\u2714' : '\u2718'}</span>
+    </div>`;
+  }
+  document.getElementById('atomCounts').innerHTML = countsHTML;
+
+  const banner = document.getElementById('resultBanner');
+  if (allBalanced) {
+    banner.className = 'result-banner balanced';
+    banner.textContent = 'Equation is balanced!';
+  } else {
+    banner.className = 'result-banner unbalanced';
+    banner.textContent = 'Not yet balanced \u2014 keep adjusting!';
+  }
+}
+
+function compoundHTML(idx, display) {
+  return `<div class="compound">
+    <button class="coeff-btn" onclick="adj(${idx},-1)">\u2212</button>
+    <span class="coeff-val">${coefficients[idx]}</span>
+    <button class="coeff-btn" onclick="adj(${idx},1)">+</button>
+    <span class="formula-text">${display}</span>
+  </div>`;
+}
+
+function adj(idx, delta) {
+  coefficients[idx] = Math.max(1, Math.min(10, coefficients[idx] + delta));
+  render();
+}
+
+init();
+</script>
+</body>
+</html>

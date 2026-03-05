@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domestic Electricity</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.wire-info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px}.wire-card{border-radius:5px;padding:8px;text-align:center;cursor:pointer;transition:all .2s;border:2px solid transparent}.wire-card:hover{transform:translateY(-1px)}.wire-card.active{border-color:#1835b4}.wire-card .name{font-weight:600;font-size:.78rem}.wire-card .desc{font-size:.65rem;color:#4a5568;margin-top:2px}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;margin-top:8px}.info strong{color:#1835b4}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Domestic Electricity</h1>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="500"></canvas></div>
+    <div class="wire-info">
+        <div class="wire-card active" style="background:#8B451320" onclick="selectWire(0)"><div class="name" style="color:#8B4513">Live (Brown)</div><div class="desc">Carries current at 230V. Alternates between +230V and -230V.</div></div>
+        <div class="wire-card" style="background:#4a90d920" onclick="selectWire(1)"><div class="name" style="color:#4a90d9">Neutral (Blue)</div><div class="desc">Completes the circuit. At 0V (earth potential).</div></div>
+        <div class="wire-card" style="background:#28a74520" onclick="selectWire(2)"><div class="name" style="color:#28a745">Earth (Green/Yellow)</div><div class="desc">Safety wire. Carries current to ground if fault occurs.</div></div>
+    </div>
+    <div class="info" id="info">The UK mains supply is <strong>230V AC at 50Hz</strong>. The three-pin plug has live, neutral, and earth wires for safe electricity delivery.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let selectedWire=0,lastTs=0,animT=0;
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*500/1060)+'px'}
+
+function selectWire(i){
+    selectedWire=i;
+    document.querySelectorAll('.wire-card').forEach((c,j)=>c.classList.toggle('active',j===i));
+    const infos=[
+        'The <strong>live wire</strong> (brown) carries the current from the supply. It alternates at <strong>50 Hz</strong> between +325V and -325V (giving 230V RMS). It is the <strong>most dangerous</strong> wire.',
+        'The <strong>neutral wire</strong> (blue) completes the circuit. It is at approximately <strong>0V</strong> (earth potential). Current flows from live, through the appliance, and returns via neutral.',
+        'The <strong>earth wire</strong> (green/yellow stripes) is a <strong>safety wire</strong>. Normally no current flows through it. If a fault occurs (live touches metal case), current flows through earth, which blows the fuse and protects the user.'
+    ];
+    document.getElementById('info').innerHTML=infos[i];
+}
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
+    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Plug outline
+    const px=W*0.1,py=H*0.1,pw=W*0.35,ph=H*0.8;
+    ctx.fillStyle='#fff';ctx.strokeStyle='#4a5568';ctx.lineWidth=3;
+    ctx.beginPath();ctx.roundRect(px,py,pw,ph,15);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#4a5568';ctx.font='600 14px Oswald';ctx.textAlign='center';
+    ctx.fillText('3-PIN PLUG',px+pw/2,py+25);
+
+    // Fuse
+    ctx.fillStyle='#e8ecf8';ctx.fillRect(px+pw*0.3,py+ph*0.35,pw*0.4,20);
+    ctx.strokeStyle='#1835b4';ctx.lineWidth=1;ctx.strokeRect(px+pw*0.3,py+ph*0.35,pw*0.4,20);
+    ctx.fillStyle='#1835b4';ctx.font='500 10px Outfit';ctx.fillText('FUSE',px+pw/2,py+ph*0.35+14);
+
+    // Pins
+    const pinColors=['#8B4513','#4a90d9','#28a745'];
+    const pinLabels=['L','N','E'];
+    const pinY=[py+ph*0.55,py+ph*0.75,py+ph*0.3];
+    const pinX=px+pw/2;
+
+    pinColors.forEach((c,i)=>{
+        const highlight=selectedWire===i;
+        ctx.fillStyle=c;
+        ctx.fillRect(pinX-8+(i-1)*60,pinY[i],16,40);
+        if(highlight){ctx.strokeStyle='#4a3fc2';ctx.lineWidth=3;ctx.strokeRect(pinX-10+(i-1)*60,pinY[i]-2,20,44)}
+        ctx.fillStyle=c;ctx.font='700 14px Oswald';ctx.textAlign='center';
+        ctx.fillText(pinLabels[i],pinX+(i-1)*60,pinY[i]-8);
+    });
+
+    // Wires going to appliance
+    const appX=W*0.7,appY=H*0.3,appW=W*0.2,appH=H*0.4;
+    ctx.fillStyle='#d4d8e5';ctx.strokeStyle='#4a5568';ctx.lineWidth=2;
+    ctx.beginPath();ctx.roundRect(appX,appY,appW,appH,8);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#4a5568';ctx.font='600 14px Oswald';ctx.textAlign='center';
+    ctx.fillText('APPLIANCE',appX+appW/2,appY+appH/2-5);
+    ctx.font='500 11px Outfit';ctx.fillText('Metal case',appX+appW/2,appY+appH/2+12);
+
+    // Wire connections
+    const wireEndX=px+pw;
+    [[wireEndX,py+ph*0.56,appX,appY+appH*0.3,'#8B4513'],
+     [wireEndX,py+ph*0.76,appX,appY+appH*0.7,'#4a90d9'],
+     [wireEndX,py+ph*0.31,appX,appY+appH*0.9,'#28a745']].forEach(([x1,y1,x2,y2,c],i)=>{
+        ctx.beginPath();ctx.moveTo(x1,y1);
+        ctx.bezierCurveTo(x1+80,y1,x2-80,y2,x2,y2);
+        ctx.strokeStyle=c;ctx.lineWidth=selectedWire===i?4:2;ctx.stroke();
+        // Current flow dots
+        if(i<2){
+            for(let j=0;j<3;j++){
+                const t=((animT*0.5+j/3)%1);
+                const tt=1-t;
+                const mx=tt*tt*tt*x1+3*tt*tt*t*(x1+80)+3*tt*t*t*(x2-80)+t*t*t*x2;
+                const my=tt*tt*tt*y1+3*tt*tt*t*y1+3*tt*t*t*y2+t*t*t*y2;
+                ctx.beginPath();ctx.arc(mx,my,3,0,Math.PI*2);
+                ctx.fillStyle=c;ctx.fill();
+            }
+        }
+    });
+
+    // Labels
+    ctx.fillStyle='#8B4513';ctx.font='500 11px Outfit';ctx.textAlign='right';
+    ctx.fillText('Live (brown)',appX-5,appY+appH*0.3+4);
+    ctx.fillStyle='#4a90d9';ctx.fillText('Neutral (blue)',appX-5,appY+appH*0.7+4);
+    ctx.fillStyle='#28a745';ctx.fillText('Earth (green/yellow)',appX-5,appY+appH*0.9+4);
+
+    requestAnimationFrame(draw);
+}
+
+resize();window.addEventListener('resize',resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

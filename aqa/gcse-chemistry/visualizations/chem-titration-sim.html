@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Titration Simulation</title>
+    <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { color: #1835b4; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
+  .subtitle { text-align: center; color: #888; font-size: 0.85rem; margin-bottom: 16px; }
+  canvas { width: 100%; background: #fafbfc; border-radius: 10px; display: block; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; transition: background 0.2s; display: inline-block; }
+  .btn:hover { background: #4f6a8a; }
+  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #d4d8e5; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  .info-box { background: #e8ecf8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.5; }
+  .info-box strong { color: #1835b4; }
+  .btn-row { display: flex; gap: 10px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+  .readout { display: flex; gap: 14px; margin-top: 12px; justify-content: center; flex-wrap: wrap; }
+  .readout-item { text-align: center; background: #fafbfc; border-radius: 8px; padding: 8px 14px; border: 1px solid #d4d8e5; }
+  .readout-item .val { font-family: system-ui, -apple-system, sans-serif; font-size: 1.3rem; color: #1835b4; }
+  .readout-item .lbl { font-size: 0.7rem; color: #888; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Titration Simulation</h1>
+    <p class="subtitle">Add acid from the burette drop by drop</p>
+    <canvas id="titCanvas" width="502" height="240"></canvas>
+    <div class="btn-row">
+      <button class="btn" id="addDrop">Add Drop</button>
+      <button class="btn" id="addFive" style="background:#4f6a8a;">Add 5 Drops</button>
+      <button class="btn" id="resetBtn" style="background:#888;">Reset</button>
+    </div>
+    <div class="readout">
+      <div class="readout-item"><div class="val" id="volRead">0.0</div><div class="lbl">Volume (cm3)</div></div>
+      <div class="readout-item"><div class="val" id="phRead">14.0</div><div class="lbl">pH</div></div>
+      <div class="readout-item"><div class="val" id="dropRead">0</div><div class="lbl">Drops</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3 style="font-size:1rem; color:#1835b4; margin-bottom:10px;">pH vs Volume Curve</h3>
+    <canvas id="graphCanvas" width="502" height="220"></canvas>
+    <div class="info-box" id="infoBox">
+      <strong>Phenolphthalein indicator:</strong> Pink in alkali, colourless in acid. The end point is where the indicator just turns colourless.
+    </div>
+  </div>
+</div>
+
+<script>
+const titCanvas = document.getElementById('titCanvas');
+const tCtx = titCanvas.getContext('2d');
+const graphCanvas = document.getElementById('graphCanvas');
+const gCtx = graphCanvas.getContext('2d');
+
+let drops = 0;
+const maxDrops = 50;
+const endPointDrop = 25;
+let dataPoints = [];
+let dripping = false;
+let dripY = 0;
+
+function getPh(d) {
+  if (d <= endPointDrop - 2) return 14 - (d / (endPointDrop - 2)) * 4;
+  if (d <= endPointDrop + 2) {
+    const t = (d - (endPointDrop - 2)) / 4;
+    return 10 - t * 8;
+  }
+  return 2 - ((d - endPointDrop - 2) / (maxDrops - endPointDrop - 2)) * 1;
+}
+
+function indicatorColor(ph) {
+  if (ph > 8.2) return 'rgba(219,68,130,0.6)';
+  if (ph > 7.5) return 'rgba(219,68,130,0.3)';
+  return 'rgba(255,255,255,0.05)';
+}
+
+function drawTitration() {
+  const W = titCanvas.width, H = titCanvas.height;
+  tCtx.clearRect(0, 0, W, H);
+  const ph = drops === 0 ? 14 : getPh(drops);
+
+  // Burette (centered top)
+  const bx = 230, by = 10, bw = 40, bh = 140;
+  tCtx.fillStyle = '#e8edf2';
+  tCtx.fillRect(bx, by, bw, bh);
+  tCtx.strokeStyle = '#1835b4';
+  tCtx.lineWidth = 1.5;
+  tCtx.strokeRect(bx, by, bw, bh);
+  // Acid level in burette
+  const acidRemain = 1 - drops / maxDrops;
+  tCtx.fillStyle = 'rgba(231,76,60,0.3)';
+  tCtx.fillRect(bx + 2, by + 2 + bh * (1 - acidRemain), bw - 4, bh * acidRemain - 2);
+  // Tap
+  tCtx.fillStyle = '#1835b4';
+  tCtx.fillRect(bx + 15, by + bh, 10, 15);
+  // Nozzle
+  tCtx.fillRect(bx + 18, by + bh + 15, 4, 10);
+  // Burette label
+  tCtx.font = '500 10px Outfit';
+  tCtx.fillStyle = '#e74c3c';
+  tCtx.textAlign = 'center';
+  tCtx.fillText('HCl (acid)', bx + bw/2, by - 2);
+  // Scale marks
+  for (let i = 0; i <= 10; i++) {
+    const y = by + (i / 10) * bh;
+    tCtx.strokeStyle = '#1835b4';
+    tCtx.lineWidth = 0.5;
+    tCtx.beginPath();
+    tCtx.moveTo(bx, y); tCtx.lineTo(bx + 8, y);
+    tCtx.stroke();
+  }
+
+  // Drip animation
+  if (dripping) {
+    tCtx.fillStyle = '#e74c3c';
+    tCtx.beginPath();
+    tCtx.arc(bx + 20, dripY, 3, 0, Math.PI * 2);
+    tCtx.fill();
+  }
+
+  // Conical flask
+  const fx = 190, fy = 200, fw = 120, fh = 100;
+  tCtx.beginPath();
+  tCtx.moveTo(fx + 30, fy);
+  tCtx.lineTo(fx, fy + fh);
+  tCtx.lineTo(fx + fw, fy + fh);
+  tCtx.lineTo(fx + fw - 30, fy);
+  tCtx.closePath();
+  tCtx.strokeStyle = '#1835b4';
+  tCtx.lineWidth = 2;
+  tCtx.stroke();
+  // Liquid in flask
+  tCtx.save();
+  tCtx.beginPath();
+  tCtx.moveTo(fx + 30, fy);
+  tCtx.lineTo(fx, fy + fh);
+  tCtx.lineTo(fx + fw, fy + fh);
+  tCtx.lineTo(fx + fw - 30, fy);
+  tCtx.closePath();
+  tCtx.clip();
+  const liqColor = indicatorColor(ph);
+  tCtx.fillStyle = liqColor;
+  tCtx.fillRect(fx, fy + 20, fw, fh);
+  tCtx.restore();
+
+  // Flask label
+  tCtx.font = '500 10px Outfit';
+  tCtx.fillStyle = '#8e44ad';
+  tCtx.textAlign = 'center';
+  tCtx.fillText('NaOH + phenolphthalein', fx + fw/2, fy + fh + 16);
+
+  // pH meter display
+  tCtx.fillStyle = '#1a2747';
+  tCtx.fillRect(380, 100, 90, 50);
+  tCtx.fillStyle = '#00ff00';
+  tCtx.font = '700 22px Oswald';
+  tCtx.textAlign = 'center';
+  tCtx.fillText('pH ' + ph.toFixed(1), 425, 132);
+  tCtx.font = '400 9px Outfit';
+  tCtx.fillStyle = '#888';
+  tCtx.fillText('pH METER', 425, 92);
+
+  // Volume display
+  const vol = (drops * 0.5).toFixed(1);
+  tCtx.fillStyle = '#1a2747';
+  tCtx.font = '500 11px Outfit';
+  tCtx.textAlign = 'left';
+  tCtx.fillText('Vol: ' + vol + ' cm\u00B3', 380, 170);
+}
+
+function drawGraph() {
+  const W = graphCanvas.width, H = graphCanvas.height;
+  const pad = { l: 50, r: 20, t: 20, b: 35 };
+  const gw = W - pad.l - pad.r, gh = H - pad.t - pad.b;
+  gCtx.clearRect(0, 0, W, H);
+
+  // Axes
+  gCtx.strokeStyle = '#ccc';
+  gCtx.lineWidth = 1;
+  gCtx.beginPath();
+  gCtx.moveTo(pad.l, pad.t); gCtx.lineTo(pad.l, pad.t + gh); gCtx.lineTo(pad.l + gw, pad.t + gh);
+  gCtx.stroke();
+
+  // Y labels (pH)
+  gCtx.font = '400 10px Outfit';
+  gCtx.fillStyle = '#888';
+  gCtx.textAlign = 'right';
+  for (let i = 0; i <= 14; i += 2) {
+    const y = pad.t + gh - (i / 14) * gh;
+    gCtx.fillText(i, pad.l - 6, y + 3);
+    gCtx.strokeStyle = '#eee';
+    gCtx.beginPath(); gCtx.moveTo(pad.l, y); gCtx.lineTo(pad.l + gw, y); gCtx.stroke();
+  }
+  gCtx.save();
+  gCtx.translate(14, pad.t + gh / 2);
+  gCtx.rotate(-Math.PI / 2);
+  gCtx.textAlign = 'center';
+  gCtx.fillText('pH', 0, 0);
+  gCtx.restore();
+
+  // X labels (volume)
+  gCtx.textAlign = 'center';
+  for (let i = 0; i <= 25; i += 5) {
+    const x = pad.l + (i / 25) * gw;
+    gCtx.fillText(i, x, pad.t + gh + 16);
+  }
+  gCtx.fillText('Volume / cm\u00B3', pad.l + gw / 2, pad.t + gh + 32);
+
+  // End point line
+  const epX = pad.l + ((endPointDrop * 0.5) / 25) * gw;
+  gCtx.strokeStyle = '#e74c3c44';
+  gCtx.setLineDash([4, 3]);
+  gCtx.beginPath(); gCtx.moveTo(epX, pad.t); gCtx.lineTo(epX, pad.t + gh); gCtx.stroke();
+  gCtx.setLineDash([]);
+  gCtx.font = '500 9px Outfit';
+  gCtx.fillStyle = '#e74c3c';
+  gCtx.textAlign = 'center';
+  gCtx.fillText('End point', epX, pad.t - 4);
+
+  // Plot S-curve (theoretical)
+  gCtx.strokeStyle = '#d4d8e5';
+  gCtx.lineWidth = 1.5;
+  gCtx.beginPath();
+  for (let d = 0; d <= maxDrops; d++) {
+    const ph = getPh(d);
+    const x = pad.l + ((d * 0.5) / 25) * gw;
+    const y = pad.t + gh - (ph / 14) * gh;
+    if (d === 0) gCtx.moveTo(x, y); else gCtx.lineTo(x, y);
+  }
+  gCtx.stroke();
+
+  // Plot data points
+  gCtx.fillStyle = '#1835b4';
+  dataPoints.forEach(p => {
+    const x = pad.l + ((p.vol) / 25) * gw;
+    const y = pad.t + gh - (p.ph / 14) * gh;
+    gCtx.beginPath();
+    gCtx.arc(x, y, 3, 0, Math.PI * 2);
+    gCtx.fill();
+  });
+
+  // Highlight current
+  if (dataPoints.length > 0) {
+    const p = dataPoints[dataPoints.length - 1];
+    const x = pad.l + ((p.vol) / 25) * gw;
+    const y = pad.t + gh - (p.ph / 14) * gh;
+    gCtx.strokeStyle = '#e74c3c';
+    gCtx.lineWidth = 2;
+    gCtx.beginPath();
+    gCtx.arc(x, y, 6, 0, Math.PI * 2);
+    gCtx.stroke();
+  }
+}
+
+function addDrops(n) {
+  for (let i = 0; i < n; i++) {
+    if (drops >= maxDrops) break;
+    drops++;
+    const ph = getPh(drops);
+    dataPoints.push({ vol: drops * 0.5, ph });
+  }
+  updateAll();
+}
+
+function updateAll() {
+  const ph = drops === 0 ? 14 : getPh(drops);
+  document.getElementById('volRead').textContent = (drops * 0.5).toFixed(1);
+  document.getElementById('phRead').textContent = ph.toFixed(1);
+  document.getElementById('dropRead').textContent = drops;
+
+  const info = document.getElementById('infoBox');
+  if (Math.abs(drops - endPointDrop) <= 1) {
+    info.innerHTML = '<strong style="color:#27ae60;">End point reached!</strong> The indicator has just turned colourless. pH is approximately 7. This is the equivalence point of the titration.';
+  } else if (drops < endPointDrop) {
+    info.innerHTML = '<strong>Phenolphthalein indicator:</strong> Solution is still <strong>pink</strong> (alkaline). Keep adding acid drops to reach the end point.';
+  } else {
+    info.innerHTML = '<strong>Past the end point:</strong> Solution is now colourless and <strong>acidic</strong>. Excess acid has been added beyond neutralisation.';
+  }
+
+  drawTitration();
+  drawGraph();
+}
+
+// Drip animation
+function animateDrip(n) {
+  dripping = true;
+  dripY = 175;
+  const interval = setInterval(() => {
+    dripY += 4;
+    drawTitration();
+    if (dripY > 220) {
+      clearInterval(interval);
+      dripping = false;
+      addDrops(n);
+    }
+  }, 30);
+}
+
+document.getElementById('addDrop').addEventListener('click', () => { if (drops < maxDrops) animateDrip(1); });
+document.getElementById('addFive').addEventListener('click', () => { if (drops < maxDrops) animateDrip(Math.min(5, maxDrops - drops)); });
+document.getElementById('resetBtn').addEventListener('click', () => { drops = 0; dataPoints = []; updateAll(); });
+
+updateAll();
+</script>
+</body>
+</html>

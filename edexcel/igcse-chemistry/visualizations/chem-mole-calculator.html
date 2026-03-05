@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mole / Mass / Mr Calculator</title>
+    <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fafbfc; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .btn { background: #1835b4; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  .btn:hover { background: #506a8a; }
+  .chip { display: inline-block; background: #e8ecf8; color: #1a2747; border: 1px solid #d4d8e5; border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin: 4px; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  h1 { font-size: 26px; margin-bottom: 4px; color: #1a2747; }
+  .subtitle { color: #1835b4; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+
+  .triangle-wrap { text-align: center; margin: 16px 0; }
+  .triangle-wrap canvas { background: #fafbfc; border-radius: 12px; }
+
+  .input-group { margin-bottom: 14px; }
+  .input-group label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .input-group input, .input-group select {
+    width: 100%; padding: 10px 14px; border: 1px solid #d4d8e5; border-radius: 10px;
+    font-family: system-ui, -apple-system, sans-serif; font-size: 15px; background: #fafbfc; color: #1a2747;
+  }
+  .input-group input:focus, .input-group select:focus { outline: none; border-color: #1835b4; }
+
+  .readout-row { display: flex; gap: 10px; margin-top: 16px; }
+  .readout { flex: 1; background: #e8ecf8; border-radius: 12px; padding: 14px; text-align: center; }
+  .readout .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #1835b4; }
+  .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 26px; margin-top: 4px; color: #1a2747; }
+  .readout .unit { font-size: 12px; color: #1835b4; }
+
+  .formula-display { text-align: center; font-family: system-ui, -apple-system, sans-serif; font-size: 20px; color: #1835b4; margin: 12px 0; }
+
+  .substance-chips { display: flex; flex-wrap: wrap; gap: 2px; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Mole Calculator</h1>
+    <p class="subtitle">Calculate moles, mass, or Mr using n = m / Mr</p>
+
+    <div class="triangle-wrap">
+      <canvas id="triangle" width="280" height="170"></canvas>
+    </div>
+
+    <div class="formula-display">n = m / M<sub>r</sub></div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px; margin-bottom:10px;">Common Substances</h3>
+    <div class="substance-chips" id="chips"></div>
+  </div>
+
+  <div class="card">
+    <div class="input-group">
+      <label>Mass (g)</label>
+      <input type="number" id="mass" placeholder="Enter mass" step="any" min="0">
+    </div>
+    <div class="input-group">
+      <label>Relative Formula Mass (M<sub>r</sub>)</label>
+      <input type="number" id="mr" placeholder="Enter Mr" step="any" min="0">
+    </div>
+    <div class="input-group">
+      <label>Moles (mol)</label>
+      <input type="number" id="moles" placeholder="Enter moles" step="any" min="0">
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:12px;">
+      <button class="btn" onclick="calculate()" style="flex:1;">Calculate</button>
+      <button class="btn" onclick="clearAll()" style="flex:0 0 auto;background:#d4d8e5;color:#1a2747;">Clear</button>
+    </div>
+
+    <div class="readout-row">
+      <div class="readout">
+        <div class="label">Mass</div>
+        <div class="value" id="rMass">--</div>
+        <div class="unit">g</div>
+      </div>
+      <div class="readout">
+        <div class="label">M<sub>r</sub></div>
+        <div class="value" id="rMr">--</div>
+        <div class="unit">g/mol</div>
+      </div>
+      <div class="readout">
+        <div class="label">Moles</div>
+        <div class="value" id="rMoles">--</div>
+        <div class="unit">mol</div>
+      </div>
+    </div>
+    <p id="msg" style="margin-top:10px;font-size:13px;color:#1835b4;text-align:center;"></p>
+  </div>
+</div>
+
+<script>
+const substances = [
+  { name: 'H\u2082O', mr: 18 },
+  { name: 'NaCl', mr: 58.5 },
+  { name: 'CO\u2082', mr: 44 },
+  { name: 'CaCO\u2083', mr: 100 },
+  { name: 'HCl', mr: 36.5 },
+  { name: 'NaOH', mr: 40 },
+  { name: 'H\u2082SO\u2084', mr: 98 },
+  { name: 'MgO', mr: 40 },
+  { name: 'Fe\u2082O\u2083', mr: 160 },
+  { name: 'O\u2082', mr: 32 },
+  { name: 'NH\u2083', mr: 17 },
+  { name: 'CH\u2084', mr: 16 },
+];
+
+const chipsEl = document.getElementById('chips');
+substances.forEach((s, i) => {
+  const c = document.createElement('span');
+  c.className = 'chip';
+  c.textContent = s.name + ' (' + s.mr + ')';
+  c.onclick = () => {
+    document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
+    c.classList.add('active');
+    document.getElementById('mr').value = s.mr;
+  };
+  chipsEl.appendChild(c);
+});
+
+function fmt(v) { return v === null || isNaN(v) ? '--' : (v < 0.001 && v > 0 ? v.toExponential(3) : parseFloat(v.toPrecision(6))); }
+
+function calculate() {
+  const m = document.getElementById('mass').value !== '' ? parseFloat(document.getElementById('mass').value) : null;
+  const mr = document.getElementById('mr').value !== '' ? parseFloat(document.getElementById('mr').value) : null;
+  const n = document.getElementById('moles').value !== '' ? parseFloat(document.getElementById('moles').value) : null;
+
+  const filled = [m, mr, n].filter(v => v !== null && !isNaN(v)).length;
+  const msg = document.getElementById('msg');
+
+  if (filled < 2) { msg.textContent = 'Please enter at least 2 values.'; return; }
+  msg.textContent = '';
+
+  let mass = m, relMass = mr, moles = n;
+
+  if (moles === null) {
+    moles = mass / relMass;
+    msg.textContent = 'Calculated moles = mass / Mr';
+  } else if (mass === null) {
+    mass = moles * relMass;
+    msg.textContent = 'Calculated mass = moles \u00d7 Mr';
+  } else if (relMass === null) {
+    relMass = mass / moles;
+    msg.textContent = 'Calculated Mr = mass / moles';
+  }
+
+  document.getElementById('rMass').textContent = fmt(mass);
+  document.getElementById('rMr').textContent = fmt(relMass);
+  document.getElementById('rMoles').textContent = fmt(moles);
+
+  document.getElementById('mass').value = mass;
+  document.getElementById('mr').value = relMass;
+  document.getElementById('moles').value = moles;
+
+  drawTriangle(mass !== null, relMass !== null, moles !== null);
+}
+
+function clearAll() {
+  ['mass','mr','moles'].forEach(id => document.getElementById(id).value = '');
+  ['rMass','rMr','rMoles'].forEach(id => document.getElementById(id).textContent = '--');
+  document.getElementById('msg').textContent = '';
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  drawTriangle();
+}
+
+function drawTriangle(hm, hmr, hn) {
+  const c = document.getElementById('triangle');
+  const ctx = c.getContext('2d');
+  const W = c.width, H = c.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const cx = W / 2, cy = H / 2;
+  const tw = 200, th = 80;
+
+  // Draw triangle frame
+  ctx.beginPath();
+  ctx.moveTo(cx - tw/2, cy + th/2);
+  ctx.lineTo(cx + tw/2, cy + th/2);
+  ctx.lineTo(cx + tw/2, cy - th/2);
+  ctx.lineTo(cx - tw/2, cy - th/2);
+  ctx.closePath();
+  ctx.strokeStyle = '#d4d8e5';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Horizontal divider
+  ctx.beginPath();
+  ctx.moveTo(cx - tw/2, cy);
+  ctx.lineTo(cx + tw/2, cy);
+  ctx.stroke();
+
+  // Vertical divider bottom half
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx, cy + th/2);
+  ctx.stroke();
+
+  ctx.font = '600 18px Oswald';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  // Top: mass
+  ctx.fillStyle = hm ? '#1835b4' : '#1a2747';
+  ctx.fillText('m (mass)', cx, cy - th/4);
+
+  // Bottom left: Mr
+  ctx.fillStyle = hmr ? '#1835b4' : '#1a2747';
+  ctx.fillText('Mr', cx - tw/4, cy + th/4);
+
+  // Bottom right: n
+  ctx.fillStyle = hn ? '#1835b4' : '#1a2747';
+  ctx.fillText('n (mol)', cx + tw/4, cy + th/4);
+}
+
+drawTriangle();
+</script>
+</body>
+</html>

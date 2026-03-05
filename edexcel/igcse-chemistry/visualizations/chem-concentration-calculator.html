@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concentration Calculator</title>
+    <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fafbfc; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .btn { background: #1835b4; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  .btn:hover { background: #506a8a; }
+  .chip { display: inline-block; background: #e8ecf8; color: #1a2747; border: 1px solid #d4d8e5; border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin: 4px; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  .subtitle { color: #1835b4; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+
+  .slider-group { margin-bottom: 18px; }
+  .slider-group label { display: flex; justify-content: space-between; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .slider-group label span { color: #1835b4; font-weight: 400; }
+  input[type=range] { -webkit-appearance: none; width: 100%; height: 8px; border-radius: 4px; background: #d4d8e5; outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 3px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+
+  .mode-toggle { display: flex; gap: 8px; margin-bottom: 16px; }
+  .mode-btn { flex: 1; text-align: center; padding: 10px; border-radius: 10px; border: 1px solid #d4d8e5; background: #fafbfc; cursor: pointer; font-weight: 500; font-size: 14px; transition: all 0.2s; }
+  .mode-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+
+  .mr-input { margin-bottom: 14px; }
+  .mr-input label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .mr-input input { width: 100%; padding: 10px 14px; border: 1px solid #d4d8e5; border-radius: 10px; font-family: system-ui, -apple-system, sans-serif; font-size: 15px; background: #fafbfc; }
+  .mr-input input:focus { outline: none; border-color: #1835b4; }
+
+  .readout-row { display: flex; gap: 10px; margin-top: 16px; }
+  .readout { flex: 1; background: #e8ecf8; border-radius: 12px; padding: 14px; text-align: center; }
+  .readout .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #1835b4; }
+  .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 26px; margin-top: 4px; color: #1a2747; }
+  .readout .unit { font-size: 12px; color: #1835b4; }
+
+  .formula-display { text-align: center; font-family: system-ui, -apple-system, sans-serif; font-size: 18px; color: #1835b4; margin: 10px 0 6px; }
+
+  .beaker-wrap { display: flex; justify-content: center; margin: 16px 0; }
+  .beaker-wrap canvas { border-radius: 12px; background: #fafbfc; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Concentration Calculator</h1>
+    <p class="subtitle">Calculate solution concentration from mass, volume, and Mr</p>
+
+    <div class="mode-toggle">
+      <div class="mode-btn active" id="modeGdm3" onclick="setMode('gdm3')">g/dm&sup3;</div>
+      <div class="mode-btn" id="modeMol" onclick="setMode('mol')">mol/dm&sup3;</div>
+    </div>
+
+    <div class="formula-display" id="formulaDisp">c = m / V</div>
+  </div>
+
+  <div class="card">
+    <div class="slider-group">
+      <label>Mass of solute <span id="massVal">10.0 g</span></label>
+      <input type="range" id="massSlider" min="0.1" max="100" step="0.1" value="10">
+    </div>
+    <div class="slider-group">
+      <label>Volume of solution <span id="volVal">1.00 dm&sup3;</span></label>
+      <input type="range" id="volSlider" min="0.05" max="5" step="0.05" value="1">
+    </div>
+    <div class="mr-input" id="mrGroup" style="display:none;">
+      <label>Relative Formula Mass (M<sub>r</sub>)</label>
+      <input type="number" id="mrInput" value="58.5" step="any" min="1" oninput="update()">
+    </div>
+
+    <div class="beaker-wrap">
+      <canvas id="beaker" width="220" height="260"></canvas>
+    </div>
+
+    <div class="readout-row">
+      <div class="readout">
+        <div class="label">Mass</div>
+        <div class="value" id="rMass">10.0</div>
+        <div class="unit">g</div>
+      </div>
+      <div class="readout">
+        <div class="label">Volume</div>
+        <div class="value" id="rVol">1.00</div>
+        <div class="unit">dm&sup3;</div>
+      </div>
+      <div class="readout">
+        <div class="label">Concentration</div>
+        <div class="value" id="rConc">10.0</div>
+        <div class="unit" id="rConcUnit">g/dm&sup3;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let mode = 'gdm3';
+
+const massSlider = document.getElementById('massSlider');
+const volSlider = document.getElementById('volSlider');
+const mrInput = document.getElementById('mrInput');
+
+massSlider.oninput = update;
+volSlider.oninput = update;
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('modeGdm3').classList.toggle('active', m === 'gdm3');
+  document.getElementById('modeMol').classList.toggle('active', m === 'mol');
+  document.getElementById('mrGroup').style.display = m === 'mol' ? 'block' : 'none';
+  document.getElementById('formulaDisp').innerHTML = m === 'gdm3'
+    ? 'c = m / V'
+    : 'c = m / (M<sub>r</sub> \u00d7 V)';
+  update();
+}
+
+function update() {
+  const mass = parseFloat(massSlider.value);
+  const vol = parseFloat(volSlider.value);
+  const mr = parseFloat(mrInput.value) || 1;
+
+  document.getElementById('massVal').textContent = mass.toFixed(1) + ' g';
+  document.getElementById('volVal').textContent = vol.toFixed(2) + ' dm\u00b3';
+
+  let conc;
+  if (mode === 'gdm3') {
+    conc = mass / vol;
+  } else {
+    conc = mass / (mr * vol);
+  }
+
+  document.getElementById('rMass').textContent = mass.toFixed(1);
+  document.getElementById('rVol').textContent = vol.toFixed(2);
+  document.getElementById('rConc').textContent = conc < 0.01 ? conc.toExponential(2) : conc.toFixed(2);
+  document.getElementById('rConcUnit').textContent = mode === 'gdm3' ? 'g/dm\u00b3' : 'mol/dm\u00b3';
+
+  drawBeaker(conc, mode === 'gdm3' ? 100 : 5);
+}
+
+function drawBeaker(conc, maxConc) {
+  const c = document.getElementById('beaker');
+  const ctx = c.getContext('2d');
+  const W = c.width, H = c.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const bx = 50, by = 40, bw = 120, bh = 180;
+
+  // Beaker outline
+  ctx.beginPath();
+  ctx.moveTo(bx, by);
+  ctx.lineTo(bx, by + bh);
+  ctx.lineTo(bx + bw, by + bh);
+  ctx.lineTo(bx + bw, by);
+  ctx.strokeStyle = '#1835b4';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Spout
+  ctx.beginPath();
+  ctx.moveTo(bx, by);
+  ctx.lineTo(bx - 10, by - 8);
+  ctx.strokeStyle = '#1835b4';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Graduation marks
+  ctx.strokeStyle = '#d4d8e5';
+  ctx.lineWidth = 1;
+  for (let i = 1; i <= 4; i++) {
+    const yy = by + bh - (bh * i / 5);
+    ctx.beginPath();
+    ctx.moveTo(bx + 5, yy);
+    ctx.lineTo(bx + 25, yy);
+    ctx.stroke();
+  }
+
+  // Solution fill (80% of beaker)
+  const fillH = bh * 0.75;
+  const fy = by + bh - fillH;
+  const intensity = Math.min(1, conc / maxConc);
+  const r = Math.round(99 + (50 * intensity));
+  const g = Math.round(126 - (80 * intensity));
+  const b = Math.round(161 - (100 * intensity));
+  const alpha = 0.2 + 0.6 * intensity;
+
+  ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  ctx.fillRect(bx + 2, fy, bw - 4, fillH - 2);
+
+  // Label
+  ctx.font = '500 13px Outfit';
+  ctx.fillStyle = '#1835b4';
+  ctx.textAlign = 'center';
+  ctx.fillText('Solution', bx + bw / 2, by + bh + 22);
+}
+
+update();
+</script>
+</body>
+</html>

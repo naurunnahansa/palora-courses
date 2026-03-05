@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>States of Matter</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .state-btns { display: flex; gap: 6px; margin-bottom: 8px; }
+        .state-btn { flex: 1; background: #e8ecf8; border: 2px solid transparent; border-radius: 5px; padding: 8px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .state-btn:hover { border-color: #1835b4; }
+        .state-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .info-box { background: #e8ecf8; border-radius: 5px; padding: 10px; font-size: 0.78rem; color: #4a5568; }
+        .info-box strong { color: #1835b4; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 8px; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 6px; text-align: center; }
+        .readout .label { font-size: 0.65rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 0.9rem; color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>States of Matter</h1>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="500"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Select State</div>
+        <div class="state-btns">
+            <button class="state-btn active" onclick="setState(0)">Solid</button>
+            <button class="state-btn" onclick="setState(1)">Liquid</button>
+            <button class="state-btn" onclick="setState(2)">Gas</button>
+        </div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Temperature</span><span class="val" id="tempLabel">25°C</span></div>
+            <input type="range" id="tempSlider" min="-50" max="400" value="25">
+        </div>
+    </div>
+    <div class="info-box" id="infoBox"></div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Spacing</div><div class="value" id="spacingVal">Close</div></div>
+        <div class="readout"><div class="label">Arrangement</div><div class="value" id="arrangVal">Regular</div></div>
+        <div class="readout"><div class="label">Movement</div><div class="value" id="moveVal">Vibrate</div></div>
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let state = 0, lastTs = 0;
+const particles = [];
+const N = 60;
+
+const stateInfo = [
+    { name: 'Solid', spacing: 'Close', arrangement: 'Regular', movement: 'Vibrate', info: 'Particles are <strong>closely packed</strong> in a <strong>regular pattern</strong>. They <strong>vibrate</strong> about fixed positions. Fixed shape and volume.' },
+    { name: 'Liquid', spacing: 'Close', arrangement: 'Random', movement: 'Slide past', info: 'Particles are <strong>close together</strong> but in a <strong>random arrangement</strong>. They can <strong>slide past</strong> each other. Fixed volume but no fixed shape.' },
+    { name: 'Gas', spacing: 'Far apart', arrangement: 'Random', movement: 'Fast & random', info: 'Particles are <strong>far apart</strong> and move <strong>quickly in random directions</strong>. They collide with each other and container walls. No fixed shape or volume.' }
+];
+
+function initParticles() {
+    particles.length = 0;
+    const W = canvas.width, H = canvas.height;
+    for (let i = 0; i < N; i++) {
+        particles.push({
+            x: W * 0.2 + Math.random() * W * 0.6,
+            y: H * 0.2 + Math.random() * H * 0.6,
+            vx: 0, vy: 0,
+            homeX: 0, homeY: 0
+        });
+    }
+    arrangeForState();
+}
+
+function arrangeForState() {
+    const W = canvas.width, H = canvas.height;
+    const cx = W / 2, cy = H / 2;
+    if (state === 0) {
+        const cols = 10, spacing = 35;
+        particles.forEach((p, i) => {
+            const col = i % cols, row = Math.floor(i / cols);
+            p.homeX = cx - (cols * spacing) / 2 + col * spacing + 18;
+            p.homeY = cy - 60 + row * spacing;
+            p.x = p.homeX; p.y = p.homeY; p.vx = 0; p.vy = 0;
+        });
+    } else if (state === 1) {
+        particles.forEach(p => {
+            p.x = cx - 150 + Math.random() * 300;
+            p.y = cy - 50 + Math.random() * 200;
+            p.vx = (Math.random() - 0.5) * 2;
+            p.vy = (Math.random() - 0.5) * 2;
+        });
+    } else {
+        particles.forEach(p => {
+            p.x = 80 + Math.random() * (canvas.width - 160);
+            p.y = 80 + Math.random() * (canvas.height - 160);
+            p.vx = (Math.random() - 0.5) * 6;
+            p.vy = (Math.random() - 0.5) * 6;
+        });
+    }
+}
+
+function setState(s) {
+    state = s;
+    document.querySelectorAll('.state-btn').forEach((b, i) => b.classList.toggle('active', i === s));
+    const info = stateInfo[s];
+    document.getElementById('infoBox').innerHTML = info.info;
+    document.getElementById('spacingVal').textContent = info.spacing;
+    document.getElementById('arrangVal').textContent = info.arrangement;
+    document.getElementById('moveVal').textContent = info.movement;
+    arrangeForState();
+}
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 500 / 1060) + 'px';
+}
+
+function draw(ts) {
+    const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.03) : 0;
+    lastTs = ts;
+    const temp = parseInt(document.getElementById('tempSlider').value);
+    const energy = (temp + 273) / 300;
+    document.getElementById('tempLabel').textContent = temp + '°C';
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    // Container
+    ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 3;
+    if (state === 0) {
+        ctx.strokeRect(W*0.2, H*0.2, W*0.6, H*0.6);
+    } else if (state === 1) {
+        ctx.beginPath(); ctx.moveTo(W*0.2, H*0.2); ctx.lineTo(W*0.2, H*0.8);
+        ctx.lineTo(W*0.8, H*0.8); ctx.lineTo(W*0.8, H*0.2); ctx.stroke();
+        // Water level
+        ctx.fillStyle = '#4a90d910';
+        ctx.fillRect(W*0.2, H*0.35, W*0.6, H*0.45);
+    } else {
+        ctx.strokeRect(W*0.05, H*0.05, W*0.9, H*0.9);
+    }
+
+    const r = 12;
+    particles.forEach(p => {
+        if (state === 0) {
+            p.x = p.homeX + (Math.random() - 0.5) * energy * 8;
+            p.y = p.homeY + (Math.random() - 0.5) * energy * 8;
+        } else {
+            const speed = state === 1 ? energy * 1.5 : energy * 4;
+            p.x += p.vx * speed;
+            p.y += p.vy * speed;
+            if (state === 1) {
+                p.vy += 0.1;
+                if (p.x < W*0.2+r) { p.x = W*0.2+r; p.vx *= -0.8; }
+                if (p.x > W*0.8-r) { p.x = W*0.8-r; p.vx *= -0.8; }
+                if (p.y > H*0.8-r) { p.y = H*0.8-r; p.vy *= -0.6; }
+                if (p.y < H*0.2+r) { p.y = H*0.2+r; p.vy *= -0.8; }
+            } else {
+                if (p.x < W*0.05+r) { p.x = W*0.05+r; p.vx *= -1; }
+                if (p.x > W*0.95-r) { p.x = W*0.95-r; p.vx *= -1; }
+                if (p.y < H*0.05+r) { p.y = H*0.05+r; p.vy *= -1; }
+                if (p.y > H*0.95-r) { p.y = H*0.95-r; p.vy *= -1; }
+            }
+        }
+        const heat = Math.min(1, energy * 0.7);
+        const cr = Math.round(99 + 160 * heat);
+        const cg = Math.round(126 - 60 * heat);
+        const cb = Math.round(161 - 120 * heat);
+        ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgb(${cr},${cg},${cb})`; ctx.fill();
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+    });
+
+    // State label
+    ctx.fillStyle = '#1835b4'; ctx.font = '700 20px Oswald'; ctx.textAlign = 'center';
+    ctx.fillText(stateInfo[state].name.toUpperCase(), W/2, H*0.12);
+
+    requestAnimationFrame(draw);
+}
+
+initParticles(); setState(0); resize();
+window.addEventListener('resize', resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

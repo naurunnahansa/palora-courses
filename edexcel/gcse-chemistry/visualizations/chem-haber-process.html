@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haber Process Simulation</title>
+    <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 4px; }
+  .subtitle { font-size: 0.85rem; color: #888; margin-bottom: 16px; }
+  canvas { width: 100%; background: #fafbfc; border-radius: 12px; border: 1px solid #d4d8e5; display: block; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  .btn:hover { background: #506a8a; }
+  .chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; border: 1.5px solid #d4d8e5; background: #fff; cursor: pointer; transition: all 0.2s; margin: 3px; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  .controls { margin-top: 14px; }
+  .control-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+  .control-row label { font-size: 0.82rem; font-weight: 500; min-width: 100px; }
+  input[type="range"] { flex: 1; accent-color: #1835b4; min-width: 120px; }
+  .value-badge { font-size: 0.78rem; background: #e8ecf8; padding: 2px 10px; border-radius: 10px; font-weight: 600; min-width: 65px; text-align: center; }
+  .toggle-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .yield-display { text-align: center; margin: 16px 0; }
+  .yield-display .yield-val { font-family: system-ui, -apple-system, sans-serif; font-size: 3rem; font-weight: 700; color: #1835b4; line-height: 1; }
+  .yield-display .yield-label { font-size: 0.85rem; color: #888; }
+  .stats-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+  .stat-card { flex: 1; min-width: 100px; background: #e8ecf8; border-radius: 10px; padding: 10px 12px; text-align: center; }
+  .stat-card .val { font-family: system-ui, -apple-system, sans-serif; font-size: 1.1rem; font-weight: 700; color: #1835b4; }
+  .stat-card .lbl { font-size: 0.7rem; color: #888; }
+  .info-box { background: #e8ecf8; border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; line-height: 1.5; margin-top: 12px; }
+  .info-box strong { color: #1835b4; }
+  .equation-display { background: #fafbfc; border-radius: 10px; padding: 12px; text-align: center; font-size: 1rem; font-weight: 600; border: 1px solid #d4d8e5; margin-bottom: 10px; }
+  .gauge-bar { height: 18px; border-radius: 9px; background: #d4d8e5; overflow: hidden; margin-top: 6px; }
+  .gauge-fill { height: 100%; border-radius: 9px; transition: width 0.5s ease, background 0.3s; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Haber Process Simulation</h1>
+    <p class="subtitle">N&#8322;(g) + 3H&#8322;(g) &#8652; 2NH&#8323;(g) &nbsp; &Delta;H = &minus;92 kJ/mol</p>
+    <div class="equation-display">Industrial synthesis of ammonia</div>
+
+    <canvas id="canvas" width="1000" height="500"></canvas>
+
+    <div class="yield-display">
+      <div class="yield-val" id="yieldVal">--</div>
+      <div class="yield-label">Ammonia Yield %</div>
+      <div class="gauge-bar"><div class="gauge-fill" id="yieldBar" style="width:0%; background:#1835b4;"></div></div>
+    </div>
+
+    <div class="controls">
+      <div class="control-row">
+        <label>Temperature</label>
+        <input type="range" id="tempSlider" min="350" max="550" value="450" step="10" oninput="update()">
+        <span class="value-badge" id="tempVal">450 &deg;C</span>
+      </div>
+      <div class="control-row">
+        <label>Pressure</label>
+        <input type="range" id="pressSlider" min="50" max="300" value="200" step="10" oninput="update()">
+        <span class="value-badge" id="pressVal">200 atm</span>
+      </div>
+      <div class="toggle-row">
+        <span class="chip active" id="catChip" onclick="toggleCatalyst()">Iron Catalyst</span>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="val" id="rateDesc">Moderate</div>
+        <div class="lbl">Reaction Rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="val" id="costDesc">Moderate</div>
+        <div class="lbl">Operating Cost</div>
+      </div>
+      <div class="stat-card" id="compCard">
+        <div class="val" id="compDesc">Good</div>
+        <div class="lbl">Compromise?</div>
+      </div>
+    </div>
+
+    <div class="info-box" id="info"></div>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+let useCatalyst = true;
+let displayYield = 0;
+let targetYield = 0;
+
+function toggleCatalyst() {
+  useCatalyst = !useCatalyst;
+  document.getElementById('catChip').classList.toggle('active', useCatalyst);
+  update();
+}
+
+function calcYield(temp, press) {
+  // Simplified model:
+  // Higher pressure -> higher yield (fewer moles on product side)
+  // Lower temperature -> higher yield (exothermic, favours forward)
+  // Base at 450C, 200atm ~ 15% yield (realistic)
+  let y = 50;
+  // Temperature effect: lower = better. At 350 yield ~60%, at 550 ~5%
+  y -= (temp - 350) * 0.275;
+  // Pressure effect: higher = better. At 50 yield low, at 300 high
+  y += (press - 50) * 0.08;
+  return Math.max(2, Math.min(95, y));
+}
+
+function update() {
+  const temp = +document.getElementById('tempSlider').value;
+  const press = +document.getElementById('pressSlider').value;
+  document.getElementById('tempVal').innerHTML = temp + ' &deg;C';
+  document.getElementById('pressVal').textContent = press + ' atm';
+
+  targetYield = calcYield(temp, press);
+
+  // Rate description
+  let rate = 'Very Slow';
+  if (temp >= 500) rate = 'Fast';
+  else if (temp >= 430) rate = 'Moderate';
+  else if (temp >= 380) rate = 'Slow';
+  if (useCatalyst) {
+    if (rate === 'Very Slow') rate = 'Slow';
+    else if (rate === 'Slow') rate = 'Moderate';
+    else if (rate === 'Moderate') rate = 'Good';
+    else rate = 'Fast';
+  }
+  document.getElementById('rateDesc').textContent = rate;
+
+  // Cost
+  let cost = 'Low';
+  if (press > 220) cost = 'High';
+  else if (press > 120) cost = 'Moderate';
+  if (temp > 480) cost = cost === 'High' ? 'Very High' : 'High';
+  document.getElementById('costDesc').textContent = cost;
+
+  // Compromise assessment
+  const isCompromise = temp >= 400 && temp <= 480 && press >= 150 && press <= 250 && useCatalyst;
+  document.getElementById('compDesc').textContent = isCompromise ? 'Yes' : 'No';
+  document.getElementById('compDesc').style.color = isCompromise ? '#5cb85c' : '#d45';
+
+  // Info
+  let info = '<strong>Conditions analysis:</strong><br>';
+  if (temp < 400) {
+    info += 'Low temperature favours a high yield (Le Chatelier: exothermic forward reaction) but the rate is too slow for industry. ';
+  } else if (temp > 480) {
+    info += 'High temperature increases rate but shifts equilibrium left, reducing yield. ';
+  } else {
+    info += 'Moderate temperature (~450 &deg;C) balances acceptable rate with reasonable yield. ';
+  }
+  if (press > 250) {
+    info += 'Very high pressure gives high yield (fewer moles on product side) but is expensive and dangerous. ';
+  } else if (press < 120) {
+    info += 'Low pressure reduces yield since equilibrium shifts towards more moles of gas (reactant side). ';
+  } else {
+    info += 'Moderate pressure (~200 atm) is the industrial compromise. ';
+  }
+  if (useCatalyst) {
+    info += '<br><strong>Iron catalyst:</strong> Speeds up both forward and reverse reactions equally, reaching equilibrium faster without changing yield.';
+  } else {
+    info += '<br><em>Without a catalyst, the reaction is too slow to be industrially viable at these temperatures.</em>';
+  }
+  if (isCompromise) {
+    info += '<br><br><strong style="color:#5cb85c;">These are close to the compromise conditions used in industry (450 &deg;C, 200 atm, iron catalyst).</strong>';
+  }
+  document.getElementById('info').innerHTML = info;
+}
+
+function drawReactor() {
+  ctx.clearRect(0, 0, W, H);
+
+  const rx = 200, ry = 60, rw = 600, rh = 380;
+
+  // Reactor body
+  const grad = ctx.createLinearGradient(rx, ry, rx + rw, ry);
+  grad.addColorStop(0, '#8a9ab5');
+  grad.addColorStop(0.5, '#b0bfd0');
+  grad.addColorStop(1, '#8a9ab5');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  roundedRect(ctx, rx, ry, rw, rh, 30);
+  ctx.fill();
+
+  // Outline
+  ctx.strokeStyle = '#1835b4';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  roundedRect(ctx, rx, ry, rw, rh, 30);
+  ctx.stroke();
+
+  // Yield fill inside reactor
+  const fillH = (displayYield / 100) * (rh - 20);
+  const fillGrad = ctx.createLinearGradient(0, ry + rh - 10 - fillH, 0, ry + rh - 10);
+  fillGrad.addColorStop(0, 'rgba(99,126,161,0.3)');
+  fillGrad.addColorStop(1, 'rgba(99,126,161,0.6)');
+  ctx.fillStyle = fillGrad;
+  ctx.fillRect(rx + 10, ry + rh - 10 - fillH, rw - 20, fillH);
+
+  // Animated bubbles
+  const t = performance.now() / 1000;
+  const temp = +document.getElementById('tempSlider').value;
+  const speed = useCatalyst ? 1.5 : 0.7;
+  const numBubbles = Math.floor(displayYield / 5) + 3;
+  for (let i = 0; i < numBubbles; i++) {
+    const bx = rx + 40 + ((i * 137) % (rw - 80));
+    const by = ry + rh - 30 - ((t * speed * 40 + i * 50) % (rh - 60));
+    const br = 6 + (i % 3) * 3;
+    ctx.beginPath();
+    ctx.arc(bx, by, br, 0, Math.PI * 2);
+    ctx.fillStyle = i % 3 === 0 ? 'rgba(255,255,255,0.5)' : 'rgba(99,126,161,0.3)';
+    ctx.fill();
+  }
+
+  // Labels
+  ctx.font = '700 28px Oswald';
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.fillText('REACTOR VESSEL', rx + rw / 2, ry + 45);
+
+  ctx.font = '500 20px Outfit';
+  ctx.fillText(useCatalyst ? 'Fe catalyst active' : 'No catalyst', rx + rw / 2, ry + 75);
+
+  // Input arrow left
+  ctx.fillStyle = '#1835b4';
+  ctx.font = '600 20px Oswald';
+  ctx.textAlign = 'right';
+  ctx.fillText('N\u2082 + 3H\u2082', rx - 20, ry + rh / 2 - 10);
+  ctx.fillText('IN', rx - 20, ry + rh / 2 + 18);
+  drawArrow(rx - 15, ry + rh / 2, rx, ry + rh / 2, '#1835b4', 3);
+
+  // Output arrow right
+  ctx.textAlign = 'left';
+  ctx.fillText('2NH\u2083', rx + rw + 20, ry + rh / 2 - 10);
+  ctx.fillText('OUT', rx + rw + 20, ry + rh / 2 + 18);
+  drawArrow(rx + rw, ry + rh / 2, rx + rw + 15, ry + rh / 2, '#d45', 3);
+
+  // Temp indicator
+  const tempNorm = (+document.getElementById('tempSlider').value - 350) / 200;
+  ctx.font = '600 22px Oswald';
+  ctx.fillStyle = '#1a2747';
+  ctx.textAlign = 'center';
+  ctx.fillText(document.getElementById('tempSlider').value + '\u00B0C', rx + rw / 2 - 120, ry + rh - 40);
+
+  // Pressure indicator
+  ctx.fillText(document.getElementById('pressSlider').value + ' atm', rx + rw / 2 + 120, ry + rh - 40);
+
+  // Yield in reactor
+  ctx.font = '700 48px Oswald';
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.fillText(displayYield.toFixed(1) + '%', rx + rw / 2, ry + rh / 2 + 15);
+  ctx.font = '400 18px Outfit';
+  ctx.fillText('NH\u2083 yield', rx + rw / 2, ry + rh / 2 + 40);
+}
+
+function roundedRect(ctx, x, y, w, h, r) {
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function drawArrow(x1, y1, x2, y2, color, lw) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = lw;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+  const angle = Math.atan2(y2 - y1, x2 - x1);
+  const hs = 12;
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2 - hs * Math.cos(angle - 0.4), y2 - hs * Math.sin(angle - 0.4));
+  ctx.lineTo(x2 - hs * Math.cos(angle + 0.4), y2 - hs * Math.sin(angle + 0.4));
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function animate() {
+  displayYield += (targetYield - displayYield) * 0.06;
+  document.getElementById('yieldVal').textContent = displayYield.toFixed(1) + '%';
+  const bar = document.getElementById('yieldBar');
+  bar.style.width = displayYield + '%';
+  if (displayYield > 50) bar.style.background = '#5cb85c';
+  else if (displayYield > 25) bar.style.background = '#1835b4';
+  else bar.style.background = '#e8a030';
+
+  drawReactor();
+  requestAnimationFrame(animate);
+}
+
+update();
+animate();
+</script>
+</body>
+</html>

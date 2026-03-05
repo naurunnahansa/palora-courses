@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Group 7 Halogen Properties</title>
+    <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { color: #1835b4; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
+  .subtitle { text-align: center; color: #888; font-size: 0.85rem; margin-bottom: 16px; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; transition: background 0.2s; }
+  .btn:hover { background: #4f6a8a; }
+  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #d4d8e5; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  .info-box { background: #e8ecf8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.6; }
+  .info-box strong { color: #1835b4; }
+  .halogen-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .hal-card { border-radius: 12px; padding: 12px 8px; text-align: center; border: 2px solid #d4d8e5; transition: all 0.2s; cursor: pointer; }
+  .hal-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .hal-card.selected { border-color: #1835b4; box-shadow: 0 0 0 2px #1835b444; }
+  .hal-card .sym { font-family: system-ui, -apple-system, sans-serif; font-size: 1.8rem; font-weight: 700; }
+  .hal-card .name { font-size: 0.7rem; font-weight: 600; margin-bottom: 4px; }
+  .hal-card .detail { font-size: 0.65rem; color: #666; line-height: 1.4; }
+  .disp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .disp-grid select { padding: 8px; border-radius: 8px; border: 1.5px solid #d4d8e5; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; width: 100%; }
+  .disp-result { text-align: center; padding: 14px; border-radius: 10px; margin-top: 12px; font-weight: 600; font-size: 0.95rem; transition: all 0.3s; }
+  .trend-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 10px; background: #fafbfc; border-radius: 8px; }
+  .trend-bar { flex: 1; height: 8px; border-radius: 4px; }
+  .trend-label { font-size: 0.75rem; min-width: 70px; color: #888; }
+  .trend-name { font-size: 0.8rem; font-weight: 600; color: #1835b4; min-width: 100px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Group 7: Halogen Properties</h1>
+    <p class="subtitle">Compare the halogens and predict displacement reactions</p>
+    <div class="halogen-cards" id="halCards"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:1rem; color:#1835b4; margin-bottom:10px;">Trends Down Group 7</h3>
+    <div class="trend-row">
+      <div class="trend-name">Reactivity</div>
+      <div class="trend-bar" style="background: linear-gradient(to right, #27ae60, #f9e79f);"></div>
+      <div class="trend-label">Decreases &darr;</div>
+    </div>
+    <div class="trend-row">
+      <div class="trend-name">Boiling Point</div>
+      <div class="trend-bar" style="background: linear-gradient(to right, #f9e79f, #e74c3c);"></div>
+      <div class="trend-label">Increases &darr;</div>
+    </div>
+    <div class="trend-row">
+      <div class="trend-name">Atomic Radius</div>
+      <div class="trend-bar" style="background: linear-gradient(to right, #f9e79f, #3498db);"></div>
+      <div class="trend-label">Increases &darr;</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:1rem; color:#1835b4; margin-bottom:10px;">Displacement Reaction Predictor</h3>
+    <p class="subtitle" style="margin-bottom:10px;">A more reactive halogen displaces a less reactive halide from solution</p>
+    <div class="disp-grid">
+      <div>
+        <label style="font-size:0.75rem; color:#888; font-weight:600;">HALOGEN ADDED</label>
+        <select id="halogenSelect">
+          <option value="">-- Select --</option>
+          <option value="F2">Fluorine (F2)</option>
+          <option value="Cl2">Chlorine (Cl2)</option>
+          <option value="Br2">Bromine (Br2)</option>
+          <option value="I2">Iodine (I2)</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:0.75rem; color:#888; font-weight:600;">HALIDE SOLUTION</label>
+        <select id="halideSelect">
+          <option value="">-- Select --</option>
+          <option value="NaF">Sodium fluoride (NaF)</option>
+          <option value="NaCl">Sodium chloride (NaCl)</option>
+          <option value="NaBr">Sodium bromide (NaBr)</option>
+          <option value="NaI">Sodium iodide (NaI)</option>
+        </select>
+      </div>
+    </div>
+    <div class="disp-result" id="dispResult" style="background:#fafbfc; color:#888;">
+      Select a halogen and a halide solution
+    </div>
+    <div class="info-box" id="dispInfo">
+      A halogen can displace a less reactive halide from its solution. Reactivity order: F > Cl > Br > I.
+    </div>
+  </div>
+</div>
+
+<script>
+const halogens = [
+  { sym: 'F', name: 'Fluorine', z: 9, state: 'Gas', color: '#f9e79f', textColor: '#7d6608', bp: '-188\u00B0C', reactivity: 4, appearance: 'Pale yellow gas', detail: 'Most reactive non-metal. Very dangerous.' },
+  { sym: 'Cl', name: 'Chlorine', z: 17, state: 'Gas', color: '#a9dfbf', textColor: '#1e8449', bp: '-34\u00B0C', reactivity: 3, appearance: 'Green-yellow gas', detail: 'Pungent smell. Used to sterilise water.' },
+  { sym: 'Br', name: 'Bromine', z: 35, state: 'Liquid', color: '#f5b7b1', textColor: '#922b21', bp: '59\u00B0C', reactivity: 2, appearance: 'Red-brown liquid', detail: 'Only non-metal liquid at room temp. Dense orange vapour.' },
+  { sym: 'I', name: 'Iodine', z: 53, state: 'Solid', color: '#d2b4de', textColor: '#6c3483', bp: '184\u00B0C', reactivity: 1, appearance: 'Dark grey solid', detail: 'Sublimes to purple vapour. Used as antiseptic.' }
+];
+
+const reactivityOrder = { F2: 4, Cl2: 3, Br2: 2, I2: 1 };
+const halideOrder = { NaF: 4, NaCl: 3, NaBr: 2, NaI: 1 };
+const halideElement = { NaF: 'F', NaCl: 'Cl', NaBr: 'Br', NaI: 'I' };
+const halogenElement = { F2: 'F', Cl2: 'Cl', Br2: 'Br', I2: 'I' };
+
+function buildCards() {
+  const cont = document.getElementById('halCards');
+  halogens.forEach(h => {
+    const card = document.createElement('div');
+    card.className = 'hal-card';
+    card.style.background = h.color + '44';
+    card.innerHTML = `
+      <div class="sym" style="color:${h.textColor}">${h.sym}</div>
+      <div class="name">${h.name}</div>
+      <div class="detail"><strong>${h.state}</strong><br>${h.appearance}<br>BP: ${h.bp}<br>Reactivity: ${'*'.repeat(h.reactivity)}</div>
+    `;
+    cont.appendChild(card);
+  });
+}
+
+function checkDisplacement() {
+  const hal = document.getElementById('halogenSelect').value;
+  const halide = document.getElementById('halideSelect').value;
+  const result = document.getElementById('dispResult');
+  const info = document.getElementById('dispInfo');
+
+  if (!hal || !halide) {
+    result.style.background = '#fafbfc';
+    result.style.color = '#888';
+    result.textContent = 'Select a halogen and a halide solution';
+    return;
+  }
+
+  const halEl = halogenElement[hal];
+  const halideEl = halideElement[halide];
+
+  if (halEl === halideEl) {
+    result.style.background = '#fafbfc';
+    result.style.color = '#888';
+    result.textContent = 'Same element -- no reaction';
+    info.innerHTML = 'A halogen cannot displace itself from a solution.';
+    return;
+  }
+
+  if (reactivityOrder[hal] > halideOrder[halide]) {
+    result.style.background = '#d4efdf';
+    result.style.color = '#1e8449';
+    result.textContent = 'DISPLACEMENT OCCURS!';
+    info.innerHTML = `<strong>Reaction occurs!</strong> ${hal} is more reactive than ${halideEl}\u2082, so it displaces ${halideEl}<sup>-</sup> ions from solution.<br><strong>Observation:</strong> Colour change as ${halideEl}\u2082 is produced.`;
+  } else {
+    result.style.background = '#fadbd8';
+    result.style.color = '#922b21';
+    result.textContent = 'NO REACTION';
+    info.innerHTML = `<strong>No reaction.</strong> ${hal} is less reactive than ${halideEl}\u2082, so it cannot displace ${halideEl}<sup>-</sup> ions from solution.`;
+  }
+}
+
+document.getElementById('halogenSelect').addEventListener('change', checkDisplacement);
+document.getElementById('halideSelect').addEventListener('change', checkDisplacement);
+
+buildCards();
+</script>
+</body>
+</html>

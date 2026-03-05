@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Structure &amp; Properties</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; cursor: pointer; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 0.9rem; color: #1835b4; }
+        .key-point { background: #f0f7ff; border-left: 3px solid #1835b4; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-top: 6px; }
+        th { font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.03em; padding: 6px 4px; text-align: left; border-bottom: 2px solid #1835b4; }
+        td { padding: 6px 4px; border-bottom: 1px solid #d4d8e5; }
+        tr.highlight { background: #e8ecf8; }
+        tr { cursor: pointer; transition: background 0.2s; }
+        tr:hover { background: #f7fafc; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Structures &amp; Properties Comparison</h1>
+
+    <div class="card">
+        <div class="card-title">Click a structure to explore</div>
+        <canvas id="structCanvas" width="520" height="200"></canvas>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Properties Comparison</div>
+        <table id="propTable">
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Ionic</th>
+                    <th>Simple Covalent</th>
+                    <th>Giant Covalent</th>
+                    <th>Metallic</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Melting Pt</strong></td>
+                    <td>High</td>
+                    <td>Low</td>
+                    <td>Very High</td>
+                    <td>High</td>
+                </tr>
+                <tr>
+                    <td><strong>Conductivity (solid)</strong></td>
+                    <td>No</td>
+                    <td>No</td>
+                    <td>No*</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td><strong>Conductivity (liquid/aq)</strong></td>
+                    <td>Yes</td>
+                    <td>No</td>
+                    <td>No*</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td><strong>Soluble in water</strong></td>
+                    <td>Often yes</td>
+                    <td>Sometimes</td>
+                    <td>No</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td><strong>Example</strong></td>
+                    <td>NaCl</td>
+                    <td>H<sub>2</sub>O, CO<sub>2</sub></td>
+                    <td>Diamond, SiO<sub>2</sub></td>
+                    <td>Fe, Cu</td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="font-size:0.62rem;color:#95a5a6;margin-top:4px;">*Graphite (giant covalent) does conduct due to delocalised electrons</div>
+    </div>
+
+    <div class="key-point" id="keyPoint">
+        Click on any structure above to learn more about its bonding and properties. The properties of a substance depend on its type of bonding and structure.
+    </div>
+</div>
+
+<script>
+const structures = [
+    {
+        name: 'Ionic',
+        col: 0,
+        note: '<strong>Ionic structures</strong> (e.g. NaCl) consist of a giant lattice of alternating positive and negative ions held by strong electrostatic forces. High melting point because many strong ionic bonds must be broken. Conducts when molten/dissolved as ions are free to move.',
+        color: '#e74c3c'
+    },
+    {
+        name: 'Simple Covalent',
+        col: 1,
+        note: '<strong>Simple covalent structures</strong> (e.g. H\u2082O) consist of small molecules with strong covalent bonds within molecules but <strong>weak intermolecular forces</strong> between molecules. Low melting point because only weak forces need to be overcome. Cannot conduct as no free charges.',
+        color: '#3498db'
+    },
+    {
+        name: 'Giant Covalent',
+        col: 2,
+        note: '<strong>Giant covalent structures</strong> (e.g. diamond, silicon dioxide) have millions of atoms all connected by strong covalent bonds in a 3D network. Very high melting point because many strong bonds must be broken. Very hard. Graphite is a special case that conducts electricity.',
+        color: '#2ecc71'
+    },
+    {
+        name: 'Metallic',
+        col: 3,
+        note: '<strong>Metallic structures</strong> consist of positive metal ions in a lattice surrounded by a sea of delocalised electrons. Strong electrostatic attraction gives high melting points. Conducts electricity as electrons are free to move. Malleable and ductile.',
+        color: '#9b59b6'
+    }
+];
+
+let selected = 0;
+let t = 0;
+
+const canvas = document.getElementById('structCanvas');
+const ctx = canvas.getContext('2d');
+
+canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+    const colW = canvas.width / 4;
+    const col = Math.floor(x / colW);
+    if (col >= 0 && col < 4) {
+        selected = col;
+        updateHighlight();
+    }
+});
+
+function updateHighlight() {
+    document.getElementById('keyPoint').innerHTML = structures[selected].note;
+    // Highlight table column
+    const rows = document.querySelectorAll('#propTable tbody tr');
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        cells.forEach((cell, i) => {
+            if (i === 0) { cell.style.background = ''; return; }
+            cell.style.background = (i - 1 === selected) ? '#e8ecf8' : '';
+        });
+    });
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const colW = canvas.width / 4;
+    t++;
+
+    structures.forEach((s, i) => {
+        const cx = colW * i + colW / 2;
+        const cy = 110;
+        const isActive = i === selected;
+
+        // Background highlight
+        if (isActive) {
+            ctx.fillStyle = 'rgba(99,126,161,0.06)';
+            ctx.fillRect(colW * i, 0, colW, canvas.height);
+        }
+
+        // Border
+        ctx.strokeStyle = isActive ? '#1835b4' : '#d4d8e5';
+        ctx.lineWidth = isActive ? 2 : 1;
+        ctx.strokeRect(colW * i + 2, 2, colW - 4, canvas.height - 4);
+
+        // Title
+        ctx.fillStyle = isActive ? '#1835b4' : '#95a5a6';
+        ctx.font = (isActive ? 'bold ' : '') + '10px Oswald';
+        ctx.textAlign = 'center';
+        ctx.fillText(s.name.toUpperCase(), cx, 18);
+
+        // Draw structure diagrams
+        if (i === 0) drawIonic(cx, cy, isActive);
+        if (i === 1) drawSimpleCovalent(cx, cy, isActive);
+        if (i === 2) drawGiantCovalent(cx, cy, isActive);
+        if (i === 3) drawMetallic(cx, cy, isActive);
+    });
+
+    ctx.textAlign = 'start';
+    requestAnimationFrame(draw);
+}
+
+function drawIonic(cx, cy, active) {
+    // Grid of alternating + and - ions
+    const spacing = 22;
+    for (let r = -2; r <= 2; r++) {
+        for (let c = -2; c <= 2; c++) {
+            const x = cx + c * spacing;
+            const y = cy + r * spacing;
+            const isPos = (r + c) % 2 === 0;
+            ctx.beginPath();
+            ctx.arc(x, y, 8, 0, Math.PI * 2);
+            ctx.fillStyle = isPos ? '#e74c3c33' : '#3498db33';
+            ctx.fill();
+            ctx.strokeStyle = isPos ? '#e74c3c' : '#3498db';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.fillStyle = isPos ? '#e74c3c' : '#3498db';
+            ctx.font = 'bold 8px Outfit';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(isPos ? '+' : '\u2013', x, y);
+        }
+    }
+    ctx.textBaseline = 'alphabetic';
+}
+
+function drawSimpleCovalent(cx, cy, active) {
+    // Small molecules scattered
+    const mols = [
+        { x: cx - 25, y: cy - 25 },
+        { x: cx + 20, y: cy - 15 },
+        { x: cx - 10, y: cy + 20 },
+        { x: cx + 25, y: cy + 25 },
+        { x: cx - 30, y: cy + 5 },
+        { x: cx + 10, y: cy - 35 }
+    ];
+
+    mols.forEach((m, i) => {
+        const wobble = Math.sin(t * 0.02 + i) * 3;
+        const mx = m.x + wobble;
+        const my = m.y;
+
+        // H2O molecule shape
+        ctx.beginPath();
+        ctx.arc(mx, my, 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#e74c3c44';
+        ctx.fill();
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+
+        // Two H
+        ctx.beginPath();
+        ctx.arc(mx - 8, my + 5, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#3498db33';
+        ctx.fill();
+        ctx.strokeStyle = '#3498db';
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(mx + 8, my + 5, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#3498db33';
+        ctx.fill();
+        ctx.strokeStyle = '#3498db';
+        ctx.stroke();
+
+        // Bonds
+        ctx.strokeStyle = '#aaa';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(mx - 3, my + 2); ctx.lineTo(mx - 6, my + 4);
+        ctx.moveTo(mx + 3, my + 2); ctx.lineTo(mx + 6, my + 4);
+        ctx.stroke();
+    });
+
+    // Dashed lines between molecules (weak forces)
+    ctx.setLineDash([2, 3]);
+    ctx.strokeStyle = '#ddd';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(mols[0].x + 10, mols[0].y + 5);
+    ctx.lineTo(mols[1].x - 10, mols[1].y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#aaa';
+    ctx.font = '7px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('weak forces', cx, cy + 50);
+    ctx.fillText('between molecules', cx, cy + 58);
+}
+
+function drawGiantCovalent(cx, cy, active) {
+    // Diamond-like network
+    const nodes = [];
+    const spacing = 20;
+    for (let r = -2; r <= 2; r++) {
+        for (let c = -2; c <= 2; c++) {
+            const offset = r % 2 !== 0 ? spacing / 2 : 0;
+            nodes.push({ x: cx + c * spacing + offset, y: cy + r * spacing });
+        }
+    }
+
+    // Draw bonds between nearby nodes
+    ctx.strokeStyle = '#2ecc71';
+    ctx.lineWidth = 1.5;
+    nodes.forEach((n1, i) => {
+        nodes.forEach((n2, j) => {
+            if (j <= i) return;
+            const dx = n1.x - n2.x, dy = n1.y - n2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < spacing * 1.2) {
+                ctx.beginPath();
+                ctx.moveTo(n1.x, n1.y);
+                ctx.lineTo(n2.x, n2.y);
+                ctx.stroke();
+            }
+        });
+    });
+
+    // Draw nodes
+    nodes.forEach(n => {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#2ecc7144';
+        ctx.fill();
+        ctx.strokeStyle = '#2ecc71';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    });
+
+    ctx.fillStyle = '#aaa';
+    ctx.font = '7px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('all strong covalent bonds', cx, cy + 55);
+}
+
+function drawMetallic(cx, cy, active) {
+    const spacing = 22;
+    // Ions
+    for (let r = -2; r <= 2; r++) {
+        for (let c = -2; c <= 2; c++) {
+            const x = cx + c * spacing + (r % 2 !== 0 ? spacing / 2 : 0);
+            const y = cy + r * spacing;
+            ctx.beginPath();
+            ctx.arc(x, y, 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#9b59b622';
+            ctx.fill();
+            ctx.strokeStyle = '#9b59b6';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.fillStyle = '#9b59b6';
+            ctx.font = 'bold 8px Outfit';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('+', x, y);
+        }
+    }
+    ctx.textBaseline = 'alphabetic';
+
+    // Electrons
+    for (let i = 0; i < 10; i++) {
+        const ex = cx - 40 + ((t * 0.5 + i * 47) % 80);
+        const ey = cy - 35 + ((i * 31 + Math.sin(t * 0.03 + i) * 10) % 70);
+        ctx.beginPath();
+        ctx.arc(ex, ey, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#1835b4';
+        ctx.fill();
+    }
+
+    ctx.fillStyle = '#aaa';
+    ctx.font = '7px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('delocalised electrons', cx, cy + 55);
+}
+
+updateHighlight();
+draw();
+</script>
+</body>
+</html>

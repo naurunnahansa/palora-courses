@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Momentum &amp; Collisions</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card {
+            border-radius: 5px;
+            border: 1px solid #d4d8e5;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99,126,161,0.15);
+        }
+        canvas {
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #d4d8e5;
+            display: block;
+            background: #fcfcfe;
+        }
+        .controls { display: flex; flex-direction: column; gap: 6px; }
+        .row-label {
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 0.8rem;
+            color: #1835b4;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: 4px;
+        }
+        .slider-row {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .slider-row label {
+            font-size: 0.78rem; font-weight: 500; color: #4a5568; min-width: 80px;
+        }
+        .slider-row input[type="range"] { flex: 1; accent-color: #1835b4; height: 6px; }
+        .slider-row .val {
+            font-size: 0.78rem; font-weight: 600; color: #1835b4; min-width: 60px; text-align: right;
+        }
+        .toggle-row {
+            display: flex; align-items: center; justify-content: center; gap: 10px; margin: 6px 0;
+        }
+        .toggle-row span { font-size: 0.82rem; font-weight: 500; color: #4a5568; }
+        .toggle-row span.active { color: #1835b4; font-weight: 700; }
+        .toggle {
+            width: 48px; height: 26px; border-radius: 13px; background: #d4d8e5;
+            position: relative; cursor: pointer; transition: background 0.3s;
+        }
+        .toggle.on { background: #1835b4; }
+        .toggle::after {
+            content: ''; position: absolute; top: 3px; left: 3px;
+            width: 20px; height: 20px; border-radius: 50%; background: #fff;
+            transition: transform 0.3s;
+        }
+        .toggle.on::after { transform: translateX(22px); }
+        .btn-row { display: flex; gap: 8px; margin-top: 4px; }
+        .btn {
+            flex: 1; padding: 7px 0; border: none; border-radius: 5px;
+            font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; font-weight: 600;
+            cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(99,126,161,0.2); }
+        .btn-primary { background: #1835b4; color: #fff; }
+        .btn-secondary { background: #4a3fc2; color: #1a2747; }
+        .btn-outline { background: #fff; color: #1835b4; border: 1px solid #1835b4; }
+        .momentum-table {
+            width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 6px;
+        }
+        .momentum-table th {
+            font-family: system-ui, -apple-system, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #1835b4;
+            padding: 6px 4px;
+            border-bottom: 2px solid #1835b4;
+            font-size: 0.72rem;
+        }
+        .momentum-table td {
+            padding: 5px 4px;
+            text-align: center;
+            border-bottom: 1px solid #d4d8e5;
+        }
+        .momentum-table .highlight {
+            background: #e8ecf8;
+            font-weight: 600;
+        }
+        .conservation-badge {
+            text-align: center;
+            padding: 6px;
+            border-radius: 5px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+        .badge-conserved { background: #d4edda; color: #155724; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Momentum &amp; Collisions</h1>
+        <div class="card">
+            <canvas id="canvas" width="576" height="220"></canvas>
+        </div>
+        <div class="card controls">
+            <div class="row-label">Object A (blue)</div>
+            <div class="slider-row">
+                <label>Mass A</label>
+                <input type="range" id="m1" min="1" max="20" value="5" step="0.5">
+                <span class="val" id="m1Val">5 kg</span>
+            </div>
+            <div class="slider-row">
+                <label>Velocity A</label>
+                <input type="range" id="v1" min="-10" max="10" value="4" step="0.5">
+                <span class="val" id="v1Val">4 m/s</span>
+            </div>
+            <div class="row-label">Object B (gold)</div>
+            <div class="slider-row">
+                <label>Mass B</label>
+                <input type="range" id="m2" min="1" max="20" value="5" step="0.5">
+                <span class="val" id="m2Val">5 kg</span>
+            </div>
+            <div class="slider-row">
+                <label>Velocity B</label>
+                <input type="range" id="v2" min="-10" max="10" value="-3" step="0.5">
+                <span class="val" id="v2Val">-3 m/s</span>
+            </div>
+            <div class="toggle-row">
+                <span id="elasticLabel" class="active">Elastic</span>
+                <div class="toggle" id="collisionToggle"></div>
+                <span id="inelasticLabel">Inelastic</span>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-primary" id="collideBtn">Collide</button>
+                <button class="btn btn-outline" id="resetBtn">Reset</button>
+            </div>
+        </div>
+        <div class="card">
+            <table class="momentum-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Object A</th>
+                        <th>Object B</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight:600;color:#1835b4;">Before</td>
+                        <td id="pA1">20.0</td>
+                        <td id="pB1">-15.0</td>
+                        <td class="highlight" id="pTot1">5.0</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600;color:#1835b4;">After</td>
+                        <td id="pA2">--</td>
+                        <td id="pB2">--</td>
+                        <td class="highlight" id="pTot2">--</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="conservation-badge badge-conserved" id="badge">
+                Momentum is always conserved in collisions
+            </div>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const m1Sl = document.getElementById('m1');
+        const v1Sl = document.getElementById('v1');
+        const m2Sl = document.getElementById('m2');
+        const v2Sl = document.getElementById('v2');
+        const toggle = document.getElementById('collisionToggle');
+
+        let isElastic = true;
+        let animId = null;
+        let isAnimating = false;
+        let phase = 'before'; // 'before', 'colliding', 'after'
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = (rect.width - 24) * 2;
+            canvas.height = 220 * 2;
+            canvas.style.height = '220px';
+        }
+        resizeCanvas();
+
+        toggle.addEventListener('click', () => {
+            isElastic = !isElastic;
+            toggle.classList.toggle('on', !isElastic);
+            document.getElementById('elasticLabel').classList.toggle('active', isElastic);
+            document.getElementById('inelasticLabel').classList.toggle('active', !isElastic);
+            updateTable();
+        });
+
+        function getInputs() {
+            return {
+                m1: parseFloat(m1Sl.value),
+                v1: parseFloat(v1Sl.value),
+                m2: parseFloat(m2Sl.value),
+                v2: parseFloat(v2Sl.value)
+            };
+        }
+
+        function computeAfter(inp) {
+            const { m1, v1, m2, v2 } = inp;
+            if (isElastic) {
+                const v1f = ((m1 - m2) * v1 + 2 * m2 * v2) / (m1 + m2);
+                const v2f = ((m2 - m1) * v2 + 2 * m1 * v1) / (m1 + m2);
+                return { v1f, v2f, combined: false };
+            } else {
+                const vf = (m1 * v1 + m2 * v2) / (m1 + m2);
+                return { v1f: vf, v2f: vf, combined: true };
+            }
+        }
+
+        function updateLabels() {
+            document.getElementById('m1Val').textContent = m1Sl.value + ' kg';
+            document.getElementById('v1Val').textContent = v1Sl.value + ' m/s';
+            document.getElementById('m2Val').textContent = m2Sl.value + ' kg';
+            document.getElementById('v2Val').textContent = v2Sl.value + ' m/s';
+        }
+
+        function updateTable() {
+            const inp = getInputs();
+            const pA1 = inp.m1 * inp.v1;
+            const pB1 = inp.m2 * inp.v2;
+            document.getElementById('pA1').textContent = pA1.toFixed(1) + ' kg\u00B7m/s';
+            document.getElementById('pB1').textContent = pB1.toFixed(1) + ' kg\u00B7m/s';
+            document.getElementById('pTot1').textContent = (pA1 + pB1).toFixed(1) + ' kg\u00B7m/s';
+
+            if (phase === 'after') {
+                const after = computeAfter(inp);
+                const pA2 = inp.m1 * after.v1f;
+                const pB2 = inp.m2 * after.v2f;
+                document.getElementById('pA2').textContent = (after.combined ? (inp.m1 + inp.m2) * after.v1f : pA2).toFixed(1) + ' kg\u00B7m/s';
+                document.getElementById('pB2').textContent = after.combined ? '--' : pB2.toFixed(1) + ' kg\u00B7m/s';
+                document.getElementById('pTot2').textContent = (after.combined ? (inp.m1 + inp.m2) * after.v1f : pA2 + pB2).toFixed(1) + ' kg\u00B7m/s';
+            } else {
+                document.getElementById('pA2').textContent = '--';
+                document.getElementById('pB2').textContent = '--';
+                document.getElementById('pTot2').textContent = '--';
+            }
+        }
+
+        function objRadius(m) {
+            return 20 + m * 3;
+        }
+
+        function drawScene(x1, x2, v1Arrow, v2Arrow, combined) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const inp = getInputs();
+            const midY = canvas.height / 2;
+
+            // Track
+            ctx.strokeStyle = '#d4d8e5';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([10, 8]);
+            ctx.beginPath();
+            ctx.moveTo(40, midY);
+            ctx.lineTo(canvas.width - 40, midY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            const r1 = objRadius(inp.m1);
+            const r2 = objRadius(inp.m2);
+
+            if (combined) {
+                // Draw combined object
+                const r = objRadius(inp.m1 + inp.m2);
+                const grad = ctx.createRadialGradient(x1, midY, r * 0.2, x1, midY, r);
+                grad.addColorStop(0, '#8ba3c0');
+                grad.addColorStop(1, '#1835b4');
+                ctx.beginPath();
+                ctx.arc(x1, midY, r, 0, Math.PI * 2);
+                ctx.fillStyle = grad;
+                ctx.fill();
+                ctx.strokeStyle = '#4a5568';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.fillStyle = '#fff';
+                ctx.font = '700 ' + Math.max(18, r * 0.45) + 'px system-ui, -apple-system, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText((inp.m1 + inp.m2) + ' kg', x1, midY);
+
+                if (Math.abs(v1Arrow) > 0.1) drawArrow(x1 + r + 10, midY, v1Arrow * 20, '#4a3fc2');
+            } else {
+                // Object A
+                const grad1 = ctx.createRadialGradient(x1, midY, r1 * 0.2, x1, midY, r1);
+                grad1.addColorStop(0, '#8ba3c0');
+                grad1.addColorStop(1, '#1835b4');
+                ctx.beginPath();
+                ctx.arc(x1, midY, r1, 0, Math.PI * 2);
+                ctx.fillStyle = grad1;
+                ctx.fill();
+                ctx.strokeStyle = '#4a5568';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.fillStyle = '#fff';
+                ctx.font = '700 ' + Math.max(18, r1 * 0.5) + 'px system-ui, -apple-system, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(inp.m1 + 'kg', x1, midY);
+
+                // Object B
+                const grad2 = ctx.createRadialGradient(x2, midY, r2 * 0.2, x2, midY, r2);
+                grad2.addColorStop(0, '#f7e08a');
+                grad2.addColorStop(1, '#4a3fc2');
+                ctx.beginPath();
+                ctx.arc(x2, midY, r2, 0, Math.PI * 2);
+                ctx.fillStyle = grad2;
+                ctx.fill();
+                ctx.strokeStyle = '#4a5568';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.fillStyle = '#1a2747';
+                ctx.font = '700 ' + Math.max(18, r2 * 0.5) + 'px system-ui, -apple-system, sans-serif';
+                ctx.fillText(inp.m2 + 'kg', x2, midY);
+
+                // Velocity arrows
+                if (Math.abs(v1Arrow) > 0.1) drawArrow(x1 + (v1Arrow > 0 ? r1 + 10 : -r1 - 10), midY - r1 - 20, v1Arrow * 20, '#1835b4');
+                if (Math.abs(v2Arrow) > 0.1) drawArrow(x2 + (v2Arrow > 0 ? r2 + 10 : -r2 - 10), midY - r2 - 20, v2Arrow * 20, '#c4a820');
+            }
+
+            // Labels
+            ctx.fillStyle = '#4a5568';
+            ctx.font = '500 20px system-ui, -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(isElastic ? 'Elastic Collision' : 'Perfectly Inelastic Collision', canvas.width / 2, 36);
+        }
+
+        function drawArrow(x, y, len, color) {
+            if (Math.abs(len) < 2) return;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + len, y);
+            ctx.stroke();
+
+            const dir = len > 0 ? 1 : -1;
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x + len, y);
+            ctx.lineTo(x + len - dir * 12, y - 8);
+            ctx.lineTo(x + len - dir * 12, y + 8);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function drawInitial() {
+            const inp = getInputs();
+            const cx = canvas.width / 2;
+            const r1 = objRadius(inp.m1);
+            const r2 = objRadius(inp.m2);
+            const gap = 80;
+            drawScene(cx - gap - r1, cx + gap + r2, inp.v1, inp.v2, false);
+        }
+
+        function stopAnim() {
+            if (animId) cancelAnimationFrame(animId);
+            isAnimating = false;
+            animId = null;
+        }
+
+        [m1Sl, v1Sl, m2Sl, v2Sl].forEach(sl => {
+            sl.addEventListener('input', () => {
+                updateLabels();
+                phase = 'before';
+                updateTable();
+                if (!isAnimating) drawInitial();
+            });
+        });
+
+        document.getElementById('collideBtn').addEventListener('click', () => {
+            stopAnim();
+            phase = 'before';
+            updateTable();
+            const inp = getInputs();
+            const after = computeAfter(inp);
+            const cx = canvas.width / 2;
+            const r1 = objRadius(inp.m1);
+            const r2 = objRadius(inp.m2);
+            const gap = 80;
+
+            let x1 = cx - gap - r1;
+            let x2 = cx + gap + r2;
+            const collisionX = cx;
+            const speed = 3;
+            let state = 'approach'; // approach -> flash -> separate
+            let flashFrames = 0;
+            isAnimating = true;
+
+            function frame() {
+                if (state === 'approach') {
+                    const dx1 = inp.v1 > 0 ? speed : inp.v1 < 0 ? -speed : 0;
+                    const dx2 = inp.v2 < 0 ? -speed : inp.v2 > 0 ? speed : 0;
+                    x1 += dx1 * 2;
+                    x2 += dx2 * 2;
+
+                    if (x1 + r1 >= x2 - r2) {
+                        x1 = collisionX - r1;
+                        x2 = collisionX + r2;
+                        state = 'flash';
+                        flashFrames = 0;
+                    }
+                    drawScene(x1, x2, inp.v1, inp.v2, false);
+                } else if (state === 'flash') {
+                    flashFrames++;
+                    // Flash effect
+                    drawScene(x1, x2, 0, 0, false);
+                    ctx.fillStyle = 'rgba(244,211,94,0.3)';
+                    ctx.beginPath();
+                    ctx.arc(collisionX, canvas.height / 2, 60 + flashFrames * 3, 0, Math.PI * 2);
+                    ctx.fill();
+                    if (flashFrames > 15) {
+                        state = 'separate';
+                        phase = 'after';
+                        updateTable();
+                        if (after.combined) {
+                            x1 = collisionX;
+                            x2 = collisionX;
+                        }
+                    }
+                } else if (state === 'separate') {
+                    if (after.combined) {
+                        x1 += after.v1f * 1.5;
+                        drawScene(x1, x1, after.v1f, 0, true);
+                    } else {
+                        x1 += after.v1f * 1.5;
+                        x2 += after.v2f * 1.5;
+                        drawScene(x1, x2, after.v1f, after.v2f, false);
+                    }
+                    if (x1 < -100 || x1 > canvas.width + 100 || x2 < -100 || x2 > canvas.width + 100) {
+                        isAnimating = false;
+                        return;
+                    }
+                }
+                animId = requestAnimationFrame(frame);
+            }
+            animId = requestAnimationFrame(frame);
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            stopAnim();
+            m1Sl.value = 5; v1Sl.value = 4; m2Sl.value = 5; v2Sl.value = -3;
+            isElastic = true;
+            toggle.classList.remove('on');
+            document.getElementById('elasticLabel').classList.add('active');
+            document.getElementById('inelasticLabel').classList.remove('active');
+            phase = 'before';
+            updateLabels();
+            updateTable();
+            drawInitial();
+        });
+
+        updateLabels();
+        updateTable();
+        drawInitial();
+        window.addEventListener('resize', () => { resizeCanvas(); if (!isAnimating) drawInitial(); });
+    </script>
+</body>
+</html>

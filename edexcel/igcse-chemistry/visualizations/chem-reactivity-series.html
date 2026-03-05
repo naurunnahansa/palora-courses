@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reactivity Series</title>
+    <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fafbfc; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  .subtitle { color: #1835b4; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+
+  .series-list { display: flex; flex-direction: column; gap: 4px; }
+  .metal-item {
+    display: flex; align-items: center; padding: 10px 14px; border-radius: 12px;
+    cursor: pointer; transition: all 0.2s; border: 2px solid transparent; position: relative;
+  }
+  .metal-item:hover { background: #e8ecf8; }
+  .metal-item.active { border-color: #1835b4; background: #e8ecf8; }
+  .metal-item.nonmetal { background: #f0f4f8; border-style: dashed; border-color: #d4d8e5; }
+  .metal-item.nonmetal:hover { background: #e8edf3; }
+
+  .metal-symbol { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 600; width: 42px; color: #1835b4; }
+  .metal-name { font-weight: 500; font-size: 14px; flex: 1; }
+  .metal-tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+  .tag-high { background: #ffe0e0; color: #c0392b; }
+  .tag-med { background: #fff3cd; color: #856404; }
+  .tag-low { background: #d4edda; color: #155724; }
+  .tag-ref { background: #d4d8e5; color: #1a2747; }
+
+  .arrow-label { text-align: center; font-size: 12px; color: #1835b4; font-weight: 600; margin: 6px 0; display: flex; align-items: center; gap: 8px; }
+  .arrow-label::before, .arrow-label::after { content: ''; flex: 1; height: 1px; background: #d4d8e5; }
+
+  .detail-card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .detail-title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; margin-bottom: 12px; color: #1835b4; }
+  .detail-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
+  .detail-label { font-weight: 600; font-size: 13px; min-width: 100px; color: #1835b4; padding-top: 2px; }
+  .detail-value { font-size: 14px; flex: 1; }
+  .detail-value.yes { color: #27ae60; font-weight: 600; }
+  .detail-value.no { color: #e74c3c; font-weight: 600; }
+  .extraction-badge { display: inline-block; background: #1835b4; color: #fff; padding: 4px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Reactivity Series</h1>
+    <p class="subtitle">Click a metal to see its reactions and extraction method</p>
+  </div>
+
+  <div class="card">
+    <div class="arrow-label">Most reactive</div>
+    <div class="series-list" id="seriesList"></div>
+    <div class="arrow-label">Least reactive</div>
+  </div>
+
+  <div class="detail-card" id="detailCard" style="display:none;"></div>
+</div>
+
+<script>
+const metals = [
+  { sym: 'K',  name: 'Potassium', reactivity: 'high',
+    water: 'Reacts violently \u2014 floats, fizzes, lilac flame, produces KOH + H\u2082',
+    acid: 'Too dangerous \u2014 explosive reaction',
+    oxygen: 'Burns vigorously with lilac flame to form K\u2082O',
+    extraction: 'Electrolysis', extractionWhy: 'Too reactive to be reduced by carbon' },
+  { sym: 'Na', name: 'Sodium', reactivity: 'high',
+    water: 'Reacts vigorously \u2014 floats, fizzes, melts into a ball, produces NaOH + H\u2082',
+    acid: 'Too dangerous \u2014 explosive reaction',
+    oxygen: 'Burns with yellow flame to form Na\u2082O',
+    extraction: 'Electrolysis', extractionWhy: 'Too reactive to be reduced by carbon' },
+  { sym: 'Ca', name: 'Calcium', reactivity: 'high',
+    water: 'Reacts readily \u2014 fizzes, sinks, produces Ca(OH)\u2082 + H\u2082, milky solution',
+    acid: 'Reacts vigorously with dilute acid',
+    oxygen: 'Burns with brick-red flame to form CaO',
+    extraction: 'Electrolysis', extractionWhy: 'Too reactive to be reduced by carbon' },
+  { sym: 'Mg', name: 'Magnesium', reactivity: 'high',
+    water: 'Very slow with cold water; reacts with steam to form MgO + H\u2082',
+    acid: 'Reacts vigorously \u2014 fizzes rapidly',
+    oxygen: 'Burns with bright white flame to form MgO',
+    extraction: 'Electrolysis', extractionWhy: 'Too reactive to be reduced by carbon' },
+  { sym: 'Al', name: 'Aluminium', reactivity: 'med',
+    water: 'No reaction (protected by oxide layer)',
+    acid: 'Reacts once oxide layer removed',
+    oxygen: 'Burns to form Al\u2082O\u2083 (oxide layer protects it)',
+    extraction: 'Electrolysis', extractionWhy: 'Too reactive to be reduced by carbon' },
+  { sym: 'C', name: 'Carbon', reactivity: 'ref', nonmetal: true,
+    water: '\u2014', acid: '\u2014', oxygen: 'Burns to form CO\u2082',
+    extraction: '\u2014', extractionWhy: 'Non-metal \u2014 used as a reducing agent' },
+  { sym: 'Zn', name: 'Zinc', reactivity: 'med',
+    water: 'No reaction with water or steam',
+    acid: 'Reacts fairly quickly \u2014 fizzes steadily',
+    oxygen: 'Burns to form ZnO (white powder)',
+    extraction: 'Carbon reduction', extractionWhy: 'Less reactive than carbon \u2014 carbon can reduce its ore' },
+  { sym: 'Fe', name: 'Iron', reactivity: 'med',
+    water: 'No reaction with water; slow reaction with steam',
+    acid: 'Reacts slowly with dilute acid',
+    oxygen: 'Burns with golden sparks to form Fe\u2083O\u2084',
+    extraction: 'Carbon reduction', extractionWhy: 'Less reactive than carbon \u2014 reduced in blast furnace' },
+  { sym: 'Sn', name: 'Tin', reactivity: 'med',
+    water: 'No reaction',
+    acid: 'Reacts very slowly with dilute acid',
+    oxygen: 'Slow oxidation to form SnO\u2082',
+    extraction: 'Carbon reduction', extractionWhy: 'Less reactive than carbon' },
+  { sym: 'Pb', name: 'Lead', reactivity: 'med',
+    water: 'No reaction',
+    acid: 'Very slow reaction with dilute acid',
+    oxygen: 'Slow oxidation to form PbO',
+    extraction: 'Carbon reduction', extractionWhy: 'Less reactive than carbon' },
+  { sym: 'H', name: 'Hydrogen', reactivity: 'ref', nonmetal: true,
+    water: '\u2014', acid: '\u2014', oxygen: 'Burns with squeaky pop to form H\u2082O',
+    extraction: '\u2014', extractionWhy: 'Non-metal \u2014 reference point for metal reactivity' },
+  { sym: 'Cu', name: 'Copper', reactivity: 'low',
+    water: 'No reaction',
+    acid: 'No reaction with dilute acid',
+    oxygen: 'Slow oxidation \u2014 goes green (patina) over time',
+    extraction: 'Carbon reduction or found native', extractionWhy: 'Less reactive than carbon' },
+  { sym: 'Ag', name: 'Silver', reactivity: 'low',
+    water: 'No reaction',
+    acid: 'No reaction with dilute acid',
+    oxygen: 'Very slow tarnishing',
+    extraction: 'Found native or chemical reduction', extractionWhy: 'Very unreactive \u2014 often found as pure element' },
+  { sym: 'Au', name: 'Gold', reactivity: 'low',
+    water: 'No reaction',
+    acid: 'No reaction (resists most acids)',
+    oxygen: 'No reaction',
+    extraction: 'Found native', extractionWhy: 'Extremely unreactive \u2014 found as pure element' },
+  { sym: 'Pt', name: 'Platinum', reactivity: 'low',
+    water: 'No reaction',
+    acid: 'No reaction (resists most acids)',
+    oxygen: 'No reaction',
+    extraction: 'Found native', extractionWhy: 'Extremely unreactive \u2014 found as pure element' }
+];
+
+const tagMap = { high: ['High', 'tag-high'], med: ['Medium', 'tag-med'], low: ['Low', 'tag-low'], ref: ['Reference', 'tag-ref'] };
+
+const list = document.getElementById('seriesList');
+metals.forEach((m, i) => {
+  const div = document.createElement('div');
+  div.className = 'metal-item' + (m.nonmetal ? ' nonmetal' : '');
+  const [tagText, tagClass] = tagMap[m.reactivity];
+  div.innerHTML = `<span class="metal-symbol">${m.sym}</span>
+    <span class="metal-name">${m.name}${m.nonmetal ? ' (non-metal)' : ''}</span>
+    <span class="metal-tag ${tagClass}">${tagText}</span>`;
+  div.onclick = () => showDetail(i, div);
+  list.appendChild(div);
+});
+
+function showDetail(i, el) {
+  document.querySelectorAll('.metal-item').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  const m = metals[i];
+  const dc = document.getElementById('detailCard');
+  dc.style.display = 'block';
+
+  const waterClass = m.water === '\u2014' || m.water.startsWith('No') ? 'no' : 'yes';
+  const acidClass = m.acid === '\u2014' || m.acid.startsWith('No') || m.acid.startsWith('Too') || m.acid.startsWith('Very slow') ? 'no' : 'yes';
+
+  dc.innerHTML = `
+    <div class="detail-title">${m.sym} \u2014 ${m.name}</div>
+    <div class="detail-row">
+      <div class="detail-label">With water</div>
+      <div class="detail-value">${m.water}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">With acid</div>
+      <div class="detail-value">${m.acid}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">With oxygen</div>
+      <div class="detail-value">${m.oxygen}</div>
+    </div>
+    ${m.extraction !== '\u2014' ? `
+    <div class="detail-row" style="margin-top:8px;padding-top:12px;border-top:1px solid #d4d8e5;">
+      <div class="detail-label">Extraction</div>
+      <div class="detail-value"><span class="extraction-badge">${m.extraction}</span></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Why?</div>
+      <div class="detail-value">${m.extractionWhy}</div>
+    </div>` : `
+    <div class="detail-row" style="margin-top:8px;padding-top:12px;border-top:1px solid #d4d8e5;">
+      <div class="detail-label">Note</div>
+      <div class="detail-value">${m.extractionWhy}</div>
+    </div>`}
+  `;
+  dc.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>

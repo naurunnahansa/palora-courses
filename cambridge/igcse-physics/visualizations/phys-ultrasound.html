@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultrasound Distance</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #1a2747; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; }
+        .readout .formula { font-size: 0.62rem; color: #4a5568; margin-top: 2px; }
+        .calc { background: #fafbfc; border-radius: 5px; padding: 8px; text-align: center; font-size: 0.78rem; margin-top: 8px; }
+        .calc strong { color: #1835b4; }
+        .btn { display: block; margin: 8px auto 0; background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 18px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { background: #506a8a; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Ultrasound Scanning</h1>
+    <p class="subtitle">Pulse-echo technique for measuring distance</p>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="400"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Depth to boundary</span><span class="val" id="dLabel">5.0 cm</span></div>
+            <input type="range" id="dSlider" min="10" max="200" value="50">
+        </div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Speed in tissue</span><span class="val" id="sLabel">1540 m/s</span></div>
+            <input type="range" id="sSlider" min="1000" max="4000" value="1540" step="10">
+        </div>
+        <button class="btn" onclick="sendPulse()">Send Pulse</button>
+    </div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Depth</div><div class="value" id="depthVal">5.0 cm</div></div>
+        <div class="readout"><div class="label">Round-trip time</div><div class="value" id="timeVal">—</div></div>
+        <div class="readout"><div class="label">Calculated depth</div><div class="value" id="calcDepth">—</div><div class="formula">s = vt / 2</div></div>
+    </div>
+    <div class="calc" id="calcBox">Press "Send Pulse" to measure</div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let pulseX = -1, pulsePhase = 0, animating = false, lastTs = 0;
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 400 / 1060) + 'px';
+}
+
+function getVals() {
+    const depth = parseInt(document.getElementById('dSlider').value) / 10; // cm
+    const speed = parseInt(document.getElementById('sSlider').value);
+    return { depth, speed };
+}
+
+function sendPulse() {
+    if (animating) return;
+    animating = true;
+    pulseX = 100;
+    pulsePhase = 0;
+}
+
+function draw(ts) {
+    const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.03) : 0;
+    lastTs = ts;
+    const { depth, speed } = getVals();
+
+    document.getElementById('dLabel').textContent = depth.toFixed(1) + ' cm';
+    document.getElementById('sLabel').textContent = speed + ' m/s';
+    document.getElementById('depthVal').textContent = depth.toFixed(1) + ' cm';
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#1a2747'; ctx.fillRect(0, 0, W, H);
+
+    // Probe (left)
+    ctx.fillStyle = '#1835b4'; ctx.fillRect(30, H*0.3, 70, H*0.4);
+    ctx.fillStyle = '#506a8a'; ctx.fillRect(30, H*0.3, 70, 10);
+    ctx.fillStyle = '#fff'; ctx.font = '600 12px Oswald'; ctx.textAlign = 'center';
+    ctx.fillText('PROBE', 65, H*0.5 + 4);
+
+    // Tissue
+    ctx.fillStyle = '#8b6e5a30';
+    ctx.fillRect(100, H*0.15, W - 150, H*0.7);
+
+    // Boundary
+    const boundaryX = 100 + (depth / 20) * (W - 250);
+    ctx.fillStyle = '#ffffff40';
+    ctx.fillRect(boundaryX, H*0.15, 4, H*0.7);
+    ctx.fillStyle = '#fff'; ctx.font = '500 12px Outfit'; ctx.textAlign = 'center';
+    ctx.fillText('Tissue boundary', boundaryX, H*0.1);
+
+    // Depth marker
+    ctx.setLineDash([4,4]); ctx.strokeStyle = '#4a3fc2'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(100, H*0.88); ctx.lineTo(boundaryX, H*0.88); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#4a3fc2'; ctx.font = '600 13px Outfit';
+    ctx.fillText(`d = ${depth.toFixed(1)} cm`, (100 + boundaryX)/2, H*0.95);
+
+    // Pulse animation
+    if (animating) {
+        const pulseSpeed = 600;
+        if (pulsePhase === 0) {
+            pulseX += pulseSpeed * dt;
+            if (pulseX >= boundaryX) { pulsePhase = 1; pulseX = boundaryX; }
+        } else {
+            pulseX -= pulseSpeed * dt;
+            if (pulseX <= 100) {
+                animating = false;
+                const roundTrip = (depth * 2 / 100) / speed; // in seconds
+                const calcD = speed * roundTrip / 2 * 100; // back to cm
+                document.getElementById('timeVal').textContent = (roundTrip * 1e6).toFixed(1) + ' μs';
+                document.getElementById('calcDepth').textContent = calcD.toFixed(1) + ' cm';
+                document.getElementById('calcBox').innerHTML = `t = 2d/v = 2×${(depth/100).toFixed(4)}/${speed} = <strong>${(roundTrip*1e6).toFixed(1)} μs</strong><br>d = vt/2 = ${speed}×${(roundTrip*1e6).toFixed(1)}μs/2 = <strong>${calcD.toFixed(1)} cm</strong>`;
+            }
+        }
+
+        // Draw pulse
+        const color = pulsePhase === 0 ? '#4a3fc2' : '#dc3545';
+        for (let i = 0; i < 3; i++) {
+            const r = 10 + i * 15;
+            ctx.beginPath(); ctx.arc(pulseX, H*0.5, r, -0.5, 0.5);
+            ctx.strokeStyle = color + (pulsePhase === 0 ? '80' : '60');
+            ctx.lineWidth = 3; ctx.stroke();
+        }
+        ctx.beginPath(); ctx.arc(pulseX, H*0.5, 5, 0, Math.PI*2);
+        ctx.fillStyle = color; ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+}
+
+resize(); window.addEventListener('resize', resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

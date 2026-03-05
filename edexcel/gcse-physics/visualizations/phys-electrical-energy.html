@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrical Energy</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}.slider-row{margin-bottom:8px}.slider-label{display:flex;justify-content:space-between;font-size:.8rem;color:#4a5568;margin-bottom:2px}.slider-label .val{font-weight:600;color:#1835b4}input[type="range"]{width:100%;accent-color:#1835b4}.readouts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.readout{background:#e8ecf8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.72rem;color:#4a5568}.readout .value{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4}.readout .formula{font-size:.68rem;color:#4a5568;margin-top:2px}.appliance-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.app-card{background:#fafbfc;border:1px solid #d4d8e5;border-radius:5px;padding:6px;text-align:center;cursor:pointer;transition:all .2s;font-size:.72rem}.app-card:hover{border-color:#1835b4}.app-card.active{border-color:#1835b4;background:#f0f4f8}.app-card .icon{font-size:1.2rem}.app-card .pw{font-weight:600;color:#1835b4}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Electrical Energy Calculator</h1>
+    <div class="card">
+        <div class="card-title">Settings</div>
+        <div class="slider-row"><div class="slider-label"><span>Power (P)</span><span class="val" id="pLabel">100 W</span></div><input type="range" id="pSlider" min="10" max="3000" value="100" step="10"></div>
+        <div class="slider-row"><div class="slider-label"><span>Time (t)</span><span class="val" id="tLabel">1.0 hours</span></div><input type="range" id="tSlider" min="1" max="240" value="10"></div>
+    </div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Energy (Joules)</div><div class="value" id="jVal">360,000 J</div><div class="formula">E = P × t</div></div>
+        <div class="readout"><div class="label">Energy (kWh)</div><div class="value" id="kwhVal">0.10 kWh</div><div class="formula">kWh = kW × hours</div></div>
+    </div>
+    <div class="readouts" style="margin-top:8px">
+        <div class="readout"><div class="label">Cost (at 30p/kWh)</div><div class="value" id="costVal">3.0p</div></div>
+        <div class="readout"><div class="label">CO₂ (at 0.2 kg/kWh)</div><div class="value" id="co2Val">0.02 kg</div></div>
+    </div>
+    <div class="card">
+        <div class="card-title">Common Appliances</div>
+        <div class="appliance-grid" id="appGrid"></div>
+    </div>
+</div>
+<script>
+const appliances=[
+    {name:'LED Bulb',icon:'💡',power:10},{name:'TV',icon:'📺',power:100},
+    {name:'Laptop',icon:'💻',power:65},{name:'Kettle',icon:'☕',power:2000},
+    {name:'Washing Machine',icon:'🫧',power:500},{name:'Oven',icon:'🍳',power:2500},
+    {name:'Fridge',icon:'❄',power:150},{name:'Hair Dryer',icon:'💨',power:1200}
+];
+
+const grid=document.getElementById('appGrid');
+appliances.forEach(a=>{
+    const card=document.createElement('div');card.className='app-card';
+    card.innerHTML=`<div class="icon">${a.icon}</div>${a.name}<div class="pw">${a.power} W</div>`;
+    card.onclick=()=>{
+        document.querySelectorAll('.app-card').forEach(c=>c.classList.remove('active'));
+        card.classList.add('active');
+        document.getElementById('pSlider').value=a.power;
+        update();
+    };
+    grid.appendChild(card);
+});
+
+function update(){
+    const P=parseInt(document.getElementById('pSlider').value);
+    const tMins=parseInt(document.getElementById('tSlider').value);
+    const tHours=tMins/10;
+    const tSecs=tHours*3600;
+    const eJ=P*tSecs;
+    const eKwh=P/1000*tHours;
+    const cost=eKwh*30;
+    const co2=eKwh*0.2;
+
+    document.getElementById('pLabel').textContent=P+' W';
+    document.getElementById('tLabel').textContent=tHours.toFixed(1)+' hours';
+    document.getElementById('jVal').textContent=eJ.toLocaleString()+' J';
+    document.getElementById('kwhVal').textContent=eKwh.toFixed(2)+' kWh';
+    document.getElementById('costVal').textContent=cost<100?cost.toFixed(1)+'p':'£'+(cost/100).toFixed(2);
+    document.getElementById('co2Val').textContent=co2.toFixed(3)+' kg';
+}
+
+['pSlider','tSlider'].forEach(id=>document.getElementById(id).addEventListener('input',update));
+update();
+</script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collision Theory Simulator</title>
+    <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 4px; }
+  .subtitle { font-size: 0.85rem; color: #888; margin-bottom: 16px; }
+  canvas { width: 100%; background: #fafbfc; border-radius: 12px; border: 1px solid #d4d8e5; display: block; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  .btn:hover { background: #506a8a; }
+  .chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; border: 1.5px solid #d4d8e5; background: #fff; cursor: pointer; transition: all 0.2s; margin: 3px; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  .controls { margin-top: 14px; }
+  .control-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+  .control-row label { font-size: 0.82rem; font-weight: 500; min-width: 110px; }
+  input[type="range"] { flex: 1; accent-color: #1835b4; min-width: 120px; }
+  .value-badge { font-size: 0.78rem; background: #e8ecf8; padding: 2px 10px; border-radius: 10px; font-weight: 600; min-width: 55px; text-align: center; }
+  .stats-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .stat-card { flex: 1; min-width: 100px; background: #e8ecf8; border-radius: 10px; padding: 10px 12px; text-align: center; }
+  .stat-card .val { font-family: system-ui, -apple-system, sans-serif; font-size: 1.4rem; font-weight: 700; color: #1835b4; }
+  .stat-card .lbl { font-size: 0.72rem; color: #888; }
+  .legend { display: flex; gap: 14px; margin-top: 10px; font-size: 0.78rem; flex-wrap: wrap; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; vertical-align: middle; margin-right: 4px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Collision Theory Simulator</h1>
+    <p class="subtitle">See how temperature, concentration and surface area affect reaction rate</p>
+    <canvas id="canvas" width="1000" height="600"></canvas>
+    <div class="legend">
+      <span><span class="legend-dot" style="background:#1835b4;"></span>Reactant A</span>
+      <span><span class="legend-dot" style="background:#d45;"></span>Reactant B</span>
+      <span><span class="legend-dot" style="background:#5cb85c;"></span>Successful collision</span>
+    </div>
+    <div class="controls">
+      <div class="control-row">
+        <label>Temperature</label>
+        <input type="range" id="tempSlider" min="1" max="10" value="5">
+        <span class="value-badge" id="tempVal">5</span>
+      </div>
+      <div class="control-row">
+        <label>Concentration</label>
+        <input type="range" id="concSlider" min="5" max="40" value="15">
+        <span class="value-badge" id="concVal">15</span>
+      </div>
+      <div class="control-row">
+        <label>Particle Size</label>
+        <input type="range" id="sizeSlider" min="8" max="30" value="15">
+        <span class="value-badge" id="sizeVal">15</span>
+      </div>
+      <div class="control-row">
+        <label>Activation Energy</label>
+        <input type="range" id="eaSlider" min="2" max="10" value="6">
+        <span class="value-badge" id="eaVal">6</span>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="val" id="collCount">0</div>
+        <div class="lbl">Total Collisions</div>
+      </div>
+      <div class="stat-card">
+        <div class="val" id="successCount">0</div>
+        <div class="lbl">Successful</div>
+      </div>
+      <div class="stat-card">
+        <div class="val" id="rateVal">0</div>
+        <div class="lbl">Rate (per sec)</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+
+let particles = [];
+let totalColl = 0, successColl = 0;
+let flashes = [];
+let lastRateTime = performance.now();
+let rateCounter = 0;
+let displayRate = 0;
+
+function initParticles() {
+  const n = +document.getElementById('concSlider').value;
+  particles = [];
+  const speed = +document.getElementById('tempSlider').value;
+  const size = +document.getElementById('sizeSlider').value;
+  for (let i = 0; i < n; i++) {
+    const type = i % 2 === 0 ? 'A' : 'B';
+    const angle = Math.random() * Math.PI * 2;
+    const spd = (0.5 + Math.random()) * speed * 0.6;
+    particles.push({
+      x: size + Math.random() * (W - size * 2),
+      y: size + Math.random() * (H - size * 2),
+      vx: Math.cos(angle) * spd,
+      vy: Math.sin(angle) * spd,
+      r: size * (0.8 + Math.random() * 0.4),
+      type
+    });
+  }
+  totalColl = 0;
+  successColl = 0;
+  rateCounter = 0;
+  displayRate = 0;
+  lastRateTime = performance.now();
+}
+
+function updateSliderLabels() {
+  document.getElementById('tempVal').textContent = document.getElementById('tempSlider').value;
+  document.getElementById('concVal').textContent = document.getElementById('concSlider').value;
+  document.getElementById('sizeVal').textContent = document.getElementById('sizeSlider').value;
+  document.getElementById('eaVal').textContent = document.getElementById('eaSlider').value;
+}
+
+document.getElementById('concSlider').addEventListener('input', () => { updateSliderLabels(); initParticles(); });
+document.getElementById('sizeSlider').addEventListener('input', () => {
+  updateSliderLabels();
+  const size = +document.getElementById('sizeSlider').value;
+  particles.forEach(p => p.r = size * (0.8 + Math.random() * 0.4));
+});
+document.getElementById('tempSlider').addEventListener('input', () => {
+  updateSliderLabels();
+  const speed = +document.getElementById('tempSlider').value;
+  particles.forEach(p => {
+    const angle = Math.atan2(p.vy, p.vx);
+    const spd = (0.5 + Math.random()) * speed * 0.6;
+    p.vx = Math.cos(angle) * spd;
+    p.vy = Math.sin(angle) * spd;
+  });
+});
+document.getElementById('eaSlider').addEventListener('input', updateSliderLabels);
+
+function update() {
+  const ea = +document.getElementById('eaSlider').value;
+
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    if (p.x - p.r < 0) { p.x = p.r; p.vx = Math.abs(p.vx); }
+    if (p.x + p.r > W) { p.x = W - p.r; p.vx = -Math.abs(p.vx); }
+    if (p.y - p.r < 0) { p.y = p.r; p.vy = Math.abs(p.vy); }
+    if (p.y + p.r > H) { p.y = H - p.r; p.vy = -Math.abs(p.vy); }
+  });
+
+  // Collision detection
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const a = particles[i], b = particles[j];
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const minDist = a.r + b.r;
+      if (dist < minDist && dist > 0) {
+        // Elastic collision response
+        const nx = dx / dist, ny = dy / dist;
+        const dvx = a.vx - b.vx, dvy = a.vy - b.vy;
+        const dvn = dvx * nx + dvy * ny;
+        if (dvn > 0) {
+          a.vx -= dvn * nx;
+          a.vy -= dvn * ny;
+          b.vx += dvn * nx;
+          b.vy += dvn * ny;
+
+          // Separate
+          const overlap = minDist - dist;
+          a.x -= overlap / 2 * nx;
+          a.y -= overlap / 2 * ny;
+          b.x += overlap / 2 * nx;
+          b.y += overlap / 2 * ny;
+
+          totalColl++;
+          // Check if collision energy exceeds Ea
+          const collisionEnergy = Math.sqrt(dvx * dvx + dvy * dvy);
+          if (a.type !== b.type && collisionEnergy > ea * 0.5) {
+            successColl++;
+            rateCounter++;
+            flashes.push({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, life: 1 });
+          }
+        }
+      }
+    }
+  }
+
+  // Rate calculation (per second)
+  const now = performance.now();
+  if (now - lastRateTime > 1000) {
+    displayRate = rateCounter;
+    rateCounter = 0;
+    lastRateTime = now;
+  }
+
+  flashes = flashes.filter(f => { f.life -= 0.03; return f.life > 0; });
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Flashes
+  flashes.forEach(f => {
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, 20 + (1 - f.life) * 20, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(92,184,92,${f.life * 0.5})`;
+    ctx.fill();
+  });
+
+  // Particles
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    if (p.type === 'A') {
+      ctx.fillStyle = '#1835b4';
+    } else {
+      ctx.fillStyle = '#d45';
+    }
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+
+  // Stats
+  document.getElementById('collCount').textContent = totalColl;
+  document.getElementById('successCount').textContent = successColl;
+  document.getElementById('rateVal').textContent = displayRate;
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+initParticles();
+updateSliderLabels();
+loop();
+</script>
+</body>
+</html>

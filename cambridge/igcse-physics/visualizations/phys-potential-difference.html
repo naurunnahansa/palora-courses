@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potential Difference</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.slider-row{margin-bottom:8px}.slider-label{display:flex;justify-content:space-between;font-size:.8rem;color:#4a5568;margin-bottom:2px}.slider-label .val{font-weight:600;color:#1835b4}input[type="range"]{width:100%;accent-color:#1835b4}.readouts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.readout{background:#e8ecf8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.72rem;color:#4a5568}.readout .value{font-family: system-ui, -apple-system, sans-serif;font-size:1.1rem;color:#1835b4}.readout .formula{font-size:.68rem;color:#4a5568;margin-top:2px}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.78rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Potential Difference</h1>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="400"></canvas></div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row"><div class="slider-label"><span>Battery voltage (V)</span><span class="val" id="vLabel">6 V</span></div><input type="range" id="vSlider" min="1" max="12" value="6"></div>
+        <div class="slider-row"><div class="slider-label"><span>Charge (Q)</span><span class="val" id="qLabel">2 C</span></div><input type="range" id="qSlider" min="1" max="10" value="2"></div>
+    </div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Energy transferred</div><div class="value" id="eVal">12 J</div><div class="formula">E = Q × V</div></div>
+        <div class="readout"><div class="label">Energy per coulomb</div><div class="value" id="epcVal">6 J/C</div><div class="formula">V = E / Q</div></div>
+    </div>
+    <div class="info">Potential difference is the <strong>energy transferred per unit charge</strong>. 1 volt = 1 joule per coulomb (1 V = 1 J/C).</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let lastTs=0,animT=0;
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*400/1060)+'px'}
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
+    const V=parseInt(document.getElementById('vSlider').value);
+    const Q=parseInt(document.getElementById('qSlider').value);
+    const E=Q*V;
+
+    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Battery on left
+    ctx.fillStyle='#1835b4';ctx.fillRect(60,H*0.3,80,H*0.4);ctx.strokeStyle='#506a8a';ctx.lineWidth=2;ctx.strokeRect(60,H*0.3,80,H*0.4);
+    ctx.fillStyle='#fff';ctx.font='700 18px Oswald';ctx.textAlign='center';ctx.fillText(V+'V',100,H*0.5+6);
+    ctx.fillStyle='#dc3545';ctx.font='700 16px Oswald';ctx.fillText('+',100,H*0.3-8);
+    ctx.fillStyle='#4a90d9';ctx.fillText('−',100,H*0.3+H*0.4+18);
+
+    // Component (lamp) on right
+    ctx.beginPath();ctx.arc(W-160,H*0.5,40,0,Math.PI*2);
+    ctx.fillStyle='#4a3fc240';ctx.fill();ctx.strokeStyle='#c9a020';ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(W-180,H*0.5+20);ctx.lineTo(W-140,H*0.5-20);ctx.moveTo(W-180,H*0.5-20);ctx.lineTo(W-140,H*0.5+20);
+    ctx.strokeStyle='#c9a020';ctx.lineWidth=2;ctx.stroke();
+
+    // Wires
+    ctx.strokeStyle='#4a5568';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(140,H*0.35);ctx.lineTo(W-160,H*0.35);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(140,H*0.65);ctx.lineTo(W-160,H*0.65);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(W-160,H*0.35);ctx.lineTo(W-160,H*0.5-40);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(W-160,H*0.5+40);ctx.lineTo(W-160,H*0.65);ctx.stroke();
+
+    // Energy level visualization
+    const barX=250,barW=W-500;
+    // High energy (top wire, after battery)
+    const highY=H*0.35;
+    for(let i=0;i<Q;i++){
+        const x=barX+((animT*80+i*barW/Q)%barW);
+        ctx.beginPath();ctx.arc(x,highY,8,0,Math.PI*2);
+        ctx.fillStyle='#dc3545';ctx.fill();
+        ctx.fillStyle='#fff';ctx.font='bold 8px sans-serif';ctx.textAlign='center';
+        ctx.fillText('+',x,highY+3);
+        // Energy indicator
+        const eHeight=V*3;
+        ctx.fillStyle='#4a3fc240';ctx.fillRect(x-4,highY-eHeight,8,eHeight);
+    }
+
+    // Low energy (bottom wire, after component)
+    const lowY=H*0.65;
+    for(let i=0;i<Q;i++){
+        const x=barX+barW-((animT*80+i*barW/Q)%barW);
+        ctx.beginPath();ctx.arc(x,lowY,8,0,Math.PI*2);
+        ctx.fillStyle='#4a90d9';ctx.fill();
+        ctx.fillStyle='#fff';ctx.font='bold 8px sans-serif';ctx.textAlign='center';
+        ctx.fillText('+',x,lowY+3);
+    }
+
+    // Labels
+    ctx.fillStyle='#dc3545';ctx.font='600 13px Outfit';ctx.textAlign='center';
+    ctx.fillText('High energy charges',W*0.5,H*0.25);
+    ctx.fillStyle='#4a90d9';ctx.fillText('Low energy charges',W*0.5,H*0.78);
+    ctx.fillStyle='#c9a020';ctx.font='500 12px Outfit';
+    ctx.fillText(`Energy transferred: ${E} J`,W-160,H*0.5+60);
+
+    document.getElementById('vLabel').textContent=V+' V';
+    document.getElementById('qLabel').textContent=Q+' C';
+    document.getElementById('eVal').textContent=E+' J';
+    document.getElementById('epcVal').textContent=V+' J/C';
+
+    requestAnimationFrame(draw);
+}
+
+resize();window.addEventListener('resize',resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

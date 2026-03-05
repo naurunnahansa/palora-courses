@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>States of Matter</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .readout-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+        .key-point { background: #f0f7ff; border-left: 3px solid #1835b4; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
+        .slider-row { display: flex; align-items: center; gap: 8px; }
+        .slider-row label { font-size: 0.72rem; color: #4a5568; white-space: nowrap; }
+        .slider-row .temp-val { font-family: system-ui, -apple-system, sans-serif; font-size: 0.9rem; color: #1835b4; min-width: 45px; text-align: right; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>States of Matter - Particle Model</h1>
+
+    <div class="card">
+        <canvas id="stateCanvas" width="520" height="280"></canvas>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Temperature Control</div>
+        <div class="slider-row">
+            <label>Temperature</label>
+            <input type="range" id="tempSlider" min="0" max="100" value="10">
+            <span class="temp-val" id="tempVal">10 &deg;C</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:0.6rem;color:#95a5a6;margin-top:2px;">
+            <span>0 &deg;C (Melting)</span>
+            <span>100 &deg;C (Boiling)</span>
+        </div>
+    </div>
+
+    <div class="readout-row">
+        <div class="readout">
+            <div class="label">State</div>
+            <div class="value" id="rState">Solid</div>
+        </div>
+        <div class="readout">
+            <div class="label">Particle Motion</div>
+            <div class="value" id="rMotion">Vibrate in place</div>
+        </div>
+        <div class="readout">
+            <div class="label">Energy</div>
+            <div class="value" id="rEnergy">Low</div>
+        </div>
+    </div>
+
+    <div class="key-point" id="keyPoint">
+        In a <strong>solid</strong>, particles are closely packed in a fixed, regular arrangement. They vibrate about fixed positions but cannot move from place to place. Solids have a definite shape and volume.
+    </div>
+</div>
+
+<script>
+const canvas = document.getElementById('stateCanvas');
+const ctx = canvas.getContext('2d');
+const slider = document.getElementById('tempSlider');
+
+const panelW = canvas.width / 3;
+const panelH = canvas.height;
+
+// Particles for each state panel
+const NUM = 30;
+
+function createSolidParticles() {
+    const particles = [];
+    const cols = 6, rows = 5;
+    const sx = 20, sy = 80;
+    const sp = 22;
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            if (particles.length >= NUM) break;
+            particles.push({
+                baseX: sx + c * sp + (r % 2 === 1 ? sp / 2 : 0),
+                baseY: sy + r * sp,
+                x: 0, y: 0,
+                vx: 0, vy: 0
+            });
+        }
+    }
+    return particles;
+}
+
+function createLiquidParticles() {
+    const particles = [];
+    for (let i = 0; i < NUM; i++) {
+        const x = 15 + Math.random() * (panelW - 30);
+        const y = 80 + Math.random() * 160;
+        particles.push({
+            baseX: x, baseY: y,
+            x: x, y: y,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: (Math.random() - 0.5) * 1.5
+        });
+    }
+    return particles;
+}
+
+function createGasParticles() {
+    const particles = [];
+    for (let i = 0; i < NUM; i++) {
+        particles.push({
+            baseX: 0, baseY: 0,
+            x: 15 + Math.random() * (panelW - 30),
+            y: 20 + Math.random() * 240,
+            vx: (Math.random() - 0.5) * 4,
+            vy: (Math.random() - 0.5) * 4
+        });
+    }
+    return particles;
+}
+
+let solidP = createSolidParticles();
+let liquidP = createLiquidParticles();
+let gasP = createGasParticles();
+
+let temp = 10;
+
+slider.addEventListener('input', () => {
+    temp = parseInt(slider.value);
+    document.getElementById('tempVal').innerHTML = temp + ' &deg;C';
+    updateReadouts();
+});
+
+function updateReadouts() {
+    let state, motion, energy, note;
+    if (temp <= 0) {
+        state = 'Solid';
+        motion = 'Vibrate in place';
+        energy = 'Low';
+        note = 'In a <strong>solid</strong>, particles are closely packed in a fixed, regular arrangement. They vibrate about fixed positions but cannot move from place to place. Solids have a definite shape and volume.';
+    } else if (temp < 100) {
+        state = 'Liquid';
+        motion = 'Slide past each other';
+        energy = 'Medium';
+        note = 'In a <strong>liquid</strong>, particles are close together but can move past each other. They have more energy than in a solid. Liquids have a definite volume but take the shape of their container.';
+    } else {
+        state = 'Gas';
+        motion = 'Fast, random motion';
+        energy = 'High';
+        note = 'In a <strong>gas</strong>, particles are far apart and move rapidly in random directions. They have high kinetic energy. Gases fill their container completely and can be compressed.';
+    }
+    document.getElementById('rState').textContent = state;
+    document.getElementById('rMotion').textContent = motion;
+    document.getElementById('rEnergy').textContent = energy;
+    document.getElementById('keyPoint').innerHTML = note;
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Panel dividers
+    ctx.strokeStyle = '#d4d8e5';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(panelW, 0); ctx.lineTo(panelW, panelH);
+    ctx.moveTo(panelW * 2, 0); ctx.lineTo(panelW * 2, panelH);
+    ctx.stroke();
+
+    // Highlight active panel
+    let activePanel;
+    if (temp <= 0) activePanel = 0;
+    else if (temp < 100) activePanel = 1;
+    else activePanel = 2;
+
+    ctx.fillStyle = 'rgba(99,126,161,0.06)';
+    ctx.fillRect(activePanel * panelW, 0, panelW, panelH);
+
+    // Panel titles
+    const titles = ['SOLID', 'LIQUID', 'GAS'];
+    titles.forEach((title, i) => {
+        ctx.fillStyle = i === activePanel ? '#1835b4' : '#b0bec5';
+        ctx.font = (i === activePanel ? 'bold ' : '') + '12px Oswald';
+        ctx.textAlign = 'center';
+        ctx.fillText(title, panelW * i + panelW / 2, 20);
+    });
+
+    // Container boxes for each panel
+    const boxPad = 12;
+    for (let i = 0; i < 3; i++) {
+        ctx.strokeStyle = i === activePanel ? '#1835b488' : '#d4d8e5';
+        ctx.lineWidth = i === activePanel ? 1.5 : 1;
+        ctx.strokeRect(panelW * i + boxPad, 30, panelW - boxPad * 2, panelH - 50);
+    }
+
+    const vibration = temp <= 0 ? Math.max(0.5, (temp + 50) / 50 * 2) : 2;
+    const liquidSpeed = temp < 100 ? 0.5 + (temp / 100) * 2 : 2.5;
+    const gasSpeed = temp >= 100 ? 2 + ((temp - 100) / 50) * 3 : 2;
+
+    // SOLID panel
+    const solidOffset = 0;
+    solidP.forEach(p => {
+        const vib = vibration;
+        const px = solidOffset + p.baseX + (Math.random() - 0.5) * vib;
+        const py = p.baseY + (Math.random() - 0.5) * vib;
+        ctx.beginPath();
+        ctx.arc(px, py, 8, 0, Math.PI * 2);
+        ctx.fillStyle = activePanel === 0 ? '#1835b433' : '#b0bec522';
+        ctx.fill();
+        ctx.strokeStyle = activePanel === 0 ? '#1835b4' : '#b0bec5';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    });
+
+    // LIQUID panel
+    const liquidOffset = panelW;
+    const lBoxL = liquidOffset + boxPad + 10;
+    const lBoxR = liquidOffset + panelW - boxPad - 10;
+    const lBoxT = 80;
+    const lBoxB = panelH - 30;
+
+    liquidP.forEach(p => {
+        p.x += p.vx * (liquidSpeed * 0.5);
+        p.y += p.vy * (liquidSpeed * 0.5);
+
+        // Gravity
+        p.vy += 0.05;
+
+        // Bounce in box
+        if (p.x < lBoxL + 8) { p.x = lBoxL + 8; p.vx = Math.abs(p.vx) * 0.8; }
+        if (p.x > lBoxR - 8) { p.x = lBoxR - 8; p.vx = -Math.abs(p.vx) * 0.8; }
+        if (p.y < lBoxT + 8) { p.y = lBoxT + 8; p.vy = Math.abs(p.vy) * 0.8; }
+        if (p.y > lBoxB - 8) { p.y = lBoxB - 8; p.vy = -Math.abs(p.vy) * 0.6; }
+
+        // Random nudge
+        p.vx += (Math.random() - 0.5) * 0.2;
+        p.vy += (Math.random() - 0.5) * 0.2;
+
+        // Dampen
+        p.vx *= 0.99;
+        p.vy *= 0.99;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+        ctx.fillStyle = activePanel === 1 ? '#1835b433' : '#b0bec522';
+        ctx.fill();
+        ctx.strokeStyle = activePanel === 1 ? '#1835b4' : '#b0bec5';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    });
+
+    // GAS panel
+    const gasOffset = panelW * 2;
+    const gBoxL = gasOffset + boxPad;
+    const gBoxR = gasOffset + panelW - boxPad;
+    const gBoxT = 30;
+    const gBoxB = panelH - 20;
+
+    gasP.forEach(p => {
+        p.x += p.vx * (gasSpeed * 0.4);
+        p.y += p.vy * (gasSpeed * 0.4);
+
+        // Bounce
+        if (p.x < gBoxL + 6) { p.x = gBoxL + 6; p.vx = Math.abs(p.vx); }
+        if (p.x > gBoxR - 6) { p.x = gBoxR - 6; p.vx = -Math.abs(p.vx); }
+        if (p.y < gBoxT + 6) { p.y = gBoxT + 6; p.vy = Math.abs(p.vy); }
+        if (p.y > gBoxB - 6) { p.y = gBoxB - 6; p.vy = -Math.abs(p.vy); }
+
+        // Random direction changes
+        p.vx += (Math.random() - 0.5) * 0.4;
+        p.vy += (Math.random() - 0.5) * 0.4;
+
+        // Speed limit
+        const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        if (spd > gasSpeed * 2) {
+            p.vx = (p.vx / spd) * gasSpeed * 2;
+            p.vy = (p.vy / spd) * gasSpeed * 2;
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = activePanel === 2 ? '#1835b433' : '#b0bec522';
+        ctx.fill();
+        ctx.strokeStyle = activePanel === 2 ? '#1835b4' : '#b0bec5';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    });
+
+    // Arrangement labels
+    ctx.textAlign = 'center';
+    ctx.font = '9px Outfit';
+
+    ctx.fillStyle = activePanel === 0 ? '#1835b4' : '#b0bec5';
+    ctx.fillText('Fixed, regular', panelW / 2, panelH - 8);
+
+    ctx.fillStyle = activePanel === 1 ? '#1835b4' : '#b0bec5';
+    ctx.fillText('Close, irregular', panelW * 1.5, panelH - 8);
+
+    ctx.fillStyle = activePanel === 2 ? '#1835b4' : '#b0bec5';
+    ctx.fillText('Far apart, random', panelW * 2.5, panelH - 8);
+
+    ctx.textAlign = 'start';
+
+    requestAnimationFrame(draw);
+}
+
+updateReadouts();
+draw();
+</script>
+</body>
+</html>

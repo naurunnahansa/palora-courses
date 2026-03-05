@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distance-Time Graph</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card {
+            border-radius: 5px;
+            border: 1px solid #d4d8e5;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99,126,161,0.15);
+        }
+        canvas {
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #d4d8e5;
+            display: block;
+            background: #fcfcfe;
+        }
+        .btn-row { display: flex; flex-wrap: wrap; gap: 6px; }
+        .btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 7px 6px;
+            border: none;
+            border-radius: 5px;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            background: #fff;
+            color: #1835b4;
+            border: 1.5px solid #1835b4;
+        }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(99,126,161,0.2); }
+        .btn.active { background: #1835b4; color: #fff; }
+        .results {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .result-item {
+            text-align: center;
+            padding: 8px 4px;
+            background: #e8ecf8;
+            border-radius: 5px;
+        }
+        .result-item .label {
+            font-size: 0.7rem;
+            color: #4a5568;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: 2px;
+        }
+        .result-item .value {
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 1.05rem;
+            color: #1835b4;
+            font-weight: 600;
+        }
+        .info {
+            font-size: 0.75rem;
+            color: #4a5568;
+            line-height: 1.5;
+            margin-top: 8px;
+            padding: 8px;
+            background: #e8ecf8;
+            border-radius: 5px;
+        }
+        .info strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Distance-Time Graph Explorer</h1>
+        <div class="card">
+            <canvas id="canvas" width="526" height="240"></canvas>
+        </div>
+        <div class="card">
+            <div class="btn-row">
+                <button class="btn active" data-scenario="stationary">Stationary</button>
+                <button class="btn" data-scenario="constant">Constant Speed</button>
+                <button class="btn" data-scenario="accel">Acceleration</button>
+                <button class="btn" data-scenario="return">Return Journey</button>
+            </div>
+        </div>
+        <div class="results">
+            <div class="result-item">
+                <div class="label">Speed (gradient)</div>
+                <div class="value" id="speedVal">0.00 m/s</div>
+            </div>
+        </div>
+        <div class="info">
+            The <strong>gradient</strong> (slope) of a distance-time graph gives the <strong>speed</strong>.<br>
+            A steeper line = faster speed. A flat line = stationary. A curve = changing speed.
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = (rect.width - 24) * 2;
+            canvas.height = 240 * 2;
+            canvas.style.height = '240px';
+        }
+        resizeCanvas();
+
+        const pad = { left: 70, right: 30, top: 30, bottom: 55 };
+
+        const scenarios = {
+            stationary: {
+                type: 'linear',
+                points: [[0, 5], [10, 5]],
+                maxT: 12, maxD: 30
+            },
+            constant: {
+                type: 'linear',
+                points: [[0, 0], [10, 25]],
+                maxT: 12, maxD: 30
+            },
+            accel: {
+                type: 'curve',
+                fn: function(t) { return 0.25 * t * t; },
+                tMax: 10,
+                maxT: 12, maxD: 30
+            },
+            return: {
+                type: 'linear',
+                points: [[0, 0], [5, 25], [10, 0]],
+                maxT: 12, maxD: 30
+            }
+        };
+
+        let current = 'stationary';
+
+        function w2c(t, d, maxT, maxD) {
+            const plotW = canvas.width - pad.left - pad.right;
+            const plotH = canvas.height - pad.top - pad.bottom;
+            return {
+                cx: pad.left + (t / maxT) * plotW,
+                cy: canvas.height - pad.bottom - (d / maxD) * plotH
+            };
+        }
+
+        function drawAxes(maxT, maxD) {
+            ctx.strokeStyle = '#4a5568';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(pad.left, pad.top);
+            ctx.lineTo(pad.left, canvas.height - pad.bottom);
+            ctx.lineTo(canvas.width - pad.right, canvas.height - pad.bottom);
+            ctx.stroke();
+
+            ctx.fillStyle = '#4a5568';
+            ctx.font = '600 22px system-ui, -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Time (s)', canvas.width / 2, canvas.height - 8);
+            ctx.save();
+            ctx.translate(18, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Distance (m)', 0, 0);
+            ctx.restore();
+
+            ctx.font = '400 20px system-ui, -apple-system, sans-serif';
+            for (let i = 0; i <= 5; i++) {
+                const t = maxT * i / 5;
+                const { cx, cy } = w2c(t, 0, maxT, maxD);
+                ctx.textAlign = 'center';
+                ctx.fillText(t.toFixed(0), cx, cy + 28);
+                if (i > 0) { ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke(); }
+            }
+            for (let i = 0; i <= 4; i++) {
+                const d = maxD * i / 4;
+                const { cx, cy } = w2c(0, d, maxT, maxD);
+                ctx.textAlign = 'right';
+                ctx.fillText(d.toFixed(0), pad.left - 10, cy + 6);
+                if (i > 0) { ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(canvas.width - pad.right, cy); ctx.stroke(); }
+            }
+        }
+
+        function drawGraph(scenario) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const s = scenarios[scenario];
+            drawAxes(s.maxT, s.maxD);
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#1835b4';
+            ctx.lineWidth = 4;
+
+            if (s.type === 'linear') {
+                for (let i = 0; i < s.points.length; i++) {
+                    const { cx, cy } = w2c(s.points[i][0], s.points[i][1], s.maxT, s.maxD);
+                    if (i === 0) ctx.moveTo(cx, cy);
+                    else ctx.lineTo(cx, cy);
+                }
+                ctx.stroke();
+
+                // Draw gradient triangle on first segment
+                if (s.points.length >= 2) {
+                    const p0 = s.points[0], p1 = s.points[1];
+                    const midT = (p0[0] + p1[0]) / 2;
+                    const midD = (p0[1] + p1[1]) / 2;
+                    const dt = p1[0] - p0[0];
+                    const dd = p1[1] - p0[1];
+
+                    // Gradient triangle
+                    const triT = midT;
+                    const triD = p0[1] + (midT - p0[0]) / dt * dd;
+                    const triW = Math.min(dt * 0.3, 2);
+
+                    const a = w2c(triT, triD, s.maxT, s.maxD);
+                    const b = w2c(triT + triW, triD, s.maxT, s.maxD);
+                    const riseD = p0[1] + (midT + triW - p0[0]) / dt * dd;
+                    const c = w2c(triT + triW, riseD, s.maxT, s.maxD);
+
+                    ctx.beginPath();
+                    ctx.setLineDash([6, 4]);
+                    ctx.strokeStyle = '#4a3fc2';
+                    ctx.lineWidth = 3;
+                    ctx.moveTo(a.cx, a.cy);
+                    ctx.lineTo(b.cx, b.cy);
+                    ctx.lineTo(c.cx, c.cy);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+
+                    // Labels
+                    ctx.font = '500 20px system-ui, -apple-system, sans-serif';
+                    ctx.fillStyle = '#4a3fc2';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('\u0394t', (a.cx + b.cx) / 2, a.cy + 24);
+                    ctx.fillText('\u0394d', c.cx + 24, (b.cy + c.cy) / 2 + 6);
+                }
+
+                // Points
+                for (const p of s.points) {
+                    const { cx, cy } = w2c(p[0], p[1], s.maxT, s.maxD);
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+                    ctx.fillStyle = '#4a3fc2';
+                    ctx.fill();
+                    ctx.strokeStyle = '#1835b4';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+
+                // Speed calculation
+                let speeds = [];
+                for (let i = 1; i < s.points.length; i++) {
+                    const dt = s.points[i][0] - s.points[i - 1][0];
+                    const dd = Math.abs(s.points[i][1] - s.points[i - 1][1]);
+                    speeds.push(dt > 0 ? dd / dt : 0);
+                }
+                document.getElementById('speedVal').textContent = speeds.map(sp => sp.toFixed(2)).join(', ') + ' m/s';
+
+            } else if (s.type === 'curve') {
+                const steps = 200;
+                for (let i = 0; i <= steps; i++) {
+                    const t = (s.tMax * i) / steps;
+                    const d = s.fn(t);
+                    const { cx, cy } = w2c(t, d, s.maxT, s.maxD);
+                    if (i === 0) ctx.moveTo(cx, cy);
+                    else ctx.lineTo(cx, cy);
+                }
+                ctx.stroke();
+
+                // Draw tangent at t=5
+                const tTan = 5;
+                const dt = 0.01;
+                const slope = (s.fn(tTan + dt) - s.fn(tTan - dt)) / (2 * dt);
+                const dAtTan = s.fn(tTan);
+                const tanLen = 2.5;
+                const t1 = tTan - tanLen, d1 = dAtTan - slope * tanLen;
+                const t2 = tTan + tanLen, d2 = dAtTan + slope * tanLen;
+                const p1 = w2c(t1, d1, s.maxT, s.maxD);
+                const p2 = w2c(t2, d2, s.maxT, s.maxD);
+                ctx.beginPath();
+                ctx.setLineDash([6, 4]);
+                ctx.strokeStyle = '#4a3fc2';
+                ctx.lineWidth = 3;
+                ctx.moveTo(p1.cx, p1.cy);
+                ctx.lineTo(p2.cx, p2.cy);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.font = '500 20px system-ui, -apple-system, sans-serif';
+                ctx.fillStyle = '#4a3fc2';
+                ctx.textAlign = 'left';
+                ctx.fillText('tangent at t=5s', p2.cx + 8, p2.cy);
+                ctx.fillText('speed = ' + slope.toFixed(2) + ' m/s', p2.cx + 8, p2.cy + 24);
+
+                // Point at t=5
+                const cp = w2c(tTan, dAtTan, s.maxT, s.maxD);
+                ctx.beginPath();
+                ctx.arc(cp.cx, cp.cy, 8, 0, Math.PI * 2);
+                ctx.fillStyle = '#4a3fc2';
+                ctx.fill();
+                ctx.strokeStyle = '#1835b4';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                document.getElementById('speedVal').textContent = 'Varies (at t=5s: ' + slope.toFixed(2) + ' m/s)';
+            }
+        }
+
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                current = btn.dataset.scenario;
+                drawGraph(current);
+            });
+        });
+
+        window.addEventListener('resize', () => { resizeCanvas(); drawGraph(current); });
+        drawGraph(current);
+    </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physical Quantities & Units</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        .qty-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .qty-item { background: #e8ecf8; border-radius: 5px; padding: 8px; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+        .qty-item:hover { border-color: #1835b4; }
+        .qty-item.active { border-color: #1835b4; background: #e8dce0; }
+        .qty-item .name { font-weight: 600; font-size: 0.82rem; color: #1a2747; }
+        .qty-item .unit { font-size: 0.72rem; color: #4a5568; }
+        .detail-panel { background: #fafbfc; border-radius: 5px; padding: 10px; margin-top: 8px; min-height: 60px; }
+        .detail-panel .label { font-size: 0.72rem; color: #4a5568; }
+        .detail-panel .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; }
+        .converter { margin-top: 8px; }
+        .converter-row { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
+        .converter-row input { flex: 1; padding: 6px 8px; border: 1px solid #d4d8e5; border-radius: 5px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.82rem; }
+        .converter-row select { padding: 6px 8px; border: 1px solid #d4d8e5; border-radius: 5px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.78rem; background: #fff; }
+        .converter-row .arrow { color: #1835b4; font-weight: 700; font-size: 1rem; }
+        .result-box { background: #e8ecf8; border-radius: 5px; padding: 8px 12px; text-align: center; }
+        .result-box .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.1rem; color: #1835b4; }
+        .prefix-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+        .prefix-chip { background: #fff; border: 1px solid #d4d8e5; border-radius: 4px; padding: 3px 8px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .prefix-chip:hover, .prefix-chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Physical Quantities & Units</h1>
+    <div class="card">
+        <div class="card-title">Base SI Quantities</div>
+        <div class="qty-grid" id="qtyGrid"></div>
+        <div class="detail-panel" id="detailPanel">
+            <div class="label">Click a quantity to explore</div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-title">Unit Converter</div>
+        <div class="converter">
+            <div class="converter-row">
+                <input type="number" id="inputVal" value="1" step="any">
+                <select id="fromPrefix"></select>
+                <span class="arrow">&rarr;</span>
+                <select id="toPrefix"></select>
+            </div>
+            <div class="result-box">
+                <div class="value" id="convertResult">1 m = 1 m</div>
+            </div>
+        </div>
+        <div class="card-title" style="margin-top:8px;">SI Prefixes</div>
+        <div class="prefix-chips" id="prefixChips"></div>
+    </div>
+</div>
+<script>
+const quantities = [
+    { name: 'Length', symbol: 'l', unit: 'metre', unitSymbol: 'm', type: 'base', desc: 'Measures the extent of something along its greatest dimension.' },
+    { name: 'Mass', symbol: 'm', unit: 'kilogram', unitSymbol: 'kg', type: 'base', desc: 'The amount of matter in an object. Not the same as weight.' },
+    { name: 'Time', symbol: 't', unit: 'second', unitSymbol: 's', type: 'base', desc: 'The duration between two events.' },
+    { name: 'Temperature', symbol: 'T', unit: 'kelvin', unitSymbol: 'K', type: 'base', desc: 'Measure of average kinetic energy of particles.' },
+    { name: 'Current', symbol: 'I', unit: 'ampere', unitSymbol: 'A', type: 'base', desc: 'Rate of flow of electric charge.' },
+    { name: 'Amount', symbol: 'n', unit: 'mole', unitSymbol: 'mol', type: 'base', desc: 'Number of particles (6.02 × 10²³ per mole).' },
+    { name: 'Force', symbol: 'F', unit: 'newton', unitSymbol: 'N', type: 'derived', desc: 'Derived: 1 N = 1 kg·m/s². Push or pull on an object.' },
+    { name: 'Energy', symbol: 'E', unit: 'joule', unitSymbol: 'J', type: 'derived', desc: 'Derived: 1 J = 1 kg·m²/s². Capacity to do work.' }
+];
+
+const prefixes = [
+    { name: 'tera', symbol: 'T', power: 12 },
+    { name: 'giga', symbol: 'G', power: 9 },
+    { name: 'mega', symbol: 'M', power: 6 },
+    { name: 'kilo', symbol: 'k', power: 3 },
+    { name: '(base)', symbol: '', power: 0 },
+    { name: 'milli', symbol: 'm', power: -3 },
+    { name: 'micro', symbol: 'μ', power: -6 },
+    { name: 'nano', symbol: 'n', power: -9 }
+];
+
+let selectedQty = null;
+const grid = document.getElementById('qtyGrid');
+const panel = document.getElementById('detailPanel');
+
+quantities.forEach((q, i) => {
+    const el = document.createElement('div');
+    el.className = 'qty-item';
+    el.innerHTML = `<div class="name">${q.name} (${q.symbol})</div><div class="unit">${q.unit} [${q.unitSymbol}] — ${q.type}</div>`;
+    el.onclick = () => {
+        document.querySelectorAll('.qty-item').forEach(e => e.classList.remove('active'));
+        el.classList.add('active');
+        selectedQty = q;
+        panel.innerHTML = `<div class="label">Symbol: <strong>${q.symbol}</strong> | Unit: <strong>${q.unitSymbol}</strong> (${q.unit}) | Type: ${q.type}</div><div class="value" style="margin-top:4px;font-size:0.85rem;">${q.desc}</div>`;
+    };
+    grid.appendChild(el);
+});
+
+// Prefix selectors
+const fromSel = document.getElementById('fromPrefix');
+const toSel = document.getElementById('toPrefix');
+prefixes.forEach(p => {
+    fromSel.add(new Option(`${p.symbol} (${p.name}) 10^${p.power}`, p.power));
+    toSel.add(new Option(`${p.symbol} (${p.name}) 10^${p.power}`, p.power));
+});
+fromSel.value = '0'; toSel.value = '-3';
+
+function convert() {
+    const val = parseFloat(document.getElementById('inputVal').value) || 0;
+    const from = parseInt(fromSel.value);
+    const to = parseInt(toSel.value);
+    const result = val * Math.pow(10, from - to);
+    const fP = prefixes.find(p => p.power === from);
+    const tP = prefixes.find(p => p.power === to);
+    const unit = selectedQty ? selectedQty.unitSymbol : 'm';
+    document.getElementById('convertResult').textContent = `${val} ${fP.symbol}${unit} = ${result.toPrecision(6)} ${tP.symbol}${unit}`;
+}
+document.getElementById('inputVal').addEventListener('input', convert);
+fromSel.addEventListener('change', convert);
+toSel.addEventListener('change', convert);
+
+// Prefix chips
+const chips = document.getElementById('prefixChips');
+prefixes.forEach(p => {
+    const chip = document.createElement('div');
+    chip.className = 'prefix-chip';
+    chip.textContent = `${p.symbol} ${p.name} (10^${p.power})`;
+    chip.onclick = () => {
+        document.querySelectorAll('.prefix-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        fromSel.value = '0'; toSel.value = String(p.power);
+        convert();
+    };
+    chips.appendChild(chip);
+});
+
+convert();
+</script>
+</body>
+</html>

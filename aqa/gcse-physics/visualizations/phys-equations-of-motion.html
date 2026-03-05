@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUVAT Equations Explorer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .subtitle { text-align: center; font-size: 0.75rem; color: #4a5568; margin-bottom: 12px; }
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .input-group { background: #f8f9fa; border-radius: 8px; padding: 8px 10px; border: 2px solid transparent; transition: all 0.2s; position: relative; }
+        .input-group.active { border-color: #1835b4; background: #f0f4f8; }
+        .input-group.computed { border-color: #4a3fc2; background: #fffdf5; }
+        .input-group label { font-size: 0.7rem; font-weight: 600; color: #4a5568; display: flex; align-items: center; gap: 4px; margin-bottom: 3px; }
+        .input-group label .symbol { color: #1835b4; font-weight: 700; font-size: 0.85rem; }
+        .input-group input { width: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 5px 8px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; background: white; }
+        .input-group input:disabled { background: #e8e8e8; color: #999; }
+        .input-group .toggle { position: absolute; top: 6px; right: 8px; cursor: pointer; font-size: 0.6rem; background: #1835b4; color: white; border: none; border-radius: 3px; padding: 1px 5px; font-family: system-ui, -apple-system, sans-serif; }
+        .input-group .toggle.off { background: #ccc; }
+        .btn { display: block; width: 100%; padding: 8px; background: #1835b4; color: white; border: none; border-radius: 8px; font-family: system-ui, -apple-system, sans-serif; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; margin-bottom: 10px; }
+        .btn:hover { background: #4f6a8a; }
+        .results { background: #f8f9fa; border-radius: 8px; padding: 10px; margin-bottom: 10px; }
+        .results h2 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        .equation-used { background: white; border-radius: 6px; padding: 6px 10px; margin-bottom: 6px; font-size: 0.78rem; border-left: 3px solid #4a3fc2; }
+        .equation-used .eq-name { font-weight: 600; color: #1835b4; }
+        .result-values { display: flex; gap: 8px; flex-wrap: wrap; }
+        .result-val { background: #fffdf5; border: 1px solid #4a3fc2; border-radius: 6px; padding: 4px 10px; font-size: 0.8rem; font-weight: 600; }
+        .result-val .sym { color: #1835b4; }
+        canvas { width: 100%; border-radius: 8px; background: #f8f9fa; display: block; }
+        .error { color: #e53e3e; font-size: 0.75rem; text-align: center; padding: 6px; }
+        .equations-ref { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 8px; }
+        .eq-ref { font-size: 0.65rem; color: #4a5568; background: #f8f9fa; padding: 3px 6px; border-radius: 4px; text-align: center; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>SUVAT Equations Explorer</h1>
+    <p class="subtitle">Enter any 3 known values, toggle off the 2 unknowns</p>
+    <div class="input-grid">
+        <div class="input-group active" id="group-s">
+            <label><span class="symbol">s</span> Displacement (m)</label>
+            <input type="number" id="inp-s" value="0" step="any">
+            <button class="toggle" id="tog-s" onclick="toggleVar('s')">ON</button>
+        </div>
+        <div class="input-group active" id="group-u">
+            <label><span class="symbol">u</span> Initial velocity (m/s)</label>
+            <input type="number" id="inp-u" value="0" step="any">
+            <button class="toggle" id="tog-u" onclick="toggleVar('u')">ON</button>
+        </div>
+        <div class="input-group active" id="group-v">
+            <label><span class="symbol">v</span> Final velocity (m/s)</label>
+            <input type="number" id="inp-v" value="20" step="any">
+            <button class="toggle" id="tog-v" onclick="toggleVar('v')">ON</button>
+        </div>
+        <div class="input-group" id="group-a">
+            <label><span class="symbol">a</span> Acceleration (m/s²)</label>
+            <input type="number" id="inp-a" value="" step="any" disabled>
+            <button class="toggle off" id="tog-a" onclick="toggleVar('a')">OFF</button>
+        </div>
+        <div class="input-group" id="group-t">
+            <label><span class="symbol">t</span> Time (s)</label>
+            <input type="number" id="inp-t" value="" step="any" disabled>
+            <button class="toggle off" id="tog-t" onclick="toggleVar('t')">OFF</button>
+        </div>
+    </div>
+    <button class="btn" onclick="calculate()">Calculate</button>
+    <div id="results" class="results" style="display:none;"></div>
+    <div id="error" class="error"></div>
+    <canvas id="canvas" height="160"></canvas>
+    <div class="equations-ref">
+        <div class="eq-ref">v = u + at</div>
+        <div class="eq-ref">s = ut + ½at²</div>
+        <div class="eq-ref">s = ½(u+v)t</div>
+        <div class="eq-ref">v² = u² + 2as</div>
+    </div>
+</div>
+<script>
+const vars = { s: true, u: true, v: true, a: false, t: false };
+const names = { s: 'Displacement', u: 'Initial velocity', v: 'Final velocity', a: 'Acceleration', t: 'Time' };
+const units = { s: 'm', u: 'm/s', v: 'm/s', a: 'm/s²', t: 's' };
+
+function toggleVar(k) {
+    const onCount = Object.values(vars).filter(v => v).length;
+    if (vars[k]) {
+        if (onCount <= 2) return;
+        vars[k] = false;
+    } else {
+        if (onCount >= 4) return;
+        vars[k] = true;
+    }
+    updateUI();
+}
+
+function updateUI() {
+    for (const k of ['s','u','v','a','t']) {
+        const grp = document.getElementById('group-' + k);
+        const inp = document.getElementById('inp-' + k);
+        const tog = document.getElementById('tog-' + k);
+        if (vars[k]) {
+            grp.classList.add('active');
+            grp.classList.remove('computed');
+            inp.disabled = false;
+            tog.textContent = 'ON';
+            tog.classList.remove('off');
+        } else {
+            grp.classList.remove('active');
+            grp.classList.remove('computed');
+            inp.disabled = true;
+            inp.value = '';
+            tog.textContent = 'OFF';
+            tog.classList.add('off');
+        }
+    }
+}
+
+function calculate() {
+    const onKeys = Object.keys(vars).filter(k => vars[k]);
+    const offKeys = Object.keys(vars).filter(k => !vars[k]);
+    if (onKeys.length !== 3) { showError('Please provide exactly 3 known values.'); return; }
+    const vals = {};
+    for (const k of onKeys) {
+        const v = parseFloat(document.getElementById('inp-' + k).value);
+        if (isNaN(v)) { showError('Please enter valid numbers for all known values.'); return; }
+        vals[k] = v;
+    }
+    const known = new Set(onKeys);
+    const results = {};
+    const eqsUsed = [];
+    let solved = false;
+    // Try to solve with SUVAT equations
+    for (let pass = 0; pass < 2; pass++) {
+        if (solved) break;
+        // v = u + at (no s)
+        if (!known.has('s') || (offKeys.some(k => !results[k]))) {
+            const have = ['u','v','a','t'].filter(k => known.has(k) || results[k] !== undefined);
+            const need = ['u','v','a','t'].filter(k => !known.has(k) && results[k] === undefined);
+            if (have.length >= 3 && need.length === 1) {
+                const g = k => vals[k] !== undefined ? vals[k] : results[k];
+                const m = need[0];
+                if (m === 'v') { results.v = g('u') + g('a') * g('t'); eqsUsed.push('v = u + at'); }
+                else if (m === 'u') { results.u = g('v') - g('a') * g('t'); eqsUsed.push('v = u + at → u = v − at'); }
+                else if (m === 'a') { if (g('t') === 0) { showError('Cannot solve: t = 0 with unknown a.'); return; } results.a = (g('v') - g('u')) / g('t'); eqsUsed.push('v = u + at → a = (v−u)/t'); }
+                else if (m === 't') { if (g('a') === 0) { showError('Cannot solve: a = 0 with unknown t and this equation.'); return; } results.t = (g('v') - g('u')) / g('a'); eqsUsed.push('v = u + at → t = (v−u)/a'); }
+            }
+        }
+        // s = ut + 0.5at^2 (no v)
+        if (!known.has('v') || (offKeys.some(k => !results[k] && k !== 'v'))) {
+            const g = k => vals[k] !== undefined ? vals[k] : results[k];
+            const have2 = ['s','u','a','t'].filter(k => g(k) !== undefined);
+            const need2 = ['s','u','a','t'].filter(k => g(k) === undefined);
+            if (have2.length >= 3 && need2.length === 1) {
+                const m = need2[0];
+                if (m === 's') { results.s = g('u') * g('t') + 0.5 * g('a') * g('t') * g('t'); eqsUsed.push('s = ut + ½at²'); }
+                else if (m === 'u') { if (g('t') === 0) { showError('t=0, cannot find u.'); return; } results.u = (g('s') - 0.5 * g('a') * g('t') * g('t')) / g('t'); eqsUsed.push('s = ut + ½at² → u = (s − ½at²)/t'); }
+                else if (m === 'a') { if (g('t') === 0) { showError('t=0, cannot find a.'); return; } results.a = 2 * (g('s') - g('u') * g('t')) / (g('t') * g('t')); eqsUsed.push('s = ut + ½at² → a = 2(s−ut)/t²'); }
+                else if (m === 't') { /* quadratic: 0.5a*t^2 + u*t - s = 0 */
+                    const A = 0.5 * g('a'), B = g('u'), C = -g('s');
+                    if (A === 0) { if (B === 0) { showError('Cannot solve for t.'); return; } results.t = -C / B; }
+                    else { const disc = B*B - 4*A*C; if (disc < 0) { showError('No real solution for t.'); return; } const t1 = (-B + Math.sqrt(disc))/(2*A), t2 = (-B - Math.sqrt(disc))/(2*A); results.t = t1 >= 0 ? t1 : t2; }
+                    eqsUsed.push('s = ut + ½at² (quadratic for t)');
+                }
+            }
+        }
+        // v^2 = u^2 + 2as (no t)
+        if (!known.has('t') || (offKeys.some(k => !results[k] && k !== 't'))) {
+            const g = k => vals[k] !== undefined ? vals[k] : results[k];
+            const have3 = ['s','u','v','a'].filter(k => g(k) !== undefined);
+            const need3 = ['s','u','v','a'].filter(k => g(k) === undefined);
+            if (have3.length >= 3 && need3.length === 1) {
+                const m = need3[0];
+                if (m === 'v') { const vv = g('u')*g('u') + 2*g('a')*g('s'); if (vv < 0) { showError('v² is negative.'); return; } results.v = Math.sqrt(vv); eqsUsed.push('v² = u² + 2as'); }
+                else if (m === 'u') { const uu = g('v')*g('v') - 2*g('a')*g('s'); if (uu < 0) { showError('u² is negative.'); return; } results.u = Math.sqrt(uu); eqsUsed.push('v² = u² + 2as → u = √(v²−2as)'); }
+                else if (m === 'a') { if (g('s') === 0) { showError('s=0, cannot find a.'); return; } results.a = (g('v')*g('v') - g('u')*g('u')) / (2*g('s')); eqsUsed.push('v² = u² + 2as → a = (v²−u²)/2s'); }
+                else if (m === 's') { if (g('a') === 0) { showError('a=0, cannot find s from this equation.'); return; } results.s = (g('v')*g('v') - g('u')*g('u')) / (2*g('a')); eqsUsed.push('v² = u² + 2as → s = (v²−u²)/2a'); }
+            }
+        }
+        // s = 0.5(u+v)t (no a)
+        if (!known.has('a') || (offKeys.some(k => !results[k] && k !== 'a'))) {
+            const g = k => vals[k] !== undefined ? vals[k] : results[k];
+            const have4 = ['s','u','v','t'].filter(k => g(k) !== undefined);
+            const need4 = ['s','u','v','t'].filter(k => g(k) === undefined);
+            if (have4.length >= 3 && need4.length === 1) {
+                const m = need4[0];
+                if (m === 's') { results.s = 0.5 * (g('u') + g('v')) * g('t'); eqsUsed.push('s = ½(u+v)t'); }
+                else if (m === 'u') { if (g('t') === 0) { showError('t=0'); return; } results.u = 2*g('s')/g('t') - g('v'); eqsUsed.push('s = ½(u+v)t → u = 2s/t − v'); }
+                else if (m === 'v') { if (g('t') === 0) { showError('t=0'); return; } results.v = 2*g('s')/g('t') - g('u'); eqsUsed.push('s = ½(u+v)t → v = 2s/t − u'); }
+                else if (m === 't') { const uv = g('u') + g('v'); if (uv === 0) { showError('u+v=0'); return; } results.t = 2*g('s') / uv; eqsUsed.push('s = ½(u+v)t → t = 2s/(u+v)'); }
+            }
+        }
+        if (offKeys.every(k => results[k] !== undefined)) { solved = true; }
+    }
+    if (!solved) { showError('Could not solve with the given values. Check inputs.'); return; }
+    // Display
+    document.getElementById('error').textContent = '';
+    const resDiv = document.getElementById('results');
+    resDiv.style.display = 'block';
+    let html = '<h2>Results</h2>';
+    for (const eq of eqsUsed) html += `<div class="equation-used"><span class="eq-name">Equation:</span> ${eq}</div>`;
+    html += '<div class="result-values">';
+    for (const k of offKeys) {
+        html += `<div class="result-val"><span class="sym">${k}</span> = ${results[k].toFixed(3)} ${units[k]}</div>`;
+        document.getElementById('group-' + k).classList.add('computed');
+    }
+    html += '</div>';
+    resDiv.innerHTML = html;
+    // Animate
+    const all = { ...vals, ...results };
+    drawMotion(all);
+}
+
+function showError(msg) {
+    document.getElementById('error').textContent = msg;
+    document.getElementById('results').style.display = 'none';
+}
+
+function drawMotion(v) {
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth * 2;
+    canvas.height = 320;
+    ctx.scale(2, 2);
+    const W = canvas.offsetWidth, H = 160;
+    ctx.clearRect(0, 0, W, H);
+    // Ground
+    ctx.fillStyle = '#e2e8f0';
+    ctx.fillRect(0, H - 25, W, 25);
+    ctx.strokeStyle = '#cbd5e0';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, H - 25); ctx.lineTo(W, H - 25); ctx.stroke();
+    // Motion path
+    const t = Math.abs(v.t) || 1;
+    const totalS = Math.abs(v.s);
+    const margin = 40;
+    const trackW = W - 2 * margin;
+    // Draw track marks
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '9px Outfit';
+    ctx.textAlign = 'center';
+    for (let i = 0; i <= 5; i++) {
+        const x = margin + (i / 5) * trackW;
+        ctx.beginPath(); ctx.moveTo(x, H - 25); ctx.lineTo(x, H - 20); ctx.strokeStyle = '#4a5568'; ctx.stroke();
+        ctx.fillText((totalS * i / 5).toFixed(1) + 'm', x, H - 10);
+    }
+    // Animate ball
+    let animT = 0;
+    const dur = 2000;
+    const startTime = performance.now();
+    function frame(now) {
+        const elapsed = now - startTime;
+        const frac = Math.min(elapsed / dur, 1);
+        const currT = frac * t;
+        const currS = v.u * currT + 0.5 * (v.a || 0) * currT * currT;
+        const xFrac = totalS > 0 ? Math.abs(currS) / totalS : frac;
+        const x = margin + xFrac * trackW;
+        // Clear ball area
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, W, H - 26);
+        // Redraw labels
+        ctx.fillStyle = '#4a5568';
+        ctx.font = '9px Outfit';
+        ctx.textAlign = 'center';
+        for (let i = 0; i <= 5; i++) {
+            const lx = margin + (i / 5) * trackW;
+            ctx.fillText((totalS * i / 5).toFixed(1) + 'm', lx, H - 10);
+            ctx.beginPath(); ctx.moveTo(lx, H - 25); ctx.lineTo(lx, H - 20); ctx.strokeStyle = '#4a5568'; ctx.lineWidth = 1; ctx.stroke();
+        }
+        // Trail
+        ctx.fillStyle = 'rgba(99,126,161,0.15)';
+        for (let i = 0; i < frac; i += 0.05) {
+            const tI = i * t;
+            const sI = v.u * tI + 0.5 * (v.a || 0) * tI * tI;
+            const xI = margin + (totalS > 0 ? Math.abs(sI) / totalS : i) * trackW;
+            ctx.beginPath(); ctx.arc(xI, H - 40, 4, 0, Math.PI * 2); ctx.fill();
+        }
+        // Ball
+        ctx.fillStyle = '#1835b4';
+        ctx.beginPath(); ctx.arc(x, H - 40, 10, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#4a3fc2';
+        ctx.beginPath(); ctx.arc(x, H - 40, 4, 0, Math.PI * 2); ctx.fill();
+        // Velocity arrow
+        const currV = v.u + (v.a || 0) * currT;
+        const arrowLen = Math.min(Math.abs(currV) * 2, 60) * Math.sign(currV);
+        if (Math.abs(arrowLen) > 2) {
+            ctx.strokeStyle = '#4a3fc2';
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(x, H - 55); ctx.lineTo(x + arrowLen, H - 55); ctx.stroke();
+            ctx.fillStyle = '#4a3fc2';
+            ctx.beginPath(); ctx.moveTo(x + arrowLen, H - 60); ctx.lineTo(x + arrowLen + (arrowLen > 0 ? 6 : -6), H - 55); ctx.lineTo(x + arrowLen, H - 50); ctx.fill();
+        }
+        // Info
+        ctx.fillStyle = '#1a2747';
+        ctx.font = '600 10px Outfit';
+        ctx.textAlign = 'left';
+        ctx.fillText(`v = ${currV.toFixed(1)} m/s`, 10, 15);
+        ctx.fillText(`s = ${Math.abs(currS).toFixed(1)} m`, 10, 28);
+        ctx.fillText(`t = ${currT.toFixed(2)} s`, 10, 41);
+        if (frac < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+}
+
+updateUI();
+</script>
+</body>
+</html>

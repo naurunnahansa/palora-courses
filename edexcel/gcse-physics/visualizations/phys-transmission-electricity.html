@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transmission of Electricity</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.slider-row{margin-bottom:8px}.slider-label{display:flex;justify-content:space-between;font-size:.8rem;color:#4a5568;margin-bottom:2px}.slider-label .val{font-weight:600;color:#1835b4}input[type="range"]{width:100%;accent-color:#1835b4}.readouts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.readout{background:#e8ecf8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.68rem;color:#4a5568}.readout .value{font-family: system-ui, -apple-system, sans-serif;font-size:.9rem;color:#1835b4}.readout .formula{font-size:.6rem;color:#4a5568;margin-top:2px}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Transmission of Electricity</h1>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="350"></canvas></div>
+    <div class="card">
+        <div class="card-title">Transmission Voltage</div>
+        <div class="slider-row"><div class="slider-label"><span>Grid voltage</span><span class="val" id="vLabel">400,000 V</span></div><input type="range" id="vSlider" min="1" max="20" value="16"></div>
+    </div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Current in lines</div><div class="value" id="curVal">—</div><div class="formula">I = P / V</div></div>
+        <div class="readout"><div class="label">Power lost</div><div class="value" id="lossVal">—</div><div class="formula">P = I²R</div></div>
+        <div class="readout"><div class="label">Efficiency</div><div class="value" id="effVal">—</div></div>
+    </div>
+    <div class="info">Higher voltage means <strong>lower current</strong> for the same power (P = IV). Lower current means <strong>less energy wasted</strong> as heat in the cables (P = I²R).</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const totalPower=1000000; // 1 MW
+const cableR=10; // ohms
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*350/1060)+'px'}
+
+function draw(){
+    const vFactor=parseInt(document.getElementById('vSlider').value);
+    const V=vFactor*25000;
+    const I=totalPower/V;
+    const Ploss=I*I*cableR;
+    const eff=((totalPower-Ploss)/totalPower*100);
+
+    document.getElementById('vLabel').textContent=V.toLocaleString()+' V';
+    document.getElementById('curVal').textContent=I.toFixed(1)+' A';
+    document.getElementById('lossVal').textContent=(Ploss/1000).toFixed(1)+' kW';
+    document.getElementById('effVal').textContent=eff.toFixed(1)+'%';
+
+    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Power station
+    ctx.fillStyle='#1835b4';ctx.fillRect(30,H*0.3,80,H*0.45);
+    ctx.fillStyle='#fff';ctx.font='600 11px Outfit';ctx.textAlign='center';
+    ctx.fillText('Power',70,H*0.5);ctx.fillText('Station',70,H*0.5+14);
+    ctx.fillText('25 kV',70,H*0.5+30);
+
+    // Step-up transformer
+    ctx.fillStyle='#4a3fc2';ctx.fillRect(160,H*0.4,50,H*0.25);
+    ctx.fillStyle='#1a2747';ctx.font='500 9px Outfit';
+    ctx.fillText('Step',185,H*0.5);ctx.fillText('UP',185,H*0.5+11);
+
+    // Power lines
+    const lineY=H*0.25;
+    const lossWidth=Math.min(20,Ploss/totalPower*80);
+    ctx.strokeStyle='#4a5568';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(210,H*0.5);ctx.lineTo(210,lineY);ctx.lineTo(W-210,lineY);ctx.lineTo(W-210,H*0.5);ctx.stroke();
+    // Pylons
+    [300,530,760].forEach(x=>{
+        ctx.strokeStyle='#aaa';ctx.lineWidth=2;
+        ctx.beginPath();ctx.moveTo(x,lineY);ctx.lineTo(x-15,H*0.75);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(x,lineY);ctx.lineTo(x+15,H*0.75);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(x-20,lineY);ctx.lineTo(x+20,lineY);ctx.stroke();
+    });
+
+    // Heat loss indicator
+    ctx.fillStyle=`rgba(220,53,69,${Math.min(0.6,Ploss/totalPower*3)})`;
+    for(let x=250;x<W-250;x+=40){
+        ctx.beginPath();ctx.moveTo(x,lineY);ctx.lineTo(x-5,lineY-15);ctx.lineTo(x+5,lineY-15);ctx.closePath();ctx.fill();
+    }
+    ctx.fillStyle='#dc3545';ctx.font='500 11px Outfit';ctx.textAlign='center';
+    ctx.fillText(`Heat loss: ${(Ploss/1000).toFixed(1)} kW`,W/2,lineY-22);
+
+    // Voltage and current labels on line
+    ctx.fillStyle='#1835b4';ctx.font='600 13px Oswald';
+    ctx.fillText(`${(V/1000).toFixed(0)} kV`,W/2,lineY+18);
+    ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';
+    ctx.fillText(`I = ${I.toFixed(1)} A`,W/2,lineY+32);
+
+    // Step-down transformer
+    ctx.fillStyle='#4a3fc2';ctx.fillRect(W-210,H*0.4,50,H*0.25);
+    ctx.fillStyle='#1a2747';ctx.font='500 9px Outfit';
+    ctx.fillText('Step',W-185,H*0.5);ctx.fillText('DOWN',W-185,H*0.5+11);
+
+    // Houses
+    ctx.fillStyle='#1835b4';
+    ctx.beginPath();ctx.moveTo(W-100,H*0.35);ctx.lineTo(W-60,H*0.2);ctx.lineTo(W-20,H*0.35);ctx.closePath();ctx.fill();
+    ctx.fillRect(W-95,H*0.35,70,H*0.35);
+    ctx.fillStyle='#4a3fc2';ctx.fillRect(W-80,H*0.45,15,15);ctx.fillRect(W-55,H*0.45,15,15);
+    ctx.fillStyle='#fff';ctx.font='600 11px Outfit';ctx.textAlign='center';
+    ctx.fillText('230 V',W-60,H*0.82);
+}
+
+document.getElementById('vSlider').addEventListener('input',draw);
+resize();draw();window.addEventListener('resize',()=>{resize();draw()});
+</script>
+</body>
+</html>

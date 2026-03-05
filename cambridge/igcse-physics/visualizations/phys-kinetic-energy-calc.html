@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinetic Energy Calculator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .formula-box { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 8px; margin-bottom: 10px; }
+        .formula-box .formula { font-size: 1.1rem; font-weight: 700; color: #1835b4; }
+        .formula-box .desc { font-size: 0.7rem; color: #4a5568; margin-top: 2px; }
+        .slider-group { border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .slider-label span { font-size: 0.8rem; font-weight: 600; }
+        .slider-label .value { font-size: 0.9rem; font-weight: 700; color: #1835b4; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #d4d8e5; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .result-card { background: linear-gradient(135deg, #1835b4, #506a8a); color: #fff; border-radius: 5px; padding: 12px; text-align: center; margin-bottom: 10px; }
+        .result-card .ke-label { font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; }
+        .result-card .ke-value { font-size: 1.8rem; font-weight: 700; }
+        .result-card .ke-unit { font-size: 0.75rem; opacity: 0.8; }
+        .result-card .breakdown { font-size: 0.72rem; opacity: 0.85; margin-top: 4px; }
+        canvas { display: block; margin: 0 auto; }
+        .chart-card { border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
+        .chart-card h2 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.82rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; text-align: center; }
+        .insight { background: #e8ecf8; border-radius: 5px; padding: 8px 10px; font-size: 0.75rem; color: #4a5568; text-align: center; }
+        .insight strong { color: #1835b4; }
+        .comparison { display: flex; gap: 6px; margin-bottom: 8px; }
+        .comp-card { flex: 1; border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px; text-align: center; }
+        .comp-card .comp-label { font-size: 0.68rem; color: #4a5568; }
+        .comp-card .comp-val { font-size: 1rem; font-weight: 700; color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Kinetic Energy Calculator</h1>
+    <div class="formula-box">
+        <div class="formula">KE = &frac12;mv&sup2;</div>
+        <div class="desc">Kinetic Energy (J) = &frac12; &times; mass (kg) &times; velocity&sup2; (m/s)&sup2;</div>
+    </div>
+    <div class="slider-group">
+        <div class="slider-label"><span>Mass (m)</span><span class="value" id="massVal">5.0 kg</span></div>
+        <input type="range" id="massSlider" min="0.5" max="100" step="0.5" value="5">
+    </div>
+    <div class="slider-group">
+        <div class="slider-label"><span>Velocity (v)</span><span class="value" id="velVal">10.0 m/s</span></div>
+        <input type="range" id="velSlider" min="0.5" max="50" step="0.5" value="10">
+    </div>
+    <div class="result-card">
+        <div class="ke-label">Kinetic Energy</div>
+        <div class="ke-value" id="keValue">250</div>
+        <div class="ke-unit">Joules (J)</div>
+        <div class="breakdown" id="keBreakdown">&frac12; &times; 5.0 &times; 10.0&sup2; = &frac12; &times; 5.0 &times; 100 = 250 J</div>
+    </div>
+    <div class="comparison">
+        <div class="comp-card">
+            <div class="comp-label">If v doubled</div>
+            <div class="comp-val" id="vDoubled">1000 J</div>
+            <div class="comp-label">(4&times; KE)</div>
+        </div>
+        <div class="comp-card">
+            <div class="comp-label">If m doubled</div>
+            <div class="comp-val" id="mDoubled">500 J</div>
+            <div class="comp-label">(2&times; KE)</div>
+        </div>
+    </div>
+    <div class="chart-card">
+        <h2>KE vs Velocity (at current mass)</h2>
+        <canvas id="chart" width="520" height="180"></canvas>
+    </div>
+    <div class="insight" id="insight">
+        <strong>Key insight:</strong> Doubling velocity quadruples kinetic energy because velocity is squared in the formula.
+    </div>
+</div>
+<script>
+const massSlider = document.getElementById('massSlider');
+const velSlider = document.getElementById('velSlider');
+const chart = document.getElementById('chart');
+const ctx = chart.getContext('2d');
+
+function calcKE(m, v) { return 0.5 * m * v * v; }
+
+function update() {
+    const m = parseFloat(massSlider.value);
+    const v = parseFloat(velSlider.value);
+    const ke = calcKE(m, v);
+    document.getElementById('massVal').textContent = m.toFixed(1) + ' kg';
+    document.getElementById('velVal').textContent = v.toFixed(1) + ' m/s';
+    document.getElementById('keValue').textContent = ke >= 1000 ? (ke/1000).toFixed(2) + 'k' : ke.toFixed(1);
+    document.getElementById('keBreakdown').innerHTML =
+        `&frac12; &times; ${m.toFixed(1)} &times; ${v.toFixed(1)}&sup2; = &frac12; &times; ${m.toFixed(1)} &times; ${(v*v).toFixed(1)} = ${ke.toFixed(1)} J`;
+    const keVD = calcKE(m, v * 2);
+    const keMD = calcKE(m * 2, v);
+    document.getElementById('vDoubled').textContent = keVD >= 1000 ? (keVD/1000).toFixed(1) + 'k J' : keVD.toFixed(0) + ' J';
+    document.getElementById('mDoubled').textContent = keMD >= 1000 ? (keMD/1000).toFixed(1) + 'k J' : keMD.toFixed(0) + ' J';
+    drawChart(m, v);
+}
+
+function drawChart(m, currentV) {
+    const w = chart.width, h = chart.height;
+    const pad = { top: 10, right: 15, bottom: 30, left: 55 };
+    const cw = w - pad.left - pad.right;
+    const ch = h - pad.top - pad.bottom;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(0, 0, w, h);
+    const maxV = 50;
+    const maxKE = calcKE(m, maxV);
+    // grid
+    ctx.strokeStyle = '#eee';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i <= 5; i++) {
+        const y = pad.top + ch - (i / 5) * ch;
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cw, y); ctx.stroke();
+    }
+    // curve
+    ctx.beginPath();
+    ctx.strokeStyle = '#1835b4';
+    ctx.lineWidth = 2.5;
+    for (let px = 0; px <= cw; px++) {
+        const v = (px / cw) * maxV;
+        const ke = calcKE(m, v);
+        const y = pad.top + ch - (ke / maxKE) * ch;
+        px === 0 ? ctx.moveTo(pad.left + px, y) : ctx.lineTo(pad.left + px, y);
+    }
+    ctx.stroke();
+    // fill under curve
+    ctx.lineTo(pad.left + cw, pad.top + ch);
+    ctx.lineTo(pad.left, pad.top + ch);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(99,126,161,0.08)';
+    ctx.fill();
+    // current point
+    const curX = pad.left + (currentV / maxV) * cw;
+    const curKE = calcKE(m, currentV);
+    const curY = pad.top + ch - (curKE / maxKE) * ch;
+    // dashed lines
+    ctx.setLineDash([4, 3]);
+    ctx.strokeStyle = '#4a3fc2';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(curX, pad.top + ch); ctx.lineTo(curX, curY); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(pad.left, curY); ctx.lineTo(curX, curY); ctx.stroke();
+    ctx.setLineDash([]);
+    // point
+    ctx.beginPath();
+    ctx.arc(curX, curY, 6, 0, Math.PI * 2);
+    ctx.fillStyle = '#4a3fc2';
+    ctx.fill();
+    ctx.strokeStyle = '#1835b4';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // axes
+    ctx.strokeStyle = '#4a5568';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, pad.top + ch);
+    ctx.lineTo(pad.left + cw, pad.top + ch);
+    ctx.stroke();
+    // labels
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '10px Outfit';
+    ctx.textAlign = 'center';
+    for (let v = 0; v <= maxV; v += 10) {
+        const x = pad.left + (v / maxV) * cw;
+        ctx.fillText(v + '', x, pad.top + ch + 14);
+    }
+    ctx.fillText('Velocity (m/s)', pad.left + cw / 2, pad.top + ch + 26);
+    ctx.textAlign = 'right';
+    for (let i = 0; i <= 5; i++) {
+        const y = pad.top + ch - (i / 5) * ch;
+        const val = (i / 5) * maxKE;
+        ctx.fillText(val >= 1000 ? (val/1000).toFixed(0) + 'k' : val.toFixed(0), pad.left - 4, y + 3);
+    }
+    ctx.save();
+    ctx.translate(12, pad.top + ch / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = 'center';
+    ctx.fillText('KE (J)', 0, 0);
+    ctx.restore();
+}
+
+function resizeChart() {
+    chart.width = Math.min(520, document.querySelector('.container').clientWidth - 24);
+    update();
+}
+
+massSlider.addEventListener('input', update);
+velSlider.addEventListener('input', update);
+resizeChart();
+window.addEventListener('resize', resizeChart);
+</script>
+</body>
+</html>

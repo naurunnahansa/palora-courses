@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polymerisation Visualiser</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family: system-ui, -apple-system, sans-serif;background:#f0f2f5;color:#1a2747;min-height:100vh;display:flex;justify-content:center;padding:20px;}
+h1,h2,h3,h4{font-family: system-ui, -apple-system, sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
+.container{max-width: 100%;width:100%;margin:0 auto;}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #d4d8e5;padding:24px;margin-bottom:16px;}
+.card-title{font-size:1.3rem;color:#1835b4;margin-bottom:4px;}
+.card-subtitle{font-size:0.85rem;color:#888;margin-bottom:16px;}
+canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #d4d8e5;display:block;margin:10px 0;}
+.btn{background:#1835b4;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-family: system-ui, -apple-system, sans-serif;font-size:0.9rem;cursor:pointer;transition:all 0.2s;display:inline-block;}
+.btn:hover{background:#506a8a;}
+.chip{display:inline-block;padding:6px 14px;border-radius:20px;border:1.5px solid #d4d8e5;font-size:0.82rem;cursor:pointer;transition:all 0.2s;margin:3px;background:#fff;font-family: system-ui, -apple-system, sans-serif;}
+.chip:hover,.chip.active{background:#1835b4;color:#fff;border-color:#1835b4;}
+.tabs{display:flex;gap:6px;margin-bottom:12px;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.info-cell{background:#e8ecf8;border-radius:8px;padding:10px;font-size:0.82rem;}
+.info-cell .label{color:#888;font-weight:500;font-size:0.75rem;}
+.info-cell .value{color:#1a2747;font-weight:600;margin-top:2px;}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h2 class="card-title">Polymerisation Visualiser</h2>
+    <p class="card-subtitle">Watch monomers join to form polymers</p>
+    <div class="tabs">
+      <span class="chip active" id="addTab" onclick="setMode('addition')">Addition Polymerisation</span>
+      <span class="chip" id="condTab" onclick="setMode('condensation')">Condensation Polymerisation</span>
+    </div>
+    <canvas id="canvas" width="510" height="300"></canvas>
+    <div class="controls">
+      <button class="btn" onclick="startAnim()">Polymerise</button>
+      <button class="btn" style="background:#aaa;" onclick="resetAnim()">Reset</button>
+    </div>
+    <div class="info-grid" id="infoGrid"></div>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = 510; canvas.height = 300;
+
+let mode = 'addition';
+let progress = 0;
+let animating = false;
+
+const info = {
+  addition: {
+    monomer: 'Ethene (CH\u2082=CH\u2082)',
+    polymer: 'Poly(ethene) / Polyethylene',
+    repeatUnit: '-(CH\u2082-CH\u2082)-',
+    notes: 'Double bond opens up. No small molecule lost. Monomers must have C=C double bond.'
+  },
+  condensation: {
+    monomer: 'Dicarboxylic acid + Diol',
+    polymer: 'Polyester',
+    repeatUnit: '-(CO-O)-',
+    notes: 'Small molecule (H\u2082O) released at each join. Two different functional groups needed.'
+  }
+};
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('addTab').className = 'chip' + (m==='addition'?' active':'');
+  document.getElementById('condTab').className = 'chip' + (m==='condensation'?' active':'');
+  resetAnim();
+}
+
+function resetAnim() { progress = 0; animating = false; updateInfo(); draw(); }
+
+function startAnim() {
+  if (animating) return;
+  animating = true;
+  progress = 0;
+  animate();
+}
+
+function animate() {
+  if (!animating) return;
+  progress += 0.012;
+  if (progress >= 1) { progress = 1; animating = false; }
+  draw();
+  if (animating) requestAnimationFrame(animate);
+}
+
+function draw() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+  if (mode === 'addition') drawAddition(W, H);
+  else drawCondensation(W, H);
+}
+
+function drawAddition(W, H) {
+  const numMonomers = 4;
+  const monW = 70, monH = 50;
+  const gap = progress < 0.5 ? 20 * (1 - progress * 2) : 0;
+  const totalW = numMonomers * monW + (numMonomers - 1) * gap;
+  const sx = W / 2 - totalW / 2;
+  const cy = H / 2;
+
+  for (let i = 0; i < numMonomers; i++) {
+    const mx = sx + i * (monW + gap);
+    const phase = Math.min(1, progress * 2);
+
+    // Monomer box
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 1.5;
+    if (progress >= 1) {
+      // No box in final polymer
+    } else {
+      ctx.strokeStyle = 'rgba(99,126,161,0.3)'; ctx.setLineDash([4,3]);
+      ctx.strokeRect(mx, cy - monH/2, monW, monH);
+      ctx.setLineDash([]);
+    }
+
+    const c1x = mx + 20, c2x = mx + 50;
+
+    // Bond between carbons
+    if (progress < 0.5) {
+      // Double bond (shrinking)
+      const dblAlpha = 1 - progress * 2;
+      ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(c1x, cy - 4); ctx.lineTo(c2x, cy - 4); ctx.stroke();
+      ctx.globalAlpha = dblAlpha;
+      ctx.beginPath(); ctx.moveTo(c1x, cy + 4); ctx.lineTo(c2x, cy + 4); ctx.stroke();
+      ctx.globalAlpha = 1;
+    } else {
+      // Single bond
+      ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(c1x, cy); ctx.lineTo(c2x, cy); ctx.stroke();
+    }
+
+    // Inter-monomer bond (after joining)
+    if (i < numMonomers - 1 && progress > 0.5) {
+      const nextMx = sx + (i + 1) * (monW + gap);
+      const bondAlpha = (progress - 0.5) * 2;
+      ctx.globalAlpha = bondAlpha;
+      ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.moveTo(c2x, cy); ctx.lineTo(nextMx + 20, cy); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+
+    // C labels
+    [c1x, c2x].forEach(cx => {
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.arc(cx, cy, 9, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#1a2747'; ctx.font = '700 11px Outfit'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('C', cx, cy);
+    });
+
+    // H atoms
+    ctx.fillStyle = '#999'; ctx.font = '500 10px Outfit';
+    ctx.strokeStyle = '#ccc'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(c1x, cy); ctx.lineTo(c1x, cy - 22); ctx.stroke();
+    ctx.fillText('H', c1x, cy - 30);
+    ctx.beginPath(); ctx.moveTo(c1x, cy); ctx.lineTo(c1x, cy + 22); ctx.stroke();
+    ctx.fillText('H', c1x, cy + 30);
+    ctx.beginPath(); ctx.moveTo(c2x, cy); ctx.lineTo(c2x, cy - 22); ctx.stroke();
+    ctx.fillText('H', c2x, cy - 30);
+    ctx.beginPath(); ctx.moveTo(c2x, cy); ctx.lineTo(c2x, cy + 22); ctx.stroke();
+    ctx.fillText('H', c2x, cy + 30);
+  }
+
+  // Bracket for polymer
+  if (progress >= 1) {
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2; ctx.font = '600 13px Outfit';
+    ctx.fillStyle = '#1835b4'; ctx.textAlign = 'center';
+    ctx.fillText('Poly(ethene)  \u2014  repeat unit: -(CH\u2082-CH\u2082)\u2099-', W/2, 28);
+  } else {
+    ctx.fillStyle = '#1835b4'; ctx.font = '600 12px Outfit'; ctx.textAlign = 'center';
+    ctx.fillText('Ethene monomers (CH\u2082=CH\u2082)', W/2, 28);
+  }
+}
+
+function drawCondensation(W, H) {
+  const cy = H / 2;
+  const numPairs = 3;
+  const unitW = 100;
+  const gap = progress < 0.5 ? 30 * (1 - progress * 2) : 0;
+  const totalW = numPairs * unitW + (numPairs - 1) * gap;
+  const sx = W / 2 - totalW / 2;
+
+  for (let i = 0; i < numPairs; i++) {
+    const ux = sx + i * (unitW + gap);
+
+    // Acid part (left half)
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(ux, cy); ctx.lineTo(ux + 25, cy); ctx.stroke();
+    // =O above
+    ctx.beginPath(); ctx.moveTo(ux + 12, cy); ctx.lineTo(ux + 12, cy - 20); ctx.stroke();
+    ctx.fillStyle = '#d45'; ctx.font = '700 10px Outfit'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('O', ux + 12, cy - 28);
+    // C=O label
+    ctx.fillStyle = '#1a2747'; ctx.font = '700 11px Outfit';
+    ctx.fillText('C', ux + 12, cy);
+
+    // OH on acid (will leave as water)
+    if (progress < 0.5) {
+      ctx.fillStyle = '#e85'; ctx.font = '600 10px Outfit';
+      ctx.fillText('OH', ux + 38, cy);
+    }
+
+    // Diol part (right half)
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2;
+    const diolX = ux + 60;
+    // H on diol (will leave as water)
+    if (progress < 0.5) {
+      ctx.fillStyle = '#e85'; ctx.font = '600 10px Outfit';
+      ctx.fillText('H', diolX - 8, cy);
+    }
+    // O
+    ctx.fillStyle = '#1835b4'; ctx.font = '700 11px Outfit';
+    ctx.fillText('O', diolX + 8, cy);
+    ctx.beginPath(); ctx.moveTo(diolX + 16, cy); ctx.lineTo(diolX + 35, cy); ctx.stroke();
+    // chain placeholder
+    ctx.fillStyle = '#1a2747';
+    ctx.fillText('R', diolX + 42, cy);
+
+    // Water molecule released
+    if (progress > 0.3 && progress < 1) {
+      const waterY = cy + 40 + progress * 40;
+      const waterAlpha = progress < 0.7 ? (progress - 0.3) * 2.5 : 1 - (progress - 0.7) * 3.3;
+      if (waterAlpha > 0) {
+        ctx.globalAlpha = Math.max(0, waterAlpha);
+        ctx.fillStyle = '#4a9edd'; ctx.font = '600 11px Outfit';
+        ctx.fillText('H\u2082O', ux + 48, waterY);
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    // New ester bond forming
+    if (progress > 0.5) {
+      const bondAlpha = (progress - 0.5) * 2;
+      ctx.globalAlpha = bondAlpha;
+      ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.moveTo(ux + 25, cy); ctx.lineTo(diolX + 8, cy); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+
+    // Inter-unit bond
+    if (i < numPairs - 1 && progress > 0.5) {
+      const nextUx = sx + (i + 1) * (unitW + gap);
+      const bondAlpha = (progress - 0.5) * 2;
+      ctx.globalAlpha = bondAlpha;
+      ctx.strokeStyle = '#888'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(ux + unitW - 10, cy); ctx.lineTo(nextUx, cy); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  ctx.fillStyle = '#1835b4'; ctx.font = '600 12px Outfit'; ctx.textAlign = 'center';
+  if (progress >= 1) {
+    ctx.fillText('Polyester formed  \u2014  H\u2082O released at each link', W/2, 24);
+  } else {
+    ctx.fillText('Condensation: acid + alcohol monomers', W/2, 24);
+  }
+}
+
+function updateInfo() {
+  const d = info[mode];
+  document.getElementById('infoGrid').innerHTML =
+    '<div class="info-cell"><div class="label">Monomer</div><div class="value">' + d.monomer + '</div></div>' +
+    '<div class="info-cell"><div class="label">Polymer</div><div class="value">' + d.polymer + '</div></div>' +
+    '<div class="info-cell"><div class="label">Repeat Unit</div><div class="value">' + d.repeatUnit + '</div></div>' +
+    '<div class="info-cell"><div class="label">Key Points</div><div class="value">' + d.notes + '</div></div>';
+}
+
+updateInfo();
+draw();
+</script>
+</body>
+</html>

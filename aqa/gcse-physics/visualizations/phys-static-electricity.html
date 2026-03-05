@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static Electricity</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.subtitle{text-align:center;font-size:.78rem;color:#4a5568;margin-bottom:10px}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;cursor:pointer}.btn-row{display:flex;gap:6px;margin-top:8px;justify-content:center}.btn{background:#1835b4;color:#fff;border:none;border-radius:5px;padding:6px 16px;font-family: system-ui, -apple-system, sans-serif;font-size:.78rem;font-weight:600;cursor:pointer}.btn:hover{background:#506a8a}.btn.secondary{background:#e8ecf8;color:#1a2747}.info{background:#e8ecf8;border-radius:5px;padding:10px;font-size:.78rem;color:#4a5568;margin-top:8px;text-align:center}.info strong{color:#1835b4}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Static Electricity</h1>
+    <p class="subtitle">Click "Rub" to transfer electrons between objects</p>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="500"></canvas></div>
+    <div class="btn-row">
+        <button class="btn" onclick="rub()">Rub Objects Together</button>
+        <button class="btn secondary" onclick="resetAll()">Reset</button>
+    </div>
+    <div class="info" id="info">Two neutral objects. Rub them to transfer electrons.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let rubCount=0,electrons=[],animT=0,lastTs=0;
+const rodX=300,rodY=250,clothX=760,clothY=250;
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*500/1060)+'px'}
+
+function rub(){
+    if(rubCount>=6)return;
+    rubCount++;
+    for(let i=0;i<3;i++){
+        electrons.push({x:clothX,y:clothY-30+i*30,tx:rodX+Math.random()*60-30,ty:rodY+Math.random()*60-30,t:0,done:false});
+    }
+    updateInfo();
+}
+
+function resetAll(){rubCount=0;electrons=[];updateInfo()}
+
+function updateInfo(){
+    const charge=rubCount*3;
+    const el=document.getElementById('info');
+    if(rubCount===0)el.innerHTML='Two <strong>neutral</strong> objects. Rub them to transfer electrons.';
+    else el.innerHTML=`Rod: <strong>${charge} extra electrons (negative charge)</strong><br>Cloth: <strong>${charge} electrons lost (positive charge)</strong><br>Electrons transferred by <strong>friction</strong>.`;
+}
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
+    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Rod (left)
+    const rodCharge=-rubCount*3;
+    ctx.fillStyle='#1835b4';ctx.beginPath();ctx.roundRect(rodX-40,rodY-60,80,120,8);ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='600 16px Oswald';ctx.textAlign='center';
+    ctx.fillText('Rod',rodX,rodY-10);
+    if(rodCharge!==0){ctx.fillStyle='#4a90d9';ctx.font='700 18px Oswald';ctx.fillText(rodCharge<0?`${rodCharge}`:`+${rodCharge}`,rodX,rodY+20)}
+    else{ctx.fillStyle='#28a745';ctx.font='500 14px Outfit';ctx.fillText('Neutral',rodX,rodY+20)}
+    // Charge glow
+    if(rubCount>0){ctx.beginPath();ctx.arc(rodX,rodY,70+Math.sin(animT*3)*5,0,Math.PI*2);ctx.fillStyle=`rgba(74,144,217,${0.05*rubCount})`;ctx.fill()}
+
+    // Cloth (right)
+    const clothCharge=rubCount*3;
+    ctx.fillStyle='#4a3fc2';ctx.beginPath();ctx.roundRect(clothX-40,clothY-60,80,120,8);ctx.fill();
+    ctx.fillStyle='#1a2747';ctx.font='600 16px Oswald';ctx.textAlign='center';
+    ctx.fillText('Cloth',clothX,clothY-10);
+    if(clothCharge!==0){ctx.fillStyle='#dc3545';ctx.font='700 18px Oswald';ctx.fillText(`+${clothCharge}`,clothX,clothY+20)}
+    else{ctx.fillStyle='#28a745';ctx.font='500 14px Outfit';ctx.fillText('Neutral',clothX,clothY+20)}
+    if(rubCount>0){ctx.beginPath();ctx.arc(clothX,clothY,70+Math.sin(animT*3)*5,0,Math.PI*2);ctx.fillStyle=`rgba(220,53,69,${0.05*rubCount})`;ctx.fill()}
+
+    // Electrons on rod
+    for(let i=0;i<rubCount*3;i++){
+        const angle=animT*0.5+i*0.8;const r=35+15*Math.sin(i*1.2);
+        const ex=rodX+r*Math.cos(angle),ey=rodY+r*Math.sin(angle);
+        ctx.beginPath();ctx.arc(ex,ey,4,0,Math.PI*2);ctx.fillStyle='#4a90d9';ctx.fill();
+        ctx.fillStyle='#fff';ctx.font='bold 6px sans-serif';ctx.textAlign='center';ctx.fillText('−',ex,ey+2);
+    }
+
+    // Animated transferring electrons
+    electrons.forEach(e=>{
+        if(e.done)return;
+        e.t+=dt*2;
+        if(e.t>=1){e.done=true;return}
+        const cx=(e.x+e.tx)/2,cy=e.y-80;
+        const t=e.t;
+        const px=(1-t)*(1-t)*e.x+2*(1-t)*t*cx+t*t*e.tx;
+        const py=(1-t)*(1-t)*e.y+2*(1-t)*t*cy+t*t*e.ty;
+        ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.fillStyle='#4a90d9';ctx.fill();
+        ctx.beginPath();ctx.arc(px,py,10,0,Math.PI*2);ctx.strokeStyle='#4a90d940';ctx.lineWidth=2;ctx.stroke();
+    });
+
+    // Arrow
+    ctx.fillStyle='#4a5568';ctx.font='500 13px Outfit';ctx.textAlign='center';
+    ctx.fillText('Electrons transfer →',530,H*0.85);
+    ctx.beginPath();ctx.moveTo(480,H*0.82);ctx.lineTo(580,H*0.82);ctx.strokeStyle='#4a5568';ctx.lineWidth=2;ctx.stroke();
+
+    requestAnimationFrame(draw);
+}
+
+resize();window.addEventListener('resize',resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

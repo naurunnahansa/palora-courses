@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electric Fields</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.subtitle{text-align:center;font-size:.78rem;color:#4a5568;margin-bottom:10px}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#1a2747;cursor:crosshair}.btn-row{display:flex;gap:6px;margin-top:8px;justify-content:center;flex-wrap:wrap}.btn{background:#1835b4;color:#fff;border:none;border-radius:5px;padding:6px 14px;font-family: system-ui, -apple-system, sans-serif;font-size:.75rem;font-weight:600;cursor:pointer}.btn:hover{background:#506a8a}.btn.pos{background:#dc3545}.btn.neg{background:#4a90d9}.info{background:#e8ecf8;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Electric Field Lines</h1>
+    <p class="subtitle">Click to place charges, then see the field lines</p>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="600"></canvas></div>
+    <div class="btn-row">
+        <button class="btn pos" onclick="mode=1">Place + Charge</button>
+        <button class="btn neg" onclick="mode=-1">Place − Charge</button>
+        <button class="btn" onclick="charges=[];draw()">Clear All</button>
+    </div>
+    <div class="info">Field lines point <strong>away from positive</strong> charges and <strong>toward negative</strong> charges. Closer lines = <strong>stronger field</strong>.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let charges=[],mode=1;
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*600/1060)+'px'}
+
+function getCanvasPos(e){const r=canvas.getBoundingClientRect();const sx=canvas.width/r.width,sy=canvas.height/r.height;return{x:((e.touches?e.touches[0].clientX:e.clientX)-r.left)*sx,y:((e.touches?e.touches[0].clientY:e.clientY)-r.top)*sy}}
+
+canvas.addEventListener('click',e=>{const p=getCanvasPos(e);charges.push({x:p.x,y:p.y,q:mode});draw()});
+canvas.addEventListener('touchstart',e=>{e.preventDefault();const p=getCanvasPos(e);charges.push({x:p.x,y:p.y,q:mode});draw()});
+
+function fieldAt(x,y){
+    let fx=0,fy=0;
+    charges.forEach(c=>{
+        const dx=x-c.x,dy=y-c.y;
+        const r2=dx*dx+dy*dy;
+        if(r2<100)return;
+        const r=Math.sqrt(r2);
+        const f=c.q/(r2)*5000;
+        fx+=f*dx/r;fy+=f*dy/r;
+    });
+    return{fx,fy};
+}
+
+function traceLine(sx,sy,dir){
+    const pts=[];let x=sx,y=sy;
+    for(let i=0;i<200;i++){
+        pts.push({x,y});
+        const f=fieldAt(x,y);
+        const mag=Math.sqrt(f.fx*f.fx+f.fy*f.fy);
+        if(mag<0.01)break;
+        const step=5;
+        x+=dir*f.fx/mag*step;y+=dir*f.fy/mag*step;
+        if(x<0||x>canvas.width||y<0||y>canvas.height)break;
+        // Stop near any charge
+        let nearCharge=false;
+        charges.forEach(c=>{if(Math.sqrt((x-c.x)**2+(y-c.y)**2)<20)nearCharge=true});
+        if(nearCharge&&i>5)break;
+    }
+    return pts;
+}
+
+function draw(){
+    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#1a2747';ctx.fillRect(0,0,W,H);
+
+    // Field lines
+    charges.forEach(c=>{
+        const nLines=12;
+        for(let i=0;i<nLines;i++){
+            const angle=i/nLines*Math.PI*2;
+            const sx=c.x+25*Math.cos(angle),sy=c.y+25*Math.sin(angle);
+            const dir=c.q>0?1:-1;
+            const pts=traceLine(sx,sy,dir);
+            if(pts.length<3)continue;
+            ctx.beginPath();
+            pts.forEach((p,j)=>j===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
+            ctx.strokeStyle='#1835b440';ctx.lineWidth=1.5;ctx.stroke();
+            // Arrow midway
+            if(pts.length>10){
+                const mi=Math.floor(pts.length/2);
+                const p=pts[mi],p2=pts[mi+1];
+                if(p2){
+                    const a=Math.atan2(p2.y-p.y,p2.x-p.x)*dir;
+                    ctx.beginPath();ctx.moveTo(p.x+8*Math.cos(a),p.y+8*Math.sin(a));
+                    ctx.lineTo(p.x-5*Math.cos(a-0.5),p.y-5*Math.sin(a-0.5));
+                    ctx.lineTo(p.x-5*Math.cos(a+0.5),p.y-5*Math.sin(a+0.5));
+                    ctx.closePath();ctx.fillStyle='#1835b460';ctx.fill();
+                }
+            }
+        }
+    });
+
+    // Charges
+    charges.forEach(c=>{
+        ctx.beginPath();ctx.arc(c.x,c.y,18,0,Math.PI*2);
+        ctx.fillStyle=c.q>0?'#dc3545':'#4a90d9';ctx.fill();
+        ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+        ctx.fillStyle='#fff';ctx.font='700 20px Oswald';ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(c.q>0?'+':'−',c.x,c.y);
+    });
+
+    if(charges.length===0){
+        ctx.fillStyle='#ffffff40';ctx.font='500 16px Outfit';ctx.textAlign='center';
+        ctx.fillText('Click to place charges',W/2,H/2);
+    }
+}
+
+resize();draw();window.addEventListener('resize',()=>{resize();draw()});
+</script>
+</body>
+</html>

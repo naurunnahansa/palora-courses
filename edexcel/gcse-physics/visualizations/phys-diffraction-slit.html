@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wave Diffraction</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; font-size: 0.75rem; color: #4a5568; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .slider-group { border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px 10px; margin-bottom: 6px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; }
+        .slider-label .val { color: #1835b4; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #d4d8e5; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .info-row { display: flex; gap: 6px; margin-bottom: 8px; }
+        .info-card { flex: 1; border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px 8px; text-align: center; }
+        .info-card .label { font-size: 0.65rem; color: #4a5568; }
+        .info-card .value { font-size: 0.85rem; font-weight: 700; color: #1835b4; }
+        .insight { background: #e8ecf8; border-radius: 5px; padding: 8px 10px; font-size: 0.72rem; color: #4a5568; }
+        .insight strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Wave Diffraction Through a Gap</h1>
+    <p class="desc">Adjust the gap width and wavelength to see how diffraction changes</p>
+    <canvas id="diffCanvas" width="530" height="300"></canvas>
+    <div class="slider-group">
+        <div class="slider-label"><span>Gap Width</span><span class="val" id="gapVal">40 units</span></div>
+        <input type="range" id="gapSlider" min="10" max="120" value="40" oninput="updateParams()">
+    </div>
+    <div class="slider-group">
+        <div class="slider-label"><span>Wavelength</span><span class="val" id="waveVal">20 units</span></div>
+        <input type="range" id="waveSlider" min="8" max="60" value="20" oninput="updateParams()">
+    </div>
+    <div class="info-row">
+        <div class="info-card"><div class="label">Gap / Wavelength</div><div class="value" id="ratioVal">2.0</div></div>
+        <div class="info-card"><div class="label">Diffraction</div><div class="value" id="diffLevel">Moderate</div></div>
+    </div>
+    <div class="insight" id="insightText">
+        <strong>Key rule:</strong> Maximum diffraction occurs when the gap width is approximately equal to the wavelength. When the gap is much larger than the wavelength, waves pass through mostly unaffected.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('diffCanvas');
+const ctx = canvas.getContext('2d');
+let gapWidth = 40, wavelength = 20;
+let time = 0;
+
+function updateParams() {
+    gapWidth = parseInt(document.getElementById('gapSlider').value);
+    wavelength = parseInt(document.getElementById('waveSlider').value);
+    document.getElementById('gapVal').textContent = gapWidth + ' units';
+    document.getElementById('waveVal').textContent = wavelength + ' units';
+    const ratio = gapWidth / wavelength;
+    document.getElementById('ratioVal').textContent = ratio.toFixed(1);
+    if (ratio <= 1.2) {
+        document.getElementById('diffLevel').textContent = 'Strong';
+        document.getElementById('diffLevel').style.color = '#28a745';
+    } else if (ratio <= 3) {
+        document.getElementById('diffLevel').textContent = 'Moderate';
+        document.getElementById('diffLevel').style.color = '#e67e22';
+    } else {
+        document.getElementById('diffLevel').textContent = 'Weak';
+        document.getElementById('diffLevel').style.color = '#dc3545';
+    }
+}
+
+function draw() {
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    // dark background
+    ctx.fillStyle = '#1a2747';
+    ctx.fillRect(0, 0, w, h);
+
+    const wallX = w * 0.35;
+    const midY = h / 2;
+    const gapHalf = gapWidth / 2;
+    const ratio = gapWidth / wavelength;
+
+    // Incoming plane waves (left side)
+    const numWaves = 20;
+    for (let i = 0; i < numWaves; i++) {
+        const x = wallX - (i * wavelength) + (time % wavelength);
+        if (x < 0 || x > wallX) continue;
+        const alpha = Math.max(0.05, 0.3 - i * 0.015);
+        ctx.strokeStyle = `rgba(99, 126, 161, ${alpha})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+    }
+
+    // Diffracted waves (right side) using Huygens' principle
+    const numSources = Math.max(3, Math.round(gapWidth / 3));
+    for (let waveIdx = 0; waveIdx < 15; waveIdx++) {
+        const radius = waveIdx * wavelength + (time % wavelength);
+        if (radius < 1) continue;
+
+        // Draw circular wavefronts from each point source in the gap
+        ctx.beginPath();
+        const step = 1.5;
+        let firstPoint = true;
+
+        for (let angle = -90; angle <= 90; angle += step) {
+            const rad = angle * Math.PI / 180;
+            // Superposition: calculate combined amplitude from all sources
+            let amp = 0;
+            for (let s = 0; s < numSources; s++) {
+                const srcY = midY - gapHalf + (s / (numSources - 1)) * gapWidth;
+                const px = wallX + radius * Math.cos(rad);
+                const py = midY + radius * Math.sin(rad);
+                const dx = px - wallX;
+                const dy = py - srcY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const phase = (dist / wavelength) * Math.PI * 2;
+                amp += Math.cos(phase);
+            }
+            amp = Math.abs(amp) / numSources;
+
+            // Diffraction envelope
+            const sinTheta = Math.sin(rad);
+            let envelope = 1;
+            const arg = Math.PI * gapWidth * sinTheta / wavelength;
+            if (Math.abs(arg) > 0.001) {
+                envelope = Math.abs(Math.sin(arg) / arg);
+            }
+
+            const px = wallX + radius * Math.cos(rad);
+            const py = midY + radius * Math.sin(rad);
+            if (px > wallX && px < w && py > 0 && py < h) {
+                const alpha = Math.max(0, envelope * amp * (0.5 - waveIdx * 0.03));
+                if (alpha > 0.02) {
+                    ctx.fillStyle = `rgba(244, 211, 94, ${alpha})`;
+                    ctx.fillRect(px - 1, py - 1, 2.5, 2.5);
+                }
+            }
+        }
+    }
+
+    // Draw circular wavefronts more explicitly
+    for (let waveIdx = 0; waveIdx < 12; waveIdx++) {
+        const baseRadius = waveIdx * wavelength + (time % wavelength);
+        if (baseRadius < 1) continue;
+        const alpha = Math.max(0.05, 0.4 - waveIdx * 0.03);
+        ctx.strokeStyle = `rgba(244, 211, 94, ${alpha})`;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        let started = false;
+        for (let angle = -89; angle <= 89; angle += 1) {
+            const rad = angle * Math.PI / 180;
+            const sinTheta = Math.sin(rad);
+            let envelope = 1;
+            const arg = Math.PI * gapWidth * sinTheta / wavelength;
+            if (Math.abs(arg) > 0.001) envelope = Math.abs(Math.sin(arg) / arg);
+            const r = baseRadius;
+            const px = wallX + r * Math.cos(rad);
+            const py = midY + r * Math.sin(rad);
+            if (px > wallX && px < w + 10 && py > -10 && py < h + 10 && envelope > 0.05) {
+                if (!started) { ctx.moveTo(px, py); started = true; }
+                else ctx.lineTo(px, py);
+            }
+        }
+        ctx.stroke();
+    }
+
+    // Wall with gap
+    ctx.fillStyle = '#4a5568';
+    ctx.fillRect(wallX - 4, 0, 8, midY - gapHalf);
+    ctx.fillRect(wallX - 4, midY + gapHalf, 8, h - midY - gapHalf);
+
+    // Gap markers
+    ctx.strokeStyle = '#4a3fc2';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.moveTo(wallX - 15, midY - gapHalf);
+    ctx.lineTo(wallX + 15, midY - gapHalf);
+    ctx.moveTo(wallX - 15, midY + gapHalf);
+    ctx.lineTo(wallX + 15, midY + gapHalf);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Gap width label
+    ctx.fillStyle = '#4a3fc2';
+    ctx.font = 'bold 10px Outfit';
+    ctx.textAlign = 'right';
+    ctx.fillText('gap = ' + gapWidth, wallX - 10, midY + 3);
+
+    // Labels
+    ctx.fillStyle = '#1835b4';
+    ctx.font = '10px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('Incoming waves', wallX / 2, 16);
+    ctx.fillText('Diffracted waves', (wallX + w) / 2, 16);
+
+    time += 0.8;
+    requestAnimationFrame(draw);
+}
+
+function resize() {
+    canvas.width = Math.min(530, document.querySelector('.container').clientWidth - 4);
+    canvas.height = 300;
+}
+
+updateParams();
+resize();
+window.addEventListener('resize', resize);
+draw();
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electromagnets</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.slider-row{margin-bottom:8px}.slider-label{display:flex;justify-content:space-between;font-size:.8rem;color:#4a5568;margin-bottom:2px}.slider-label .val{font-weight:600;color:#1835b4}input[type="range"]{width:100%;accent-color:#1835b4}.controls{display:flex;gap:6px;margin-bottom:8px}.ctrl-btn{flex:1;background:#e8ecf8;border:2px solid transparent;border-radius:5px;padding:6px;font-family: system-ui, -apple-system, sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#1835b4}.ctrl-btn.active{background:#1835b4;color:#fff}.readouts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.readout{background:#e8ecf8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.68rem;color:#4a5568}.readout .value{font-family: system-ui, -apple-system, sans-serif;font-size:.95rem;color:#1835b4}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Electromagnets</h1>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="450"></canvas></div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row"><div class="slider-label"><span>Current</span><span class="val" id="iLabel">5 A</span></div><input type="range" id="iSlider" min="0" max="10" value="5"></div>
+        <div class="slider-row"><div class="slider-label"><span>Number of turns</span><span class="val" id="nLabel">10</span></div><input type="range" id="nSlider" min="3" max="20" value="10"></div>
+        <div class="controls">
+            <button class="ctrl-btn" id="coreBtn" onclick="toggleCore()">Iron Core: OFF</button>
+        </div>
+    </div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Current</div><div class="value" id="curVal">5 A</div></div>
+        <div class="readout"><div class="label">Turns</div><div class="value" id="turnsVal">10</div></div>
+        <div class="readout"><div class="label">Field Strength</div><div class="value" id="fieldVal">Medium</div></div>
+    </div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let hasCore=false,lastTs=0,animT=0;
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*450/1060)+'px'}
+function toggleCore(){hasCore=!hasCore;const b=document.getElementById('coreBtn');b.textContent='Iron Core: '+(hasCore?'ON':'OFF');b.classList.toggle('active',hasCore)}
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
+    const I=parseInt(document.getElementById('iSlider').value);
+    const N=parseInt(document.getElementById('nSlider').value);
+    const strength=I*N*(hasCore?3:1)/100;
+
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Core
+    if(hasCore){ctx.fillStyle='#a0a0a0';ctx.fillRect(cx-150,cy-15,300,30);ctx.strokeStyle='#808080';ctx.lineWidth=1;ctx.strokeRect(cx-150,cy-15,300,30)}
+
+    // Coil turns
+    const coilW=280,turnSpacing=coilW/N;
+    for(let i=0;i<N;i++){
+        const x=cx-coilW/2+i*turnSpacing+turnSpacing/2;
+        ctx.beginPath();ctx.ellipse(x,cy,turnSpacing*0.4,35,0,0,Math.PI*2);
+        ctx.strokeStyle='#c87533';ctx.lineWidth=3;ctx.stroke();
+    }
+
+    // Field lines (if current > 0)
+    if(I>0){
+        const nLines=4;const fieldAlpha=Math.min(0.6,strength*0.8);
+        for(let i=1;i<=nLines;i++){
+            const r=40+i*25;
+            ctx.beginPath();ctx.ellipse(cx,cy,coilW/2+50+i*20,r,0,0,Math.PI*2);
+            ctx.strokeStyle=`rgba(99,126,161,${fieldAlpha/i})`;ctx.lineWidth=2;ctx.setLineDash([6,4]);ctx.stroke();ctx.setLineDash([]);
+            // Arrow
+            const ax=cx+coilW/2+50+i*20;
+            ctx.beginPath();ctx.moveTo(ax,cy-r);ctx.lineTo(ax-6,cy-r+8);ctx.lineTo(ax+6,cy-r+8);ctx.closePath();
+            ctx.fillStyle=`rgba(99,126,161,${fieldAlpha})`;ctx.fill();
+        }
+        // N and S poles
+        ctx.fillStyle='#dc3545';ctx.font='700 24px Oswald';ctx.textAlign='center';
+        ctx.fillText('N',cx+coilW/2+80,cy+8);
+        ctx.fillStyle='#4a90d9';ctx.fillText('S',cx-coilW/2-80,cy+8);
+    }
+
+    // Labels
+    ctx.fillStyle='#4a5568';ctx.font='500 12px Outfit';ctx.textAlign='center';
+    ctx.fillText(hasCore?'Iron core inside':'No core (air)',cx,cy+70);
+
+    document.getElementById('iLabel').textContent=I+' A';
+    document.getElementById('nLabel').textContent=N;
+    document.getElementById('curVal').textContent=I+' A';
+    document.getElementById('turnsVal').textContent=N;
+    const level=strength>1.5?'Very Strong':strength>0.8?'Strong':strength>0.3?'Medium':I>0?'Weak':'None';
+    document.getElementById('fieldVal').textContent=level;
+
+    requestAnimationFrame(draw);
+}
+resize();window.addEventListener('resize',resize);requestAnimationFrame(draw);
+</script>
+</body>
+</html>

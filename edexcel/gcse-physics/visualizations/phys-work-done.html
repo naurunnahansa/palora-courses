@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Done</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.72rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.1rem; color: #1835b4; }
+        .readout .formula { font-size: 0.68rem; color: #4a5568; margin-top: 2px; }
+        .calc-box { background: #fafbfc; border-radius: 5px; padding: 8px; text-align: center; font-size: 0.82rem; margin-top: 8px; }
+        .calc-box strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Work Done</h1>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="400"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Force (F)</span><span class="val" id="fLabel">50 N</span></div>
+            <input type="range" id="fSlider" min="5" max="200" value="50">
+        </div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Distance (d)</span><span class="val" id="dLabel">10 m</span></div>
+            <input type="range" id="dSlider" min="1" max="50" value="10">
+        </div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Angle (θ)</span><span class="val" id="aLabel">0°</span></div>
+            <input type="range" id="aSlider" min="0" max="90" value="0">
+        </div>
+    </div>
+    <div class="readouts">
+        <div class="readout">
+            <div class="label">Work Done</div>
+            <div class="value" id="wVal">500 J</div>
+            <div class="formula">W = F × d × cos θ</div>
+        </div>
+        <div class="readout">
+            <div class="label">Effective Force</div>
+            <div class="value" id="efVal">50 N</div>
+            <div class="formula">F × cos θ</div>
+        </div>
+    </div>
+    <div class="calc-box" id="calcBox"></div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 400 / 1060) + 'px';
+}
+
+function draw() {
+    const F = parseInt(document.getElementById('fSlider').value);
+    const d = parseInt(document.getElementById('dSlider').value);
+    const angle = parseInt(document.getElementById('aSlider').value);
+    const rad = angle * Math.PI / 180;
+    const W_done = F * d * Math.cos(rad);
+    const Feff = F * Math.cos(rad);
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    // Ground
+    const groundY = H * 0.7;
+    ctx.fillStyle = '#f0eded'; ctx.fillRect(0, groundY, W, H - groundY);
+    ctx.strokeStyle = '#ccc'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(W, groundY); ctx.stroke();
+
+    // Distance marker
+    const startX = 150, endX = startX + d * 14;
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = '#4a3fc2'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(startX, groundY + 20); ctx.lineTo(endX, groundY + 20); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(startX, groundY + 14); ctx.lineTo(startX, groundY + 26); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(endX, groundY + 14); ctx.lineTo(endX, groundY + 26); ctx.stroke();
+    ctx.fillStyle = '#c9a020'; ctx.font = '600 14px Outfit'; ctx.textAlign = 'center';
+    ctx.fillText(`d = ${d} m`, (startX + endX) / 2, groundY + 42);
+
+    // Object
+    const boxW = 60, boxH = 50;
+    const boxX = startX + (endX - startX) * 0.3;
+    const boxY = groundY - boxH;
+    ctx.fillStyle = '#1835b4'; ctx.fillRect(boxX, boxY, boxW, boxH);
+    ctx.strokeStyle = '#506a8a'; ctx.lineWidth = 2; ctx.strokeRect(boxX, boxY, boxW, boxH);
+
+    // Force arrow at angle
+    const arrowLen = F * 1.2;
+    const arrowStartX = boxX + boxW;
+    const arrowStartY = boxY + boxH * 0.3;
+    const arrowEndX = arrowStartX + arrowLen * Math.cos(-rad);
+    const arrowEndY = arrowStartY + arrowLen * Math.sin(-rad);
+
+    ctx.beginPath(); ctx.moveTo(arrowStartX, arrowStartY);
+    ctx.lineTo(arrowEndX, arrowEndY);
+    ctx.strokeStyle = '#28a745'; ctx.lineWidth = 4; ctx.stroke();
+    const a = Math.atan2(arrowEndY - arrowStartY, arrowEndX - arrowStartX);
+    ctx.beginPath(); ctx.moveTo(arrowEndX, arrowEndY);
+    ctx.lineTo(arrowEndX - 14*Math.cos(a-0.3), arrowEndY - 14*Math.sin(a-0.3));
+    ctx.lineTo(arrowEndX - 14*Math.cos(a+0.3), arrowEndY - 14*Math.sin(a+0.3));
+    ctx.closePath(); ctx.fillStyle = '#28a745'; ctx.fill();
+    ctx.fillStyle = '#28a745'; ctx.font = '600 14px Outfit'; ctx.textAlign = 'left';
+    ctx.fillText(`F = ${F} N`, arrowEndX + 8, arrowEndY - 5);
+
+    // Effective horizontal component (dashed)
+    if (angle > 0) {
+        const effEndX = arrowStartX + Feff * 1.2;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath(); ctx.moveTo(arrowStartX, arrowStartY); ctx.lineTo(effEndX, arrowStartY);
+        ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2; ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#1835b4'; ctx.font = '500 12px Outfit';
+        ctx.fillText(`F cos θ = ${Feff.toFixed(1)} N`, effEndX + 5, arrowStartY + 15);
+
+        // Angle arc
+        ctx.beginPath(); ctx.arc(arrowStartX, arrowStartY, 30, -rad, 0);
+        ctx.strokeStyle = '#4a3fc2'; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = '#c9a020'; ctx.font = '500 12px Outfit';
+        ctx.fillText(`θ = ${angle}°`, arrowStartX + 35, arrowStartY - 8);
+    }
+
+    // Update readouts
+    document.getElementById('fLabel').textContent = F + ' N';
+    document.getElementById('dLabel').textContent = d + ' m';
+    document.getElementById('aLabel').textContent = angle + '°';
+    document.getElementById('wVal').textContent = W_done.toFixed(0) + ' J';
+    document.getElementById('efVal').textContent = Feff.toFixed(1) + ' N';
+    document.getElementById('calcBox').innerHTML = angle > 0
+        ? `W = ${F} × ${d} × cos(${angle}°) = ${F} × ${d} × ${Math.cos(rad).toFixed(3)} = <strong>${W_done.toFixed(1)} J</strong>`
+        : `W = ${F} × ${d} = <strong>${W_done.toFixed(0)} J</strong>`;
+}
+
+['fSlider', 'dSlider', 'aSlider'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+resize(); draw();
+window.addEventListener('resize', () => { resize(); draw(); });
+</script>
+</body>
+</html>

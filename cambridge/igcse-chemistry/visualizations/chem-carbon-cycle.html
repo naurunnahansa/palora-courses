@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Carbon Cycle</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family: system-ui, -apple-system, sans-serif;background:#f0f2f5;color:#1a2747;min-height:100vh;display:flex;justify-content:center;padding:20px;}
+h1,h2,h3,h4{font-family: system-ui, -apple-system, sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
+.container{max-width: 100%;width:100%;margin:0 auto;}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #d4d8e5;padding:24px;margin-bottom:16px;}
+.card-title{font-size:1.3rem;color:#1835b4;margin-bottom:4px;}
+.card-subtitle{font-size:0.85rem;color:#888;margin-bottom:16px;}
+canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #d4d8e5;display:block;margin:10px 0;cursor:pointer;}
+.info-box{background:#e8ecf8;border-radius:10px;padding:14px;margin-top:10px;display:none;}
+.info-box.show{display:block;}
+.info-box h4{color:#1835b4;margin-bottom:6px;font-size:0.95rem;}
+.info-box p{font-size:0.85rem;line-height:1.5;color:#444;}
+.chip-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;}
+.chip{display:inline-block;padding:5px 12px;border-radius:20px;border:1.5px solid #d4d8e5;font-size:0.78rem;cursor:pointer;transition:all 0.2s;background:#fff;font-family: system-ui, -apple-system, sans-serif;}
+.chip:hover,.chip.active{background:#1835b4;color:#fff;border-color:#1835b4;}
+.hint{font-size:0.78rem;color:#aaa;text-align:center;margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h2 class="card-title">Interactive Carbon Cycle</h2>
+    <p class="card-subtitle">Click a process to highlight its pathway and learn more</p>
+    <canvas id="canvas" width="510" height="400"></canvas>
+    <div class="chip-row" id="chips"></div>
+    <p class="hint">Click on the canvas or select a process below</p>
+    <div class="info-box" id="infoBox"></div>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = 510; canvas.height = 400;
+
+const processes = [
+  { id:'photosynthesis', name:'Photosynthesis', desc:'Plants absorb CO\u2082 from the atmosphere and use sunlight energy to convert it into glucose (C\u2086H\u2081\u2082O\u2086) and oxygen. This removes carbon from the air and stores it in plant biomass.', from:'atm', to:'plants', color:'#4aaa55' },
+  { id:'respiration', name:'Respiration', desc:'All living organisms (plants and animals) release CO\u2082 back into the atmosphere through aerobic respiration. Glucose is broken down: C\u2086H\u2081\u2082O\u2086 + 6O\u2082 \u2192 6CO\u2082 + 6H\u2082O', from:'animals', to:'atm', color:'#cc6644' },
+  { id:'combustion', name:'Combustion', desc:'Burning fossil fuels (coal, oil, gas) releases CO\u2082 that was locked underground for millions of years. This is the main cause of rising atmospheric CO\u2082 levels.', from:'fossil', to:'atm', color:'#dd4444' },
+  { id:'decomposition', name:'Decomposition', desc:'Decomposers (bacteria, fungi) break down dead organisms and waste. Carbon compounds are broken down, releasing CO\u2082 back into the atmosphere or into the soil.', from:'animals', to:'fossil', color:'#8a6644' },
+  { id:'ocean_absorb', name:'Ocean Absorption', desc:'Oceans absorb CO\u2082 from the atmosphere. It dissolves in seawater forming carbonic acid. Oceans are the largest carbon sink, but excess CO\u2082 causes ocean acidification.', from:'atm', to:'ocean', color:'#3388bb' },
+  { id:'feeding', name:'Feeding', desc:'Animals eat plants and other animals, transferring carbon stored in biomass along the food chain. Carbon is incorporated into animal tissues.', from:'plants', to:'animals', color:'#aa8844' }
+];
+
+const zones = {
+  atm: { x:255, y:50, w:200, h:50, label:'Atmosphere\n(CO\u2082)', color:'#88bbdd' },
+  plants: { x:40, y:160, w:110, h:60, label:'Plants', color:'#55aa55' },
+  animals: { x:200, y:170, w:110, h:55, label:'Animals', color:'#cc8855' },
+  ocean: { x:380, y:170, w:100, h:55, label:'Ocean', color:'#4488bb' },
+  fossil: { x:100, y:310, w:130, h:50, label:'Fossil Fuels', color:'#666' },
+  factory: { x:310, y:300, w:110, h:55, label:'Factories\n& Cars', color:'#888' }
+};
+
+let selected = -1;
+let t = 0;
+
+// Build chips
+const chipsEl = document.getElementById('chips');
+processes.forEach((p, i) => {
+  const chip = document.createElement('span');
+  chip.className = 'chip';
+  chip.textContent = p.name;
+  chip.onclick = () => selectProcess(i);
+  chipsEl.appendChild(chip);
+});
+
+function selectProcess(i) {
+  selected = (selected === i) ? -1 : i;
+  document.querySelectorAll('.chip').forEach((c, j) => c.classList.toggle('active', j === selected));
+  const ib = document.getElementById('infoBox');
+  if (selected >= 0) {
+    const p = processes[selected];
+    ib.className = 'info-box show';
+    ib.innerHTML = '<h4>' + p.name + '</h4><p>' + p.desc + '</p>';
+  } else {
+    ib.className = 'info-box';
+  }
+}
+
+// Click detection on canvas
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = canvas.width / rect.width, sy = canvas.height / rect.height;
+  const mx = (e.clientX - rect.left) * sx, my = (e.clientY - rect.top) * sy;
+
+  // Check zones
+  for (const [key, z] of Object.entries(zones)) {
+    if (mx >= z.x && mx <= z.x + z.w && my >= z.y && my <= z.y + z.h) {
+      // Find a process related to this zone
+      const idx = processes.findIndex(p => p.from === key || p.to === key);
+      if (idx >= 0) selectProcess(idx);
+      return;
+    }
+  }
+});
+
+function drawArrow(fx, fy, tx, ty, color, alpha, animated) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = animated ? 3 : 2;
+
+  // Curved arrow
+  const mx = (fx + tx) / 2, my = (fy + ty) / 2;
+  const dx = tx - fx, dy = ty - fy;
+  const cx = mx - dy * 0.2, cy = my + dx * 0.2;
+
+  ctx.beginPath();
+  ctx.moveTo(fx, fy);
+  ctx.quadraticCurveTo(cx, cy, tx, ty);
+  ctx.stroke();
+
+  // Arrowhead
+  const angle = Math.atan2(ty - cy, tx - cx);
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(tx, ty);
+  ctx.lineTo(tx - 10 * Math.cos(angle - 0.4), ty - 10 * Math.sin(angle - 0.4));
+  ctx.lineTo(tx - 10 * Math.cos(angle + 0.4), ty - 10 * Math.sin(angle + 0.4));
+  ctx.closePath();
+  ctx.fill();
+
+  // Animated dot
+  if (animated) {
+    const param = (t * 0.015) % 1;
+    const px = (1-param)*(1-param)*fx + 2*(1-param)*param*cx + param*param*tx;
+    const py = (1-param)*(1-param)*fy + 2*(1-param)*param*cy + param*param*ty;
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.arc(px, py, 4, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = '700 7px Outfit'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('C', px, py);
+  }
+
+  ctx.restore();
+}
+
+function getZoneCenter(id) {
+  const z = zones[id];
+  return { x: z.x + z.w / 2, y: z.y + z.h / 2 };
+}
+
+function draw() {
+  t++;
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+  // Draw zones
+  for (const [key, z] of Object.entries(zones)) {
+    const isHighlighted = selected >= 0 && (processes[selected].from === key || processes[selected].to === key);
+    ctx.fillStyle = isHighlighted ? z.color : z.color + '44';
+    ctx.strokeStyle = isHighlighted ? z.color : '#ccc';
+    ctx.lineWidth = isHighlighted ? 2.5 : 1;
+    ctx.beginPath(); ctx.roundRect(z.x, z.y, z.w, z.h, 10); ctx.fill(); ctx.stroke();
+
+    ctx.fillStyle = isHighlighted ? '#fff' : '#555';
+    ctx.font = (isHighlighted ? '700' : '500') + ' 11px Outfit';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const lines = z.label.split('\n');
+    lines.forEach((line, li) => {
+      ctx.fillText(line, z.x + z.w / 2, z.y + z.h / 2 + (li - (lines.length-1)/2) * 14);
+    });
+  }
+
+  // Draw process arrows
+  processes.forEach((p, i) => {
+    const from = getZoneCenter(p.from);
+    const to = getZoneCenter(p.to);
+    const isSelected = i === selected;
+    const alpha = selected < 0 ? 0.4 : (isSelected ? 1 : 0.12);
+    drawArrow(from.x, from.y, to.x, to.y, p.color, alpha, isSelected);
+
+    // Label on arrow if selected
+    if (isSelected) {
+      const mx = (from.x + to.x) / 2, my = (from.y + to.y) / 2;
+      ctx.fillStyle = p.color; ctx.font = '600 10px Outfit'; ctx.textAlign = 'center';
+      ctx.fillText(p.name, mx, my - 16);
+    }
+  });
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water Treatment Process</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family: system-ui, -apple-system, sans-serif;background:#f0f2f5;color:#1a2747;min-height:100vh;display:flex;justify-content:center;padding:20px;}
+h1,h2,h3,h4{font-family: system-ui, -apple-system, sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
+.container{max-width: 100%;width:100%;margin:0 auto;}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #d4d8e5;padding:24px;margin-bottom:16px;}
+.card-title{font-size:1.3rem;color:#1835b4;margin-bottom:4px;}
+.card-subtitle{font-size:0.85rem;color:#888;margin-bottom:16px;}
+canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #d4d8e5;display:block;margin:10px 0;cursor:pointer;}
+.info-box{background:#e8ecf8;border-radius:10px;padding:14px;margin-top:10px;display:none;}
+.info-box.show{display:block;}
+.info-box h4{color:#1835b4;margin-bottom:6px;font-size:0.95rem;}
+.info-row{display:flex;justify-content:space-between;padding:6px 0;font-size:0.84rem;border-bottom:1px solid rgba(0,0,0,0.05);}
+.info-row:last-child{border-bottom:none;}
+.info-label{color:#888;font-weight:500;flex:0 0 100px;}
+.info-value{color:#1a2747;font-weight:500;text-align:right;}
+.quality-bar{display:flex;gap:6px;margin-top:10px;align-items:center;}
+.quality-bar .label{font-size:0.78rem;color:#888;min-width:50px;}
+.quality-bar .bar{flex:1;height:12px;background:#eee;border-radius:6px;overflow:hidden;}
+.quality-bar .fill{height:100%;border-radius:6px;transition:width 0.5s;}
+.hint{font-size:0.78rem;color:#aaa;text-align:center;margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h2 class="card-title">Water Treatment Process</h2>
+    <p class="card-subtitle">Click each stage to learn how raw water becomes safe to drink</p>
+    <canvas id="canvas" width="510" height="240"></canvas>
+    <p class="hint">Click on any treatment stage in the diagram</p>
+    <div class="quality-bar">
+      <span class="label">Purity</span>
+      <div class="bar"><div class="fill" id="purityFill" style="width:20%;background:#88bb55;"></div></div>
+      <span class="label" id="purityLabel" style="text-align:right;">20%</span>
+    </div>
+    <div class="info-box" id="infoBox"></div>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = 510; canvas.height = 320;
+
+const stages = [
+  {
+    name:'Screening',
+    x:20, y:80, w:100, h:160,
+    removes:'Large debris: sticks, leaves, litter, plastic, large stones',
+    how:'Water passes through metal grids and mesh screens of decreasing size. Large solid objects are physically caught and removed.',
+    purity:35,
+    color:'#8B7355'
+  },
+  {
+    name:'Sedimentation',
+    x:140, y:80, w:100, h:160,
+    removes:'Suspended particles: mud, clay, fine sand, organic matter',
+    how:'Water flows slowly through large settling tanks. Heavy particles sink to the bottom under gravity, forming a sludge that is removed. Chemical flocculants (aluminium sulfate) may be added to clump small particles together.',
+    purity:60,
+    color:'#A0926B'
+  },
+  {
+    name:'Filtration',
+    x:260, y:80, w:100, h:160,
+    removes:'Fine particles, some bacteria, remaining suspended solids',
+    how:'Water passes through beds of sand and gravel. Fine particles are trapped between sand grains. Some treatment plants also use activated carbon filters to remove taste, odour and some dissolved chemicals.',
+    purity:85,
+    color:'#B8C4A8'
+  },
+  {
+    name:'Chlorination',
+    x:380, y:80, w:110, h:160,
+    removes:'Bacteria, viruses and other harmful microorganisms',
+    how:'A measured dose of chlorine (or ozone/UV light) is added to kill remaining pathogens. Chlorine remains in the water to protect it through the pipe network. The dose must be enough to disinfect but not enough to be harmful.',
+    purity:99,
+    color:'#88BBDD'
+  }
+];
+
+let selected = -1;
+let t = 0;
+let particles = [];
+
+// Water particles flowing through
+for (let i = 0; i < 40; i++) {
+  particles.push({
+    x: Math.random() * 510,
+    y: 140 + Math.random() * 60,
+    r: 1 + Math.random() * 3,
+    speed: 0.3 + Math.random() * 0.5,
+    type: Math.random() < 0.4 ? 'debris' : 'water',
+    stage: Math.floor(Math.random() * 4)
+  });
+}
+
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = canvas.width / rect.width, sy = canvas.height / rect.height;
+  const mx = (e.clientX - rect.left) * sx, my = (e.clientY - rect.top) * sy;
+
+  stages.forEach((s, i) => {
+    if (mx >= s.x && mx <= s.x + s.w && my >= s.y && my <= s.y + s.h) {
+      selected = i;
+      const ib = document.getElementById('infoBox');
+      ib.className = 'info-box show';
+      ib.innerHTML =
+        '<h4>Stage ' + (i+1) + ': ' + s.name + '</h4>' +
+        '<div class="info-row"><span class="info-label">Removes</span><span class="info-value">' + s.removes + '</span></div>' +
+        '<div class="info-row"><span class="info-label">How It Works</span><span class="info-value">' + s.how + '</span></div>';
+      document.getElementById('purityFill').style.width = s.purity + '%';
+      document.getElementById('purityFill').style.background = s.purity > 80 ? '#4aaa55' : s.purity > 50 ? '#bbaa44' : '#cc8844';
+      document.getElementById('purityLabel').textContent = s.purity + '%';
+    }
+  });
+});
+
+function draw() {
+  t++;
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+  // Title label
+  ctx.fillStyle = '#1835b4'; ctx.font = '600 11px Outfit'; ctx.textAlign = 'left';
+  ctx.fillText('RAW WATER IN', 10, 25);
+  ctx.textAlign = 'right';
+  ctx.fillText('CLEAN WATER OUT', W - 10, 25);
+
+  // Flow arrow at top
+  ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 1.5; ctx.setLineDash([4,3]);
+  ctx.beginPath(); ctx.moveTo(90, 20); ctx.lineTo(W - 110, 20); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.beginPath(); ctx.moveTo(W-110,20); ctx.lineTo(W-118,16); ctx.moveTo(W-110,20); ctx.lineTo(W-118,24); ctx.stroke();
+
+  // Draw stages
+  stages.forEach((s, i) => {
+    const isSel = i === selected;
+
+    // Tank
+    ctx.fillStyle = isSel ? s.color : s.color + '55';
+    ctx.strokeStyle = isSel ? '#1835b4' : '#ccc';
+    ctx.lineWidth = isSel ? 2.5 : 1;
+    ctx.beginPath(); ctx.roundRect(s.x, s.y, s.w, s.h, 8); ctx.fill(); ctx.stroke();
+
+    // Water inside tank
+    const waterLevel = s.h * 0.65;
+    const waterY = s.y + s.h - waterLevel;
+    const waterBlue = `rgba(100,170,220,${isSel ? 0.5 : 0.25})`;
+    ctx.fillStyle = waterBlue;
+    ctx.fillRect(s.x + 2, waterY, s.w - 4, waterLevel - 2);
+
+    // Stage-specific decorations
+    if (i === 0) {
+      // Screen lines
+      for (let j = 0; j < 5; j++) {
+        ctx.strokeStyle = '#666'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(s.x + 20 + j*15, s.y + 30); ctx.lineTo(s.x + 20 + j*15, s.y + s.h - 10); ctx.stroke();
+      }
+    }
+    if (i === 1) {
+      // Settled particles at bottom
+      ctx.fillStyle = '#8B7355';
+      ctx.beginPath(); ctx.ellipse(s.x + s.w/2, s.y + s.h - 15, 35, 10, 0, 0, Math.PI*2); ctx.fill();
+    }
+    if (i === 2) {
+      // Sand layers
+      ctx.fillStyle = '#d4c8a0'; ctx.fillRect(s.x + 5, s.y + s.h - 50, s.w - 10, 20);
+      ctx.fillStyle = '#aaa'; ctx.fillRect(s.x + 5, s.y + s.h - 30, s.w - 10, 15);
+      ctx.fillStyle = '#888'; ctx.font = '500 8px Outfit'; ctx.textAlign = 'center';
+      ctx.fillText('Sand', s.x + s.w/2, s.y + s.h - 37);
+      ctx.fillText('Gravel', s.x + s.w/2, s.y + s.h - 20);
+    }
+    if (i === 3) {
+      // Chlorine drops
+      ctx.fillStyle = '#55ddaa';
+      for (let j = 0; j < 3; j++) {
+        const dy = (t + j * 20) % 60;
+        ctx.beginPath(); ctx.arc(s.x + 30 + j * 25, s.y + 30 + dy, 3, 0, Math.PI*2); ctx.fill();
+      }
+    }
+
+    // Label
+    ctx.fillStyle = isSel ? '#fff' : '#555';
+    ctx.font = (isSel ? '700' : '600') + ' 11px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.name, s.x + s.w / 2, s.y + 18);
+    ctx.fillStyle = isSel ? '#fff' : '#999';
+    ctx.font = '500 9px Outfit';
+    ctx.fillText('Stage ' + (i + 1), s.x + s.w / 2, s.y + s.h + 16);
+
+    // Connecting pipe
+    if (i < stages.length - 1) {
+      const next = stages[i + 1];
+      ctx.strokeStyle = '#88bbdd'; ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.moveTo(s.x + s.w, s.y + s.h / 2); ctx.lineTo(next.x, next.y + next.h / 2); ctx.stroke();
+      ctx.strokeStyle = '#aaddee'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(s.x + s.w, s.y + s.h / 2); ctx.lineTo(next.x, next.y + next.h / 2); ctx.stroke();
+    }
+  });
+
+  // Animated water drops in pipes
+  for (let i = 0; i < 3; i++) {
+    stages.forEach((s, j) => {
+      if (j < stages.length - 1) {
+        const next = stages[j + 1];
+        const px = ((t * 1.5 + i * 40 + j * 20) % (next.x - (s.x + s.w))) + s.x + s.w;
+        ctx.fillStyle = 'rgba(100,180,240,0.6)';
+        ctx.beginPath(); ctx.arc(px, s.y + s.h/2, 3, 0, Math.PI*2); ctx.fill();
+      }
+    });
+  }
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+</body>
+</html>

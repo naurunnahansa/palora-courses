@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gas Pressure Simulation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        canvas { width: 100%; display: block; border-radius: 8px; background: #f8f9fa; margin-bottom: 8px; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .control-group { background: #f8f9fa; border-radius: 8px; padding: 8px 10px; }
+        .control-group label { font-size: 0.7rem; font-weight: 600; color: #4a5568; display: block; margin-bottom: 3px; }
+        .control-group .val { font-size: 0.85rem; font-weight: 700; color: #1835b4; }
+        .control-group input[type=range] { width: 100%; accent-color: #1835b4; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
+        .stat { background: #f8f9fa; border-radius: 8px; padding: 8px; text-align: center; }
+        .stat .label { font-size: 0.6rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.05em; }
+        .stat .value { font-size: 1.1rem; font-weight: 700; color: #1835b4; }
+        .stat .unit { font-size: 0.6rem; color: #4a5568; }
+        .laws { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .law { background: #f0f4f8; border-radius: 8px; padding: 8px; text-align: center; }
+        .law .name { font-family: system-ui, -apple-system, sans-serif; font-size: 0.7rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
+        .law .formula { font-size: 0.85rem; font-weight: 600; }
+        .law .desc { font-size: 0.6rem; color: #4a5568; margin-top: 2px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Gas Pressure Simulation</h1>
+    <canvas id="canvas" height="240"></canvas>
+    <div class="controls">
+        <div class="control-group">
+            <label>Temperature: <span class="val" id="tempVal">300 K</span></label>
+            <input type="range" id="tempSlider" min="100" max="800" value="300">
+        </div>
+        <div class="control-group">
+            <label>Volume: <span class="val" id="volVal">100%</span></label>
+            <input type="range" id="volSlider" min="30" max="100" value="100">
+        </div>
+    </div>
+    <div class="stats">
+        <div class="stat">
+            <div class="label">Pressure</div>
+            <div class="value" id="pressure">1.00</div>
+            <div class="unit">atm</div>
+        </div>
+        <div class="stat">
+            <div class="label">Collisions/sec</div>
+            <div class="value" id="collisions">0</div>
+            <div class="unit">per wall</div>
+        </div>
+        <div class="stat">
+            <div class="label">Avg Speed</div>
+            <div class="value" id="avgSpeed">0</div>
+            <div class="unit">m/s</div>
+        </div>
+    </div>
+    <div class="laws">
+        <div class="law">
+            <div class="name">Gay-Lussac's Law</div>
+            <div class="formula">P ∝ T</div>
+            <div class="desc">At constant volume, pressure increases with temperature</div>
+        </div>
+        <div class="law">
+            <div class="name">Boyle's Law</div>
+            <div class="formula">P ∝ 1/V</div>
+            <div class="desc">At constant temperature, pressure increases as volume decreases</div>
+        </div>
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const rect = canvas.getBoundingClientRect();
+canvas.width = rect.width * 2;
+canvas.height = 240 * 2;
+ctx.scale(2, 2);
+const W = rect.width, H = 240;
+
+const particles = [];
+const N = 50;
+const baseTemp = 300;
+const baseVol = 1.0;
+
+for (let i = 0; i < N; i++) {
+    particles.push({
+        x: 60 + Math.random() * (W - 120),
+        y: 30 + Math.random() * 180,
+        vx: (Math.random() - 0.5) * 4,
+        vy: (Math.random() - 0.5) * 4,
+        r: 3
+    });
+}
+
+let collisionCount = 0;
+let collisionRate = 0;
+let lastCountTime = Date.now();
+let lastCount = 0;
+
+function getBoxBounds() {
+    const vol = parseInt(document.getElementById('volSlider').value) / 100;
+    const boxW = (W - 40) * vol;
+    const boxH = 200 * vol;
+    const bx = (W - boxW) / 2;
+    const by = 20 + (200 - boxH) / 2;
+    return { x: bx, y: by, w: boxW, h: boxH };
+}
+
+function update() {
+    const temp = parseInt(document.getElementById('tempSlider').value);
+    const vol = parseInt(document.getElementById('volSlider').value) / 100;
+    const speedFactor = Math.sqrt(temp / baseTemp);
+    const box = getBoxBounds();
+
+    document.getElementById('tempVal').textContent = temp + ' K';
+    document.getElementById('volVal').textContent = Math.round(vol * 100) + '%';
+
+    const pressure = (temp / baseTemp) / vol;
+    document.getElementById('pressure').textContent = pressure.toFixed(2);
+
+    let totalSpeed = 0;
+    particles.forEach(p => {
+        // Scale velocities towards target based on temperature
+        const targetSpeed = speedFactor * 3;
+        const currSpeed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        if (currSpeed > 0) {
+            const scale = targetSpeed / currSpeed;
+            p.vx += (p.vx * scale - p.vx) * 0.05;
+            p.vy += (p.vy * scale - p.vy) * 0.05;
+        }
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Wall collisions
+        if (p.x - p.r < box.x) { p.x = box.x + p.r; p.vx = Math.abs(p.vx); collisionCount++; }
+        if (p.x + p.r > box.x + box.w) { p.x = box.x + box.w - p.r; p.vx = -Math.abs(p.vx); collisionCount++; }
+        if (p.y - p.r < box.y) { p.y = box.y + p.r; p.vy = Math.abs(p.vy); collisionCount++; }
+        if (p.y + p.r > box.y + box.h) { p.y = box.y + box.h - p.r; p.vy = -Math.abs(p.vy); collisionCount++; }
+
+        // Keep in bounds
+        p.x = Math.max(box.x + p.r, Math.min(box.x + box.w - p.r, p.x));
+        p.y = Math.max(box.y + p.r, Math.min(box.y + box.h - p.r, p.y));
+
+        totalSpeed += Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+    });
+
+    // Collision rate
+    const now = Date.now();
+    if (now - lastCountTime > 500) {
+        collisionRate = Math.round((collisionCount - lastCount) * 2);
+        lastCount = collisionCount;
+        lastCountTime = now;
+        document.getElementById('collisions').textContent = collisionRate;
+    }
+
+    document.getElementById('avgSpeed').textContent = Math.round(totalSpeed / N * 100);
+}
+
+function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const box = getBoxBounds();
+    const temp = parseInt(document.getElementById('tempSlider').value);
+
+    // Box walls - glow based on pressure
+    const pressure = (temp / baseTemp) / (parseInt(document.getElementById('volSlider').value) / 100);
+    const glowAlpha = Math.min(0.6, pressure * 0.15);
+    ctx.shadowColor = `rgba(229,62,62,${glowAlpha})`;
+    ctx.shadowBlur = pressure * 5;
+    ctx.strokeStyle = '#1835b4';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(box.x, box.y, box.w, box.h);
+    ctx.shadowBlur = 0;
+
+    // Piston indicator on right wall
+    ctx.fillStyle = '#4a5568';
+    ctx.fillRect(box.x + box.w - 2, box.y + box.h * 0.3, 8, box.h * 0.4);
+    ctx.fillStyle = '#1835b4';
+    ctx.fillRect(box.x + box.w + 4, box.y + box.h * 0.3 + 5, 3, box.h * 0.4 - 10);
+
+    // Particles
+    particles.forEach(p => {
+        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        const maxSpeed = 10;
+        const t = Math.min(1, speed / maxSpeed);
+        // Color by speed: blue -> yellow -> red
+        let r, g, b;
+        if (t < 0.5) {
+            const f = t / 0.5;
+            r = Math.round(66 + f * (244 - 66));
+            g = Math.round(153 + f * (211 - 153));
+            b = Math.round(225 + f * (94 - 225));
+        } else {
+            const f = (t - 0.5) / 0.5;
+            r = Math.round(244 + f * (229 - 244));
+            g = Math.round(211 + f * (62 - 211));
+            b = Math.round(94 + f * (62 - 94));
+        }
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Motion trail
+        ctx.strokeStyle = `rgba(${r},${g},${b},0.3)`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x - p.vx * 2, p.y - p.vy * 2);
+        ctx.stroke();
+    });
+
+    // Wall flash on high collision
+    if (collisionRate > 100) {
+        ctx.strokeStyle = `rgba(244,211,94,${Math.min(0.5, collisionRate / 500)})`;
+        ctx.lineWidth = 4;
+        ctx.strokeRect(box.x - 1, box.y - 1, box.w + 2, box.h + 2);
+    }
+
+    // Pressure bar
+    const barX = W - 25;
+    const barH = 180;
+    const barY = 30;
+    ctx.fillStyle = '#e2e8f0';
+    ctx.fillRect(barX, barY, 12, barH);
+    const pFill = Math.min(1, pressure / 5);
+    const grad = ctx.createLinearGradient(0, barY + barH, 0, barY);
+    grad.addColorStop(0, '#4299e1');
+    grad.addColorStop(0.5, '#4a3fc2');
+    grad.addColorStop(1, '#e53e3e');
+    ctx.fillStyle = grad;
+    ctx.fillRect(barX, barY + barH * (1 - pFill), 12, barH * pFill);
+    ctx.strokeStyle = '#aaa';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(barX, barY, 12, barH);
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '600 8px Outfit';
+    ctx.textAlign = 'center';
+    ctx.save();
+    ctx.translate(barX + 6, barY - 5);
+    ctx.fillText('P', 0, 0);
+    ctx.restore();
+}
+
+function animate() {
+    update();
+    draw();
+    requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newton's Third Law</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .subtitle { text-align: center; font-size: 0.75rem; color: #4a5568; margin-bottom: 10px; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .scene-btns { display: flex; gap: 5px; flex-wrap: wrap; }
+        .scene-btn { background: #e8ecf8; border: 2px solid transparent; border-radius: 5px; padding: 6px 12px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; flex: 1; text-align: center; }
+        .scene-btn:hover { border-color: #1835b4; }
+        .scene-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+        .info-box { background: #e8ecf8; border-radius: 5px; padding: 10px; margin-top: 8px; font-size: 0.78rem; color: #4a5568; }
+        .info-box strong { color: #1835b4; }
+        .force-pair { display: flex; gap: 8px; margin-top: 6px; }
+        .force-card { flex: 1; background: #fff; border-radius: 5px; padding: 8px; border: 1px solid #d4d8e5; text-align: center; }
+        .force-card .dir { font-family: system-ui, -apple-system, sans-serif; font-size: 1.2rem; }
+        .force-card .desc { font-size: 0.72rem; color: #4a5568; }
+        .action { border-left: 3px solid #28a745; }
+        .reaction { border-left: 3px solid #dc3545; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Newton's Third Law</h1>
+    <p class="subtitle">Every action has an equal and opposite reaction</p>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="500"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Choose Scenario</div>
+        <div class="scene-btns" id="sceneBtns"></div>
+        <div class="info-box" id="infoBox"></div>
+        <div class="force-pair" id="forcePair"></div>
+    </div>
+</div>
+<script>
+const scenes = [
+    {
+        name: 'Book on Table',
+        action: { label: 'Weight of book pushes down on table', force: 'Book → Table', mag: '10 N ↓', color: '#28a745' },
+        reaction: { label: 'Table pushes up on book (normal force)', force: 'Table → Book', mag: '10 N ↑', color: '#dc3545' },
+        info: 'The book pushes the table down with its weight. The table pushes back up with an equal <strong>normal contact force</strong>.',
+        draw: drawBookTable
+    },
+    {
+        name: 'Person & Wall',
+        action: { label: 'Person pushes wall to the right', force: 'Person → Wall', mag: '50 N →', color: '#28a745' },
+        reaction: { label: 'Wall pushes person to the left', force: 'Wall → Person', mag: '50 N ←', color: '#dc3545' },
+        info: 'When you push a wall, the wall pushes back on you with an <strong>equal and opposite</strong> force. You feel this as resistance.',
+        draw: drawPersonWall
+    },
+    {
+        name: 'Rocket',
+        action: { label: 'Rocket pushes exhaust gas downward', force: 'Rocket → Gas', mag: 'F ↓', color: '#28a745' },
+        reaction: { label: 'Exhaust gas pushes rocket upward', force: 'Gas → Rocket', mag: 'F ↑', color: '#dc3545' },
+        info: 'The rocket pushes hot gas <strong>downward</strong>. By Newton\'s 3rd law, the gas pushes the rocket <strong>upward</strong> — this is thrust!',
+        draw: drawRocket
+    },
+    {
+        name: 'Swimming',
+        action: { label: 'Hands push water backward', force: 'Swimmer → Water', mag: 'F ←', color: '#28a745' },
+        reaction: { label: 'Water pushes swimmer forward', force: 'Water → Swimmer', mag: 'F →', color: '#dc3545' },
+        info: 'A swimmer pushes water <strong>backward</strong> with their hands. The water pushes the swimmer <strong>forward</strong> as a reaction.',
+        draw: drawSwimmer
+    }
+];
+
+let selected = 0, animT = 0, lastTs = 0;
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 500 / 1060) + 'px';
+}
+
+// Scene buttons
+const btnContainer = document.getElementById('sceneBtns');
+scenes.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'scene-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = s.name;
+    btn.onclick = () => { selected = i; document.querySelectorAll('.scene-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); updateInfo(); };
+    btnContainer.appendChild(btn);
+});
+
+function updateInfo() {
+    const s = scenes[selected];
+    document.getElementById('infoBox').innerHTML = s.info;
+    document.getElementById('forcePair').innerHTML = `
+        <div class="force-card action"><div class="dir" style="color:#28a745;">Action</div><div class="desc">${s.action.label}</div><div style="font-weight:700;color:#28a745;margin-top:4px;">${s.action.mag}</div></div>
+        <div class="force-card reaction"><div class="dir" style="color:#dc3545;">Reaction</div><div class="desc">${s.reaction.label}</div><div style="font-weight:700;color:#dc3545;margin-top:4px;">${s.reaction.mag}</div></div>`;
+}
+
+function drawArrow(x1, y1, x2, y2, color, label) {
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+    ctx.strokeStyle = color; ctx.lineWidth = 5; ctx.stroke();
+    const a = Math.atan2(y2-y1, x2-x1);
+    ctx.beginPath(); ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - 14*Math.cos(a-0.4), y2 - 14*Math.sin(a-0.4));
+    ctx.lineTo(x2 - 14*Math.cos(a+0.4), y2 - 14*Math.sin(a+0.4));
+    ctx.closePath(); ctx.fillStyle = color; ctx.fill();
+    if (label) {
+        ctx.fillStyle = color; ctx.font = '600 13px Outfit'; ctx.textAlign = 'center';
+        const offX = -20 * Math.sin(a), offY = 20 * Math.cos(a);
+        ctx.fillText(label, (x1+x2)/2 + offX, (y1+y2)/2 + offY);
+    }
+}
+
+function drawBookTable() {
+    const W = canvas.width, H = canvas.height;
+    const tableY = H * 0.6;
+    // Table
+    ctx.fillStyle = '#c8a96e'; ctx.fillRect(W*0.25, tableY, W*0.5, 20);
+    ctx.fillStyle = '#a8895e'; ctx.fillRect(W*0.3, tableY+20, 20, H*0.3);
+    ctx.fillRect(W*0.7-20, tableY+20, 20, H*0.3);
+    // Book
+    const bookW = 100, bookH = 30;
+    ctx.fillStyle = '#1835b4'; ctx.fillRect(W*0.5-bookW/2, tableY-bookH, bookW, bookH);
+    ctx.fillStyle = '#fff'; ctx.font = '600 14px Outfit'; ctx.textAlign = 'center';
+    ctx.fillText('Book', W*0.5, tableY - bookH/2 + 5);
+    // Force arrows
+    const pulse = Math.sin(animT * 3) * 5;
+    drawArrow(W*0.5, tableY-bookH, W*0.5, tableY + 60 + pulse, '#28a745', 'Weight (Action)');
+    drawArrow(W*0.5, tableY, W*0.5, tableY - bookH - 50 - pulse, '#dc3545', 'Normal (Reaction)');
+}
+
+function drawPersonWall() {
+    const W = canvas.width, H = canvas.height;
+    const groundY = H * 0.75;
+    ctx.fillStyle = '#d0d0d0'; ctx.fillRect(W*0.7, 0, W*0.08, groundY);
+    // Person (stick figure)
+    const px = W * 0.45;
+    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.arc(px, groundY - 120, 20, 0, Math.PI*2); ctx.stroke(); // head
+    ctx.beginPath(); ctx.moveTo(px, groundY - 100); ctx.lineTo(px, groundY - 40); ctx.stroke(); // body
+    ctx.beginPath(); ctx.moveTo(px, groundY - 40); ctx.lineTo(px - 25, groundY); ctx.stroke(); // legs
+    ctx.beginPath(); ctx.moveTo(px, groundY - 40); ctx.lineTo(px + 25, groundY); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(px, groundY - 80); ctx.lineTo(W*0.7 - 5, groundY - 70); ctx.stroke(); // arms
+    const pulse = Math.sin(animT * 3) * 8;
+    drawArrow(W*0.7, groundY - 70, W*0.7 + 80 + pulse, groundY - 70, '#28a745', 'Action');
+    drawArrow(W*0.7, groundY - 70, W*0.7 - 80 - pulse, groundY - 70, '#dc3545', 'Reaction');
+}
+
+function drawRocket() {
+    const W = canvas.width, H = canvas.height;
+    const rx = W * 0.5, ry = H * 0.35;
+    // Rocket body
+    ctx.fillStyle = '#1835b4';
+    ctx.beginPath(); ctx.moveTo(rx, ry - 60); ctx.lineTo(rx - 25, ry + 40); ctx.lineTo(rx + 25, ry + 40); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#4a3fc2'; ctx.fillRect(rx - 15, ry + 40, 30, 15);
+    // Exhaust
+    const flicker = Math.sin(animT * 8) * 10;
+    ctx.fillStyle = '#ff6b3520';
+    ctx.beginPath(); ctx.moveTo(rx - 20, ry + 55); ctx.lineTo(rx, ry + 110 + flicker); ctx.lineTo(rx + 20, ry + 55); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#4a3fc240';
+    ctx.beginPath(); ctx.moveTo(rx - 12, ry + 55); ctx.lineTo(rx, ry + 90 + flicker); ctx.lineTo(rx + 12, ry + 55); ctx.closePath(); ctx.fill();
+    const pulse = Math.sin(animT * 3) * 8;
+    drawArrow(rx, ry + 55, rx, ry + 150 + pulse, '#28a745', 'Gas pushed down (Action)');
+    drawArrow(rx, ry - 60, rx, ry - 140 - pulse, '#dc3545', 'Rocket pushed up (Reaction)');
+}
+
+function drawSwimmer() {
+    const W = canvas.width, H = canvas.height;
+    const waterY = H * 0.35;
+    ctx.fillStyle = '#4a90d920'; ctx.fillRect(0, waterY, W, H - waterY);
+    ctx.strokeStyle = '#4a90d9'; ctx.lineWidth = 1; ctx.setLineDash([6,4]);
+    ctx.beginPath(); ctx.moveTo(0, waterY); ctx.lineTo(W, waterY); ctx.stroke(); ctx.setLineDash([]);
+    const sx = W * 0.5, sy = waterY + 40;
+    ctx.fillStyle = '#4a3fc2'; ctx.beginPath();
+    ctx.ellipse(sx, sy, 50, 15, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#c9a020'; ctx.lineWidth = 2; ctx.stroke();
+    // head
+    ctx.beginPath(); ctx.arc(sx + 55, sy - 5, 12, 0, Math.PI*2); ctx.fillStyle = '#4a3fc2'; ctx.fill(); ctx.stroke();
+    // arms
+    const armAngle = Math.sin(animT * 4) * 0.3;
+    ctx.strokeStyle = '#c9a020'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(sx - 10, sy); ctx.lineTo(sx - 40, sy + 30 * Math.cos(armAngle)); ctx.stroke();
+    const pulse = Math.sin(animT * 3) * 8;
+    drawArrow(sx - 30, sy + 15, sx - 120 - pulse, sy + 15, '#28a745', 'Hands push water (Action)');
+    drawArrow(sx + 30, sy + 15, sx + 120 + pulse, sy + 15, '#dc3545', 'Water pushes swimmer (Reaction)');
+}
+
+function draw(ts) {
+    const dt = lastTs ? (ts - lastTs) / 1000 : 0;
+    lastTs = ts; animT += dt;
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+    scenes[selected].draw();
+    requestAnimationFrame(draw);
+}
+
+updateInfo(); resize();
+window.addEventListener('resize', resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

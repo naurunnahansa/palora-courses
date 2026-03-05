@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orbits & Satellites</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#1a2747}.controls{display:flex;gap:6px;margin-bottom:8px}.ctrl-btn{flex:1;background:#e8ecf8;border:2px solid transparent;border-radius:5px;padding:8px;font-family: system-ui, -apple-system, sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#1835b4}.ctrl-btn.active{background:#1835b4;color:#fff}.readouts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.readout{background:#e8ecf8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.68rem;color:#4a5568}.readout .value{font-family: system-ui, -apple-system, sans-serif;font-size:.9rem;color:#1835b4}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Orbits & Satellites</h1>
+    <div class="controls">
+        <button class="ctrl-btn active" onclick="setView(0)">Low Earth Orbit</button>
+        <button class="ctrl-btn" onclick="setView(1)">Geostationary</button>
+        <button class="ctrl-btn" onclick="setView(2)">Both</button>
+    </div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="500"></canvas></div>
+    <div class="readouts">
+        <div class="readout"><div class="label">LEO Altitude</div><div class="value">~200-2000 km</div></div>
+        <div class="readout"><div class="label">Geostationary Altitude</div><div class="value">~36,000 km</div></div>
+    </div>
+    <div class="info" id="info"><strong>Low Earth Orbit (LEO):</strong> Altitude ~200–2000 km. Period ~90 minutes. Used for the ISS, Earth observation, and spy satellites. Moves fast relative to Earth's surface.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let view=0,lastTs=0,animT=0;
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*500/1060)+'px'}
+
+function setView(v){
+    view=v;
+    document.querySelectorAll('.ctrl-btn').forEach((c,j)=>c.classList.toggle('active',j===v));
+    const infos=[
+        '<strong>Low Earth Orbit (LEO):</strong> Altitude ~200–2000 km. Period ~90 minutes. Used for the ISS, Earth observation, and spy satellites. Moves fast relative to Earth\'s surface.',
+        '<strong>Geostationary orbit:</strong> Altitude ~36,000 km. Period = 24 hours (matches Earth\'s rotation). Stays above the same point on Earth. Used for communications and weather satellites.',
+        'LEO satellites orbit much <strong>faster</strong> and <strong>closer</strong> to Earth. Geostationary satellites orbit at the same rate as Earth\'s rotation, appearing <strong>stationary</strong> from the ground.'
+    ];
+    document.getElementById('info').innerHTML=infos[v];
+}
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#1a2747';ctx.fillRect(0,0,W,H);
+
+    // Stars
+    for(let i=0;i<40;i++){
+        const sx=(i*137.5)%W,sy=(i*97.3)%H;
+        ctx.beginPath();ctx.arc(sx,sy,0.7,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.3)';ctx.fill();
+    }
+
+    // Earth
+    const earthR=80;
+    ctx.beginPath();ctx.arc(cx,cy,earthR,0,Math.PI*2);
+    const earthGrd=ctx.createRadialGradient(cx-20,cy-20,10,cx,cy,earthR);
+    earthGrd.addColorStop(0,'#4a90d9');earthGrd.addColorStop(1,'#2d6aa0');
+    ctx.fillStyle=earthGrd;ctx.fill();
+    // Continents (simplified)
+    ctx.fillStyle='#28a745';
+    ctx.beginPath();ctx.arc(cx-15,cy-20,20,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(cx+25,cy+10,15,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='600 12px Oswald';ctx.textAlign='center';ctx.fillText('EARTH',cx,cy+earthR+18);
+
+    // Earth rotation indicator
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(animT*0.1);
+    ctx.beginPath();ctx.moveTo(0,-earthR+5);ctx.lineTo(-4,-earthR+12);ctx.lineTo(4,-earthR+12);ctx.closePath();
+    ctx.fillStyle='rgba(255,255,255,0.5)';ctx.fill();
+    ctx.restore();
+
+    const showLEO=view===0||view===2;
+    const showGeo=view===1||view===2;
+
+    // LEO orbit
+    if(showLEO){
+        const leoR=earthR+30;
+        ctx.beginPath();ctx.arc(cx,cy,leoR,0,Math.PI*2);ctx.strokeStyle='rgba(244,211,94,0.3)';ctx.lineWidth=1;ctx.setLineDash([4,4]);ctx.stroke();ctx.setLineDash([]);
+        // LEO satellite (fast)
+        const leoAngle=animT*1.5;
+        const lx=cx+Math.cos(leoAngle)*leoR;const ly=cy+Math.sin(leoAngle)*leoR;
+        ctx.fillStyle='#4a3fc2';ctx.fillRect(lx-6,ly-3,12,6);
+        // Solar panels
+        ctx.fillStyle='#4a90d9';ctx.fillRect(lx-14,ly-2,8,4);ctx.fillRect(lx+6,ly-2,8,4);
+        ctx.fillStyle='#4a3fc2';ctx.font='500 10px Outfit';ctx.textAlign='center';ctx.fillText('LEO',lx,ly-10);
+        // Orbit trail
+        ctx.strokeStyle='rgba(244,211,94,0.15)';ctx.lineWidth=2;ctx.beginPath();
+        for(let a=0;a<Math.PI*2;a+=0.05){ctx.lineTo(cx+Math.cos(leoAngle-a)*leoR,cy+Math.sin(leoAngle-a)*leoR)}
+        ctx.stroke();
+    }
+
+    // Geostationary orbit
+    if(showGeo){
+        const geoR=earthR+130;
+        ctx.beginPath();ctx.arc(cx,cy,geoR,0,Math.PI*2);ctx.strokeStyle='rgba(220,53,69,0.3)';ctx.lineWidth=1;ctx.setLineDash([4,4]);ctx.stroke();ctx.setLineDash([]);
+        // Geostationary satellite (same speed as Earth rotation)
+        const geoAngle=animT*0.1; // Same speed as Earth
+        const gx=cx+Math.cos(geoAngle)*geoR;const gy=cy+Math.sin(geoAngle)*geoR;
+        ctx.fillStyle='#dc3545';ctx.fillRect(gx-6,gy-3,12,6);
+        ctx.fillStyle='#4a90d9';ctx.fillRect(gx-14,gy-2,8,4);ctx.fillRect(gx+6,gy-2,8,4);
+        ctx.fillStyle='#dc3545';ctx.font='500 10px Outfit';ctx.textAlign='center';ctx.fillText('GEO',gx,gy-10);
+        // Line to Earth showing "stationary"
+        ctx.beginPath();ctx.moveTo(cx+Math.cos(geoAngle)*earthR,cy+Math.sin(geoAngle)*earthR);ctx.lineTo(gx,gy);
+        ctx.strokeStyle='rgba(220,53,69,0.2)';ctx.lineWidth=1;ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([]);
+    }
+
+    // Gravity arrow
+    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='500 10px Outfit';ctx.textAlign='center';
+    ctx.fillText('Gravity provides centripetal force',cx,H-15);
+
+    requestAnimationFrame(draw);
+}
+resize();window.addEventListener('resize',resize);requestAnimationFrame(draw);
+</script>
+</body>
+</html>

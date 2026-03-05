@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conservation of Energy</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; }
+        .ke { color: #dc3545 !important; }
+        .gpe { color: #28a745 !important; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Conservation of Energy</h1>
+    <p class="subtitle">Watch energy transfer between KE and GPE in a pendulum</p>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="500"></canvas>
+    </div>
+    <div class="card" style="padding:8px;">
+        <div class="card-title">Energy Bar Chart</div>
+        <canvas id="barCanvas" width="1060" height="200"></canvas>
+    </div>
+    <div class="readouts">
+        <div class="readout">
+            <div class="label">Kinetic Energy</div>
+            <div class="value ke" id="keVal">0 J</div>
+        </div>
+        <div class="readout">
+            <div class="label">Gravitational PE</div>
+            <div class="value gpe" id="gpeVal">100 J</div>
+        </div>
+        <div class="readout">
+            <div class="label">Total Energy</div>
+            <div class="value" id="totalVal">100 J</div>
+        </div>
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const barCanvas = document.getElementById('barCanvas');
+const bCtx = barCanvas.getContext('2d');
+
+let angle = Math.PI / 3, angVel = 0, lastTs = 0;
+const g = 9.8, L = 280, mass = 2;
+const pivotX = 530, pivotY = 50;
+
+function resize() {
+    [canvas, barCanvas].forEach(c => {
+        const w = Math.min(530, c.parentElement.clientWidth - 16);
+        c.style.width = w + 'px';
+        c.style.height = (w * c.height / c.width) + 'px';
+    });
+}
+
+function draw(ts) {
+    const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.03) : 0;
+    lastTs = ts;
+
+    // Physics
+    const angAcc = -(g / (L * 0.5)) * Math.sin(angle);
+    angVel += angAcc * dt;
+    angVel *= 0.999; // tiny damping for stability
+    angle += angVel * dt;
+
+    const bobX = pivotX + L * Math.sin(angle);
+    const bobY = pivotY + L * Math.cos(angle);
+    const h = L - L * Math.cos(angle);
+    const v = angVel * L * 0.5;
+
+    const ke = 0.5 * mass * v * v;
+    const gpe = mass * g * h * 0.5;
+    const total = ke + gpe;
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    // Ceiling
+    ctx.fillStyle = '#d0d0d0'; ctx.fillRect(pivotX - 60, 0, 120, 15);
+    for (let x = pivotX - 60; x < pivotX + 60; x += 10) {
+        ctx.beginPath(); ctx.moveTo(x, 15); ctx.lineTo(x - 6, 0);
+        ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1; ctx.stroke();
+    }
+
+    // Lowest point line
+    const lowestY = pivotY + L;
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = '#ddd'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(100, lowestY); ctx.lineTo(W - 100, lowestY); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#aaa'; ctx.font = '500 11px Outfit'; ctx.textAlign = 'right';
+    ctx.fillText('h = 0', 95, lowestY + 4);
+
+    // Height marker
+    if (h > 2) {
+        ctx.strokeStyle = '#28a74580'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(bobX + 30, bobY); ctx.lineTo(bobX + 30, lowestY); ctx.stroke();
+        ctx.fillStyle = '#28a745'; ctx.font = '500 12px Outfit'; ctx.textAlign = 'left';
+        ctx.fillText(`h = ${(h*0.5).toFixed(1)} m`, bobX + 35, (bobY + lowestY) / 2);
+    }
+
+    // String
+    ctx.beginPath(); ctx.moveTo(pivotX, pivotY); ctx.lineTo(bobX, bobY);
+    ctx.strokeStyle = '#4a5568'; ctx.lineWidth = 2; ctx.stroke();
+
+    // Bob
+    const bobR = 20;
+    const keFrac = total > 0 ? ke / total : 0;
+    const r = Math.round(220 * keFrac + 40 * (1 - keFrac));
+    const gn = Math.round(167 * (1 - keFrac) + 80 * keFrac);
+    const b = Math.round(69 * keFrac + 120 * (1 - keFrac));
+    ctx.beginPath(); ctx.arc(bobX, bobY, bobR, 0, Math.PI * 2);
+    ctx.fillStyle = `rgb(${r},${gn},${b})`; ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+
+    // Pivot
+    ctx.beginPath(); ctx.arc(pivotX, pivotY, 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#4a5568'; ctx.fill();
+
+    // Labels
+    ctx.font = '600 13px Outfit'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#dc3545'; ctx.fillText(`KE = ${ke.toFixed(1)} J`, W * 0.15, H * 0.15);
+    ctx.fillStyle = '#28a745'; ctx.fillText(`GPE = ${gpe.toFixed(1)} J`, W * 0.85, H * 0.15);
+    ctx.fillStyle = '#1835b4'; ctx.fillText(`Total = ${total.toFixed(1)} J`, W * 0.5, H * 0.95);
+
+    // Bar chart
+    const bW = barCanvas.width, bH = barCanvas.height;
+    bCtx.clearRect(0, 0, bW, bH);
+    bCtx.fillStyle = '#fafbfc'; bCtx.fillRect(0, 0, bW, bH);
+
+    const barW2 = 80, gap = 60;
+    const totalBarH = bH - 40;
+    const keH = total > 0 ? (ke / total) * totalBarH : 0;
+    const gpeH = total > 0 ? (gpe / total) * totalBarH : 0;
+
+    // KE bar
+    const keX = bW / 2 - barW2 - gap / 2;
+    bCtx.fillStyle = '#dc354520'; bCtx.fillRect(keX, 20, barW2, totalBarH);
+    bCtx.fillStyle = '#dc3545'; bCtx.fillRect(keX, 20 + totalBarH - keH, barW2, keH);
+    bCtx.strokeStyle = '#dc3545'; bCtx.lineWidth = 1; bCtx.strokeRect(keX, 20, barW2, totalBarH);
+    bCtx.fillStyle = '#dc3545'; bCtx.font = '600 14px Oswald'; bCtx.textAlign = 'center';
+    bCtx.fillText('KE', keX + barW2 / 2, 15);
+
+    // GPE bar
+    const gpeX = bW / 2 + gap / 2;
+    bCtx.fillStyle = '#28a74520'; bCtx.fillRect(gpeX, 20, barW2, totalBarH);
+    bCtx.fillStyle = '#28a745'; bCtx.fillRect(gpeX, 20 + totalBarH - gpeH, barW2, gpeH);
+    bCtx.strokeStyle = '#28a745'; bCtx.lineWidth = 1; bCtx.strokeRect(gpeX, 20, barW2, totalBarH);
+    bCtx.fillStyle = '#28a745'; bCtx.font = '600 14px Oswald';
+    bCtx.fillText('GPE', gpeX + barW2 / 2, 15);
+
+    // Total line
+    bCtx.setLineDash([4, 4]); bCtx.strokeStyle = '#1835b4'; bCtx.lineWidth = 2;
+    bCtx.beginPath(); bCtx.moveTo(keX - 20, 20); bCtx.lineTo(gpeX + barW2 + 20, 20); bCtx.stroke();
+    bCtx.setLineDash([]);
+    bCtx.fillStyle = '#1835b4'; bCtx.font = '500 11px Outfit'; bCtx.textAlign = 'right';
+    bCtx.fillText('Total', keX - 25, 24);
+
+    // Update readouts
+    document.getElementById('keVal').textContent = ke.toFixed(1) + ' J';
+    document.getElementById('gpeVal').textContent = gpe.toFixed(1) + ' J';
+    document.getElementById('totalVal').textContent = total.toFixed(1) + ' J';
+
+    requestAnimationFrame(draw);
+}
+
+resize(); window.addEventListener('resize', resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

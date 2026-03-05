@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efficiency Calculator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .formula-box { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 10px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        .presets { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; margin-bottom: 10px; }
+        .preset-btn { background: #fff; border: 1px solid #d4d8e5; border-radius: 5px; padding: 5px 10px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.72rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .preset-btn:hover, .preset-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+        .input-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .input-group { flex: 1; }
+        .input-group label { display: block; font-size: 0.72rem; font-weight: 600; color: #4a5568; margin-bottom: 3px; }
+        .input-group input { width: 100%; padding: 6px 8px; border: 1px solid #d4d8e5; border-radius: 5px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1a2747; }
+        .input-group input:focus { outline: none; border-color: #1835b4; }
+        .result-card { background: linear-gradient(135deg, #1835b4, #506a8a); color: #fff; border-radius: 5px; padding: 10px; text-align: center; margin-bottom: 10px; }
+        .result-card .eff-label { font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; }
+        .result-card .eff-value { font-size: 2rem; font-weight: 700; }
+        .result-card .eff-bar { height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; margin-top: 6px; overflow: hidden; }
+        .result-card .eff-fill { height: 100%; border-radius: 4px; background: #4a3fc2; transition: width 0.4s; }
+        .sankey { border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
+        .sankey h2 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.82rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; text-align: center; }
+        canvas { display: block; margin: 0 auto; }
+        .bar-chart { border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
+        .bar-chart h2 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.82rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; text-align: center; }
+        .error-msg { color: #dc3545; font-size: 0.72rem; text-align: center; margin-top: 4px; display: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Efficiency Calculator</h1>
+    <div class="formula-box">Efficiency = (Useful Energy Output / Total Energy Input) &times; 100%</div>
+    <div class="presets">
+        <button class="preset-btn" onclick="setPreset('bulb')">Filament Bulb</button>
+        <button class="preset-btn" onclick="setPreset('led')">LED Bulb</button>
+        <button class="preset-btn" onclick="setPreset('car')">Car Engine</button>
+        <button class="preset-btn" onclick="setPreset('electric')">Electric Motor</button>
+        <button class="preset-btn" onclick="setPreset('solar')">Solar Panel</button>
+        <button class="preset-btn" onclick="setPreset('human')">Human Body</button>
+    </div>
+    <div class="input-row">
+        <div class="input-group">
+            <label>Total Energy Input (J)</label>
+            <input type="number" id="totalEnergy" value="100" min="0" step="1" oninput="calculate()">
+        </div>
+        <div class="input-group">
+            <label>Useful Energy Output (J)</label>
+            <input type="number" id="usefulEnergy" value="10" min="0" step="1" oninput="calculate()">
+        </div>
+    </div>
+    <div class="error-msg" id="errorMsg">Useful energy cannot exceed total energy input!</div>
+    <div class="result-card">
+        <div class="eff-label">Efficiency</div>
+        <div class="eff-value" id="effValue">10.0%</div>
+        <div class="eff-bar"><div class="eff-fill" id="effFill" style="width:10%"></div></div>
+    </div>
+    <div class="sankey">
+        <h2>Energy Flow Diagram</h2>
+        <canvas id="sankeyCanvas" width="520" height="150"></canvas>
+    </div>
+    <div class="bar-chart">
+        <h2>Efficiency Comparison</h2>
+        <canvas id="barCanvas" width="520" height="180"></canvas>
+    </div>
+</div>
+<script>
+const presets = {
+    bulb: { total: 100, useful: 10, name: 'Filament Bulb', usefulLabel: 'Light', wasteLabel: 'Heat' },
+    led: { total: 100, useful: 75, name: 'LED Bulb', usefulLabel: 'Light', wasteLabel: 'Heat' },
+    car: { total: 1000, useful: 250, name: 'Car Engine', usefulLabel: 'Kinetic', wasteLabel: 'Heat + Sound' },
+    electric: { total: 500, useful: 425, name: 'Electric Motor', usefulLabel: 'Kinetic', wasteLabel: 'Heat + Sound' },
+    solar: { total: 1000, useful: 200, name: 'Solar Panel', usefulLabel: 'Electrical', wasteLabel: 'Heat + Reflection' },
+    human: { total: 500, useful: 125, name: 'Human Body', usefulLabel: 'Kinetic', wasteLabel: 'Heat' }
+};
+const allPresets = Object.entries(presets).map(([k,v]) => ({key:k, ...v, eff: (v.useful/v.total)*100}));
+let currentPreset = null;
+
+function setPreset(key) {
+    const p = presets[key];
+    document.getElementById('totalEnergy').value = p.total;
+    document.getElementById('usefulEnergy').value = p.useful;
+    currentPreset = key;
+    document.querySelectorAll('.preset-btn').forEach((b,i) => {
+        b.classList.toggle('active', Object.keys(presets)[i] === key);
+    });
+    calculate();
+}
+
+function calculate() {
+    const total = parseFloat(document.getElementById('totalEnergy').value) || 0;
+    const useful = parseFloat(document.getElementById('usefulEnergy').value) || 0;
+    const errEl = document.getElementById('errorMsg');
+    if (useful > total) { errEl.style.display = 'block'; } else { errEl.style.display = 'none'; }
+    const eff = total > 0 ? Math.min((useful / total) * 100, 100) : 0;
+    document.getElementById('effValue').textContent = eff.toFixed(1) + '%';
+    document.getElementById('effFill').style.width = eff + '%';
+    drawSankey(total, useful, eff);
+    drawBarChart(eff);
+}
+
+function drawSankey(total, useful, eff) {
+    const c = document.getElementById('sankeyCanvas');
+    const ctx = c.getContext('2d');
+    const w = c.width, h = c.height;
+    ctx.clearRect(0, 0, w, h);
+    const totalH = 70;
+    const usefulH = totalH * (eff / 100);
+    const wasteH = totalH - usefulH;
+    const startX = 30, midX = w * 0.45, endX = w - 80;
+    const topY = (h - totalH) / 2;
+    // input arrow
+    ctx.fillStyle = '#1835b4';
+    ctx.beginPath();
+    ctx.moveTo(startX, topY);
+    ctx.lineTo(midX, topY);
+    ctx.lineTo(midX, topY + totalH);
+    ctx.lineTo(startX, topY + totalH);
+    ctx.closePath();
+    ctx.fill();
+    // useful output (top)
+    ctx.fillStyle = '#28a745';
+    ctx.beginPath();
+    ctx.moveTo(midX, topY);
+    ctx.bezierCurveTo(midX + 60, topY, endX - 60, topY, endX, topY);
+    ctx.lineTo(endX, topY + usefulH);
+    ctx.bezierCurveTo(endX - 60, topY + usefulH, midX + 60, topY + usefulH, midX, topY + usefulH);
+    ctx.closePath();
+    ctx.fill();
+    // waste output (bottom)
+    ctx.fillStyle = '#dc3545';
+    ctx.globalAlpha = 0.7;
+    ctx.beginPath();
+    ctx.moveTo(midX, topY + usefulH);
+    const wasteEndY = topY + usefulH + 10;
+    ctx.bezierCurveTo(midX + 60, topY + totalH + 15, endX - 60, h - wasteH - 5, endX, h - wasteH - 5);
+    ctx.lineTo(endX, h - 5);
+    ctx.bezierCurveTo(endX - 60, h - 5, midX + 60, topY + totalH + 15 + wasteH, midX, topY + totalH);
+    ctx.closePath();
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    // labels
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 11px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText(total + ' J', (startX + midX) / 2, topY + totalH / 2 + 4);
+    ctx.font = '9px Outfit';
+    ctx.fillText('Total Input', (startX + midX) / 2, topY + totalH / 2 + 16);
+    if (usefulH > 12) {
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 10px Outfit';
+        ctx.fillText(useful.toFixed(0) + ' J', (midX + endX) / 2, topY + usefulH / 2 + 4);
+    }
+    ctx.fillStyle = '#28a745';
+    ctx.font = 'bold 10px Outfit';
+    ctx.textAlign = 'left';
+    ctx.fillText('Useful: ' + useful.toFixed(0) + ' J', endX + 5, topY + Math.max(usefulH / 2, 8) + 3);
+    ctx.fillStyle = '#dc3545';
+    ctx.fillText('Wasted: ' + (total - useful).toFixed(0) + ' J', endX + 5, h - (wasteH > 10 ? wasteH / 2 : 0) - 2);
+}
+
+function drawBarChart(currentEff) {
+    const c = document.getElementById('barCanvas');
+    const ctx = c.getContext('2d');
+    const w = c.width, h = c.height;
+    ctx.clearRect(0, 0, w, h);
+    const pad = { top: 8, right: 10, bottom: 20, left: 100 };
+    const cw = w - pad.left - pad.right;
+    const items = allPresets.map(p => ({ name: p.name, eff: p.eff }));
+    if (currentPreset === null) {
+        items.push({ name: 'Custom', eff: currentEff, custom: true });
+    }
+    const barH = 18;
+    const gap = 6;
+    const totalBarsH = items.length * (barH + gap) - gap;
+    items.forEach((item, i) => {
+        const y = pad.top + i * (barH + gap);
+        const barW = (item.eff / 100) * cw;
+        // bg bar
+        ctx.fillStyle = '#f0f0f0';
+        ctx.beginPath(); ctx.roundRect(pad.left, y, cw, barH, 3); ctx.fill();
+        // value bar
+        const isHighlighted = (currentPreset && item.name === presets[currentPreset].name) || item.custom;
+        ctx.fillStyle = isHighlighted ? '#4a3fc2' : '#1835b4';
+        if (barW > 0) { ctx.beginPath(); ctx.roundRect(pad.left, y, barW, barH, 3); ctx.fill(); }
+        // label
+        ctx.fillStyle = '#1a2747';
+        ctx.font = (isHighlighted ? 'bold ' : '') + '11px Outfit';
+        ctx.textAlign = 'right';
+        ctx.fillText(item.name, pad.left - 6, y + barH / 2 + 4);
+        // value
+        ctx.fillStyle = isHighlighted ? '#1a2747' : '#fff';
+        ctx.font = 'bold 10px Outfit';
+        ctx.textAlign = 'left';
+        if (barW > 35) ctx.fillText(item.eff.toFixed(0) + '%', pad.left + 6, y + barH / 2 + 4);
+        else { ctx.fillStyle = '#4a5568'; ctx.fillText(item.eff.toFixed(0) + '%', pad.left + barW + 4, y + barH / 2 + 4); }
+    });
+}
+
+function resize() {
+    const w = Math.min(520, document.querySelector('.container').clientWidth - 24);
+    document.getElementById('sankeyCanvas').width = w;
+    document.getElementById('barCanvas').width = w;
+    calculate();
+}
+
+setPreset('bulb');
+resize();
+window.addEventListener('resize', resize);
+</script>
+</body>
+</html>

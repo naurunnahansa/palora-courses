@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motor Effect</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; font-size: 0.75rem; color: #4a5568; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto 10px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .controls { display: flex; gap: 6px; justify-content: center; margin-bottom: 8px; flex-wrap: wrap; }
+        .ctrl-btn { background: #fff; border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px 12px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.72rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .ctrl-btn:hover { border-color: #1835b4; }
+        .ctrl-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+        .info-row { display: flex; gap: 6px; margin-bottom: 8px; }
+        .info-card { flex: 1; border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px 8px; text-align: center; }
+        .info-card .label { font-size: 0.62rem; color: #4a5568; text-transform: uppercase; }
+        .info-card .value { font-size: 0.85rem; font-weight: 700; color: #1835b4; }
+        .hand-guide { border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
+        .hand-guide h2 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.82rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; text-align: center; }
+        .hand-steps { display: flex; gap: 6px; }
+        .hand-step { flex: 1; text-align: center; font-size: 0.68rem; color: #4a5568; }
+        .hand-step .finger { font-size: 1.5rem; display: block; margin-bottom: 2px; }
+        .hand-step strong { color: #1a2747; display: block; font-size: 0.72rem; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Motor Effect</h1>
+    <p class="desc">A current-carrying wire in a magnetic field experiences a force</p>
+    <canvas id="motorCanvas" width="530" height="300"></canvas>
+    <div class="controls">
+        <button class="ctrl-btn active" id="curRightBtn" onclick="setCurrent('right')">Current: Right</button>
+        <button class="ctrl-btn" id="curLeftBtn" onclick="setCurrent('left')">Current: Left</button>
+        <button class="ctrl-btn active" id="fieldInBtn" onclick="setField('into')">Field: Into Page</button>
+        <button class="ctrl-btn" id="fieldOutBtn" onclick="setField('outof')">Field: Out of Page</button>
+    </div>
+    <div class="info-row">
+        <div class="info-card"><div class="label">Current (I)</div><div class="value" id="curDir">Right</div></div>
+        <div class="info-card"><div class="label">Field (B)</div><div class="value" id="fieldDir">Into page</div></div>
+        <div class="info-card"><div class="label">Force (F)</div><div class="value" id="forceDir">Upward</div></div>
+    </div>
+    <div class="hand-guide">
+        <h2>Fleming's Left-Hand Rule</h2>
+        <div class="hand-steps">
+            <div class="hand-step"><span class="finger">&#9757;</span><strong>First finger</strong>Field (B) direction</div>
+            <div class="hand-step"><span class="finger">&#9758;</span><strong>seCond finger</strong>Current (I) direction</div>
+            <div class="hand-step"><span class="finger">&#128077;</span><strong>thuMb</strong>Motion / Force (F)</div>
+        </div>
+    </div>
+    <div class="note">
+        <strong>F = BIl</strong> &mdash; The force on the wire equals the magnetic field strength (B) &times; current (I) &times; length of wire in field (l). The force is always perpendicular to both the current and field.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('motorCanvas');
+const ctx = canvas.getContext('2d');
+
+let currentDir = 'right'; // right or left
+let fieldDir = 'into'; // into or outof
+let wireOffset = 0;
+let wireVelocity = 0;
+let time = 0;
+
+function setCurrent(dir) {
+    currentDir = dir;
+    document.getElementById('curRightBtn').classList.toggle('active', dir === 'right');
+    document.getElementById('curLeftBtn').classList.toggle('active', dir === 'left');
+    document.getElementById('curDir').textContent = dir === 'right' ? 'Right' : 'Left';
+    wireOffset = 0; wireVelocity = 0;
+    updateForce();
+}
+
+function setField(dir) {
+    fieldDir = dir;
+    document.getElementById('fieldInBtn').classList.toggle('active', dir === 'into');
+    document.getElementById('fieldOutBtn').classList.toggle('active', dir === 'outof');
+    document.getElementById('fieldDir').textContent = dir === 'into' ? 'Into page' : 'Out of page';
+    wireOffset = 0; wireVelocity = 0;
+    updateForce();
+}
+
+function getForceDirection() {
+    // Fleming's left-hand rule
+    // Current right + Field into = Force UP
+    // Current right + Field out = Force DOWN
+    // Current left + Field into = Force DOWN
+    // Current left + Field out = Force UP
+    if (currentDir === 'right' && fieldDir === 'into') return 'up';
+    if (currentDir === 'right' && fieldDir === 'outof') return 'down';
+    if (currentDir === 'left' && fieldDir === 'into') return 'down';
+    if (currentDir === 'left' && fieldDir === 'outof') return 'up';
+}
+
+function updateForce() {
+    const dir = getForceDirection();
+    document.getElementById('forceDir').textContent = dir === 'up' ? 'Upward' : 'Downward';
+}
+
+function draw() {
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(0, 0, w, h);
+
+    const cx = w / 2, cy = h / 2;
+    const forceDir = getForceDirection();
+
+    // Magnetic field symbols
+    const spacing = 40;
+    ctx.lineWidth = 1;
+    for (let x = spacing; x < w; x += spacing) {
+        for (let y = spacing; y < h; y += spacing) {
+            if (Math.abs(x - cx) < 15 && Math.abs(y - (cy + wireOffset)) < 15) continue;
+            if (fieldDir === 'into') {
+                // X symbol
+                ctx.strokeStyle = 'rgba(99,126,161,0.25)';
+                ctx.beginPath();
+                ctx.moveTo(x - 5, y - 5); ctx.lineTo(x + 5, y + 5);
+                ctx.moveTo(x + 5, y - 5); ctx.lineTo(x - 5, y + 5);
+                ctx.stroke();
+            } else {
+                // Dot symbol
+                ctx.fillStyle = 'rgba(99,126,161,0.35)';
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(99,126,161,0.2)';
+                ctx.beginPath();
+                ctx.arc(x, y, 7, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+        }
+    }
+
+    // Magnet poles
+    // N pole (left)
+    ctx.fillStyle = '#dc3545';
+    ctx.fillRect(0, cy - 60, 30, 120);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 16px Oswald';
+    ctx.textAlign = 'center';
+    ctx.fillText('N', 15, cy + 6);
+
+    // S pole (right)
+    ctx.fillStyle = '#3498db';
+    ctx.fillRect(w - 30, cy - 60, 30, 120);
+    ctx.fillStyle = '#fff';
+    ctx.fillText('S', w - 15, cy + 6);
+
+    // Wire (current-carrying)
+    const wireY = cy + wireOffset;
+    ctx.strokeStyle = '#4a3fc2';
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(50, wireY);
+    ctx.lineTo(w - 50, wireY);
+    ctx.stroke();
+    // Wire outline
+    ctx.strokeStyle = '#c4a030';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(50, wireY - 3); ctx.lineTo(w - 50, wireY - 3);
+    ctx.moveTo(50, wireY + 3); ctx.lineTo(w - 50, wireY + 3);
+    ctx.stroke();
+
+    // Current direction arrows on wire
+    ctx.fillStyle = '#1a2747';
+    const arrowDir = currentDir === 'right' ? 1 : -1;
+    for (let i = 0; i < 5; i++) {
+        const ax = cx - 120 + i * 60;
+        drawArrowHead(ax, wireY, arrowDir * 10, 0, '#1a2747');
+    }
+
+    // Current label
+    ctx.fillStyle = '#1a2747';
+    ctx.font = 'bold 11px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('I (' + (currentDir === 'right' ? '→' : '←') + ')', cx, wireY + 18);
+
+    // Force arrow
+    const forceSign = forceDir === 'up' ? -1 : 1;
+    const forceLen = 50;
+    ctx.strokeStyle = '#28a745';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(cx, wireY);
+    ctx.lineTo(cx, wireY + forceSign * forceLen);
+    ctx.stroke();
+    drawArrowHead(cx, wireY + forceSign * forceLen, 0, forceSign * 10, '#28a745');
+
+    ctx.fillStyle = '#28a745';
+    ctx.font = 'bold 12px Outfit';
+    ctx.textAlign = 'left';
+    ctx.fillText('F (' + (forceDir === 'up' ? '↑' : '↓') + ')', cx + 10, wireY + forceSign * forceLen / 2 + 4);
+
+    // Field direction label
+    ctx.fillStyle = '#1835b4';
+    ctx.font = 'bold 11px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('B (' + (fieldDir === 'into' ? '⊗ into page' : '⊙ out of page') + ')', cx, 18);
+
+    // Animate wire movement
+    const accel = forceSign * 0.15;
+    wireVelocity += accel;
+    wireVelocity *= 0.96;
+    wireOffset += wireVelocity;
+    // bounce at limits
+    if (Math.abs(wireOffset) > 60) {
+        wireOffset = Math.sign(wireOffset) * 60;
+        wireVelocity *= -0.3;
+    }
+
+    time++;
+    requestAnimationFrame(draw);
+}
+
+function drawArrowHead(x, y, dx, dy, color) {
+    const angle = Math.atan2(dy, dx);
+    const headLen = 8;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x + dx, y + dy);
+    ctx.lineTo(x + dx - headLen * Math.cos(angle - 0.5), y + dy - headLen * Math.sin(angle - 0.5));
+    ctx.lineTo(x + dx - headLen * Math.cos(angle + 0.5), y + dy - headLen * Math.sin(angle + 0.5));
+    ctx.closePath();
+    ctx.fill();
+}
+
+function resize() {
+    canvas.width = Math.min(530, document.querySelector('.container').clientWidth - 4);
+    canvas.height = 300;
+}
+
+updateForce();
+resize();
+window.addEventListener('resize', resize);
+draw();
+</script>
+</body>
+</html>

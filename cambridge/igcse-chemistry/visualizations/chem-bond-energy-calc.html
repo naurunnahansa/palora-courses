@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bond Energy Calculator</title>
+    <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 4px; }
+  .subtitle { font-size: 0.85rem; color: #888; margin-bottom: 16px; }
+  canvas { width: 100%; background: #fafbfc; border-radius: 12px; border: 1px solid #d4d8e5; display: block; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  .btn:hover { background: #506a8a; }
+  .chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; border: 1.5px solid #d4d8e5; background: #fff; cursor: pointer; transition: all 0.2s; margin: 3px; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  .controls { margin-top: 14px; }
+  .toggle-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .bond-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.82rem; }
+  .bond-table th { font-family: system-ui, -apple-system, sans-serif; font-weight: 600; text-align: left; padding: 6px 8px; border-bottom: 2px solid #d4d8e5; color: #1835b4; }
+  .bond-table td { padding: 5px 8px; border-bottom: 1px solid #f0f0f0; }
+  .bond-table .total { font-weight: 700; border-top: 2px solid #1835b4; }
+  .section-label { font-family: system-ui, -apple-system, sans-serif; font-size: 0.95rem; font-weight: 600; margin: 14px 0 6px; }
+  .result-box { background: #e8ecf8; border-radius: 10px; padding: 14px 18px; margin-top: 14px; text-align: center; }
+  .result-box .dh { font-family: system-ui, -apple-system, sans-serif; font-size: 1.6rem; font-weight: 700; }
+  .result-box .dh.neg { color: #c06060; }
+  .result-box .dh.pos { color: #1835b4; }
+  .result-box .label { font-size: 0.82rem; color: #888; }
+  .equation-display { background: #fafbfc; border-radius: 10px; padding: 12px; text-align: center; font-size: 1rem; font-weight: 600; border: 1px solid #d4d8e5; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Bond Energy Calculator</h1>
+    <p class="subtitle">Calculate &Delta;H from bond energies: bonds broken &minus; bonds made</p>
+    <div class="toggle-row">
+      <span class="chip active" data-rxn="0" onclick="selectRxn(0)">CH&#8324; + 2O&#8322; &rarr; CO&#8322; + 2H&#8322;O</span>
+      <span class="chip" data-rxn="1" onclick="selectRxn(1)">H&#8322; + Cl&#8322; &rarr; 2HCl</span>
+      <span class="chip" data-rxn="2" onclick="selectRxn(2)">N&#8322; + 3H&#8322; &rarr; 2NH&#8323;</span>
+    </div>
+    <div class="equation-display" id="eqDisplay"></div>
+    <div id="tables"></div>
+    <div class="result-box" id="resultBox"></div>
+    <canvas id="canvas" width="1000" height="400" style="margin-top:14px;"></canvas>
+  </div>
+</div>
+<script>
+const reactions = [
+  {
+    name: 'Combustion of methane',
+    equation: 'CH\u2084 + 2O\u2082 \u2192 CO\u2082 + 2H\u2082O',
+    broken: [
+      { bond: 'C\u2013H', energy: 413, count: 4 },
+      { bond: 'O=O', energy: 498, count: 2 }
+    ],
+    made: [
+      { bond: 'C=O', energy: 805, count: 2 },
+      { bond: 'O\u2013H', energy: 463, count: 4 }
+    ]
+  },
+  {
+    name: 'Formation of hydrogen chloride',
+    equation: 'H\u2082 + Cl\u2082 \u2192 2HCl',
+    broken: [
+      { bond: 'H\u2013H', energy: 436, count: 1 },
+      { bond: 'Cl\u2013Cl', energy: 243, count: 1 }
+    ],
+    made: [
+      { bond: 'H\u2013Cl', energy: 432, count: 2 }
+    ]
+  },
+  {
+    name: 'Formation of ammonia',
+    equation: 'N\u2082 + 3H\u2082 \u2192 2NH\u2083',
+    broken: [
+      { bond: 'N\u2261N', energy: 945, count: 1 },
+      { bond: 'H\u2013H', energy: 436, count: 3 }
+    ],
+    made: [
+      { bond: 'N\u2013H', energy: 391, count: 6 }
+    ]
+  }
+];
+
+let currentRxn = 0;
+
+function selectRxn(i) {
+  currentRxn = i;
+  document.querySelectorAll('.chip[data-rxn]').forEach((c, j) => c.classList.toggle('active', j === i));
+  render();
+}
+
+function render() {
+  const rxn = reactions[currentRxn];
+  document.getElementById('eqDisplay').textContent = rxn.equation;
+
+  let totalBroken = 0, totalMade = 0;
+  let html = '<p class="section-label" style="color:#d45;">Bonds Broken (energy absorbed)</p>';
+  html += '<table class="bond-table"><tr><th>Bond</th><th>Energy (kJ/mol)</th><th>Count</th><th>Subtotal</th></tr>';
+  rxn.broken.forEach(b => {
+    const sub = b.energy * b.count;
+    totalBroken += sub;
+    html += `<tr><td>${b.bond}</td><td>${b.energy}</td><td>${b.count}</td><td>${sub}</td></tr>`;
+  });
+  html += `<tr class="total"><td colspan="3">Total energy in</td><td>${totalBroken} kJ</td></tr></table>`;
+
+  html += '<p class="section-label" style="color:#1835b4;">Bonds Made (energy released)</p>';
+  html += '<table class="bond-table"><tr><th>Bond</th><th>Energy (kJ/mol)</th><th>Count</th><th>Subtotal</th></tr>';
+  rxn.made.forEach(b => {
+    const sub = b.energy * b.count;
+    totalMade += sub;
+    html += `<tr><td>${b.bond}</td><td>${b.energy}</td><td>${b.count}</td><td>${sub}</td></tr>`;
+  });
+  html += `<tr class="total"><td colspan="3">Total energy out</td><td>${totalMade} kJ</td></tr></table>`;
+  document.getElementById('tables').innerHTML = html;
+
+  const dh = totalBroken - totalMade;
+  const sign = dh < 0 ? '' : '+';
+  const cls = dh < 0 ? 'neg' : 'pos';
+  const typeLabel = dh < 0 ? 'Exothermic' : 'Endothermic';
+  document.getElementById('resultBox').innerHTML =
+    `<div class="label">&Delta;H = bonds broken &minus; bonds made = ${totalBroken} &minus; ${totalMade}</div>
+     <div class="dh ${cls}">&Delta;H = ${sign}${dh} kJ/mol</div>
+     <div class="label">${typeLabel} reaction</div>`;
+
+  drawChart(totalBroken, totalMade);
+}
+
+function drawChart(broken, made) {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const pad = { l: 80, r: 40, t: 40, b: 60 };
+  const plotW = W - pad.l - pad.r;
+  const plotH = H - pad.t - pad.b;
+  const maxVal = Math.max(broken, made) * 1.15;
+
+  const barW = plotW * 0.25;
+  const gap = plotW * 0.15;
+  const x1 = pad.l + plotW / 2 - barW - gap / 2;
+  const x2 = pad.l + plotW / 2 + gap / 2;
+
+  const h1 = (broken / maxVal) * plotH;
+  const h2 = (made / maxVal) * plotH;
+
+  // Axes
+  ctx.strokeStyle = '#1a2747';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(pad.l, pad.t);
+  ctx.lineTo(pad.l, H - pad.b);
+  ctx.lineTo(W - pad.r, H - pad.b);
+  ctx.stroke();
+
+  ctx.font = '600 22px Oswald';
+  ctx.fillStyle = '#1a2747';
+  ctx.save();
+  ctx.translate(28, pad.t + plotH / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center';
+  ctx.fillText('Energy (kJ/mol)', 0, 0);
+  ctx.restore();
+
+  // Bar 1: Broken
+  const grad1 = ctx.createLinearGradient(0, H - pad.b - h1, 0, H - pad.b);
+  grad1.addColorStop(0, '#e86060');
+  grad1.addColorStop(1, '#f5a0a0');
+  ctx.fillStyle = grad1;
+  ctx.beginPath();
+  roundedRect(ctx, x1, H - pad.b - h1, barW, h1, 8);
+  ctx.fill();
+
+  // Bar 2: Made
+  const grad2 = ctx.createLinearGradient(0, H - pad.b - h2, 0, H - pad.b);
+  grad2.addColorStop(0, '#1835b4');
+  grad2.addColorStop(1, '#a0bcd8');
+  ctx.fillStyle = grad2;
+  ctx.beginPath();
+  roundedRect(ctx, x2, H - pad.b - h2, barW, h2, 8);
+  ctx.fill();
+
+  // Labels
+  ctx.font = '600 22px Oswald';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#d45';
+  ctx.fillText('Bonds Broken', x1 + barW / 2, H - pad.b + 28);
+  ctx.fillText(broken + ' kJ', x1 + barW / 2, H - pad.b - h1 - 12);
+  ctx.fillStyle = '#1835b4';
+  ctx.fillText('Bonds Made', x2 + barW / 2, H - pad.b + 28);
+  ctx.fillText(made + ' kJ', x2 + barW / 2, H - pad.b - h2 - 12);
+}
+
+function roundedRect(ctx, x, y, w, h, r) {
+  r = Math.min(r, h / 2, w / 2);
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h);
+  ctx.lineTo(x, y + h);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+selectRxn(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrical Power Calculator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .mode-selector { display: flex; gap: 4px; margin-bottom: 8px; }
+        .mode-btn { flex: 1; padding: 6px; border: 2px solid #1835b4; background: white; color: #1835b4; border-radius: 6px; font-family: system-ui, -apple-system, sans-serif; font-weight: 600; font-size: 0.65rem; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .mode-btn.active { background: #1835b4; color: white; }
+        .sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+        .slider-group { background: #f8f9fa; border-radius: 8px; padding: 8px 10px; }
+        .slider-group.computed { background: #fffdf5; border: 2px solid #4a3fc2; }
+        .slider-group label { font-size: 0.68rem; font-weight: 600; color: #4a5568; display: block; margin-bottom: 2px; }
+        .slider-group .val { font-size: 0.9rem; font-weight: 700; color: #1835b4; }
+        .slider-group .unit { font-size: 0.65rem; color: #4a5568; }
+        .slider-group input[type=range] { width: 100%; accent-color: #1835b4; }
+        .power-display { background: linear-gradient(135deg, #1835b4, #4f6a8a); border-radius: 10px; padding: 12px; text-align: center; margin-bottom: 8px; color: white; }
+        .power-display .label { font-family: system-ui, -apple-system, sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.8; }
+        .power-display .value { font-size: 1.8rem; font-weight: 700; }
+        .power-display .unit { font-size: 0.8rem; opacity: 0.8; }
+        .equations { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 8px; }
+        .eq { background: #f8f9fa; border-radius: 6px; padding: 5px; text-align: center; font-size: 0.75rem; font-weight: 600; color: #4a5568; transition: all 0.2s; }
+        .eq.highlight { background: #4a3fc2; color: #1a2747; }
+        .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        canvas { width: 100%; border-radius: 8px; background: #f8f9fa; display: block; }
+        .examples { margin-top: 8px; }
+        .examples h2 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .example-list { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+        .example { background: #f8f9fa; border-radius: 6px; padding: 6px 8px; font-size: 0.65rem; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
+        .example:hover { border-color: #1835b4; }
+        .example .name { font-weight: 600; color: #1835b4; }
+        .example .specs { color: #4a5568; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Electrical Power Calculator</h1>
+    <div class="mode-selector">
+        <button class="mode-btn active" onclick="setMode('VR')" id="mode-VR">Know V & R</button>
+        <button class="mode-btn" onclick="setMode('IR')" id="mode-IR">Know I & R</button>
+        <button class="mode-btn" onclick="setMode('VI')" id="mode-VI">Know V & I</button>
+    </div>
+    <div class="sliders" id="sliderArea"></div>
+    <div class="power-display">
+        <div class="label">Power</div>
+        <div class="value" id="powerVal">0</div>
+        <div class="unit" id="powerUnit">W</div>
+    </div>
+    <div class="equations">
+        <div class="eq" id="eq1">P = IV</div>
+        <div class="eq" id="eq2">P = I²R</div>
+        <div class="eq" id="eq3">P = V²/R</div>
+    </div>
+    <div class="layout">
+        <canvas id="circuitCanvas" height="180"></canvas>
+        <canvas id="barCanvas" height="180"></canvas>
+    </div>
+    <div class="examples">
+        <h2>Practical Examples</h2>
+        <div class="example-list">
+            <div class="example" onclick="loadExample(230, 13, 'VR')">
+                <div class="name">Kettle</div>
+                <div class="specs">230V, ~13A, ~3000W</div>
+            </div>
+            <div class="example" onclick="loadExample(5, 200, 'VR')">
+                <div class="name">Phone Charger</div>
+                <div class="specs">5V, ~200Ω, ~0.125W</div>
+            </div>
+            <div class="example" onclick="loadExample(230, 960, 'VR')">
+                <div class="name">Light Bulb (60W)</div>
+                <div class="specs">230V, ~960Ω, ~55W</div>
+            </div>
+            <div class="example" onclick="loadExample(12, 4, 'VR')">
+                <div class="name">Car Headlight</div>
+                <div class="specs">12V, ~4Ω, ~36W</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+let mode = 'VR';
+let V = 12, I = 2, R = 6;
+
+const circuitCanvas = document.getElementById('circuitCanvas');
+const barCanvas = document.getElementById('barCanvas');
+const cCtx = circuitCanvas.getContext('2d');
+const bCtx = barCanvas.getContext('2d');
+
+function initC(c, h) {
+    const r = c.getBoundingClientRect();
+    c.width = r.width * 2; c.height = h * 2;
+    c.getContext('2d').scale(2, 2);
+    return { w: r.width, h };
+}
+let cSize, bSize;
+setTimeout(() => {
+    cSize = initC(circuitCanvas, 180);
+    bSize = initC(barCanvas, 180);
+    setMode('VR');
+}, 50);
+
+function setMode(m) {
+    mode = m;
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('mode-' + m).classList.add('active');
+    buildSliders();
+    calculate();
+}
+
+function buildSliders() {
+    const area = document.getElementById('sliderArea');
+    let html = '';
+    if (mode === 'VR') {
+        html = `
+            <div class="slider-group"><label>Voltage: <span class="val" id="v1Val">${V} V</span></label>
+            <input type="range" id="slider1" min="1" max="240" value="${V}" oninput="onSlide()"></div>
+            <div class="slider-group"><label>Resistance: <span class="val" id="v2Val">${R} Ω</span></label>
+            <input type="range" id="slider2" min="1" max="1000" value="${R}" oninput="onSlide()"></div>
+            <div class="slider-group computed"><label>Current (calculated):</label><div class="val" id="calcVal">0 A</div></div>
+        `;
+    } else if (mode === 'IR') {
+        html = `
+            <div class="slider-group"><label>Current: <span class="val" id="v1Val">${I} A</span></label>
+            <input type="range" id="slider1" min="0.1" max="20" value="${I}" step="0.1" oninput="onSlide()"></div>
+            <div class="slider-group"><label>Resistance: <span class="val" id="v2Val">${R} Ω</span></label>
+            <input type="range" id="slider2" min="1" max="1000" value="${R}" oninput="onSlide()"></div>
+            <div class="slider-group computed"><label>Voltage (calculated):</label><div class="val" id="calcVal">0 V</div></div>
+        `;
+    } else {
+        html = `
+            <div class="slider-group"><label>Voltage: <span class="val" id="v1Val">${V} V</span></label>
+            <input type="range" id="slider1" min="1" max="240" value="${V}" oninput="onSlide()"></div>
+            <div class="slider-group"><label>Current: <span class="val" id="v2Val">${I} A</span></label>
+            <input type="range" id="slider2" min="0.1" max="20" value="${I}" step="0.1" oninput="onSlide()"></div>
+            <div class="slider-group computed"><label>Resistance (calculated):</label><div class="val" id="calcVal">0 Ω</div></div>
+        `;
+    }
+    area.innerHTML = html;
+}
+
+function onSlide() {
+    const s1 = parseFloat(document.getElementById('slider1').value);
+    const s2 = parseFloat(document.getElementById('slider2').value);
+    if (mode === 'VR') { V = s1; R = s2; }
+    else if (mode === 'IR') { I = s1; R = s2; }
+    else { V = s1; I = s2; }
+    calculate();
+}
+
+function calculate() {
+    let P;
+    if (mode === 'VR') {
+        I = V / R;
+        P = V * V / R;
+        document.getElementById('v1Val').textContent = V + ' V';
+        document.getElementById('v2Val').textContent = R + ' Ω';
+        document.getElementById('calcVal').textContent = I.toFixed(3) + ' A';
+        highlightEq('eq3');
+    } else if (mode === 'IR') {
+        V = I * R;
+        P = I * I * R;
+        document.getElementById('v1Val').textContent = I.toFixed(1) + ' A';
+        document.getElementById('v2Val').textContent = R + ' Ω';
+        document.getElementById('calcVal').textContent = V.toFixed(1) + ' V';
+        highlightEq('eq2');
+    } else {
+        R = V / I;
+        P = V * I;
+        document.getElementById('v1Val').textContent = V + ' V';
+        document.getElementById('v2Val').textContent = I.toFixed(1) + ' A';
+        document.getElementById('calcVal').textContent = R.toFixed(1) + ' Ω';
+        highlightEq('eq1');
+    }
+
+    let pStr, pUnit;
+    if (P >= 1000) { pStr = (P / 1000).toFixed(2); pUnit = 'kW'; }
+    else if (P < 0.01) { pStr = (P * 1000).toFixed(2); pUnit = 'mW'; }
+    else { pStr = P.toFixed(2); pUnit = 'W'; }
+    document.getElementById('powerVal').textContent = pStr;
+    document.getElementById('powerUnit').textContent = pUnit;
+
+    drawCircuit();
+    drawBars(P);
+}
+
+function highlightEq(id) {
+    document.querySelectorAll('.eq').forEach(e => e.classList.remove('highlight'));
+    document.getElementById(id).classList.add('highlight');
+}
+
+function drawCircuit() {
+    if (!cSize) return;
+    const ctx = cCtx;
+    const W = cSize.w, H = cSize.h;
+    ctx.clearRect(0, 0, W, H);
+
+    const mx = W / 2, my = H / 2;
+    const hw = 70, hh = 55;
+
+    // Wires
+    ctx.strokeStyle = '#1835b4';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(mx - hw, my - hh);
+    ctx.lineTo(mx + hw, my - hh);
+    ctx.lineTo(mx + hw, my + hh);
+    ctx.lineTo(mx - hw, my + hh);
+    ctx.lineTo(mx - hw, my - hh);
+    ctx.stroke();
+
+    // Battery (left side)
+    ctx.lineWidth = 2;
+    const batY = my;
+    ctx.clearRect(mx - hw - 3, batY - 15, 6, 30);
+    ctx.strokeStyle = '#1835b4';
+    ctx.beginPath(); ctx.moveTo(mx - hw, batY - 12); ctx.lineTo(mx - hw, batY + 12); ctx.stroke();
+    ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(mx - hw - 5, batY - 6); ctx.lineTo(mx - hw - 5, batY + 6); ctx.stroke();
+    ctx.lineWidth = 2;
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '600 8px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText(V.toFixed(1) + 'V', mx - hw - 18, batY + 3);
+    ctx.fillText('+', mx - hw + 3, batY - 14);
+    ctx.fillText('−', mx - hw - 10, batY - 14);
+
+    // Resistor (top)
+    const resX = mx;
+    const resY = my - hh;
+    ctx.clearRect(resX - 20, resY - 8, 40, 16);
+    ctx.strokeStyle = '#1835b4';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(resX - 18, resY - 6, 36, 12);
+    // Zigzag inside
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+        const x = resX - 14 + i * 5;
+        ctx.lineTo(x, resY + (i % 2 === 0 ? -4 : 4));
+    }
+    ctx.stroke();
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '600 8px Outfit';
+    ctx.fillText(R.toFixed(1) + 'Ω', resX, resY - 10);
+
+    // Current arrow
+    ctx.fillStyle = '#4a3fc2';
+    ctx.strokeStyle = '#4a3fc2';
+    ctx.lineWidth = 1.5;
+    const arrowY = my + hh;
+    ctx.beginPath(); ctx.moveTo(mx + 20, arrowY); ctx.lineTo(mx - 20, arrowY); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(mx - 20, arrowY - 4); ctx.lineTo(mx - 26, arrowY); ctx.lineTo(mx - 20, arrowY + 4); ctx.fill();
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '600 8px Outfit';
+    ctx.fillText('I = ' + I.toFixed(2) + 'A', mx, arrowY + 14);
+
+    // Electron dots flowing
+    const t = Date.now() / 1000;
+    ctx.fillStyle = '#4a3fc2';
+    for (let i = 0; i < 8; i++) {
+        const frac = ((i / 8 + t * 0.2 * I) % 1 + 1) % 1;
+        const perimeter = 2 * (2 * hw + 2 * hh);
+        const pos = frac * perimeter;
+        let ex, ey;
+        if (pos < 2 * hw) {
+            ex = mx - hw + pos; ey = my - hh;
+        } else if (pos < 2 * hw + 2 * hh) {
+            ex = mx + hw; ey = my - hh + (pos - 2 * hw);
+        } else if (pos < 4 * hw + 2 * hh) {
+            ex = mx + hw - (pos - 2 * hw - 2 * hh); ey = my + hh;
+        } else {
+            ex = mx - hw; ey = my + hh - (pos - 4 * hw - 2 * hh);
+        }
+        ctx.beginPath(); ctx.arc(ex, ey, 2.5, 0, Math.PI * 2); ctx.fill();
+    }
+}
+
+function drawBars(P) {
+    if (!bSize) return;
+    const ctx = bCtx;
+    const W = bSize.w, H = bSize.h;
+    ctx.clearRect(0, 0, W, H);
+
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '600 8px Oswald';
+    ctx.textAlign = 'center';
+    ctx.fillText('POWER BREAKDOWN', W / 2, 14);
+
+    const barW = 30;
+    const maxH = 120;
+    const baseY = H - 25;
+
+    const pIV = I * V;
+    const pI2R = I * I * R;
+    const pV2R = V * V / R;
+    const maxP = Math.max(pIV, pI2R, pV2R, 1);
+
+    const bars = [
+        { label: 'P=IV', val: pIV, color: '#1835b4' },
+        { label: 'P=I²R', val: pI2R, color: '#4a3fc2' },
+        { label: 'P=V²/R', val: pV2R, color: '#e8ecf8' }
+    ];
+
+    bars.forEach((b, i) => {
+        const x = 20 + i * (barW + 20);
+        const h = (b.val / maxP) * maxH;
+
+        ctx.fillStyle = b.color;
+        ctx.beginPath();
+        ctx.roundRect(x, baseY - h, barW, h, [4, 4, 0, 0]);
+        ctx.fill();
+
+        ctx.strokeStyle = '#1835b4';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(x, baseY - h, barW, h, [4, 4, 0, 0]);
+        ctx.stroke();
+
+        ctx.fillStyle = '#4a5568';
+        ctx.font = '600 7px Outfit';
+        ctx.fillText(b.label, x + barW / 2, baseY + 12);
+
+        ctx.fillStyle = '#1a2747';
+        ctx.font = '600 8px Outfit';
+        let valStr = b.val >= 1000 ? (b.val/1000).toFixed(1) + 'kW' : b.val.toFixed(1) + 'W';
+        ctx.fillText(valStr, x + barW / 2, baseY - h - 5);
+    });
+}
+
+function loadExample(v, r, m) {
+    V = v; R = r;
+    I = V / R;
+    setMode(m);
+    document.getElementById('slider1').value = V;
+    document.getElementById('slider2').value = R;
+    onSlide();
+}
+
+function animLoop() {
+    drawCircuit();
+    requestAnimationFrame(animLoop);
+}
+setTimeout(animLoop, 100);
+</script>
+</body>
+</html>

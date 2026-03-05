@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velocity-Time Graph</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card {
+            border-radius: 5px;
+            border: 1px solid #d4d8e5;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99,126,161,0.15);
+        }
+        canvas {
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #d4d8e5;
+            display: block;
+            background: #fcfcfe;
+        }
+        .btn-row { display: flex; flex-wrap: wrap; gap: 6px; }
+        .btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 7px 6px;
+            border: none;
+            border-radius: 5px;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            background: #fff;
+            color: #1835b4;
+            border: 1.5px solid #1835b4;
+        }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(99,126,161,0.2); }
+        .btn.active { background: #1835b4; color: #fff; }
+        .results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .result-item {
+            text-align: center;
+            padding: 8px 4px;
+            background: #e8ecf8;
+            border-radius: 5px;
+        }
+        .result-item .label {
+            font-size: 0.7rem;
+            color: #4a5568;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: 2px;
+        }
+        .result-item .value {
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 1.05rem;
+            color: #1835b4;
+            font-weight: 600;
+        }
+        .info {
+            font-size: 0.75rem;
+            color: #4a5568;
+            line-height: 1.5;
+            margin-top: 8px;
+            padding: 8px;
+            background: #e8ecf8;
+            border-radius: 5px;
+        }
+        .info strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Velocity-Time Graph Explorer</h1>
+        <div class="card">
+            <canvas id="canvas" width="526" height="240"></canvas>
+        </div>
+        <div class="card">
+            <div class="btn-row">
+                <button class="btn active" data-scenario="constant">Constant Velocity</button>
+                <button class="btn" data-scenario="accel">Uniform Acceleration</button>
+                <button class="btn" data-scenario="decel">Deceleration</button>
+                <button class="btn" data-scenario="complex">Complex Motion</button>
+            </div>
+        </div>
+        <div class="results">
+            <div class="result-item">
+                <div class="label">Acceleration</div>
+                <div class="value" id="accelVal">0.00 m/s&sup2;</div>
+            </div>
+            <div class="result-item">
+                <div class="label">Displacement (area)</div>
+                <div class="value" id="dispVal">0.00 m</div>
+            </div>
+        </div>
+        <div class="info">
+            <strong>Gradient</strong> of a v-t graph = <strong>acceleration</strong>. <br>
+            <strong>Area under</strong> a v-t graph = <strong>displacement</strong>. The shaded region shows displacement.
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = (rect.width - 24) * 2;
+            canvas.height = 240 * 2;
+            canvas.style.height = '240px';
+        }
+        resizeCanvas();
+
+        const pad = { left: 70, right: 30, top: 30, bottom: 55 };
+
+        const scenarios = {
+            constant: {
+                points: [[0, 10], [10, 10]],
+                maxT: 12, maxV: 15,
+                desc: 'Constant velocity at 10 m/s'
+            },
+            accel: {
+                points: [[0, 0], [10, 20]],
+                maxT: 12, maxV: 25,
+                desc: 'Uniform acceleration from rest'
+            },
+            decel: {
+                points: [[0, 20], [8, 0]],
+                maxT: 10, maxV: 25,
+                desc: 'Uniform deceleration to rest'
+            },
+            complex: {
+                points: [[0, 0], [3, 15], [6, 15], [10, 5]],
+                maxT: 12, maxV: 20,
+                desc: 'Accelerate, cruise, decelerate'
+            }
+        };
+
+        let current = 'constant';
+
+        function worldToCanvas(t, v, maxT, maxV) {
+            const plotW = canvas.width - pad.left - pad.right;
+            const plotH = canvas.height - pad.top - pad.bottom;
+            return {
+                cx: pad.left + (t / maxT) * plotW,
+                cy: canvas.height - pad.bottom - (v / maxV) * plotH
+            };
+        }
+
+        function drawAxes(maxT, maxV) {
+            ctx.strokeStyle = '#4a5568';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(pad.left, pad.top);
+            ctx.lineTo(pad.left, canvas.height - pad.bottom);
+            ctx.lineTo(canvas.width - pad.right, canvas.height - pad.bottom);
+            ctx.stroke();
+
+            ctx.fillStyle = '#4a5568';
+            ctx.font = '600 22px system-ui, -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Time (s)', canvas.width / 2, canvas.height - 8);
+            ctx.save();
+            ctx.translate(18, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Velocity (m/s)', 0, 0);
+            ctx.restore();
+
+            ctx.font = '400 20px system-ui, -apple-system, sans-serif';
+            for (let i = 0; i <= 5; i++) {
+                const t = maxT * i / 5;
+                const { cx, cy } = worldToCanvas(t, 0, maxT, maxV);
+                ctx.textAlign = 'center';
+                ctx.fillText(t.toFixed(0), cx, cy + 28);
+                if (i > 0) {
+                    ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1;
+                    ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+                }
+            }
+            for (let i = 0; i <= 4; i++) {
+                const v = maxV * i / 4;
+                const { cx, cy } = worldToCanvas(0, v, maxT, maxV);
+                ctx.textAlign = 'right';
+                ctx.fillText(v.toFixed(0), pad.left - 10, cy + 6);
+                if (i > 0) {
+                    ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1;
+                    ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(canvas.width - pad.right, cy); ctx.stroke();
+                }
+            }
+        }
+
+        function drawGraph(scenario) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const s = scenarios[scenario];
+            const pts = s.points;
+            drawAxes(s.maxT, s.maxV);
+
+            // Shaded area
+            ctx.beginPath();
+            const start = worldToCanvas(pts[0][0], 0, s.maxT, s.maxV);
+            ctx.moveTo(start.cx, start.cy);
+            for (const p of pts) {
+                const { cx, cy } = worldToCanvas(p[0], p[1], s.maxT, s.maxV);
+                ctx.lineTo(cx, cy);
+            }
+            const end = worldToCanvas(pts[pts.length - 1][0], 0, s.maxT, s.maxV);
+            ctx.lineTo(end.cx, end.cy);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(99,126,161,0.15)';
+            ctx.fill();
+
+            // Line
+            ctx.beginPath();
+            ctx.strokeStyle = '#1835b4';
+            ctx.lineWidth = 4;
+            for (let i = 0; i < pts.length; i++) {
+                const { cx, cy } = worldToCanvas(pts[i][0], pts[i][1], s.maxT, s.maxV);
+                if (i === 0) ctx.moveTo(cx, cy);
+                else ctx.lineTo(cx, cy);
+            }
+            ctx.stroke();
+
+            // Points
+            for (const p of pts) {
+                const { cx, cy } = worldToCanvas(p[0], p[1], s.maxT, s.maxV);
+                ctx.beginPath();
+                ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+                ctx.fillStyle = '#4a3fc2';
+                ctx.fill();
+                ctx.strokeStyle = '#1835b4';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            // Calculations
+            let totalDisp = 0;
+            for (let i = 1; i < pts.length; i++) {
+                const dt = pts[i][0] - pts[i - 1][0];
+                const avgV = (pts[i][1] + pts[i - 1][1]) / 2;
+                totalDisp += avgV * dt;
+            }
+
+            // Average acceleration
+            const totalT = pts[pts.length - 1][0] - pts[0][0];
+            const dv = pts[pts.length - 1][1] - pts[0][1];
+            const avgAccel = totalT > 0 ? dv / totalT : 0;
+
+            // For segments, show per-segment if complex
+            let accelText;
+            if (pts.length === 2) {
+                accelText = avgAccel.toFixed(2) + ' m/s\u00B2';
+            } else {
+                const accels = [];
+                for (let i = 1; i < pts.length; i++) {
+                    const dt = pts[i][0] - pts[i - 1][0];
+                    const segDv = pts[i][1] - pts[i - 1][1];
+                    accels.push((dt > 0 ? segDv / dt : 0).toFixed(2));
+                }
+                accelText = accels.join(', ') + ' m/s\u00B2';
+            }
+
+            document.getElementById('accelVal').textContent = accelText;
+            document.getElementById('dispVal').textContent = totalDisp.toFixed(2) + ' m';
+        }
+
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                current = btn.dataset.scenario;
+                drawGraph(current);
+            });
+        });
+
+        window.addEventListener('resize', () => { resizeCanvas(); drawGraph(current); });
+        drawGraph(current);
+    </script>
+</body>
+</html>

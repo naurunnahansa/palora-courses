@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conduction vs Convection</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .panel { background: #f8f9fa; border-radius: 8px; overflow: hidden; }
+        .panel-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; padding: 6px; background: #f0f4f8; }
+        canvas { width: 100%; display: block; }
+        .desc { font-size: 0.65rem; color: #4a5568; padding: 6px 8px; line-height: 1.4; }
+        .desc strong { color: #1835b4; }
+        .controls { display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: #f0f4f8; }
+        .controls label { font-size: 0.65rem; font-weight: 600; color: #4a5568; white-space: nowrap; }
+        .controls input[type=range] { flex: 1; accent-color: #1835b4; }
+        .legend { display: flex; gap: 10px; justify-content: center; margin-top: 8px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.65rem; color: #4a5568; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Conduction vs Convection</h1>
+    <div class="panels">
+        <div class="panel">
+            <div class="panel-title">Conduction</div>
+            <canvas id="cond" height="280"></canvas>
+            <div class="controls">
+                <label>Heat:</label>
+                <input type="range" id="condHeat" min="1" max="10" value="5">
+            </div>
+            <div class="desc">
+                <strong>Conduction:</strong> Heat transfers through a solid as particles vibrate and pass kinetic energy to neighbouring particles. No bulk movement of material.
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-title">Convection</div>
+            <canvas id="conv" height="280"></canvas>
+            <div class="controls">
+                <label>Heat:</label>
+                <input type="range" id="convHeat" min="1" max="10" value="5">
+            </div>
+            <div class="desc">
+                <strong>Convection:</strong> Hot fluid rises (less dense), cool fluid sinks (more dense), creating a convection current. Bulk movement transfers energy.
+            </div>
+        </div>
+    </div>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#e53e3e;"></div> Hot</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ed8936;"></div> Warm</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4299e1;"></div> Cool</div>
+    </div>
+</div>
+<script>
+// Conduction
+const condCanvas = document.getElementById('cond');
+const condCtx = condCanvas.getContext('2d');
+const convCanvas = document.getElementById('conv');
+const convCtx = convCanvas.getContext('2d');
+
+function initCanvas(canvas) {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * 2;
+    canvas.height = 280 * 2;
+    canvas.getContext('2d').scale(2, 2);
+    return { w: rect.width, h: 280 };
+}
+
+const condSize = initCanvas(condCanvas);
+const convSize = initCanvas(convCanvas);
+
+// Conduction particles - grid in a bar
+const condParticles = [];
+const barTop = 80, barH = 60, barLeft = 15, barRight = condSize.w - 15;
+const cols = 14, rows = 4;
+for (let c = 0; c < cols; c++) {
+    for (let r = 0; r < rows; r++) {
+        condParticles.push({
+            baseX: barLeft + (c + 0.5) * (barRight - barLeft) / cols,
+            baseY: barTop + (r + 0.5) * barH / rows,
+            x: 0, y: 0,
+            energy: 0,
+            col: c, row: r
+        });
+    }
+}
+
+// Convection particles
+const convParticles = [];
+const boxLeft = 15, boxRight = convSize.w - 15, boxTop = 30, boxBottom = 230;
+for (let i = 0; i < 60; i++) {
+    convParticles.push({
+        x: boxLeft + Math.random() * (boxRight - boxLeft),
+        y: boxTop + Math.random() * (boxBottom - boxTop),
+        vx: 0, vy: 0,
+        temp: 0.3 + Math.random() * 0.3
+    });
+}
+
+function tempColor(t) {
+    t = Math.max(0, Math.min(1, t));
+    if (t < 0.5) {
+        const f = t / 0.5;
+        const r = Math.round(66 + f * (237 - 66));
+        const g = Math.round(153 + f * (137 - 153));
+        const b = Math.round(225 + f * (54 - 225));
+        return `rgb(${r},${g},${b})`;
+    } else {
+        const f = (t - 0.5) / 0.5;
+        const r = Math.round(237 + f * (229 - 237));
+        const g = Math.round(137 + f * (62 - 137));
+        const b = Math.round(54 + f * (62 - 54));
+        return `rgb(${r},${g},${b})`;
+    }
+}
+
+function animateConduction() {
+    const ctx = condCtx;
+    const heat = parseInt(document.getElementById('condHeat').value) / 10;
+    ctx.clearRect(0, 0, condSize.w, 280);
+
+    // Bar
+    ctx.fillStyle = '#d4d4d4';
+    ctx.strokeStyle = '#aaa';
+    ctx.lineWidth = 1;
+    const grad = ctx.createLinearGradient(barLeft, 0, barRight, 0);
+    grad.addColorStop(0, `rgba(229,62,62,${0.3 + heat * 0.4})`);
+    grad.addColorStop(1, 'rgba(66,153,225,0.3)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.roundRect(barLeft, barTop, barRight - barLeft, barH, 4);
+    ctx.fill();
+    ctx.stroke();
+
+    // Flame
+    ctx.fillStyle = '#e53e3e';
+    const flameH = 15 + heat * 20;
+    for (let i = 0; i < 5; i++) {
+        const fx = barLeft - 5 + i * 5;
+        const fy = barTop + barH;
+        const fh = flameH * (0.6 + 0.4 * Math.sin(Date.now() / 200 + i));
+        ctx.beginPath();
+        ctx.moveTo(fx, fy);
+        ctx.quadraticCurveTo(fx + 2, fy + fh * 0.3, fx + 4, fy + fh * 0.6);
+        ctx.quadraticCurveTo(fx + 6, fy + fh * 0.3, fx + 8, fy);
+        ctx.fillStyle = i % 2 === 0 ? '#e53e3e' : '#4a3fc2';
+        ctx.fill();
+    }
+
+    // Update and draw particles
+    condParticles.forEach(p => {
+        // Energy propagation from left
+        const targetEnergy = Math.max(0, heat - (p.col / cols) * heat * 1.1);
+        p.energy += (targetEnergy - p.energy) * 0.02;
+        const vibAmp = 1 + p.energy * 4;
+        p.x = p.baseX + Math.sin(Date.now() / (80 - p.energy * 40) + p.col + p.row) * vibAmp;
+        p.y = p.baseY + Math.cos(Date.now() / (80 - p.energy * 40) + p.col * 2) * vibAmp;
+
+        ctx.fillStyle = tempColor(p.energy);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+    });
+
+    // Labels
+    ctx.fillStyle = '#e53e3e';
+    ctx.font = '600 9px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('HEAT SOURCE', barLeft + 20, barTop - 8);
+    ctx.fillStyle = '#4299e1';
+    ctx.fillText('COOL END', barRight - 20, barTop - 8);
+
+    // Arrow showing energy direction
+    ctx.strokeStyle = '#4a3fc2';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([4, 3]);
+    ctx.beginPath();
+    ctx.moveTo(barLeft + 30, barTop + barH + 35 + flameH * 0.3);
+    ctx.lineTo(barRight - 30, barTop + barH + 35 + flameH * 0.3);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#4a3fc2';
+    ctx.beginPath();
+    ctx.moveTo(barRight - 30, barTop + barH + 30 + flameH * 0.3);
+    ctx.lineTo(barRight - 20, barTop + barH + 35 + flameH * 0.3);
+    ctx.lineTo(barRight - 30, barTop + barH + 40 + flameH * 0.3);
+    ctx.fill();
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '8px Outfit';
+    ctx.fillText('Energy transfer direction →', (barLeft + barRight) / 2, barTop + barH + 50 + flameH * 0.3);
+}
+
+function animateConvection() {
+    const ctx = convCtx;
+    const heat = parseInt(document.getElementById('convHeat').value) / 10;
+    ctx.clearRect(0, 0, convSize.w, 280);
+
+    // Container
+    ctx.strokeStyle = '#aaa';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(boxLeft, boxTop, boxRight - boxLeft, boxBottom - boxTop);
+
+    // Heat source at bottom center
+    const heatZoneLeft = boxLeft + (boxRight - boxLeft) * 0.3;
+    const heatZoneRight = boxLeft + (boxRight - boxLeft) * 0.7;
+    ctx.fillStyle = `rgba(229,62,62,${0.2 + heat * 0.3})`;
+    ctx.fillRect(heatZoneLeft, boxBottom - 8, heatZoneRight - heatZoneLeft, 8);
+
+    // Flames
+    for (let i = 0; i < 4; i++) {
+        const fx = heatZoneLeft + i * 15 + 5;
+        const fh = 8 + heat * 12 * (0.6 + 0.4 * Math.sin(Date.now() / 150 + i));
+        ctx.fillStyle = i % 2 === 0 ? '#e53e3e' : '#4a3fc2';
+        ctx.beginPath();
+        ctx.moveTo(fx, boxBottom + 2);
+        ctx.quadraticCurveTo(fx + 3, boxBottom + fh * 0.4, fx + 6, boxBottom + fh * 0.7);
+        ctx.quadraticCurveTo(fx + 9, boxBottom + fh * 0.4, fx + 12, boxBottom + 2);
+        ctx.fill();
+    }
+
+    // Update particles
+    const centerX = (boxLeft + boxRight) / 2;
+    const centerY = (boxTop + boxBottom) / 2;
+    convParticles.forEach(p => {
+        // Heat particles near bottom center
+        if (p.y > boxBottom - 40 && p.x > heatZoneLeft && p.x < heatZoneRight) {
+            p.temp = Math.min(1, p.temp + 0.01 * heat);
+        }
+        // Cool near top
+        if (p.y < boxTop + 40) {
+            p.temp = Math.max(0.1, p.temp - 0.005);
+        }
+        // Cool near sides
+        if (p.x < boxLeft + 15 || p.x > boxRight - 15) {
+            p.temp = Math.max(0.1, p.temp - 0.003);
+        }
+
+        // Convection forces: hot rises, cold sinks
+        const buoyancy = (p.temp - 0.4) * heat * 0.4;
+        p.vy -= buoyancy * 0.1;
+
+        // Circulation: create a loop
+        // If near top, push sideways
+        if (p.y < centerY - 20) {
+            p.vx += (p.x < centerX ? -0.02 : 0.02) * heat;
+        }
+        // If near sides, push down
+        if (p.x < boxLeft + 30) p.vy += 0.02 * heat;
+        if (p.x > boxRight - 30) p.vy += 0.02 * heat;
+        // If near bottom, push to center
+        if (p.y > centerY + 40) {
+            p.vx += (centerX - p.x) * 0.001 * heat;
+        }
+
+        p.vx *= 0.97;
+        p.vy *= 0.97;
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Random jitter
+        p.x += (Math.random() - 0.5) * 0.5;
+        p.y += (Math.random() - 0.5) * 0.5;
+
+        // Bounds
+        if (p.x < boxLeft + 6) { p.x = boxLeft + 6; p.vx *= -0.5; }
+        if (p.x > boxRight - 6) { p.x = boxRight - 6; p.vx *= -0.5; }
+        if (p.y < boxTop + 6) { p.y = boxTop + 6; p.vy *= -0.5; }
+        if (p.y > boxBottom - 6) { p.y = boxBottom - 6; p.vy *= -0.5; }
+
+        ctx.fillStyle = tempColor(p.temp);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+    });
+
+    // Convection arrows
+    ctx.strokeStyle = 'rgba(100,126,161,0.4)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([3, 3]);
+    // Up arrow center
+    drawArrow(ctx, centerX, boxBottom - 50, centerX, boxTop + 30, false);
+    // Right arrow top
+    drawArrow(ctx, centerX + 10, boxTop + 25, boxRight - 20, boxTop + 25, false);
+    // Down arrow right
+    drawArrow(ctx, boxRight - 18, boxTop + 35, boxRight - 18, boxBottom - 35, false);
+    // Left arrow bottom
+    drawArrow(ctx, boxRight - 25, boxBottom - 30, centerX - 10, boxBottom - 30, false);
+    // Down arrow left
+    drawArrow(ctx, boxLeft + 18, boxTop + 35, boxLeft + 18, boxBottom - 35, false);
+    // Left arrow top
+    drawArrow(ctx, centerX - 10, boxTop + 25, boxLeft + 20, boxTop + 25, false);
+    ctx.setLineDash([]);
+
+    // Labels
+    ctx.fillStyle = '#e53e3e';
+    ctx.font = '600 8px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('HOT RISES', centerX, boxTop + 15);
+    ctx.fillStyle = '#4299e1';
+    ctx.fillText('COOL SINKS', boxRight - 25, centerY);
+    ctx.fillText('COOL SINKS', boxLeft + 25, centerY);
+}
+
+function drawArrow(ctx, x1, y1, x2, y2) {
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    ctx.fillStyle = 'rgba(100,126,161,0.5)';
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - 6 * Math.cos(angle - 0.4), y2 - 6 * Math.sin(angle - 0.4));
+    ctx.lineTo(x2 - 6 * Math.cos(angle + 0.4), y2 - 6 * Math.sin(angle + 0.4));
+    ctx.fill();
+}
+
+function animate() {
+    animateConduction();
+    animateConvection();
+    requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>

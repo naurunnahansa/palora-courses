@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnetic Effects Summary</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.topic-card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;background:#fff;cursor:pointer;transition:all .2s}.topic-card:hover{border-color:#1835b4;transform:translateY(-1px)}.topic-card.active{border-color:#1835b4;background:#e8ecf8}.topic-card .icon{font-size:1.3rem;margin-bottom:4px}.topic-card .name{font-family: system-ui, -apple-system, sans-serif;font-size:.8rem;color:#1835b4;text-transform:uppercase}.topic-card .desc{font-size:.68rem;color:#4a5568;margin-top:2px}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-top:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.detail{background:#fafbfc;border-radius:5px;padding:10px;margin-top:8px;font-size:.75rem;color:#4a5568}.detail strong{color:#1835b4}.detail .eq{font-family: system-ui, -apple-system, sans-serif;font-size:.95rem;color:#1835b4;text-align:center;margin:6px 0}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Magnetic Effects — Summary</h1>
+    <div class="grid">
+        <div class="topic-card active" onclick="select(0)"><div class="name">Motor Effect</div><div class="desc">Force on a current-carrying conductor in a magnetic field</div></div>
+        <div class="topic-card" onclick="select(1)"><div class="name">Electromagnetic Induction</div><div class="desc">Inducing voltage by changing magnetic flux</div></div>
+        <div class="topic-card" onclick="select(2)"><div class="name">Transformers</div><div class="desc">Changing voltage using electromagnetic induction</div></div>
+        <div class="topic-card" onclick="select(3)"><div class="name">Generators</div><div class="desc">Converting kinetic energy to electrical energy</div></div>
+    </div>
+    <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="400"></canvas></div>
+    <div class="detail" id="detail"><strong>Motor Effect:</strong> A current-carrying conductor placed in a magnetic field experiences a force. The direction is given by <strong>Fleming's Left-Hand Rule</strong>.<div class="eq">F = BIL</div>Force = Magnetic field strength × Current × Length</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let sel=0,lastTs=0,animT=0;
+
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*400/1060)+'px'}
+
+function select(i){
+    sel=i;
+    document.querySelectorAll('.topic-card').forEach((c,j)=>c.classList.toggle('active',j===i));
+    const details=[
+        '<strong>Motor Effect:</strong> A current-carrying conductor placed in a magnetic field experiences a force. The direction is given by <strong>Fleming\'s Left-Hand Rule</strong>.<div class="eq">F = BIL</div>Force = Magnetic field strength × Current × Length',
+        '<strong>Electromagnetic Induction:</strong> A changing magnetic field through a conductor induces a voltage (<strong>Faraday\'s Law</strong>). The direction opposes the change (<strong>Lenz\'s Law</strong>).<div class="eq">V = -N × ΔΦ/Δt</div>Increasing speed, turns, or field strength increases the induced voltage.',
+        '<strong>Transformers:</strong> Two coils wound on an iron core. An AC current in the primary coil creates a changing magnetic field that induces a voltage in the secondary coil.<div class="eq">Vp/Vs = Np/Ns</div>Step-up: Ns > Np (increases voltage). Step-down: Ns < Np (decreases voltage).',
+        '<strong>Generators:</strong> A coil rotating in a magnetic field produces an alternating voltage. Essentially a motor working in reverse.<div class="eq">AC Generator → alternating current</div>Faster rotation or stronger magnets → greater voltage.'
+    ];
+    document.getElementById('detail').innerHTML=details[i];
+}
+
+function draw(ts){
+    const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    if(sel===0){
+        // Motor effect - wire between magnets
+        ctx.fillStyle='#dc3545';ctx.fillRect(cx-200,cy-80,40,160);
+        ctx.fillStyle='#4a90d9';ctx.fillRect(cx+160,cy-80,40,160);
+        ctx.fillStyle='#fff';ctx.font='700 20px Oswald';ctx.textAlign='center';
+        ctx.fillText('N',cx-180,cy+5);ctx.fillText('S',cx+180,cy+5);
+        // Field lines
+        ctx.setLineDash([4,4]);ctx.strokeStyle='#d4d8e5';ctx.lineWidth=1;
+        for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(cx-160,cy+i*28);ctx.lineTo(cx+160,cy+i*28);ctx.stroke()}
+        ctx.setLineDash([]);
+        // Wire (current into page)
+        ctx.beginPath();ctx.arc(cx,cy,15,0,Math.PI*2);ctx.fillStyle='#c87533';ctx.fill();ctx.strokeStyle='#8B4513';ctx.lineWidth=2;ctx.stroke();
+        ctx.fillStyle='#fff';ctx.font='700 16px Oswald';ctx.fillText('×',cx,cy+5);
+        ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.fillText('Current into page',cx,cy+40);
+        // Force arrow
+        const fy=cy-30-Math.sin(animT*3)*10;
+        ctx.beginPath();ctx.moveTo(cx,cy-15);ctx.lineTo(cx,fy);ctx.strokeStyle='#28a745';ctx.lineWidth=3;ctx.stroke();
+        ctx.beginPath();ctx.moveTo(cx,fy);ctx.lineTo(cx-6,fy+10);ctx.lineTo(cx+6,fy+10);ctx.closePath();ctx.fillStyle='#28a745';ctx.fill();
+        ctx.fillStyle='#28a745';ctx.font='600 13px Outfit';ctx.fillText('Force (F = BIL)',cx,fy-10);
+    } else if(sel===1){
+        // Electromagnetic induction
+        // Coil
+        for(let i=0;i<6;i++){ctx.beginPath();ctx.ellipse(cx+i*12-30,cy,6,50,0,0,Math.PI*2);ctx.strokeStyle='#c87533';ctx.lineWidth=2;ctx.stroke()}
+        // Magnet moving
+        const mx=cx-180+Math.sin(animT*2)*60;
+        ctx.fillStyle='#dc3545';ctx.fillRect(mx-40,cy-15,40,30);ctx.fillStyle='#4a90d9';ctx.fillRect(mx,cy-15,40,30);
+        ctx.fillStyle='#fff';ctx.font='700 14px Oswald';ctx.textAlign='center';ctx.fillText('N',mx-20,cy+5);ctx.fillText('S',mx+20,cy+5);
+        // EMF indicator
+        const emfVal=Math.cos(animT*2)*0.6;
+        ctx.fillStyle='#1835b4';ctx.font='600 14px Oswald';
+        ctx.fillText(`Induced EMF: ${(emfVal*10).toFixed(1)} V`,cx+200,cy);
+        // Arrow showing motion
+        ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.fillText('← Moving magnet →',mx,cy-30);
+    } else if(sel===2){
+        // Transformer
+        // Iron core
+        ctx.fillStyle='#a0a0a0';ctx.fillRect(cx-120,cy-70,240,20);ctx.fillRect(cx-120,cy+50,240,20);
+        ctx.fillRect(cx-120,cy-70,20,140);ctx.fillRect(cx+100,cy-70,20,140);
+        // Primary coil
+        for(let i=0;i<8;i++){ctx.beginPath();ctx.ellipse(cx-80+i*10,cy,5,50,0,0,Math.PI*2);ctx.strokeStyle='#c87533';ctx.lineWidth=2;ctx.stroke()}
+        // Secondary coil
+        for(let i=0;i<4;i++){ctx.beginPath();ctx.ellipse(cx+60+i*10,cy,5,50,0,0,Math.PI*2);ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.stroke()}
+        ctx.fillStyle='#c87533';ctx.font='500 12px Outfit';ctx.textAlign='center';ctx.fillText('Primary (Np)',cx-40,cy+90);
+        ctx.fillStyle='#1835b4';ctx.fillText('Secondary (Ns)',cx+75,cy+90);
+        ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.fillText('Iron core',cx,cy-80);
+        // AC symbol
+        ctx.strokeStyle='#c87533';ctx.lineWidth=2;ctx.beginPath();
+        for(let x=0;x<40;x++){const sx=cx-120+x;ctx.lineTo(sx,cy+120+Math.sin(x*0.3+animT*4)*10)}
+        ctx.stroke();ctx.fillStyle='#c87533';ctx.font='500 10px Outfit';ctx.fillText('AC in',cx-100,cy+145);
+    } else {
+        // Generator
+        const angle=animT*2;
+        // Magnets
+        ctx.fillStyle='#dc3545';ctx.fillRect(cx-180,cy-60,30,120);ctx.fillStyle='#4a90d9';ctx.fillRect(cx+150,cy-60,30,120);
+        ctx.fillStyle='#fff';ctx.font='700 18px Oswald';ctx.textAlign='center';ctx.fillText('N',cx-165,cy+5);ctx.fillText('S',cx+165,cy+5);
+        // Rotating coil
+        const coilW=100*Math.cos(angle);
+        ctx.strokeStyle='#c87533';ctx.lineWidth=3;
+        ctx.beginPath();ctx.moveTo(cx-coilW,cy-50);ctx.lineTo(cx+coilW,cy-50);ctx.lineTo(cx+coilW,cy+50);ctx.lineTo(cx-coilW,cy+50);ctx.closePath();ctx.stroke();
+        // Axle
+        ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);ctx.fillStyle='#4a5568';ctx.fill();
+        // Slip rings
+        ctx.beginPath();ctx.arc(cx,cy+80,12,0,Math.PI*2);ctx.strokeStyle='#c87533';ctx.lineWidth=2;ctx.stroke();
+        ctx.fillStyle='#4a5568';ctx.font='500 10px Outfit';ctx.fillText('Slip rings',cx,cy+105);
+        // Output wave
+        ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.beginPath();
+        for(let x=0;x<150;x++){const sx=cx+200+x;ctx.lineTo(sx,cy+Math.sin(x*0.04+animT*2)*30)}
+        ctx.stroke();
+        ctx.fillStyle='#1835b4';ctx.font='500 11px Outfit';ctx.fillText('AC output',cx+275,cy-40);
+    }
+
+    requestAnimationFrame(draw);
+}
+resize();window.addEventListener('resize',resize);requestAnimationFrame(draw);
+</script>
+</body>
+</html>

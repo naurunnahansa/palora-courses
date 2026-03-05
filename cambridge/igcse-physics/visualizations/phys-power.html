@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .side { border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px; }
+        .side-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; color: #1835b4; text-transform: uppercase; text-align: center; margin-bottom: 6px; }
+        .slider-row { margin-bottom: 6px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.72rem; color: #4a5568; margin-bottom: 1px; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .result { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; margin-top: 6px; }
+        .result .label { font-size: 0.68rem; color: #4a5568; }
+        .result .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.2rem; color: #1835b4; }
+        .winner { border-color: #4a3fc2; box-shadow: 0 0 0 2px #4a3fc240; }
+        .calc-box { background: #fafbfc; border-radius: 5px; padding: 8px; text-align: center; font-size: 0.78rem; margin-top: 8px; }
+        .calc-box strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Power Comparison</h1>
+    <p class="subtitle">Compare the power of two machines doing work</p>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="350"></canvas>
+    </div>
+    <div class="compare">
+        <div class="side" id="sideA">
+            <div class="side-title">Machine A</div>
+            <div class="slider-row">
+                <div class="slider-label"><span>Work done</span><span class="val" id="wA">500 J</span></div>
+                <input type="range" id="wSliderA" min="100" max="2000" value="500">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label"><span>Time</span><span class="val" id="tA">10 s</span></div>
+                <input type="range" id="tSliderA" min="1" max="60" value="10">
+            </div>
+            <div class="result"><div class="label">Power</div><div class="value" id="pA">50 W</div></div>
+        </div>
+        <div class="side" id="sideB">
+            <div class="side-title">Machine B</div>
+            <div class="slider-row">
+                <div class="slider-label"><span>Work done</span><span class="val" id="wB">500 J</span></div>
+                <input type="range" id="wSliderB" min="100" max="2000" value="500">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label"><span>Time</span><span class="val" id="tB">5 s</span></div>
+                <input type="range" id="tSliderB" min="1" max="60" value="5">
+            </div>
+            <div class="result"><div class="label">Power</div><div class="value" id="pB">100 W</div></div>
+        </div>
+    </div>
+    <div class="calc-box" id="calcBox"></div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let animT = 0, lastTs = 0;
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 350 / 1060) + 'px';
+}
+
+function getVals() {
+    const wA = parseInt(document.getElementById('wSliderA').value);
+    const tA = parseInt(document.getElementById('tSliderA').value);
+    const wB = parseInt(document.getElementById('wSliderB').value);
+    const tB = parseInt(document.getElementById('tSliderB').value);
+    return { wA, tA, pA: wA / tA, wB, tB, pB: wB / tB };
+}
+
+function draw(ts) {
+    const dt = lastTs ? (ts - lastTs) / 1000 : 0;
+    lastTs = ts; animT += dt;
+    const v = getVals();
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    // Two lifting machines side by side
+    const groundY = H * 0.85;
+    ctx.fillStyle = '#f0eded'; ctx.fillRect(0, groundY, W, H - groundY);
+
+    // Machine A (left)
+    const maxH = groundY - 40;
+    const speedA = v.pA / 100;
+    const speedB = v.pB / 100;
+    const posA = (animT * speedA * 30) % maxH;
+    const posB = (animT * speedB * 30) % maxH;
+
+    // A
+    const axA = W * 0.25;
+    ctx.fillStyle = '#1835b4';
+    ctx.fillRect(axA - 20, groundY - posA - 30, 40, 30);
+    ctx.strokeStyle = '#506a8a'; ctx.lineWidth = 2;
+    ctx.strokeRect(axA - 20, groundY - posA - 30, 40, 30);
+    // rope
+    ctx.beginPath(); ctx.moveTo(axA, groundY - posA - 30); ctx.lineTo(axA, 20);
+    ctx.strokeStyle = '#aaa'; ctx.lineWidth = 2; ctx.stroke();
+    // pulley
+    ctx.beginPath(); ctx.arc(axA, 20, 8, 0, Math.PI * 2);
+    ctx.fillStyle = '#4a5568'; ctx.fill();
+    ctx.fillStyle = '#1835b4'; ctx.font = '600 14px Oswald'; ctx.textAlign = 'center';
+    ctx.fillText('A', axA, groundY + 18);
+
+    // B
+    const axB = W * 0.75;
+    ctx.fillStyle = '#4a3fc2';
+    ctx.fillRect(axB - 20, groundY - posB - 30, 40, 30);
+    ctx.strokeStyle = '#c9a020'; ctx.lineWidth = 2;
+    ctx.strokeRect(axB - 20, groundY - posB - 30, 40, 30);
+    ctx.beginPath(); ctx.moveTo(axB, groundY - posB - 30); ctx.lineTo(axB, 20);
+    ctx.strokeStyle = '#aaa'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.beginPath(); ctx.arc(axB, 20, 8, 0, Math.PI * 2);
+    ctx.fillStyle = '#4a5568'; ctx.fill();
+    ctx.fillStyle = '#c9a020'; ctx.font = '600 14px Oswald';
+    ctx.fillText('B', axB, groundY + 18);
+
+    // Power bars
+    const barW = 30, barMaxH = 100;
+    const barA = Math.min(barMaxH, v.pA / 5);
+    const barB = Math.min(barMaxH, v.pB / 5);
+    const barX = W * 0.48;
+    ctx.fillStyle = '#1835b440'; ctx.fillRect(barX, H * 0.3 + barMaxH - barA, barW, barA);
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 1; ctx.strokeRect(barX, H * 0.3, barW, barMaxH);
+    ctx.fillStyle = '#4a3fc240'; ctx.fillRect(barX + barW + 4, H * 0.3 + barMaxH - barB, barW, barB);
+    ctx.strokeStyle = '#c9a020'; ctx.strokeRect(barX + barW + 4, H * 0.3, barW, barMaxH);
+    ctx.fillStyle = '#4a5568'; ctx.font = '500 11px Outfit'; ctx.textAlign = 'center';
+    ctx.fillText('Power', barX + barW + 2, H * 0.3 - 6);
+
+    // Update
+    document.getElementById('wA').textContent = v.wA + ' J';
+    document.getElementById('tA').textContent = v.tA + ' s';
+    document.getElementById('pA').textContent = v.pA.toFixed(1) + ' W';
+    document.getElementById('wB').textContent = v.wB + ' J';
+    document.getElementById('tB').textContent = v.tB + ' s';
+    document.getElementById('pB').textContent = v.pB.toFixed(1) + ' W';
+
+    document.getElementById('sideA').classList.toggle('winner', v.pA >= v.pB);
+    document.getElementById('sideB').classList.toggle('winner', v.pB > v.pA);
+
+    const winner = v.pA >= v.pB ? 'A' : 'B';
+    const ratio = Math.max(v.pA, v.pB) / Math.min(v.pA, v.pB);
+    document.getElementById('calcBox').innerHTML = `Machine <strong>${winner}</strong> is more powerful (${ratio.toFixed(1)}× more). P = W ÷ t`;
+
+    requestAnimationFrame(draw);
+}
+
+['wSliderA', 'tSliderA', 'wSliderB', 'tSliderB'].forEach(id =>
+    document.getElementById(id).addEventListener('input', () => {}));
+
+resize(); window.addEventListener('resize', resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

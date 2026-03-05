@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Transfer Sankey Diagram</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 12px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        label { font-size: 0.82rem; color: #4a5568; display: block; margin-bottom: 4px; }
+        .input-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .input-row input[type="number"] { width: 80px; padding: 5px 8px; border: 1px solid #d4d8e5; border-radius: 4px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; }
+        .input-row span { font-size: 0.82rem; color: #4a5568; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .slider-row { margin-bottom: 10px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.82rem; color: #4a5568; margin-bottom: 2px; }
+        canvas { width: 100%; border-radius: 5px; display: block; }
+        .efficiency-display { text-align: center; padding: 10px; background: #e8ecf8; border-radius: 5px; margin-top: 8px; }
+        .efficiency-display .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.8rem; color: #1835b4; }
+        .efficiency-display .label { font-size: 0.78rem; color: #4a5568; }
+        .legend { display: flex; justify-content: center; gap: 16px; margin-top: 8px; font-size: 0.78rem; color: #4a5568; }
+        .legend-item { display: flex; align-items: center; gap: 4px; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Energy Transfer Sankey Diagram</h1>
+
+        <div class="card">
+            <div class="card-title">Energy Input</div>
+            <div class="input-row">
+                <label style="margin:0;">Total energy input:</label>
+                <input type="number" id="totalEnergy" value="100" min="1" max="10000" step="1">
+                <span>J</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Energy Distribution</div>
+            <div class="slider-row">
+                <div class="slider-label">
+                    <span>Useful output energy</span>
+                    <span id="usefulLabel">40 J</span>
+                </div>
+                <input type="range" id="usefulSlider" min="0" max="100" value="40">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label">
+                    <span>Wasted energy (heat, sound, etc.)</span>
+                    <span id="wastedLabel">60 J</span>
+                </div>
+                <input type="range" id="wastedSlider" min="0" max="100" value="60" disabled style="opacity:0.6;">
+            </div>
+        </div>
+
+        <div class="card" style="padding:8px;">
+            <canvas id="sankeyCanvas" width="526" height="280"></canvas>
+            <div class="legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#1835b4;"></div> Useful output</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#4a3fc2;"></div> Wasted energy</div>
+            </div>
+        </div>
+
+        <div class="efficiency-display">
+            <div class="label">Efficiency</div>
+            <div class="value" id="efficiencyValue">40%</div>
+            <div class="label" id="efficiencyFormula">Efficiency = Useful output / Total input = 40 / 100</div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('sankeyCanvas');
+        const ctx = canvas.getContext('2d');
+        const totalInput = document.getElementById('totalEnergy');
+        const usefulSlider = document.getElementById('usefulSlider');
+        const wastedSlider = document.getElementById('wastedSlider');
+        const usefulLabel = document.getElementById('usefulLabel');
+        const wastedLabel = document.getElementById('wastedLabel');
+        const efficiencyValue = document.getElementById('efficiencyValue');
+        const efficiencyFormula = document.getElementById('efficiencyFormula');
+
+        function setCanvasSize() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const w = rect.width - 16;
+            canvas.style.width = w + 'px';
+            canvas.style.height = (w * 280 / 526) + 'px';
+            canvas.width = w * 2;
+            canvas.height = (w * 280 / 526) * 2;
+        }
+
+        function update() {
+            const total = parseFloat(totalInput.value) || 100;
+            const usefulPct = parseInt(usefulSlider.value);
+            const wastedPct = 100 - usefulPct;
+            wastedSlider.value = wastedPct;
+
+            const useful = Math.round(total * usefulPct / 100);
+            const wasted = total - useful;
+
+            usefulLabel.textContent = useful + ' J';
+            wastedLabel.textContent = wasted + ' J';
+
+            const eff = total > 0 ? Math.round((useful / total) * 100) : 0;
+            efficiencyValue.textContent = eff + '%';
+            efficiencyFormula.textContent = `Efficiency = Useful output \u00F7 Total input = ${useful} \u00F7 ${total}`;
+
+            draw(usefulPct / 100, wastedPct / 100, useful, wasted, total);
+        }
+
+        function draw(usefulFrac, wastedFrac, usefulJ, wastedJ, totalJ) {
+            const W = canvas.width;
+            const H = canvas.height;
+            ctx.clearRect(0, 0, W, H);
+
+            const maxThickness = H * 0.55;
+            const totalThickness = maxThickness;
+            const usefulThickness = totalThickness * usefulFrac;
+            const wastedThickness = totalThickness * wastedFrac;
+
+            const leftX = W * 0.08;
+            const splitX = W * 0.42;
+            const rightX = W * 0.88;
+            const centerY = H * 0.5;
+
+            const usefulEndY = H * 0.28;
+            const wastedEndY = H * 0.72;
+
+            // Input arrow (thick band from left to split)
+            ctx.beginPath();
+            ctx.moveTo(leftX, centerY - totalThickness / 2);
+            ctx.lineTo(splitX, centerY - totalThickness / 2);
+            ctx.lineTo(splitX, centerY + totalThickness / 2);
+            ctx.lineTo(leftX, centerY + totalThickness / 2);
+            ctx.closePath();
+            const grad = ctx.createLinearGradient(leftX, 0, splitX, 0);
+            grad.addColorStop(0, '#8ba3bf');
+            grad.addColorStop(1, '#1835b4');
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            // Useful output branch (curves upward)
+            if (usefulFrac > 0.005) {
+                ctx.beginPath();
+                const uTop1 = centerY - totalThickness / 2;
+                const uBot1 = uTop1 + usefulThickness;
+                const uTopEnd = usefulEndY - usefulThickness / 2;
+                const uBotEnd = usefulEndY + usefulThickness / 2;
+
+                ctx.moveTo(splitX, uTop1);
+                ctx.bezierCurveTo(splitX + (rightX - splitX) * 0.4, uTop1, splitX + (rightX - splitX) * 0.6, uTopEnd, rightX, uTopEnd);
+                ctx.lineTo(rightX, uBotEnd);
+                ctx.bezierCurveTo(splitX + (rightX - splitX) * 0.6, uBotEnd, splitX + (rightX - splitX) * 0.4, uBot1, splitX, uBot1);
+                ctx.closePath();
+                const g2 = ctx.createLinearGradient(splitX, 0, rightX, 0);
+                g2.addColorStop(0, '#1835b4');
+                g2.addColorStop(1, '#4a6a8a');
+                ctx.fillStyle = g2;
+                ctx.fill();
+
+                // Arrowhead useful
+                ctx.beginPath();
+                ctx.moveTo(rightX, uTopEnd - usefulThickness * 0.25);
+                ctx.lineTo(rightX + W * 0.04, usefulEndY);
+                ctx.lineTo(rightX, uBotEnd + usefulThickness * 0.25);
+                ctx.closePath();
+                ctx.fillStyle = '#4a6a8a';
+                ctx.fill();
+
+                // Label
+                ctx.fillStyle = '#fff';
+                ctx.font = `bold ${Math.max(H * 0.055, 14)}px system-ui, -apple-system, sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                if (usefulThickness > H * 0.06) {
+                    ctx.fillText(usefulJ + ' J', (splitX + rightX) / 2, usefulEndY);
+                }
+            }
+
+            // Wasted output branch (curves downward)
+            if (wastedFrac > 0.005) {
+                ctx.beginPath();
+                const wTop1 = centerY + totalThickness / 2 - wastedThickness;
+                const wBot1 = centerY + totalThickness / 2;
+                const wTopEnd = wastedEndY - wastedThickness / 2;
+                const wBotEnd = wastedEndY + wastedThickness / 2;
+
+                ctx.moveTo(splitX, wTop1);
+                ctx.bezierCurveTo(splitX + (rightX - splitX) * 0.4, wTop1, splitX + (rightX - splitX) * 0.6, wTopEnd, rightX, wTopEnd);
+                ctx.lineTo(rightX, wBotEnd);
+                ctx.bezierCurveTo(splitX + (rightX - splitX) * 0.6, wBotEnd, splitX + (rightX - splitX) * 0.4, wBot1, splitX, wBot1);
+                ctx.closePath();
+                const g3 = ctx.createLinearGradient(splitX, 0, rightX, 0);
+                g3.addColorStop(0, '#4a3fc2');
+                g3.addColorStop(1, '#e0bc3a');
+                ctx.fillStyle = g3;
+                ctx.fill();
+
+                // Arrowhead wasted
+                ctx.beginPath();
+                ctx.moveTo(rightX, wTopEnd - wastedThickness * 0.25);
+                ctx.lineTo(rightX + W * 0.04, wastedEndY);
+                ctx.lineTo(rightX, wBotEnd + wastedThickness * 0.25);
+                ctx.closePath();
+                ctx.fillStyle = '#e0bc3a';
+                ctx.fill();
+
+                // Label
+                ctx.fillStyle = '#1a2747';
+                ctx.font = `bold ${Math.max(H * 0.055, 14)}px system-ui, -apple-system, sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                if (wastedThickness > H * 0.06) {
+                    ctx.fillText(wastedJ + ' J', (splitX + rightX) / 2, wastedEndY);
+                }
+            }
+
+            // Labels outside
+            ctx.font = `600 ${Math.max(H * 0.05, 12)}px system-ui, -apple-system, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#4a5568';
+            ctx.fillText('Total Input', leftX + (splitX - leftX) / 2, centerY - totalThickness / 2 - H * 0.04);
+            ctx.fillText(totalJ + ' J', leftX + (splitX - leftX) / 2, centerY - totalThickness / 2 - H * 0.1);
+
+            if (usefulFrac > 0.005) {
+                ctx.fillStyle = '#1835b4';
+                ctx.textAlign = 'right';
+                ctx.fillText('Useful', W * 0.97, usefulEndY - usefulThickness / 2 - H * 0.04);
+            }
+            if (wastedFrac > 0.005) {
+                ctx.fillStyle = '#c9a020';
+                ctx.textAlign = 'right';
+                ctx.fillText('Wasted', W * 0.97, wastedEndY + wastedThickness / 2 + H * 0.06);
+            }
+
+            // Direction arrow on input
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            const arrowMidX = leftX + (splitX - leftX) * 0.5;
+            ctx.beginPath();
+            ctx.moveTo(arrowMidX - 12, centerY);
+            ctx.lineTo(arrowMidX + 12, centerY);
+            ctx.lineTo(arrowMidX + 5, centerY - 6);
+            ctx.moveTo(arrowMidX + 12, centerY);
+            ctx.lineTo(arrowMidX + 5, centerY + 6);
+            ctx.stroke();
+        }
+
+        usefulSlider.addEventListener('input', update);
+        totalInput.addEventListener('input', update);
+
+        window.addEventListener('resize', () => { setCanvasSize(); update(); });
+        setCanvasSize();
+        update();
+    </script>
+</body>
+</html>

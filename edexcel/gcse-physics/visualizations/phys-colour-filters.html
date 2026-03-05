@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colour & Filters</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; }
+        .filter-btns { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+        .filter-btn { flex: 1; min-width: 70px; border: 2px solid #d4d8e5; border-radius: 5px; padding: 6px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .filter-btn:hover { transform: scale(1.05); }
+        .filter-btn.active { border-width: 3px; transform: scale(1.05); }
+        .result { background: #e8ecf8; border-radius: 5px; padding: 10px; text-align: center; }
+        .result .label { font-size: 0.72rem; color: #4a5568; }
+        .result .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.2rem; margin-top: 4px; }
+        .result .desc { font-size: 0.72rem; color: #4a5568; margin-top: 4px; }
+        .info { background: #fafbfc; border-radius: 5px; padding: 8px; font-size: 0.75rem; color: #4a5568; margin-top: 8px; }
+        .info strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Colour & Filters</h1>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="400" style="background:#1a2747;"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Select Filter</div>
+        <div class="filter-btns">
+            <button class="filter-btn active" style="background:#fff;color:#333;border-color:#ccc;" onclick="setFilter('none')">No Filter</button>
+            <button class="filter-btn" style="background:#ff000030;color:#cc0000;border-color:#ff0000;" onclick="setFilter('red')">Red</button>
+            <button class="filter-btn" style="background:#00ff0030;color:#008800;border-color:#00ff00;" onclick="setFilter('green')">Green</button>
+            <button class="filter-btn" style="background:#0000ff30;color:#0000cc;border-color:#0000ff;" onclick="setFilter('blue')">Blue</button>
+            <button class="filter-btn" style="background:#ffff0030;color:#888800;border-color:#ffff00;" onclick="setFilter('yellow')">Yellow</button>
+            <button class="filter-btn" style="background:#ff00ff30;color:#880088;border-color:#ff00ff;" onclick="setFilter('magenta')">Magenta</button>
+        </div>
+    </div>
+    <div class="result" id="result">
+        <div class="label">Light passing through filter</div>
+        <div class="value" id="resultColor" style="color:#fff;">White Light (all colours)</div>
+        <div class="desc" id="resultDesc">No filter applied — all colours pass through</div>
+    </div>
+    <div class="info">
+        <strong>How filters work:</strong> A colour filter only allows its own colour of light to pass through and <strong>absorbs</strong> all other colours. A red filter transmits red light and absorbs green and blue.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let currentFilter = 'none';
+
+const spectrumColors = [
+    {name: 'Red', color: '#ff0000', x: 0}, {name: 'Orange', color: '#ff8800', x: 1},
+    {name: 'Yellow', color: '#ffff00', x: 2}, {name: 'Green', color: '#00ff00', x: 3},
+    {name: 'Blue', color: '#0088ff', x: 4}, {name: 'Indigo', color: '#4400cc', x: 5},
+    {name: 'Violet', color: '#8800ff', x: 6}
+];
+
+const filterRules = {
+    none: () => true,
+    red: c => c.name === 'Red',
+    green: c => c.name === 'Green',
+    blue: c => c.name === 'Blue',
+    yellow: c => c.name === 'Red' || c.name === 'Orange' || c.name === 'Yellow' || c.name === 'Green',
+    magenta: c => c.name === 'Red' || c.name === 'Blue' || c.name === 'Indigo' || c.name === 'Violet'
+};
+
+function setFilter(f) {
+    currentFilter = f;
+    document.querySelectorAll('.filter-btn').forEach((b, i) => {
+        const filters = ['none','red','green','blue','yellow','magenta'];
+        b.classList.toggle('active', filters[i] === f);
+    });
+    draw();
+}
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 400 / 1060) + 'px';
+}
+
+function draw() {
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#1a2747'; ctx.fillRect(0, 0, W, H);
+
+    // Prism
+    const px = W * 0.25, py = H * 0.5;
+    ctx.beginPath(); ctx.moveTo(px, py - 80); ctx.lineTo(px - 50, py + 60); ctx.lineTo(px + 50, py + 60); ctx.closePath();
+    ctx.fillStyle = '#ffffff20'; ctx.fill(); ctx.strokeStyle = '#ffffff60'; ctx.lineWidth = 2; ctx.stroke();
+
+    // White light beam in
+    ctx.beginPath(); ctx.moveTo(30, py); ctx.lineTo(px - 30, py);
+    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 8; ctx.stroke();
+    ctx.fillStyle = '#fff'; ctx.font = '500 13px Outfit'; ctx.textAlign = 'center';
+    ctx.fillText('White light', 80, py - 20);
+
+    // Filter position
+    const filterX = W * 0.6;
+    if (currentFilter !== 'none') {
+        const filterColors = { red: '#ff000060', green: '#00ff0060', blue: '#0000ff60', yellow: '#ffff0060', magenta: '#ff00ff60' };
+        ctx.fillStyle = filterColors[currentFilter];
+        ctx.fillRect(filterX - 5, H * 0.1, 10, H * 0.8);
+        ctx.strokeStyle = '#ffffff40'; ctx.lineWidth = 1;
+        ctx.strokeRect(filterX - 5, H * 0.1, 10, H * 0.8);
+        ctx.fillStyle = '#fff'; ctx.font = '600 12px Outfit';
+        ctx.fillText(currentFilter.charAt(0).toUpperCase() + currentFilter.slice(1) + ' filter', filterX, H * 0.07);
+    }
+
+    // Spectrum beams from prism
+    const rule = filterRules[currentFilter];
+    const passing = [];
+    spectrumColors.forEach((c, i) => {
+        const angle = (i - 3) * 0.08;
+        const startY = py + (i - 3) * 15;
+        const endY = startY + (i - 3) * 30;
+        const passes = rule(c);
+
+        // Before filter
+        ctx.beginPath(); ctx.moveTo(px + 50, startY);
+        ctx.lineTo(currentFilter !== 'none' ? filterX - 5 : W - 50, endY);
+        ctx.strokeStyle = c.color + (passes ? 'cc' : '30');
+        ctx.lineWidth = 6; ctx.stroke();
+
+        // After filter
+        if (passes && currentFilter !== 'none') {
+            ctx.beginPath(); ctx.moveTo(filterX + 5, endY);
+            ctx.lineTo(W - 50, endY);
+            ctx.strokeStyle = c.color + 'cc'; ctx.lineWidth = 6; ctx.stroke();
+            passing.push(c.name);
+        } else if (currentFilter === 'none') {
+            passing.push(c.name);
+        }
+
+        // Blocked X
+        if (!passes && currentFilter !== 'none') {
+            const mx = filterX;
+            ctx.beginPath(); ctx.moveTo(mx - 6, endY - 6); ctx.lineTo(mx + 6, endY + 6);
+            ctx.moveTo(mx + 6, endY - 6); ctx.lineTo(mx - 6, endY + 6);
+            ctx.strokeStyle = '#ff000080'; ctx.lineWidth = 2; ctx.stroke();
+        }
+    });
+
+    // Labels on right
+    spectrumColors.forEach((c, i) => {
+        const endY = py + (i - 3) * 15 + (i - 3) * 30;
+        const passes = rule(c);
+        if (passes) {
+            ctx.fillStyle = c.color; ctx.font = '500 12px Outfit'; ctx.textAlign = 'left';
+            ctx.fillText(c.name, W - 45, endY + 4);
+        }
+    });
+
+    // Result
+    const resultEl = document.getElementById('resultColor');
+    const descEl = document.getElementById('resultDesc');
+    if (currentFilter === 'none') {
+        resultEl.style.color = '#fff';
+        resultEl.textContent = 'White Light (all colours)';
+        descEl.textContent = 'No filter — all colours pass through';
+    } else {
+        resultEl.style.color = spectrumColors.find(c => rule(c))?.color || '#333';
+        resultEl.textContent = passing.join(', ') || 'No light passes';
+        descEl.textContent = passing.length > 0
+            ? `${currentFilter.charAt(0).toUpperCase() + currentFilter.slice(1)} filter transmits ${passing.length} colour(s)`
+            : 'All light is absorbed by the filter';
+    }
+}
+
+resize(); draw();
+window.addEventListener('resize', () => { resize(); draw(); });
+</script>
+</body>
+</html>

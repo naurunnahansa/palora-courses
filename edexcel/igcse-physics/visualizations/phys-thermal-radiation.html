@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thermal Radiation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .surface-btns { display: flex; gap: 5px; margin-bottom: 8px; }
+        .surface-btn { flex: 1; background: #e8ecf8; border: 2px solid transparent; border-radius: 5px; padding: 6px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.72rem; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .surface-btn:hover { border-color: #1835b4; }
+        .surface-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.72rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; }
+        .info { background: #fafbfc; border-radius: 5px; padding: 8px; font-size: 0.75rem; color: #4a5568; margin-top: 8px; }
+        .info strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Thermal Radiation</h1>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="500"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row">
+            <div class="slider-label"><span>Temperature</span><span class="val" id="tempLabel">200°C</span></div>
+            <input type="range" id="tempSlider" min="20" max="500" value="200">
+        </div>
+        <div class="card-title">Surface Type</div>
+        <div class="surface-btns" id="surfaceBtns"></div>
+    </div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Emission Rate</div><div class="value" id="emitVal">Medium</div></div>
+        <div class="readout"><div class="label">Absorption Rate</div><div class="value" id="absVal">Medium</div></div>
+    </div>
+    <div class="info" id="info"></div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let lastTs = 0, animT = 0;
+
+const surfaces = [
+    { name: 'Matt Black', emit: 1.0, absorb: 1.0, color: '#1a1a1a', info: 'Matt black surfaces are the <strong>best emitters and absorbers</strong> of infrared radiation.' },
+    { name: 'Matt White', emit: 0.9, absorb: 0.3, color: '#f0f0f0', info: 'Matt white surfaces are <strong>good emitters</strong> but <strong>poor absorbers</strong> (they reflect visible light).' },
+    { name: 'Shiny Silver', emit: 0.2, absorb: 0.2, color: '#d0d0d0', info: 'Shiny silver surfaces are <strong>poor emitters and absorbers</strong>. They reflect radiation, which is why flasks use them.' },
+    { name: 'Dark Red', emit: 0.85, absorb: 0.85, color: '#8b2020', info: 'Dark coloured surfaces are <strong>good emitters and good absorbers</strong> of infrared radiation.' }
+];
+
+let selectedSurface = 0;
+const btnContainer = document.getElementById('surfaceBtns');
+surfaces.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'surface-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = s.name;
+    btn.onclick = () => { selectedSurface = i; document.querySelectorAll('.surface-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); };
+    btnContainer.appendChild(btn);
+});
+
+const waves = [];
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 500 / 1060) + 'px';
+}
+
+function draw(ts) {
+    const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.03) : 0;
+    lastTs = ts; animT += dt;
+
+    const temp = parseInt(document.getElementById('tempSlider').value);
+    const surf = surfaces[selectedSurface];
+    const emitRate = surf.emit * (temp / 500);
+
+    document.getElementById('tempLabel').textContent = temp + '°C';
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    // Object
+    const objX = W * 0.35, objY = H * 0.25, objW = 140, objH = 200;
+    ctx.fillStyle = surf.color;
+    ctx.fillRect(objX, objY, objW, objH);
+    ctx.strokeStyle = '#4a5568'; ctx.lineWidth = 2;
+    ctx.strokeRect(objX, objY, objW, objH);
+
+    // Temperature glow
+    const glowIntensity = temp / 500;
+    ctx.shadowBlur = 30 * glowIntensity;
+    ctx.shadowColor = `rgba(220, 53, 69, ${glowIntensity * 0.5})`;
+    ctx.fillStyle = surf.color;
+    ctx.fillRect(objX, objY, objW, objH);
+    ctx.shadowBlur = 0;
+
+    // Temp label on object
+    ctx.fillStyle = surf.color === '#1a1a1a' || surf.color === '#8b2020' ? '#fff' : '#1a2747';
+    ctx.font = '700 18px Oswald'; ctx.textAlign = 'center';
+    ctx.fillText(temp + '°C', objX + objW / 2, objY + objH / 2 + 6);
+
+    // Emit radiation waves
+    if (Math.random() < emitRate * 0.3) {
+        const angle = (Math.random() - 0.5) * Math.PI * 0.8;
+        const side = Math.random() > 0.5 ? 1 : -1;
+        waves.push({
+            x: side > 0 ? objX + objW : objX,
+            y: objY + Math.random() * objH,
+            vx: Math.cos(angle) * 3 * side,
+            vy: Math.sin(angle) * 2,
+            life: 1,
+            r: Math.round(220 * glowIntensity + 100),
+            g: Math.round(80 * (1 - glowIntensity)),
+            b: Math.round(50)
+        });
+    }
+
+    // Update and draw waves
+    for (let i = waves.length - 1; i >= 0; i--) {
+        const w = waves[i];
+        w.x += w.vx * 2;
+        w.y += w.vy;
+        w.life -= 0.008;
+        if (w.life <= 0 || w.x < 0 || w.x > W || w.y < 0 || w.y > H) {
+            waves.splice(i, 1); continue;
+        }
+        // Wavy line
+        ctx.beginPath();
+        for (let t = 0; t < 20; t++) {
+            const wx = w.x - w.vx * t * 0.5;
+            const wy = w.y - w.vy * t * 0.5 + Math.sin(t * 0.8 + animT * 5) * 4;
+            if (t === 0) ctx.moveTo(wx, wy); else ctx.lineTo(wx, wy);
+        }
+        ctx.strokeStyle = `rgba(${w.r},${w.g},${w.b},${w.life * 0.6})`;
+        ctx.lineWidth = 2; ctx.stroke();
+    }
+
+    // Keep waves manageable
+    while (waves.length > 100) waves.shift();
+
+    // Labels
+    ctx.fillStyle = '#dc3545'; ctx.font = '600 14px Outfit'; ctx.textAlign = 'center';
+    ctx.fillText('Infrared radiation emitted', W * 0.5, H * 0.9);
+    ctx.fillStyle = '#4a5568'; ctx.font = '500 12px Outfit';
+    ctx.fillText(surf.name + ' surface', objX + objW / 2, objY - 12);
+
+    // Emission rate label
+    const emitLevel = emitRate > 0.6 ? 'High' : emitRate > 0.3 ? 'Medium' : 'Low';
+    const absLevel = surf.absorb > 0.7 ? 'High' : surf.absorb > 0.4 ? 'Medium' : 'Low';
+    document.getElementById('emitVal').textContent = emitLevel;
+    document.getElementById('absVal').textContent = absLevel;
+    document.getElementById('info').innerHTML = surf.info;
+
+    requestAnimationFrame(draw);
+}
+
+resize(); window.addEventListener('resize', resize);
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

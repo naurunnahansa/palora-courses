@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wave Properties Explorer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { width: 100%; display: block; border-radius: 4px; background: #fafbfc; }
+        .slider-row { margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.72rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.1rem; color: #1835b4; }
+        .readout .formula { font-size: 0.68rem; color: #4a5568; margin-top: 2px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wave Properties Explorer</h1>
+
+        <div class="card" style="padding:8px;">
+            <canvas id="waveCanvas" width="1060" height="400"></canvas>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Wave Controls</div>
+            <div class="slider-row">
+                <div class="slider-label">
+                    <span>Amplitude</span>
+                    <span class="val" id="ampVal">3.0 units</span>
+                </div>
+                <input type="range" id="ampSlider" min="10" max="50" value="30">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label">
+                    <span>Wavelength</span>
+                    <span class="val" id="wlVal">120 px</span>
+                </div>
+                <input type="range" id="wlSlider" min="50" max="200" value="120">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label">
+                    <span>Frequency</span>
+                    <span class="val" id="freqVal">1.5 Hz</span>
+                </div>
+                <input type="range" id="freqSlider" min="5" max="30" value="15">
+            </div>
+        </div>
+
+        <div class="readouts">
+            <div class="readout">
+                <div class="label">Wave Speed</div>
+                <div class="value" id="speedVal">180 px/s</div>
+                <div class="formula">v = f &times; &lambda;</div>
+            </div>
+            <div class="readout">
+                <div class="label">Period</div>
+                <div class="value" id="periodVal">0.67 s</div>
+                <div class="formula">T = 1 / f</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('waveCanvas');
+        const ctx = canvas.getContext('2d');
+        const ampSlider = document.getElementById('ampSlider');
+        const wlSlider = document.getElementById('wlSlider');
+        const freqSlider = document.getElementById('freqSlider');
+
+        let time = 0;
+        let lastTs = 0;
+
+        function sizeCanvas() {
+            const w = canvas.parentElement.clientWidth - 16;
+            canvas.style.width = w + 'px';
+            canvas.style.height = (w * 400 / 1060) + 'px';
+            canvas.width = w * 2;
+            canvas.height = (w * 400 / 1060) * 2;
+        }
+
+        function getParams() {
+            const amp = parseInt(ampSlider.value) / 10; // 1.0 to 5.0
+            const wl = parseInt(wlSlider.value); // 50 to 200 px
+            const freq = parseInt(freqSlider.value) / 10; // 0.5 to 3.0 Hz
+            return { amp, wl, freq };
+        }
+
+        function updateLabels() {
+            const { amp, wl, freq } = getParams();
+            document.getElementById('ampVal').textContent = amp.toFixed(1) + ' units';
+            document.getElementById('wlVal').textContent = wl + ' px';
+            document.getElementById('freqVal').textContent = freq.toFixed(1) + ' Hz';
+            document.getElementById('speedVal').textContent = (freq * wl).toFixed(0) + ' px/s';
+            document.getElementById('periodVal').textContent = (1 / freq).toFixed(2) + ' s';
+        }
+
+        function drawWave(ts) {
+            const dt = lastTs ? (ts - lastTs) / 1000 : 0;
+            lastTs = ts;
+
+            const { amp, wl, freq } = getParams();
+            time += dt * freq;
+
+            const W = canvas.width;
+            const H = canvas.height;
+            ctx.clearRect(0, 0, W, H);
+
+            const scale = W / 530;
+            const ampPx = amp * H * 0.1;
+            const wlPx = wl * scale;
+            const centerY = H * 0.5;
+            const startX = W * 0.06;
+            const endX = W * 0.94;
+            const phaseOffset = time * Math.PI * 2;
+
+            // Equilibrium line
+            ctx.setLineDash([4, 4]);
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(startX, centerY);
+            ctx.lineTo(endX, centerY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Wave
+            ctx.beginPath();
+            ctx.strokeStyle = '#1835b4';
+            ctx.lineWidth = 3;
+            for (let x = startX; x <= endX; x += 1) {
+                const phase = ((x - startX) / wlPx) * Math.PI * 2 - phaseOffset;
+                const y = centerY - ampPx * Math.sin(phase);
+                if (x === startX) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Amplitude annotation
+            // Find a crest near center
+            const crestPhaseTarget = Math.PI / 2;
+            let crestX = startX;
+            for (let x = startX; x <= endX; x += 1) {
+                const phase = ((x - startX) / wlPx) * Math.PI * 2 - phaseOffset;
+                const norm = ((phase % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+                if (Math.abs(norm - Math.PI / 2) < 0.05 && x > W * 0.2 && x < W * 0.7) {
+                    crestX = x;
+                    break;
+                }
+            }
+
+            const crestY = centerY - ampPx;
+            // Amplitude double arrow
+            ctx.strokeStyle = '#4a3fc2';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(crestX, centerY);
+            ctx.lineTo(crestX, crestY);
+            ctx.stroke();
+            // Arrowheads
+            ctx.beginPath();
+            ctx.moveTo(crestX - 4, centerY - 6);
+            ctx.lineTo(crestX, centerY);
+            ctx.lineTo(crestX + 4, centerY - 6);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(crestX - 4, crestY + 6);
+            ctx.lineTo(crestX, crestY);
+            ctx.lineTo(crestX + 4, crestY + 6);
+            ctx.stroke();
+
+            ctx.font = `600 ${Math.max(W * 0.025, 12)}px system-ui, -apple-system, sans-serif`;
+            ctx.fillStyle = '#c9a020';
+            ctx.textAlign = 'left';
+            ctx.fillText('Amplitude', crestX + 8, centerY - ampPx / 2 + 4);
+
+            // Wavelength annotation - find two consecutive crests
+            let crests = [];
+            let prevDy = 0;
+            for (let x = startX + 2; x <= endX; x += 1) {
+                const phase1 = (((x - 1) - startX) / wlPx) * Math.PI * 2 - phaseOffset;
+                const phase2 = ((x - startX) / wlPx) * Math.PI * 2 - phaseOffset;
+                const y1 = -Math.sin(phase1);
+                const y2 = -Math.sin(phase2);
+                if (prevDy > 0 && (y2 - y1) <= 0 && y2 > 0.9) {
+                    crests.push(x);
+                }
+                prevDy = y2 - y1;
+            }
+
+            if (crests.length >= 2) {
+                const c1 = crests[0];
+                const c2 = crests[1];
+                const annotY = centerY + ampPx + H * 0.08;
+
+                ctx.strokeStyle = '#1835b4';
+                ctx.lineWidth = 2;
+                // Horizontal line
+                ctx.beginPath();
+                ctx.moveTo(c1, annotY);
+                ctx.lineTo(c2, annotY);
+                ctx.stroke();
+                // Vertical ticks
+                ctx.beginPath();
+                ctx.moveTo(c1, annotY - 6);
+                ctx.lineTo(c1, annotY + 6);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(c2, annotY - 6);
+                ctx.lineTo(c2, annotY + 6);
+                ctx.stroke();
+                // Arrowheads
+                ctx.beginPath();
+                ctx.moveTo(c1 + 6, annotY - 3);
+                ctx.lineTo(c1, annotY);
+                ctx.lineTo(c1 + 6, annotY + 3);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(c2 - 6, annotY - 3);
+                ctx.lineTo(c2, annotY);
+                ctx.lineTo(c2 - 6, annotY + 3);
+                ctx.stroke();
+
+                ctx.fillStyle = '#1835b4';
+                ctx.textAlign = 'center';
+                ctx.fillText('Wavelength (\u03BB)', (c1 + c2) / 2, annotY + H * 0.05);
+            }
+
+            // Direction arrow
+            ctx.fillStyle = '#4a5568';
+            ctx.font = `${Math.max(W * 0.022, 10)}px system-ui, -apple-system, sans-serif`;
+            ctx.textAlign = 'right';
+            ctx.fillText('Wave direction \u2192', endX, H * 0.06);
+
+            requestAnimationFrame(drawWave);
+        }
+
+        ampSlider.addEventListener('input', updateLabels);
+        wlSlider.addEventListener('input', updateLabels);
+        freqSlider.addEventListener('input', updateLabels);
+
+        window.addEventListener('resize', sizeCanvas);
+        sizeCanvas();
+        updateLabels();
+        requestAnimationFrame(drawWave);
+    </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflection</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; cursor: pointer; }
+        .slider-row { margin: 8px 0; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.72rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.1rem; color: #1835b4; }
+        .law { text-align: center; background: #fafbfc; border-radius: 5px; padding: 8px; font-size: 0.82rem; margin-top: 8px; }
+        .law strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Law of Reflection</h1>
+    <p class="subtitle">Drag the slider to change the angle of incidence</p>
+    <div class="card" style="padding:8px;">
+        <canvas id="canvas" width="1060" height="600"></canvas>
+    </div>
+    <div class="slider-row">
+        <div class="slider-label"><span>Angle of incidence</span><span class="val" id="angleLabel">30°</span></div>
+        <input type="range" id="angleSlider" min="5" max="85" value="30">
+    </div>
+    <div class="readouts">
+        <div class="readout"><div class="label">Angle of Incidence (i)</div><div class="value" id="iVal">30°</div></div>
+        <div class="readout"><div class="label">Angle of Reflection (r)</div><div class="value" id="rVal">30°</div></div>
+    </div>
+    <div class="law">The angle of incidence <strong>always equals</strong> the angle of reflection: <strong>i = r</strong></div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+    const w = Math.min(530, canvas.parentElement.clientWidth - 16);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 600 / 1060) + 'px';
+}
+
+function draw() {
+    const angle = parseInt(document.getElementById('angleSlider').value);
+    const rad = angle * Math.PI / 180;
+
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+    const mirrorY = H * 0.6;
+    const hitX = W * 0.5;
+
+    // Mirror surface
+    ctx.fillStyle = '#d0d0d0'; ctx.fillRect(W * 0.1, mirrorY, W * 0.8, 15);
+    for (let x = W * 0.1; x < W * 0.9; x += 12) {
+        ctx.beginPath(); ctx.moveTo(x, mirrorY + 15); ctx.lineTo(x - 8, mirrorY + 28);
+        ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1; ctx.stroke();
+    }
+
+    // Normal (dashed vertical)
+    ctx.setLineDash([6, 6]); ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(hitX, mirrorY - 250); ctx.lineTo(hitX, mirrorY + 10); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#1835b4'; ctx.font = '600 14px Outfit'; ctx.textAlign = 'left';
+    ctx.fillText('Normal', hitX + 6, mirrorY - 240);
+
+    // Incident ray
+    const rayLen = 280;
+    const incStartX = hitX - rayLen * Math.sin(rad);
+    const incStartY = mirrorY - rayLen * Math.cos(rad);
+    ctx.beginPath(); ctx.moveTo(incStartX, incStartY); ctx.lineTo(hitX, mirrorY);
+    ctx.strokeStyle = '#4a3fc2'; ctx.lineWidth = 4; ctx.stroke();
+    // Arrow on incident
+    const ia = Math.atan2(mirrorY - incStartY, hitX - incStartX);
+    const midIx = (incStartX + hitX) / 2, midIy = (incStartY + mirrorY) / 2;
+    ctx.beginPath(); ctx.moveTo(midIx + 14*Math.cos(ia), midIy + 14*Math.sin(ia));
+    ctx.lineTo(midIx + 14*Math.cos(ia) - 12*Math.cos(ia-0.5), midIy + 14*Math.sin(ia) - 12*Math.sin(ia-0.5));
+    ctx.lineTo(midIx + 14*Math.cos(ia) - 12*Math.cos(ia+0.5), midIy + 14*Math.sin(ia) - 12*Math.sin(ia+0.5));
+    ctx.closePath(); ctx.fillStyle = '#4a3fc2'; ctx.fill();
+
+    // Reflected ray
+    const refEndX = hitX + rayLen * Math.sin(rad);
+    const refEndY = mirrorY - rayLen * Math.cos(rad);
+    ctx.beginPath(); ctx.moveTo(hitX, mirrorY); ctx.lineTo(refEndX, refEndY);
+    ctx.strokeStyle = '#dc3545'; ctx.lineWidth = 4; ctx.stroke();
+    // Arrow on reflected
+    const ra2 = Math.atan2(refEndY - mirrorY, refEndX - hitX);
+    const midRx = (hitX + refEndX) / 2, midRy = (mirrorY + refEndY) / 2;
+    ctx.beginPath(); ctx.moveTo(midRx + 14*Math.cos(ra2), midRy + 14*Math.sin(ra2));
+    ctx.lineTo(midRx + 14*Math.cos(ra2) - 12*Math.cos(ra2-0.5), midRy + 14*Math.sin(ra2) - 12*Math.sin(ra2-0.5));
+    ctx.lineTo(midRx + 14*Math.cos(ra2) - 12*Math.cos(ra2+0.5), midRy + 14*Math.sin(ra2) - 12*Math.sin(ra2+0.5));
+    ctx.closePath(); ctx.fillStyle = '#dc3545'; ctx.fill();
+
+    // Angle arcs
+    ctx.beginPath(); ctx.arc(hitX, mirrorY, 50, -Math.PI/2 - rad, -Math.PI/2);
+    ctx.strokeStyle = '#4a3fc2'; ctx.lineWidth = 3; ctx.stroke();
+    ctx.beginPath(); ctx.arc(hitX, mirrorY, 55, -Math.PI/2, -Math.PI/2 + rad);
+    ctx.strokeStyle = '#dc3545'; ctx.lineWidth = 3; ctx.stroke();
+
+    // Labels
+    ctx.font = '700 16px Oswald'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#4a3fc2'; ctx.fillText(`i = ${angle}°`, hitX - 80, mirrorY - 80);
+    ctx.fillStyle = '#dc3545'; ctx.fillText(`r = ${angle}°`, hitX + 80, mirrorY - 80);
+
+    ctx.font = '500 13px Outfit';
+    ctx.fillStyle = '#4a3fc2'; ctx.fillText('Incident ray', incStartX + 40, incStartY + 20);
+    ctx.fillStyle = '#dc3545'; ctx.fillText('Reflected ray', refEndX - 40, refEndY + 20);
+
+    // Hit point
+    ctx.beginPath(); ctx.arc(hitX, mirrorY, 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#1a2747'; ctx.fill();
+
+    document.getElementById('angleLabel').textContent = angle + '°';
+    document.getElementById('iVal').textContent = angle + '°';
+    document.getElementById('rVal').textContent = angle + '°';
+}
+
+document.getElementById('angleSlider').addEventListener('input', draw);
+resize(); draw();
+window.addEventListener('resize', () => { resize(); draw(); });
+</script>
+</body>
+</html>

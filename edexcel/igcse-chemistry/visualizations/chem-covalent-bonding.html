@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covalent Bonding</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 0.9rem; color: #1835b4; }
+        .chip { background: #fff; border: 1px solid #d4d8e5; border-radius: 4px; padding: 4px 9px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+        .chip-row { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
+        .readout-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+        .key-point { background: #f0f7ff; border-left: 3px solid #1835b4; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Covalent Bonding - Shared Electrons</h1>
+
+    <div class="card">
+        <div class="card-title">Select Molecule</div>
+        <div class="chip-row" id="molRow"></div>
+    </div>
+
+    <div class="card">
+        <canvas id="covCanvas" width="520" height="340"></canvas>
+    </div>
+
+    <div class="readout-row">
+        <div class="readout">
+            <div class="label">Molecule</div>
+            <div class="value" id="rMol">H2</div>
+        </div>
+        <div class="readout">
+            <div class="label">Bond Type</div>
+            <div class="value" id="rBond">Single</div>
+        </div>
+        <div class="readout">
+            <div class="label">Shared Pairs</div>
+            <div class="value" id="rPairs">1</div>
+        </div>
+    </div>
+
+    <div class="key-point" id="keyPoint">
+        In covalent bonding, atoms <strong>share</strong> pairs of electrons to achieve a full outer shell. Each shared pair forms one covalent bond.
+    </div>
+</div>
+
+<script>
+const molecules = [
+    {
+        name: 'H\u2082', id: 'H2',
+        atoms: [
+            { sym: 'H', outerElectrons: 1, lonePairs: 0, x: -40, y: 0, color: '#e74c3c' },
+            { sym: 'H', outerElectrons: 1, lonePairs: 0, x: 40, y: 0, color: '#3498db' }
+        ],
+        bonds: [{ a: 0, b: 1, shared: 1 }],
+        bondType: 'Single bond',
+        sharedPairs: 1,
+        note: 'Two hydrogen atoms each share 1 electron, forming a <strong>single covalent bond</strong>. Each H now has 2 electrons (full 1st shell).'
+    },
+    {
+        name: 'O\u2082', id: 'O2',
+        atoms: [
+            { sym: 'O', outerElectrons: 6, lonePairs: 2, x: -35, y: 0, color: '#e74c3c' },
+            { sym: 'O', outerElectrons: 6, lonePairs: 2, x: 35, y: 0, color: '#3498db' }
+        ],
+        bonds: [{ a: 0, b: 1, shared: 2 }],
+        bondType: 'Double bond',
+        sharedPairs: 2,
+        note: 'Two oxygen atoms share 2 pairs of electrons, forming a <strong>double bond (O=O)</strong>. Each O achieves 8 outer electrons.'
+    },
+    {
+        name: 'N\u2082', id: 'N2',
+        atoms: [
+            { sym: 'N', outerElectrons: 5, lonePairs: 1, x: -35, y: 0, color: '#e74c3c' },
+            { sym: 'N', outerElectrons: 5, lonePairs: 1, x: 35, y: 0, color: '#3498db' }
+        ],
+        bonds: [{ a: 0, b: 1, shared: 3 }],
+        bondType: 'Triple bond',
+        sharedPairs: 3,
+        note: 'Two nitrogen atoms share 3 pairs of electrons, forming a <strong>triple bond (N\u2261N)</strong>. Very strong bond, making N\u2082 unreactive. Each N has 8 outer electrons.'
+    },
+    {
+        name: 'H\u2082O', id: 'H2O',
+        atoms: [
+            { sym: 'O', outerElectrons: 6, lonePairs: 2, x: 0, y: 0, color: '#e74c3c' },
+            { sym: 'H', outerElectrons: 1, lonePairs: 0, x: -55, y: 40, color: '#3498db' },
+            { sym: 'H', outerElectrons: 1, lonePairs: 0, x: 55, y: 40, color: '#2ecc71' }
+        ],
+        bonds: [{ a: 0, b: 1, shared: 1 }, { a: 0, b: 2, shared: 1 }],
+        bondType: 'Single bonds',
+        sharedPairs: 2,
+        note: 'Oxygen shares 1 pair with each hydrogen. O has 2 lone pairs remaining. The bent shape is due to lone pair repulsion.'
+    },
+    {
+        name: 'CH\u2084', id: 'CH4',
+        atoms: [
+            { sym: 'C', outerElectrons: 4, lonePairs: 0, x: 0, y: 0, color: '#e74c3c' },
+            { sym: 'H', outerElectrons: 1, lonePairs: 0, x: -55, y: -40, color: '#3498db' },
+            { sym: 'H', outerElectrons: 1, lonePairs: 0, x: 55, y: -40, color: '#2ecc71' },
+            { sym: 'H', outerElectrons: 1, lonePairs: 0, x: -55, y: 45, color: '#9b59b6' },
+            { sym: 'H', outerElectrons: 1, lonePairs: 0, x: 55, y: 45, color: '#f39c12' }
+        ],
+        bonds: [{ a: 0, b: 1, shared: 1 }, { a: 0, b: 2, shared: 1 }, { a: 0, b: 3, shared: 1 }, { a: 0, b: 4, shared: 1 }],
+        bondType: 'Single bonds',
+        sharedPairs: 4,
+        note: 'Carbon shares 1 pair with each of 4 hydrogen atoms. C achieves 8 outer electrons, each H achieves 2. This is methane.'
+    },
+    {
+        name: 'CO\u2082', id: 'CO2',
+        atoms: [
+            { sym: 'C', outerElectrons: 4, lonePairs: 0, x: 0, y: 0, color: '#e74c3c' },
+            { sym: 'O', outerElectrons: 6, lonePairs: 2, x: -55, y: 0, color: '#3498db' },
+            { sym: 'O', outerElectrons: 6, lonePairs: 2, x: 55, y: 0, color: '#2ecc71' }
+        ],
+        bonds: [{ a: 0, b: 1, shared: 2 }, { a: 0, b: 2, shared: 2 }],
+        bondType: 'Double bonds',
+        sharedPairs: 4,
+        note: 'Carbon forms a double bond with each oxygen (O=C=O). C shares 4 pairs total, each O shares 2 pairs. Linear molecule.'
+    },
+    {
+        name: 'NH\u2083', id: 'NH3',
+        atoms: [
+            { sym: 'N', outerElectrons: 5, lonePairs: 1, x: 0, y: 0, color: '#e74c3c' },
+            { sym: 'H', outerElectrons: 1, lonePairs: 0, x: -50, y: 45, color: '#3498db' },
+            { sym: 'H', outerElectrons: 1, lonePairs: 0, x: 0, y: 60, color: '#2ecc71' },
+            { sym: 'H', outerElectrons: 1, lonePairs: 0, x: 50, y: 45, color: '#9b59b6' }
+        ],
+        bonds: [{ a: 0, b: 1, shared: 1 }, { a: 0, b: 2, shared: 1 }, { a: 0, b: 3, shared: 1 }],
+        bondType: 'Single bonds',
+        sharedPairs: 3,
+        note: 'Nitrogen shares 1 pair with each of 3 hydrogens, keeping 1 lone pair. This lone pair gives ammonia its pyramidal shape.'
+    },
+    {
+        name: 'HCl', id: 'HCl',
+        atoms: [
+            { sym: 'H', outerElectrons: 1, lonePairs: 0, x: -40, y: 0, color: '#e74c3c' },
+            { sym: 'Cl', outerElectrons: 7, lonePairs: 3, x: 40, y: 0, color: '#3498db' }
+        ],
+        bonds: [{ a: 0, b: 1, shared: 1 }],
+        bondType: 'Single bond',
+        sharedPairs: 1,
+        note: 'Hydrogen shares 1 pair with chlorine. H gets 2 electrons (full), Cl gets 8 (full). Cl has 3 lone pairs.'
+    }
+];
+
+let current = 0;
+
+const canvas = document.getElementById('covCanvas');
+const ctx = canvas.getContext('2d');
+
+const row = document.getElementById('molRow');
+molecules.forEach((mol, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (i === 0 ? ' active' : '');
+    chip.textContent = mol.name;
+    chip.onclick = () => { current = i; document.querySelectorAll('.chip-row .chip').forEach((c, j) => c.classList.toggle('active', j === i)); updateDisplay(); };
+    row.appendChild(chip);
+});
+
+function updateDisplay() {
+    const mol = molecules[current];
+    document.getElementById('rMol').textContent = mol.name;
+    document.getElementById('rBond').textContent = mol.bondType;
+    document.getElementById('rPairs').textContent = mol.sharedPairs;
+    document.getElementById('keyPoint').innerHTML = mol.note;
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const mol = molecules[current];
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+
+    // Draw bonds first
+    mol.bonds.forEach(bond => {
+        const a1 = mol.atoms[bond.a];
+        const a2 = mol.atoms[bond.b];
+        const x1 = cx + a1.x, y1 = cy + a1.y;
+        const x2 = cx + a2.x, y2 = cy + a2.y;
+
+        // Bond lines
+        const dx = x2 - x1, dy = y2 - y1;
+        const len = Math.sqrt(dx * dx + dy * dy);
+        const nx = -dy / len, ny = dx / len;
+
+        ctx.strokeStyle = '#b0bec5';
+        ctx.lineWidth = 2;
+
+        for (let i = 0; i < bond.shared; i++) {
+            const offset = (i - (bond.shared - 1) / 2) * 6;
+            ctx.beginPath();
+            ctx.moveTo(x1 + nx * offset, y1 + ny * offset);
+            ctx.lineTo(x2 + nx * offset, y2 + ny * offset);
+            ctx.stroke();
+        }
+
+        // Shared electron pairs (dots and crosses in overlap region)
+        const midX = (x1 + x2) / 2;
+        const midY = (y1 + y2) / 2;
+
+        for (let i = 0; i < bond.shared; i++) {
+            const offset = (i - (bond.shared - 1) / 2) * 12;
+            const px = midX + nx * offset;
+            const py = midY + ny * offset;
+
+            // Dot (from atom a)
+            const d1x = px - nx * 4;
+            const d1y = py - ny * 4;
+            ctx.beginPath();
+            ctx.arc(d1x, d1y, 3.5, 0, Math.PI * 2);
+            ctx.fillStyle = a1.color;
+            ctx.fill();
+
+            // Cross (from atom b)
+            const d2x = px + nx * 4;
+            const d2y = py + ny * 4;
+            ctx.beginPath();
+            ctx.arc(d2x, d2y, 3.5, 0, Math.PI * 2);
+            ctx.fillStyle = a2.color;
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(d2x - 2, d2y - 2); ctx.lineTo(d2x + 2, d2y + 2);
+            ctx.moveTo(d2x + 2, d2y - 2); ctx.lineTo(d2x - 2, d2y + 2);
+            ctx.stroke();
+        }
+    });
+
+    // Draw atoms
+    mol.atoms.forEach((atom, ai) => {
+        const ax = cx + atom.x;
+        const ay = cy + atom.y;
+        const isH = atom.sym === 'H';
+        const r = isH ? 24 : 36;
+
+        // Outer shell circle
+        ctx.beginPath();
+        ctx.arc(ax, ay, r, 0, Math.PI * 2);
+        ctx.strokeStyle = atom.color + '40';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Nucleus
+        ctx.beginPath();
+        ctx.arc(ax, ay, 12, 0, Math.PI * 2);
+        ctx.fillStyle = atom.color + '18';
+        ctx.fill();
+        ctx.strokeStyle = atom.color;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.fillStyle = atom.color;
+        ctx.font = 'bold 11px Oswald';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(atom.sym, ax, ay);
+
+        // Lone pairs
+        if (atom.lonePairs > 0) {
+            // Find bonds to this atom to know which directions are taken
+            const bondAngles = [];
+            mol.bonds.forEach(bond => {
+                let other = -1;
+                if (bond.a === ai) other = bond.b;
+                if (bond.b === ai) other = bond.a;
+                if (other >= 0) {
+                    const ox = mol.atoms[other].x - atom.x;
+                    const oy = mol.atoms[other].y - atom.y;
+                    bondAngles.push(Math.atan2(oy, ox));
+                }
+            });
+
+            // Place lone pairs opposite to bonds
+            const allAngles = [];
+            for (let i = 0; i < atom.lonePairs; i++) {
+                let angle;
+                if (bondAngles.length === 1) {
+                    // Place lone pairs spread around opposite side
+                    const opposite = bondAngles[0] + Math.PI;
+                    angle = opposite + (i - (atom.lonePairs - 1) / 2) * 0.8;
+                } else if (bondAngles.length === 2) {
+                    const avgAngle = Math.atan2(
+                        Math.sin(bondAngles[0]) + Math.sin(bondAngles[1]),
+                        Math.cos(bondAngles[0]) + Math.cos(bondAngles[1])
+                    );
+                    const opposite = avgAngle + Math.PI;
+                    angle = opposite + (i - (atom.lonePairs - 1) / 2) * 0.9;
+                } else {
+                    const avgAngle = bondAngles.reduce((sum, a) => sum + a, 0) / bondAngles.length;
+                    const opposite = avgAngle + Math.PI;
+                    angle = opposite + (i - (atom.lonePairs - 1) / 2) * 0.8;
+                }
+                allAngles.push(angle);
+            }
+
+            allAngles.forEach(angle => {
+                const lpd = r - 2;
+                const lx1 = ax + Math.cos(angle - 0.12) * lpd;
+                const ly1 = ay + Math.sin(angle - 0.12) * lpd;
+                const lx2 = ax + Math.cos(angle + 0.12) * lpd;
+                const ly2 = ay + Math.sin(angle + 0.12) * lpd;
+
+                ctx.beginPath();
+                ctx.arc(lx1, ly1, 3, 0, Math.PI * 2);
+                ctx.fillStyle = atom.color;
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(lx2, ly2, 3, 0, Math.PI * 2);
+                ctx.fillStyle = atom.color;
+                ctx.fill();
+            });
+        }
+    });
+
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'alphabetic';
+
+    // Title on canvas
+    ctx.fillStyle = '#1835b4';
+    ctx.font = 'bold 13px Oswald';
+    ctx.textAlign = 'center';
+    ctx.fillText('Dot-and-Cross Diagram: ' + mol.name, cx, 22);
+
+    // Legend
+    ctx.font = '9px Outfit';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#4a5568';
+    ctx.fillText('\u25CF = dot (electron from atom A)', 10, canvas.height - 18);
+    ctx.fillText('\u2573 = cross (electron from atom B)', 10, canvas.height - 6);
+    ctx.fillText('Paired dots = lone pair', 300, canvas.height - 12);
+
+    ctx.textAlign = 'start';
+
+    requestAnimationFrame(draw);
+}
+
+updateDisplay();
+draw();
+</script>
+</body>
+</html>
