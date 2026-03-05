@@ -8,41 +8,25 @@
       "difficulty": "knowledge-check",
       "stem": "In triangle $ABC$, $a = 8\\text{ cm}$, $b = 6\\text{ cm}$, and $c = 10\\text{ cm}$. Which expression finds angle $C$?",
       "options": [
-        { "id": "a", "text": "$\\cos C = \\frac{8^2 + 6^2 - 10^2}{2 \\times 8 \\times 6}$" },
-        { "id": "b", "text": "$\\cos C = \\frac{10^2 + 6^2 - 8^2}{2 \\times 10 \\times 6}$" },
-        { "id": "c", "text": "$\\cos C = \\frac{8^2 + 10^2 - 6^2}{2 \\times 8 \\times 10}$" },
-        { "id": "d", "text": "$\\cos C = \\frac{8^2 - 6^2 + 10^2}{2 \\times 6 \\times 10}$" }
+        {
+          "id": "a",
+          "text": "$\\cos C = \\frac{8^2 + 6^2 - 10^2}{2 \\times 8 \\times 6}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\cos C = \\frac{10^2 + 6^2 - 8^2}{2 \\times 10 \\times 6}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\cos C = \\frac{8^2 + 10^2 - 6^2}{2 \\times 8 \\times 10}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\cos C = \\frac{8^2 - 6^2 + 10^2}{2 \\times 6 \\times 10}$"
+        }
       ],
       "correctAnswer": "a",
       "explanation": "To find angle $C$, rearrange the cosine rule: $\\cos C = \\frac{a^2 + b^2 - c^2}{2ab} = \\frac{8^2 + 6^2 - 10^2}{2 \\times 8 \\times 6}$."
-    },
-    {
-      "id": "q2",
-      "type": "multiple-choice",
-      "difficulty": "knowledge-check",
-      "stem": "When should you use the cosine rule instead of the sine rule?",
-      "options": [
-        { "id": "a", "text": "When you know two angles and one side" },
-        { "id": "b", "text": "When you know all three angles" },
-        { "id": "c", "text": "When you know two sides and the included angle, or all three sides" },
-        { "id": "d", "text": "Only in right-angled triangles" }
-      ],
-      "correctAnswer": "c",
-      "explanation": "The cosine rule is used when you know two sides and the included angle (SAS) to find the third side, or when you know all three sides (SSS) to find an angle."
-    },
-    {
-      "id": "q3",
-      "type": "multiple-choice",
-      "difficulty": "knowledge-check",
-      "stem": "In triangle $PQR$, $p = 5\\text{ cm}$, $q = 5\\text{ cm}$, and $r = 5\\text{ cm}$. Using the cosine rule, what is angle $P$?",
-      "options": [
-        { "id": "a", "text": "$45°$" },
-        { "id": "b", "text": "$60°$" },
-        { "id": "c", "text": "$90°$" },
-        { "id": "d", "text": "$120°$" }
-      ],
-      "correctAnswer": "b",
-      "explanation": "$\\cos P = \\frac{q^2 + r^2 - p^2}{2qr} = \\frac{25 + 25 - 25}{50} = \\frac{25}{50} = 0.5$. So $P = \\cos^{-1}(0.5) = 60°$. This confirms an equilateral triangle has all angles equal to $60°$."
     }
   ]
 }

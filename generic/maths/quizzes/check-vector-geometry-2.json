@@ -8,41 +8,25 @@
       "difficulty": "knowledge-check",
       "stem": "$OABC$ is a parallelogram with $\\overrightarrow{OA} = \\mathbf{a}$ and $\\overrightarrow{OC} = \\mathbf{c}$. Express $\\overrightarrow{OB}$ in terms of $\\mathbf{a}$ and $\\mathbf{c}$.",
       "options": [
-        { "id": "a", "text": "$\\mathbf{a} - \\mathbf{c}$" },
-        { "id": "b", "text": "$\\mathbf{c} - \\mathbf{a}$" },
-        { "id": "c", "text": "$\\mathbf{a} + \\mathbf{c}$" },
-        { "id": "d", "text": "$2\\mathbf{a} + 2\\mathbf{c}$" }
+        {
+          "id": "a",
+          "text": "$\\mathbf{a} - \\mathbf{c}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\mathbf{c} - \\mathbf{a}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\mathbf{a} + \\mathbf{c}$"
+        },
+        {
+          "id": "d",
+          "text": "$2\\mathbf{a} + 2\\mathbf{c}$"
+        }
       ],
       "correctAnswer": "c",
       "explanation": "In parallelogram $OABC$, $B$ is the opposite vertex to $O$. We can reach $B$ by going $O \\to A \\to B$, i.e. $\\overrightarrow{OB} = \\overrightarrow{OA} + \\overrightarrow{AB} = \\mathbf{a} + \\mathbf{c}$ (since $\\overrightarrow{AB} = \\overrightarrow{OC} = \\mathbf{c}$)."
-    },
-    {
-      "id": "q2",
-      "type": "multiple-choice",
-      "difficulty": "knowledge-check",
-      "stem": "In triangle $OAB$, $\\overrightarrow{OA} = \\mathbf{a}$ and $\\overrightarrow{OB} = \\mathbf{b}$. Point $P$ lies on $AB$ such that $AP:PB = 1:2$. Express $\\overrightarrow{OP}$ in terms of $\\mathbf{a}$ and $\\mathbf{b}$.",
-      "options": [
-        { "id": "a", "text": "$\\frac{2}{3}\\mathbf{a} + \\frac{1}{3}\\mathbf{b}$" },
-        { "id": "b", "text": "$\\frac{1}{3}\\mathbf{a} + \\frac{2}{3}\\mathbf{b}$" },
-        { "id": "c", "text": "$\\mathbf{a} + \\frac{1}{3}\\mathbf{b}$" },
-        { "id": "d", "text": "$\\frac{1}{3}(\\mathbf{b} - \\mathbf{a})$" }
-      ],
-      "correctAnswer": "a",
-      "explanation": "$\\overrightarrow{OP} = \\overrightarrow{OA} + \\overrightarrow{AP} = \\mathbf{a} + \\frac{1}{3}\\overrightarrow{AB} = \\mathbf{a} + \\frac{1}{3}(\\mathbf{b} - \\mathbf{a}) = \\mathbf{a} + \\frac{1}{3}\\mathbf{b} - \\frac{1}{3}\\mathbf{a} = \\frac{2}{3}\\mathbf{a} + \\frac{1}{3}\\mathbf{b}$."
-    },
-    {
-      "id": "q3",
-      "type": "multiple-choice",
-      "difficulty": "knowledge-check",
-      "stem": "To prove two vectors are parallel using vector geometry, you need to show that:",
-      "options": [
-        { "id": "a", "text": "They have the same magnitude" },
-        { "id": "b", "text": "One is a scalar multiple of the other" },
-        { "id": "c", "text": "They start from the same point" },
-        { "id": "d", "text": "Their sum is zero" }
-      ],
-      "correctAnswer": "b",
-      "explanation": "Two vectors are parallel if and only if one is a scalar multiple of the other, i.e. $\\mathbf{v} = k\\mathbf{u}$ for some scalar $k$. If the vectors also share a common point, the points are collinear."
     }
   ]
 }

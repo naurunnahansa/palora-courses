@@ -8,27 +8,25 @@
       "difficulty": "knowledge-check",
       "stem": "A grouped table shows: $0 \\leq x < 10$ (freq $5$), $10 \\leq x < 20$ (freq $8$), $20 \\leq x < 30$ (freq $7$). What is the estimated mean?",
       "options": [
-        { "id": "a", "text": "$13$" },
-        { "id": "b", "text": "$15$" },
-        { "id": "c", "text": "$14.5$" },
-        { "id": "d", "text": "$16$" }
+        {
+          "id": "a",
+          "text": "$13$"
+        },
+        {
+          "id": "b",
+          "text": "$15$"
+        },
+        {
+          "id": "c",
+          "text": "$14.5$"
+        },
+        {
+          "id": "d",
+          "text": "$16$"
+        }
       ],
       "correctAnswer": "d",
       "explanation": "Midpoints: $5, 15, 25$. $\\sum fx = (5 \\times 5) + (15 \\times 8) + (25 \\times 7) = 25 + 120 + 175 = 320$. $\\sum f = 20$. Estimated mean $= \\frac{320}{20} = 16$."
-    },
-    {
-      "id": "q2",
-      "type": "multiple-choice",
-      "difficulty": "knowledge-check",
-      "stem": "When estimating the mean from grouped data, you use the midpoint of each class because:",
-      "options": [
-        { "id": "a", "text": "The midpoint is always the mode" },
-        { "id": "b", "text": "The exact values are unknown, so the midpoint is the best estimate" },
-        { "id": "c", "text": "It makes the calculation easier" },
-        { "id": "d", "text": "The midpoint is always the median" }
-      ],
-      "correctAnswer": "b",
-      "explanation": "Since individual data values are not known in grouped data, the midpoint of each class is used as a representative value. This gives an estimate rather than an exact mean."
     }
   ]
 }

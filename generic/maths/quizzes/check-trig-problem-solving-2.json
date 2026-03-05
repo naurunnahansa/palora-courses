@@ -8,41 +8,25 @@
       "difficulty": "knowledge-check",
       "stem": "A surveyor measures the angle of elevation to the top of a tower from point $A$ as $35°$ and from point $B$ (which is $50\\text{ m}$ closer to the tower) as $50°$. To find the height of the tower, you should:",
       "options": [
-        { "id": "a", "text": "Use Pythagoras' theorem directly" },
-        { "id": "b", "text": "Set up two equations using $\\tan$ and solve simultaneously" },
-        { "id": "c", "text": "Use the sine rule directly on triangle $ABT$" },
-        { "id": "d", "text": "Average the two angles and use a single $\\tan$ equation" }
+        {
+          "id": "a",
+          "text": "Use Pythagoras' theorem directly"
+        },
+        {
+          "id": "b",
+          "text": "Set up two equations using $\\tan$ and solve simultaneously"
+        },
+        {
+          "id": "c",
+          "text": "Use the sine rule directly on triangle $ABT$"
+        },
+        {
+          "id": "d",
+          "text": "Average the two angles and use a single $\\tan$ equation"
+        }
       ],
       "correctAnswer": "b",
       "explanation": "Let the height be $h$ and the distance from $B$ to the base be $d$. Then $\\tan 50° = \\frac{h}{d}$ and $\\tan 35° = \\frac{h}{d + 50}$. Solving these simultaneously gives $h$."
-    },
-    {
-      "id": "q2",
-      "type": "multiple-choice",
-      "difficulty": "knowledge-check",
-      "stem": "In a quadrilateral $ABCD$, you know diagonal $AC = 15\\text{ cm}$, $\\angle BAC = 40°$, $\\angle ACD = 55°$, $AB = 10\\text{ cm}$, and $CD = 8\\text{ cm}$. To find the area of the quadrilateral, which approach is best?",
-      "options": [
-        { "id": "a", "text": "Split it into two triangles along diagonal $AC$ and use $\\frac{1}{2}ab\\sin C$ for each" },
-        { "id": "b", "text": "Use the cosine rule on the whole quadrilateral" },
-        { "id": "c", "text": "Multiply $AC$ by the average of the other sides" },
-        { "id": "d", "text": "Use Pythagoras' theorem on each triangle" }
-      ],
-      "correctAnswer": "a",
-      "explanation": "Splitting the quadrilateral into triangles $ABC$ and $ACD$ along diagonal $AC$, you can use $\\frac{1}{2}ab\\sin C$ for each triangle and add the areas."
-    },
-    {
-      "id": "q3",
-      "type": "multiple-choice",
-      "difficulty": "knowledge-check",
-      "stem": "A triangle has area $40\\text{ cm}^2$, sides $a = 10\\text{ cm}$ and $b = 16\\text{ cm}$. What is the included angle $C$?",
-      "options": [
-        { "id": "a", "text": "$60°$" },
-        { "id": "b", "text": "$45°$" },
-        { "id": "c", "text": "$30°$" },
-        { "id": "d", "text": "$90°$" }
-      ],
-      "correctAnswer": "c",
-      "explanation": "$40 = \\frac{1}{2} \\times 10 \\times 16 \\times \\sin C$, so $\\sin C = \\frac{40}{80} = 0.5$, giving $C = 30°$."
     }
   ]
 }

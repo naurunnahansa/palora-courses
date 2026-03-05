@@ -1,0 +1,32 @@
+{
+  "id": "check-bounds-2-c",
+  "title": "Check: Bounds (C)",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A distance is $100\\,\\text{m}$ to the nearest $10\\,\\text{m}$. A time is $12.5\\,\\text{s}$ to $3$ significant figures. What is the lower bound of speed $\\left(\\frac{\\text{distance}}{\\text{time}}\\right)$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{95}{12.55}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{105}{12.45}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{95}{12.45}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{105}{12.55}$"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "For the minimum speed, use the smallest distance and the largest time. Lower bound of distance $= 95\\,\\text{m}$, upper bound of time $= 12.55\\,\\text{s}$. Minimum speed $= \\frac{95}{12.55}$."
+    }
+  ]
+}

@@ -8,41 +8,25 @@
       "difficulty": "knowledge-check",
       "stem": "Given $A = 2^3 \\times 3 \\times 5$ and $B = 2^2 \\times 3^2 \\times 7$, what is the HCF of $A$ and $B$?",
       "options": [
-        { "id": "a", "text": "$6$" },
-        { "id": "b", "text": "$12$" },
-        { "id": "c", "text": "$42$" },
-        { "id": "d", "text": "$2520$" }
+        {
+          "id": "a",
+          "text": "$6$"
+        },
+        {
+          "id": "b",
+          "text": "$12$"
+        },
+        {
+          "id": "c",
+          "text": "$42$"
+        },
+        {
+          "id": "d",
+          "text": "$2520$"
+        }
       ],
       "correctAnswer": "b",
       "explanation": "The HCF uses the lowest power of each common prime: $2^2 \\times 3^1 = 4 \\times 3 = 12$. The primes $5$ and $7$ are not common to both, so they are excluded."
-    },
-    {
-      "id": "q2",
-      "type": "multiple-choice",
-      "difficulty": "knowledge-check",
-      "stem": "Two buses depart from the same stop. Bus A departs every $12$ minutes and Bus B every $18$ minutes. If both leave at 9:00 am, when will they next depart together?",
-      "options": [
-        { "id": "a", "text": "9:24 am" },
-        { "id": "b", "text": "9:30 am" },
-        { "id": "c", "text": "9:36 am" },
-        { "id": "d", "text": "9:54 am" }
-      ],
-      "correctAnswer": "c",
-      "explanation": "We need the LCM of $12$ and $18$. $12 = 2^2 \\times 3$ and $18 = 2 \\times 3^2$. LCM $= 2^2 \\times 3^2 = 36$ minutes. So they next depart together at 9:36 am."
-    },
-    {
-      "id": "q3",
-      "type": "multiple-choice",
-      "difficulty": "knowledge-check",
-      "stem": "The HCF of two numbers is $8$ and their LCM is $120$. If one number is $24$, what is the other?",
-      "options": [
-        { "id": "a", "text": "$30$" },
-        { "id": "b", "text": "$40$" },
-        { "id": "c", "text": "$48$" },
-        { "id": "d", "text": "$60$" }
-      ],
-      "correctAnswer": "b",
-      "explanation": "Using the relationship HCF $\\times$ LCM $= $ product of the two numbers: $8 \\times 120 = 24 \\times n$, so $n = \\frac{960}{24} = 40$."
     }
   ]
 }

@@ -8,41 +8,25 @@
       "difficulty": "knowledge-check",
       "stem": "Write $x^2 - 10x + 30$ in the form $(x + a)^2 + b$.",
       "options": [
-        { "id": "a", "text": "$(x - 5)^2 - 5$" },
-        { "id": "b", "text": "$(x - 5)^2 + 5$" },
-        { "id": "c", "text": "$(x - 10)^2 + 30$" },
-        { "id": "d", "text": "$(x + 5)^2 + 5$" }
+        {
+          "id": "a",
+          "text": "$(x - 5)^2 - 5$"
+        },
+        {
+          "id": "b",
+          "text": "$(x - 5)^2 + 5$"
+        },
+        {
+          "id": "c",
+          "text": "$(x - 10)^2 + 30$"
+        },
+        {
+          "id": "d",
+          "text": "$(x + 5)^2 + 5$"
+        }
       ],
       "correctAnswer": "b",
       "explanation": "Half the coefficient of $x$ is $-5$. So $x^2 - 10x = (x-5)^2 - 25$. Then $x^2 - 10x + 30 = (x-5)^2 - 25 + 30 = (x-5)^2 + 5$."
-    },
-    {
-      "id": "q2",
-      "type": "multiple-choice",
-      "difficulty": "knowledge-check",
-      "stem": "The expression $x^2 - 4x + 7$ is written as $(x - 2)^2 + 3$. What is the minimum value of this expression?",
-      "options": [
-        { "id": "a", "text": "$-2$" },
-        { "id": "b", "text": "$2$" },
-        { "id": "c", "text": "$3$" },
-        { "id": "d", "text": "$7$" }
-      ],
-      "correctAnswer": "c",
-      "explanation": "Since $(x - 2)^2 \\geq 0$ for all values of $x$, the minimum value of $(x-2)^2 + 3$ is $0 + 3 = 3$, which occurs when $x = 2$."
-    },
-    {
-      "id": "q3",
-      "type": "multiple-choice",
-      "difficulty": "knowledge-check",
-      "stem": "Write $2x^2 + 12x + 5$ in the form $a(x + b)^2 + c$.",
-      "options": [
-        { "id": "a", "text": "$2(x + 3)^2 - 13$" },
-        { "id": "b", "text": "$2(x + 6)^2 - 67$" },
-        { "id": "c", "text": "$2(x + 3)^2 + 5$" },
-        { "id": "d", "text": "$(2x + 6)^2 - 31$" }
-      ],
-      "correctAnswer": "a",
-      "explanation": "Factor out $2$: $2(x^2 + 6x) + 5$. Complete the square: $2((x+3)^2 - 9) + 5 = 2(x+3)^2 - 18 + 5 = 2(x+3)^2 - 13$."
     }
   ]
 }
