@@ -3,28 +3,25 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Speed vs Velocity</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
         .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
         .readout .label { font-size: 0.72rem; color: #4a5568; }
-        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: #637EA1; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.1rem; color: #1835b4; }
         .readout .formula { font-size: 0.68rem; color: #4a5568; margin-top: 2px; }
         .slider-row { margin-bottom: 8px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
-        .slider-label .val { font-weight: 600; color: #637EA1; }
-        input[type="range"] { width: 100%; accent-color: #637EA1; }
-        .btn { display: block; margin: 8px auto 0; background: #637EA1; color: #fff; border: none; border-radius: 5px; padding: 6px 18px; font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .btn { display: block; margin: 8px auto 0; background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 18px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
         .btn:hover { background: #506a8a; }
     </style>
 </head>
@@ -96,7 +93,7 @@ function draw(ts) {
 
     // Track
     ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-    ctx.strokeStyle = '#e5dfe0'; ctx.lineWidth = 30; ctx.stroke();
+    ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 30; ctx.stroke();
     ctx.strokeStyle = '#ddd'; ctx.lineWidth = 1;
     ctx.setLineDash([8, 8]); ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
     ctx.setLineDash([]);
@@ -113,7 +110,7 @@ function draw(ts) {
 
     // Displacement arrow from start to car
     ctx.beginPath(); ctx.moveTo(cx + radius, cy); ctx.lineTo(carX, carY);
-    ctx.strokeStyle = '#F4D35E'; ctx.lineWidth = 3; ctx.stroke();
+    ctx.strokeStyle = '#4a3fc2'; ctx.lineWidth = 3; ctx.stroke();
     const da = Math.atan2(carY - cy, carX - (cx + radius));
     const dispMag = Math.sqrt((carX - cx - radius)**2 + (carY - cy)**2);
     if (dispMag > 10) {
@@ -121,7 +118,7 @@ function draw(ts) {
         ctx.moveTo(carX, carY);
         ctx.lineTo(carX - 12*Math.cos(da-0.4), carY - 12*Math.sin(da-0.4));
         ctx.lineTo(carX - 12*Math.cos(da+0.4), carY - 12*Math.sin(da+0.4));
-        ctx.closePath(); ctx.fillStyle = '#F4D35E'; ctx.fill();
+        ctx.closePath(); ctx.fillStyle = '#4a3fc2'; ctx.fill();
     }
 
     // Velocity arrow (tangent)
@@ -130,13 +127,13 @@ function draw(ts) {
     ctx.beginPath();
     ctx.moveTo(carX, carY);
     ctx.lineTo(carX + velLen * Math.cos(tangentAngle), carY + velLen * Math.sin(tangentAngle));
-    ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 3; ctx.stroke();
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 3; ctx.stroke();
     const va = tangentAngle;
     ctx.beginPath();
     ctx.moveTo(carX + velLen*Math.cos(va), carY + velLen*Math.sin(va));
     ctx.lineTo(carX + velLen*Math.cos(va) - 12*Math.cos(va-0.4), carY + velLen*Math.sin(va) - 12*Math.sin(va-0.4));
     ctx.lineTo(carX + velLen*Math.cos(va) - 12*Math.cos(va+0.4), carY + velLen*Math.sin(va) - 12*Math.sin(va+0.4));
-    ctx.closePath(); ctx.fillStyle = '#637EA1'; ctx.fill();
+    ctx.closePath(); ctx.fillStyle = '#1835b4'; ctx.fill();
 
     // Car
     ctx.beginPath(); ctx.arc(carX, carY, 12, 0, Math.PI * 2);
@@ -144,7 +141,7 @@ function draw(ts) {
 
     // Labels
     ctx.font = '600 13px Outfit';
-    ctx.fillStyle = '#637EA1'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#1835b4'; ctx.textAlign = 'center';
     ctx.fillText('Velocity (tangent)', carX + velLen*0.5*Math.cos(va) - 20*Math.sin(va), carY + velLen*0.5*Math.sin(va) + 20*Math.cos(va));
     ctx.fillStyle = '#c9a020';
     ctx.fillText('Displacement', (cx + radius + carX)/2, (cy + carY)/2 - 10);

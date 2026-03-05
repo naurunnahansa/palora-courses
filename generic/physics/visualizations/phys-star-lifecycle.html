@@ -3,27 +3,24 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Star Lifecycle</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
         .subtitle { text-align: center; font-size: 0.68rem; color: #4a5568; margin-bottom: 10px; }
         .flowchart { position: relative; }
         .stage { border-radius: 10px; padding: 8px 10px; cursor: pointer; transition: all 0.3s; border: 2px solid transparent; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
         .stage:hover { transform: translateX(3px); }
-        .stage.active { border-color: #F4D35E; }
+        .stage.active { border-color: #4a3fc2; }
         .stage .icon { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
         .stage .info { flex: 1; }
-        .stage .name { font-family: 'Oswald', sans-serif; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        .stage .name { font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; }
         .stage .brief { font-size: 0.6rem; color: #4a5568; }
         .stage .detail { font-size: 0.62rem; color: #4a5568; line-height: 1.4; margin-top: 4px; display: none; padding-top: 4px; border-top: 1px solid rgba(0,0,0,0.08); }
         .stage.active .detail { display: block; }
-        .arrow { text-align: center; color: #637EA1; font-size: 0.8rem; margin: 0 0 2px 18px; }
-        .path-label { font-family: 'Oswald', sans-serif; font-size: 0.72rem; color: white; padding: 4px 12px; border-radius: 20px; text-align: center; margin: 8px 0 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .arrow { text-align: center; color: #1835b4; font-size: 0.8rem; margin: 0 0 2px 18px; }
+        .path-label { font-family: system-ui, -apple-system, sans-serif; font-size: 0.72rem; color: white; padding: 4px 12px; border-radius: 20px; text-align: center; margin: 8px 0 4px; text-transform: uppercase; letter-spacing: 0.05em; }
         .path-split { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
         .path-col { }
         .nebula { background: #f0f4f8; }
@@ -36,16 +33,16 @@
         .ns { background: #f0f0ff; }
         .bh { background: #f5f0ff; }
         .pn { background: #f0fff8; }
-        .icon-nebula { background: radial-gradient(circle, #a0aec0, #637EA1); }
-        .icon-proto { background: radial-gradient(circle, #F4D35E, #ed8936); }
-        .icon-ms { background: radial-gradient(circle, #F4D35E, #ecc94b); }
+        .icon-nebula { background: radial-gradient(circle, #a0aec0, #1835b4); }
+        .icon-proto { background: radial-gradient(circle, #4a3fc2, #ed8936); }
+        .icon-ms { background: radial-gradient(circle, #4a3fc2, #ecc94b); }
         .icon-rg { background: radial-gradient(circle, #fc8181, #e53e3e); }
         .icon-rsg { background: radial-gradient(circle, #e53e3e, #9b2c2c); }
-        .icon-pn { background: radial-gradient(circle, rgba(99,126,161,0.3), #637EA1); }
+        .icon-pn { background: radial-gradient(circle, rgba(99,126,161,0.3), #1835b4); }
         .icon-wd { background: radial-gradient(circle, white, #bee3f8); }
-        .icon-sn { background: radial-gradient(circle, #F4D35E, #e53e3e, #F4D35E); }
+        .icon-sn { background: radial-gradient(circle, #4a3fc2, #e53e3e, #4a3fc2); }
         .icon-ns { background: radial-gradient(circle, #a0aec0, #4a5568); }
-        .icon-bh { background: radial-gradient(circle, #1a1f2e, #000); }
+        .icon-bh { background: radial-gradient(circle, #1a2747, #000); }
         .expand-hint { font-size: 0.55rem; color: #aaa; }
     </style>
 </head>
@@ -58,7 +55,7 @@
         <div class="stage nebula" onclick="toggle(this)">
             <div class="icon icon-nebula"></div>
             <div class="info">
-                <div class="name" style="color:#637EA1;">Nebula (Stellar Nursery)</div>
+                <div class="name" style="color:#1835b4;">Nebula (Stellar Nursery)</div>
                 <div class="brief">A vast cloud of gas (mainly hydrogen) and dust</div>
                 <div class="detail">
                     Nebulae are enormous clouds of gas and dust, sometimes light-years across. Gravity causes regions of higher density to begin collapsing inward. Triggers can include shockwaves from nearby supernovae. Temperature: ~10-50 K. Composition: ~75% hydrogen, ~25% helium.
@@ -96,7 +93,7 @@
 
         <div class="path-split">
             <div class="path-col">
-                <div class="path-label" style="background:#637EA1;">Low Mass (like our Sun)</div>
+                <div class="path-label" style="background:#1835b4;">Low Mass (like our Sun)</div>
 
                 <div class="stage rg" onclick="toggle(this)">
                     <div class="icon icon-rg" style="width:30px;height:30px;"></div>
@@ -111,7 +108,7 @@
                 <div class="stage pn" onclick="toggle(this)">
                     <div class="icon icon-pn" style="width:30px;height:30px;"></div>
                     <div class="info">
-                        <div class="name" style="color:#637EA1;">Planetary Nebula</div>
+                        <div class="name" style="color:#1835b4;">Planetary Nebula</div>
                         <div class="brief">Outer layers gently ejected into space</div>
                         <div class="detail">The outer layers are shed, creating a beautiful glowing shell of gas. The hot core is exposed. These nebulae have nothing to do with planets, the name is historical. They disperse over ~10,000 years, enriching space with heavier elements.</div>
                     </div>

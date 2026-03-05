@@ -4,37 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Haber Process Simulation</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
-  h1 { font-size: 1.5rem; color: #637EA1; margin-bottom: 4px; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 4px; }
   .subtitle { font-size: 0.85rem; color: #888; margin-bottom: 16px; }
-  canvas { width: 100%; background: #fafbfc; border-radius: 12px; border: 1px solid #e5dfe0; display: block; }
-  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  canvas { width: 100%; background: #fafbfc; border-radius: 12px; border: 1px solid #d4d8e5; display: block; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
   .btn:hover { background: #506a8a; }
-  .chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; border: 1.5px solid #e5dfe0; background: #fff; cursor: pointer; transition: all 0.2s; margin: 3px; }
-  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; border: 1.5px solid #d4d8e5; background: #fff; cursor: pointer; transition: all 0.2s; margin: 3px; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
   .controls { margin-top: 14px; }
   .control-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
   .control-row label { font-size: 0.82rem; font-weight: 500; min-width: 100px; }
-  input[type="range"] { flex: 1; accent-color: #637EA1; min-width: 120px; }
-  .value-badge { font-size: 0.78rem; background: #F5E6E8; padding: 2px 10px; border-radius: 10px; font-weight: 600; min-width: 65px; text-align: center; }
+  input[type="range"] { flex: 1; accent-color: #1835b4; min-width: 120px; }
+  .value-badge { font-size: 0.78rem; background: #e8ecf8; padding: 2px 10px; border-radius: 10px; font-weight: 600; min-width: 65px; text-align: center; }
   .toggle-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
   .yield-display { text-align: center; margin: 16px 0; }
-  .yield-display .yield-val { font-family: 'Oswald', sans-serif; font-size: 3rem; font-weight: 700; color: #637EA1; line-height: 1; }
+  .yield-display .yield-val { font-family: system-ui, -apple-system, sans-serif; font-size: 3rem; font-weight: 700; color: #1835b4; line-height: 1; }
   .yield-display .yield-label { font-size: 0.85rem; color: #888; }
   .stats-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
-  .stat-card { flex: 1; min-width: 100px; background: #F5E6E8; border-radius: 10px; padding: 10px 12px; text-align: center; }
-  .stat-card .val { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: #637EA1; }
+  .stat-card { flex: 1; min-width: 100px; background: #e8ecf8; border-radius: 10px; padding: 10px 12px; text-align: center; }
+  .stat-card .val { font-family: system-ui, -apple-system, sans-serif; font-size: 1.1rem; font-weight: 700; color: #1835b4; }
   .stat-card .lbl { font-size: 0.7rem; color: #888; }
-  .info-box { background: #F5E6E8; border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; line-height: 1.5; margin-top: 12px; }
-  .info-box strong { color: #637EA1; }
-  .equation-display { background: #fafbfc; border-radius: 10px; padding: 12px; text-align: center; font-size: 1rem; font-weight: 600; border: 1px solid #e5dfe0; margin-bottom: 10px; }
-  .gauge-bar { height: 18px; border-radius: 9px; background: #e5dfe0; overflow: hidden; margin-top: 6px; }
+  .info-box { background: #e8ecf8; border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; line-height: 1.5; margin-top: 12px; }
+  .info-box strong { color: #1835b4; }
+  .equation-display { background: #fafbfc; border-radius: 10px; padding: 12px; text-align: center; font-size: 1rem; font-weight: 600; border: 1px solid #d4d8e5; margin-bottom: 10px; }
+  .gauge-bar { height: 18px; border-radius: 9px; background: #d4d8e5; overflow: hidden; margin-top: 6px; }
   .gauge-fill { height: 100%; border-radius: 9px; transition: width 0.5s ease, background 0.3s; }
 </style>
 </head>
@@ -50,7 +49,7 @@
     <div class="yield-display">
       <div class="yield-val" id="yieldVal">--</div>
       <div class="yield-label">Ammonia Yield %</div>
-      <div class="gauge-bar"><div class="gauge-fill" id="yieldBar" style="width:0%; background:#637EA1;"></div></div>
+      <div class="gauge-bar"><div class="gauge-fill" id="yieldBar" style="width:0%; background:#1835b4;"></div></div>
     </div>
 
     <div class="controls">
@@ -190,7 +189,7 @@ function drawReactor() {
   ctx.fill();
 
   // Outline
-  ctx.strokeStyle = '#637EA1';
+  ctx.strokeStyle = '#1835b4';
   ctx.lineWidth = 4;
   ctx.beginPath();
   roundedRect(ctx, rx, ry, rw, rh, 30);
@@ -229,12 +228,12 @@ function drawReactor() {
   ctx.fillText(useCatalyst ? 'Fe catalyst active' : 'No catalyst', rx + rw / 2, ry + 75);
 
   // Input arrow left
-  ctx.fillStyle = '#637EA1';
+  ctx.fillStyle = '#1835b4';
   ctx.font = '600 20px Oswald';
   ctx.textAlign = 'right';
   ctx.fillText('N\u2082 + 3H\u2082', rx - 20, ry + rh / 2 - 10);
   ctx.fillText('IN', rx - 20, ry + rh / 2 + 18);
-  drawArrow(rx - 15, ry + rh / 2, rx, ry + rh / 2, '#637EA1', 3);
+  drawArrow(rx - 15, ry + rh / 2, rx, ry + rh / 2, '#1835b4', 3);
 
   // Output arrow right
   ctx.textAlign = 'left';
@@ -245,7 +244,7 @@ function drawReactor() {
   // Temp indicator
   const tempNorm = (+document.getElementById('tempSlider').value - 350) / 200;
   ctx.font = '600 22px Oswald';
-  ctx.fillStyle = '#1a1f2e';
+  ctx.fillStyle = '#1a2747';
   ctx.textAlign = 'center';
   ctx.fillText(document.getElementById('tempSlider').value + '\u00B0C', rx + rw / 2 - 120, ry + rh - 40);
 
@@ -300,7 +299,7 @@ function animate() {
   const bar = document.getElementById('yieldBar');
   bar.style.width = displayYield + '%';
   if (displayYield > 50) bar.style.background = '#5cb85c';
-  else if (displayYield > 25) bar.style.background = '#637EA1';
+  else if (displayYield > 25) bar.style.background = '#1835b4';
   else bar.style.background = '#e8a030';
 
   drawReactor();

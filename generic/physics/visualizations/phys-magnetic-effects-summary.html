@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magnetic Effects Summary</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.topic-card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;background:#fff;cursor:pointer;transition:all .2s}.topic-card:hover{border-color:#637EA1;transform:translateY(-1px)}.topic-card.active{border-color:#637EA1;background:#F5E6E8}.topic-card .icon{font-size:1.3rem;margin-bottom:4px}.topic-card .name{font-family:'Oswald',sans-serif;font-size:.8rem;color:#637EA1;text-transform:uppercase}.topic-card .desc{font-size:.68rem;color:#4a5568;margin-top:2px}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-top:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.detail{background:#fafbfc;border-radius:5px;padding:10px;margin-top:8px;font-size:.75rem;color:#4a5568}.detail strong{color:#637EA1}.detail .eq{font-family:'Oswald',sans-serif;font-size:.95rem;color:#637EA1;text-align:center;margin:6px 0}</style>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.topic-card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;background:#fff;cursor:pointer;transition:all .2s}.topic-card:hover{border-color:#1835b4;transform:translateY(-1px)}.topic-card.active{border-color:#1835b4;background:#e8ecf8}.topic-card .icon{font-size:1.3rem;margin-bottom:4px}.topic-card .name{font-family: system-ui, -apple-system, sans-serif;font-size:.8rem;color:#1835b4;text-transform:uppercase}.topic-card .desc{font-size:.68rem;color:#4a5568;margin-top:2px}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-top:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.detail{background:#fafbfc;border-radius:5px;padding:10px;margin-top:8px;font-size:.75rem;color:#4a5568}.detail strong{color:#1835b4}.detail .eq{font-family: system-ui, -apple-system, sans-serif;font-size:.95rem;color:#1835b4;text-align:center;margin:6px 0}</style>
 </head>
 <body>
 <div class="container">
@@ -49,7 +47,7 @@ function draw(ts){
         ctx.fillStyle='#fff';ctx.font='700 20px Oswald';ctx.textAlign='center';
         ctx.fillText('N',cx-180,cy+5);ctx.fillText('S',cx+180,cy+5);
         // Field lines
-        ctx.setLineDash([4,4]);ctx.strokeStyle='#e5dfe0';ctx.lineWidth=1;
+        ctx.setLineDash([4,4]);ctx.strokeStyle='#d4d8e5';ctx.lineWidth=1;
         for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(cx-160,cy+i*28);ctx.lineTo(cx+160,cy+i*28);ctx.stroke()}
         ctx.setLineDash([]);
         // Wire (current into page)
@@ -71,7 +69,7 @@ function draw(ts){
         ctx.fillStyle='#fff';ctx.font='700 14px Oswald';ctx.textAlign='center';ctx.fillText('N',mx-20,cy+5);ctx.fillText('S',mx+20,cy+5);
         // EMF indicator
         const emfVal=Math.cos(animT*2)*0.6;
-        ctx.fillStyle='#637EA1';ctx.font='600 14px Oswald';
+        ctx.fillStyle='#1835b4';ctx.font='600 14px Oswald';
         ctx.fillText(`Induced EMF: ${(emfVal*10).toFixed(1)} V`,cx+200,cy);
         // Arrow showing motion
         ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.fillText('← Moving magnet →',mx,cy-30);
@@ -83,9 +81,9 @@ function draw(ts){
         // Primary coil
         for(let i=0;i<8;i++){ctx.beginPath();ctx.ellipse(cx-80+i*10,cy,5,50,0,0,Math.PI*2);ctx.strokeStyle='#c87533';ctx.lineWidth=2;ctx.stroke()}
         // Secondary coil
-        for(let i=0;i<4;i++){ctx.beginPath();ctx.ellipse(cx+60+i*10,cy,5,50,0,0,Math.PI*2);ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.stroke()}
+        for(let i=0;i<4;i++){ctx.beginPath();ctx.ellipse(cx+60+i*10,cy,5,50,0,0,Math.PI*2);ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.stroke()}
         ctx.fillStyle='#c87533';ctx.font='500 12px Outfit';ctx.textAlign='center';ctx.fillText('Primary (Np)',cx-40,cy+90);
-        ctx.fillStyle='#637EA1';ctx.fillText('Secondary (Ns)',cx+75,cy+90);
+        ctx.fillStyle='#1835b4';ctx.fillText('Secondary (Ns)',cx+75,cy+90);
         ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.fillText('Iron core',cx,cy-80);
         // AC symbol
         ctx.strokeStyle='#c87533';ctx.lineWidth=2;ctx.beginPath();
@@ -107,10 +105,10 @@ function draw(ts){
         ctx.beginPath();ctx.arc(cx,cy+80,12,0,Math.PI*2);ctx.strokeStyle='#c87533';ctx.lineWidth=2;ctx.stroke();
         ctx.fillStyle='#4a5568';ctx.font='500 10px Outfit';ctx.fillText('Slip rings',cx,cy+105);
         // Output wave
-        ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.beginPath();
+        ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.beginPath();
         for(let x=0;x<150;x++){const sx=cx+200+x;ctx.lineTo(sx,cy+Math.sin(x*0.04+animT*2)*30)}
         ctx.stroke();
-        ctx.fillStyle='#637EA1';ctx.font='500 11px Outfit';ctx.fillText('AC output',cx+275,cy-40);
+        ctx.fillStyle='#1835b4';ctx.font='500 11px Outfit';ctx.fillText('AC output',cx+275,cy-40);
     }
 
     requestAnimationFrame(draw);

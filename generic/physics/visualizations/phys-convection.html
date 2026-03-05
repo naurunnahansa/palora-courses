@@ -3,24 +3,21 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Convection Currents</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #1a1f2e; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #1a2747; }
         .slider-row { margin-bottom: 8px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
-        .slider-label .val { font-weight: 600; color: #637EA1; }
-        input[type="range"] { width: 100%; accent-color: #637EA1; }
-        .info { background: #F5E6E8; border-radius: 5px; padding: 10px; font-size: 0.78rem; color: #4a5568; }
-        .info strong { color: #637EA1; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .info { background: #e8ecf8; border-radius: 5px; padding: 10px; font-size: 0.78rem; color: #4a5568; }
+        .info strong { color: #1835b4; }
     </style>
 </head>
 <body>
@@ -74,10 +71,10 @@ function draw(ts) {
 
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = '#1a1f2e'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#1a2747'; ctx.fillRect(0, 0, W, H);
 
     // Container
-    ctx.strokeStyle = '#637EA180'; ctx.lineWidth = 3;
+    ctx.strokeStyle = '#1835b480'; ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(containerL, containerT); ctx.lineTo(containerL, containerB);
     ctx.lineTo(containerR, containerB); ctx.lineTo(containerR, containerT);
@@ -135,8 +132,8 @@ function draw(ts) {
         // Up arrow center
         drawFlowArrow(cx, containerB - 60, cx, containerT + 60, '#dc354560');
         // Right arrow top
-        drawFlowArrow(cx + 30, containerT + 50, containerR - 40, containerT + 50, '#F4D35E40');
-        drawFlowArrow(cx - 30, containerT + 50, containerL + 40, containerT + 50, '#F4D35E40');
+        drawFlowArrow(cx + 30, containerT + 50, containerR - 40, containerT + 50, '#4a3fc240');
+        drawFlowArrow(cx - 30, containerT + 50, containerL + 40, containerT + 50, '#4a3fc240');
         // Down arrows sides
         drawFlowArrow(containerR - 40, containerT + 80, containerR - 40, containerB - 60, '#4a90d940');
         drawFlowArrow(containerL + 40, containerT + 80, containerL + 40, containerB - 60, '#4a90d940');
@@ -150,7 +147,7 @@ function draw(ts) {
     ctx.fillStyle = '#dc3545'; ctx.fillText('HOT (rises)', cx, containerT + 25);
     ctx.fillStyle = '#4a90d9'; ctx.fillText('COOL (sinks)', containerR - 80, cy);
     ctx.fillText('COOL (sinks)', containerL + 80, cy);
-    ctx.fillStyle = '#F4D35E'; ctx.fillText('Heat Source', cx, containerB + 50);
+    ctx.fillStyle = '#4a3fc2'; ctx.fillText('Heat Source', cx, containerB + 50);
 
     requestAnimationFrame(draw);
 }

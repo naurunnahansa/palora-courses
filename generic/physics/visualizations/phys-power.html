@@ -3,31 +3,28 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Power</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
         .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .side { border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px; }
-        .side-title { font-family: 'Oswald', sans-serif; font-size: 0.8rem; color: #637EA1; text-transform: uppercase; text-align: center; margin-bottom: 6px; }
+        .side { border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px; }
+        .side-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; color: #1835b4; text-transform: uppercase; text-align: center; margin-bottom: 6px; }
         .slider-row { margin-bottom: 6px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 0.72rem; color: #4a5568; margin-bottom: 1px; }
-        .slider-label .val { font-weight: 600; color: #637EA1; }
-        input[type="range"] { width: 100%; accent-color: #637EA1; }
-        .result { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; margin-top: 6px; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .result { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; margin-top: 6px; }
         .result .label { font-size: 0.68rem; color: #4a5568; }
-        .result .value { font-family: 'Oswald', sans-serif; font-size: 1.2rem; color: #637EA1; }
-        .winner { border-color: #F4D35E; box-shadow: 0 0 0 2px #F4D35E40; }
+        .result .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.2rem; color: #1835b4; }
+        .winner { border-color: #4a3fc2; box-shadow: 0 0 0 2px #4a3fc240; }
         .calc-box { background: #fafbfc; border-radius: 5px; padding: 8px; text-align: center; font-size: 0.78rem; margin-top: 8px; }
-        .calc-box strong { color: #637EA1; }
+        .calc-box strong { color: #1835b4; }
     </style>
 </head>
 <body>
@@ -106,7 +103,7 @@ function draw(ts) {
 
     // A
     const axA = W * 0.25;
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.fillRect(axA - 20, groundY - posA - 30, 40, 30);
     ctx.strokeStyle = '#506a8a'; ctx.lineWidth = 2;
     ctx.strokeRect(axA - 20, groundY - posA - 30, 40, 30);
@@ -116,12 +113,12 @@ function draw(ts) {
     // pulley
     ctx.beginPath(); ctx.arc(axA, 20, 8, 0, Math.PI * 2);
     ctx.fillStyle = '#4a5568'; ctx.fill();
-    ctx.fillStyle = '#637EA1'; ctx.font = '600 14px Oswald'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#1835b4'; ctx.font = '600 14px Oswald'; ctx.textAlign = 'center';
     ctx.fillText('A', axA, groundY + 18);
 
     // B
     const axB = W * 0.75;
-    ctx.fillStyle = '#F4D35E';
+    ctx.fillStyle = '#4a3fc2';
     ctx.fillRect(axB - 20, groundY - posB - 30, 40, 30);
     ctx.strokeStyle = '#c9a020'; ctx.lineWidth = 2;
     ctx.strokeRect(axB - 20, groundY - posB - 30, 40, 30);
@@ -137,9 +134,9 @@ function draw(ts) {
     const barA = Math.min(barMaxH, v.pA / 5);
     const barB = Math.min(barMaxH, v.pB / 5);
     const barX = W * 0.48;
-    ctx.fillStyle = '#637EA140'; ctx.fillRect(barX, H * 0.3 + barMaxH - barA, barW, barA);
-    ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 1; ctx.strokeRect(barX, H * 0.3, barW, barMaxH);
-    ctx.fillStyle = '#F4D35E40'; ctx.fillRect(barX + barW + 4, H * 0.3 + barMaxH - barB, barW, barB);
+    ctx.fillStyle = '#1835b440'; ctx.fillRect(barX, H * 0.3 + barMaxH - barA, barW, barA);
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 1; ctx.strokeRect(barX, H * 0.3, barW, barMaxH);
+    ctx.fillStyle = '#4a3fc240'; ctx.fillRect(barX + barW + 4, H * 0.3 + barMaxH - barB, barW, barB);
     ctx.strokeStyle = '#c9a020'; ctx.strokeRect(barX + barW + 4, H * 0.3, barW, barMaxH);
     ctx.fillStyle = '#4a5568'; ctx.font = '500 11px Outfit'; ctx.textAlign = 'center';
     ctx.fillText('Power', barX + barW + 2, H * 0.3 - 6);

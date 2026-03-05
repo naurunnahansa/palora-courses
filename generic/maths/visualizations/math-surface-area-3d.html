@@ -4,30 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Surface Area Calculator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #d4d8e5; background: #fafbfc; margin-bottom: 10px; }
         .toggle-row { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
-        .toggle-btn { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 10px; border-radius: 5px; border: 2px solid #637EA1; background: #fff; color: #637EA1; cursor: pointer; transition: all 0.15s; }
-        .toggle-btn.active { background: #637EA1; color: #fff; }
+        .toggle-btn { font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 10px; border-radius: 5px; border: 2px solid #1835b4; background: #fff; color: #1835b4; cursor: pointer; transition: all 0.15s; }
+        .toggle-btn.active { background: #1835b4; color: #fff; }
         .input-group { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
         .input-group label { font-size: 0.82rem; font-weight: 600; color: #4a5568; min-width: 100px; }
-        .input-group input { flex: 1; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; }
-        .result-box { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; margin-bottom: 8px; }
-        .result-box .value { font-size: 1.1rem; color: #637EA1; }
+        .input-group input { flex: 1; padding: 6px 8px; border: 1px solid #d4d8e5; border-radius: 5px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; }
+        .result-box { background: #e8ecf8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: system-ui, -apple-system, sans-serif; margin-bottom: 8px; }
+        .result-box .value { font-size: 1.1rem; color: #1835b4; }
         .result-box .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
-        .working { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; font-size: 0.82rem; line-height: 1.6; }
+        .working { background: #e8ecf8; border-radius: 5px; padding: 8px 12px; font-size: 0.82rem; line-height: 1.6; }
         .working .step { margin-bottom: 4px; }
-        .working .highlight { color: #637EA1; font-weight: 700; }
-        .formula-ref { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; margin-bottom: 8px; }
+        .working .highlight { color: #1835b4; font-weight: 700; }
+        .formula-ref { background: #e8ecf8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; margin-bottom: 8px; }
     </style>
 </head>
 <body>
@@ -157,14 +154,14 @@
             const s = Math.min((W - 40) / 4, (H - 40) / 3);
             const ox = (W - 4 * s) / 2;
             const oy = (H - 3 * s) / 2;
-            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
+            ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
             // Cross shape: top, left, center, right, bottom (center col), far right
             const faces = [[1,0],[0,1],[1,1],[2,1],[3,1],[1,2]];
             faces.forEach(([c,r]) => {
                 ctx.fillRect(ox + c * s, oy + r * s, s, s);
                 ctx.strokeRect(ox + c * s, oy + r * s, s, s);
             });
-            ctx.font = '500 11px Outfit, sans-serif'; ctx.fillStyle = '#637EA1'; ctx.textAlign = 'center';
+            ctx.font = '500 11px system-ui, -apple-system, sans-serif'; ctx.fillStyle = '#1835b4'; ctx.textAlign = 'center';
             faces.forEach(([c,r]) => {
                 ctx.fillText(a + '\u00D7' + a, ox + c * s + s/2, oy + r * s + s/2 + 4);
             });
@@ -178,7 +175,7 @@
             const sc = Math.min((W - 40) / totalW, (H - 40) / totalH);
             const ox = (W - totalW * sc) / 2;
             const oy = (H - totalH * sc) / 2;
-            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
+            ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
             // Top
             ctx.fillRect(ox + h * sc, oy, w * sc, h * sc);
             ctx.strokeRect(ox + h * sc, oy, w * sc, h * sc);
@@ -197,7 +194,7 @@
             // Bottom
             ctx.fillRect(ox + h * sc, oy + (h + l) * sc, w * sc, h * sc);
             ctx.strokeRect(ox + h * sc, oy + (h + l) * sc, w * sc, h * sc);
-            ctx.font = '500 10px Outfit, sans-serif'; ctx.fillStyle = '#4a5568'; ctx.textAlign = 'center';
+            ctx.font = '500 10px system-ui, -apple-system, sans-serif'; ctx.fillStyle = '#4a5568'; ctx.textAlign = 'center';
             ctx.fillText('Net of Cuboid', W/2, H - 8);
         }
 
@@ -207,7 +204,7 @@
             const rectH = Math.min(h / r * circR, H / 3);
             const ox = (W - rectW) / 2;
             const oy = (H - rectH) / 2;
-            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
+            ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
             // Rectangle
             ctx.fillRect(ox, oy, rectW, rectH);
             ctx.strokeRect(ox, oy, rectW, rectH);
@@ -217,7 +214,7 @@
             // Bottom circle
             ctx.beginPath(); ctx.ellipse(ox + rectW / 2, oy + rectH + circR + 5, circR, circR, 0, 0, 2 * Math.PI);
             ctx.fill(); ctx.stroke();
-            ctx.font = '500 10px Outfit, sans-serif'; ctx.fillStyle = '#637EA1'; ctx.textAlign = 'center';
+            ctx.font = '500 10px system-ui, -apple-system, sans-serif'; ctx.fillStyle = '#1835b4'; ctx.textAlign = 'center';
             ctx.fillText('2\u03C0r = ' + (2 * Math.PI * r).toFixed(1), ox + rectW / 2, oy + rectH + 14);
             ctx.fillText('h = ' + h, ox - 14, oy + rectH / 2);
             ctx.fillStyle = '#4a5568'; ctx.fillText('Net of Cylinder', W/2, H - 8);
@@ -228,7 +225,7 @@
             const cx = W / 2, cy = H / 2 - 10;
             const sectorAngle = (r / l) * 2 * Math.PI;
             const drawR = maxR * 0.8;
-            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
+            ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
             // Sector
             ctx.beginPath();
             ctx.moveTo(cx, cy);
@@ -240,7 +237,7 @@
             ctx.beginPath();
             ctx.arc(cx, cy + drawR + baseR + 8, baseR, 0, 2 * Math.PI);
             ctx.fill(); ctx.stroke();
-            ctx.font = '500 10px Outfit, sans-serif'; ctx.fillStyle = '#637EA1'; ctx.textAlign = 'center';
+            ctx.font = '500 10px system-ui, -apple-system, sans-serif'; ctx.fillStyle = '#1835b4'; ctx.textAlign = 'center';
             ctx.fillText('l = ' + l, cx + drawR / 2 + 10, cy);
             ctx.fillStyle = '#4a5568'; ctx.fillText('Net of Cone', W/2, H - 8);
         }
@@ -248,7 +245,7 @@
         function drawSphereNet(r) {
             const cx = W / 2, cy = H / 2;
             const drawR = Math.min(W / 2 - 40, H / 2 - 30);
-            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
+            ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2; ctx.fillStyle = 'rgba(99,126,161,0.08)';
             ctx.beginPath(); ctx.arc(cx, cy, drawR, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
             // Latitude lines
             ctx.strokeStyle = 'rgba(99,126,161,0.3)'; ctx.lineWidth = 1;
@@ -262,11 +259,11 @@
                 const angle = i * Math.PI / 4;
                 ctx.beginPath(); ctx.ellipse(cx, cy, drawR * Math.cos(angle), drawR, Math.PI / 2, 0, 2 * Math.PI); ctx.stroke();
             }
-            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 1.5;
+            ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 1.5;
             ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + drawR, cy); ctx.stroke();
-            ctx.font = '600 12px Oswald, sans-serif'; ctx.fillStyle = '#637EA1'; ctx.textAlign = 'center';
+            ctx.font = '600 12px system-ui, -apple-system, sans-serif'; ctx.fillStyle = '#1835b4'; ctx.textAlign = 'center';
             ctx.fillText('r = ' + r, cx + drawR / 2, cy - 10);
-            ctx.font = '500 10px Outfit, sans-serif'; ctx.fillStyle = '#4a5568';
+            ctx.font = '500 10px system-ui, -apple-system, sans-serif'; ctx.fillStyle = '#4a5568';
             ctx.fillText('Sphere (no flat net possible)', W/2, H - 8);
         }
 

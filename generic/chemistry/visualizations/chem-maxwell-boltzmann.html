@@ -4,31 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maxwell-Boltzmann Distribution</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
-  h1 { font-size: 1.5rem; color: #637EA1; margin-bottom: 4px; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 4px; }
   .subtitle { font-size: 0.85rem; color: #888; margin-bottom: 16px; }
-  canvas { width: 100%; background: #fafbfc; border-radius: 12px; border: 1px solid #e5dfe0; display: block; }
-  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  canvas { width: 100%; background: #fafbfc; border-radius: 12px; border: 1px solid #d4d8e5; display: block; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
   .btn:hover { background: #506a8a; }
-  .chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; border: 1.5px solid #e5dfe0; background: #fff; cursor: pointer; transition: all 0.2s; margin: 3px; }
-  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; border: 1.5px solid #d4d8e5; background: #fff; cursor: pointer; transition: all 0.2s; margin: 3px; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
   .controls { margin-top: 14px; }
   .control-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
   .control-row label { font-size: 0.82rem; font-weight: 500; min-width: 120px; }
-  input[type="range"] { flex: 1; accent-color: #637EA1; min-width: 120px; }
-  .value-badge { font-size: 0.78rem; background: #F5E6E8; padding: 2px 10px; border-radius: 10px; font-weight: 600; min-width: 55px; text-align: center; }
+  input[type="range"] { flex: 1; accent-color: #1835b4; min-width: 120px; }
+  .value-badge { font-size: 0.78rem; background: #e8ecf8; padding: 2px 10px; border-radius: 10px; font-weight: 600; min-width: 55px; text-align: center; }
   .toggle-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-  .info-box { background: #F5E6E8; border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; line-height: 1.5; margin-top: 12px; }
-  .info-box strong { color: #637EA1; }
+  .info-box { background: #e8ecf8; border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; line-height: 1.5; margin-top: 12px; }
+  .info-box strong { color: #1835b4; }
   .stats-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-  .stat-card { flex: 1; min-width: 100px; background: #F5E6E8; border-radius: 10px; padding: 10px 12px; text-align: center; }
-  .stat-card .val { font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 700; color: #637EA1; }
+  .stat-card { flex: 1; min-width: 100px; background: #e8ecf8; border-radius: 10px; padding: 10px 12px; text-align: center; }
+  .stat-card .val { font-family: system-ui, -apple-system, sans-serif; font-size: 1.2rem; font-weight: 700; color: #1835b4; }
   .stat-card .lbl { font-size: 0.72rem; color: #888; }
 </style>
 </head>
@@ -134,7 +133,7 @@ function draw() {
   const toY = (v) => pad.t + plotH - (v / maxY) * plotH;
 
   // Axes
-  ctx.strokeStyle = '#1a1f2e';
+  ctx.strokeStyle = '#1a2747';
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(pad.l, pad.t);
@@ -143,7 +142,7 @@ function draw() {
   ctx.stroke();
 
   ctx.font = '600 22px Oswald';
-  ctx.fillStyle = '#1a1f2e';
+  ctx.fillStyle = '#1a2747';
   ctx.save();
   ctx.translate(24, pad.t + plotH / 2);
   ctx.rotate(-Math.PI / 2);
@@ -182,7 +181,7 @@ function draw() {
   }
 
   // T1 curve
-  ctx.strokeStyle = '#637EA1';
+  ctx.strokeStyle = '#1835b4';
   ctx.lineWidth = 3;
   ctx.beginPath();
   for (let e = 0; e <= 100; e += 0.5) {
@@ -223,7 +222,7 @@ function draw() {
   ctx.font = '500 18px Outfit';
   ctx.textAlign = 'left';
   const lx = pad.l + 20, ly = pad.t + 30;
-  ctx.fillStyle = '#637EA1';
+  ctx.fillStyle = '#1835b4';
   ctx.fillRect(lx, ly - 6, 20, 4);
   ctx.fillText('T\u2081 = ' + T1 + ' K', lx + 28, ly);
   if (showCompare) {

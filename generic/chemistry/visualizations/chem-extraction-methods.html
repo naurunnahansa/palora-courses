@@ -4,15 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Metal Extraction Methods</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #fafbfc; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border: 1px solid #e5dfe0; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fafbfc; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
   h1 { font-size: 26px; margin-bottom: 4px; }
-  .subtitle { color: #637EA1; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+  .subtitle { color: #1835b4; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
 
   .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 16px; }
   .metal-cell {
@@ -21,26 +20,26 @@
     font-size: 12px; position: relative;
   }
   .metal-cell:hover { transform: scale(1.08); }
-  .metal-cell.active { border-color: #1a1f2e; transform: scale(1.08); }
-  .metal-cell .sym { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 600; }
+  .metal-cell.active { border-color: #1a2747; transform: scale(1.08); }
+  .metal-cell .sym { font-family: system-ui, -apple-system, sans-serif; font-size: 18px; font-weight: 600; }
   .metal-cell .name { font-size: 9px; font-weight: 400; }
 
   .cell-electrolysis { background: #dce7f5; }
   .cell-carbon { background: #ffecd2; }
   .cell-native { background: #d4edda; }
-  .cell-carbon-ref { background: #e5dfe0; }
+  .cell-carbon-ref { background: #d4d8e5; }
 
   .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
   .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; }
   .legend-swatch { width: 16px; height: 16px; border-radius: 4px; }
 
-  .divider-label { text-align: center; font-size: 12px; color: #637EA1; font-weight: 600; margin: 10px 0 6px; display: flex; align-items: center; gap: 8px; }
-  .divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: #e5dfe0; }
+  .divider-label { text-align: center; font-size: 12px; color: #1835b4; font-weight: 600; margin: 10px 0 6px; display: flex; align-items: center; gap: 8px; }
+  .divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: #d4d8e5; }
 
-  .detail-card { background: #fff; border: 1px solid #e5dfe0; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-  .detail-title { font-family: 'Oswald', sans-serif; font-size: 22px; color: #637EA1; margin-bottom: 12px; }
+  .detail-card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .detail-title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; color: #1835b4; margin-bottom: 12px; }
   .detail-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
-  .detail-label { font-weight: 600; font-size: 13px; min-width: 100px; color: #637EA1; padding-top: 2px; }
+  .detail-label { font-weight: 600; font-size: 13px; min-width: 100px; color: #1835b4; padding-top: 2px; }
   .detail-value { font-size: 14px; flex: 1; line-height: 1.5; }
 
   .method-badge { display: inline-block; padding: 5px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; }
@@ -50,9 +49,9 @@
 
   .reactivity-bar { margin-top: 16px; }
   .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-  .bar-sym { font-family: 'Oswald', sans-serif; font-size: 14px; width: 28px; text-align: right; }
+  .bar-sym { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; width: 28px; text-align: right; }
   .bar-fill { height: 18px; border-radius: 4px; transition: width 0.4s; }
-  .bar-row.highlight .bar-sym { font-weight: 700; color: #637EA1; }
+  .bar-row.highlight .bar-sym { font-weight: 700; color: #1835b4; }
   .bar-row.carbon-row .bar-sym { color: #e65100; font-weight: 700; }
   .bar-row.carbon-row .bar-fill { background: #e65100 !important; }
 </style>
@@ -67,7 +66,7 @@
       <div class="legend-item"><div class="legend-swatch" style="background:#dce7f5;"></div> Electrolysis</div>
       <div class="legend-item"><div class="legend-swatch" style="background:#ffecd2;"></div> Carbon reduction</div>
       <div class="legend-item"><div class="legend-swatch" style="background:#d4edda;"></div> Found native</div>
-      <div class="legend-item"><div class="legend-swatch" style="background:#e5dfe0;"></div> Carbon (reference)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#d4d8e5;"></div> Carbon (reference)</div>
     </div>
   </div>
 
@@ -198,7 +197,7 @@ function showDetail(i, cell) {
     </div>
     <div class="detail-row">
       <div class="detail-label">Equation</div>
-      <div class="detail-value" style="font-family:'Oswald',sans-serif;font-size:15px;">${m.eq}</div>
+      <div class="detail-value" style="font-family: system-ui, -apple-system, sans-serif;font-size:15px;">${m.eq}</div>
     </div>
   `;
   dc.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

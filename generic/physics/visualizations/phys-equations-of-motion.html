@@ -3,34 +3,31 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUVAT Equations Explorer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .subtitle { text-align: center; font-size: 0.75rem; color: #4a5568; margin-bottom: 12px; }
         .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
         .input-group { background: #f8f9fa; border-radius: 8px; padding: 8px 10px; border: 2px solid transparent; transition: all 0.2s; position: relative; }
-        .input-group.active { border-color: #637EA1; background: #f0f4f8; }
-        .input-group.computed { border-color: #F4D35E; background: #fffdf5; }
+        .input-group.active { border-color: #1835b4; background: #f0f4f8; }
+        .input-group.computed { border-color: #4a3fc2; background: #fffdf5; }
         .input-group label { font-size: 0.7rem; font-weight: 600; color: #4a5568; display: flex; align-items: center; gap: 4px; margin-bottom: 3px; }
-        .input-group label .symbol { color: #637EA1; font-weight: 700; font-size: 0.85rem; }
-        .input-group input { width: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 5px 8px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; background: white; }
+        .input-group label .symbol { color: #1835b4; font-weight: 700; font-size: 0.85rem; }
+        .input-group input { width: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 5px 8px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; background: white; }
         .input-group input:disabled { background: #e8e8e8; color: #999; }
-        .input-group .toggle { position: absolute; top: 6px; right: 8px; cursor: pointer; font-size: 0.6rem; background: #637EA1; color: white; border: none; border-radius: 3px; padding: 1px 5px; font-family: 'Outfit', sans-serif; }
+        .input-group .toggle { position: absolute; top: 6px; right: 8px; cursor: pointer; font-size: 0.6rem; background: #1835b4; color: white; border: none; border-radius: 3px; padding: 1px 5px; font-family: system-ui, -apple-system, sans-serif; }
         .input-group .toggle.off { background: #ccc; }
-        .btn { display: block; width: 100%; padding: 8px; background: #637EA1; color: white; border: none; border-radius: 8px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; margin-bottom: 10px; }
+        .btn { display: block; width: 100%; padding: 8px; background: #1835b4; color: white; border: none; border-radius: 8px; font-family: system-ui, -apple-system, sans-serif; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; margin-bottom: 10px; }
         .btn:hover { background: #4f6a8a; }
         .results { background: #f8f9fa; border-radius: 8px; padding: 10px; margin-bottom: 10px; }
-        .results h2 { font-family: 'Oswald', sans-serif; font-size: 0.8rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-        .equation-used { background: white; border-radius: 6px; padding: 6px 10px; margin-bottom: 6px; font-size: 0.78rem; border-left: 3px solid #F4D35E; }
-        .equation-used .eq-name { font-weight: 600; color: #637EA1; }
+        .results h2 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        .equation-used { background: white; border-radius: 6px; padding: 6px 10px; margin-bottom: 6px; font-size: 0.78rem; border-left: 3px solid #4a3fc2; }
+        .equation-used .eq-name { font-weight: 600; color: #1835b4; }
         .result-values { display: flex; gap: 8px; flex-wrap: wrap; }
-        .result-val { background: #fffdf5; border: 1px solid #F4D35E; border-radius: 6px; padding: 4px 10px; font-size: 0.8rem; font-weight: 600; }
-        .result-val .sym { color: #637EA1; }
+        .result-val { background: #fffdf5; border: 1px solid #4a3fc2; border-radius: 6px; padding: 4px 10px; font-size: 0.8rem; font-weight: 600; }
+        .result-val .sym { color: #1835b4; }
         canvas { width: 100%; border-radius: 8px; background: #f8f9fa; display: block; }
         .error { color: #e53e3e; font-size: 0.75rem; text-align: center; padding: 6px; }
         .equations-ref { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 8px; }
@@ -278,22 +275,22 @@ function drawMotion(v) {
             ctx.beginPath(); ctx.arc(xI, H - 40, 4, 0, Math.PI * 2); ctx.fill();
         }
         // Ball
-        ctx.fillStyle = '#637EA1';
+        ctx.fillStyle = '#1835b4';
         ctx.beginPath(); ctx.arc(x, H - 40, 10, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#F4D35E';
+        ctx.fillStyle = '#4a3fc2';
         ctx.beginPath(); ctx.arc(x, H - 40, 4, 0, Math.PI * 2); ctx.fill();
         // Velocity arrow
         const currV = v.u + (v.a || 0) * currT;
         const arrowLen = Math.min(Math.abs(currV) * 2, 60) * Math.sign(currV);
         if (Math.abs(arrowLen) > 2) {
-            ctx.strokeStyle = '#F4D35E';
+            ctx.strokeStyle = '#4a3fc2';
             ctx.lineWidth = 2;
             ctx.beginPath(); ctx.moveTo(x, H - 55); ctx.lineTo(x + arrowLen, H - 55); ctx.stroke();
-            ctx.fillStyle = '#F4D35E';
+            ctx.fillStyle = '#4a3fc2';
             ctx.beginPath(); ctx.moveTo(x + arrowLen, H - 60); ctx.lineTo(x + arrowLen + (arrowLen > 0 ? 6 : -6), H - 55); ctx.lineTo(x + arrowLen, H - 50); ctx.fill();
         }
         // Info
-        ctx.fillStyle = '#1a1f2e';
+        ctx.fillStyle = '#1a2747';
         ctx.font = '600 10px Outfit';
         ctx.textAlign = 'left';
         ctx.fillText(`v = ${currV.toFixed(1)} m/s`, 10, 15);

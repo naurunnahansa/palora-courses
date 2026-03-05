@@ -4,29 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Refraction Ray Diagram</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         canvas { width: 100%; display: block; border-radius: 4px; }
         .control-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
         .control-row label { font-size: 0.8rem; color: #4a5568; white-space: nowrap; }
-        select { padding: 5px 8px; border: 1px solid #e5dfe0; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 0.82rem; flex: 1; min-width: 140px; }
+        select { padding: 5px 8px; border: 1px solid #d4d8e5; border-radius: 4px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.82rem; flex: 1; min-width: 140px; }
         .slider-row { margin-bottom: 8px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
-        .slider-label .val { font-weight: 600; color: #637EA1; }
-        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
         .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
-        .readout { background: #F5E6E8; border-radius: 5px; padding: 6px; text-align: center; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 6px; text-align: center; }
         .readout .label { font-size: 0.68rem; color: #4a5568; }
-        .readout .value { font-family: 'Oswald', sans-serif; font-size: 0.95rem; color: #637EA1; }
-        .tir-banner { background: #F4D35E; color: #1a1f2e; padding: 8px; border-radius: 5px; text-align: center; font-size: 0.82rem; font-weight: 600; margin-top: 8px; display: none; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 0.95rem; color: #1835b4; }
+        .tir-banner { background: #4a3fc2; color: #1a2747; padding: 8px; border-radius: 5px; text-align: center; font-size: 0.82rem; font-weight: 600; margin-top: 8px; display: none; }
     </style>
 </head>
 <body>
@@ -133,7 +130,7 @@
             ctx.fillRect(0, boundaryY, W, H - boundaryY);
 
             // Boundary line
-            ctx.strokeStyle = '#1a1f2e';
+            ctx.strokeStyle = '#1a2747';
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(0, boundaryY);
@@ -151,7 +148,7 @@
             ctx.setLineDash([]);
 
             // Media labels
-            ctx.font = `600 ${Math.max(W * 0.028, 13)}px Outfit, sans-serif`;
+            ctx.font = `600 ${Math.max(W * 0.028, 13)}px system-ui, -apple-system, sans-serif`;
             ctx.fillStyle = '#4a5568';
             ctx.textAlign = 'left';
             ctx.fillText(pair.m1 + ' (n=' + n1.toFixed(2) + ')', W * 0.03, H * 0.06);
@@ -159,7 +156,7 @@
 
             // Normal label
             ctx.textAlign = 'right';
-            ctx.font = `${Math.max(W * 0.022, 10)}px Outfit, sans-serif`;
+            ctx.font = `${Math.max(W * 0.022, 10)}px system-ui, -apple-system, sans-serif`;
             ctx.fillStyle = '#4a5568';
             ctx.fillText('Normal', centerX - 8, H * 0.08);
 
@@ -169,7 +166,7 @@
             const incEndX = centerX - rayLen * Math.sin(thetaIRad);
             const incEndY = boundaryY - rayLen * Math.cos(thetaIRad);
 
-            ctx.strokeStyle = '#637EA1';
+            ctx.strokeStyle = '#1835b4';
             ctx.lineWidth = 3;
             ctx.beginPath();
             ctx.moveTo(incEndX, incEndY);
@@ -178,7 +175,7 @@
 
             // Arrowhead on incident ray
             const incAng = Math.atan2(boundaryY - incEndY, centerX - incEndX);
-            drawArrow(ctx, centerX - rayLen * 0.3 * Math.sin(thetaIRad), boundaryY - rayLen * 0.3 * Math.cos(thetaIRad), incAng, '#637EA1');
+            drawArrow(ctx, centerX - rayLen * 0.3 * Math.sin(thetaIRad), boundaryY - rayLen * 0.3 * Math.cos(thetaIRad), incAng, '#1835b4');
 
             // Check for TIR
             const sinThetaR = (n1 * Math.sin(thetaIRad)) / n2;
@@ -192,7 +189,7 @@
 
             // Angle of incidence arc
             if (thetaI > 2) {
-                ctx.strokeStyle = '#637EA1';
+                ctx.strokeStyle = '#1835b4';
                 ctx.lineWidth = 1.5;
                 const arcR = W * 0.07;
                 ctx.beginPath();
@@ -200,8 +197,8 @@
                 ctx.stroke();
 
                 const labelAng = -Math.PI / 2 + thetaIRad / 2;
-                ctx.fillStyle = '#637EA1';
-                ctx.font = `600 ${Math.max(W * 0.024, 11)}px Outfit, sans-serif`;
+                ctx.fillStyle = '#1835b4';
+                ctx.font = `600 ${Math.max(W * 0.024, 11)}px system-ui, -apple-system, sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.fillText('θ₁', centerX + (arcR + 14) * Math.cos(labelAng), boundaryY + (arcR + 14) * Math.sin(labelAng));
             }
@@ -214,7 +211,7 @@
                 const refEndX = centerX + rayLen * Math.sin(thetaRRad);
                 const refEndY = boundaryY + rayLen * Math.cos(thetaRRad);
 
-                ctx.strokeStyle = '#F4D35E';
+                ctx.strokeStyle = '#4a3fc2';
                 ctx.lineWidth = 3;
                 ctx.beginPath();
                 ctx.moveTo(centerX, boundaryY);
@@ -223,7 +220,7 @@
 
                 // Arrowhead on refracted ray
                 const refAng = Math.atan2(refEndY - boundaryY, refEndX - centerX);
-                drawArrow(ctx, centerX + rayLen * 0.5 * Math.sin(thetaRRad), boundaryY + rayLen * 0.5 * Math.cos(thetaRRad), refAng, '#F4D35E');
+                drawArrow(ctx, centerX + rayLen * 0.5 * Math.sin(thetaRRad), boundaryY + rayLen * 0.5 * Math.cos(thetaRRad), refAng, '#4a3fc2');
 
                 // Angle of refraction arc
                 if (thetaR > 2) {
@@ -236,7 +233,7 @@
 
                     const labelAng2 = Math.PI / 2 - thetaRRad / 2;
                     ctx.fillStyle = '#c9a020';
-                    ctx.font = `600 ${Math.max(W * 0.024, 11)}px Outfit, sans-serif`;
+                    ctx.font = `600 ${Math.max(W * 0.024, 11)}px system-ui, -apple-system, sans-serif`;
                     ctx.textAlign = 'center';
                     ctx.fillText('θ₂', centerX + (arcR2 + 14) * Math.cos(labelAng2), boundaryY + (arcR2 + 14) * Math.sin(labelAng2));
                 }
@@ -248,7 +245,7 @@
                 const refEndX = centerX + rayLen * Math.sin(thetaIRad);
                 const refEndY = boundaryY - rayLen * Math.cos(thetaIRad);
 
-                ctx.strokeStyle = '#F4D35E';
+                ctx.strokeStyle = '#4a3fc2';
                 ctx.lineWidth = 3;
                 ctx.beginPath();
                 ctx.moveTo(centerX, boundaryY);
@@ -256,7 +253,7 @@
                 ctx.stroke();
 
                 const refAng = Math.atan2(refEndY - boundaryY, refEndX - centerX);
-                drawArrow(ctx, centerX + rayLen * 0.5 * Math.sin(thetaIRad), boundaryY - rayLen * 0.5 * Math.cos(thetaIRad), refAng, '#F4D35E');
+                drawArrow(ctx, centerX + rayLen * 0.5 * Math.sin(thetaIRad), boundaryY - rayLen * 0.5 * Math.cos(thetaIRad), refAng, '#4a3fc2');
 
                 // Reflected angle arc
                 ctx.strokeStyle = '#e0bc3a';
@@ -271,11 +268,11 @@
             }
 
             // Legend
-            ctx.font = `${Math.max(W * 0.02, 10)}px Outfit, sans-serif`;
+            ctx.font = `${Math.max(W * 0.02, 10)}px system-ui, -apple-system, sans-serif`;
             ctx.textAlign = 'right';
-            ctx.fillStyle = '#637EA1';
+            ctx.fillStyle = '#1835b4';
             ctx.fillText('\u2014 Incident ray', W * 0.97, H * 0.06);
-            ctx.fillStyle = '#F4D35E';
+            ctx.fillStyle = '#4a3fc2';
             ctx.fillText(isTIR ? '\u2014 Reflected ray' : '\u2014 Refracted ray', W * 0.97, H * 0.1);
 
             // Update readouts

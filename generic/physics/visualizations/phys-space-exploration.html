@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Exploration</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.timeline{position:relative;padding-left:20px}.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:#e5dfe0}.event{position:relative;margin-bottom:12px;padding:10px;background:#fff;border:1px solid #e5dfe0;border-radius:5px;box-shadow:0 1px 3px rgba(0,0,0,.06);cursor:pointer;transition:all .2s}.event:hover{border-color:#637EA1;transform:translateX(3px)}.event.active{border-color:#637EA1;background:#F5E6E8}.event::before{content:'';position:absolute;left:-16px;top:14px;width:10px;height:10px;border-radius:50%;background:#637EA1}.event .year{font-family:'Oswald',sans-serif;font-size:.8rem;color:#637EA1}.event .title{font-size:.78rem;font-weight:600;margin-top:2px}.event .desc{font-size:.68rem;color:#4a5568;margin-top:3px;display:none}.event.active .desc{display:block}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#1a1f2e}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.timeline{position:relative;padding-left:20px}.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:#d4d8e5}.event{position:relative;margin-bottom:12px;padding:10px;background:#fff;border:1px solid #d4d8e5;border-radius:5px;box-shadow:0 1px 3px rgba(0,0,0,.06);cursor:pointer;transition:all .2s}.event:hover{border-color:#1835b4;transform:translateX(3px)}.event.active{border-color:#1835b4;background:#e8ecf8}.event::before{content:'';position:absolute;left:-16px;top:14px;width:10px;height:10px;border-radius:50%;background:#1835b4}.event .year{font-family: system-ui, -apple-system, sans-serif;font-size:.8rem;color:#1835b4}.event .title{font-size:.78rem;font-weight:600;margin-top:2px}.event .desc{font-size:.68rem;color:#4a5568;margin-top:3px;display:none}.event.active .desc{display:block}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#1a2747}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
 </head>
 <body>
 <div class="container">
@@ -42,7 +40,7 @@ function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canv
 function draw(ts){
     const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
     const W=canvas.width,H=canvas.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle='#1a1f2e';ctx.fillRect(0,0,W,H);
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#1a2747';ctx.fillRect(0,0,W,H);
 
     // Stars
     for(let i=0;i<60;i++){
@@ -53,7 +51,7 @@ function draw(ts){
     // Rocket
     const rx=150+((animT*30)%200),ry=H/2-30;
     // Body
-    ctx.fillStyle='#e5dfe0';ctx.beginPath();ctx.moveTo(rx+30,ry);ctx.lineTo(rx-15,ry-12);ctx.lineTo(rx-15,ry+12);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#d4d8e5';ctx.beginPath();ctx.moveTo(rx+30,ry);ctx.lineTo(rx-15,ry-12);ctx.lineTo(rx-15,ry+12);ctx.closePath();ctx.fill();
     ctx.fillRect(rx-15,ry-10,30,20);
     // Window
     ctx.beginPath();ctx.arc(rx+5,ry,5,0,Math.PI*2);ctx.fillStyle='#4a90d9';ctx.fill();
@@ -64,7 +62,7 @@ function draw(ts){
     for(let i=0;i<5;i++){
         const ex=rx-20-i*8-Math.random()*5;
         ctx.beginPath();ctx.arc(ex,ry+Math.sin(animT*10+i)*4,3+Math.random()*3,0,Math.PI*2);
-        ctx.fillStyle=i<2?'#F4D35E':'rgba(244,211,94,0.3)';ctx.fill();
+        ctx.fillStyle=i<2?'#4a3fc2':'rgba(244,211,94,0.3)';ctx.fill();
     }
 
     // Earth on left
@@ -80,7 +78,7 @@ function draw(ts){
 
     // ISS
     const issX=W*0.65,issY=H*0.7;
-    ctx.fillStyle='#e5dfe0';ctx.fillRect(issX-5,issY-3,10,6);
+    ctx.fillStyle='#d4d8e5';ctx.fillRect(issX-5,issY-3,10,6);
     ctx.fillStyle='#4a90d9';ctx.fillRect(issX-25,issY-1,20,2);ctx.fillRect(issX+5,issY-1,20,2);
     ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='500 9px Outfit';ctx.textAlign='center';ctx.fillText('ISS',issX,issY+15);
 

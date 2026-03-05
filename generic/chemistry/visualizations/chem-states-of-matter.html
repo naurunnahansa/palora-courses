@@ -3,26 +3,23 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>States of Matter</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
-        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
         .readout .label { font-size: 0.68rem; color: #4a5568; }
-        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; }
-        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
         .readout-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
-        .key-point { background: #f0f7ff; border-left: 3px solid #637EA1; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
+        .key-point { background: #f0f7ff; border-left: 3px solid #1835b4; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
         .slider-row { display: flex; align-items: center; gap: 8px; }
         .slider-row label { font-size: 0.72rem; color: #4a5568; white-space: nowrap; }
-        .slider-row .temp-val { font-family: 'Oswald', sans-serif; font-size: 0.9rem; color: #637EA1; min-width: 45px; text-align: right; }
+        .slider-row .temp-val { font-family: system-ui, -apple-system, sans-serif; font-size: 0.9rem; color: #1835b4; min-width: 45px; text-align: right; }
     </style>
 </head>
 <body>
@@ -165,7 +162,7 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Panel dividers
-    ctx.strokeStyle = '#e5dfe0';
+    ctx.strokeStyle = '#d4d8e5';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(panelW, 0); ctx.lineTo(panelW, panelH);
@@ -184,7 +181,7 @@ function draw() {
     // Panel titles
     const titles = ['SOLID', 'LIQUID', 'GAS'];
     titles.forEach((title, i) => {
-        ctx.fillStyle = i === activePanel ? '#637EA1' : '#b0bec5';
+        ctx.fillStyle = i === activePanel ? '#1835b4' : '#b0bec5';
         ctx.font = (i === activePanel ? 'bold ' : '') + '12px Oswald';
         ctx.textAlign = 'center';
         ctx.fillText(title, panelW * i + panelW / 2, 20);
@@ -193,7 +190,7 @@ function draw() {
     // Container boxes for each panel
     const boxPad = 12;
     for (let i = 0; i < 3; i++) {
-        ctx.strokeStyle = i === activePanel ? '#637EA188' : '#e5dfe0';
+        ctx.strokeStyle = i === activePanel ? '#1835b488' : '#d4d8e5';
         ctx.lineWidth = i === activePanel ? 1.5 : 1;
         ctx.strokeRect(panelW * i + boxPad, 30, panelW - boxPad * 2, panelH - 50);
     }
@@ -210,9 +207,9 @@ function draw() {
         const py = p.baseY + (Math.random() - 0.5) * vib;
         ctx.beginPath();
         ctx.arc(px, py, 8, 0, Math.PI * 2);
-        ctx.fillStyle = activePanel === 0 ? '#637EA133' : '#b0bec522';
+        ctx.fillStyle = activePanel === 0 ? '#1835b433' : '#b0bec522';
         ctx.fill();
-        ctx.strokeStyle = activePanel === 0 ? '#637EA1' : '#b0bec5';
+        ctx.strokeStyle = activePanel === 0 ? '#1835b4' : '#b0bec5';
         ctx.lineWidth = 1;
         ctx.stroke();
     });
@@ -247,9 +244,9 @@ function draw() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
-        ctx.fillStyle = activePanel === 1 ? '#637EA133' : '#b0bec522';
+        ctx.fillStyle = activePanel === 1 ? '#1835b433' : '#b0bec522';
         ctx.fill();
-        ctx.strokeStyle = activePanel === 1 ? '#637EA1' : '#b0bec5';
+        ctx.strokeStyle = activePanel === 1 ? '#1835b4' : '#b0bec5';
         ctx.lineWidth = 1;
         ctx.stroke();
     });
@@ -284,9 +281,9 @@ function draw() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
-        ctx.fillStyle = activePanel === 2 ? '#637EA133' : '#b0bec522';
+        ctx.fillStyle = activePanel === 2 ? '#1835b433' : '#b0bec522';
         ctx.fill();
-        ctx.strokeStyle = activePanel === 2 ? '#637EA1' : '#b0bec5';
+        ctx.strokeStyle = activePanel === 2 ? '#1835b4' : '#b0bec5';
         ctx.lineWidth = 1;
         ctx.stroke();
     });
@@ -295,13 +292,13 @@ function draw() {
     ctx.textAlign = 'center';
     ctx.font = '9px Outfit';
 
-    ctx.fillStyle = activePanel === 0 ? '#637EA1' : '#b0bec5';
+    ctx.fillStyle = activePanel === 0 ? '#1835b4' : '#b0bec5';
     ctx.fillText('Fixed, regular', panelW / 2, panelH - 8);
 
-    ctx.fillStyle = activePanel === 1 ? '#637EA1' : '#b0bec5';
+    ctx.fillStyle = activePanel === 1 ? '#1835b4' : '#b0bec5';
     ctx.fillText('Close, irregular', panelW * 1.5, panelH - 8);
 
-    ctx.fillStyle = activePanel === 2 ? '#637EA1' : '#b0bec5';
+    ctx.fillStyle = activePanel === 2 ? '#1835b4' : '#b0bec5';
     ctx.fillText('Far apart, random', panelW * 2.5, panelH - 8);
 
     ctx.textAlign = 'start';

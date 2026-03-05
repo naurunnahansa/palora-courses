@@ -3,25 +3,22 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Structure &amp; Properties</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; cursor: pointer; }
-        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
         .readout .label { font-size: 0.68rem; color: #4a5568; }
-        .readout .value { font-family: 'Oswald', sans-serif; font-size: 0.9rem; color: #637EA1; }
-        .key-point { background: #f0f7ff; border-left: 3px solid #637EA1; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 0.9rem; color: #1835b4; }
+        .key-point { background: #f0f7ff; border-left: 3px solid #1835b4; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
         table { width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-top: 6px; }
-        th { font-family: 'Oswald', sans-serif; font-size: 0.75rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.03em; padding: 6px 4px; text-align: left; border-bottom: 2px solid #637EA1; }
-        td { padding: 6px 4px; border-bottom: 1px solid #e5dfe0; }
-        tr.highlight { background: #F5E6E8; }
+        th { font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.03em; padding: 6px 4px; text-align: left; border-bottom: 2px solid #1835b4; }
+        td { padding: 6px 4px; border-bottom: 1px solid #d4d8e5; }
+        tr.highlight { background: #e8ecf8; }
         tr { cursor: pointer; transition: background 0.2s; }
         tr:hover { background: #f7fafc; }
     </style>
@@ -146,7 +143,7 @@ function updateHighlight() {
         const cells = row.querySelectorAll('td');
         cells.forEach((cell, i) => {
             if (i === 0) { cell.style.background = ''; return; }
-            cell.style.background = (i - 1 === selected) ? '#F5E6E8' : '';
+            cell.style.background = (i - 1 === selected) ? '#e8ecf8' : '';
         });
     });
 }
@@ -168,12 +165,12 @@ function draw() {
         }
 
         // Border
-        ctx.strokeStyle = isActive ? '#637EA1' : '#e5dfe0';
+        ctx.strokeStyle = isActive ? '#1835b4' : '#d4d8e5';
         ctx.lineWidth = isActive ? 2 : 1;
         ctx.strokeRect(colW * i + 2, 2, colW - 4, canvas.height - 4);
 
         // Title
-        ctx.fillStyle = isActive ? '#637EA1' : '#95a5a6';
+        ctx.fillStyle = isActive ? '#1835b4' : '#95a5a6';
         ctx.font = (isActive ? 'bold ' : '') + '10px Oswald';
         ctx.textAlign = 'center';
         ctx.fillText(s.name.toUpperCase(), cx, 18);
@@ -354,7 +351,7 @@ function drawMetallic(cx, cy, active) {
         const ey = cy - 35 + ((i * 31 + Math.sin(t * 0.03 + i) * 10) % 70);
         ctx.beginPath();
         ctx.arc(ex, ey, 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = '#637EA1';
+        ctx.fillStyle = '#1835b4';
         ctx.fill();
     }
 

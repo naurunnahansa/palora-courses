@@ -3,34 +3,31 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Specific Heat Capacity</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         .slider-row { margin-bottom: 8px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
-        .slider-label .val { font-weight: 600; color: #637EA1; }
-        input[type="range"] { width: 100%; accent-color: #637EA1; }
-        select { width: 100%; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.82rem; margin-bottom: 8px; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        select { width: 100%; padding: 6px 8px; border: 1px solid #d4d8e5; border-radius: 5px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.82rem; margin-bottom: 8px; }
         .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
         .readout .label { font-size: 0.72rem; color: #4a5568; }
-        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: #637EA1; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.1rem; color: #1835b4; }
         .readout .formula { font-size: 0.68rem; color: #4a5568; margin-top: 2px; }
         .therm { display: flex; justify-content: center; align-items: flex-end; gap: 20px; margin: 10px 0; }
         .therm-col { text-align: center; }
-        .therm-bar { width: 30px; border: 2px solid #e5dfe0; border-radius: 3px 3px 0 0; position: relative; background: #fff; margin: 0 auto; }
+        .therm-bar { width: 30px; border: 2px solid #d4d8e5; border-radius: 3px 3px 0 0; position: relative; background: #fff; margin: 0 auto; }
         .therm-fill { position: absolute; bottom: 0; width: 100%; border-radius: 0 0 3px 3px; transition: height 0.3s; }
         .therm-label { font-size: 0.72rem; color: #4a5568; margin-top: 4px; }
-        .therm-temp { font-family: 'Oswald', sans-serif; font-size: 0.9rem; color: #637EA1; }
+        .therm-temp { font-family: system-ui, -apple-system, sans-serif; font-size: 0.9rem; color: #1835b4; }
         .calc-box { background: #fafbfc; border-radius: 5px; padding: 8px; text-align: center; font-size: 0.78rem; margin-top: 8px; }
-        .calc-box strong { color: #637EA1; }
+        .calc-box strong { color: #1835b4; }
     </style>
 </head>
 <body>

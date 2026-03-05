@@ -4,41 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Displacement Reaction Predictor</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #fafbfc; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border: 1px solid #e5dfe0; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-  .btn { background: #637EA1; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; width: 100%; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fafbfc; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .btn { background: #1835b4; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; width: 100%; }
   .btn:hover { background: #506a8a; }
   h1 { font-size: 26px; margin-bottom: 4px; }
-  .subtitle { color: #637EA1; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+  .subtitle { color: #1835b4; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
 
   .select-group { margin-bottom: 14px; }
   .select-group label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
   .select-group select {
-    width: 100%; padding: 10px 14px; border: 1px solid #e5dfe0; border-radius: 10px;
-    font-family: 'Outfit', sans-serif; font-size: 15px; background: #fafbfc; color: #1a1f2e;
+    width: 100%; padding: 10px 14px; border: 1px solid #d4d8e5; border-radius: 10px;
+    font-family: system-ui, -apple-system, sans-serif; font-size: 15px; background: #fafbfc; color: #1a2747;
     -webkit-appearance: none; appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23637EA1' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 14px center;
   }
-  .select-group select:focus { outline: none; border-color: #637EA1; }
+  .select-group select:focus { outline: none; border-color: #1835b4; }
 
   .result-banner { padding: 16px; border-radius: 12px; text-align: center; margin-top: 16px; font-weight: 600; }
   .result-banner.yes { background: #e6f7e9; color: #27ae60; }
   .result-banner.no { background: #fde8e8; color: #c0392b; }
 
-  .equation-display { margin-top: 14px; padding: 16px; background: #F5E6E8; border-radius: 12px; }
-  .equation-display .eq-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #637EA1; margin-bottom: 4px; }
-  .equation-display .eq-text { font-family: 'Oswald', sans-serif; font-size: 16px; color: #1a1f2e; }
+  .equation-display { margin-top: 14px; padding: 16px; background: #e8ecf8; border-radius: 12px; }
+  .equation-display .eq-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #1835b4; margin-bottom: 4px; }
+  .equation-display .eq-text { font-family: system-ui, -apple-system, sans-serif; font-size: 16px; color: #1a2747; }
 
   .canvas-wrap { display: flex; justify-content: center; margin: 16px 0; }
-  .canvas-wrap canvas { border-radius: 12px; background: #fafbfc; border: 1px solid #e5dfe0; }
+  .canvas-wrap canvas { border-radius: 12px; background: #fafbfc; border: 1px solid #d4d8e5; }
 
-  .explanation { font-size: 13px; color: #637EA1; margin-top: 10px; line-height: 1.5; }
+  .explanation { font-size: 13px; color: #1835b4; margin-top: 10px; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -208,7 +207,7 @@ function drawTestTube(reacting, solutionColor, depositColor) {
     ctx.quadraticCurveTo(tx, ty + th, tx + tw / 2, ty + th);
     ctx.quadraticCurveTo(tx + tw, ty + th, tx + tw, ty + th - 30);
     ctx.lineTo(tx + tw, ty);
-    ctx.strokeStyle = '#637EA1';
+    ctx.strokeStyle = '#1835b4';
     ctx.lineWidth = 2.5;
     ctx.stroke();
 
@@ -270,7 +269,7 @@ function drawTestTube(reacting, solutionColor, depositColor) {
 
     // Labels
     ctx.font = '500 12px Outfit';
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.textAlign = 'center';
     ctx.fillText('Metal', tx + tw / 2, ty + 15);
     ctx.fillText('Solution', tx + tw / 2, ty + th + 20);

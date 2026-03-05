@@ -3,29 +3,26 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lens Ray Diagram</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .toggle-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 8px; }
-        .toggle-btn { background: #fff; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px 14px; font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .toggle-btn:hover { border-color: #637EA1; }
-        .toggle-btn.active { background: #637EA1; color: #fff; border-color: #637EA1; }
-        canvas { display: block; margin: 0 auto 8px; border: 1px solid #e5dfe0; border-radius: 5px; cursor: ew-resize; }
+        .toggle-btn { background: #fff; border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px 14px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .toggle-btn:hover { border-color: #1835b4; }
+        .toggle-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: ew-resize; }
         .info-desc { text-align: center; font-size: 0.72rem; color: #4a5568; margin-bottom: 8px; }
         .props { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
-        .prop { flex: 1; min-width: 80px; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px; text-align: center; }
+        .prop { flex: 1; min-width: 80px; border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px; text-align: center; }
         .prop .label { font-size: 0.62rem; color: #4a5568; }
-        .prop .value { font-size: 0.82rem; font-weight: 700; color: #637EA1; }
+        .prop .value { font-size: 0.82rem; font-weight: 700; color: #1835b4; }
         .legend { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; font-size: 0.68rem; color: #4a5568; margin-bottom: 8px; }
         .legend-item { display: flex; align-items: center; gap: 3px; }
         .legend-line { width: 16px; height: 3px; border-radius: 1px; }
-        .note { background: #F5E6E8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
-        .note strong { color: #637EA1; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
     </style>
 </head>
 <body>
@@ -93,7 +90,7 @@ function draw() {
         { x: cx + f, label: 'F' }, { x: cx + 2*f, label: '2F' }
     ];
     markers.forEach(m => {
-        ctx.fillStyle = '#637EA1';
+        ctx.fillStyle = '#1835b4';
         ctx.beginPath(); ctx.arc(m.x, cy, 4, 0, Math.PI * 2); ctx.fill();
         ctx.font = 'bold 10px Outfit';
         ctx.textAlign = 'center';
@@ -101,15 +98,15 @@ function draw() {
     });
 
     // Lens
-    ctx.strokeStyle = '#637EA1';
+    ctx.strokeStyle = '#1835b4';
     ctx.lineWidth = 2.5;
     if (lensType === 'converging') {
         ctx.beginPath();
         ctx.ellipse(cx, cy, 8, 100, 0, 0, Math.PI * 2);
         ctx.stroke();
         // arrows on lens
-        drawArrow(cx, cy - 100, cx - 6, cy - 90, '#637EA1', 1.5);
-        drawArrow(cx, cy + 100, cx + 6, cy + 90, '#637EA1', 1.5);
+        drawArrow(cx, cy - 100, cx - 6, cy - 90, '#1835b4', 1.5);
+        drawArrow(cx, cy + 100, cx + 6, cy + 90, '#1835b4', 1.5);
     } else {
         ctx.beginPath();
         ctx.moveTo(cx - 8, cy - 100);
@@ -124,10 +121,10 @@ function draw() {
     // Object
     const oX = cx + objX;
     const oTop = cy - objH;
-    ctx.strokeStyle = '#1a1f2e';
+    ctx.strokeStyle = '#1a2747';
     ctx.lineWidth = 3;
     ctx.beginPath(); ctx.moveTo(oX, cy); ctx.lineTo(oX, oTop); ctx.stroke();
-    drawArrow(oX, cy, oX, oTop, '#1a1f2e', 3);
+    drawArrow(oX, cy, oX, oTop, '#1a2747', 3);
 
     // Calculate image position using thin lens equation: 1/f = 1/v - 1/u (sign convention)
     const u = objX; // negative (object on left)
@@ -246,14 +243,14 @@ function draw() {
 
     // Image arrow
     if (Math.abs(v) < 2000) {
-        ctx.strokeStyle = isVirtual ? '#637EA1' : '#1a1f2e';
+        ctx.strokeStyle = isVirtual ? '#1835b4' : '#1a2747';
         ctx.lineWidth = 3;
         if (isVirtual) ctx.setLineDash([5, 4]);
         ctx.beginPath(); ctx.moveTo(iX, cy); ctx.lineTo(iX, iTop); ctx.stroke();
-        drawArrow(iX, cy, iX, iTop, isVirtual ? '#637EA1' : '#1a1f2e', 3);
+        drawArrow(iX, cy, iX, iTop, isVirtual ? '#1835b4' : '#1a2747', 3);
         ctx.setLineDash([]);
         // Image label
-        ctx.fillStyle = isVirtual ? '#637EA1' : '#1a1f2e';
+        ctx.fillStyle = isVirtual ? '#1835b4' : '#1a2747';
         ctx.font = 'bold 10px Outfit';
         ctx.textAlign = 'center';
         ctx.fillText(isVirtual ? 'Virtual Image' : 'Real Image', iX, Math.min(iTop, oTop) - 8);

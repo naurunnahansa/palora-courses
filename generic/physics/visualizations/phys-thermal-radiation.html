@@ -3,31 +3,28 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thermal Radiation</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
         .slider-row { margin-bottom: 8px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
-        .slider-label .val { font-weight: 600; color: #637EA1; }
-        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
         .surface-btns { display: flex; gap: 5px; margin-bottom: 8px; }
-        .surface-btn { flex: 1; background: #F5E6E8; border: 2px solid transparent; border-radius: 5px; padding: 6px; font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; }
-        .surface-btn:hover { border-color: #637EA1; }
-        .surface-btn.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        .surface-btn { flex: 1; background: #e8ecf8; border: 2px solid transparent; border-radius: 5px; padding: 6px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.72rem; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .surface-btn:hover { border-color: #1835b4; }
+        .surface-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
         .readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
         .readout .label { font-size: 0.72rem; color: #4a5568; }
-        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; }
         .info { background: #fafbfc; border-radius: 5px; padding: 8px; font-size: 0.75rem; color: #4a5568; margin-top: 8px; }
-        .info strong { color: #637EA1; }
+        .info strong { color: #1835b4; }
     </style>
 </head>
 <body>
@@ -111,7 +108,7 @@ function draw(ts) {
     ctx.shadowBlur = 0;
 
     // Temp label on object
-    ctx.fillStyle = surf.color === '#1a1a1a' || surf.color === '#8b2020' ? '#fff' : '#1a1f2e';
+    ctx.fillStyle = surf.color === '#1a1a1a' || surf.color === '#8b2020' ? '#fff' : '#1a2747';
     ctx.font = '700 18px Oswald'; ctx.textAlign = 'center';
     ctx.fillText(temp + '°C', objX + objW / 2, objY + objH / 2 + 6);
 

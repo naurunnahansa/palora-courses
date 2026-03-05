@@ -3,34 +3,31 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Colour & Filters</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         canvas { display: block; margin: 0 auto; border-radius: 4px; }
         .filter-btns { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
-        .filter-btn { flex: 1; min-width: 70px; border: 2px solid #e5dfe0; border-radius: 5px; padding: 6px; font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .filter-btn { flex: 1; min-width: 70px; border: 2px solid #d4d8e5; border-radius: 5px; padding: 6px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; }
         .filter-btn:hover { transform: scale(1.05); }
         .filter-btn.active { border-width: 3px; transform: scale(1.05); }
-        .result { background: #F5E6E8; border-radius: 5px; padding: 10px; text-align: center; }
+        .result { background: #e8ecf8; border-radius: 5px; padding: 10px; text-align: center; }
         .result .label { font-size: 0.72rem; color: #4a5568; }
-        .result .value { font-family: 'Oswald', sans-serif; font-size: 1.2rem; margin-top: 4px; }
+        .result .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.2rem; margin-top: 4px; }
         .result .desc { font-size: 0.72rem; color: #4a5568; margin-top: 4px; }
         .info { background: #fafbfc; border-radius: 5px; padding: 8px; font-size: 0.75rem; color: #4a5568; margin-top: 8px; }
-        .info strong { color: #637EA1; }
+        .info strong { color: #1835b4; }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Colour & Filters</h1>
     <div class="card" style="padding:8px;">
-        <canvas id="canvas" width="1060" height="400" style="background:#1a1f2e;"></canvas>
+        <canvas id="canvas" width="1060" height="400" style="background:#1a2747;"></canvas>
     </div>
     <div class="card">
         <div class="card-title">Select Filter</div>
@@ -91,7 +88,7 @@ function resize() {
 function draw() {
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = '#1a1f2e'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#1a2747'; ctx.fillRect(0, 0, W, H);
 
     // Prism
     const px = W * 0.25, py = H * 0.5;

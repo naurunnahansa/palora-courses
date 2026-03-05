@@ -3,28 +3,25 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gas Pressure Simulation</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         canvas { width: 100%; display: block; border-radius: 8px; background: #f8f9fa; margin-bottom: 8px; }
         .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
         .control-group { background: #f8f9fa; border-radius: 8px; padding: 8px 10px; }
         .control-group label { font-size: 0.7rem; font-weight: 600; color: #4a5568; display: block; margin-bottom: 3px; }
-        .control-group .val { font-size: 0.85rem; font-weight: 700; color: #637EA1; }
-        .control-group input[type=range] { width: 100%; accent-color: #637EA1; }
+        .control-group .val { font-size: 0.85rem; font-weight: 700; color: #1835b4; }
+        .control-group input[type=range] { width: 100%; accent-color: #1835b4; }
         .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
         .stat { background: #f8f9fa; border-radius: 8px; padding: 8px; text-align: center; }
         .stat .label { font-size: 0.6rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.05em; }
-        .stat .value { font-size: 1.1rem; font-weight: 700; color: #637EA1; }
+        .stat .value { font-size: 1.1rem; font-weight: 700; color: #1835b4; }
         .stat .unit { font-size: 0.6rem; color: #4a5568; }
         .laws { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
         .law { background: #f0f4f8; border-radius: 8px; padding: 8px; text-align: center; }
-        .law .name { font-family: 'Oswald', sans-serif; font-size: 0.7rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
+        .law .name { font-family: system-ui, -apple-system, sans-serif; font-size: 0.7rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
         .law .formula { font-size: 0.85rem; font-weight: 600; }
         .law .desc { font-size: 0.6rem; color: #4a5568; margin-top: 2px; }
     </style>
@@ -172,7 +169,7 @@ function draw() {
     const glowAlpha = Math.min(0.6, pressure * 0.15);
     ctx.shadowColor = `rgba(229,62,62,${glowAlpha})`;
     ctx.shadowBlur = pressure * 5;
-    ctx.strokeStyle = '#637EA1';
+    ctx.strokeStyle = '#1835b4';
     ctx.lineWidth = 3;
     ctx.strokeRect(box.x, box.y, box.w, box.h);
     ctx.shadowBlur = 0;
@@ -180,7 +177,7 @@ function draw() {
     // Piston indicator on right wall
     ctx.fillStyle = '#4a5568';
     ctx.fillRect(box.x + box.w - 2, box.y + box.h * 0.3, 8, box.h * 0.4);
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.fillRect(box.x + box.w + 4, box.y + box.h * 0.3 + 5, 3, box.h * 0.4 - 10);
 
     // Particles
@@ -231,7 +228,7 @@ function draw() {
     const pFill = Math.min(1, pressure / 5);
     const grad = ctx.createLinearGradient(0, barY + barH, 0, barY);
     grad.addColorStop(0, '#4299e1');
-    grad.addColorStop(0.5, '#F4D35E');
+    grad.addColorStop(0.5, '#4a3fc2');
     grad.addColorStop(1, '#e53e3e');
     ctx.fillStyle = grad;
     ctx.fillRect(barX, barY + barH * (1 - pFill), 12, barH * pFill);

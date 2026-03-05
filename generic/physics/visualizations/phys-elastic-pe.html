@@ -3,25 +3,22 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elastic Potential Energy</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
         .slider-row { margin-bottom: 8px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
-        .slider-label .val { font-weight: 600; color: #637EA1; }
-        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
         .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
-        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
         .readout .label { font-size: 0.68rem; color: #4a5568; }
-        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; }
         .readout .formula { font-size: 0.62rem; color: #4a5568; margin-top: 2px; }
     </style>
 </head>
@@ -117,7 +114,7 @@ function draw() {
 
     // Block
     const blockW = 50, blockH = 60;
-    sCtx.fillStyle = '#637EA1';
+    sCtx.fillStyle = '#1835b4';
     sCtx.fillRect(springEnd, midY - blockH/2, blockW, blockH);
     sCtx.strokeStyle = '#506a8a'; sCtx.lineWidth = 2;
     sCtx.strokeRect(springEnd, midY - blockH/2, blockW, blockH);
@@ -125,11 +122,11 @@ function draw() {
     // Extension marker
     if (x > 0.01) {
         const natEnd = 30 + restLen;
-        sCtx.setLineDash([3, 3]); sCtx.strokeStyle = '#F4D35E'; sCtx.lineWidth = 1;
+        sCtx.setLineDash([3, 3]); sCtx.strokeStyle = '#4a3fc2'; sCtx.lineWidth = 1;
         sCtx.beginPath(); sCtx.moveTo(natEnd, midY - 50); sCtx.lineTo(natEnd, midY + 50); sCtx.stroke();
         sCtx.setLineDash([]);
         sCtx.beginPath(); sCtx.moveTo(natEnd, midY + 40); sCtx.lineTo(springEnd, midY + 40);
-        sCtx.strokeStyle = '#F4D35E'; sCtx.lineWidth = 2; sCtx.stroke();
+        sCtx.strokeStyle = '#4a3fc2'; sCtx.lineWidth = 2; sCtx.stroke();
         sCtx.fillStyle = '#c9a020'; sCtx.font = '600 14px Outfit'; sCtx.textAlign = 'center';
         sCtx.fillText(`x = ${x.toFixed(2)} m`, (natEnd + springEnd)/2, midY + 58);
     }
@@ -141,7 +138,7 @@ function draw() {
 
     const px = 80, py = 40, pw = gW - 120, ph = gH - 100;
     // Axes
-    gCtx.strokeStyle = '#1a1f2e'; gCtx.lineWidth = 2;
+    gCtx.strokeStyle = '#1a2747'; gCtx.lineWidth = 2;
     gCtx.beginPath(); gCtx.moveTo(px, py); gCtx.lineTo(px, py + ph); gCtx.lineTo(px + pw, py + ph); gCtx.stroke();
     gCtx.fillStyle = '#4a5568'; gCtx.font = '500 13px Outfit'; gCtx.textAlign = 'center';
     gCtx.fillText('Extension (m)', px + pw/2, py + ph + 35);
@@ -152,15 +149,15 @@ function draw() {
     const maxX = 1, maxF = k;
     gCtx.beginPath(); gCtx.moveTo(px, py + ph);
     gCtx.lineTo(px + pw, py + ph - (maxF / (k * 1.2)) * ph);
-    gCtx.strokeStyle = '#637EA1'; gCtx.lineWidth = 3; gCtx.stroke();
+    gCtx.strokeStyle = '#1835b4'; gCtx.lineWidth = 3; gCtx.stroke();
 
     // Shaded area (EPE)
     const curPx = px + (x / maxX) * pw;
     const curFPx = py + ph - (F / (k * 1.2)) * ph;
     gCtx.beginPath();
     gCtx.moveTo(px, py + ph); gCtx.lineTo(curPx, curFPx); gCtx.lineTo(curPx, py + ph); gCtx.closePath();
-    gCtx.fillStyle = '#637EA140'; gCtx.fill();
-    gCtx.fillStyle = '#637EA1'; gCtx.font = '600 13px Outfit';
+    gCtx.fillStyle = '#1835b440'; gCtx.fill();
+    gCtx.fillStyle = '#1835b4'; gCtx.font = '600 13px Outfit';
     gCtx.fillText(`EPE = ${epe.toFixed(2)} J`, curPx - 30, py + ph - 20);
 
     // Current point

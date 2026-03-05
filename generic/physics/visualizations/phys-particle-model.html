@@ -3,29 +3,26 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Particle Model</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .state-toggle { display: flex; gap: 4px; margin-bottom: 10px; justify-content: center; }
-        .state-btn { flex: 1; max-width: 140px; background: #fff; border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px 6px; text-align: center; cursor: pointer; transition: all 0.2s; font-family: 'Outfit', sans-serif; }
-        .state-btn:hover { border-color: #637EA1; }
-        .state-btn.active { background: #637EA1; border-color: #637EA1; color: #fff; }
+        .state-btn { flex: 1; max-width: 140px; background: #fff; border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px 6px; text-align: center; cursor: pointer; transition: all 0.2s; font-family: system-ui, -apple-system, sans-serif; }
+        .state-btn:hover { border-color: #1835b4; }
+        .state-btn.active { background: #1835b4; border-color: #1835b4; color: #fff; }
         .state-btn .icon { font-size: 1.2rem; }
         .state-btn .label { font-size: 0.72rem; font-weight: 600; }
-        canvas { display: block; margin: 0 auto 10px; border: 1px solid #e5dfe0; border-radius: 5px; }
-        .slider-group { border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px 10px; margin-bottom: 8px; }
+        canvas { display: block; margin: 0 auto 10px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .slider-group { border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px 10px; margin-bottom: 8px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; }
-        .slider-label .val { color: #637EA1; }
-        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #e5dfe0; border-radius: 3px; outline: none; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #637EA1; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .slider-label .val { color: #1835b4; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #d4d8e5; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
         .info-cards { display: flex; gap: 6px; }
-        .info-card { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px; text-align: center; }
-        .info-card h3 { font-family: 'Oswald', sans-serif; font-size: 0.7rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+        .info-card { flex: 1; border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px; text-align: center; }
+        .info-card h3 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.7rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
         .info-card p { font-size: 0.68rem; color: #4a5568; }
     </style>
 </head>
@@ -194,7 +191,7 @@ function draw() {
     ctx.fillRect(0, 0, cw, ch);
     // container for liquid
     if (state === 'liquid') {
-        ctx.strokeStyle = '#637EA1';
+        ctx.strokeStyle = '#1835b4';
         ctx.lineWidth = 2;
         const lw = cw/2 - 120, rw = cw/2 + 120, bt = ch - 20, tp = ch - 180;
         ctx.beginPath();
@@ -203,7 +200,7 @@ function draw() {
     }
     // box for gas
     if (state === 'gas') {
-        ctx.strokeStyle = '#637EA1';
+        ctx.strokeStyle = '#1835b4';
         ctx.lineWidth = 2;
         ctx.strokeRect(4, 4, cw - 8, ch - 8);
     }
@@ -242,7 +239,7 @@ function draw() {
         }
     }
     // state label
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.font = 'bold 12px Oswald';
     ctx.textAlign = 'center';
     ctx.fillText(state.toUpperCase(), cw/2, 20);

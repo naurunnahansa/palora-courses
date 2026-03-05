@@ -3,34 +3,31 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transformer Ratio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .formula-box { text-align: center; background: #F5E6E8; border-radius: 5px; padding: 6px; margin-bottom: 10px; font-size: 0.82rem; font-weight: 600; color: #637EA1; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .formula-box { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 10px; font-size: 0.82rem; font-weight: 600; color: #1835b4; }
         canvas { display: block; margin: 0 auto 8px; }
         .slider-row { display: flex; gap: 8px; margin-bottom: 6px; }
-        .slider-group { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px 10px; }
+        .slider-group { flex: 1; border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px 10px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600; margin-bottom: 4px; }
-        .slider-label .val { color: #637EA1; }
-        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #e5dfe0; border-radius: 3px; outline: none; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #637EA1; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .slider-label .val { color: #1835b4; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #d4d8e5; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
         .results { display: flex; gap: 6px; margin-bottom: 8px; }
-        .res-card { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px; text-align: center; }
-        .res-card h3 { font-family: 'Oswald', sans-serif; font-size: 0.7rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
-        .res-card .val { font-size: 1.1rem; font-weight: 700; color: #637EA1; }
+        .res-card { flex: 1; border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px; text-align: center; }
+        .res-card h3 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.7rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+        .res-card .val { font-size: 1.1rem; font-weight: 700; color: #1835b4; }
         .res-card .unit { font-size: 0.62rem; color: #4a5568; }
-        .type-badge { display: inline-block; background: #637EA1; color: #fff; border-radius: 5px; padding: 4px 12px; font-size: 0.75rem; font-weight: 600; margin-bottom: 8px; }
+        .type-badge { display: inline-block; background: #1835b4; color: #fff; border-radius: 5px; padding: 4px 12px; font-size: 0.75rem; font-weight: 600; margin-bottom: 8px; }
         .type-badge.step-up { background: #28a745; }
         .type-badge.step-down { background: #dc3545; }
-        .type-badge.equal { background: #F4D35E; color: #1a1f2e; }
+        .type-badge.equal { background: #4a3fc2; color: #1a2747; }
         .center { text-align: center; }
-        .note { background: #F5E6E8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
-        .note strong { color: #637EA1; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
     </style>
 </head>
 <body>

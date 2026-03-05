@@ -4,26 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Energy Transfer Sankey Diagram</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 12px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 12px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
         label { font-size: 0.82rem; color: #4a5568; display: block; margin-bottom: 4px; }
         .input-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-        .input-row input[type="number"] { width: 80px; padding: 5px 8px; border: 1px solid #e5dfe0; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; }
+        .input-row input[type="number"] { width: 80px; padding: 5px 8px; border: 1px solid #d4d8e5; border-radius: 4px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; }
         .input-row span { font-size: 0.82rem; color: #4a5568; }
-        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
         .slider-row { margin-bottom: 10px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 0.82rem; color: #4a5568; margin-bottom: 2px; }
         canvas { width: 100%; border-radius: 5px; display: block; }
-        .efficiency-display { text-align: center; padding: 10px; background: #F5E6E8; border-radius: 5px; margin-top: 8px; }
-        .efficiency-display .value { font-family: 'Oswald', sans-serif; font-size: 1.8rem; color: #637EA1; }
+        .efficiency-display { text-align: center; padding: 10px; background: #e8ecf8; border-radius: 5px; margin-top: 8px; }
+        .efficiency-display .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.8rem; color: #1835b4; }
         .efficiency-display .label { font-size: 0.78rem; color: #4a5568; }
         .legend { display: flex; justify-content: center; gap: 16px; margin-top: 8px; font-size: 0.78rem; color: #4a5568; }
         .legend-item { display: flex; align-items: center; gap: 4px; }
@@ -64,8 +61,8 @@
         <div class="card" style="padding:8px;">
             <canvas id="sankeyCanvas" width="526" height="280"></canvas>
             <div class="legend">
-                <div class="legend-item"><div class="legend-dot" style="background:#637EA1;"></div> Useful output</div>
-                <div class="legend-item"><div class="legend-dot" style="background:#F4D35E;"></div> Wasted energy</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#1835b4;"></div> Useful output</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#4a3fc2;"></div> Wasted energy</div>
             </div>
         </div>
 
@@ -142,7 +139,7 @@
             ctx.closePath();
             const grad = ctx.createLinearGradient(leftX, 0, splitX, 0);
             grad.addColorStop(0, '#8ba3bf');
-            grad.addColorStop(1, '#637EA1');
+            grad.addColorStop(1, '#1835b4');
             ctx.fillStyle = grad;
             ctx.fill();
 
@@ -160,7 +157,7 @@
                 ctx.bezierCurveTo(splitX + (rightX - splitX) * 0.6, uBotEnd, splitX + (rightX - splitX) * 0.4, uBot1, splitX, uBot1);
                 ctx.closePath();
                 const g2 = ctx.createLinearGradient(splitX, 0, rightX, 0);
-                g2.addColorStop(0, '#637EA1');
+                g2.addColorStop(0, '#1835b4');
                 g2.addColorStop(1, '#4a6a8a');
                 ctx.fillStyle = g2;
                 ctx.fill();
@@ -176,7 +173,7 @@
 
                 // Label
                 ctx.fillStyle = '#fff';
-                ctx.font = `bold ${Math.max(H * 0.055, 14)}px Oswald, sans-serif`;
+                ctx.font = `bold ${Math.max(H * 0.055, 14)}px system-ui, -apple-system, sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 if (usefulThickness > H * 0.06) {
@@ -198,7 +195,7 @@
                 ctx.bezierCurveTo(splitX + (rightX - splitX) * 0.6, wBotEnd, splitX + (rightX - splitX) * 0.4, wBot1, splitX, wBot1);
                 ctx.closePath();
                 const g3 = ctx.createLinearGradient(splitX, 0, rightX, 0);
-                g3.addColorStop(0, '#F4D35E');
+                g3.addColorStop(0, '#4a3fc2');
                 g3.addColorStop(1, '#e0bc3a');
                 ctx.fillStyle = g3;
                 ctx.fill();
@@ -213,8 +210,8 @@
                 ctx.fill();
 
                 // Label
-                ctx.fillStyle = '#1a1f2e';
-                ctx.font = `bold ${Math.max(H * 0.055, 14)}px Oswald, sans-serif`;
+                ctx.fillStyle = '#1a2747';
+                ctx.font = `bold ${Math.max(H * 0.055, 14)}px system-ui, -apple-system, sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 if (wastedThickness > H * 0.06) {
@@ -223,14 +220,14 @@
             }
 
             // Labels outside
-            ctx.font = `600 ${Math.max(H * 0.05, 12)}px Outfit, sans-serif`;
+            ctx.font = `600 ${Math.max(H * 0.05, 12)}px system-ui, -apple-system, sans-serif`;
             ctx.textAlign = 'center';
             ctx.fillStyle = '#4a5568';
             ctx.fillText('Total Input', leftX + (splitX - leftX) / 2, centerY - totalThickness / 2 - H * 0.04);
             ctx.fillText(totalJ + ' J', leftX + (splitX - leftX) / 2, centerY - totalThickness / 2 - H * 0.1);
 
             if (usefulFrac > 0.005) {
-                ctx.fillStyle = '#637EA1';
+                ctx.fillStyle = '#1835b4';
                 ctx.textAlign = 'right';
                 ctx.fillText('Useful', W * 0.97, usefulEndY - usefulThickness / 2 - H * 0.04);
             }

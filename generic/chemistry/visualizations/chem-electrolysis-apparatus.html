@@ -4,23 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Electrolysis Apparatus</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #fafbfc; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border: 1px solid #e5dfe0; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-  .btn { background: #637EA1; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fafbfc; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .btn { background: #1835b4; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
   .btn:hover { background: #506a8a; }
-  .chip { display: inline-block; background: #F5E6E8; color: #1a1f2e; border: 1px solid #e5dfe0; border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin: 4px; }
-  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .chip { display: inline-block; background: #e8ecf8; color: #1a2747; border: 1px solid #d4d8e5; border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin: 4px; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
   h1 { font-size: 26px; margin-bottom: 4px; }
-  .subtitle { color: #637EA1; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+  .subtitle { color: #1835b4; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
 
   .electrolyte-select { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
   .canvas-wrap { display: flex; justify-content: center; margin: 12px 0; }
-  .canvas-wrap canvas { border-radius: 12px; background: #fafbfc; border: 1px solid #e5dfe0; }
+  .canvas-wrap canvas { border-radius: 12px; background: #fafbfc; border: 1px solid #d4d8e5; }
 
   .products-row { display: flex; gap: 12px; margin-top: 14px; }
   .product-card { flex: 1; border-radius: 12px; padding: 14px; text-align: center; }
@@ -29,13 +28,13 @@
   .product-card .elec-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
   .product-card.cathode .elec-label { color: #2962ff; }
   .product-card.anode .elec-label { color: #c62828; }
-  .product-card .product-name { font-family: 'Oswald', sans-serif; font-size: 18px; margin-bottom: 4px; }
-  .product-card .half-eq { font-size: 12px; color: #637EA1; font-style: italic; }
+  .product-card .product-name { font-family: system-ui, -apple-system, sans-serif; font-size: 18px; margin-bottom: 4px; }
+  .product-card .half-eq { font-size: 12px; color: #1835b4; font-style: italic; }
 
   .info-row { display: flex; gap: 10px; margin-top: 12px; }
-  .info-item { flex: 1; background: #F5E6E8; border-radius: 10px; padding: 10px; text-align: center; }
-  .info-item .il { font-size: 11px; font-weight: 600; color: #637EA1; text-transform: uppercase; }
-  .info-item .iv { font-family: 'Oswald', sans-serif; font-size: 15px; margin-top: 2px; }
+  .info-item { flex: 1; background: #e8ecf8; border-radius: 10px; padding: 10px; text-align: center; }
+  .info-item .il { font-size: 11px; font-weight: 600; color: #1835b4; text-transform: uppercase; }
+  .info-item .iv { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -100,7 +99,7 @@ const electrolytes = [
     state: 'Aqueous',
     color: 'rgba(99,126,161,0.18)',
     ions: 'Na\u207a, Cl\u207b, H\u207a, OH\u207b',
-    cations: [{ label: 'Na\u207a', color: '#637EA1' }, { label: 'H\u207a', color: '#2ecc71' }],
+    cations: [{ label: 'Na\u207a', color: '#1835b4' }, { label: 'H\u207a', color: '#2ecc71' }],
     anions: [{ label: 'Cl\u207b', color: '#27ae60' }, { label: 'OH\u207b', color: '#e74c3c' }],
     cathode: { product: 'Hydrogen (H\u2082)', eq: '2H\u207a + 2e\u207b \u2192 H\u2082' },
     anode: { product: 'Chlorine (Cl\u2082)', eq: '2Cl\u207b \u2192 Cl\u2082 + 2e\u207b' }
@@ -189,20 +188,20 @@ function draw() {
   time += 0.02;
 
   // Power supply
-  ctx.fillStyle = '#e5dfe0';
-  ctx.strokeStyle = '#637EA1';
+  ctx.fillStyle = '#d4d8e5';
+  ctx.strokeStyle = '#1835b4';
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.roundRect(190, 8, 120, 40, 8);
   ctx.fill();
   ctx.stroke();
   ctx.font = '600 13px Oswald';
-  ctx.fillStyle = '#1a1f2e';
+  ctx.fillStyle = '#1a2747';
   ctx.textAlign = 'center';
   ctx.fillText('DC POWER SUPPLY', 250, 33);
 
   // Wires from power supply to electrodes
-  ctx.strokeStyle = '#637EA1';
+  ctx.strokeStyle = '#1835b4';
   ctx.lineWidth = 2.5;
   // Left wire (to cathode -)
   ctx.beginPath();
@@ -231,7 +230,7 @@ function draw() {
   const bx = 80, by = 140, bw = 340, bh = 200;
   ctx.fillStyle = e.color;
   ctx.fillRect(bx, by, bw, bh);
-  ctx.strokeStyle = '#637EA1';
+  ctx.strokeStyle = '#1835b4';
   ctx.lineWidth = 3;
   ctx.beginPath();
   ctx.moveTo(bx, by);
@@ -316,7 +315,7 @@ function draw() {
 
   // Electrolyte label
   ctx.font = '500 14px Outfit';
-  ctx.fillStyle = '#637EA1';
+  ctx.fillStyle = '#1835b4';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
   ctx.fillText(e.formula, 250, 360);
@@ -356,19 +355,19 @@ draw = function() {
   time += 0.02;
 
   // Power supply
-  ctx.fillStyle = '#e5dfe0';
-  ctx.strokeStyle = '#637EA1';
+  ctx.fillStyle = '#d4d8e5';
+  ctx.strokeStyle = '#1835b4';
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.roundRect(190, 8, 120, 40, 8);
   ctx.fill();
   ctx.stroke();
   ctx.font = '600 13px Oswald';
-  ctx.fillStyle = '#1a1f2e';
+  ctx.fillStyle = '#1a2747';
   ctx.textAlign = 'center';
   ctx.fillText('DC POWER SUPPLY', 250, 33);
 
-  ctx.strokeStyle = '#637EA1';
+  ctx.strokeStyle = '#1835b4';
   ctx.lineWidth = 2.5;
   ctx.beginPath();
   ctx.moveTo(210, 48);
@@ -393,7 +392,7 @@ draw = function() {
   const bx = 80, by = 140, bw = 340, bh = 200;
   ctx.fillStyle = e.color;
   ctx.fillRect(bx, by, bw, bh);
-  ctx.strokeStyle = '#637EA1';
+  ctx.strokeStyle = '#1835b4';
   ctx.lineWidth = 3;
   ctx.beginPath();
   ctx.moveTo(bx, by);
@@ -477,7 +476,7 @@ draw = function() {
   }
 
   ctx.font = '500 14px Outfit';
-  ctx.fillStyle = '#637EA1';
+  ctx.fillStyle = '#1835b4';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
   ctx.fillText(e.formula, 250, 365);

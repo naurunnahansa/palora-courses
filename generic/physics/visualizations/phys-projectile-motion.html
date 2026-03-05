@@ -4,17 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projectile Motion Simulator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .card {
             border-radius: 5px;
-            border: 1px solid #e5dfe0;
+            border: 1px solid #d4d8e5;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             padding: 12px;
             margin-bottom: 10px;
@@ -27,9 +24,9 @@
         canvas {
             width: 100%;
             border-radius: 5px;
-            border: 1px solid #e5dfe0;
+            border: 1px solid #d4d8e5;
             display: block;
-            background: #fafafa;
+            background: #fcfcfe;
         }
         .controls { display: flex; flex-direction: column; gap: 8px; }
         .slider-row {
@@ -45,13 +42,13 @@
         }
         .slider-row input[type="range"] {
             flex: 1;
-            accent-color: #637EA1;
+            accent-color: #1835b4;
             height: 6px;
         }
         .slider-row .val {
             font-size: 0.82rem;
             font-weight: 600;
-            color: #637EA1;
+            color: #1835b4;
             min-width: 50px;
             text-align: right;
         }
@@ -61,16 +58,16 @@
             padding: 7px 0;
             border: none;
             border-radius: 5px;
-            font-family: 'Outfit', sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.15s, box-shadow 0.15s;
         }
         .btn:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(99,126,161,0.2); }
-        .btn-primary { background: #637EA1; color: #fff; }
-        .btn-secondary { background: #F4D35E; color: #1a1f2e; }
-        .btn-outline { background: #fff; color: #637EA1; border: 1px solid #637EA1; }
+        .btn-primary { background: #1835b4; color: #fff; }
+        .btn-secondary { background: #4a3fc2; color: #1a2747; }
+        .btn-outline { background: #fff; color: #1835b4; border: 1px solid #1835b4; }
         .results {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -80,7 +77,7 @@
         .result-item {
             text-align: center;
             padding: 8px 4px;
-            background: #F5E6E8;
+            background: #e8ecf8;
             border-radius: 5px;
         }
         .result-item .label {
@@ -91,9 +88,9 @@
             margin-bottom: 2px;
         }
         .result-item .value {
-            font-family: 'Oswald', sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             font-size: 1.05rem;
-            color: #637EA1;
+            color: #1835b4;
             font-weight: 600;
         }
     </style>
@@ -192,7 +189,7 @@
             ctx.stroke();
 
             ctx.fillStyle = '#4a5568';
-            ctx.font = '600 22px Outfit, sans-serif';
+            ctx.font = '600 22px system-ui, -apple-system, sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText('Distance (m)', canvas.width / 2, canvas.height - 8);
             ctx.save();
@@ -201,13 +198,13 @@
             ctx.fillText('Height (m)', 0, 0);
             ctx.restore();
 
-            ctx.font = '400 20px Outfit, sans-serif';
+            ctx.font = '400 20px system-ui, -apple-system, sans-serif';
             const xTicks = 5;
             for (let i = 0; i <= xTicks; i++) {
                 const val = (maxX * i / xTicks);
                 const { cx, cy } = worldToCanvas(val, 0, maxX, maxY);
                 ctx.fillText(val.toFixed(0), cx, cy + 28);
-                ctx.strokeStyle = '#e5dfe0';
+                ctx.strokeStyle = '#d4d8e5';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(cx, pad.top);
@@ -220,7 +217,7 @@
                 const { cx, cy } = worldToCanvas(0, val, maxX, maxY);
                 ctx.textAlign = 'right';
                 ctx.fillText(val.toFixed(0), pad.left - 10, cy + 6);
-                ctx.strokeStyle = '#e5dfe0';
+                ctx.strokeStyle = '#d4d8e5';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(pad.left, cy);
@@ -240,7 +237,7 @@
             const tMax = tFlight * (progress || 1);
             ctx.beginPath();
             ctx.setLineDash([8, 6]);
-            ctx.strokeStyle = '#637EA1';
+            ctx.strokeStyle = '#1835b4';
             ctx.lineWidth = 3;
             for (let i = 0; i <= steps; i++) {
                 const t = (tMax * i) / steps;
@@ -261,9 +258,9 @@
                 const { cx, cy } = worldToCanvas(peakX, maxH, maxX, maxY);
                 ctx.beginPath();
                 ctx.arc(cx, cy, 7, 0, Math.PI * 2);
-                ctx.fillStyle = '#F4D35E';
+                ctx.fillStyle = '#4a3fc2';
                 ctx.fill();
-                ctx.strokeStyle = '#637EA1';
+                ctx.strokeStyle = '#1835b4';
                 ctx.lineWidth = 2;
                 ctx.stroke();
             }
@@ -278,9 +275,9 @@
             const { cx, cy } = worldToCanvas(x, Math.max(y, 0), scales.maxX, scales.maxY);
             ctx.beginPath();
             ctx.arc(cx, cy, 12, 0, Math.PI * 2);
-            ctx.fillStyle = '#637EA1';
+            ctx.fillStyle = '#1835b4';
             ctx.fill();
-            ctx.strokeStyle = '#F4D35E';
+            ctx.strokeStyle = '#4a3fc2';
             ctx.lineWidth = 3;
             ctx.stroke();
         }

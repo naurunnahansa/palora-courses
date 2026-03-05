@@ -3,34 +3,32 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fraction Operations</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
-.container{max-width:550px;margin:0 auto}
-h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
-.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
-.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}
+.container{max-width: 100%;margin:0 auto}
+h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
 .fraction-row{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap}
 .fraction-input{display:flex;flex-direction:column;align-items:center;gap:2px}
-.fraction-input input{width:52px;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.85rem;text-align:center;outline:none;transition:border-color .2s}
-.fraction-input input:focus{border-color:#637EA1}
-.fraction-line{width:52px;height:2px;background:#1a1f2e}
+.fraction-input input{width:52px;padding:6px 8px;border:1px solid #d4d8e5;border-radius:5px;font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;text-align:center;outline:none;transition:border-color .2s}
+.fraction-input input:focus{border-color:#1835b4}
+.fraction-line{width:52px;height:2px;background:#1a2747}
 .op-btns{display:flex;gap:6px}
-.op-btn{background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:8px 14px;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s}
-.op-btn:hover{border-color:#637EA1}
-.op-btn.active{background:#637EA1;color:#fff}
-.equals{font-family:'Oswald',sans-serif;font-size:1.2rem;color:#637EA1}
-.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;margin-top:8px}
-.result-box .value{font-family:'Oswald',sans-serif;font-size:1.1rem;color:#637EA1}
+.op-btn{background:#e8ecf8;border:2px solid transparent;border-radius:5px;padding:8px 14px;font-family: system-ui, -apple-system, sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s}
+.op-btn:hover{border-color:#1835b4}
+.op-btn.active{background:#1835b4;color:#fff}
+.equals{font-family: system-ui, -apple-system, sans-serif;font-size:1.2rem;color:#1835b4}
+.result-box{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;margin-top:8px}
+.result-box .value{font-family: system-ui, -apple-system, sans-serif;font-size:1.1rem;color:#1835b4}
 .result-box .label{font-size:.7rem;color:#4a5568;margin-top:2px}
 .steps{margin-top:8px}
-.step{background:#F5E6E8;border-radius:5px;padding:8px;margin-bottom:6px;font-size:.78rem}
-.step .step-label{font-family:'Oswald',sans-serif;font-size:.75rem;color:#637EA1;text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
-.step .step-math{font-weight:600;color:#1a1f2e}
+.step{background:#e8ecf8;border-radius:5px;padding:8px;margin-bottom:6px;font-size:.78rem}
+.step .step-label{font-family: system-ui, -apple-system, sans-serif;font-size:.75rem;color:#1835b4;text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
+.step .step-math{font-weight:600;color:#1a2747}
 .info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
-.info strong{color:#637EA1}
+.info strong{color:#1835b4}
     </style>
 </head>
 <body>

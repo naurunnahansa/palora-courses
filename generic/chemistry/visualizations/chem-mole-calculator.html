@@ -4,19 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mole / Mass / Mr Calculator</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #fafbfc; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border: 1px solid #e5dfe0; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-  .btn { background: #637EA1; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fafbfc; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .btn { background: #1835b4; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
   .btn:hover { background: #506a8a; }
-  .chip { display: inline-block; background: #F5E6E8; color: #1a1f2e; border: 1px solid #e5dfe0; border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin: 4px; }
-  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
-  h1 { font-size: 26px; margin-bottom: 4px; color: #1a1f2e; }
-  .subtitle { color: #637EA1; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+  .chip { display: inline-block; background: #e8ecf8; color: #1a2747; border: 1px solid #d4d8e5; border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin: 4px; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  h1 { font-size: 26px; margin-bottom: 4px; color: #1a2747; }
+  .subtitle { color: #1835b4; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
 
   .triangle-wrap { text-align: center; margin: 16px 0; }
   .triangle-wrap canvas { background: #fafbfc; border-radius: 12px; }
@@ -24,18 +23,18 @@
   .input-group { margin-bottom: 14px; }
   .input-group label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
   .input-group input, .input-group select {
-    width: 100%; padding: 10px 14px; border: 1px solid #e5dfe0; border-radius: 10px;
-    font-family: 'Outfit', sans-serif; font-size: 15px; background: #fafbfc; color: #1a1f2e;
+    width: 100%; padding: 10px 14px; border: 1px solid #d4d8e5; border-radius: 10px;
+    font-family: system-ui, -apple-system, sans-serif; font-size: 15px; background: #fafbfc; color: #1a2747;
   }
-  .input-group input:focus, .input-group select:focus { outline: none; border-color: #637EA1; }
+  .input-group input:focus, .input-group select:focus { outline: none; border-color: #1835b4; }
 
   .readout-row { display: flex; gap: 10px; margin-top: 16px; }
-  .readout { flex: 1; background: #F5E6E8; border-radius: 12px; padding: 14px; text-align: center; }
-  .readout .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #637EA1; }
-  .readout .value { font-family: 'Oswald', sans-serif; font-size: 26px; margin-top: 4px; color: #1a1f2e; }
-  .readout .unit { font-size: 12px; color: #637EA1; }
+  .readout { flex: 1; background: #e8ecf8; border-radius: 12px; padding: 14px; text-align: center; }
+  .readout .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #1835b4; }
+  .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 26px; margin-top: 4px; color: #1a2747; }
+  .readout .unit { font-size: 12px; color: #1835b4; }
 
-  .formula-display { text-align: center; font-family: 'Oswald', sans-serif; font-size: 20px; color: #637EA1; margin: 12px 0; }
+  .formula-display { text-align: center; font-family: system-ui, -apple-system, sans-serif; font-size: 20px; color: #1835b4; margin: 12px 0; }
 
   .substance-chips { display: flex; flex-wrap: wrap; gap: 2px; margin-bottom: 8px; }
 </style>
@@ -74,7 +73,7 @@
 
     <div style="display:flex;gap:10px;margin-top:12px;">
       <button class="btn" onclick="calculate()" style="flex:1;">Calculate</button>
-      <button class="btn" onclick="clearAll()" style="flex:0 0 auto;background:#e5dfe0;color:#1a1f2e;">Clear</button>
+      <button class="btn" onclick="clearAll()" style="flex:0 0 auto;background:#d4d8e5;color:#1a2747;">Clear</button>
     </div>
 
     <div class="readout-row">
@@ -94,7 +93,7 @@
         <div class="unit">mol</div>
       </div>
     </div>
-    <p id="msg" style="margin-top:10px;font-size:13px;color:#637EA1;text-align:center;"></p>
+    <p id="msg" style="margin-top:10px;font-size:13px;color:#1835b4;text-align:center;"></p>
   </div>
 </div>
 
@@ -188,7 +187,7 @@ function drawTriangle(hm, hmr, hn) {
   ctx.lineTo(cx + tw/2, cy - th/2);
   ctx.lineTo(cx - tw/2, cy - th/2);
   ctx.closePath();
-  ctx.strokeStyle = '#e5dfe0';
+  ctx.strokeStyle = '#d4d8e5';
   ctx.lineWidth = 2;
   ctx.stroke();
 
@@ -209,15 +208,15 @@ function drawTriangle(hm, hmr, hn) {
   ctx.textBaseline = 'middle';
 
   // Top: mass
-  ctx.fillStyle = hm ? '#637EA1' : '#1a1f2e';
+  ctx.fillStyle = hm ? '#1835b4' : '#1a2747';
   ctx.fillText('m (mass)', cx, cy - th/4);
 
   // Bottom left: Mr
-  ctx.fillStyle = hmr ? '#637EA1' : '#1a1f2e';
+  ctx.fillStyle = hmr ? '#1835b4' : '#1a2747';
   ctx.fillText('Mr', cx - tw/4, cy + th/4);
 
   // Bottom right: n
-  ctx.fillStyle = hn ? '#637EA1' : '#1a1f2e';
+  ctx.fillStyle = hn ? '#1835b4' : '#1a2747';
   ctx.fillText('n (mol)', cx + tw/4, cy + th/4);
 }
 

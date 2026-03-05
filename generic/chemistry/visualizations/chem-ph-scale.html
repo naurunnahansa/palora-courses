@@ -4,29 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Interactive pH Scale</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
-  h1 { color: #637EA1; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { color: #1835b4; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
   .subtitle { text-align: center; color: #888; font-size: 0.85rem; margin-bottom: 16px; }
   canvas { width: 100%; background: #fafbfc; border-radius: 10px; display: block; }
-  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.85rem; transition: background 0.2s; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; transition: background 0.2s; }
   .btn:hover { background: #4f6a8a; }
-  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #e5dfe0; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
-  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #d4d8e5; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
   .substances { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; margin-top: 12px; }
-  .info-box { background: #F5E6E8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.5; }
-  .info-box strong { color: #637EA1; }
+  .info-box { background: #e8ecf8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.5; }
+  .info-box strong { color: #1835b4; }
   .ion-bars { display: flex; gap: 16px; margin-top: 14px; align-items: flex-end; height: 80px; }
   .ion-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
   .ion-bar { width: 100%; border-radius: 6px 6px 0 0; transition: height 0.4s ease; min-height: 4px; }
   .ion-bar.h-plus { background: linear-gradient(to top, #e74c3c, #f39c12); }
   .ion-bar.oh-minus { background: linear-gradient(to top, #2980b9, #8e44ad); }
-  .ion-label { font-size: 0.75rem; font-weight: 600; margin-top: 4px; color: #637EA1; }
+  .ion-label { font-size: 0.75rem; font-weight: 600; margin-top: 4px; color: #1835b4; }
 </style>
 </head>
 <body>
@@ -38,7 +37,7 @@
     <div class="substances" id="substances"></div>
   </div>
   <div class="card">
-    <h3 style="font-size:1rem; color:#637EA1; margin-bottom:8px;">Ion Concentration</h3>
+    <h3 style="font-size:1rem; color:#1835b4; margin-bottom:8px;">Ion Concentration</h3>
     <div style="display:flex; gap:16px;">
       <div class="ion-bar-wrap">
         <div class="ion-bar h-plus" id="hBar" style="height:50%;"></div>
@@ -99,12 +98,12 @@ function draw() {
     ctx.fillStyle = phColor(ph);
     ctx.fillRect(padL + i, scaleY, 1, scaleH);
   }
-  ctx.strokeStyle = '#e5dfe0';
+  ctx.strokeStyle = '#d4d8e5';
   ctx.lineWidth = 1;
   ctx.strokeRect(padL, scaleY, scaleW, scaleH);
 
   // Draw numbers 0-14
-  ctx.fillStyle = '#1a1f2e';
+  ctx.fillStyle = '#1a2747';
   ctx.font = '600 13px Outfit';
   ctx.textAlign = 'center';
   for (let i = 0; i <= 14; i++) {
@@ -133,7 +132,7 @@ function draw() {
 
   // pH label
   ctx.font = '600 14px Oswald';
-  ctx.fillStyle = '#637EA1';
+  ctx.fillStyle = '#1835b4';
   ctx.textAlign = 'left';
   ctx.fillText('pH', 4, scaleY + scaleH / 2 + 5);
 
@@ -156,7 +155,7 @@ function draw() {
     ctx.translate(x, scaleY + scaleH + 32);
     ctx.rotate(-0.5);
     ctx.font = '500 9px Outfit';
-    ctx.fillStyle = '#1a1f2e';
+    ctx.fillStyle = '#1a2747';
     ctx.textAlign = 'left';
     ctx.fillText(s.name, 0, 0);
     ctx.restore();
@@ -166,7 +165,7 @@ function draw() {
   if (selected !== null) {
     const s = substances[selected];
     const x = padL + (s.ph / 14) * scaleW;
-    ctx.strokeStyle = '#1a1f2e';
+    ctx.strokeStyle = '#1a2747';
     ctx.lineWidth = 2;
     ctx.setLineDash([4, 3]);
     ctx.beginPath();

@@ -4,45 +4,44 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reactivity Series</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #fafbfc; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border: 1px solid #e5dfe0; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fafbfc; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
   h1 { font-size: 26px; margin-bottom: 4px; }
-  .subtitle { color: #637EA1; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+  .subtitle { color: #1835b4; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
 
   .series-list { display: flex; flex-direction: column; gap: 4px; }
   .metal-item {
     display: flex; align-items: center; padding: 10px 14px; border-radius: 12px;
     cursor: pointer; transition: all 0.2s; border: 2px solid transparent; position: relative;
   }
-  .metal-item:hover { background: #F5E6E8; }
-  .metal-item.active { border-color: #637EA1; background: #F5E6E8; }
-  .metal-item.nonmetal { background: #f0f4f8; border-style: dashed; border-color: #e5dfe0; }
+  .metal-item:hover { background: #e8ecf8; }
+  .metal-item.active { border-color: #1835b4; background: #e8ecf8; }
+  .metal-item.nonmetal { background: #f0f4f8; border-style: dashed; border-color: #d4d8e5; }
   .metal-item.nonmetal:hover { background: #e8edf3; }
 
-  .metal-symbol { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 600; width: 42px; color: #637EA1; }
+  .metal-symbol { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 600; width: 42px; color: #1835b4; }
   .metal-name { font-weight: 500; font-size: 14px; flex: 1; }
   .metal-tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
   .tag-high { background: #ffe0e0; color: #c0392b; }
   .tag-med { background: #fff3cd; color: #856404; }
   .tag-low { background: #d4edda; color: #155724; }
-  .tag-ref { background: #e5dfe0; color: #1a1f2e; }
+  .tag-ref { background: #d4d8e5; color: #1a2747; }
 
-  .arrow-label { text-align: center; font-size: 12px; color: #637EA1; font-weight: 600; margin: 6px 0; display: flex; align-items: center; gap: 8px; }
-  .arrow-label::before, .arrow-label::after { content: ''; flex: 1; height: 1px; background: #e5dfe0; }
+  .arrow-label { text-align: center; font-size: 12px; color: #1835b4; font-weight: 600; margin: 6px 0; display: flex; align-items: center; gap: 8px; }
+  .arrow-label::before, .arrow-label::after { content: ''; flex: 1; height: 1px; background: #d4d8e5; }
 
-  .detail-card { background: #fff; border: 1px solid #e5dfe0; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-  .detail-title { font-family: 'Oswald', sans-serif; font-size: 22px; margin-bottom: 12px; color: #637EA1; }
+  .detail-card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .detail-title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; margin-bottom: 12px; color: #1835b4; }
   .detail-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
-  .detail-label { font-weight: 600; font-size: 13px; min-width: 100px; color: #637EA1; padding-top: 2px; }
+  .detail-label { font-weight: 600; font-size: 13px; min-width: 100px; color: #1835b4; padding-top: 2px; }
   .detail-value { font-size: 14px; flex: 1; }
   .detail-value.yes { color: #27ae60; font-weight: 600; }
   .detail-value.no { color: #e74c3c; font-weight: 600; }
-  .extraction-badge { display: inline-block; background: #637EA1; color: #fff; padding: 4px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; }
+  .extraction-badge { display: inline-block; background: #1835b4; color: #fff; padding: 4px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -175,7 +174,7 @@ function showDetail(i, el) {
       <div class="detail-value">${m.oxygen}</div>
     </div>
     ${m.extraction !== '\u2014' ? `
-    <div class="detail-row" style="margin-top:8px;padding-top:12px;border-top:1px solid #e5dfe0;">
+    <div class="detail-row" style="margin-top:8px;padding-top:12px;border-top:1px solid #d4d8e5;">
       <div class="detail-label">Extraction</div>
       <div class="detail-value"><span class="extraction-badge">${m.extraction}</span></div>
     </div>
@@ -183,7 +182,7 @@ function showDetail(i, el) {
       <div class="detail-label">Why?</div>
       <div class="detail-value">${m.extractionWhy}</div>
     </div>` : `
-    <div class="detail-row" style="margin-top:8px;padding-top:12px;border-top:1px solid #e5dfe0;">
+    <div class="detail-row" style="margin-top:8px;padding-top:12px;border-top:1px solid #d4d8e5;">
       <div class="detail-label">Note</div>
       <div class="detail-value">${m.extractionWhy}</div>
     </div>`}

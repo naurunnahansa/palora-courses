@@ -3,35 +3,32 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Physical Quantities & Units</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         .qty-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-        .qty-item { background: #F5E6E8; border-radius: 5px; padding: 8px; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
-        .qty-item:hover { border-color: #637EA1; }
-        .qty-item.active { border-color: #637EA1; background: #e8dce0; }
-        .qty-item .name { font-weight: 600; font-size: 0.82rem; color: #1a1f2e; }
+        .qty-item { background: #e8ecf8; border-radius: 5px; padding: 8px; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+        .qty-item:hover { border-color: #1835b4; }
+        .qty-item.active { border-color: #1835b4; background: #e8dce0; }
+        .qty-item .name { font-weight: 600; font-size: 0.82rem; color: #1a2747; }
         .qty-item .unit { font-size: 0.72rem; color: #4a5568; }
         .detail-panel { background: #fafbfc; border-radius: 5px; padding: 10px; margin-top: 8px; min-height: 60px; }
         .detail-panel .label { font-size: 0.72rem; color: #4a5568; }
-        .detail-panel .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; }
+        .detail-panel .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; }
         .converter { margin-top: 8px; }
         .converter-row { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
-        .converter-row input { flex: 1; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.82rem; }
-        .converter-row select { padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.78rem; background: #fff; }
-        .converter-row .arrow { color: #637EA1; font-weight: 700; font-size: 1rem; }
-        .result-box { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; }
-        .result-box .value { font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: #637EA1; }
+        .converter-row input { flex: 1; padding: 6px 8px; border: 1px solid #d4d8e5; border-radius: 5px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.82rem; }
+        .converter-row select { padding: 6px 8px; border: 1px solid #d4d8e5; border-radius: 5px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.78rem; background: #fff; }
+        .converter-row .arrow { color: #1835b4; font-weight: 700; font-size: 1rem; }
+        .result-box { background: #e8ecf8; border-radius: 5px; padding: 8px 12px; text-align: center; }
+        .result-box .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.1rem; color: #1835b4; }
         .prefix-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-        .prefix-chip { background: #fff; border: 1px solid #e5dfe0; border-radius: 4px; padding: 3px 8px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
-        .prefix-chip:hover, .prefix-chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        .prefix-chip { background: #fff; border: 1px solid #d4d8e5; border-radius: 4px; padding: 3px 8px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .prefix-chip:hover, .prefix-chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
     </style>
 </head>
 <body>

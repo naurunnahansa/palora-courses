@@ -4,25 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cracking Demonstration</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Outfit',sans-serif;background:#f0f2f5;color:#1a1f2e;min-height:100vh;display:flex;justify-content:center;padding:20px;}
-h1,h2,h3,h4{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
-.container{max-width:550px;width:100%;margin:0 auto;}
-.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #e5dfe0;padding:24px;margin-bottom:16px;}
-.card-title{font-size:1.3rem;color:#637EA1;margin-bottom:4px;}
+body{font-family: system-ui, -apple-system, sans-serif;background:#f0f2f5;color:#1a2747;min-height:100vh;display:flex;justify-content:center;padding:20px;}
+h1,h2,h3,h4{font-family: system-ui, -apple-system, sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
+.container{max-width: 100%;width:100%;margin:0 auto;}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #d4d8e5;padding:24px;margin-bottom:16px;}
+.card-title{font-size:1.3rem;color:#1835b4;margin-bottom:4px;}
 .card-subtitle{font-size:0.85rem;color:#888;margin-bottom:16px;}
-canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #e5dfe0;display:block;margin:10px 0;}
-.btn{background:#637EA1;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:0.9rem;cursor:pointer;transition:all 0.2s;display:inline-block;}
+canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #d4d8e5;display:block;margin:10px 0;}
+.btn{background:#1835b4;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-family: system-ui, -apple-system, sans-serif;font-size:0.9rem;cursor:pointer;transition:all 0.2s;display:inline-block;}
 .btn:hover{background:#506a8a;}
-.chip{display:inline-block;padding:6px 14px;border-radius:20px;border:1.5px solid #e5dfe0;font-size:0.82rem;cursor:pointer;transition:all 0.2s;margin:3px;background:#fff;font-family:'Outfit',sans-serif;}
-.chip:hover,.chip.active{background:#637EA1;color:#fff;border-color:#637EA1;}
+.chip{display:inline-block;padding:6px 14px;border-radius:20px;border:1.5px solid #d4d8e5;font-size:0.82rem;cursor:pointer;transition:all 0.2s;margin:3px;background:#fff;font-family: system-ui, -apple-system, sans-serif;}
+.chip:hover,.chip.active{background:#1835b4;color:#fff;border-color:#1835b4;}
 .tabs{display:flex;gap:6px;margin-bottom:12px;}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
-.info-cell{background:#F5E6E8;border-radius:8px;padding:10px;font-size:0.82rem;}
+.info-cell{background:#e8ecf8;border-radius:8px;padding:10px;font-size:0.82rem;}
 .info-cell .label{color:#888;font-weight:500;font-size:0.75rem;}
-.info-cell .value{color:#1a1f2e;font-weight:600;margin-top:2px;}
+.info-cell .value{color:#1a2747;font-weight:600;margin-top:2px;}
 .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
 </style>
 </head>
@@ -120,8 +119,8 @@ function draw() {
   if (animProgress < 0.01) {
     // Full chain
     const startX = W/2 - ((m.total-1)*bondLen)/2;
-    drawChain(startX, yCenter, m.total, '#1a1f2e', false, -1);
-    ctx.fillStyle = '#637EA1'; ctx.font = '600 12px Outfit'; ctx.textAlign = 'center';
+    drawChain(startX, yCenter, m.total, '#1a2747', false, -1);
+    ctx.fillStyle = '#1835b4'; ctx.font = '600 12px Outfit'; ctx.textAlign = 'center';
     ctx.fillText(m.reactant, W/2, 24);
   } else {
     // Breaking apart
@@ -139,7 +138,7 @@ function draw() {
 
     // Product A (left, moves left)
     const offA = -sep;
-    drawChain(startXA + offA, yCenter, m.productA, '#637EA1', false, -1);
+    drawChain(startXA + offA, yCenter, m.productA, '#1835b4', false, -1);
 
     // Product B (right, moves right)
     const startXB = startXA + breakIdx * bondLen + sep;
@@ -156,7 +155,7 @@ function draw() {
     // Labels
     ctx.font = '600 11px Outfit'; ctx.textAlign = 'center';
     if (cracked) {
-      ctx.fillStyle = '#637EA1';
+      ctx.fillStyle = '#1835b4';
       ctx.fillText('Alkane product', startXA + offA + ((m.productA-1)*bondLen)/2, 24);
       ctx.fillStyle = '#d45';
       ctx.fillText('Alkene product', startXB + ((m.productB-1)*bondLen)/2, 24);

@@ -3,30 +3,27 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heating Curve</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .desc { text-align: center; font-size: 0.75rem; color: #4a5568; margin-bottom: 10px; }
-        canvas { display: block; margin: 0 auto 8px; border: 1px solid #e5dfe0; border-radius: 5px; cursor: crosshair; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; }
         .controls { display: flex; gap: 6px; justify-content: center; margin-bottom: 10px; }
-        .btn { background: #637EA1; color: #fff; border: none; border-radius: 5px; padding: 6px 14px; font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+        .btn { background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 14px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
         .btn:hover { background: #506a8a; }
-        .btn.active { background: #F4D35E; color: #1a1f2e; }
+        .btn.active { background: #4a3fc2; color: #1a2747; }
         .readout { display: flex; gap: 6px; margin-bottom: 8px; }
-        .readout-card { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px 8px; text-align: center; }
+        .readout-card { flex: 1; border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px 8px; text-align: center; }
         .readout-card .label { font-size: 0.65rem; color: #4a5568; font-weight: 500; }
-        .readout-card .value { font-size: 1rem; font-weight: 700; color: #637EA1; }
+        .readout-card .value { font-size: 1rem; font-weight: 700; color: #1835b4; }
         .readout-card .unit { font-size: 0.65rem; color: #4a5568; }
         .legend { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 8px; }
         .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.68rem; color: #4a5568; }
         .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
-        .explanation { border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px 10px; font-size: 0.72rem; color: #4a5568; }
-        .explanation strong { color: #637EA1; }
+        .explanation { border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px 10px; font-size: 0.72rem; color: #4a5568; }
+        .explanation strong { color: #1835b4; }
         .explanation p { margin-bottom: 4px; }
     </style>
 </head>
@@ -46,7 +43,7 @@
     </div>
     <div class="legend">
         <div class="legend-item"><div class="legend-dot" style="background:#3498db"></div>Ice (solid)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#F4D35E"></div>Melting (latent heat)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4a3fc2"></div>Melting (latent heat)</div>
         <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div>Water (liquid)</div>
         <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>Boiling (latent heat)</div>
         <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>Steam (gas)</div>
@@ -64,7 +61,7 @@ const ctx = canvas.getContext('2d');
 // Segments: ice heating, melting plateau, water heating, boiling plateau, steam heating
 const segments = [
     { t0: 0, t1: 3, T0: -20, T1: 0, color: '#3498db', label: 'Ice heating', state: 'Ice (solid)' },
-    { t0: 3, t1: 7, T0: 0, T1: 0, color: '#F4D35E', label: 'Melting (0°C)', state: 'Melting (solid+liquid)', plateau: true },
+    { t0: 3, t1: 7, T0: 0, T1: 0, color: '#4a3fc2', label: 'Melting (0°C)', state: 'Melting (solid+liquid)', plateau: true },
     { t0: 7, t1: 15, T0: 0, T1: 100, color: '#2ecc71', label: 'Water heating', state: 'Water (liquid)' },
     { t0: 15, t1: 24, T0: 100, T1: 100, color: '#e67e22', label: 'Boiling (100°C)', state: 'Boiling (liquid+gas)', plateau: true },
     { t0: 24, t1: 28, T0: 100, T1: 130, color: '#e74c3c', label: 'Steam heating', state: 'Steam (gas)' }
@@ -149,7 +146,7 @@ function draw() {
     ctx.setLineDash([]);
 
     // labels for reference lines
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.font = 'bold 9px Outfit';
     ctx.textAlign = 'left';
     ctx.fillText('Melting Point (0°C)', pad.left + cw - 100, y0 - 4);
@@ -198,7 +195,7 @@ function draw() {
         // dot
         ctx.beginPath();
         ctx.arc(x, y, 6, 0, Math.PI * 2);
-        ctx.fillStyle = '#637EA1';
+        ctx.fillStyle = '#1835b4';
         ctx.fill();
         ctx.strokeStyle = '#fff';
         ctx.lineWidth = 2;

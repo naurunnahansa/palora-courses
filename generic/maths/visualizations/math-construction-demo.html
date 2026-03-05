@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geometric Constructions</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.controls{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.ctrl-btn{flex:1;min-width:100px;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#637EA1}.ctrl-btn.active{background:#637EA1;color:#fff}.nav-controls{display:flex;gap:6px;margin-top:8px}.nav-btn{flex:1;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:8px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.nav-btn:hover{border-color:#637EA1}.nav-btn:disabled{opacity:.4;cursor:default}.step-info{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;margin-top:8px}.desc-box{background:#fafbfc;border-radius:5px;padding:8px;font-size:.78rem;color:#4a5568;text-align:center;margin-top:8px;line-height:1.5}.desc-box strong{color:#637EA1}</style>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.controls{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.ctrl-btn{flex:1;min-width:100px;background:#e8ecf8;border:2px solid transparent;border-radius:5px;padding:6px;font-family: system-ui, -apple-system, sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#1835b4}.ctrl-btn.active{background:#1835b4;color:#fff}.nav-controls{display:flex;gap:6px;margin-top:8px}.nav-btn{flex:1;background:#e8ecf8;border:2px solid transparent;border-radius:5px;padding:8px;font-family: system-ui, -apple-system, sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.nav-btn:hover{border-color:#1835b4}.nav-btn:disabled{opacity:.4;cursor:default}.step-info{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;color:#1835b4;margin-top:8px}.desc-box{background:#fafbfc;border-radius:5px;padding:8px;font-size:.78rem;color:#4a5568;text-align:center;margin-top:8px;line-height:1.5}.desc-box strong{color:#1835b4}</style>
 </head>
 <body>
 <div class="container">
@@ -62,8 +60,8 @@ function prevStep(){if(step>0){step--;draw()}}
 function resetSteps(){step=0;draw()}
 
 function drawPoint(x,y,label,color){
-    ctx.beginPath();ctx.arc(x,y,8,0,Math.PI*2);ctx.fillStyle=color||'#637EA1';ctx.fill();
-    ctx.fillStyle='#1a1f2e';ctx.font='700 26px Oswald';ctx.textAlign='center';ctx.textBaseline='top';
+    ctx.beginPath();ctx.arc(x,y,8,0,Math.PI*2);ctx.fillStyle=color||'#1835b4';ctx.fill();
+    ctx.fillStyle='#1a2747';ctx.font='700 26px Oswald';ctx.textAlign='center';ctx.textBaseline='top';
     ctx.fillText(label,x,y+12);
 }
 function drawArc(cx,cy,r,startA,endA,color){
@@ -74,7 +72,7 @@ function drawArc(cx,cy,r,startA,endA,color){
 const pA={x:280,y:400},pB={x:780,y:400};
 const pR=320;
 function drawPerpBisBase(){
-    ctx.strokeStyle='#1a1f2e';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(pA.x,pA.y);ctx.lineTo(pB.x,pB.y);ctx.stroke();
+    ctx.strokeStyle='#1a2747';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(pA.x,pA.y);ctx.lineTo(pB.x,pB.y);ctx.stroke();
     drawPoint(pA.x,pA.y,'A');drawPoint(pB.x,pB.y,'B');
 }
 function drawPerpBisStep1(){drawPerpBisBase()}
@@ -90,14 +88,14 @@ function drawPerpBisStep4(){
     drawPerpBisStep3();
     const mx=(pA.x+pB.x)/2,dx=pB.x-pA.x;
     const h=Math.sqrt(pR*pR-(dx/2)*(dx/2));
-    ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.setLineDash([]);
+    ctx.strokeStyle='#1835b4';ctx.lineWidth=3;ctx.setLineDash([]);
     ctx.beginPath();ctx.moveTo(mx,pA.y-h-60);ctx.lineTo(mx,pA.y+h+60);ctx.stroke();
     // Right angle marker
     const sz=20;
-    ctx.strokeStyle='#637EA1';ctx.lineWidth=2;
+    ctx.strokeStyle='#1835b4';ctx.lineWidth=2;
     ctx.beginPath();ctx.moveTo(mx+sz,pA.y);ctx.lineTo(mx+sz,pA.y-sz);ctx.lineTo(mx,pA.y-sz);ctx.stroke();
     // Midpoint
-    drawPoint(mx,pA.y,'M','#637EA1');
+    drawPoint(mx,pA.y,'M','#1835b4');
 }
 
 // Angle bisector steps
@@ -106,7 +104,7 @@ const rayLen=500;
 const oR1={x:oP.x+rayLen,y:oP.y};
 const oR2={x:oP.x+Math.cos(-oAng)*rayLen,y:oP.y+Math.sin(-oAng)*rayLen};
 function drawAngBisBase(){
-    ctx.strokeStyle='#1a1f2e';ctx.lineWidth=3;
+    ctx.strokeStyle='#1a2747';ctx.lineWidth=3;
     ctx.beginPath();ctx.moveTo(oP.x,oP.y);ctx.lineTo(oR1.x,oR1.y);ctx.stroke();
     ctx.beginPath();ctx.moveTo(oP.x,oP.y);ctx.lineTo(oR2.x,oR2.y);ctx.stroke();
     drawPoint(oP.x,oP.y,'O');
@@ -129,12 +127,12 @@ function drawAngBisStep3(){
 function drawAngBisStep4(){
     drawAngBisStep3();
     const halfAng=oAng/2;
-    ctx.strokeStyle='#637EA1';ctx.lineWidth=3;
+    ctx.strokeStyle='#1835b4';ctx.lineWidth=3;
     ctx.beginPath();ctx.moveTo(oP.x,oP.y);ctx.lineTo(oP.x+Math.cos(-halfAng)*rayLen,oP.y+Math.sin(-halfAng)*rayLen);ctx.stroke();
     // Angle marks
-    drawArc(oP.x,oP.y,80,-halfAng,0,'#637EA1');
-    drawArc(oP.x,oP.y,90,-oAng,-halfAng,'#637EA1');
-    ctx.fillStyle='#637EA1';ctx.font='600 22px Oswald';ctx.textAlign='left';
+    drawArc(oP.x,oP.y,80,-halfAng,0,'#1835b4');
+    drawArc(oP.x,oP.y,90,-oAng,-halfAng,'#1835b4');
+    ctx.fillStyle='#1835b4';ctx.font='600 22px Oswald';ctx.textAlign='left';
     ctx.fillText(Math.round(oAng*90/Math.PI)+'\u00B0',oP.x+100,oP.y-20);
     ctx.fillText(Math.round(oAng*90/Math.PI)+'\u00B0',oP.x+100,oP.y-60);
 }
@@ -143,7 +141,7 @@ function drawAngBisStep4(){
 const sA={x:180,y:550},sBaseEnd={x:880,y:550};
 const sR=400;
 function draw60Base(){
-    ctx.strokeStyle='#1a1f2e';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(sA.x,sA.y);ctx.lineTo(sBaseEnd.x,sBaseEnd.y);ctx.stroke();
+    ctx.strokeStyle='#1a2747';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(sA.x,sA.y);ctx.lineTo(sBaseEnd.x,sBaseEnd.y);ctx.stroke();
     drawPoint(sA.x,sA.y,'A');
 }
 function draw60Step1(){draw60Base()}
@@ -163,11 +161,11 @@ function draw60Step3(){
 function draw60Step4(){
     draw60Step3();
     const cx2=sA.x+sR*Math.cos(-Math.PI/3),cy2=sA.y+sR*Math.sin(-Math.PI/3);
-    ctx.strokeStyle='#637EA1';ctx.lineWidth=3;
+    ctx.strokeStyle='#1835b4';ctx.lineWidth=3;
     ctx.beginPath();ctx.moveTo(sA.x,sA.y);ctx.lineTo(cx2+(cx2-sA.x)*0.3,cy2+(cy2-sA.y)*0.3);ctx.stroke();
     // Angle arc
-    drawArc(sA.x,sA.y,100,-Math.PI/3,0,'#637EA1');
-    ctx.fillStyle='#637EA1';ctx.font='700 28px Oswald';ctx.textAlign='left';
+    drawArc(sA.x,sA.y,100,-Math.PI/3,0,'#1835b4');
+    ctx.fillStyle='#1835b4';ctx.font='700 28px Oswald';ctx.textAlign='left';
     ctx.fillText('60\u00B0',sA.x+110,sA.y-40);
 }
 

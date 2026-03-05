@@ -4,31 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Series Circuit Builder</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         canvas { display: block; width: 100%; border-radius: 8px; border: 1px solid #e2e8f0; background: #fafbfc; margin-bottom: 10px; }
         .controls { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
         .slider-row { display: flex; align-items: center; gap: 8px; }
         .slider-row label { font-size: 0.82rem; font-weight: 600; color: #4a5568; min-width: 90px; }
-        .slider-row input[type="range"] { flex: 1; accent-color: #637EA1; height: 6px; }
-        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #637EA1; min-width: 48px; text-align: right; }
+        .slider-row input[type="range"] { flex: 1; accent-color: #1835b4; height: 6px; }
+        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #1835b4; min-width: 48px; text-align: right; }
         .readings { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-        .reading-card { background: #F5E6E8; border-radius: 6px; padding: 8px 10px; text-align: center; }
+        .reading-card { background: #e8ecf8; border-radius: 6px; padding: 8px 10px; text-align: center; }
         .reading-card .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
-        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 1.05rem; color: #637EA1; margin-top: 2px; }
+        .reading-card .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.05rem; color: #1835b4; margin-top: 2px; }
         .reading-card.full { grid-column: 1 / -1; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Series Circuit Builder</h1>
-        <canvas id="circuitCanvas" width="550" height="320"></canvas>
+        <canvas id="circuitCanvas" width="550" height="240"></canvas>
         <div class="controls">
             <div class="slider-row">
                 <label>Battery (V)</label>
@@ -125,7 +122,7 @@
 
         function drawBattery(x, y1, y2) {
             const cy = (y1 + y2) / 2;
-            ctx.strokeStyle = '#1a1f2e';
+            ctx.strokeStyle = '#1a2747';
             ctx.lineWidth = 2;
             // Wires to battery
             ctx.beginPath(); ctx.moveTo(x, y1); ctx.lineTo(x, cy - 14); ctx.stroke();
@@ -139,7 +136,7 @@
             ctx.beginPath(); ctx.moveTo(x - 6, cy + 14); ctx.lineTo(x + 6, cy + 14); ctx.stroke();
             ctx.lineWidth = 2;
             // Labels
-            ctx.font = "600 11px 'Outfit'";
+            ctx.font = "600 11px 'HK Grotesk'";
             ctx.fillStyle = '#e74c3c';
             ctx.textAlign = 'right';
             ctx.fillText('+', x - 15, cy - 8);
@@ -150,7 +147,7 @@
         function drawResistor(x1, y, x2, label, vLabel) {
             const cx = (x1 + x2) / 2;
             const rw = Math.min(40, (x2 - x1) * 0.4);
-            ctx.strokeStyle = '#1a1f2e';
+            ctx.strokeStyle = '#1a2747';
             ctx.lineWidth = 2;
             // Wire to resistor
             ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(cx - rw, y); ctx.stroke();
@@ -167,26 +164,26 @@
             }
             ctx.stroke();
             // Label
-            ctx.font = "600 11px 'Outfit'";
-            ctx.fillStyle = '#637EA1';
+            ctx.font = "600 11px 'HK Grotesk'";
+            ctx.fillStyle = '#1835b4';
             ctx.textAlign = 'center';
             ctx.fillText(label, cx, y - 14);
             // Voltage label
-            ctx.font = "500 10px 'Outfit'";
+            ctx.font = "500 10px 'HK Grotesk'";
             ctx.fillStyle = '#e74c3c';
             ctx.fillText(vLabel, cx, y + 22);
         }
 
         function drawAmmeter(x1, y, x2) {
             const cx = (x1 + x2) / 2;
-            ctx.strokeStyle = '#1a1f2e';
+            ctx.strokeStyle = '#1a2747';
             ctx.lineWidth = 2;
             ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(cx - 14, y); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(cx + 14, y); ctx.lineTo(x2, y); ctx.stroke();
             // Circle
             ctx.beginPath(); ctx.arc(cx, y, 14, 0, Math.PI * 2); ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2; ctx.stroke();
             ctx.fillStyle = '#fff'; ctx.fill();
-            ctx.font = "700 12px 'Oswald'";
+            ctx.font = "700 12px 'HK Grotesk'";
             ctx.fillStyle = '#e74c3c';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -198,7 +195,7 @@
             ctx.beginPath(); ctx.arc(x, y, 13, 0, Math.PI * 2);
             ctx.strokeStyle = '#3498db'; ctx.lineWidth = 1.5; ctx.stroke();
             ctx.fillStyle = '#fff'; ctx.fill();
-            ctx.font = "700 11px 'Oswald'";
+            ctx.font = "700 11px 'HK Grotesk'";
             ctx.fillStyle = '#3498db';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -243,7 +240,7 @@
 
             const numDots = 18;
             const spacing = totalLen / numDots;
-            ctx.fillStyle = '#F4D35E';
+            ctx.fillStyle = '#4a3fc2';
 
             for (let i = 0; i < numDots; i++) {
                 let dist = ((animTime * speed * 60 + i * spacing) % totalLen + totalLen) % totalLen;
@@ -269,7 +266,7 @@
             const p = getCircuitPath();
 
             // Draw wires
-            ctx.strokeStyle = '#1a1f2e';
+            ctx.strokeStyle = '#1a2747';
             ctx.lineWidth = 2;
             // Corners
             ctx.beginPath();
@@ -299,21 +296,21 @@
             drawVoltmeter(p.mx, p.b + 32, v.V.toFixed(1) + 'V');
 
             // Battery voltage label
-            ctx.font = "600 11px 'Outfit'";
-            ctx.fillStyle = '#637EA1';
+            ctx.font = "600 11px 'HK Grotesk'";
+            ctx.fillStyle = '#1835b4';
             ctx.textAlign = 'center';
             ctx.fillText(v.V.toFixed(1) + ' V', p.l - 2, p.my + 1);
 
             // Current direction arrow on right side
             const arrowY = p.my;
-            ctx.fillStyle = '#F4D35E';
+            ctx.fillStyle = '#4a3fc2';
             ctx.beginPath();
             ctx.moveTo(p.r + 4, arrowY - 8);
             ctx.lineTo(p.r + 12, arrowY);
             ctx.lineTo(p.r + 4, arrowY + 8);
             ctx.closePath();
             ctx.fill();
-            ctx.font = "500 9px 'Outfit'";
+            ctx.font = "500 9px 'HK Grotesk'";
             ctx.fillStyle = '#4a5568';
             ctx.textAlign = 'left';
             ctx.fillText('I', p.r + 14, arrowY + 4);

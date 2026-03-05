@@ -4,25 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Group 1 Alkali Metals Reactivity</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
-  h1 { color: #637EA1; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { color: #1835b4; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
   .subtitle { text-align: center; color: #888; font-size: 0.85rem; margin-bottom: 16px; }
   canvas { width: 100%; background: #fafbfc; border-radius: 10px; display: block; }
-  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.85rem; transition: background 0.2s; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; transition: background 0.2s; }
   .btn:hover { background: #4f6a8a; }
-  .chip { display: inline-block; padding: 8px 18px; border-radius: 20px; border: 1.5px solid #e5dfe0; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; font-weight: 600; }
-  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
-  .info-box { background: #F5E6E8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.6; }
-  .info-box strong { color: #637EA1; }
+  .chip { display: inline-block; padding: 8px 18px; border-radius: 20px; border: 1.5px solid #d4d8e5; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; font-weight: 600; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  .info-box { background: #e8ecf8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.6; }
+  .info-box strong { color: #1835b4; }
   .chip-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 14px; }
   .btn-row { display: flex; gap: 10px; justify-content: center; margin-top: 14px; }
-  .eq-box { background: #fafbfc; border: 1px solid #e5dfe0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 0.85rem; text-align: center; }
+  .eq-box { background: #fafbfc; border: 1px solid #d4d8e5; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 0.85rem; text-align: center; }
   .trend-arrow { display: flex; align-items: center; justify-content: center; margin-top: 14px; gap: 10px; }
   .trend-arrow .arrow { width: 40px; height: 120px; position: relative; }
   .trend-arrow .arrow::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 16px solid #e74c3c; }
@@ -58,7 +57,7 @@
       <div class="arrow">
         <div class="arrow-bar"></div>
       </div>
-      <div style="font-size:0.8rem; color:#637EA1; font-weight:600; writing-mode:vertical-lr; text-orientation:mixed;">REACTIVITY INCREASES</div>
+      <div style="font-size:0.8rem; color:#1835b4; font-weight:600; writing-mode:vertical-lr; text-orientation:mixed;">REACTIVITY INCREASES</div>
     </div>
   </div>
 </div>
@@ -140,7 +139,7 @@ function drawScene() {
   const wx = 100, wy = 130, ww = 300, wh = 130;
   ctx.fillStyle = 'rgba(52,152,219,0.15)';
   ctx.fillRect(wx, wy, ww, wh);
-  ctx.strokeStyle = '#637EA1';
+  ctx.strokeStyle = '#1835b4';
   ctx.lineWidth = 2;
   ctx.strokeRect(wx, wy, ww, wh);
 
@@ -172,7 +171,7 @@ function drawScene() {
     ctx.fillStyle = '#bdc3c7';
     ctx.fillRect(W / 2 - 10, 60, 20, 20);
     ctx.font = '700 12px Oswald';
-    ctx.fillStyle = '#1a1f2e';
+    ctx.fillStyle = '#1a2747';
     ctx.textAlign = 'center';
     ctx.fillText(m.sym, W / 2, 75);
     return;
@@ -260,7 +259,7 @@ function drawScene() {
 
   if (progress >= 1) {
     ctx.font = '600 13px Outfit';
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.fillText('Reaction complete', W / 2, 50);
     ctx.font = '400 10px Outfit';
     ctx.fillStyle = '#888';

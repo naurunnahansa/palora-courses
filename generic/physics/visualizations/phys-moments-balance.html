@@ -3,32 +3,29 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moments & Balance</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .info { text-align: center; font-size: 0.75rem; color: #4a5568; margin-bottom: 8px; }
-        .formula { text-align: center; font-size: 0.8rem; font-weight: 600; color: #637EA1; background: #F5E6E8; border-radius: 5px; padding: 6px; margin-bottom: 10px; }
+        .formula { text-align: center; font-size: 0.8rem; font-weight: 600; color: #1835b4; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 10px; }
         canvas { display: block; margin: 0 auto; border-radius: 5px; }
         .controls { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
-        .btn { background: #637EA1; color: #fff; border: none; border-radius: 5px; padding: 6px 12px; font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+        .btn { background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 12px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
         .btn:hover { background: #506a8a; }
-        .btn.secondary { background: #F4D35E; color: #1a1f2e; }
+        .btn.secondary { background: #4a3fc2; color: #1a2747; }
         .btn.secondary:hover { background: #e5c44f; }
         .moments-display { display: flex; gap: 8px; margin-top: 10px; }
-        .moment-card { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px; text-align: center; }
-        .moment-card h3 { font-family: 'Oswald', sans-serif; font-size: 0.75rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .moment-card { flex: 1; border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px; text-align: center; }
+        .moment-card h3 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
         .moment-card .val { font-size: 1.1rem; font-weight: 700; }
         .moment-card.cw .val { color: #dc3545; }
         .moment-card.ccw .val { color: #28a745; }
-        .moment-card.result .val { color: #637EA1; }
+        .moment-card.result .val { color: #1835b4; }
         .moment-card .unit { font-size: 0.65rem; color: #4a5568; }
-        .weight-list { margin-top: 8px; font-size: 0.7rem; color: #4a5568; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px 8px; }
-        .weight-list strong { color: #1a1f2e; }
+        .weight-list { margin-top: 8px; font-size: 0.7rem; color: #4a5568; border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px 8px; }
+        .weight-list strong { color: #1a2747; }
     </style>
 </head>
 <body>
@@ -136,10 +133,10 @@ function draw() {
     ctx.lineTo(PIVOT_X - 18, BEAM_Y + 50);
     ctx.lineTo(PIVOT_X + 18, BEAM_Y + 50);
     ctx.closePath();
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.fill();
     // ground
-    ctx.fillStyle = '#e5dfe0';
+    ctx.fillStyle = '#d4d8e5';
     ctx.fillRect(20, BEAM_Y + 48, canvas.width - 40, 4);
     // beam with rotation
     ctx.save();
@@ -171,9 +168,9 @@ function draw() {
     // pivot marker
     ctx.beginPath();
     ctx.arc(0, 0, 5, 0, Math.PI * 2);
-    ctx.fillStyle = '#F4D35E';
+    ctx.fillStyle = '#4a3fc2';
     ctx.fill();
-    ctx.strokeStyle = '#637EA1';
+    ctx.strokeStyle = '#1835b4';
     ctx.lineWidth = 1.5;
     ctx.stroke();
     // weights
@@ -190,7 +187,7 @@ function draw() {
         ctx.stroke();
         // weight block
         const gradient = ctx.createLinearGradient(wx - ww/2, 20, wx + ww/2, 20 + wh);
-        gradient.addColorStop(0, w.force === 5 ? '#F4D35E' : w.force === 10 ? '#637EA1' : '#dc3545');
+        gradient.addColorStop(0, w.force === 5 ? '#4a3fc2' : w.force === 10 ? '#1835b4' : '#dc3545');
         gradient.addColorStop(1, w.force === 5 ? '#e5c44f' : w.force === 10 ? '#506a8a' : '#b02a37');
         ctx.fillStyle = gradient;
         ctx.beginPath();

@@ -4,26 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Air Pollutant Explorer</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Outfit',sans-serif;background:#f0f2f5;color:#1a1f2e;min-height:100vh;display:flex;justify-content:center;padding:20px;}
-h1,h2,h3,h4{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
-.container{max-width:550px;width:100%;margin:0 auto;}
-.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #e5dfe0;padding:24px;margin-bottom:16px;}
-.card-title{font-size:1.3rem;color:#637EA1;margin-bottom:4px;}
+body{font-family: system-ui, -apple-system, sans-serif;background:#f0f2f5;color:#1a2747;min-height:100vh;display:flex;justify-content:center;padding:20px;}
+h1,h2,h3,h4{font-family: system-ui, -apple-system, sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
+.container{max-width: 100%;width:100%;margin:0 auto;}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #d4d8e5;padding:24px;margin-bottom:16px;}
+.card-title{font-size:1.3rem;color:#1835b4;margin-bottom:4px;}
 .card-subtitle{font-size:0.85rem;color:#888;margin-bottom:16px;}
-canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #e5dfe0;display:block;margin:10px 0;}
-.chip{display:inline-block;padding:6px 14px;border-radius:20px;border:1.5px solid #e5dfe0;font-size:0.82rem;cursor:pointer;transition:all 0.2s;margin:3px;background:#fff;font-family:'Outfit',sans-serif;}
-.chip:hover,.chip.active{background:#637EA1;color:#fff;border-color:#637EA1;}
+canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #d4d8e5;display:block;margin:10px 0;}
+.chip{display:inline-block;padding:6px 14px;border-radius:20px;border:1.5px solid #d4d8e5;font-size:0.82rem;cursor:pointer;transition:all 0.2s;margin:3px;background:#fff;font-family: system-ui, -apple-system, sans-serif;}
+.chip:hover,.chip.active{background:#1835b4;color:#fff;border-color:#1835b4;}
 .tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
-.detail-card{background:#F5E6E8;border-radius:12px;padding:16px;margin-top:10px;display:none;}
+.detail-card{background:#e8ecf8;border-radius:12px;padding:16px;margin-top:10px;display:none;}
 .detail-card.show{display:block;}
-.detail-card h3{color:#637EA1;font-size:1rem;margin-bottom:8px;}
+.detail-card h3{color:#1835b4;font-size:1rem;margin-bottom:8px;}
 .detail-row{padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.06);font-size:0.85rem;}
 .detail-row:last-child{border-bottom:none;}
 .detail-row .dlabel{color:#888;font-weight:500;font-size:0.78rem;margin-bottom:2px;}
-.detail-row .dvalue{color:#1a1f2e;font-weight:500;line-height:1.4;}
+.detail-row .dvalue{color:#1a2747;font-weight:500;line-height:1.4;}
 </style>
 </head>
 <body>

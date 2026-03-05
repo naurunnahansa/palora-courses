@@ -4,29 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Periodic Trends Visualiser</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
-  h1 { color: #637EA1; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { color: #1835b4; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
   .subtitle { text-align: center; color: #888; font-size: 0.85rem; margin-bottom: 16px; }
-  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.85rem; transition: background 0.2s; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; transition: background 0.2s; }
   .btn:hover { background: #4f6a8a; }
-  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #e5dfe0; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
-  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
-  .info-box { background: #F5E6E8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.6; }
-  .info-box strong { color: #637EA1; }
+  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #d4d8e5; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  .info-box { background: #e8ecf8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.6; }
+  .info-box strong { color: #1835b4; }
   .chip-row { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; margin-bottom: 14px; }
   .pt-grid { display: grid; grid-template-columns: repeat(18, 1fr); gap: 2px; }
   .el-cell { aspect-ratio: 1; border-radius: 3px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.55rem; position: relative; transition: all 0.3s; }
-  .el-cell .sym { font-weight: 700; font-size: 0.7rem; font-family: 'Oswald', sans-serif; line-height: 1; }
+  .el-cell .sym { font-weight: 700; font-size: 0.7rem; font-family: system-ui, -apple-system, sans-serif; line-height: 1; }
   .el-cell .num { font-size: 0.45rem; opacity: 0.6; }
   .el-cell.empty { background: transparent !important; }
   .arrow-overlay { position: relative; margin-top: 14px; }
-  .arrow-h, .arrow-v { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #637EA1; font-weight: 600; }
+  .arrow-h, .arrow-v { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #1835b4; font-weight: 600; }
   .arrow-h { justify-content: center; margin-bottom: 8px; }
   .arrow-bar-h { height: 4px; flex: 1; max-width: 200px; border-radius: 2px; }
   .legend-bar { height: 14px; border-radius: 4px; margin-top: 10px; }
@@ -162,7 +161,7 @@ function buildGrid() {
           bg = colorLerp(t.gradientL, t.gradientR, val);
         }
         cell.style.background = bg;
-        cell.style.color = '#1a1f2e';
+        cell.style.color = '#1a2747';
         cell.innerHTML = `<span class="num">${el.z}</span><span class="sym">${el.sym}</span>`;
       }
       grid.appendChild(cell);

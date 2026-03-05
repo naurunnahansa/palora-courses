@@ -3,27 +3,24 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Newton's Third Law</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
         .subtitle { text-align: center; font-size: 0.75rem; color: #4a5568; margin-bottom: 10px; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
         .scene-btns { display: flex; gap: 5px; flex-wrap: wrap; }
-        .scene-btn { background: #F5E6E8; border: 2px solid transparent; border-radius: 5px; padding: 6px 12px; font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; flex: 1; text-align: center; }
-        .scene-btn:hover { border-color: #637EA1; }
-        .scene-btn.active { background: #637EA1; color: #fff; border-color: #637EA1; }
-        .info-box { background: #F5E6E8; border-radius: 5px; padding: 10px; margin-top: 8px; font-size: 0.78rem; color: #4a5568; }
-        .info-box strong { color: #637EA1; }
+        .scene-btn { background: #e8ecf8; border: 2px solid transparent; border-radius: 5px; padding: 6px 12px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; flex: 1; text-align: center; }
+        .scene-btn:hover { border-color: #1835b4; }
+        .scene-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+        .info-box { background: #e8ecf8; border-radius: 5px; padding: 10px; margin-top: 8px; font-size: 0.78rem; color: #4a5568; }
+        .info-box strong { color: #1835b4; }
         .force-pair { display: flex; gap: 8px; margin-top: 6px; }
-        .force-card { flex: 1; background: #fff; border-radius: 5px; padding: 8px; border: 1px solid #e5dfe0; text-align: center; }
-        .force-card .dir { font-family: 'Oswald', sans-serif; font-size: 1.2rem; }
+        .force-card { flex: 1; background: #fff; border-radius: 5px; padding: 8px; border: 1px solid #d4d8e5; text-align: center; }
+        .force-card .dir { font-family: system-ui, -apple-system, sans-serif; font-size: 1.2rem; }
         .force-card .desc { font-size: 0.72rem; color: #4a5568; }
         .action { border-left: 3px solid #28a745; }
         .reaction { border-left: 3px solid #dc3545; }
@@ -127,7 +124,7 @@ function drawBookTable() {
     ctx.fillRect(W*0.7-20, tableY+20, 20, H*0.3);
     // Book
     const bookW = 100, bookH = 30;
-    ctx.fillStyle = '#637EA1'; ctx.fillRect(W*0.5-bookW/2, tableY-bookH, bookW, bookH);
+    ctx.fillStyle = '#1835b4'; ctx.fillRect(W*0.5-bookW/2, tableY-bookH, bookW, bookH);
     ctx.fillStyle = '#fff'; ctx.font = '600 14px Outfit'; ctx.textAlign = 'center';
     ctx.fillText('Book', W*0.5, tableY - bookH/2 + 5);
     // Force arrows
@@ -142,7 +139,7 @@ function drawPersonWall() {
     ctx.fillStyle = '#d0d0d0'; ctx.fillRect(W*0.7, 0, W*0.08, groundY);
     // Person (stick figure)
     const px = W * 0.45;
-    ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 4;
+    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 4;
     ctx.beginPath(); ctx.arc(px, groundY - 120, 20, 0, Math.PI*2); ctx.stroke(); // head
     ctx.beginPath(); ctx.moveTo(px, groundY - 100); ctx.lineTo(px, groundY - 40); ctx.stroke(); // body
     ctx.beginPath(); ctx.moveTo(px, groundY - 40); ctx.lineTo(px - 25, groundY); ctx.stroke(); // legs
@@ -157,14 +154,14 @@ function drawRocket() {
     const W = canvas.width, H = canvas.height;
     const rx = W * 0.5, ry = H * 0.35;
     // Rocket body
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.beginPath(); ctx.moveTo(rx, ry - 60); ctx.lineTo(rx - 25, ry + 40); ctx.lineTo(rx + 25, ry + 40); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#F4D35E'; ctx.fillRect(rx - 15, ry + 40, 30, 15);
+    ctx.fillStyle = '#4a3fc2'; ctx.fillRect(rx - 15, ry + 40, 30, 15);
     // Exhaust
     const flicker = Math.sin(animT * 8) * 10;
     ctx.fillStyle = '#ff6b3520';
     ctx.beginPath(); ctx.moveTo(rx - 20, ry + 55); ctx.lineTo(rx, ry + 110 + flicker); ctx.lineTo(rx + 20, ry + 55); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#F4D35E40';
+    ctx.fillStyle = '#4a3fc240';
     ctx.beginPath(); ctx.moveTo(rx - 12, ry + 55); ctx.lineTo(rx, ry + 90 + flicker); ctx.lineTo(rx + 12, ry + 55); ctx.closePath(); ctx.fill();
     const pulse = Math.sin(animT * 3) * 8;
     drawArrow(rx, ry + 55, rx, ry + 150 + pulse, '#28a745', 'Gas pushed down (Action)');
@@ -178,11 +175,11 @@ function drawSwimmer() {
     ctx.strokeStyle = '#4a90d9'; ctx.lineWidth = 1; ctx.setLineDash([6,4]);
     ctx.beginPath(); ctx.moveTo(0, waterY); ctx.lineTo(W, waterY); ctx.stroke(); ctx.setLineDash([]);
     const sx = W * 0.5, sy = waterY + 40;
-    ctx.fillStyle = '#F4D35E'; ctx.beginPath();
+    ctx.fillStyle = '#4a3fc2'; ctx.beginPath();
     ctx.ellipse(sx, sy, 50, 15, 0, 0, Math.PI * 2); ctx.fill();
     ctx.strokeStyle = '#c9a020'; ctx.lineWidth = 2; ctx.stroke();
     // head
-    ctx.beginPath(); ctx.arc(sx + 55, sy - 5, 12, 0, Math.PI*2); ctx.fillStyle = '#F4D35E'; ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.arc(sx + 55, sy - 5, 12, 0, Math.PI*2); ctx.fillStyle = '#4a3fc2'; ctx.fill(); ctx.stroke();
     // arms
     const armAngle = Math.sin(animT * 4) * 0.3;
     ctx.strokeStyle = '#c9a020'; ctx.lineWidth = 3;

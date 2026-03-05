@@ -3,33 +3,30 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Efficiency Calculator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .formula-box { text-align: center; background: #F5E6E8; border-radius: 5px; padding: 6px; margin-bottom: 10px; font-size: 0.8rem; font-weight: 600; color: #637EA1; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .formula-box { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 10px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
         .presets { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; margin-bottom: 10px; }
-        .preset-btn { background: #fff; border: 1px solid #e5dfe0; border-radius: 5px; padding: 5px 10px; font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-        .preset-btn:hover, .preset-btn.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        .preset-btn { background: #fff; border: 1px solid #d4d8e5; border-radius: 5px; padding: 5px 10px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.72rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .preset-btn:hover, .preset-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
         .input-row { display: flex; gap: 8px; margin-bottom: 8px; }
         .input-group { flex: 1; }
         .input-group label { display: block; font-size: 0.72rem; font-weight: 600; color: #4a5568; margin-bottom: 3px; }
-        .input-group input { width: 100%; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; color: #1a1f2e; }
-        .input-group input:focus { outline: none; border-color: #637EA1; }
-        .result-card { background: linear-gradient(135deg, #637EA1, #506a8a); color: #fff; border-radius: 5px; padding: 10px; text-align: center; margin-bottom: 10px; }
-        .result-card .eff-label { font-family: 'Oswald', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; }
+        .input-group input { width: 100%; padding: 6px 8px; border: 1px solid #d4d8e5; border-radius: 5px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1a2747; }
+        .input-group input:focus { outline: none; border-color: #1835b4; }
+        .result-card { background: linear-gradient(135deg, #1835b4, #506a8a); color: #fff; border-radius: 5px; padding: 10px; text-align: center; margin-bottom: 10px; }
+        .result-card .eff-label { font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; }
         .result-card .eff-value { font-size: 2rem; font-weight: 700; }
         .result-card .eff-bar { height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; margin-top: 6px; overflow: hidden; }
-        .result-card .eff-fill { height: 100%; border-radius: 4px; background: #F4D35E; transition: width 0.4s; }
-        .sankey { border: 1px solid #e5dfe0; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
-        .sankey h2 { font-family: 'Oswald', sans-serif; font-size: 0.82rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; text-align: center; }
+        .result-card .eff-fill { height: 100%; border-radius: 4px; background: #4a3fc2; transition: width 0.4s; }
+        .sankey { border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
+        .sankey h2 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.82rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; text-align: center; }
         canvas { display: block; margin: 0 auto; }
-        .bar-chart { border: 1px solid #e5dfe0; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
-        .bar-chart h2 { font-family: 'Oswald', sans-serif; font-size: 0.82rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; text-align: center; }
+        .bar-chart { border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
+        .bar-chart h2 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.82rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; text-align: center; }
         .error-msg { color: #dc3545; font-size: 0.72rem; text-align: center; margin-top: 4px; display: none; }
     </style>
 </head>
@@ -116,7 +113,7 @@ function drawSankey(total, useful, eff) {
     const startX = 30, midX = w * 0.45, endX = w - 80;
     const topY = (h - totalH) / 2;
     // input arrow
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.beginPath();
     ctx.moveTo(startX, topY);
     ctx.lineTo(midX, topY);
@@ -187,15 +184,15 @@ function drawBarChart(currentEff) {
         ctx.beginPath(); ctx.roundRect(pad.left, y, cw, barH, 3); ctx.fill();
         // value bar
         const isHighlighted = (currentPreset && item.name === presets[currentPreset].name) || item.custom;
-        ctx.fillStyle = isHighlighted ? '#F4D35E' : '#637EA1';
+        ctx.fillStyle = isHighlighted ? '#4a3fc2' : '#1835b4';
         if (barW > 0) { ctx.beginPath(); ctx.roundRect(pad.left, y, barW, barH, 3); ctx.fill(); }
         // label
-        ctx.fillStyle = '#1a1f2e';
+        ctx.fillStyle = '#1a2747';
         ctx.font = (isHighlighted ? 'bold ' : '') + '11px Outfit';
         ctx.textAlign = 'right';
         ctx.fillText(item.name, pad.left - 6, y + barH / 2 + 4);
         // value
-        ctx.fillStyle = isHighlighted ? '#1a1f2e' : '#fff';
+        ctx.fillStyle = isHighlighted ? '#1a2747' : '#fff';
         ctx.font = 'bold 10px Outfit';
         ctx.textAlign = 'left';
         if (barW > 35) ctx.fillText(item.eff.toFixed(0) + '%', pad.left + 6, y + barH / 2 + 4);

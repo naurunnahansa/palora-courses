@@ -4,33 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bond Energy Calculator</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
-  h1 { font-size: 1.5rem; color: #637EA1; margin-bottom: 4px; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 4px; }
   .subtitle { font-size: 0.85rem; color: #888; margin-bottom: 16px; }
-  canvas { width: 100%; background: #fafbfc; border-radius: 12px; border: 1px solid #e5dfe0; display: block; }
-  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  canvas { width: 100%; background: #fafbfc; border-radius: 12px; border: 1px solid #d4d8e5; display: block; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
   .btn:hover { background: #506a8a; }
-  .chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; border: 1.5px solid #e5dfe0; background: #fff; cursor: pointer; transition: all 0.2s; margin: 3px; }
-  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; border: 1.5px solid #d4d8e5; background: #fff; cursor: pointer; transition: all 0.2s; margin: 3px; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
   .controls { margin-top: 14px; }
   .toggle-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
   .bond-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.82rem; }
-  .bond-table th { font-family: 'Oswald', sans-serif; font-weight: 600; text-align: left; padding: 6px 8px; border-bottom: 2px solid #e5dfe0; color: #637EA1; }
+  .bond-table th { font-family: system-ui, -apple-system, sans-serif; font-weight: 600; text-align: left; padding: 6px 8px; border-bottom: 2px solid #d4d8e5; color: #1835b4; }
   .bond-table td { padding: 5px 8px; border-bottom: 1px solid #f0f0f0; }
-  .bond-table .total { font-weight: 700; border-top: 2px solid #637EA1; }
-  .section-label { font-family: 'Oswald', sans-serif; font-size: 0.95rem; font-weight: 600; margin: 14px 0 6px; }
-  .result-box { background: #F5E6E8; border-radius: 10px; padding: 14px 18px; margin-top: 14px; text-align: center; }
-  .result-box .dh { font-family: 'Oswald', sans-serif; font-size: 1.6rem; font-weight: 700; }
+  .bond-table .total { font-weight: 700; border-top: 2px solid #1835b4; }
+  .section-label { font-family: system-ui, -apple-system, sans-serif; font-size: 0.95rem; font-weight: 600; margin: 14px 0 6px; }
+  .result-box { background: #e8ecf8; border-radius: 10px; padding: 14px 18px; margin-top: 14px; text-align: center; }
+  .result-box .dh { font-family: system-ui, -apple-system, sans-serif; font-size: 1.6rem; font-weight: 700; }
   .result-box .dh.neg { color: #c06060; }
-  .result-box .dh.pos { color: #637EA1; }
+  .result-box .dh.pos { color: #1835b4; }
   .result-box .label { font-size: 0.82rem; color: #888; }
-  .equation-display { background: #fafbfc; border-radius: 10px; padding: 12px; text-align: center; font-size: 1rem; font-weight: 600; border: 1px solid #e5dfe0; margin-bottom: 10px; }
+  .equation-display { background: #fafbfc; border-radius: 10px; padding: 12px; text-align: center; font-size: 1rem; font-weight: 600; border: 1px solid #d4d8e5; margin-bottom: 10px; }
 </style>
 </head>
 <body>
@@ -109,7 +108,7 @@ function render() {
   });
   html += `<tr class="total"><td colspan="3">Total energy in</td><td>${totalBroken} kJ</td></tr></table>`;
 
-  html += '<p class="section-label" style="color:#637EA1;">Bonds Made (energy released)</p>';
+  html += '<p class="section-label" style="color:#1835b4;">Bonds Made (energy released)</p>';
   html += '<table class="bond-table"><tr><th>Bond</th><th>Energy (kJ/mol)</th><th>Count</th><th>Subtotal</th></tr>';
   rxn.made.forEach(b => {
     const sub = b.energy * b.count;
@@ -151,7 +150,7 @@ function drawChart(broken, made) {
   const h2 = (made / maxVal) * plotH;
 
   // Axes
-  ctx.strokeStyle = '#1a1f2e';
+  ctx.strokeStyle = '#1a2747';
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(pad.l, pad.t);
@@ -160,7 +159,7 @@ function drawChart(broken, made) {
   ctx.stroke();
 
   ctx.font = '600 22px Oswald';
-  ctx.fillStyle = '#1a1f2e';
+  ctx.fillStyle = '#1a2747';
   ctx.save();
   ctx.translate(28, pad.t + plotH / 2);
   ctx.rotate(-Math.PI / 2);
@@ -179,7 +178,7 @@ function drawChart(broken, made) {
 
   // Bar 2: Made
   const grad2 = ctx.createLinearGradient(0, H - pad.b - h2, 0, H - pad.b);
-  grad2.addColorStop(0, '#637EA1');
+  grad2.addColorStop(0, '#1835b4');
   grad2.addColorStop(1, '#a0bcd8');
   ctx.fillStyle = grad2;
   ctx.beginPath();
@@ -192,7 +191,7 @@ function drawChart(broken, made) {
   ctx.fillStyle = '#d45';
   ctx.fillText('Bonds Broken', x1 + barW / 2, H - pad.b + 28);
   ctx.fillText(broken + ' kJ', x1 + barW / 2, H - pad.b - h1 - 12);
-  ctx.fillStyle = '#637EA1';
+  ctx.fillStyle = '#1835b4';
   ctx.fillText('Bonds Made', x2 + barW / 2, H - pad.b + 28);
   ctx.fillText(made + ' kJ', x2 + barW / 2, H - pad.b - h2 - 12);
 }

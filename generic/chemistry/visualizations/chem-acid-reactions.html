@@ -4,25 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Acid Reaction Explorer</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
-  h1 { color: #637EA1; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { color: #1835b4; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
   .subtitle { text-align: center; color: #888; font-size: 0.85rem; margin-bottom: 16px; }
   canvas { width: 100%; background: #fafbfc; border-radius: 10px; display: block; }
-  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.85rem; transition: background 0.2s; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; transition: background 0.2s; }
   .btn:hover { background: #4f6a8a; }
-  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #e5dfe0; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
-  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
-  .info-box { background: #F5E6E8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.6; }
-  .info-box strong { color: #637EA1; }
+  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #d4d8e5; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  .info-box { background: #e8ecf8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.6; }
+  .info-box strong { color: #1835b4; }
   .chip-group { display: flex; flex-wrap: wrap; gap: 2px; margin-bottom: 10px; }
   .chip-group-label { font-size: 0.75rem; color: #888; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; }
-  .eq-box { background: #fafbfc; border: 1px solid #e5dfe0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 0.85rem; line-height: 1.8; }
+  .eq-box { background: #fafbfc; border: 1px solid #d4d8e5; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 0.85rem; line-height: 1.8; }
   .eq-box .label { font-size: 0.7rem; color: #888; text-transform: uppercase; font-weight: 600; }
 </style>
 </head>
@@ -184,7 +183,7 @@ function drawTube(rxn) {
 
   // Test tube
   const tx = 180, ty = 30, tw = 80, th = 160;
-  ctx.strokeStyle = '#637EA1';
+  ctx.strokeStyle = '#1835b4';
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(tx, ty);
@@ -230,7 +229,7 @@ function drawTube(rxn) {
 
   // Labels
   ctx.font = '500 11px Outfit';
-  ctx.fillStyle = '#637EA1';
+  ctx.fillStyle = '#1835b4';
   ctx.textAlign = 'center';
   if (rxn) {
     ctx.fillText('Reaction mixture', tx + tw / 2, ty + th + 30);
@@ -244,12 +243,12 @@ function drawTube(rxn) {
 
   // General pattern (right side)
   ctx.font = '600 12px Oswald';
-  ctx.fillStyle = '#637EA1';
+  ctx.fillStyle = '#1835b4';
   ctx.textAlign = 'left';
   const px = 310, py = 50;
   ctx.fillText('General Patterns:', px, py);
   ctx.font = '400 10px Outfit';
-  ctx.fillStyle = '#1a1f2e';
+  ctx.fillStyle = '#1a2747';
   const patterns = [
     'acid + metal \u2192 salt + H\u2082',
     'acid + metal oxide \u2192 salt + H\u2082O',
@@ -257,7 +256,7 @@ function drawTube(rxn) {
     'acid + alkali \u2192 salt + H\u2082O'
   ];
   patterns.forEach((p, i) => {
-    ctx.fillStyle = selectedType === ['metal','oxide','carbonate','alkali'][i] ? '#637EA1' : '#aaa';
+    ctx.fillStyle = selectedType === ['metal','oxide','carbonate','alkali'][i] ? '#1835b4' : '#aaa';
     ctx.font = selectedType === ['metal','oxide','carbonate','alkali'][i] ? '600 10px Outfit' : '400 10px Outfit';
     ctx.fillText(p, px, py + 20 + i * 18);
   });

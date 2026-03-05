@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orbits & Satellites</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#1a1f2e}.controls{display:flex;gap:6px;margin-bottom:8px}.ctrl-btn{flex:1;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:8px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#637EA1}.ctrl-btn.active{background:#637EA1;color:#fff}.readouts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.readout{background:#F5E6E8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.68rem;color:#4a5568}.readout .value{font-family:'Oswald',sans-serif;font-size:.9rem;color:#637EA1}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#1a2747}.controls{display:flex;gap:6px;margin-bottom:8px}.ctrl-btn{flex:1;background:#e8ecf8;border:2px solid transparent;border-radius:5px;padding:8px;font-family: system-ui, -apple-system, sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#1835b4}.ctrl-btn.active{background:#1835b4;color:#fff}.readouts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.readout{background:#e8ecf8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.68rem;color:#4a5568}.readout .value{font-family: system-ui, -apple-system, sans-serif;font-size:.9rem;color:#1835b4}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
 </head>
 <body>
 <div class="container">
@@ -42,7 +40,7 @@ function setView(v){
 function draw(ts){
     const dt=lastTs?(ts-lastTs)/1000:0;lastTs=ts;animT+=dt;
     const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle='#1a1f2e';ctx.fillRect(0,0,W,H);
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#1a2747';ctx.fillRect(0,0,W,H);
 
     // Stars
     for(let i=0;i<40;i++){
@@ -78,10 +76,10 @@ function draw(ts){
         // LEO satellite (fast)
         const leoAngle=animT*1.5;
         const lx=cx+Math.cos(leoAngle)*leoR;const ly=cy+Math.sin(leoAngle)*leoR;
-        ctx.fillStyle='#F4D35E';ctx.fillRect(lx-6,ly-3,12,6);
+        ctx.fillStyle='#4a3fc2';ctx.fillRect(lx-6,ly-3,12,6);
         // Solar panels
         ctx.fillStyle='#4a90d9';ctx.fillRect(lx-14,ly-2,8,4);ctx.fillRect(lx+6,ly-2,8,4);
-        ctx.fillStyle='#F4D35E';ctx.font='500 10px Outfit';ctx.textAlign='center';ctx.fillText('LEO',lx,ly-10);
+        ctx.fillStyle='#4a3fc2';ctx.font='500 10px Outfit';ctx.textAlign='center';ctx.fillText('LEO',lx,ly-10);
         // Orbit trail
         ctx.strokeStyle='rgba(244,211,94,0.15)';ctx.lineWidth=2;ctx.beginPath();
         for(let a=0;a<Math.PI*2;a+=0.05){ctx.lineTo(cx+Math.cos(leoAngle-a)*leoR,cy+Math.sin(leoAngle-a)*leoR)}

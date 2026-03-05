@@ -3,38 +3,35 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generator & Electromagnetic Induction</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .views { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
         .view-box { background: #f8f9fa; border-radius: 8px; overflow: hidden; }
-        .view-label { font-family: 'Oswald', sans-serif; font-size: 0.65rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; padding: 4px; background: #f0f4f8; }
+        .view-label { font-family: system-ui, -apple-system, sans-serif; font-size: 0.65rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; padding: 4px; background: #f0f4f8; }
         canvas { width: 100%; display: block; }
         .controls { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; background: #f8f9fa; border-radius: 8px; padding: 8px 10px; }
         .controls label { font-size: 0.7rem; font-weight: 600; color: #4a5568; white-space: nowrap; }
-        .controls .val { font-weight: 700; color: #637EA1; }
-        .controls input[type=range] { flex: 1; accent-color: #637EA1; }
-        .controls button { padding: 5px 12px; border: 2px solid #637EA1; background: white; color: #637EA1; border-radius: 6px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.7rem; cursor: pointer; }
-        .controls button.active { background: #637EA1; color: white; }
+        .controls .val { font-weight: 700; color: #1835b4; }
+        .controls input[type=range] { flex: 1; accent-color: #1835b4; }
+        .controls button { padding: 5px 12px; border: 2px solid #1835b4; background: white; color: #1835b4; border-radius: 6px; font-family: system-ui, -apple-system, sans-serif; font-weight: 600; font-size: 0.7rem; cursor: pointer; }
+        .controls button.active { background: #1835b4; color: white; }
         .graphs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
         .graph-box { background: #f8f9fa; border-radius: 8px; overflow: hidden; }
         .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 8px; }
         .stat { background: #f8f9fa; border-radius: 6px; padding: 5px; text-align: center; }
         .stat .lbl { font-size: 0.55rem; color: #4a5568; text-transform: uppercase; }
-        .stat .val { font-size: 0.85rem; font-weight: 700; color: #637EA1; }
+        .stat .val { font-size: 0.85rem; font-weight: 700; color: #1835b4; }
         .rule-box { background: #f0f4f8; border-radius: 8px; padding: 8px; }
-        .rule-box h3 { font-family: 'Oswald', sans-serif; font-size: 0.7rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .rule-box h3 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.7rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
         .rule-box p { font-size: 0.65rem; color: #4a5568; line-height: 1.4; }
         .rule-box .fingers { display: flex; gap: 8px; margin-top: 4px; }
         .rule-box .finger { background: white; border-radius: 4px; padding: 3px 8px; font-size: 0.6rem; font-weight: 600; }
         .finger.motion { color: #e53e3e; }
-        .finger.field { color: #637EA1; }
-        .finger.current { color: #F4D35E; border: 1px solid #F4D35E; }
+        .finger.field { color: #1835b4; }
+        .finger.current { color: #4a3fc2; border: 1px solid #4a3fc2; }
     </style>
 </head>
 <body>
@@ -143,8 +140,8 @@ function animate() {
 
     drawGenerator(emf, flux);
     drawCrossSection();
-    drawGraph(eS, emfHistory, '#637EA1', 'EMF');
-    drawGraph(fS, fluxHistory, '#F4D35E', 'Flux');
+    drawGraph(eS, emfHistory, '#1835b4', 'EMF');
+    drawGraph(fS, fluxHistory, '#4a3fc2', 'Flux');
 
     requestAnimationFrame(animate);
 }
@@ -186,7 +183,7 @@ function drawGenerator(emf, flux) {
     const cos = Math.cos(angle), sin = Math.sin(angle);
     const projW = coilW * Math.abs(cos);
 
-    ctx.strokeStyle = '#1a1f2e';
+    ctx.strokeStyle = '#1a2747';
     ctx.lineWidth = 3;
 
     // Draw coil as projected rectangle
@@ -196,7 +193,7 @@ function drawGenerator(emf, flux) {
     ctx.lineTo(cx + projW / 2, cy + coilH / 2);
     ctx.lineTo(cx - projW / 2, cy + coilH / 2);
     ctx.closePath();
-    ctx.strokeStyle = cos > 0 ? '#1a1f2e' : '#888';
+    ctx.strokeStyle = cos > 0 ? '#1a2747' : '#888';
     ctx.stroke();
 
     // Coil fill (slight transparency to show field)
@@ -220,12 +217,12 @@ function drawGenerator(emf, flux) {
     ctx.fillRect(cx + 8, cy + 72, 6, 8);
 
     // Rotation arrow
-    ctx.strokeStyle = '#F4D35E';
+    ctx.strokeStyle = '#4a3fc2';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.arc(cx, cy - 60, 10, -Math.PI * 0.8, Math.PI * 0.2);
     ctx.stroke();
-    ctx.fillStyle = '#F4D35E';
+    ctx.fillStyle = '#4a3fc2';
     const ax = cx + 10 * Math.cos(Math.PI * 0.2);
     const ay = cy - 60 + 10 * Math.sin(Math.PI * 0.2);
     ctx.beginPath(); ctx.moveTo(ax - 3, ay - 4); ctx.lineTo(ax + 3, ay); ctx.lineTo(ax - 3, ay + 2); ctx.fill();
@@ -274,7 +271,7 @@ function drawCrossSection() {
     const x2 = cx - radius * cos, y2 = cy - radius * sin;
 
     // Side 1 (current direction indicator)
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.beginPath(); ctx.arc(x1, y1, 8, 0, Math.PI * 2); ctx.fill();
     // Current direction: dot or cross
     ctx.fillStyle = 'white';
@@ -288,9 +285,9 @@ function drawCrossSection() {
     }
 
     // Side 2
-    ctx.fillStyle = '#F4D35E';
+    ctx.fillStyle = '#4a3fc2';
     ctx.beginPath(); ctx.arc(x2, y2, 8, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#1a1f2e';
+    ctx.fillStyle = '#1a2747';
     if (sin < 0) {
         ctx.fillText('×', x2, y2);
     } else {
@@ -299,7 +296,7 @@ function drawCrossSection() {
     ctx.textBaseline = 'alphabetic';
 
     // Coil line connecting them
-    ctx.strokeStyle = '#1a1f2e';
+    ctx.strokeStyle = '#1a2747';
     ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
 
@@ -320,12 +317,12 @@ function drawCrossSection() {
     ctx.fillText('n (normal)', cx + nx + 4, cy + ny - 2);
 
     // Angle arc
-    ctx.strokeStyle = '#F4D35E';
+    ctx.strokeStyle = '#4a3fc2';
     ctx.lineWidth = 1;
     const startAngle = 0;
     const endAngle = Math.atan2(ny, nx);
     ctx.beginPath(); ctx.arc(cx, cy, 18, startAngle, endAngle, ny < 0); ctx.stroke();
-    ctx.fillStyle = '#F4D35E';
+    ctx.fillStyle = '#4a3fc2';
     ctx.font = '600 8px Outfit';
     ctx.textAlign = 'center';
     ctx.fillText('θ', cx + 22, cy - 4);
@@ -333,11 +330,11 @@ function drawCrossSection() {
     // Legend
     ctx.font = '8px Outfit';
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.beginPath(); ctx.arc(15, H - 24, 4, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#4a5568';
     ctx.fillText('Side A', 22, H - 21);
-    ctx.fillStyle = '#F4D35E';
+    ctx.fillStyle = '#4a3fc2';
     ctx.beginPath(); ctx.arc(15, H - 12, 4, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#4a5568';
     ctx.fillText('Side B', 22, H - 9);

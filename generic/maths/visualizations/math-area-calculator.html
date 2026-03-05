@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Area Calculator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.controls{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.ctrl-btn{flex:1;min-width:80px;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#637EA1}.ctrl-btn.active{background:#637EA1;color:#fff}.param-row{display:flex;align-items:center;gap:8px;background:#F5E6E8;border-radius:5px;padding:8px;margin-bottom:6px;flex-wrap:wrap;font-size:.78rem}.param-row label{font-weight:600;min-width:60px}.param-row input{width:70px;padding:6px 8px;border:1px solid #e5dfe0;border-radius:5px;font-family:'Outfit',sans-serif;font-size:.82rem;text-align:center}.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;font-family:'Oswald',sans-serif;font-size:.95rem;color:#637EA1;margin-top:8px}.working{background:#fafbfc;border-radius:5px;padding:8px 12px;font-size:.78rem;color:#4a5568;margin-top:8px;line-height:1.8;text-align:center}.working strong{color:#637EA1}</style>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.controls{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.ctrl-btn{flex:1;min-width:80px;background:#e8ecf8;border:2px solid transparent;border-radius:5px;padding:6px;font-family: system-ui, -apple-system, sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#1835b4}.ctrl-btn.active{background:#1835b4;color:#fff}.param-row{display:flex;align-items:center;gap:8px;background:#e8ecf8;border-radius:5px;padding:8px;margin-bottom:6px;flex-wrap:wrap;font-size:.78rem}.param-row label{font-weight:600;min-width:60px}.param-row input{width:70px;padding:6px 8px;border:1px solid #d4d8e5;border-radius:5px;font-family: system-ui, -apple-system, sans-serif;font-size:.82rem;text-align:center}.result-box{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;font-family: system-ui, -apple-system, sans-serif;font-size:.95rem;color:#1835b4;margin-top:8px}.working{background:#fafbfc;border-radius:5px;padding:8px 12px;font-size:.78rem;color:#4a5568;margin-top:8px;line-height:1.8;text-align:center}.working strong{color:#1835b4}</style>
 </head>
 <body>
 <div class="container">
@@ -63,16 +61,16 @@ function draw(){
     ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
 
     const sc=40; // pixels per unit
-    ctx.fillStyle='#637EA1';ctx.globalAlpha=0.12;ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.globalAlpha=1;
+    ctx.fillStyle='#1835b4';ctx.globalAlpha=0.12;ctx.strokeStyle='#1835b4';ctx.lineWidth=3;ctx.globalAlpha=1;
 
     if(selShape===0){
         // Rectangle
         const w=vals[0]*sc,h=vals[1]*sc;
         const x=cx-w/2,y=cy-h/2;
-        ctx.fillStyle='#637EA1';ctx.globalAlpha=0.12;ctx.fillRect(x,y,w,h);ctx.globalAlpha=1;
-        ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.strokeRect(x,y,w,h);
+        ctx.fillStyle='#1835b4';ctx.globalAlpha=0.12;ctx.fillRect(x,y,w,h);ctx.globalAlpha=1;
+        ctx.strokeStyle='#1835b4';ctx.lineWidth=3;ctx.strokeRect(x,y,w,h);
         // Labels
-        ctx.fillStyle='#1a1f2e';ctx.font='600 26px Oswald';ctx.textAlign='center';ctx.textBaseline='top';
+        ctx.fillStyle='#1a2747';ctx.font='600 26px Oswald';ctx.textAlign='center';ctx.textBaseline='top';
         ctx.fillText(vals[0]+' cm',cx,y+h+12);
         ctx.save();ctx.translate(x-16,cy);ctx.rotate(-Math.PI/2);ctx.fillText(vals[1]+' cm',0,0);ctx.restore();
         // Dimension arrows
@@ -83,11 +81,11 @@ function draw(){
         const b=vals[0]*sc,h=vals[1]*sc;
         const x1=cx-b/2,x2=cx+b/2,yt=cy+h/2,yp=cy-h/2;
         ctx.beginPath();ctx.moveTo(x1,yt);ctx.lineTo(x2,yt);ctx.lineTo(cx,yp);ctx.closePath();
-        ctx.fillStyle='#637EA1';ctx.globalAlpha=0.12;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.stroke();
+        ctx.fillStyle='#1835b4';ctx.globalAlpha=0.12;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='#1835b4';ctx.lineWidth=3;ctx.stroke();
         // Height dashed
         ctx.setLineDash([6,4]);ctx.strokeStyle='#dc3545';ctx.lineWidth=2;
         ctx.beginPath();ctx.moveTo(cx,yp);ctx.lineTo(cx,yt);ctx.stroke();ctx.setLineDash([]);
-        ctx.fillStyle='#1a1f2e';ctx.font='600 26px Oswald';ctx.textAlign='center';ctx.textBaseline='top';
+        ctx.fillStyle='#1a2747';ctx.font='600 26px Oswald';ctx.textAlign='center';ctx.textBaseline='top';
         ctx.fillText(vals[0]+' cm',cx,yt+12);
         ctx.fillStyle='#dc3545';ctx.textAlign='left';ctx.fillText(vals[1]+' cm',cx+8,(yp+yt)/2);
     } else if(selShape===2){
@@ -96,11 +94,11 @@ function draw(){
         const offset=h*0.4;
         const x=cx-b/2,y=cy-h/2;
         ctx.beginPath();ctx.moveTo(x+offset,y);ctx.lineTo(x+b+offset,y);ctx.lineTo(x+b-offset,y+h);ctx.lineTo(x-offset,y+h);ctx.closePath();
-        ctx.fillStyle='#637EA1';ctx.globalAlpha=0.12;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.stroke();
+        ctx.fillStyle='#1835b4';ctx.globalAlpha=0.12;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='#1835b4';ctx.lineWidth=3;ctx.stroke();
         // Height
         ctx.setLineDash([6,4]);ctx.strokeStyle='#dc3545';ctx.lineWidth=2;
         ctx.beginPath();ctx.moveTo(x+offset,y);ctx.lineTo(x+offset,y+h);ctx.stroke();ctx.setLineDash([]);
-        ctx.fillStyle='#1a1f2e';ctx.font='600 26px Oswald';ctx.textAlign='center';ctx.textBaseline='top';
+        ctx.fillStyle='#1a2747';ctx.font='600 26px Oswald';ctx.textAlign='center';ctx.textBaseline='top';
         ctx.fillText(vals[0]+' cm',cx,y+h+12);
         ctx.fillStyle='#dc3545';ctx.textAlign='right';ctx.fillText(vals[1]+' cm',x+offset-8,(y+y+h)/2);
     } else if(selShape===3){
@@ -108,10 +106,10 @@ function draw(){
         const a=vals[0]*sc,b=vals[1]*sc,h=vals[2]*sc;
         const y1=cy-h/2,y2=cy+h/2;
         ctx.beginPath();ctx.moveTo(cx-a/2,y1);ctx.lineTo(cx+a/2,y1);ctx.lineTo(cx+b/2,y2);ctx.lineTo(cx-b/2,y2);ctx.closePath();
-        ctx.fillStyle='#637EA1';ctx.globalAlpha=0.12;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.stroke();
+        ctx.fillStyle='#1835b4';ctx.globalAlpha=0.12;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='#1835b4';ctx.lineWidth=3;ctx.stroke();
         ctx.setLineDash([6,4]);ctx.strokeStyle='#dc3545';ctx.lineWidth=2;
         ctx.beginPath();ctx.moveTo(cx-a/2,y1);ctx.lineTo(cx-a/2,y2);ctx.stroke();ctx.setLineDash([]);
-        ctx.fillStyle='#1a1f2e';ctx.font='600 26px Oswald';ctx.textAlign='center';
+        ctx.fillStyle='#1a2747';ctx.font='600 26px Oswald';ctx.textAlign='center';
         ctx.textBaseline='bottom';ctx.fillText('a = '+vals[0]+' cm',cx,y1-8);
         ctx.textBaseline='top';ctx.fillText('b = '+vals[1]+' cm',cx,y2+8);
         ctx.fillStyle='#dc3545';ctx.textAlign='right';ctx.textBaseline='middle';
@@ -120,7 +118,7 @@ function draw(){
         // Circle
         const r=vals[0]*sc;
         ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
-        ctx.fillStyle='#637EA1';ctx.globalAlpha=0.12;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.stroke();
+        ctx.fillStyle='#1835b4';ctx.globalAlpha=0.12;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='#1835b4';ctx.lineWidth=3;ctx.stroke();
         ctx.strokeStyle='#dc3545';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r,cy);ctx.stroke();
         ctx.beginPath();ctx.arc(cx,cy,4,0,Math.PI*2);ctx.fillStyle='#dc3545';ctx.fill();
         ctx.fillStyle='#dc3545';ctx.font='600 26px Oswald';ctx.textAlign='center';ctx.textBaseline='bottom';

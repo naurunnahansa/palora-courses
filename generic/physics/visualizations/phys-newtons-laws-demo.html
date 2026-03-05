@@ -4,17 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Newton's Second Law - F=ma</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .card {
             border-radius: 5px;
-            border: 1px solid #e5dfe0;
+            border: 1px solid #d4d8e5;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             padding: 12px;
             margin-bottom: 10px;
@@ -27,9 +24,9 @@
         canvas {
             width: 100%;
             border-radius: 5px;
-            border: 1px solid #e5dfe0;
+            border: 1px solid #d4d8e5;
             display: block;
-            background: #fafafa;
+            background: #fcfcfe;
         }
         .controls { display: flex; flex-direction: column; gap: 8px; }
         .slider-row {
@@ -38,21 +35,21 @@
         .slider-row label {
             font-size: 0.82rem; font-weight: 500; color: #4a5568; min-width: 80px;
         }
-        .slider-row input[type="range"] { flex: 1; accent-color: #637EA1; height: 6px; }
+        .slider-row input[type="range"] { flex: 1; accent-color: #1835b4; height: 6px; }
         .slider-row .val {
-            font-size: 0.82rem; font-weight: 600; color: #637EA1; min-width: 55px; text-align: right;
+            font-size: 0.82rem; font-weight: 600; color: #1835b4; min-width: 55px; text-align: right;
         }
         .equation {
             text-align: center;
             padding: 10px;
-            background: #F5E6E8;
+            background: #e8ecf8;
             border-radius: 5px;
             margin-bottom: 10px;
         }
         .equation .formula {
-            font-family: 'Oswald', sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             font-size: 1.3rem;
-            color: #637EA1;
+            color: #1835b4;
             font-weight: 600;
         }
         .equation .values {
@@ -68,29 +65,29 @@
         .result-item {
             text-align: center;
             padding: 8px 4px;
-            background: #F5E6E8;
+            background: #e8ecf8;
             border-radius: 5px;
         }
         .result-item .label {
             font-size: 0.7rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 2px;
         }
         .result-item .value {
-            font-family: 'Oswald', sans-serif; font-size: 1.05rem; color: #637EA1; font-weight: 600;
+            font-family: system-ui, -apple-system, sans-serif; font-size: 1.05rem; color: #1835b4; font-weight: 600;
         }
         .btn-row { display: flex; gap: 8px; margin-top: 4px; }
         .btn {
             flex: 1; padding: 7px 0; border: none; border-radius: 5px;
-            font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 600;
+            font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; font-weight: 600;
             cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
         }
         .btn:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(99,126,161,0.2); }
-        .btn-primary { background: #637EA1; color: #fff; }
-        .btn-outline { background: #fff; color: #637EA1; border: 1px solid #637EA1; }
+        .btn-primary { background: #1835b4; color: #fff; }
+        .btn-outline { background: #fff; color: #1835b4; border: 1px solid #1835b4; }
         .info {
             font-size: 0.75rem; color: #4a5568; line-height: 1.5;
-            margin-top: 8px; padding: 8px; background: #F5E6E8; border-radius: 5px;
+            margin-top: 8px; padding: 8px; background: #e8ecf8; border-radius: 5px;
         }
-        .info strong { color: #637EA1; }
+        .info strong { color: #1835b4; }
     </style>
 </head>
 <body>
@@ -169,7 +166,7 @@
 
             // Ground
             const groundY = canvas.height - 60;
-            ctx.fillStyle = '#e5dfe0';
+            ctx.fillStyle = '#d4d8e5';
             ctx.fillRect(0, groundY, canvas.width, 60);
             ctx.strokeStyle = '#4a5568';
             ctx.lineWidth = 2;
@@ -198,7 +195,7 @@
             ctx.fillRect(bx + 4, by + 4, boxSize, boxSize);
 
             // Box
-            ctx.fillStyle = '#637EA1';
+            ctx.fillStyle = '#1835b4';
             ctx.fillRect(bx, by, boxSize, boxSize);
             ctx.strokeStyle = '#4a5568';
             ctx.lineWidth = 2;
@@ -206,7 +203,7 @@
 
             // Mass label on box
             ctx.fillStyle = '#fff';
-            ctx.font = '700 ' + Math.max(20, boxSize * 0.35) + 'px Oswald, sans-serif';
+            ctx.font = '700 ' + Math.max(20, boxSize * 0.35) + 'px system-ui, -apple-system, sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(m + ' kg', bx + boxSize / 2, by + boxSize / 2);
@@ -218,7 +215,7 @@
             const arrowEnd = arrowStart + arrowLen;
 
             // Arrow shaft
-            ctx.strokeStyle = '#F4D35E';
+            ctx.strokeStyle = '#4a3fc2';
             ctx.lineWidth = Math.max(4, F * 0.12);
             ctx.beginPath();
             ctx.moveTo(arrowStart, arrowY);
@@ -226,7 +223,7 @@
             ctx.stroke();
 
             // Arrow head
-            ctx.fillStyle = '#F4D35E';
+            ctx.fillStyle = '#4a3fc2';
             ctx.beginPath();
             ctx.moveTo(arrowEnd, arrowY);
             ctx.lineTo(arrowEnd - 20, arrowY - 14);
@@ -235,8 +232,8 @@
             ctx.fill();
 
             // Force label
-            ctx.fillStyle = '#1a1f2e';
-            ctx.font = '600 24px Outfit, sans-serif';
+            ctx.fillStyle = '#1a2747';
+            ctx.font = '600 24px system-ui, -apple-system, sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'bottom';
             ctx.fillText('F = ' + F + ' N', arrowStart + arrowLen / 2, arrowY - 18);
@@ -290,7 +287,7 @@
 
                 // Speed indicator
                 ctx.fillStyle = '#4a5568';
-                ctx.font = '500 22px Outfit, sans-serif';
+                ctx.font = '500 22px system-ui, -apple-system, sans-serif';
                 ctx.textAlign = 'left';
                 ctx.textBaseline = 'top';
                 ctx.fillText('v = ' + (v / 30).toFixed(1) + ' m/s   t = ' + t.toFixed(1) + ' s', 20, 20);

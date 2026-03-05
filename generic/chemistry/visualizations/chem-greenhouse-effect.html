@@ -4,22 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Greenhouse Effect</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Outfit',sans-serif;background:#f0f2f5;color:#1a1f2e;min-height:100vh;display:flex;justify-content:center;padding:20px;}
-h1,h2,h3,h4{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
-.container{max-width:550px;width:100%;margin:0 auto;}
-.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #e5dfe0;padding:24px;margin-bottom:16px;}
-.card-title{font-size:1.3rem;color:#637EA1;margin-bottom:4px;}
+body{font-family: system-ui, -apple-system, sans-serif;background:#f0f2f5;color:#1a2747;min-height:100vh;display:flex;justify-content:center;padding:20px;}
+h1,h2,h3,h4{font-family: system-ui, -apple-system, sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
+.container{max-width: 100%;width:100%;margin:0 auto;}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #d4d8e5;padding:24px;margin-bottom:16px;}
+.card-title{font-size:1.3rem;color:#1835b4;margin-bottom:4px;}
 .card-subtitle{font-size:0.85rem;color:#888;margin-bottom:16px;}
-canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #e5dfe0;display:block;margin:10px 0;}
+canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #d4d8e5;display:block;margin:10px 0;}
 .slider-row{display:flex;align-items:center;gap:12px;margin:10px 0;}
-.slider-row label{font-size:0.85rem;font-weight:600;color:#637EA1;min-width:80px;}
-.slider-row input[type=range]{flex:1;accent-color:#637EA1;}
+.slider-row label{font-size:0.85rem;font-weight:600;color:#1835b4;min-width:80px;}
+.slider-row input[type=range]{flex:1;accent-color:#1835b4;}
 .slider-row .val{font-size:0.9rem;font-weight:700;min-width:60px;text-align:right;}
-.temp-display{text-align:center;padding:14px;background:#F5E6E8;border-radius:10px;margin:10px 0;}
-.temp-display .temp{font-family:'Oswald',sans-serif;font-size:2rem;color:#637EA1;}
+.temp-display{text-align:center;padding:14px;background:#e8ecf8;border-radius:10px;margin:10px 0;}
+.temp-display .temp{font-family: system-ui, -apple-system, sans-serif;font-size:2rem;color:#1835b4;}
 .temp-display .lbl{font-size:0.78rem;color:#888;}
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
 .compare-box{border-radius:10px;padding:12px;font-size:0.82rem;}

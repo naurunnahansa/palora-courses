@@ -3,32 +3,29 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Half-Life Graph</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .formula-box { text-align: center; background: #F5E6E8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #637EA1; }
-        canvas { display: block; margin: 0 auto 8px; border: 1px solid #e5dfe0; border-radius: 5px; cursor: crosshair; }
-        .slider-group { border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px 10px; margin-bottom: 8px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .formula-box { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; }
+        .slider-group { border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px 10px; margin-bottom: 8px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; }
-        .slider-label .val { color: #637EA1; }
-        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #e5dfe0; border-radius: 3px; outline: none; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #637EA1; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .slider-label .val { color: #1835b4; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #d4d8e5; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
         .readout { display: flex; gap: 6px; margin-bottom: 8px; }
-        .readout-card { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px; text-align: center; }
+        .readout-card { flex: 1; border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px; text-align: center; }
         .readout-card .label { font-size: 0.62rem; color: #4a5568; }
-        .readout-card .value { font-size: 0.9rem; font-weight: 700; color: #637EA1; }
-        .table-wrap { border: 1px solid #e5dfe0; border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
+        .readout-card .value { font-size: 0.9rem; font-weight: 700; color: #1835b4; }
+        .table-wrap { border: 1px solid #d4d8e5; border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
         table { width: 100%; border-collapse: collapse; font-size: 0.72rem; }
-        th { background: #637EA1; color: #fff; padding: 5px 6px; font-family: 'Oswald', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; font-size: 0.68rem; }
-        td { padding: 4px 6px; text-align: center; border-bottom: 1px solid #e5dfe0; }
-        tr:nth-child(even) { background: #fafafa; }
-        .note { background: #F5E6E8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
-        .note strong { color: #637EA1; }
+        th { background: #1835b4; color: #fff; padding: 5px 6px; font-family: system-ui, -apple-system, sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; font-size: 0.68rem; }
+        td { padding: 4px 6px; text-align: center; border-bottom: 1px solid #d4d8e5; }
+        tr:nth-child(even) { background: #fcfcfe; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
     </style>
 </head>
 <body>
@@ -109,7 +106,7 @@ function draw() {
     for (let n = 1; n <= 6; n++) {
         const x = pad.left + (n * halfLife / maxTime) * cw;
         ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + ch); ctx.stroke();
-        ctx.fillStyle = '#F4D35E';
+        ctx.fillStyle = '#4a3fc2';
         ctx.font = '9px Outfit';
         ctx.textAlign = 'center';
         ctx.fillText(n + 't½', x, pad.top + ch + 12);
@@ -125,7 +122,7 @@ function draw() {
 
     // Decay curve
     ctx.beginPath();
-    ctx.strokeStyle = '#637EA1';
+    ctx.strokeStyle = '#1835b4';
     ctx.lineWidth = 2.5;
     for (let px = 0; px <= cw; px++) {
         const t = (px / cw) * maxTime;
@@ -150,9 +147,9 @@ function draw() {
         const y = pad.top + ch - (N / N0) * ch;
         ctx.beginPath();
         ctx.arc(x, y, 5, 0, Math.PI * 2);
-        ctx.fillStyle = '#F4D35E';
+        ctx.fillStyle = '#4a3fc2';
         ctx.fill();
-        ctx.strokeStyle = '#637EA1';
+        ctx.strokeStyle = '#1835b4';
         ctx.lineWidth = 1.5;
         ctx.stroke();
     }
@@ -209,7 +206,7 @@ function draw() {
 
         ctx.beginPath();
         ctx.arc(x, y, 7, 0, Math.PI * 2);
-        ctx.fillStyle = '#637EA1';
+        ctx.fillStyle = '#1835b4';
         ctx.fill();
         ctx.strokeStyle = '#fff';
         ctx.lineWidth = 2;

@@ -3,32 +3,29 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Motor Effect</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .desc { text-align: center; font-size: 0.75rem; color: #4a5568; margin-bottom: 10px; }
-        canvas { display: block; margin: 0 auto 10px; border: 1px solid #e5dfe0; border-radius: 5px; }
+        canvas { display: block; margin: 0 auto 10px; border: 1px solid #d4d8e5; border-radius: 5px; }
         .controls { display: flex; gap: 6px; justify-content: center; margin-bottom: 8px; flex-wrap: wrap; }
-        .ctrl-btn { background: #fff; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px 12px; font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .ctrl-btn:hover { border-color: #637EA1; }
-        .ctrl-btn.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        .ctrl-btn { background: #fff; border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px 12px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.72rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .ctrl-btn:hover { border-color: #1835b4; }
+        .ctrl-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
         .info-row { display: flex; gap: 6px; margin-bottom: 8px; }
-        .info-card { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px 8px; text-align: center; }
+        .info-card { flex: 1; border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px 8px; text-align: center; }
         .info-card .label { font-size: 0.62rem; color: #4a5568; text-transform: uppercase; }
-        .info-card .value { font-size: 0.85rem; font-weight: 700; color: #637EA1; }
-        .hand-guide { border: 1px solid #e5dfe0; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
-        .hand-guide h2 { font-family: 'Oswald', sans-serif; font-size: 0.82rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; text-align: center; }
+        .info-card .value { font-size: 0.85rem; font-weight: 700; color: #1835b4; }
+        .hand-guide { border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
+        .hand-guide h2 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.82rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; text-align: center; }
         .hand-steps { display: flex; gap: 6px; }
         .hand-step { flex: 1; text-align: center; font-size: 0.68rem; color: #4a5568; }
         .hand-step .finger { font-size: 1.5rem; display: block; margin-bottom: 2px; }
-        .hand-step strong { color: #1a1f2e; display: block; font-size: 0.72rem; }
-        .note { background: #F5E6E8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
-        .note strong { color: #637EA1; }
+        .hand-step strong { color: #1a2747; display: block; font-size: 0.72rem; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
     </style>
 </head>
 <body>
@@ -157,7 +154,7 @@ function draw() {
 
     // Wire (current-carrying)
     const wireY = cy + wireOffset;
-    ctx.strokeStyle = '#F4D35E';
+    ctx.strokeStyle = '#4a3fc2';
     ctx.lineWidth = 6;
     ctx.beginPath();
     ctx.moveTo(50, wireY);
@@ -172,15 +169,15 @@ function draw() {
     ctx.stroke();
 
     // Current direction arrows on wire
-    ctx.fillStyle = '#1a1f2e';
+    ctx.fillStyle = '#1a2747';
     const arrowDir = currentDir === 'right' ? 1 : -1;
     for (let i = 0; i < 5; i++) {
         const ax = cx - 120 + i * 60;
-        drawArrowHead(ax, wireY, arrowDir * 10, 0, '#1a1f2e');
+        drawArrowHead(ax, wireY, arrowDir * 10, 0, '#1a2747');
     }
 
     // Current label
-    ctx.fillStyle = '#1a1f2e';
+    ctx.fillStyle = '#1a2747';
     ctx.font = 'bold 11px Outfit';
     ctx.textAlign = 'center';
     ctx.fillText('I (' + (currentDir === 'right' ? '→' : '←') + ')', cx, wireY + 18);
@@ -202,7 +199,7 @@ function draw() {
     ctx.fillText('F (' + (forceDir === 'up' ? '↑' : '↓') + ')', cx + 10, wireY + forceSign * forceLen / 2 + 4);
 
     // Field direction label
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.font = 'bold 11px Outfit';
     ctx.textAlign = 'center';
     ctx.fillText('B (' + (fieldDir === 'into' ? '⊗ into page' : '⊙ out of page') + ')', cx, 18);

@@ -4,23 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Water Treatment Process</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Outfit',sans-serif;background:#f0f2f5;color:#1a1f2e;min-height:100vh;display:flex;justify-content:center;padding:20px;}
-h1,h2,h3,h4{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
-.container{max-width:550px;width:100%;margin:0 auto;}
-.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #e5dfe0;padding:24px;margin-bottom:16px;}
-.card-title{font-size:1.3rem;color:#637EA1;margin-bottom:4px;}
+body{font-family: system-ui, -apple-system, sans-serif;background:#f0f2f5;color:#1a2747;min-height:100vh;display:flex;justify-content:center;padding:20px;}
+h1,h2,h3,h4{font-family: system-ui, -apple-system, sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
+.container{max-width: 100%;width:100%;margin:0 auto;}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #d4d8e5;padding:24px;margin-bottom:16px;}
+.card-title{font-size:1.3rem;color:#1835b4;margin-bottom:4px;}
 .card-subtitle{font-size:0.85rem;color:#888;margin-bottom:16px;}
-canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #e5dfe0;display:block;margin:10px 0;cursor:pointer;}
-.info-box{background:#F5E6E8;border-radius:10px;padding:14px;margin-top:10px;display:none;}
+canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #d4d8e5;display:block;margin:10px 0;cursor:pointer;}
+.info-box{background:#e8ecf8;border-radius:10px;padding:14px;margin-top:10px;display:none;}
 .info-box.show{display:block;}
-.info-box h4{color:#637EA1;margin-bottom:6px;font-size:0.95rem;}
+.info-box h4{color:#1835b4;margin-bottom:6px;font-size:0.95rem;}
 .info-row{display:flex;justify-content:space-between;padding:6px 0;font-size:0.84rem;border-bottom:1px solid rgba(0,0,0,0.05);}
 .info-row:last-child{border-bottom:none;}
 .info-label{color:#888;font-weight:500;flex:0 0 100px;}
-.info-value{color:#1a1f2e;font-weight:500;text-align:right;}
+.info-value{color:#1a2747;font-weight:500;text-align:right;}
 .quality-bar{display:flex;gap:6px;margin-top:10px;align-items:center;}
 .quality-bar .label{font-size:0.78rem;color:#888;min-width:50px;}
 .quality-bar .bar{flex:1;height:12px;background:#eee;border-radius:6px;overflow:hidden;}
@@ -33,7 +32,7 @@ canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #e5dfe0
   <div class="card">
     <h2 class="card-title">Water Treatment Process</h2>
     <p class="card-subtitle">Click each stage to learn how raw water becomes safe to drink</p>
-    <canvas id="canvas" width="510" height="320"></canvas>
+    <canvas id="canvas" width="510" height="240"></canvas>
     <p class="hint">Click on any treatment stage in the diagram</p>
     <div class="quality-bar">
       <span class="label">Purity</span>
@@ -127,13 +126,13 @@ function draw() {
   ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
 
   // Title label
-  ctx.fillStyle = '#637EA1'; ctx.font = '600 11px Outfit'; ctx.textAlign = 'left';
+  ctx.fillStyle = '#1835b4'; ctx.font = '600 11px Outfit'; ctx.textAlign = 'left';
   ctx.fillText('RAW WATER IN', 10, 25);
   ctx.textAlign = 'right';
   ctx.fillText('CLEAN WATER OUT', W - 10, 25);
 
   // Flow arrow at top
-  ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 1.5; ctx.setLineDash([4,3]);
+  ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 1.5; ctx.setLineDash([4,3]);
   ctx.beginPath(); ctx.moveTo(90, 20); ctx.lineTo(W - 110, 20); ctx.stroke();
   ctx.setLineDash([]);
   ctx.beginPath(); ctx.moveTo(W-110,20); ctx.lineTo(W-118,16); ctx.moveTo(W-110,20); ctx.lineTo(W-118,24); ctx.stroke();
@@ -144,7 +143,7 @@ function draw() {
 
     // Tank
     ctx.fillStyle = isSel ? s.color : s.color + '55';
-    ctx.strokeStyle = isSel ? '#637EA1' : '#ccc';
+    ctx.strokeStyle = isSel ? '#1835b4' : '#ccc';
     ctx.lineWidth = isSel ? 2.5 : 1;
     ctx.beginPath(); ctx.roundRect(s.x, s.y, s.w, s.h, 8); ctx.fill(); ctx.stroke();
 

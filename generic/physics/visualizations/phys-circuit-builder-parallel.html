@@ -4,24 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parallel Circuit Builder</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         canvas { display: block; width: 100%; border-radius: 8px; border: 1px solid #e2e8f0; background: #fafbfc; margin-bottom: 10px; }
         .controls { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
         .slider-row { display: flex; align-items: center; gap: 8px; }
         .slider-row label { font-size: 0.82rem; font-weight: 600; color: #4a5568; min-width: 90px; }
-        .slider-row input[type="range"] { flex: 1; accent-color: #637EA1; height: 6px; }
-        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #637EA1; min-width: 48px; text-align: right; }
+        .slider-row input[type="range"] { flex: 1; accent-color: #1835b4; height: 6px; }
+        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #1835b4; min-width: 48px; text-align: right; }
         .readings { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-        .reading-card { background: #F5E6E8; border-radius: 6px; padding: 8px 10px; text-align: center; }
+        .reading-card { background: #e8ecf8; border-radius: 6px; padding: 8px 10px; text-align: center; }
         .reading-card .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
-        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 1.05rem; color: #637EA1; margin-top: 2px; }
+        .reading-card .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.05rem; color: #1835b4; margin-top: 2px; }
     </style>
 </head>
 <body>
@@ -111,7 +108,7 @@
 
         function drawResistorH(cx, cy, label) {
             const rw = 22, amp = 7, segs = 6;
-            ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 2;
+            ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 2;
             ctx.beginPath(); ctx.moveTo(cx - rw, cy);
             for (let i = 0; i <= segs; i++) {
                 const px = cx - rw + (2 * rw) * (i / segs);
@@ -119,8 +116,8 @@
                 ctx.lineTo(px, py);
             }
             ctx.stroke();
-            ctx.font = "600 10px 'Outfit'";
-            ctx.fillStyle = '#637EA1';
+            ctx.font = "600 10px 'HK Grotesk'";
+            ctx.fillStyle = '#1835b4';
             ctx.textAlign = 'center';
             ctx.fillText(label, cx, cy - 14);
         }
@@ -129,7 +126,7 @@
             ctx.beginPath(); ctx.arc(cx, cy, 12, 0, Math.PI * 2);
             ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 1.5; ctx.stroke();
             ctx.fillStyle = '#fff'; ctx.fill();
-            ctx.font = "700 10px 'Oswald'"; ctx.fillStyle = '#e74c3c';
+            ctx.font = "700 10px 'HK Grotesk'"; ctx.fillStyle = '#e74c3c';
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ctx.fillText('A', cx, cy + 1);
             ctx.textBaseline = 'alphabetic';
@@ -137,7 +134,7 @@
 
         function drawBatteryVert(x, y1, y2) {
             const cy = (y1 + y2) / 2;
-            ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 2;
+            ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 2;
             ctx.beginPath(); ctx.moveTo(x, y1); ctx.lineTo(x, cy - 14); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(x, cy + 14); ctx.lineTo(x, y2); ctx.stroke();
             ctx.lineWidth = 2.5;
@@ -146,7 +143,7 @@
             ctx.beginPath(); ctx.moveTo(x - 12, cy + 6); ctx.lineTo(x + 12, cy + 6); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(x - 6, cy + 14); ctx.lineTo(x + 6, cy + 14); ctx.stroke();
             ctx.lineWidth = 2;
-            ctx.font = "600 11px 'Outfit'";
+            ctx.font = "600 11px 'HK Grotesk'";
             ctx.fillStyle = '#e74c3c'; ctx.textAlign = 'right';
             ctx.fillText('+', x - 15, cy - 8);
             ctx.fillStyle = '#3498db';
@@ -168,7 +165,7 @@
             const v = getValues();
             const L = getLayout();
 
-            ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 2;
+            ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 2;
 
             // Top main wire
             ctx.beginPath(); ctx.moveTo(L.left, L.top); ctx.lineTo(L.right, L.top); ctx.stroke();
@@ -177,11 +174,11 @@
 
             // Battery on left side
             drawBatteryVert(L.left, L.top, L.bot);
-            ctx.font = "600 11px 'Outfit'"; ctx.fillStyle = '#637EA1'; ctx.textAlign = 'center';
+            ctx.font = "600 11px 'HK Grotesk'"; ctx.fillStyle = '#1835b4'; ctx.textAlign = 'center';
             ctx.fillText(v.V.toFixed(1) + ' V', L.left, L.bot + 18);
 
             // Left vertical wires to junction
-            ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 2;
+            ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 2;
             // From top wire down to junction splits
             ctx.beginPath(); ctx.moveTo(L.jLeft, L.top); ctx.lineTo(L.jLeft, L.branchY[0]); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(L.jLeft, L.branchY[0]); ctx.lineTo(L.jLeft, L.branchY[1]); ctx.stroke();
@@ -201,17 +198,17 @@
 
             for (let i = 0; i < 3; i++) {
                 const by = L.branchY[i];
-                ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 2;
+                ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 2;
                 ctx.beginPath(); ctx.moveTo(L.jLeft, by); ctx.lineTo(rcx - 24, by); ctx.stroke();
                 ctx.beginPath(); ctx.moveTo(rcx + 24, by); ctx.lineTo(L.jRight, by); ctx.stroke();
                 drawResistorH(rcx, by, labels[i]);
                 // Current label
-                ctx.font = "500 9px 'Outfit'"; ctx.fillStyle = '#e74c3c'; ctx.textAlign = 'left';
+                ctx.font = "500 9px 'HK Grotesk'"; ctx.fillStyle = '#e74c3c'; ctx.textAlign = 'left';
                 ctx.fillText('I=' + currents[i].toFixed(3) + 'A', L.jRight + 6, by + 4);
             }
 
             // Junction dots
-            ctx.fillStyle = '#1a1f2e';
+            ctx.fillStyle = '#1a2747';
             for (let i = 0; i < 3; i++) {
                 ctx.beginPath(); ctx.arc(L.jLeft, L.branchY[i], 4, 0, Math.PI * 2); ctx.fill();
                 ctx.beginPath(); ctx.arc(L.jRight, L.branchY[i], 4, 0, Math.PI * 2); ctx.fill();
@@ -222,14 +219,14 @@
             ctx.beginPath(); ctx.moveTo(L.left, L.top); ctx.lineTo(ammX - 14, L.top); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(ammX + 14, L.top); ctx.lineTo(L.jLeft, L.top); ctx.stroke();
             drawAmmeter(ammX, L.top, 'A');
-            ctx.font = "500 9px 'Outfit'"; ctx.fillStyle = '#e74c3c'; ctx.textAlign = 'center';
+            ctx.font = "500 9px 'HK Grotesk'"; ctx.fillStyle = '#e74c3c'; ctx.textAlign = 'center';
             ctx.fillText(v.It.toFixed(3) + ' A', ammX, L.top - 16);
 
             // Voltmeter indicator
             ctx.beginPath(); ctx.arc(L.mx, L.bot + 26, 12, 0, Math.PI * 2);
             ctx.strokeStyle = '#3498db'; ctx.lineWidth = 1.5; ctx.stroke();
             ctx.fillStyle = '#fff'; ctx.fill();
-            ctx.font = "700 10px 'Oswald'"; ctx.fillStyle = '#3498db';
+            ctx.font = "700 10px 'HK Grotesk'"; ctx.fillStyle = '#3498db';
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ctx.fillText('V', L.mx, L.bot + 27);
             ctx.textBaseline = 'alphabetic';
@@ -241,7 +238,7 @@
         function drawCurrentDots() {
             const v = getValues();
             const L = getLayout();
-            ctx.fillStyle = '#F4D35E';
+            ctx.fillStyle = '#4a3fc2';
 
             // Animate dots along each branch path
             // Main path: top wire left->jLeft, branches, jRight->right wire, bottom wire right->left, battery

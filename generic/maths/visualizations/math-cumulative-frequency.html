@@ -4,31 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cumulative Frequency Graph</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; cursor: crosshair; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #d4d8e5; background: #fafbfc; margin-bottom: 10px; cursor: crosshair; }
         .data-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 0.82rem; }
-        .data-table th { font-family: 'Oswald', sans-serif; font-size: 0.75rem; color: #637EA1; text-transform: uppercase; padding: 4px; text-align: center; border-bottom: 2px solid #e5dfe0; }
+        .data-table th { font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; color: #1835b4; text-transform: uppercase; padding: 4px; text-align: center; border-bottom: 2px solid #d4d8e5; }
         .data-table td { padding: 3px; text-align: center; font-size: 0.8rem; }
-        .data-table input { width: 55px; padding: 4px 4px; border: 1px solid #e5dfe0; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 0.8rem; text-align: center; }
-        .data-table .cf { font-weight: 600; color: #637EA1; }
+        .data-table input { width: 55px; padding: 4px 4px; border: 1px solid #d4d8e5; border-radius: 4px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; text-align: center; }
+        .data-table .cf { font-weight: 600; color: #1835b4; }
         .btn-row { display: flex; gap: 6px; margin-bottom: 8px; }
-        .btn { font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 600; padding: 5px 8px; border-radius: 5px; border: 1px solid #e5dfe0; background: #F5E6E8; color: #637EA1; cursor: pointer; }
-        .btn:hover { background: #637EA1; color: #fff; }
+        .btn { font-family: system-ui, -apple-system, sans-serif; font-size: 0.72rem; font-weight: 600; padding: 5px 8px; border-radius: 5px; border: 1px solid #d4d8e5; background: #e8ecf8; color: #1835b4; cursor: pointer; }
+        .btn:hover { background: #1835b4; color: #fff; }
         .readings { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
-        .reading-card { background: #F5E6E8; border-radius: 5px; padding: 8px 6px; text-align: center; }
+        .reading-card { background: #e8ecf8; border-radius: 5px; padding: 8px 6px; text-align: center; }
         .reading-card .label { font-size: 0.68rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
-        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 0.95rem; color: #637EA1; margin-top: 2px; }
-        .result-box { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; margin-bottom: 8px; }
-        .result-box .value { font-size: 0.9rem; color: #637EA1; }
+        .reading-card .value { font-family: system-ui, -apple-system, sans-serif; font-size: 0.95rem; color: #1835b4; margin-top: 2px; }
+        .result-box { background: #e8ecf8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: system-ui, -apple-system, sans-serif; margin-bottom: 8px; }
+        .result-box .value { font-size: 0.9rem; color: #1835b4; }
         .result-box .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
         .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
     </style>
@@ -207,11 +204,11 @@
             }
 
             // Axes
-            ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 1.5;
+            ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5;
             ctx.beginPath(); ctx.moveTo(PAD.left, PAD.top); ctx.lineTo(PAD.left, PAD.top + gH); ctx.lineTo(PAD.left + gW, PAD.top + gH); ctx.stroke();
 
             // Tick labels
-            ctx.font = '400 10px Outfit, sans-serif'; ctx.fillStyle = '#4a5568';
+            ctx.font = '400 10px system-ui, -apple-system, sans-serif'; ctx.fillStyle = '#4a5568';
             ctx.textAlign = 'center';
             for (let i = 0; i <= 8; i++) {
                 const val = minX + (i / 8) * (maxX - minX);
@@ -227,7 +224,7 @@
             ctx.save();
             ctx.translate(12, PAD.top + gH / 2);
             ctx.rotate(-Math.PI / 2);
-            ctx.font = '500 11px Outfit, sans-serif';
+            ctx.font = '500 11px system-ui, -apple-system, sans-serif';
             ctx.fillStyle = '#4a5568';
             ctx.textAlign = 'center';
             ctx.fillText('Cumulative Frequency', 0, 0);
@@ -245,12 +242,12 @@
                     ctx.lineTo(toSX(points[i].x), toSY(points[i].y));
                 }
             }
-            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2.5; ctx.stroke();
+            ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5; ctx.stroke();
 
             // Data points
             points.forEach(p => {
                 ctx.beginPath(); ctx.arc(toSX(p.x), toSY(p.y), 4, 0, 2 * Math.PI);
-                ctx.fillStyle = '#637EA1'; ctx.fill();
+                ctx.fillStyle = '#1835b4'; ctx.fill();
                 ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
             });
 
@@ -278,7 +275,7 @@
                 ctx.lineTo(toSX(val), toSY(0));
                 ctx.stroke();
                 ctx.setLineDash([]);
-                ctx.font = '600 10px Oswald, sans-serif'; ctx.fillStyle = color; ctx.textAlign = 'center';
+                ctx.font = '600 10px system-ui, -apple-system, sans-serif'; ctx.fillStyle = color; ctx.textAlign = 'center';
                 ctx.fillText(label + ' = ' + val.toFixed(1), toSX(val), toSY(0) + 32);
             };
 

@@ -4,43 +4,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Equation Balancer</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #fafbfc; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border: 1px solid #e5dfe0; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-  .btn { background: #637EA1; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fafbfc; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .btn { background: #1835b4; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
   .btn:hover { background: #506a8a; }
-  .chip { display: inline-block; background: #F5E6E8; color: #1a1f2e; border: 1px solid #e5dfe0; border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin: 4px; }
-  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .chip { display: inline-block; background: #e8ecf8; color: #1a2747; border: 1px solid #d4d8e5; border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin: 4px; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
   h1 { font-size: 26px; margin-bottom: 4px; }
-  .subtitle { color: #637EA1; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+  .subtitle { color: #1835b4; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
 
   .eq-select { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
 
   .equation-display { text-align: center; margin: 20px 0 10px; }
   .equation-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; }
   .compound { display: flex; align-items: center; gap: 4px; }
-  .coeff-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #e5dfe0; background: #fafbfc; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; color: #1a1f2e; }
-  .coeff-btn:hover { background: #637EA1; color: #fff; border-color: #637EA1; }
-  .coeff-val { font-family: 'Oswald', sans-serif; font-size: 24px; min-width: 24px; text-align: center; color: #637EA1; }
-  .formula-text { font-family: 'Oswald', sans-serif; font-size: 20px; }
-  .arrow { font-size: 22px; color: #637EA1; margin: 0 6px; }
+  .coeff-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #d4d8e5; background: #fafbfc; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; color: #1a2747; }
+  .coeff-btn:hover { background: #1835b4; color: #fff; border-color: #1835b4; }
+  .coeff-val { font-family: system-ui, -apple-system, sans-serif; font-size: 24px; min-width: 24px; text-align: center; color: #1835b4; }
+  .formula-text { font-family: system-ui, -apple-system, sans-serif; font-size: 20px; }
+  .arrow { font-size: 22px; color: #1835b4; margin: 0 6px; }
 
   .atom-counts { margin-top: 18px; }
   .atom-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 10px; margin-bottom: 6px; font-size: 14px; font-weight: 500; }
   .atom-row.balanced { background: #e6f7e9; }
   .atom-row.unbalanced { background: #fde8e8; }
-  .atom-el { font-family: 'Oswald', sans-serif; font-size: 18px; width: 40px; }
-  .atom-side { font-family: 'Oswald', sans-serif; font-size: 16px; }
+  .atom-el { font-family: system-ui, -apple-system, sans-serif; font-size: 18px; width: 40px; }
+  .atom-side { font-family: system-ui, -apple-system, sans-serif; font-size: 16px; }
   .check { color: #2ecc71; font-weight: 700; }
   .cross { color: #e74c3c; font-weight: 700; }
 
   .result-banner { text-align: center; padding: 14px; border-radius: 12px; margin-top: 14px; font-weight: 600; font-size: 16px; }
   .result-banner.balanced { background: #e6f7e9; color: #27ae60; }
-  .result-banner.unbalanced { background: #F5E6E8; color: #637EA1; }
+  .result-banner.unbalanced { background: #e8ecf8; color: #1835b4; }
 </style>
 </head>
 <body>

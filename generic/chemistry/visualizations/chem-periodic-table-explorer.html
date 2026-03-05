@@ -4,26 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Periodic Table Explorer</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
-  h1 { color: #637EA1; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { color: #1835b4; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
   .subtitle { text-align: center; color: #888; font-size: 0.85rem; margin-bottom: 16px; }
-  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.85rem; transition: background 0.2s; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; transition: background 0.2s; }
   .btn:hover { background: #4f6a8a; }
-  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #e5dfe0; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
-  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
-  .info-box { background: #F5E6E8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.6; }
-  .info-box strong { color: #637EA1; }
+  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #d4d8e5; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  .info-box { background: #e8ecf8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.6; }
+  .info-box strong { color: #1835b4; }
   .pt-grid { display: grid; grid-template-columns: repeat(18, 1fr); gap: 2px; margin-bottom: 14px; }
   .el-cell { aspect-ratio: 1; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-size: 0.6rem; border: 1.5px solid transparent; transition: all 0.2s; position: relative; }
   .el-cell:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-  .el-cell.selected { border-color: #1a1f2e; box-shadow: 0 0 0 2px #637EA1; }
-  .el-cell .sym { font-weight: 700; font-size: 0.75rem; line-height: 1; font-family: 'Oswald', sans-serif; }
+  .el-cell.selected { border-color: #1a2747; box-shadow: 0 0 0 2px #1835b4; }
+  .el-cell .sym { font-weight: 700; font-size: 0.75rem; line-height: 1; font-family: system-ui, -apple-system, sans-serif; }
   .el-cell .num { font-size: 0.5rem; color: rgba(0,0,0,0.5); }
   .el-cell.empty { background: transparent !important; cursor: default; }
   .el-cell.empty:hover { transform: none; box-shadow: none; }
@@ -31,12 +30,12 @@
   .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.7rem; }
   .legend-swatch { width: 12px; height: 12px; border-radius: 3px; }
   .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .detail-item { background: #fafbfc; border-radius: 8px; padding: 8px; border: 1px solid #e5dfe0; }
+  .detail-item { background: #fafbfc; border-radius: 8px; padding: 8px; border: 1px solid #d4d8e5; }
   .detail-item .label { font-size: 0.65rem; color: #888; text-transform: uppercase; font-weight: 600; }
-  .detail-item .value { font-family: 'Oswald', sans-serif; font-size: 1rem; color: #637EA1; }
+  .detail-item .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1rem; color: #1835b4; }
   .el-big { text-align: center; margin-bottom: 10px; }
-  .el-big .sym { font-family: 'Oswald', sans-serif; font-size: 3rem; color: #637EA1; }
-  .el-big .name { font-size: 1rem; color: #1a1f2e; }
+  .el-big .sym { font-family: system-ui, -apple-system, sans-serif; font-size: 3rem; color: #1835b4; }
+  .el-big .name { font-size: 1rem; color: #1a2747; }
 </style>
 </head>
 <body>

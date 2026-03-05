@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Static Electricity</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.subtitle{text-align:center;font-size:.78rem;color:#4a5568;margin-bottom:10px}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;cursor:pointer}.btn-row{display:flex;gap:6px;margin-top:8px;justify-content:center}.btn{background:#637EA1;color:#fff;border:none;border-radius:5px;padding:6px 16px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer}.btn:hover{background:#506a8a}.btn.secondary{background:#F5E6E8;color:#1a1f2e}.info{background:#F5E6E8;border-radius:5px;padding:10px;font-size:.78rem;color:#4a5568;margin-top:8px;text-align:center}.info strong{color:#637EA1}
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.subtitle{text-align:center;font-size:.78rem;color:#4a5568;margin-bottom:10px}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;cursor:pointer}.btn-row{display:flex;gap:6px;margin-top:8px;justify-content:center}.btn{background:#1835b4;color:#fff;border:none;border-radius:5px;padding:6px 16px;font-family: system-ui, -apple-system, sans-serif;font-size:.78rem;font-weight:600;cursor:pointer}.btn:hover{background:#506a8a}.btn.secondary{background:#e8ecf8;color:#1a2747}.info{background:#e8ecf8;border-radius:5px;padding:10px;font-size:.78rem;color:#4a5568;margin-top:8px;text-align:center}.info strong{color:#1835b4}
     </style>
 </head>
 <body>
@@ -52,7 +50,7 @@ function draw(ts){
 
     // Rod (left)
     const rodCharge=-rubCount*3;
-    ctx.fillStyle='#637EA1';ctx.beginPath();ctx.roundRect(rodX-40,rodY-60,80,120,8);ctx.fill();
+    ctx.fillStyle='#1835b4';ctx.beginPath();ctx.roundRect(rodX-40,rodY-60,80,120,8);ctx.fill();
     ctx.fillStyle='#fff';ctx.font='600 16px Oswald';ctx.textAlign='center';
     ctx.fillText('Rod',rodX,rodY-10);
     if(rodCharge!==0){ctx.fillStyle='#4a90d9';ctx.font='700 18px Oswald';ctx.fillText(rodCharge<0?`${rodCharge}`:`+${rodCharge}`,rodX,rodY+20)}
@@ -62,8 +60,8 @@ function draw(ts){
 
     // Cloth (right)
     const clothCharge=rubCount*3;
-    ctx.fillStyle='#F4D35E';ctx.beginPath();ctx.roundRect(clothX-40,clothY-60,80,120,8);ctx.fill();
-    ctx.fillStyle='#1a1f2e';ctx.font='600 16px Oswald';ctx.textAlign='center';
+    ctx.fillStyle='#4a3fc2';ctx.beginPath();ctx.roundRect(clothX-40,clothY-60,80,120,8);ctx.fill();
+    ctx.fillStyle='#1a2747';ctx.font='600 16px Oswald';ctx.textAlign='center';
     ctx.fillText('Cloth',clothX,clothY-10);
     if(clothCharge!==0){ctx.fillStyle='#dc3545';ctx.font='700 18px Oswald';ctx.fillText(`+${clothCharge}`,clothX,clothY+20)}
     else{ctx.fillStyle='#28a745';ctx.font='500 14px Outfit';ctx.fillText('Neutral',clothX,clothY+20)}

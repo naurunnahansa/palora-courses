@@ -4,26 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Organic Molecule Viewer</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Outfit',sans-serif;background:#f0f2f5;color:#1a1f2e;min-height:100vh;display:flex;justify-content:center;padding:20px;}
-h1,h2,h3,h4{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
-.container{max-width:550px;width:100%;margin:0 auto;}
-.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #e5dfe0;padding:24px;margin-bottom:16px;}
-.card-title{font-size:1.3rem;color:#637EA1;margin-bottom:4px;}
+body{font-family: system-ui, -apple-system, sans-serif;background:#f0f2f5;color:#1a2747;min-height:100vh;display:flex;justify-content:center;padding:20px;}
+h1,h2,h3,h4{font-family: system-ui, -apple-system, sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
+.container{max-width: 100%;width:100%;margin:0 auto;}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #d4d8e5;padding:24px;margin-bottom:16px;}
+.card-title{font-size:1.3rem;color:#1835b4;margin-bottom:4px;}
 .card-subtitle{font-size:0.85rem;color:#888;margin-bottom:16px;}
-canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #e5dfe0;display:block;margin:10px 0;}
-.btn{background:#637EA1;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:0.9rem;cursor:pointer;transition:all 0.2s;}
+canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #d4d8e5;display:block;margin:10px 0;}
+.btn{background:#1835b4;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-family: system-ui, -apple-system, sans-serif;font-size:0.9rem;cursor:pointer;transition:all 0.2s;}
 .btn:hover{background:#506a8a;}
-select{font-family:'Outfit',sans-serif;font-size:0.95rem;padding:10px 14px;border-radius:8px;border:1.5px solid #e5dfe0;background:#fff;color:#1a1f2e;width:100%;cursor:pointer;outline:none;transition:border 0.2s;}
-select:focus{border-color:#637EA1;}
+select{font-family: system-ui, -apple-system, sans-serif;font-size:0.95rem;padding:10px 14px;border-radius:8px;border:1.5px solid #d4d8e5;background:#fff;color:#1a2747;width:100%;cursor:pointer;outline:none;transition:border 0.2s;}
+select:focus{border-color:#1835b4;}
 .info-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f2f5;font-size:0.88rem;}
 .info-row:last-child{border-bottom:none;}
 .info-label{color:#888;font-weight:500;}
-.info-value{color:#1a1f2e;font-weight:600;}
-.highlight{color:#637EA1;font-weight:700;}
-.badge{display:inline-block;background:#F5E6E8;color:#637EA1;padding:3px 10px;border-radius:12px;font-size:0.78rem;font-weight:600;}
+.info-value{color:#1a2747;font-weight:600;}
+.highlight{color:#1835b4;font-weight:700;}
+.badge{display:inline-block;background:#e8ecf8;color:#1835b4;padding:3px 10px;border-radius:12px;font-size:0.78rem;font-weight:600;}
 </style>
 </head>
 <body>
@@ -83,12 +82,12 @@ function draw() {
   for (let i = 0; i < n - 1; i++) {
     const isDbl = mol.doubleBond && mol.doubleBond.includes(i);
     if (isDbl) {
-      ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2.5;
+      ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5;
       ctx.beginPath(); ctx.moveTo(positions[i].x, positions[i].y - 5); ctx.lineTo(positions[i+1].x, positions[i+1].y - 5); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(positions[i].x, positions[i].y + 5); ctx.lineTo(positions[i+1].x, positions[i+1].y + 5); ctx.stroke();
       ctx.lineWidth = 2;
     } else {
-      ctx.strokeStyle = '#1a1f2e';
+      ctx.strokeStyle = '#1a2747';
       ctx.beginPath(); ctx.moveTo(positions[i].x, positions[i].y); ctx.lineTo(positions[i+1].x, positions[i+1].y); ctx.stroke();
     }
   }
@@ -117,9 +116,9 @@ function draw() {
   // OH group
   if (mol.oh) {
     const last = positions[n-1];
-    ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2.5;
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5;
     ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(last.x+35, last.y); ctx.stroke();
-    ctx.fillStyle = '#637EA1'; ctx.font = '700 14px Outfit';
+    ctx.fillStyle = '#1835b4'; ctx.font = '700 14px Outfit';
     ctx.fillText('O', last.x+45, last.y);
     ctx.beginPath(); ctx.moveTo(last.x+45, last.y+8); ctx.lineTo(last.x+45, last.y+28); ctx.stroke();
     ctx.fillText('H', last.x+45, last.y+38);
@@ -128,11 +127,11 @@ function draw() {
   // COOH group
   if (mol.cooh) {
     const last = positions[n-1];
-    ctx.strokeWidth = 2.5; ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2.5;
+    ctx.strokeWidth = 2.5; ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5;
     // =O above
     ctx.beginPath(); ctx.moveTo(last.x-3, last.y-8); ctx.lineTo(last.x-3, last.y-32); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(last.x+3, last.y-8); ctx.lineTo(last.x+3, last.y-32); ctx.stroke();
-    ctx.fillStyle = '#637EA1'; ctx.font = '700 14px Outfit';
+    ctx.fillStyle = '#1835b4'; ctx.font = '700 14px Outfit';
     ctx.fillText('O', last.x, last.y-44);
     // -OH right
     ctx.beginPath(); ctx.moveTo(last.x+8, last.y); ctx.lineTo(last.x+38, last.y); ctx.stroke();
@@ -146,11 +145,11 @@ function draw() {
   positions.forEach(p => {
     ctx.fillStyle = '#fff';
     ctx.beginPath(); ctx.arc(p.x, p.y, 10, 0, Math.PI*2); ctx.fill();
-    ctx.fillStyle = '#1a1f2e';
+    ctx.fillStyle = '#1a2747';
     ctx.fillText('C', p.x, p.y);
   });
 
-  ctx.fillStyle = '#637EA1'; ctx.font = '600 13px Outfit'; ctx.textAlign = 'left';
+  ctx.fillStyle = '#1835b4'; ctx.font = '600 13px Outfit'; ctx.textAlign = 'left';
   ctx.fillText(mol.name, 14, 22);
 
   // Info panel

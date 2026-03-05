@@ -3,31 +3,28 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuclear Fission Chain Reaction</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .desc { text-align: center; font-size: 0.75rem; color: #4a5568; margin-bottom: 10px; }
-        canvas { display: block; margin: 0 auto 8px; border: 1px solid #e5dfe0; border-radius: 5px; background: #0d1117; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; background: #0d1117; }
         .controls { display: flex; gap: 6px; justify-content: center; margin-bottom: 8px; flex-wrap: wrap; }
-        .ctrl-btn { background: #637EA1; color: #fff; border: none; border-radius: 5px; padding: 6px 14px; font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .ctrl-btn { background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 14px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .ctrl-btn:hover { background: #506a8a; }
-        .ctrl-btn.secondary { background: #fff; color: #1a1f2e; border: 1px solid #e5dfe0; }
-        .ctrl-btn.secondary:hover { border-color: #637EA1; }
-        .ctrl-btn.active { background: #F4D35E; color: #1a1f2e; }
+        .ctrl-btn.secondary { background: #fff; color: #1a2747; border: 1px solid #d4d8e5; }
+        .ctrl-btn.secondary:hover { border-color: #1835b4; }
+        .ctrl-btn.active { background: #4a3fc2; color: #1a2747; }
         .toggle-row { display: flex; gap: 4px; justify-content: center; margin-bottom: 8px; }
-        .toggle-btn { flex: 0 1 auto; background: #fff; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px 14px; font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 600; cursor: pointer; }
-        .toggle-btn.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        .toggle-btn { flex: 0 1 auto; background: #fff; border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px 14px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.72rem; font-weight: 600; cursor: pointer; }
+        .toggle-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
         .stats { display: flex; gap: 6px; margin-bottom: 8px; }
-        .stat-card { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 6px; text-align: center; }
+        .stat-card { flex: 1; border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px; text-align: center; }
         .stat-card .label { font-size: 0.62rem; color: #4a5568; text-transform: uppercase; }
-        .stat-card .value { font-size: 0.9rem; font-weight: 700; color: #637EA1; }
-        .note { background: #F5E6E8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; }
-        .note strong { color: #637EA1; }
+        .stat-card .value { font-size: 0.9rem; font-weight: 700; color: #1835b4; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; }
+        .note strong { color: #1835b4; }
     </style>
 </head>
 <body>
@@ -297,7 +294,7 @@ function draw() {
         if (!n.alive) return;
         ctx.beginPath();
         ctx.arc(n.x, n.y, NEUTRON_R, 0, Math.PI * 2);
-        ctx.fillStyle = '#F4D35E';
+        ctx.fillStyle = '#4a3fc2';
         ctx.fill();
         // trail
         ctx.beginPath();
@@ -316,7 +313,7 @@ function draw() {
     ctx.beginPath(); ctx.arc(15, 15, 6, 0, Math.PI * 2); ctx.fillStyle = '#2d8a2d'; ctx.fill();
     ctx.fillStyle = '#888'; ctx.fillText('U-235 Nucleus', 26, 18);
     // Neutron
-    ctx.beginPath(); ctx.arc(15, 30, 3, 0, Math.PI * 2); ctx.fillStyle = '#F4D35E'; ctx.fill();
+    ctx.beginPath(); ctx.arc(15, 30, 3, 0, Math.PI * 2); ctx.fillStyle = '#4a3fc2'; ctx.fill();
     ctx.fillStyle = '#888'; ctx.fillText('Neutron', 26, 33);
     // Fragment
     ctx.beginPath(); ctx.arc(130, 15, 5, 0, Math.PI * 2); ctx.fillStyle = '#e74c3c'; ctx.fill();

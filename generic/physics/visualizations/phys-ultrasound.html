@@ -3,30 +3,27 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ultrasound Distance</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #1a1f2e; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #1a2747; }
         .slider-row { margin-bottom: 8px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
-        .slider-label .val { font-weight: 600; color: #637EA1; }
-        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
         .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
-        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
         .readout .label { font-size: 0.68rem; color: #4a5568; }
-        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; }
         .readout .formula { font-size: 0.62rem; color: #4a5568; margin-top: 2px; }
         .calc { background: #fafbfc; border-radius: 5px; padding: 8px; text-align: center; font-size: 0.78rem; margin-top: 8px; }
-        .calc strong { color: #637EA1; }
-        .btn { display: block; margin: 8px auto 0; background: #637EA1; color: #fff; border: none; border-radius: 5px; padding: 6px 18px; font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+        .calc strong { color: #1835b4; }
+        .btn { display: block; margin: 8px auto 0; background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 18px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
         .btn:hover { background: #506a8a; }
     </style>
 </head>
@@ -91,10 +88,10 @@ function draw(ts) {
 
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = '#1a1f2e'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#1a2747'; ctx.fillRect(0, 0, W, H);
 
     // Probe (left)
-    ctx.fillStyle = '#637EA1'; ctx.fillRect(30, H*0.3, 70, H*0.4);
+    ctx.fillStyle = '#1835b4'; ctx.fillRect(30, H*0.3, 70, H*0.4);
     ctx.fillStyle = '#506a8a'; ctx.fillRect(30, H*0.3, 70, 10);
     ctx.fillStyle = '#fff'; ctx.font = '600 12px Oswald'; ctx.textAlign = 'center';
     ctx.fillText('PROBE', 65, H*0.5 + 4);
@@ -111,10 +108,10 @@ function draw(ts) {
     ctx.fillText('Tissue boundary', boundaryX, H*0.1);
 
     // Depth marker
-    ctx.setLineDash([4,4]); ctx.strokeStyle = '#F4D35E'; ctx.lineWidth = 1;
+    ctx.setLineDash([4,4]); ctx.strokeStyle = '#4a3fc2'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(100, H*0.88); ctx.lineTo(boundaryX, H*0.88); ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#F4D35E'; ctx.font = '600 13px Outfit';
+    ctx.fillStyle = '#4a3fc2'; ctx.font = '600 13px Outfit';
     ctx.fillText(`d = ${depth.toFixed(1)} cm`, (100 + boundaryX)/2, H*0.95);
 
     // Pulse animation
@@ -136,7 +133,7 @@ function draw(ts) {
         }
 
         // Draw pulse
-        const color = pulsePhase === 0 ? '#F4D35E' : '#dc3545';
+        const color = pulsePhase === 0 ? '#4a3fc2' : '#dc3545';
         for (let i = 0; i < 3; i++) {
             const r = 10 + i * 15;
             ctx.beginPath(); ctx.arc(pulseX, H*0.5, r, -0.5, 0.5);

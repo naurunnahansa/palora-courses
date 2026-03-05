@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Uses of Radioactivity</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.use-card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;background:#fff;cursor:pointer;transition:all .2s}.use-card:hover{border-color:#637EA1;transform:translateY(-1px)}.use-card.active{border-color:#637EA1;background:#F5E6E8}.use-card .name{font-family:'Oswald',sans-serif;font-size:.8rem;color:#637EA1;text-transform:uppercase}.use-card .type{font-size:.65rem;color:#4a5568;margin-top:2px}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-top:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.info{background:#fafbfc;border-radius:5px;padding:10px;margin-top:8px;font-size:.75rem;color:#4a5568}.info strong{color:#637EA1}</style>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.use-card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;background:#fff;cursor:pointer;transition:all .2s}.use-card:hover{border-color:#1835b4;transform:translateY(-1px)}.use-card.active{border-color:#1835b4;background:#e8ecf8}.use-card .name{font-family: system-ui, -apple-system, sans-serif;font-size:.8rem;color:#1835b4;text-transform:uppercase}.use-card .type{font-size:.65rem;color:#4a5568;margin-top:2px}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-top:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.info{background:#fafbfc;border-radius:5px;padding:10px;margin-top:8px;font-size:.75rem;color:#4a5568}.info strong{color:#1835b4}</style>
 </head>
 <body>
 <div class="container">
@@ -43,7 +41,7 @@ function draw(ts){
     const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
     ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
 
-    ctx.fillStyle='#637EA1';ctx.font='600 14px Oswald';ctx.textAlign='center';
+    ctx.fillStyle='#1835b4';ctx.font='600 14px Oswald';ctx.textAlign='center';
     ctx.fillText(uses[sel].name.toUpperCase(),cx,25);
 
     if(sel===0){
@@ -58,7 +56,7 @@ function draw(ts){
             ctx.beginPath();ctx.arc(tx,ty,4,0,Math.PI*2);ctx.fillStyle=`rgba(244,211,94,${0.5+Math.sin(animT*3+i)*0.3})`;ctx.fill();
         }
         // Gamma camera
-        ctx.fillStyle='#637EA1';ctx.fillRect(cx+120,cy-50,80,100);
+        ctx.fillStyle='#1835b4';ctx.fillRect(cx+120,cy-50,80,100);
         ctx.fillStyle='#fff';ctx.font='500 10px Outfit';ctx.fillText('Gamma',cx+160,cy-5);ctx.fillText('Camera',cx+160,cy+10);
         // Rays
         for(let i=0;i<3;i++){
@@ -68,7 +66,7 @@ function draw(ts){
         }
     } else if(sel===1){
         // Cancer treatment - rotating beam
-        ctx.beginPath();ctx.arc(cx,cy,50,0,Math.PI*2);ctx.fillStyle='#F5E6E8';ctx.fill();ctx.strokeStyle='#4a5568';ctx.lineWidth=2;ctx.stroke();
+        ctx.beginPath();ctx.arc(cx,cy,50,0,Math.PI*2);ctx.fillStyle='#e8ecf8';ctx.fill();ctx.strokeStyle='#4a5568';ctx.lineWidth=2;ctx.stroke();
         ctx.fillStyle='#dc3545';ctx.beginPath();ctx.arc(cx+10,cy-5,12,0,Math.PI*2);ctx.fill();
         ctx.fillStyle='#4a5568';ctx.font='500 10px Outfit';ctx.textAlign='center';ctx.fillText('Tumour',cx+10,cy+20);
         // Rotating gamma beams
@@ -77,17 +75,17 @@ function draw(ts){
             const sx=cx+Math.cos(a)*150,sy=cy+Math.sin(a)*150;
             ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(cx+10,cy-5);
             ctx.strokeStyle=`rgba(244,211,94,0.4)`;ctx.lineWidth=8;ctx.stroke();
-            ctx.strokeStyle='#F4D35E';ctx.lineWidth=2;ctx.stroke();
-            ctx.beginPath();ctx.arc(sx,sy,10,0,Math.PI*2);ctx.fillStyle='#637EA1';ctx.fill();
+            ctx.strokeStyle='#4a3fc2';ctx.lineWidth=2;ctx.stroke();
+            ctx.beginPath();ctx.arc(sx,sy,10,0,Math.PI*2);ctx.fillStyle='#1835b4';ctx.fill();
             ctx.fillStyle='#fff';ctx.font='700 10px Oswald';ctx.fillText('γ',sx,sy+4);
         }
     } else if(sel===2){
         // Smoke detector
-        ctx.fillStyle='#637EA1';ctx.fillRect(cx-100,cy-60,200,40);
+        ctx.fillStyle='#1835b4';ctx.fillRect(cx-100,cy-60,200,40);
         ctx.fillStyle='#fff';ctx.font='600 12px Oswald';ctx.textAlign='center';ctx.fillText('SMOKE DETECTOR',cx,cy-35);
         // Alpha source
-        ctx.fillStyle='#F4D35E';ctx.beginPath();ctx.arc(cx-40,cy+10,10,0,Math.PI*2);ctx.fill();
-        ctx.fillStyle='#1a1f2e';ctx.font='700 12px Oswald';ctx.fillText('α',cx-40,cy+14);
+        ctx.fillStyle='#4a3fc2';ctx.beginPath();ctx.arc(cx-40,cy+10,10,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle='#1a2747';ctx.font='700 12px Oswald';ctx.fillText('α',cx-40,cy+14);
         // Ion pairs
         for(let i=0;i<6;i++){
             const ix=cx-20+i*15;const iy=cy+10+Math.sin(animT*2+i)*5;
@@ -103,11 +101,11 @@ function draw(ts){
         ctx.fillStyle='#a0a0a0';ctx.fillRect(cx-150,cy-5,300,10);
         ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';ctx.textAlign='center';ctx.fillText('Paper / metal sheet',cx,cy+25);
         // Beta source below
-        ctx.fillStyle='#F4D35E';ctx.beginPath();ctx.arc(cx,cy+60,12,0,Math.PI*2);ctx.fill();
-        ctx.fillStyle='#1a1f2e';ctx.font='700 12px Oswald';ctx.fillText('β',cx,cy+64);
+        ctx.fillStyle='#4a3fc2';ctx.beginPath();ctx.arc(cx,cy+60,12,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle='#1a2747';ctx.font='700 12px Oswald';ctx.fillText('β',cx,cy+64);
         ctx.fillStyle='#4a5568';ctx.font='500 10px Outfit';ctx.fillText('Beta source',cx,cy+85);
         // Detector above
-        ctx.fillStyle='#637EA1';ctx.fillRect(cx-15,cy-50,30,25);
+        ctx.fillStyle='#1835b4';ctx.fillRect(cx-15,cy-50,30,25);
         ctx.fillStyle='#4a5568';ctx.font='500 10px Outfit';ctx.fillText('Detector',cx,cy-55);
         // Rays
         for(let i=0;i<3;i++){
@@ -121,12 +119,12 @@ function draw(ts){
         ctx.fillStyle='#4a5568';ctx.font='500 10px Outfit';ctx.fillText('Rollers',cx-160,cy+30);
     } else if(sel===4){
         // Sterilisation
-        ctx.fillStyle='#637EA1';ctx.fillRect(cx-80,cy-40,160,80);ctx.strokeStyle='#4a5568';ctx.lineWidth=2;ctx.strokeRect(cx-80,cy-40,160,80);
+        ctx.fillStyle='#1835b4';ctx.fillRect(cx-80,cy-40,160,80);ctx.strokeStyle='#4a5568';ctx.lineWidth=2;ctx.strokeRect(cx-80,cy-40,160,80);
         ctx.fillStyle='#fff';ctx.font='600 12px Oswald';ctx.textAlign='center';ctx.fillText('MEDICAL',cx,cy-5);ctx.fillText('EQUIPMENT',cx,cy+12);
         // Gamma rays from source
         const sx=cx-200;
-        ctx.fillStyle='#F4D35E';ctx.beginPath();ctx.arc(sx,cy,15,0,Math.PI*2);ctx.fill();
-        ctx.fillStyle='#1a1f2e';ctx.font='700 14px Oswald';ctx.fillText('γ',sx,cy+5);
+        ctx.fillStyle='#4a3fc2';ctx.beginPath();ctx.arc(sx,cy,15,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle='#1a2747';ctx.font='700 14px Oswald';ctx.fillText('γ',sx,cy+5);
         for(let i=0;i<5;i++){
             const rx=sx+30+i*30+((animT*50)%30);
             ctx.beginPath();ctx.moveTo(rx,cy-20);ctx.lineTo(rx,cy+20);
@@ -143,15 +141,15 @@ function draw(ts){
             const remaining=8-Math.floor(animT%8);
             const fx=cx-40+i*12;const fy=cy-15;
             ctx.beginPath();ctx.arc(fx,fy,4,0,Math.PI*2);
-            ctx.fillStyle=i<remaining?'#4a90d9':'#e5dfe0';ctx.fill();
+            ctx.fillStyle=i<remaining?'#4a90d9':'#d4d8e5';ctx.fill();
         }
         ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';
         ctx.fillText('C-14 atoms remaining',cx,cy-35);
         // Half-life arrow
-        ctx.fillStyle='#637EA1';ctx.font='600 13px Oswald';
+        ctx.fillStyle='#1835b4';ctx.font='600 13px Oswald';
         ctx.fillText('Half-life = 5,730 years',cx,cy+55);
         // Timeline
-        ctx.strokeStyle='#637EA1';ctx.lineWidth=2;
+        ctx.strokeStyle='#1835b4';ctx.lineWidth=2;
         ctx.beginPath();ctx.moveTo(cx-180,cy+80);ctx.lineTo(cx+180,cy+80);ctx.stroke();
         for(let i=0;i<=4;i++){
             const tx=cx-180+i*90;

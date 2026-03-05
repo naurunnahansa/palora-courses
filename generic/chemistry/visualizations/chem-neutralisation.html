@@ -4,32 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Neutralisation Reaction Simulator</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
-  h1 { color: #637EA1; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #d4d8e5; padding: 24px; margin-bottom: 18px; }
+  h1 { color: #1835b4; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
   .subtitle { text-align: center; color: #888; font-size: 0.85rem; margin-bottom: 16px; }
   canvas { width: 100%; background: #fafbfc; border-radius: 10px; display: block; }
-  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.85rem; transition: background 0.2s; }
+  .btn { background: #1835b4; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; transition: background 0.2s; }
   .btn:hover { background: #4f6a8a; }
-  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #e5dfe0; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
-  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
-  .info-box { background: #F5E6E8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.5; }
-  .info-box strong { color: #637EA1; }
+  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #d4d8e5; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+  .info-box { background: #e8ecf8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.5; }
+  .info-box strong { color: #1835b4; }
   .controls { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
   .slider-row { display: flex; align-items: center; gap: 10px; }
   .slider-row label { font-size: 0.85rem; font-weight: 500; min-width: 100px; }
-  input[type=range] { flex: 1; accent-color: #637EA1; }
-  .ph-display { text-align: center; font-size: 2rem; font-family: 'Oswald', sans-serif; padding: 10px; border-radius: 10px; margin-top: 10px; transition: all 0.3s; }
-  .equation { text-align: center; font-size: 1rem; font-family: 'Outfit', sans-serif; padding: 10px; background: #fafbfc; border-radius: 8px; margin-top: 10px; }
+  input[type=range] { flex: 1; accent-color: #1835b4; }
+  .ph-display { text-align: center; font-size: 2rem; font-family: system-ui, -apple-system, sans-serif; padding: 10px; border-radius: 10px; margin-top: 10px; transition: all 0.3s; }
+  .equation { text-align: center; font-size: 1rem; font-family: system-ui, -apple-system, sans-serif; padding: 10px; background: #fafbfc; border-radius: 8px; margin-top: 10px; }
   .neutralised { animation: pulse 0.6s ease-in-out infinite alternate; }
   @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
   .select-row { display: flex; gap: 10px; margin-bottom: 10px; }
-  .select-row select { flex: 1; padding: 8px; border-radius: 8px; border: 1.5px solid #e5dfe0; font-family: 'Outfit', sans-serif; font-size: 0.85rem; }
+  .select-row select { flex: 1; padding: 8px; border-radius: 8px; border: 1.5px solid #d4d8e5; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; }
 </style>
 </head>
 <body>
@@ -114,7 +113,7 @@ function draw() {
 
   // Acid beaker (left)
   const bx1 = 60, by = 80, bw = 140, bh = 150;
-  ctx.strokeStyle = '#637EA1';
+  ctx.strokeStyle = '#1835b4';
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(bx1, by); ctx.lineTo(bx1, by + bh); ctx.lineTo(bx1 + bw, by + bh); ctx.lineTo(bx1 + bw, by);
@@ -131,7 +130,7 @@ function draw() {
 
   // Alkali beaker (right)
   const bx2 = 300;
-  ctx.strokeStyle = '#637EA1';
+  ctx.strokeStyle = '#1835b4';
   ctx.beginPath();
   ctx.moveTo(bx2, by); ctx.lineTo(bx2, by + bh); ctx.lineTo(bx2 + bw, by + bh); ctx.lineTo(bx2 + bw, by);
   ctx.stroke();
@@ -146,7 +145,7 @@ function draw() {
   ctx.fillText('ALKALI + INDICATOR', bx2 + bw/2, by - 24);
 
   // Arrow
-  ctx.fillStyle = '#637EA1';
+  ctx.fillStyle = '#1835b4';
   ctx.beginPath();
   ctx.moveTo(220, 140);
   ctx.lineTo(260, 130);
@@ -154,7 +153,7 @@ function draw() {
   ctx.closePath();
   ctx.fill();
   ctx.font = '500 10px Outfit';
-  ctx.fillStyle = '#637EA1';
+  ctx.fillStyle = '#1835b4';
   ctx.textAlign = 'center';
   ctx.fillText('adding acid', 240, 120);
 

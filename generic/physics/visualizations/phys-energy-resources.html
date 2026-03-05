@@ -3,35 +3,32 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Energy Resources</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .subtitle { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; }
-        .score-bar { display: flex; justify-content: space-between; background: #F5E6E8; border-radius: 5px; padding: 6px 12px; margin-bottom: 10px; font-size: 0.8rem; font-weight: 600; }
-        .score-bar span { color: #637EA1; }
+        .score-bar { display: flex; justify-content: space-between; background: #e8ecf8; border-radius: 5px; padding: 6px 12px; margin-bottom: 10px; font-size: 0.8rem; font-weight: 600; }
+        .score-bar span { color: #1835b4; }
         .drop-zones { display: flex; gap: 8px; margin-bottom: 10px; }
-        .drop-zone { flex: 1; min-height: 100px; border: 2px dashed #e5dfe0; border-radius: 5px; padding: 8px; text-align: center; transition: all 0.2s; }
-        .drop-zone.over { border-color: #637EA1; background: rgba(99,126,161,0.06); }
-        .drop-zone h2 { font-family: 'Oswald', sans-serif; font-size: 0.82rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .drop-zone { flex: 1; min-height: 100px; border: 2px dashed #d4d8e5; border-radius: 5px; padding: 8px; text-align: center; transition: all 0.2s; }
+        .drop-zone.over { border-color: #1835b4; background: rgba(99,126,161,0.06); }
+        .drop-zone h2 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.82rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
         .drop-zone .desc { font-size: 0.65rem; color: #4a5568; margin-bottom: 6px; }
         .items-area { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 10px; }
-        .item { display: inline-flex; align-items: center; gap: 4px; background: #fff; border: 1px solid #e5dfe0; border-radius: 5px; padding: 5px 10px; font-size: 0.78rem; font-weight: 500; cursor: grab; user-select: none; transition: all 0.2s; }
+        .item { display: inline-flex; align-items: center; gap: 4px; background: #fff; border: 1px solid #d4d8e5; border-radius: 5px; padding: 5px 10px; font-size: 0.78rem; font-weight: 500; cursor: grab; user-select: none; transition: all 0.2s; }
         .item:active { cursor: grabbing; transform: scale(1.05); }
         .item.correct { background: #d4edda; border-color: #28a745; }
         .item.incorrect { background: #f8d7da; border-color: #dc3545; }
         .item.placed { opacity: 0.5; pointer-events: none; }
-        .dropped-item { display: inline-flex; align-items: center; gap: 3px; background: #fff; border: 1px solid #e5dfe0; border-radius: 4px; padding: 3px 7px; font-size: 0.7rem; margin: 2px; }
+        .dropped-item { display: inline-flex; align-items: center; gap: 3px; background: #fff; border: 1px solid #d4d8e5; border-radius: 4px; padding: 3px 7px; font-size: 0.7rem; margin: 2px; }
         .dropped-item.correct { background: #d4edda; border-color: #28a745; }
         .dropped-item.incorrect { background: #f8d7da; border-color: #dc3545; }
-        .detail { border: 1px solid #e5dfe0; border-radius: 5px; padding: 10px; background: #fafbfc; margin-top: 8px; }
-        .detail .name { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; }
+        .detail { border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px; background: #fafbfc; margin-top: 8px; }
+        .detail .name { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; }
         .detail .info { font-size: 0.75rem; color: #4a5568; margin-top: 4px; line-height: 1.5; }
-        .reset-btn { display: block; margin: 10px auto 0; background: #637EA1; color: #fff; border: none; border-radius: 5px; padding: 6px 18px; font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+        .reset-btn { display: block; margin: 10px auto 0; background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 18px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
         .reset-btn:hover { background: #506a8a; }
     </style>
 </head>

@@ -4,19 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Electromagnetic Spectrum Explorer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-        .speed-note { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; background: #F5E6E8; padding: 6px 10px; border-radius: 5px; }
-        .speed-note strong { color: #637EA1; }
-        .spectrum-bar { display: flex; border-radius: 5px; overflow: hidden; cursor: pointer; margin-bottom: 10px; border: 1px solid #e5dfe0; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        .speed-note { text-align: center; font-size: 0.78rem; color: #4a5568; margin-bottom: 10px; background: #e8ecf8; padding: 6px 10px; border-radius: 5px; }
+        .speed-note strong { color: #1835b4; }
+        .spectrum-bar { display: flex; border-radius: 5px; overflow: hidden; cursor: pointer; margin-bottom: 10px; border: 1px solid #d4d8e5; }
         .spectrum-segment { padding: 8px 2px; text-align: center; font-size: 0.6rem; font-weight: 600; color: #fff; transition: flex 0.3s ease, padding 0.3s ease; position: relative; min-width: 0; display: flex; align-items: center; justify-content: center; }
         .spectrum-segment span { writing-mode: vertical-rl; text-orientation: mixed; font-size: 0.58rem; letter-spacing: 0.02em; white-space: nowrap; }
         .spectrum-segment.active { flex: 3 !important; }
@@ -24,18 +21,18 @@
         .detail-panel { display: none; animation: fadeIn 0.2s ease; }
         .detail-panel.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
-        .detail-header { font-family: 'Oswald', sans-serif; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; padding: 6px 10px; border-radius: 4px; color: #fff; }
+        .detail-header { font-family: system-ui, -apple-system, sans-serif; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; padding: 6px 10px; border-radius: 4px; color: #fff; }
         .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-        .detail-item { background: #fafbfc; border-radius: 4px; padding: 7px 9px; border: 1px solid #e5dfe0; }
+        .detail-item { background: #fafbfc; border-radius: 4px; padding: 7px 9px; border: 1px solid #d4d8e5; }
         .detail-item .dlabel { font-size: 0.68rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 2px; }
-        .detail-item .dvalue { font-size: 0.8rem; color: #1a1f2e; font-weight: 500; }
+        .detail-item .dvalue { font-size: 0.8rem; color: #1a2747; font-weight: 500; }
         .detail-full { grid-column: 1 / -1; }
         .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; }
-        .type-card { border-radius: 5px; border: 1px solid #e5dfe0; padding: 8px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; text-align: center; }
+        .type-card { border-radius: 5px; border: 1px solid #d4d8e5; padding: 8px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; text-align: center; }
         .type-card:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .type-card.active { border-color: #637EA1; box-shadow: 0 0 0 2px rgba(99,126,161,0.3); }
+        .type-card.active { border-color: #1835b4; box-shadow: 0 0 0 2px rgba(99,126,161,0.3); }
         .type-card .dot { width: 24px; height: 24px; border-radius: 50%; margin: 0 auto 4px; }
-        .type-card .name { font-size: 0.72rem; font-weight: 600; color: #1a1f2e; }
+        .type-card .name { font-size: 0.72rem; font-weight: 600; color: #1a2747; }
         .arrow-labels { display: flex; justify-content: space-between; font-size: 0.65rem; color: #4a5568; margin-bottom: 2px; padding: 0 2px; }
     </style>
 </head>
@@ -103,7 +100,7 @@
                 name: 'Visible',
                 color: 'linear-gradient(to right, #ff0000, #ff8800, #ffff00, #00cc00, #0066ff, #4400aa, #8800aa)',
                 isGradient: true,
-                textColor: '#1a1f2e',
+                textColor: '#1a2747',
                 wavelength: '400 nm – 700 nm',
                 frequency: '430 THz – 750 THz',
                 sources: 'The Sun, light bulbs, LEDs, lasers, fire',

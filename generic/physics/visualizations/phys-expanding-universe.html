@@ -3,30 +3,27 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expanding Universe & Red Shift</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .section-label { font-family: 'Oswald', sans-serif; font-size: 0.7rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin: 6px 0 3px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .section-label { font-family: system-ui, -apple-system, sans-serif; font-size: 0.7rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin: 6px 0 3px; }
         canvas { width: 100%; display: block; border-radius: 8px; background: #f8f9fa; }
         .controls { display: flex; gap: 8px; align-items: center; background: #f8f9fa; border-radius: 8px; padding: 8px 10px; margin: 6px 0; }
         .controls label { font-size: 0.7rem; font-weight: 600; color: #4a5568; white-space: nowrap; }
-        .controls .val { font-weight: 700; color: #637EA1; }
-        .controls input[type=range] { flex: 1; accent-color: #637EA1; }
+        .controls .val { font-weight: 700; color: #1835b4; }
+        .controls input[type=range] { flex: 1; accent-color: #1835b4; }
         .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
         .box { background: #f8f9fa; border-radius: 8px; overflow: hidden; }
-        .box-label { font-family: 'Oswald', sans-serif; font-size: 0.65rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; padding: 4px; background: #f0f4f8; }
+        .box-label { font-family: system-ui, -apple-system, sans-serif; font-size: 0.65rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; padding: 4px; background: #f0f4f8; }
         .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin: 6px 0; }
         .stat { background: #f8f9fa; border-radius: 6px; padding: 5px; text-align: center; }
         .stat .lbl { font-size: 0.55rem; color: #4a5568; text-transform: uppercase; }
-        .stat .val { font-size: 0.8rem; font-weight: 700; color: #637EA1; }
+        .stat .val { font-size: 0.8rem; font-weight: 700; color: #1835b4; }
         .stat .unit { font-size: 0.55rem; color: #4a5568; }
         .hubble-box { background: #f0f4f8; border-radius: 8px; padding: 8px 10px; text-align: center; margin-bottom: 6px; }
-        .hubble-box .formula { font-size: 1rem; font-weight: 700; color: #637EA1; margin: 3px 0; }
+        .hubble-box .formula { font-size: 1rem; font-weight: 700; color: #1835b4; margin: 3px 0; }
         .hubble-box .desc { font-size: 0.65rem; color: #4a5568; }
     </style>
 </head>
@@ -164,7 +161,7 @@ function drawSpectrum(z) {
         const x = margin + ((wl - 380) / 400) * specW;
         ctx.fillStyle = 'rgba(0,0,0,0.8)';
         ctx.fillRect(x - 1, 16, 2, specH);
-        ctx.fillStyle = '#1a1f2e';
+        ctx.fillStyle = '#1a2747';
         ctx.font = '600 6px Outfit';
         ctx.textAlign = 'center';
         ctx.fillText(lineNames[i], x, 14);
@@ -241,7 +238,7 @@ function drawHubble(currentD, currentV) {
     // Hubble line (v = H0 * d)
     const maxD = 1000;
     const maxV = H0 * maxD;
-    ctx.strokeStyle = '#637EA1';
+    ctx.strokeStyle = '#1835b4';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(m.l, m.t + gH);
@@ -265,14 +262,14 @@ function drawHubble(currentD, currentV) {
     // Current point
     const cx = m.l + (currentD / maxD) * gW;
     const cy = m.t + gH - (currentV / maxV) * gH;
-    ctx.fillStyle = '#F4D35E';
-    ctx.strokeStyle = '#1a1f2e';
+    ctx.fillStyle = '#4a3fc2';
+    ctx.strokeStyle = '#1a2747';
     ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
     // Dashed lines to axes
     ctx.setLineDash([3, 3]);
-    ctx.strokeStyle = '#F4D35E';
+    ctx.strokeStyle = '#4a3fc2';
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx, m.t + gH); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(m.l, cy); ctx.stroke();
@@ -298,7 +295,7 @@ function drawHubble(currentD, currentV) {
     ctx.fillText((maxV / 1000).toFixed(0) + 'k', m.l - 3, m.t + 5);
 
     // Slope label
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.font = '600 7px Outfit';
     ctx.textAlign = 'left';
     ctx.fillText('slope = H₀', m.l + gW * 0.3, m.t + gH * 0.3);
@@ -334,7 +331,7 @@ function animateBalloon() {
     const ballR = maxR * expansion;
 
     // Draw balloon (circle outline)
-    ctx.strokeStyle = '#637EA1';
+    ctx.strokeStyle = '#1835b4';
     ctx.lineWidth = 2;
     ctx.beginPath(); ctx.arc(cx, cy, ballR, 0, Math.PI * 2); ctx.stroke();
     ctx.fillStyle = 'rgba(99,126,161,0.05)';
@@ -368,12 +365,12 @@ function animateBalloon() {
     // "Us" marker
     const usX = cx + Math.cos(0.5) * 0.4 * ballR;
     const usY = cy + Math.sin(0.5) * 0.4 * ballR;
-    ctx.fillStyle = '#F4D35E';
+    ctx.fillStyle = '#4a3fc2';
     ctx.beginPath(); ctx.arc(usX, usY, 4, 0, Math.PI * 2); ctx.fill();
-    ctx.strokeStyle = '#1a1f2e';
+    ctx.strokeStyle = '#1a2747';
     ctx.lineWidth = 1;
     ctx.stroke();
-    ctx.fillStyle = '#1a1f2e';
+    ctx.fillStyle = '#1a2747';
     ctx.font = '600 7px Outfit';
     ctx.textAlign = 'left';
     ctx.fillText('Us', usX + 6, usY + 3);

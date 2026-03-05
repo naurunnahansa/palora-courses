@@ -4,27 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ohm's Law V-I Graph</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         canvas { display: block; width: 100%; border-radius: 8px; border: 1px solid #e2e8f0; background: #fafbfc; margin-bottom: 10px; cursor: crosshair; }
         .controls { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
         .slider-row { display: flex; align-items: center; gap: 8px; }
         .slider-row label { font-size: 0.82rem; font-weight: 600; color: #4a5568; min-width: 100px; }
-        .slider-row input[type="range"] { flex: 1; accent-color: #637EA1; height: 6px; }
-        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #637EA1; min-width: 52px; text-align: right; }
+        .slider-row input[type="range"] { flex: 1; accent-color: #1835b4; height: 6px; }
+        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #1835b4; min-width: 52px; text-align: right; }
         .toggle-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
-        .toggle-btn { font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600; padding: 5px 12px; border-radius: 5px; border: 2px solid #637EA1; background: #fff; color: #637EA1; cursor: pointer; transition: all 0.15s; }
-        .toggle-btn.active { background: #637EA1; color: #fff; }
+        .toggle-btn { font-family: system-ui, -apple-system, sans-serif; font-size: 0.78rem; font-weight: 600; padding: 5px 12px; border-radius: 5px; border: 2px solid #1835b4; background: #fff; color: #1835b4; cursor: pointer; transition: all 0.15s; }
+        .toggle-btn.active { background: #1835b4; color: #fff; }
         .readings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
-        .reading-card { background: #F5E6E8; border-radius: 6px; padding: 8px 10px; text-align: center; }
+        .reading-card { background: #e8ecf8; border-radius: 6px; padding: 8px 10px; text-align: center; }
         .reading-card .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
-        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 1.05rem; color: #637EA1; margin-top: 2px; }
+        .reading-card .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.05rem; color: #1835b4; margin-top: 2px; }
         .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
     </style>
 </head>
@@ -84,14 +81,14 @@
         function invGraphI(y) { return ((H - PAD.bottom - y) / (H - PAD.top - PAD.bottom)) * maxI; }
 
         function drawAxes() {
-            ctx.strokeStyle = '#1a1f2e';
+            ctx.strokeStyle = '#1a2747';
             ctx.lineWidth = 1.5;
             // Y axis
             ctx.beginPath(); ctx.moveTo(PAD.left, PAD.top); ctx.lineTo(PAD.left, H - PAD.bottom); ctx.stroke();
             // X axis
             ctx.beginPath(); ctx.moveTo(PAD.left, H - PAD.bottom); ctx.lineTo(W - PAD.right, H - PAD.bottom); ctx.stroke();
 
-            ctx.font = "600 11px 'Outfit'";
+            ctx.font = "600 11px 'HK Grotesk'";
             ctx.fillStyle = '#4a5568';
             ctx.textAlign = 'center';
 
@@ -103,7 +100,7 @@
                 if (v > 0) {
                     ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 0.5;
                     ctx.beginPath(); ctx.moveTo(x, PAD.top); ctx.lineTo(x, H - PAD.bottom); ctx.stroke();
-                    ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 1.5;
+                    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5;
                 }
             }
 
@@ -116,13 +113,13 @@
                 if (i > 0) {
                     ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 0.5;
                     ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(W - PAD.right, y); ctx.stroke();
-                    ctx.strokeStyle = '#1a1f2e'; ctx.lineWidth = 1.5;
+                    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5;
                 }
             }
 
             // Axis labels
-            ctx.font = "600 12px 'Outfit'";
-            ctx.fillStyle = '#637EA1';
+            ctx.font = "600 12px 'HK Grotesk'";
+            ctx.fillStyle = '#1835b4';
             ctx.textAlign = 'center';
             ctx.fillText('Voltage (V)', (PAD.left + W - PAD.right) / 2, H - 4);
             ctx.save();
@@ -133,7 +130,7 @@
         }
 
         function drawOhmicLine(R) {
-            ctx.strokeStyle = '#637EA1';
+            ctx.strokeStyle = '#1835b4';
             ctx.lineWidth = 2.5;
             ctx.beginPath();
             for (let v = 0; v <= maxV; v += 0.1) {
@@ -148,8 +145,8 @@
             const annotV = Math.min(maxV * 0.6, R * maxI * 0.6);
             const annotI = annotV / R;
             if (annotI <= maxI) {
-                ctx.font = "600 11px 'Outfit'";
-                ctx.fillStyle = '#637EA1';
+                ctx.font = "600 11px 'HK Grotesk'";
+                ctx.fillStyle = '#1835b4';
                 ctx.textAlign = 'left';
                 const ax = graphX(annotV) + 8;
                 const ay = graphY(annotI) - 8;
@@ -161,7 +158,7 @@
         function drawFilamentCurve(R) {
             // Filament: resistance increases with temperature. I = V / (R * (1 + k*V^2))
             const k = 0.03;
-            ctx.strokeStyle = '#F4D35E';
+            ctx.strokeStyle = '#4a3fc2';
             ctx.lineWidth = 2.5;
             ctx.beginPath();
             let started = false;
@@ -173,7 +170,7 @@
                 if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
             }
             ctx.stroke();
-            ctx.font = "600 10px 'Outfit'"; ctx.fillStyle = '#F4D35E'; ctx.textAlign = 'left';
+            ctx.font = "600 10px 'HK Grotesk'"; ctx.fillStyle = '#4a3fc2'; ctx.textAlign = 'left';
             ctx.fillText('Filament lamp (non-ohmic)', graphX(maxV * 0.35), graphY(maxI * 0.82));
         }
 
@@ -205,7 +202,7 @@
                 if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
             }
             ctx.stroke();
-            ctx.font = "600 10px 'Outfit'"; ctx.fillStyle = '#e74c3c'; ctx.textAlign = 'left';
+            ctx.font = "600 10px 'HK Grotesk'"; ctx.fillStyle = '#e74c3c'; ctx.textAlign = 'left';
             ctx.fillText('Diode (non-ohmic)', graphX(1.5), graphY(maxI * 0.9));
         }
 
@@ -234,9 +231,9 @@
             ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(x, y); ctx.stroke();
             ctx.setLineDash([]);
             // Dot
-            ctx.fillStyle = '#1a1f2e';
+            ctx.fillStyle = '#1a2747';
             ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#F4D35E';
+            ctx.fillStyle = '#4a3fc2';
             ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
         }
 

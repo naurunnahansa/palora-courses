@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Distance-Time Graph Builder</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;cursor:grab}.controls{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.ctrl-btn{flex:1;min-width:90px;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#637EA1}.ctrl-btn.danger{background:#fce4ec}.result-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;margin-top:8px}.segment-info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;margin-top:8px;line-height:1.8}.segment-info strong{color:#637EA1}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;cursor:grab}.controls{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.ctrl-btn{flex:1;min-width:90px;background:#e8ecf8;border:2px solid transparent;border-radius:5px;padding:6px;font-family: system-ui, -apple-system, sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#1835b4}.ctrl-btn.danger{background:#fce4ec}.result-box{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;color:#1835b4;margin-top:8px}.segment-info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;margin-top:8px;line-height:1.8}.segment-info strong{color:#1835b4}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
 </head>
 <body>
 <div class="container">
@@ -62,12 +60,12 @@ function draw(){
     ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
 
     // Grid
-    ctx.strokeStyle='#e5dfe0';ctx.lineWidth=1;
+    ctx.strokeStyle='#d4d8e5';ctx.lineWidth=1;
     for(let t=0;t<=maxT;t+=2){const p=toCanvas(t,0);ctx.beginPath();ctx.moveTo(p.x,margin.t);ctx.lineTo(p.x,margin.t+plotH);ctx.stroke()}
     for(let d=0;d<=maxD;d+=10){const p=toCanvas(0,d);ctx.beginPath();ctx.moveTo(margin.l,p.y);ctx.lineTo(margin.l+plotW,p.y);ctx.stroke()}
 
     // Axes
-    ctx.strokeStyle='#1a1f2e';ctx.lineWidth=2;
+    ctx.strokeStyle='#1a2747';ctx.lineWidth=2;
     ctx.beginPath();ctx.moveTo(margin.l,margin.t);ctx.lineTo(margin.l,margin.t+plotH);ctx.lineTo(margin.l+plotW,margin.t+plotH);ctx.stroke();
 
     // Labels
@@ -76,13 +74,13 @@ function draw(){
     ctx.textAlign='right';ctx.textBaseline='middle';
     for(let d=0;d<=maxD;d+=10){const p=toCanvas(0,d);ctx.fillText(d,margin.l-10,p.y)}
 
-    ctx.font='600 24px Oswald';ctx.fillStyle='#1a1f2e';ctx.textAlign='center';
+    ctx.font='600 24px Oswald';ctx.fillStyle='#1a2747';ctx.textAlign='center';
     ctx.fillText('Time (s)',margin.l+plotW/2,H-12);
     ctx.save();ctx.translate(22,margin.t+plotH/2);ctx.rotate(-Math.PI/2);ctx.fillText('Distance (m)',0,0);ctx.restore();
 
     // Plot line
     if(points.length>1){
-        ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.beginPath();
+        ctx.strokeStyle='#1835b4';ctx.lineWidth=3;ctx.beginPath();
         points.forEach((p,i)=>{const cp=toCanvas(p.t,p.d);i===0?ctx.moveTo(cp.x,cp.y):ctx.lineTo(cp.x,cp.y)});
         ctx.stroke();
     }
@@ -91,7 +89,7 @@ function draw(){
     points.forEach((p,i)=>{
         const cp=toCanvas(p.t,p.d);
         ctx.beginPath();ctx.arc(cp.x,cp.y,10,0,Math.PI*2);
-        ctx.fillStyle=i===dragging?'#dc3545':'#637EA1';ctx.fill();
+        ctx.fillStyle=i===dragging?'#dc3545':'#1835b4';ctx.fill();
         ctx.fillStyle='#fff';ctx.font='700 14px Oswald';ctx.textAlign='center';ctx.textBaseline='middle';
         ctx.fillText(i,cp.x,cp.y);
     });

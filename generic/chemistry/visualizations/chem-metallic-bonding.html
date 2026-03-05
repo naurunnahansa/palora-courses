@@ -3,24 +3,21 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Metallic Bonding</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
-        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
         .readout .label { font-size: 0.68rem; color: #4a5568; }
-        .readout .value { font-family: 'Oswald', sans-serif; font-size: 0.9rem; color: #637EA1; }
-        .chip { background: #fff; border: 1px solid #e5dfe0; border-radius: 4px; padding: 5px 10px; font-size: 0.72rem; cursor: pointer; transition: all 0.2s; }
-        .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 0.9rem; color: #1835b4; }
+        .chip { background: #fff; border: 1px solid #d4d8e5; border-radius: 4px; padding: 5px 10px; font-size: 0.72rem; cursor: pointer; transition: all 0.2s; }
+        .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
         .chip-row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
-        .key-point { background: #f0f7ff; border-left: 3px solid #637EA1; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
+        .key-point { background: #f0f7ff; border-left: 3px solid #1835b4; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -176,7 +173,7 @@ function draw() {
 
         ctx.beginPath();
         ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
-        ctx.fillStyle = '#637EA1';
+        ctx.fillStyle = '#1835b4';
         ctx.fill();
 
         // Tiny e-
@@ -196,7 +193,7 @@ function draw() {
         ctx.beginPath();
         ctx.arc(ix, iy, 18, 0, Math.PI * 2);
         const grad = ctx.createRadialGradient(ix - 3, iy - 3, 2, ix, iy, 18);
-        grad.addColorStop(0, '#f5e6e8');
+        grad.addColorStop(0, '#e8ecf8');
         grad.addColorStop(1, '#e8d0d3');
         ctx.fillStyle = grad;
         ctx.fill();
@@ -218,7 +215,7 @@ function draw() {
     // Mode-specific labels
     if (mode === 'conduct') {
         // Arrow showing electron flow
-        ctx.fillStyle = '#637EA1';
+        ctx.fillStyle = '#1835b4';
         ctx.font = 'bold 10px Outfit';
         ctx.textAlign = 'center';
         ctx.fillText('Electron flow \u2192', canvas.width / 2, canvas.height - 10);
@@ -234,13 +231,13 @@ function draw() {
 
     if (mode === 'malleable') {
         // Arrow showing force
-        ctx.fillStyle = '#637EA1';
+        ctx.fillStyle = '#1835b4';
         ctx.font = '10px Outfit';
         ctx.textAlign = 'center';
         ctx.fillText('Force applied \u2192 Layers slide', canvas.width / 2, canvas.height - 10);
 
         // Arrow
-        ctx.strokeStyle = '#637EA1';
+        ctx.strokeStyle = '#1835b4';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(20, 55);

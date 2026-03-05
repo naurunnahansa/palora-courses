@@ -4,36 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Box Plot Builder</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #d4d8e5; background: #fafbfc; margin-bottom: 10px; }
         .toggle-row { display: flex; gap: 6px; margin-bottom: 10px; }
-        .toggle-btn { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 10px; border-radius: 5px; border: 2px solid #637EA1; background: #fff; color: #637EA1; cursor: pointer; flex: 1; text-align: center; }
-        .toggle-btn.active { background: #637EA1; color: #fff; }
+        .toggle-btn { font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 10px; border-radius: 5px; border: 2px solid #1835b4; background: #fff; color: #1835b4; cursor: pointer; flex: 1; text-align: center; }
+        .toggle-btn.active { background: #1835b4; color: #fff; }
         .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
         .input-item { display: flex; align-items: center; gap: 6px; }
         .input-item label { font-size: 0.78rem; font-weight: 600; color: #4a5568; min-width: 65px; }
-        .input-item input { width: 70px; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; text-align: center; }
+        .input-item input { width: 70px; padding: 6px 8px; border: 1px solid #d4d8e5; border-radius: 5px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; text-align: center; }
         .input-group { margin-bottom: 8px; }
         .input-group label { font-size: 0.82rem; font-weight: 600; color: #4a5568; display: block; margin-bottom: 4px; }
-        .input-group input { width: 100%; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; }
+        .input-group input { width: 100%; padding: 6px 8px; border: 1px solid #d4d8e5; border-radius: 5px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; }
         .readings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
-        .reading-card { background: #F5E6E8; border-radius: 5px; padding: 8px 6px; text-align: center; }
+        .reading-card { background: #e8ecf8; border-radius: 5px; padding: 8px 6px; text-align: center; }
         .reading-card .label { font-size: 0.68rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
-        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 0.95rem; color: #637EA1; margin-top: 2px; }
-        .outlier-box { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; font-size: 0.82rem; text-align: center; margin-bottom: 8px; }
-        .outlier-box .value { font-family: 'Oswald', sans-serif; color: #637EA1; }
+        .reading-card .value { font-family: system-ui, -apple-system, sans-serif; font-size: 0.95rem; color: #1835b4; margin-top: 2px; }
+        .outlier-box { background: #e8ecf8; border-radius: 5px; padding: 8px 12px; font-size: 0.82rem; text-align: center; margin-bottom: 8px; }
+        .outlier-box .value { font-family: system-ui, -apple-system, sans-serif; color: #1835b4; }
         .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
-        .btn { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 12px; border-radius: 5px; border: 1px solid #e5dfe0; background: #F5E6E8; color: #637EA1; cursor: pointer; display: block; width: 100%; margin-top: 6px; }
-        .btn:hover { background: #637EA1; color: #fff; }
+        .btn { font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 12px; border-radius: 5px; border: 1px solid #d4d8e5; background: #e8ecf8; color: #1835b4; cursor: pointer; display: block; width: 100%; margin-top: 6px; }
+        .btn:hover { background: #1835b4; color: #fff; }
     </style>
 </head>
 <body>
@@ -198,11 +195,11 @@
             const boxH = 50;
 
             // Number line
-            ctx.strokeStyle = '#e5dfe0'; ctx.lineWidth = 1;
+            ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1;
             ctx.beginPath(); ctx.moveTo(PAD.left, cy + boxH / 2 + 20); ctx.lineTo(PAD.left + gW, cy + boxH / 2 + 20); ctx.stroke();
 
             // Ticks on number line
-            ctx.font = '400 10px Outfit, sans-serif'; ctx.fillStyle = '#4a5568'; ctx.textAlign = 'center';
+            ctx.font = '400 10px system-ui, -apple-system, sans-serif'; ctx.fillStyle = '#4a5568'; ctx.textAlign = 'center';
             const step = Math.pow(10, Math.floor(Math.log10(dataRange)));
             const niceStep = dataRange / step > 10 ? step * 2 : dataRange / step < 3 ? step / 2 : step;
             let tick = Math.ceil(dataMin / niceStep) * niceStep;
@@ -214,7 +211,7 @@
             }
 
             // Whiskers
-            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2;
+            ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2;
             // Left whisker
             ctx.beginPath(); ctx.moveTo(toX(whiskerMin), cy); ctx.lineTo(toX(q1), cy); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(toX(whiskerMin), cy - boxH / 3); ctx.lineTo(toX(whiskerMin), cy + boxH / 3); ctx.stroke();
@@ -226,7 +223,7 @@
             const bx = toX(q1), bw = toX(q3) - toX(q1);
             ctx.fillStyle = 'rgba(99, 126, 161, 0.12)';
             ctx.fillRect(bx, cy - boxH / 2, bw, boxH);
-            ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2;
+            ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2;
             ctx.strokeRect(bx, cy - boxH / 2, bw, boxH);
 
             // Median line
@@ -244,18 +241,18 @@
             });
 
             // Labels
-            ctx.font = '600 11px Oswald, sans-serif'; ctx.textAlign = 'center';
-            ctx.fillStyle = '#637EA1';
+            ctx.font = '600 11px system-ui, -apple-system, sans-serif'; ctx.textAlign = 'center';
+            ctx.fillStyle = '#1835b4';
             ctx.fillText('Min: ' + whiskerMin, toX(whiskerMin), cy - boxH / 2 - 22);
             ctx.fillText('Q1: ' + q1, toX(q1), cy - boxH / 2 - 8);
             ctx.fillStyle = '#e74c3c';
             ctx.fillText('Med: ' + med, toX(med), cy - boxH / 2 - 22);
-            ctx.fillStyle = '#637EA1';
+            ctx.fillStyle = '#1835b4';
             ctx.fillText('Q3: ' + q3, toX(q3), cy - boxH / 2 - 8);
             ctx.fillText('Max: ' + whiskerMax, toX(whiskerMax), cy - boxH / 2 - 22);
 
             // IQR bracket
-            ctx.font = '500 10px Outfit, sans-serif'; ctx.fillStyle = '#8e44ad'; ctx.textAlign = 'center';
+            ctx.font = '500 10px system-ui, -apple-system, sans-serif'; ctx.fillStyle = '#8e44ad'; ctx.textAlign = 'center';
             ctx.fillText('IQR = ' + iqr.toFixed(1), (toX(q1) + toX(q3)) / 2, cy + boxH / 2 + 14);
             ctx.beginPath();
             ctx.moveTo(toX(q1), cy + boxH / 2 + 4);

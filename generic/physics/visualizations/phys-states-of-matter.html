@@ -3,31 +3,28 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>States of Matter</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
         .state-btns { display: flex; gap: 6px; margin-bottom: 8px; }
-        .state-btn { flex: 1; background: #F5E6E8; border: 2px solid transparent; border-radius: 5px; padding: 8px; font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; }
-        .state-btn:hover { border-color: #637EA1; }
-        .state-btn.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        .state-btn { flex: 1; background: #e8ecf8; border: 2px solid transparent; border-radius: 5px; padding: 8px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .state-btn:hover { border-color: #1835b4; }
+        .state-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
         .slider-row { margin-bottom: 8px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4a5568; margin-bottom: 2px; }
-        .slider-label .val { font-weight: 600; color: #637EA1; }
-        input[type="range"] { width: 100%; accent-color: #637EA1; }
-        .info-box { background: #F5E6E8; border-radius: 5px; padding: 10px; font-size: 0.78rem; color: #4a5568; }
-        .info-box strong { color: #637EA1; }
+        .slider-label .val { font-weight: 600; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .info-box { background: #e8ecf8; border-radius: 5px; padding: 10px; font-size: 0.78rem; color: #4a5568; }
+        .info-box strong { color: #1835b4; }
         .readouts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 8px; }
-        .readout { background: #F5E6E8; border-radius: 5px; padding: 6px; text-align: center; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 6px; text-align: center; }
         .readout .label { font-size: 0.65rem; color: #4a5568; }
-        .readout .value { font-family: 'Oswald', sans-serif; font-size: 0.9rem; color: #637EA1; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 0.9rem; color: #1835b4; }
     </style>
 </head>
 <body>
@@ -139,7 +136,7 @@ function draw(ts) {
     ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
 
     // Container
-    ctx.strokeStyle = '#e5dfe0'; ctx.lineWidth = 3;
+    ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 3;
     if (state === 0) {
         ctx.strokeRect(W*0.2, H*0.2, W*0.6, H*0.6);
     } else if (state === 1) {
@@ -184,7 +181,7 @@ function draw(ts) {
     });
 
     // State label
-    ctx.fillStyle = '#637EA1'; ctx.font = '700 20px Oswald'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#1835b4'; ctx.font = '700 20px Oswald'; ctx.textAlign = 'center';
     ctx.fillText(stateInfo[state].name.toUpperCase(), W/2, H*0.12);
 
     requestAnimationFrame(draw);

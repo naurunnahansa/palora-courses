@@ -3,36 +3,34 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sequence Explorer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Outfit',system-ui,sans-serif;background:#fff;padding:10px 12px;color:#1a1f2e}
-.container{max-width:550px;margin:0 auto}
-h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
-.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
-.card-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:#637EA1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}
+.container{max-width: 100%;margin:0 auto}
+h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
 .mode-btns{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
-.mode-btn{flex:1;min-width:90px;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:8px 6px;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}
-.mode-btn:hover{border-color:#637EA1}
-.mode-btn.active{background:#637EA1;color:#fff}
+.mode-btn{flex:1;min-width:90px;background:#e8ecf8;border:2px solid transparent;border-radius:5px;padding:8px 6px;font-family: system-ui, -apple-system, sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}
+.mode-btn:hover{border-color:#1835b4}
+.mode-btn.active{background:#1835b4;color:#fff}
 .slider-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
-.slider-row label{font-size:.78rem;font-weight:600;min-width:24px;font-family:'Oswald',sans-serif;color:#637EA1}
-.slider-row input[type=range]{flex:1;accent-color:#637EA1}
-.slider-row .val{font-family:'Oswald',sans-serif;font-size:.85rem;min-width:32px;text-align:right;color:#637EA1}
+.slider-row label{font-size:.78rem;font-weight:600;min-width:24px;font-family: system-ui, -apple-system, sans-serif;color:#1835b4}
+.slider-row input[type=range]{flex:1;accent-color:#1835b4}
+.slider-row .val{font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;min-width:32px;text-align:right;color:#1835b4}
 .terms-row{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
-.term{background:#F5E6E8;border-radius:5px;padding:6px 8px;text-align:center;min-width:44px}
+.term{background:#e8ecf8;border-radius:5px;padding:6px 8px;text-align:center;min-width:44px}
 .term .n{font-size:.6rem;color:#4a5568}
-.term .v{font-family:'Oswald',sans-serif;font-size:.82rem;color:#637EA1}
-.formula-box{background:#F5E6E8;border-radius:5px;padding:8px 12px;text-align:center;margin-top:8px}
-.formula-box .value{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1}
+.term .v{font-family: system-ui, -apple-system, sans-serif;font-size:.82rem;color:#1835b4}
+.formula-box{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;margin-top:8px}
+.formula-box .value{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4}
 .formula-box .label{font-size:.7rem;color:#4a5568;margin-top:2px}
 .diff-table{width:100%;font-size:.72rem;margin-top:8px;border-collapse:collapse}
 .diff-table td{padding:3px 6px;text-align:center;border-bottom:1px solid #f0eeef}
-.diff-table .diff-label{font-family:'Oswald',sans-serif;color:#637EA1;font-size:.68rem;text-align:left}
+.diff-table .diff-label{font-family: system-ui, -apple-system, sans-serif;color:#1835b4;font-size:.68rem;text-align:left}
 .diff-table .diff-val{font-weight:600}
 .info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
-.info strong{color:#637EA1}
+.info strong{color:#1835b4}
     </style>
 </head>
 <body>

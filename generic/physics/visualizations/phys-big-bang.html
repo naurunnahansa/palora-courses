@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Big Bang & Expanding Universe</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#1a1f2e}.slider-row{margin:8px 0}.slider-label{display:flex;justify-content:space-between;font-size:.8rem;color:#4a5568;margin-bottom:2px}.slider-label .val{font-weight:600;color:#637EA1}input[type="range"]{width:100%;accent-color:#637EA1}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#1a2747}.slider-row{margin:8px 0}.slider-label{display:flex;justify-content:space-between;font-size:.8rem;color:#4a5568;margin-bottom:2px}.slider-label .val{font-weight:600;color:#1835b4}input[type="range"]{width:100%;accent-color:#1835b4}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
 </head>
 <body>
 <div class="container">
@@ -103,8 +101,8 @@ function draw(ts){
 
     // Timeline at bottom
     ctx.fillStyle='rgba(255,255,255,0.15)';ctx.fillRect(50,H-30,W-100,4);
-    ctx.fillStyle='#F4D35E';ctx.fillRect(50,H-30,(W-100)*t,4);
-    ctx.beginPath();ctx.arc(50+(W-100)*t,H-28,6,0,Math.PI*2);ctx.fillStyle='#F4D35E';ctx.fill();
+    ctx.fillStyle='#4a3fc2';ctx.fillRect(50,H-30,(W-100)*t,4);
+    ctx.beginPath();ctx.arc(50+(W-100)*t,H-28,6,0,Math.PI*2);ctx.fillStyle='#4a3fc2';ctx.fill();
 
     ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='500 10px Outfit';ctx.textAlign='center';
     ctx.fillText('13.8 billion years ago',80,H-8);

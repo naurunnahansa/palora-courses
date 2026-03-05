@@ -4,33 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tree Diagram Builder</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; cursor: pointer; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #d4d8e5; background: #fafbfc; margin-bottom: 10px; cursor: pointer; }
         .input-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
         .input-row label { font-size: 0.78rem; font-weight: 600; color: #4a5568; min-width: 90px; }
-        .input-row input { flex: 1; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; }
-        .input-row select { flex: 1; padding: 6px 8px; border: 1px solid #e5dfe0; border-radius: 5px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; }
-        .event-section { background: #F5E6E8; border-radius: 5px; padding: 8px; margin-bottom: 8px; }
-        .event-section .event-title { font-family: 'Oswald', sans-serif; font-size: 0.8rem; color: #637EA1; margin-bottom: 6px; }
+        .input-row input { flex: 1; padding: 6px 8px; border: 1px solid #d4d8e5; border-radius: 5px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; }
+        .input-row select { flex: 1; padding: 6px 8px; border: 1px solid #d4d8e5; border-radius: 5px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; }
+        .event-section { background: #e8ecf8; border-radius: 5px; padding: 8px; margin-bottom: 8px; }
+        .event-section .event-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; color: #1835b4; margin-bottom: 6px; }
         .outcome-row { display: flex; gap: 6px; margin-bottom: 4px; align-items: center; }
-        .outcome-row input { flex: 1; padding: 4px 6px; border: 1px solid #e5dfe0; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 0.8rem; }
+        .outcome-row input { flex: 1; padding: 4px 6px; border: 1px solid #d4d8e5; border-radius: 4px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; }
         .outcome-row .olabel { font-size: 0.75rem; color: #4a5568; min-width: 70px; }
-        .result-box { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; margin-bottom: 8px; }
-        .result-box .value { font-size: 0.95rem; color: #637EA1; }
+        .result-box { background: #e8ecf8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: system-ui, -apple-system, sans-serif; margin-bottom: 8px; }
+        .result-box .value { font-size: 0.95rem; color: #1835b4; }
         .result-box .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
         .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
         .toggle-row { display: flex; gap: 6px; margin-bottom: 8px; }
-        .toggle-btn { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 10px; border-radius: 5px; border: 2px solid #637EA1; background: #fff; color: #637EA1; cursor: pointer; transition: all 0.15s; flex: 1; text-align: center; }
-        .toggle-btn.active { background: #637EA1; color: #fff; }
+        .toggle-btn { font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; padding: 5px 10px; border-radius: 5px; border: 2px solid #1835b4; background: #fff; color: #1835b4; cursor: pointer; transition: all 0.15s; flex: 1; text-align: center; }
+        .toggle-btn.active { background: #1835b4; color: #fff; }
     </style>
 </head>
 <body>
@@ -162,7 +159,7 @@
             const verticalRange = H - 40;
 
             // Draw from start
-            ctx.fillStyle = '#637EA1';
+            ctx.fillStyle = '#1835b4';
             ctx.beginPath();
             ctx.arc(startX, startY, 6, 0, 2 * Math.PI);
             ctx.fill();
@@ -174,12 +171,12 @@
                 ctx.beginPath();
                 ctx.moveTo(startX, startY);
                 ctx.lineTo(midX, y1);
-                ctx.strokeStyle = '#637EA1';
+                ctx.strokeStyle = '#1835b4';
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
                 // Probability label on branch
-                ctx.font = '500 10px Outfit, sans-serif';
+                ctx.font = '500 10px system-ui, -apple-system, sans-serif';
                 ctx.fillStyle = '#e74c3c';
                 ctx.textAlign = 'center';
                 const bMidX = (startX + midX) / 2;
@@ -187,14 +184,14 @@
                 ctx.fillText(o1.prob.toFixed(2), bMidX, bMidY - 6);
 
                 // Event1 outcome node
-                ctx.fillStyle = '#637EA1';
+                ctx.fillStyle = '#1835b4';
                 ctx.beginPath();
                 ctx.arc(midX, y1, 5, 0, 2 * Math.PI);
                 ctx.fill();
 
                 // Label
-                ctx.font = '600 12px Oswald, sans-serif';
-                ctx.fillStyle = '#1a1f2e';
+                ctx.font = '600 12px system-ui, -apple-system, sans-serif';
+                ctx.fillStyle = '#1a2747';
                 ctx.textAlign = 'right';
                 ctx.fillText(o1.name, midX - 10, y1 + 4);
 
@@ -209,12 +206,12 @@
                     ctx.moveTo(midX, y1);
                     ctx.lineTo(endX, y2);
                     const isSelected = selectedEndpoint && selectedEndpoint.i === i && selectedEndpoint.j === j;
-                    ctx.strokeStyle = isSelected ? '#e74c3c' : '#637EA1';
+                    ctx.strokeStyle = isSelected ? '#e74c3c' : '#1835b4';
                     ctx.lineWidth = isSelected ? 3 : 1.5;
                     ctx.stroke();
 
                     // Probability on branch
-                    ctx.font = '500 10px Outfit, sans-serif';
+                    ctx.font = '500 10px system-ui, -apple-system, sans-serif';
                     ctx.fillStyle = '#27ae60';
                     ctx.textAlign = 'center';
                     const b2MidX = (midX + endX) / 2;
@@ -224,17 +221,17 @@
                     // Endpoint
                     ctx.beginPath();
                     ctx.arc(endX, y2, isSelected ? 7 : 4, 0, 2 * Math.PI);
-                    ctx.fillStyle = isSelected ? '#e74c3c' : '#637EA1';
+                    ctx.fillStyle = isSelected ? '#e74c3c' : '#1835b4';
                     ctx.fill();
 
                     // Endpoint label
                     const combined = o1.prob * o2.prob;
-                    ctx.font = '500 10px Outfit, sans-serif';
-                    ctx.fillStyle = '#1a1f2e';
+                    ctx.font = '500 10px system-ui, -apple-system, sans-serif';
+                    ctx.fillStyle = '#1a2747';
                     ctx.textAlign = 'left';
                     ctx.fillText(o1.name + ', ' + o2.name, endX + 10, y2 - 4);
-                    ctx.fillStyle = '#637EA1';
-                    ctx.font = '600 10px Oswald, sans-serif';
+                    ctx.fillStyle = '#1835b4';
+                    ctx.font = '600 10px system-ui, -apple-system, sans-serif';
                     ctx.fillText(combined.toFixed(4), endX + 10, y2 + 10);
 
                     endpointPositions.push({ x: endX, y: y2, i, j, n1: o1.name, n2: o2.name, p1: o1.prob, p2: o2.prob });
@@ -254,8 +251,8 @@
             }
 
             // Column headers
-            ctx.font = '600 11px Oswald, sans-serif';
-            ctx.fillStyle = '#637EA1';
+            ctx.font = '600 11px system-ui, -apple-system, sans-serif';
+            ctx.fillStyle = '#1835b4';
             ctx.textAlign = 'center';
             ctx.fillText('START', startX, 16);
             ctx.fillText('EVENT 1', midX, 16);

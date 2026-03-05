@@ -3,23 +3,20 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conduction vs Convection</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .panel { background: #f8f9fa; border-radius: 8px; overflow: hidden; }
-        .panel-title { font-family: 'Oswald', sans-serif; font-size: 0.75rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; padding: 6px; background: #f0f4f8; }
+        .panel-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.75rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; padding: 6px; background: #f0f4f8; }
         canvas { width: 100%; display: block; }
         .desc { font-size: 0.65rem; color: #4a5568; padding: 6px 8px; line-height: 1.4; }
-        .desc strong { color: #637EA1; }
+        .desc strong { color: #1835b4; }
         .controls { display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: #f0f4f8; }
         .controls label { font-size: 0.65rem; font-weight: 600; color: #4a5568; white-space: nowrap; }
-        .controls input[type=range] { flex: 1; accent-color: #637EA1; }
+        .controls input[type=range] { flex: 1; accent-color: #1835b4; }
         .legend { display: flex; gap: 10px; justify-content: center; margin-top: 8px; flex-wrap: wrap; }
         .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.65rem; color: #4a5568; }
         .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
@@ -150,7 +147,7 @@ function animateConduction() {
         ctx.moveTo(fx, fy);
         ctx.quadraticCurveTo(fx + 2, fy + fh * 0.3, fx + 4, fy + fh * 0.6);
         ctx.quadraticCurveTo(fx + 6, fy + fh * 0.3, fx + 8, fy);
-        ctx.fillStyle = i % 2 === 0 ? '#e53e3e' : '#F4D35E';
+        ctx.fillStyle = i % 2 === 0 ? '#e53e3e' : '#4a3fc2';
         ctx.fill();
     }
 
@@ -178,7 +175,7 @@ function animateConduction() {
     ctx.fillText('COOL END', barRight - 20, barTop - 8);
 
     // Arrow showing energy direction
-    ctx.strokeStyle = '#F4D35E';
+    ctx.strokeStyle = '#4a3fc2';
     ctx.lineWidth = 2;
     ctx.setLineDash([4, 3]);
     ctx.beginPath();
@@ -186,7 +183,7 @@ function animateConduction() {
     ctx.lineTo(barRight - 30, barTop + barH + 35 + flameH * 0.3);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#F4D35E';
+    ctx.fillStyle = '#4a3fc2';
     ctx.beginPath();
     ctx.moveTo(barRight - 30, barTop + barH + 30 + flameH * 0.3);
     ctx.lineTo(barRight - 20, barTop + barH + 35 + flameH * 0.3);
@@ -217,7 +214,7 @@ function animateConvection() {
     for (let i = 0; i < 4; i++) {
         const fx = heatZoneLeft + i * 15 + 5;
         const fh = 8 + heat * 12 * (0.6 + 0.4 * Math.sin(Date.now() / 150 + i));
-        ctx.fillStyle = i % 2 === 0 ? '#e53e3e' : '#F4D35E';
+        ctx.fillStyle = i % 2 === 0 ? '#e53e3e' : '#4a3fc2';
         ctx.beginPath();
         ctx.moveTo(fx, boxBottom + 2);
         ctx.quadraticCurveTo(fx + 3, boxBottom + fh * 0.4, fx + 6, boxBottom + fh * 0.7);

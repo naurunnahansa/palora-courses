@@ -3,29 +3,26 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Isotope Explorer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
-        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout { background: #e8ecf8; border-radius: 5px; padding: 8px; text-align: center; }
         .readout .label { font-size: 0.68rem; color: #4a5568; }
-        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; }
-        input[type="range"] { width: 100%; accent-color: #637EA1; }
-        .btn { background: #637EA1; color: #fff; border: none; border-radius: 4px; padding: 6px 14px; font-family: 'Outfit'; font-size: 0.8rem; cursor: pointer; }
+        .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; }
+        input[type="range"] { width: 100%; accent-color: #1835b4; }
+        .btn { background: #1835b4; color: #fff; border: none; border-radius: 4px; padding: 6px 14px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; cursor: pointer; }
         .btn:hover { background: #506a8a; }
-        .chip { background: #fff; border: 1px solid #e5dfe0; border-radius: 4px; padding: 3px 8px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
-        .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        .chip { background: #fff; border: 1px solid #d4d8e5; border-radius: 4px; padding: 3px 8px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
         .chip-row { display: flex; gap: 6px; margin-bottom: 8px; justify-content: center; }
         .readout-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
         .slider-label { font-size: 0.72rem; color: #4a5568; margin-bottom: 2px; }
-        .key-point { background: #f0f7ff; border-left: 3px solid #637EA1; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
+        .key-point { background: #f0f7ff; border-left: 3px solid #1835b4; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
         .legend { display: flex; gap: 10px; justify-content: center; margin-top: 6px; font-size: 0.65rem; color: #4a5568; }
         .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; vertical-align: middle; margin-right: 3px; }
     </style>
@@ -44,14 +41,14 @@
         <div class="legend">
             <span><span class="legend-dot" style="background:#e74c3c;"></span>Proton (+)</span>
             <span><span class="legend-dot" style="background:#95a5a6;"></span>Neutron (0)</span>
-            <span><span class="legend-dot" style="background:#637EA1;"></span>Electron</span>
+            <span><span class="legend-dot" style="background:#1835b4;"></span>Electron</span>
         </div>
     </div>
 
     <div class="card">
         <div class="slider-label">Neutrons: <strong id="nVal">0</strong></div>
         <input type="range" id="neutronSlider" min="0" max="2" value="0">
-        <div id="isotopeName" style="text-align:center;font-size:0.8rem;margin-top:4px;font-weight:600;color:#637EA1;"></div>
+        <div id="isotopeName" style="text-align:center;font-size:0.8rem;margin-top:4px;font-weight:600;color:#1835b4;"></div>
     </div>
 
     <div class="readout-row">
@@ -156,7 +153,7 @@ function updateDisplay() {
     document.getElementById('rNeutrons').textContent = iso.n;
     document.getElementById('rMass').textContent = el.z + iso.n;
     document.getElementById('rAbund').textContent = iso.abundance;
-    document.getElementById('keyPoint').innerHTML = iso.note + ' <br><em style="color:#637EA1;">Same ' + el.z + ' protons = still ' + el.name + '. Different neutrons = different isotope.</em>';
+    document.getElementById('keyPoint').innerHTML = iso.note + ' <br><em style="color:#1835b4;">Same ' + el.z + ' protons = still ' + el.name + '. Different neutrons = different isotope.</em>';
 }
 
 function draw() {
@@ -172,7 +169,7 @@ function draw() {
     for (let i = 0; i < config.length; i++) {
         ctx.beginPath();
         ctx.arc(cx, cy, shellRadii[i], 0, Math.PI * 2);
-        ctx.strokeStyle = '#e5dfe0';
+        ctx.strokeStyle = '#d4d8e5';
         ctx.lineWidth = 1;
         ctx.setLineDash([4, 4]);
         ctx.stroke();
@@ -231,7 +228,7 @@ function draw() {
             const ey = cy + Math.sin(a) * r;
             ctx.beginPath();
             ctx.arc(ex, ey, 5, 0, Math.PI * 2);
-            ctx.fillStyle = '#637EA1';
+            ctx.fillStyle = '#1835b4';
             ctx.fill();
             ctx.fillStyle = '#fff';
             ctx.font = 'bold 6px Outfit';
@@ -245,7 +242,7 @@ function draw() {
 
     // Notation top-left
     ctx.font = 'bold 18px Oswald';
-    ctx.fillStyle = '#637EA1';
+    ctx.fillStyle = '#1835b4';
     ctx.fillText(el.sym, 40, 38);
     ctx.font = '12px Oswald';
     ctx.fillStyle = '#e74c3c';

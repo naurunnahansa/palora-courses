@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuclear Fission & Fusion</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.controls{display:flex;gap:6px;margin-bottom:8px}.ctrl-btn{flex:1;background:#F5E6E8;border:2px solid transparent;border-radius:5px;padding:8px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#637EA1}.ctrl-btn.active{background:#637EA1;color:#fff}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;margin-top:8px}.info strong{color:#637EA1}</style>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.controls{display:flex;gap:6px;margin-bottom:8px}.ctrl-btn{flex:1;background:#e8ecf8;border:2px solid transparent;border-radius:5px;padding:8px;font-family: system-ui, -apple-system, sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}.ctrl-btn:hover{border-color:#1835b4}.ctrl-btn.active{background:#1835b4;color:#fff}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;margin-top:8px}.info strong{color:#1835b4}</style>
 </head>
 <body>
 <div class="container">
@@ -36,7 +34,7 @@ function setMode(m){
 }
 
 function drawNucleus(x,y,r,np,nn){
-    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle='#F5E6E8';ctx.fill();
+    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle='#e8ecf8';ctx.fill();
     const total=np+nn;
     for(let i=0;i<Math.min(total,16);i++){
         const a=i*(Math.PI*2/Math.min(total,16))+animT*0.4;
@@ -59,7 +57,7 @@ function draw(ts){
     if(mode===0){
         // Fission animation
         const phase=animT%5;
-        ctx.fillStyle='#637EA1';ctx.font='600 16px Oswald';ctx.textAlign='center';
+        ctx.fillStyle='#1835b4';ctx.font='600 16px Oswald';ctx.textAlign='center';
         ctx.fillText('NUCLEAR FISSION',cx,30);
 
         if(phase<1.5){
@@ -89,12 +87,12 @@ function draw(ts){
             // Energy burst
             ctx.beginPath();ctx.arc(cx,cy,t*60,0,Math.PI*2);
             ctx.fillStyle=`rgba(244,211,94,${0.3*(1-t)})`;ctx.fill();
-            ctx.fillStyle='#F4D35E';ctx.font='600 14px Oswald';ctx.fillText('ENERGY',cx,cy+5);
+            ctx.fillStyle='#4a3fc2';ctx.font='600 14px Oswald';ctx.fillText('ENERGY',cx,cy+5);
         }
     } else if(mode===1){
         // Fusion animation
         const phase=animT%4;
-        ctx.fillStyle='#637EA1';ctx.font='600 16px Oswald';ctx.textAlign='center';
+        ctx.fillStyle='#1835b4';ctx.font='600 16px Oswald';ctx.textAlign='center';
         ctx.fillText('NUCLEAR FUSION',cx,30);
         ctx.fillStyle='#4a5568';ctx.font='500 11px Outfit';
         ctx.fillText('Temperature: ~15 million °C',cx,50);
@@ -117,11 +115,11 @@ function draw(ts){
             // Energy
             ctx.beginPath();ctx.arc(cx,cy,t*80,0,Math.PI*2);
             ctx.fillStyle=`rgba(244,211,94,${0.3*(1-t)})`;ctx.fill();
-            ctx.fillStyle='#F4D35E';ctx.font='600 14px Oswald';ctx.fillText('ENERGY',cx,cy-50);
+            ctx.fillStyle='#4a3fc2';ctx.font='600 14px Oswald';ctx.fillText('ENERGY',cx,cy-50);
         }
     } else {
         // Chain reaction
-        ctx.fillStyle='#637EA1';ctx.font='600 16px Oswald';ctx.textAlign='center';
+        ctx.fillStyle='#1835b4';ctx.font='600 16px Oswald';ctx.textAlign='center';
         ctx.fillText('CHAIN REACTION',cx,30);
 
         // Draw branching fission tree
@@ -144,7 +142,7 @@ function draw(ts){
             // Nucleus
             const nr=12-n.gen*2;
             ctx.beginPath();ctx.arc(n.x,n.y,nr,0,Math.PI*2);
-            ctx.fillStyle=r<1?'#F5E6E8':'#F4D35E';ctx.fill();
+            ctx.fillStyle=r<1?'#e8ecf8':'#4a3fc2';ctx.fill();
             if(r>=1){
                 // Burst
                 ctx.beginPath();ctx.arc(n.x,n.y,nr+8,0,Math.PI*2);

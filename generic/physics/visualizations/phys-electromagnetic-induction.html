@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Electromagnetic Induction</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.subtitle{text-align:center;font-size:.78rem;color:#4a5568;margin-bottom:10px}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;cursor:grab}.readouts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.readout{background:#F5E6E8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.72rem;color:#4a5568}.readout .value{font-family:'Oswald',sans-serif;font-size:1.1rem;color:#637EA1}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.subtitle{text-align:center;font-size:.78rem;color:#4a5568;margin-bottom:10px}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;cursor:grab}.readouts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.readout{background:#e8ecf8;border-radius:5px;padding:8px;text-align:center}.readout .label{font-size:.72rem;color:#4a5568}.readout .value{font-family: system-ui, -apple-system, sans-serif;font-size:1.1rem;color:#1835b4}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
 </head>
 <body>
 <div class="container">
@@ -57,14 +55,14 @@ function draw(ts){
 
     // Galvanometer
     const gx=coilX,gy=coilY+140;
-    ctx.beginPath();ctx.arc(gx,gy,30,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.arc(gx,gy,30,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.stroke();
     // Needle
     const needleAngle=-Math.PI/2+Math.min(0.8,Math.max(-0.8,emf*2));
     ctx.beginPath();ctx.moveTo(gx,gy);ctx.lineTo(gx+25*Math.cos(needleAngle),gy+25*Math.sin(needleAngle));
     ctx.strokeStyle='#dc3545';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle='#637EA1';ctx.font='500 10px Outfit';ctx.textAlign='center';ctx.fillText('G',gx,gy+45);
+    ctx.fillStyle='#1835b4';ctx.font='500 10px Outfit';ctx.textAlign='center';ctx.fillText('G',gx,gy+45);
     // Scale marks
-    ctx.beginPath();ctx.moveTo(gx-20,gy);ctx.lineTo(gx+20,gy);ctx.strokeStyle='#e5dfe0';ctx.lineWidth=1;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(gx-20,gy);ctx.lineTo(gx+20,gy);ctx.strokeStyle='#d4d8e5';ctx.lineWidth=1;ctx.stroke();
     ctx.beginPath();ctx.moveTo(gx,gy-25);ctx.lineTo(gx,gy);ctx.stroke();
 
     // Wires from coil to galvanometer

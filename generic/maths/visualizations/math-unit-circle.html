@@ -4,32 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unit Circle Explorer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
-        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #e5dfe0; background: #fafbfc; margin-bottom: 10px; cursor: crosshair; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #d4d8e5; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        canvas { display: block; width: 100%; border-radius: 5px; border: 1px solid #d4d8e5; background: #fafbfc; margin-bottom: 10px; cursor: crosshair; }
         .slider-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
         .slider-row label { font-size: 0.82rem; font-weight: 600; color: #4a5568; min-width: 80px; }
-        .slider-row input[type="range"] { flex: 1; accent-color: #637EA1; height: 6px; }
-        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #637EA1; min-width: 52px; text-align: right; }
+        .slider-row input[type="range"] { flex: 1; accent-color: #1835b4; height: 6px; }
+        .slider-row .val { font-size: 0.82rem; font-weight: 700; color: #1835b4; min-width: 52px; text-align: right; }
         .readings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
-        .reading-card { background: #F5E6E8; border-radius: 5px; padding: 8px 10px; text-align: center; }
+        .reading-card { background: #e8ecf8; border-radius: 5px; padding: 8px 10px; text-align: center; }
         .reading-card .label { font-size: 0.72rem; color: #4a5568; text-transform: uppercase; letter-spacing: 0.04em; }
-        .reading-card .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; margin-top: 2px; }
+        .reading-card .value { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; margin-top: 2px; }
         .reading-card.sin-card { border-left: 3px solid #e74c3c; }
         .reading-card.cos-card { border-left: 3px solid #27ae60; }
         .reading-card.tan-card { border-left: 3px solid #8e44ad; }
-        .exact-val { background: #F5E6E8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: 'Oswald', sans-serif; font-size: 0.9rem; color: #637EA1; margin-bottom: 8px; min-height: 32px; }
+        .exact-val { background: #e8ecf8; border-radius: 5px; padding: 8px 12px; text-align: center; font-family: system-ui, -apple-system, sans-serif; font-size: 0.9rem; color: #1835b4; margin-bottom: 8px; min-height: 32px; }
         .special-angles { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; }
-        .special-btn { font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 600; padding: 4px 8px; border-radius: 5px; border: 1px solid #e5dfe0; background: #F5E6E8; color: #637EA1; cursor: pointer; transition: all 0.15s; }
-        .special-btn:hover { background: #637EA1; color: #fff; }
+        .special-btn { font-family: system-ui, -apple-system, sans-serif; font-size: 0.72rem; font-weight: 600; padding: 4px 8px; border-radius: 5px; border: 1px solid #d4d8e5; background: #e8ecf8; color: #1835b4; cursor: pointer; transition: all 0.15s; }
+        .special-btn:hover { background: #1835b4; color: #fff; }
         .hint { font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 6px; }
     </style>
 </head>
@@ -162,7 +159,7 @@
             const r = Math.min(W, H) / 2 - 50;
 
             // Grid
-            ctx.strokeStyle = '#e5dfe0';
+            ctx.strokeStyle = '#d4d8e5';
             ctx.lineWidth = 1;
             // Horizontal axis
             ctx.beginPath(); ctx.moveTo(cx - r - 20, cy); ctx.lineTo(cx + r + 20, cy); ctx.stroke();
@@ -170,7 +167,7 @@
             ctx.beginPath(); ctx.moveTo(cx, cy - r - 20); ctx.lineTo(cx, cy + r + 20); ctx.stroke();
 
             // Axis labels
-            ctx.font = '500 11px Outfit, sans-serif';
+            ctx.font = '500 11px system-ui, -apple-system, sans-serif';
             ctx.fillStyle = '#4a5568';
             ctx.textAlign = 'center';
             ctx.fillText('1', cx + r + 8, cy + 14);
@@ -181,7 +178,7 @@
             // Unit circle
             ctx.beginPath();
             ctx.arc(cx, cy, r, 0, 2 * Math.PI);
-            ctx.strokeStyle = '#637EA1';
+            ctx.strokeStyle = '#1835b4';
             ctx.lineWidth = 2;
             ctx.stroke();
 
@@ -193,7 +190,7 @@
             ctx.beginPath();
             ctx.moveTo(cx, cy);
             ctx.lineTo(px, py);
-            ctx.strokeStyle = '#637EA1';
+            ctx.strokeStyle = '#1835b4';
             ctx.lineWidth = 2;
             ctx.stroke();
 
@@ -248,7 +245,7 @@
 
             // Angle label
             const labelAngle = -angleRad / 2;
-            ctx.font = '600 12px Oswald, sans-serif';
+            ctx.font = '600 12px system-ui, -apple-system, sans-serif';
             ctx.fillStyle = '#e74c3c';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -258,19 +255,19 @@
             // Point dot
             ctx.beginPath();
             ctx.arc(px, py, 5, 0, 2 * Math.PI);
-            ctx.fillStyle = '#637EA1';
+            ctx.fillStyle = '#1835b4';
             ctx.fill();
 
             // Coordinate label
-            ctx.font = '500 11px Outfit, sans-serif';
-            ctx.fillStyle = '#1a1f2e';
+            ctx.font = '500 11px system-ui, -apple-system, sans-serif';
+            ctx.fillStyle = '#1a2747';
             ctx.textAlign = 'left';
             const coordX = cosV.toFixed(3);
             const coordY = sinV.toFixed(3);
             ctx.fillText('(' + coordX + ', ' + coordY + ')', px + 8, py - 8);
 
             // Legend
-            ctx.font = '600 11px Outfit, sans-serif';
+            ctx.font = '600 11px system-ui, -apple-system, sans-serif';
             const legendX = 12, legendY = 20;
             ctx.fillStyle = '#27ae60';
             ctx.textAlign = 'left';
@@ -286,7 +283,7 @@
             else if (angleDeg >= 90 && angleDeg < 180) quad = 'Quadrant II';
             else if (angleDeg >= 180 && angleDeg < 270) quad = 'Quadrant III';
             else quad = 'Quadrant IV';
-            ctx.font = '500 11px Outfit, sans-serif';
+            ctx.font = '500 11px system-ui, -apple-system, sans-serif';
             ctx.fillStyle = '#4a5568';
             ctx.textAlign = 'right';
             ctx.fillText(quad, W - 12, 20);

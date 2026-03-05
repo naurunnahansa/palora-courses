@@ -4,17 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Distance-Time Graph</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .card {
             border-radius: 5px;
-            border: 1px solid #e5dfe0;
+            border: 1px solid #d4d8e5;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             padding: 12px;
             margin-bottom: 10px;
@@ -27,9 +24,9 @@
         canvas {
             width: 100%;
             border-radius: 5px;
-            border: 1px solid #e5dfe0;
+            border: 1px solid #d4d8e5;
             display: block;
-            background: #fafafa;
+            background: #fcfcfe;
         }
         .btn-row { display: flex; flex-wrap: wrap; gap: 6px; }
         .btn {
@@ -38,17 +35,17 @@
             padding: 7px 6px;
             border: none;
             border-radius: 5px;
-            font-family: 'Outfit', sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             font-size: 0.75rem;
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.15s, box-shadow 0.15s;
             background: #fff;
-            color: #637EA1;
-            border: 1.5px solid #637EA1;
+            color: #1835b4;
+            border: 1.5px solid #1835b4;
         }
         .btn:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(99,126,161,0.2); }
-        .btn.active { background: #637EA1; color: #fff; }
+        .btn.active { background: #1835b4; color: #fff; }
         .results {
             display: grid;
             grid-template-columns: 1fr;
@@ -58,7 +55,7 @@
         .result-item {
             text-align: center;
             padding: 8px 4px;
-            background: #F5E6E8;
+            background: #e8ecf8;
             border-radius: 5px;
         }
         .result-item .label {
@@ -69,9 +66,9 @@
             margin-bottom: 2px;
         }
         .result-item .value {
-            font-family: 'Oswald', sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             font-size: 1.05rem;
-            color: #637EA1;
+            color: #1835b4;
             font-weight: 600;
         }
         .info {
@@ -80,17 +77,17 @@
             line-height: 1.5;
             margin-top: 8px;
             padding: 8px;
-            background: #F5E6E8;
+            background: #e8ecf8;
             border-radius: 5px;
         }
-        .info strong { color: #637EA1; }
+        .info strong { color: #1835b4; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Distance-Time Graph Explorer</h1>
         <div class="card">
-            <canvas id="canvas" width="526" height="320"></canvas>
+            <canvas id="canvas" width="526" height="240"></canvas>
         </div>
         <div class="card">
             <div class="btn-row">
@@ -118,8 +115,8 @@
         function resizeCanvas() {
             const rect = canvas.parentElement.getBoundingClientRect();
             canvas.width = (rect.width - 24) * 2;
-            canvas.height = 320 * 2;
-            canvas.style.height = '320px';
+            canvas.height = 240 * 2;
+            canvas.style.height = '240px';
         }
         resizeCanvas();
 
@@ -170,7 +167,7 @@
             ctx.stroke();
 
             ctx.fillStyle = '#4a5568';
-            ctx.font = '600 22px Outfit, sans-serif';
+            ctx.font = '600 22px system-ui, -apple-system, sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText('Time (s)', canvas.width / 2, canvas.height - 8);
             ctx.save();
@@ -179,20 +176,20 @@
             ctx.fillText('Distance (m)', 0, 0);
             ctx.restore();
 
-            ctx.font = '400 20px Outfit, sans-serif';
+            ctx.font = '400 20px system-ui, -apple-system, sans-serif';
             for (let i = 0; i <= 5; i++) {
                 const t = maxT * i / 5;
                 const { cx, cy } = w2c(t, 0, maxT, maxD);
                 ctx.textAlign = 'center';
                 ctx.fillText(t.toFixed(0), cx, cy + 28);
-                if (i > 0) { ctx.strokeStyle = '#e5dfe0'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke(); }
+                if (i > 0) { ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke(); }
             }
             for (let i = 0; i <= 4; i++) {
                 const d = maxD * i / 4;
                 const { cx, cy } = w2c(0, d, maxT, maxD);
                 ctx.textAlign = 'right';
                 ctx.fillText(d.toFixed(0), pad.left - 10, cy + 6);
-                if (i > 0) { ctx.strokeStyle = '#e5dfe0'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(canvas.width - pad.right, cy); ctx.stroke(); }
+                if (i > 0) { ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(canvas.width - pad.right, cy); ctx.stroke(); }
             }
         }
 
@@ -202,7 +199,7 @@
             drawAxes(s.maxT, s.maxD);
 
             ctx.beginPath();
-            ctx.strokeStyle = '#637EA1';
+            ctx.strokeStyle = '#1835b4';
             ctx.lineWidth = 4;
 
             if (s.type === 'linear') {
@@ -233,7 +230,7 @@
 
                     ctx.beginPath();
                     ctx.setLineDash([6, 4]);
-                    ctx.strokeStyle = '#F4D35E';
+                    ctx.strokeStyle = '#4a3fc2';
                     ctx.lineWidth = 3;
                     ctx.moveTo(a.cx, a.cy);
                     ctx.lineTo(b.cx, b.cy);
@@ -242,8 +239,8 @@
                     ctx.setLineDash([]);
 
                     // Labels
-                    ctx.font = '500 20px Outfit, sans-serif';
-                    ctx.fillStyle = '#F4D35E';
+                    ctx.font = '500 20px system-ui, -apple-system, sans-serif';
+                    ctx.fillStyle = '#4a3fc2';
                     ctx.textAlign = 'center';
                     ctx.fillText('\u0394t', (a.cx + b.cx) / 2, a.cy + 24);
                     ctx.fillText('\u0394d', c.cx + 24, (b.cy + c.cy) / 2 + 6);
@@ -254,9 +251,9 @@
                     const { cx, cy } = w2c(p[0], p[1], s.maxT, s.maxD);
                     ctx.beginPath();
                     ctx.arc(cx, cy, 8, 0, Math.PI * 2);
-                    ctx.fillStyle = '#F4D35E';
+                    ctx.fillStyle = '#4a3fc2';
                     ctx.fill();
-                    ctx.strokeStyle = '#637EA1';
+                    ctx.strokeStyle = '#1835b4';
                     ctx.lineWidth = 2;
                     ctx.stroke();
                 }
@@ -293,15 +290,15 @@
                 const p2 = w2c(t2, d2, s.maxT, s.maxD);
                 ctx.beginPath();
                 ctx.setLineDash([6, 4]);
-                ctx.strokeStyle = '#F4D35E';
+                ctx.strokeStyle = '#4a3fc2';
                 ctx.lineWidth = 3;
                 ctx.moveTo(p1.cx, p1.cy);
                 ctx.lineTo(p2.cx, p2.cy);
                 ctx.stroke();
                 ctx.setLineDash([]);
 
-                ctx.font = '500 20px Outfit, sans-serif';
-                ctx.fillStyle = '#F4D35E';
+                ctx.font = '500 20px system-ui, -apple-system, sans-serif';
+                ctx.fillStyle = '#4a3fc2';
                 ctx.textAlign = 'left';
                 ctx.fillText('tangent at t=5s', p2.cx + 8, p2.cy);
                 ctx.fillText('speed = ' + slope.toFixed(2) + ' m/s', p2.cx + 8, p2.cy + 24);
@@ -310,9 +307,9 @@
                 const cp = w2c(tTan, dAtTan, s.maxT, s.maxD);
                 ctx.beginPath();
                 ctx.arc(cp.cx, cp.cy, 8, 0, Math.PI * 2);
-                ctx.fillStyle = '#F4D35E';
+                ctx.fillStyle = '#4a3fc2';
                 ctx.fill();
-                ctx.strokeStyle = '#637EA1';
+                ctx.strokeStyle = '#1835b4';
                 ctx.lineWidth = 2;
                 ctx.stroke();
 

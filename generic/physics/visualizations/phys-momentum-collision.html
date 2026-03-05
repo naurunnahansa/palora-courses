@@ -4,17 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Momentum &amp; Collisions</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 600px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
         .card {
             border-radius: 5px;
-            border: 1px solid #e5dfe0;
+            border: 1px solid #d4d8e5;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             padding: 12px;
             margin-bottom: 10px;
@@ -27,15 +24,15 @@
         canvas {
             width: 100%;
             border-radius: 5px;
-            border: 1px solid #e5dfe0;
+            border: 1px solid #d4d8e5;
             display: block;
-            background: #fafafa;
+            background: #fcfcfe;
         }
         .controls { display: flex; flex-direction: column; gap: 6px; }
         .row-label {
-            font-family: 'Oswald', sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             font-size: 0.8rem;
-            color: #637EA1;
+            color: #1835b4;
             text-transform: uppercase;
             letter-spacing: 0.04em;
             margin-top: 4px;
@@ -46,20 +43,20 @@
         .slider-row label {
             font-size: 0.78rem; font-weight: 500; color: #4a5568; min-width: 80px;
         }
-        .slider-row input[type="range"] { flex: 1; accent-color: #637EA1; height: 6px; }
+        .slider-row input[type="range"] { flex: 1; accent-color: #1835b4; height: 6px; }
         .slider-row .val {
-            font-size: 0.78rem; font-weight: 600; color: #637EA1; min-width: 60px; text-align: right;
+            font-size: 0.78rem; font-weight: 600; color: #1835b4; min-width: 60px; text-align: right;
         }
         .toggle-row {
             display: flex; align-items: center; justify-content: center; gap: 10px; margin: 6px 0;
         }
         .toggle-row span { font-size: 0.82rem; font-weight: 500; color: #4a5568; }
-        .toggle-row span.active { color: #637EA1; font-weight: 700; }
+        .toggle-row span.active { color: #1835b4; font-weight: 700; }
         .toggle {
-            width: 48px; height: 26px; border-radius: 13px; background: #e5dfe0;
+            width: 48px; height: 26px; border-radius: 13px; background: #d4d8e5;
             position: relative; cursor: pointer; transition: background 0.3s;
         }
-        .toggle.on { background: #637EA1; }
+        .toggle.on { background: #1835b4; }
         .toggle::after {
             content: ''; position: absolute; top: 3px; left: 3px;
             width: 20px; height: 20px; border-radius: 50%; background: #fff;
@@ -69,32 +66,32 @@
         .btn-row { display: flex; gap: 8px; margin-top: 4px; }
         .btn {
             flex: 1; padding: 7px 0; border: none; border-radius: 5px;
-            font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 600;
+            font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; font-weight: 600;
             cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
         }
         .btn:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(99,126,161,0.2); }
-        .btn-primary { background: #637EA1; color: #fff; }
-        .btn-secondary { background: #F4D35E; color: #1a1f2e; }
-        .btn-outline { background: #fff; color: #637EA1; border: 1px solid #637EA1; }
+        .btn-primary { background: #1835b4; color: #fff; }
+        .btn-secondary { background: #4a3fc2; color: #1a2747; }
+        .btn-outline { background: #fff; color: #1835b4; border: 1px solid #1835b4; }
         .momentum-table {
             width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 6px;
         }
         .momentum-table th {
-            font-family: 'Oswald', sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             text-transform: uppercase;
             letter-spacing: 0.03em;
-            color: #637EA1;
+            color: #1835b4;
             padding: 6px 4px;
-            border-bottom: 2px solid #637EA1;
+            border-bottom: 2px solid #1835b4;
             font-size: 0.72rem;
         }
         .momentum-table td {
             padding: 5px 4px;
             text-align: center;
-            border-bottom: 1px solid #e5dfe0;
+            border-bottom: 1px solid #d4d8e5;
         }
         .momentum-table .highlight {
-            background: #F5E6E8;
+            background: #e8ecf8;
             font-weight: 600;
         }
         .conservation-badge {
@@ -159,13 +156,13 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="font-weight:600;color:#637EA1;">Before</td>
+                        <td style="font-weight:600;color:#1835b4;">Before</td>
                         <td id="pA1">20.0</td>
                         <td id="pB1">-15.0</td>
                         <td class="highlight" id="pTot1">5.0</td>
                     </tr>
                     <tr>
-                        <td style="font-weight:600;color:#637EA1;">After</td>
+                        <td style="font-weight:600;color:#1835b4;">After</td>
                         <td id="pA2">--</td>
                         <td id="pB2">--</td>
                         <td class="highlight" id="pTot2">--</td>
@@ -268,7 +265,7 @@
             const midY = canvas.height / 2;
 
             // Track
-            ctx.strokeStyle = '#e5dfe0';
+            ctx.strokeStyle = '#d4d8e5';
             ctx.lineWidth = 2;
             ctx.setLineDash([10, 8]);
             ctx.beginPath();
@@ -285,7 +282,7 @@
                 const r = objRadius(inp.m1 + inp.m2);
                 const grad = ctx.createRadialGradient(x1, midY, r * 0.2, x1, midY, r);
                 grad.addColorStop(0, '#8ba3c0');
-                grad.addColorStop(1, '#637EA1');
+                grad.addColorStop(1, '#1835b4');
                 ctx.beginPath();
                 ctx.arc(x1, midY, r, 0, Math.PI * 2);
                 ctx.fillStyle = grad;
@@ -295,17 +292,17 @@
                 ctx.stroke();
 
                 ctx.fillStyle = '#fff';
-                ctx.font = '700 ' + Math.max(18, r * 0.45) + 'px Oswald, sans-serif';
+                ctx.font = '700 ' + Math.max(18, r * 0.45) + 'px system-ui, -apple-system, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText((inp.m1 + inp.m2) + ' kg', x1, midY);
 
-                if (Math.abs(v1Arrow) > 0.1) drawArrow(x1 + r + 10, midY, v1Arrow * 20, '#F4D35E');
+                if (Math.abs(v1Arrow) > 0.1) drawArrow(x1 + r + 10, midY, v1Arrow * 20, '#4a3fc2');
             } else {
                 // Object A
                 const grad1 = ctx.createRadialGradient(x1, midY, r1 * 0.2, x1, midY, r1);
                 grad1.addColorStop(0, '#8ba3c0');
-                grad1.addColorStop(1, '#637EA1');
+                grad1.addColorStop(1, '#1835b4');
                 ctx.beginPath();
                 ctx.arc(x1, midY, r1, 0, Math.PI * 2);
                 ctx.fillStyle = grad1;
@@ -314,7 +311,7 @@
                 ctx.lineWidth = 2;
                 ctx.stroke();
                 ctx.fillStyle = '#fff';
-                ctx.font = '700 ' + Math.max(18, r1 * 0.5) + 'px Oswald, sans-serif';
+                ctx.font = '700 ' + Math.max(18, r1 * 0.5) + 'px system-ui, -apple-system, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(inp.m1 + 'kg', x1, midY);
@@ -322,7 +319,7 @@
                 // Object B
                 const grad2 = ctx.createRadialGradient(x2, midY, r2 * 0.2, x2, midY, r2);
                 grad2.addColorStop(0, '#f7e08a');
-                grad2.addColorStop(1, '#F4D35E');
+                grad2.addColorStop(1, '#4a3fc2');
                 ctx.beginPath();
                 ctx.arc(x2, midY, r2, 0, Math.PI * 2);
                 ctx.fillStyle = grad2;
@@ -330,18 +327,18 @@
                 ctx.strokeStyle = '#4a5568';
                 ctx.lineWidth = 2;
                 ctx.stroke();
-                ctx.fillStyle = '#1a1f2e';
-                ctx.font = '700 ' + Math.max(18, r2 * 0.5) + 'px Oswald, sans-serif';
+                ctx.fillStyle = '#1a2747';
+                ctx.font = '700 ' + Math.max(18, r2 * 0.5) + 'px system-ui, -apple-system, sans-serif';
                 ctx.fillText(inp.m2 + 'kg', x2, midY);
 
                 // Velocity arrows
-                if (Math.abs(v1Arrow) > 0.1) drawArrow(x1 + (v1Arrow > 0 ? r1 + 10 : -r1 - 10), midY - r1 - 20, v1Arrow * 20, '#637EA1');
+                if (Math.abs(v1Arrow) > 0.1) drawArrow(x1 + (v1Arrow > 0 ? r1 + 10 : -r1 - 10), midY - r1 - 20, v1Arrow * 20, '#1835b4');
                 if (Math.abs(v2Arrow) > 0.1) drawArrow(x2 + (v2Arrow > 0 ? r2 + 10 : -r2 - 10), midY - r2 - 20, v2Arrow * 20, '#c4a820');
             }
 
             // Labels
             ctx.fillStyle = '#4a5568';
-            ctx.font = '500 20px Outfit, sans-serif';
+            ctx.font = '500 20px system-ui, -apple-system, sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText(isElastic ? 'Elastic Collision' : 'Perfectly Inelastic Collision', canvas.width / 2, 36);
         }

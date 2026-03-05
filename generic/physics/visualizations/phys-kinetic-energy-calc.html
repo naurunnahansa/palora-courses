@@ -3,37 +3,34 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kinetic Energy Calculator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .formula-box { text-align: center; background: #F5E6E8; border-radius: 5px; padding: 8px; margin-bottom: 10px; }
-        .formula-box .formula { font-size: 1.1rem; font-weight: 700; color: #637EA1; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .formula-box { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 8px; margin-bottom: 10px; }
+        .formula-box .formula { font-size: 1.1rem; font-weight: 700; color: #1835b4; }
         .formula-box .desc { font-size: 0.7rem; color: #4a5568; margin-top: 2px; }
-        .slider-group { border: 1px solid #e5dfe0; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
+        .slider-group { border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
         .slider-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
         .slider-label span { font-size: 0.8rem; font-weight: 600; }
-        .slider-label .value { font-size: 0.9rem; font-weight: 700; color: #637EA1; }
-        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #e5dfe0; border-radius: 3px; outline: none; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #637EA1; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-        .result-card { background: linear-gradient(135deg, #637EA1, #506a8a); color: #fff; border-radius: 5px; padding: 12px; text-align: center; margin-bottom: 10px; }
-        .result-card .ke-label { font-family: 'Oswald', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; }
+        .slider-label .value { font-size: 0.9rem; font-weight: 700; color: #1835b4; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #d4d8e5; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .result-card { background: linear-gradient(135deg, #1835b4, #506a8a); color: #fff; border-radius: 5px; padding: 12px; text-align: center; margin-bottom: 10px; }
+        .result-card .ke-label { font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; }
         .result-card .ke-value { font-size: 1.8rem; font-weight: 700; }
         .result-card .ke-unit { font-size: 0.75rem; opacity: 0.8; }
         .result-card .breakdown { font-size: 0.72rem; opacity: 0.85; margin-top: 4px; }
         canvas { display: block; margin: 0 auto; }
-        .chart-card { border: 1px solid #e5dfe0; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
-        .chart-card h2 { font-family: 'Oswald', sans-serif; font-size: 0.82rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; text-align: center; }
-        .insight { background: #F5E6E8; border-radius: 5px; padding: 8px 10px; font-size: 0.75rem; color: #4a5568; text-align: center; }
-        .insight strong { color: #637EA1; }
+        .chart-card { border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
+        .chart-card h2 { font-family: system-ui, -apple-system, sans-serif; font-size: 0.82rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; text-align: center; }
+        .insight { background: #e8ecf8; border-radius: 5px; padding: 8px 10px; font-size: 0.75rem; color: #4a5568; text-align: center; }
+        .insight strong { color: #1835b4; }
         .comparison { display: flex; gap: 6px; margin-bottom: 8px; }
-        .comp-card { flex: 1; border: 1px solid #e5dfe0; border-radius: 5px; padding: 8px; text-align: center; }
+        .comp-card { flex: 1; border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px; text-align: center; }
         .comp-card .comp-label { font-size: 0.68rem; color: #4a5568; }
-        .comp-card .comp-val { font-size: 1rem; font-weight: 700; color: #637EA1; }
+        .comp-card .comp-val { font-size: 1rem; font-weight: 700; color: #1835b4; }
     </style>
 </head>
 <body>
@@ -120,7 +117,7 @@ function drawChart(m, currentV) {
     }
     // curve
     ctx.beginPath();
-    ctx.strokeStyle = '#637EA1';
+    ctx.strokeStyle = '#1835b4';
     ctx.lineWidth = 2.5;
     for (let px = 0; px <= cw; px++) {
         const v = (px / cw) * maxV;
@@ -141,7 +138,7 @@ function drawChart(m, currentV) {
     const curY = pad.top + ch - (curKE / maxKE) * ch;
     // dashed lines
     ctx.setLineDash([4, 3]);
-    ctx.strokeStyle = '#F4D35E';
+    ctx.strokeStyle = '#4a3fc2';
     ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(curX, pad.top + ch); ctx.lineTo(curX, curY); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(pad.left, curY); ctx.lineTo(curX, curY); ctx.stroke();
@@ -149,9 +146,9 @@ function drawChart(m, currentV) {
     // point
     ctx.beginPath();
     ctx.arc(curX, curY, 6, 0, Math.PI * 2);
-    ctx.fillStyle = '#F4D35E';
+    ctx.fillStyle = '#4a3fc2';
     ctx.fill();
-    ctx.strokeStyle = '#637EA1';
+    ctx.strokeStyle = '#1835b4';
     ctx.lineWidth = 2;
     ctx.stroke();
     // axes

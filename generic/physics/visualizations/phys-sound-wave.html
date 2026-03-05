@@ -3,30 +3,27 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sound Wave Visualization</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
-        .container { max-width: 550px; margin: 0 auto; }
-        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .view-label { font-family: 'Oswald', sans-serif; font-size: 0.7rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; margin: 4px 0 2px; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-family: system-ui, -apple-system, sans-serif; font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .view-label { font-family: system-ui, -apple-system, sans-serif; font-size: 0.7rem; color: #1835b4; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; margin: 4px 0 2px; }
         canvas { width: 100%; display: block; border-radius: 8px; background: #f8f9fa; }
         .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
         .control-group { background: #f8f9fa; border-radius: 8px; padding: 8px 10px; }
         .control-group label { font-size: 0.7rem; font-weight: 600; color: #4a5568; display: block; margin-bottom: 3px; }
-        .control-group .val { font-weight: 700; color: #637EA1; }
-        .control-group input[type=range] { width: 100%; accent-color: #637EA1; }
+        .control-group .val { font-weight: 700; color: #1835b4; }
+        .control-group input[type=range] { width: 100%; accent-color: #1835b4; }
         .btn-row { display: flex; gap: 6px; margin-bottom: 8px; }
-        .btn { flex: 1; padding: 7px; border: 2px solid #637EA1; background: white; color: #637EA1; border-radius: 8px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.75rem; cursor: pointer; text-align: center; transition: all 0.2s; }
-        .btn.active { background: #637EA1; color: white; }
+        .btn { flex: 1; padding: 7px; border: 2px solid #1835b4; background: white; color: #1835b4; border-radius: 8px; font-family: system-ui, -apple-system, sans-serif; font-weight: 600; font-size: 0.75rem; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .btn.active { background: #1835b4; color: white; }
         .btn:hover { background: #f0f4f8; }
         .btn.active:hover { background: #4f6a8a; }
         .info-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 6px; }
         .info-box { background: #f8f9fa; border-radius: 6px; padding: 5px; text-align: center; }
         .info-box .lbl { font-size: 0.55rem; color: #4a5568; text-transform: uppercase; }
-        .info-box .val { font-size: 0.8rem; font-weight: 700; color: #637EA1; }
+        .info-box .val { font-size: 0.8rem; font-weight: 700; color: #1835b4; }
         .annotations { display: flex; gap: 8px; justify-content: center; margin-top: 6px; }
         .anno { display: flex; align-items: center; gap: 4px; font-size: 0.6rem; color: #4a5568; }
         .anno-dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -72,8 +69,8 @@
         </div>
     </div>
     <div class="annotations">
-        <div class="anno"><div class="anno-dot" style="background:#637EA1;"></div> Compression (high pressure)</div>
-        <div class="anno"><div class="anno-dot" style="background:#F5E6E8;"></div> Rarefaction (low pressure)</div>
+        <div class="anno"><div class="anno-dot" style="background:#1835b4;"></div> Compression (high pressure)</div>
+        <div class="anno"><div class="anno-dot" style="background:#e8ecf8;"></div> Rarefaction (low pressure)</div>
     </div>
 </div>
 <script>
@@ -205,7 +202,7 @@ function animate() {
     }
 
     // Speaker icon
-    pCtx.fillStyle = '#637EA1';
+    pCtx.fillStyle = '#1835b4';
     pCtx.fillRect(2, pSize.h / 2 - 8, 6, 16);
     pCtx.beginPath();
     pCtx.moveTo(8, pSize.h / 2 - 8);
@@ -236,7 +233,7 @@ function animate() {
     wCtx.fillText('−', 16, midY + 33);
 
     // Waveform
-    wCtx.strokeStyle = '#637EA1';
+    wCtx.strokeStyle = '#1835b4';
     wCtx.lineWidth = 2;
     wCtx.beginPath();
     for (let x = 20; x < wSize.w - 10; x++) {
@@ -258,10 +255,10 @@ function animate() {
     const arrowX = 30;
     const peakY = midY - amp * 35;
     if (amp > 0.2) {
-        wCtx.strokeStyle = '#F4D35E';
+        wCtx.strokeStyle = '#4a3fc2';
         wCtx.lineWidth = 1.5;
         wCtx.beginPath(); wCtx.moveTo(arrowX, midY); wCtx.lineTo(arrowX, peakY); wCtx.stroke();
-        wCtx.fillStyle = '#F4D35E';
+        wCtx.fillStyle = '#4a3fc2';
         wCtx.beginPath(); wCtx.moveTo(arrowX - 3, peakY + 5); wCtx.lineTo(arrowX, peakY); wCtx.lineTo(arrowX + 3, peakY + 5); wCtx.fill();
         wCtx.font = '600 7px Outfit';
         wCtx.textAlign = 'left';

@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuclear Energy Summary</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.compare-card{border-radius:5px;padding:10px;text-align:center}.compare-card .title{font-family:'Oswald',sans-serif;font-size:.85rem;text-transform:uppercase;margin-bottom:4px}.compare-card .items{font-size:.7rem;color:#4a5568;text-align:left}.compare-card .items div{padding:2px 0;border-bottom:1px solid #e5dfe0}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.compare-card{border-radius:5px;padding:10px;text-align:center}.compare-card .title{font-family: system-ui, -apple-system, sans-serif;font-size:.85rem;text-transform:uppercase;margin-bottom:4px}.compare-card .items{font-size:.7rem;color:#4a5568;text-align:left}.compare-card .items div{padding:2px 0;border-bottom:1px solid #d4d8e5}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
 </head>
 <body>
 <div class="container">
@@ -21,7 +19,7 @@
                 <div>Small amount of fuel needed</div>
             </div>
         </div>
-        <div class="compare-card" style="background:#F5E6E8">
+        <div class="compare-card" style="background:#e8ecf8">
             <div class="title" style="color:#dc3545">Disadvantages</div>
             <div class="items">
                 <div>Radioactive waste — dangerous for thousands of years</div>
@@ -44,14 +42,14 @@ function draw(ts){
     const W=canvas.width,H=canvas.height;
     ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
 
-    ctx.fillStyle='#637EA1';ctx.font='600 14px Oswald';ctx.textAlign='center';
+    ctx.fillStyle='#1835b4';ctx.font='600 14px Oswald';ctx.textAlign='center';
     ctx.fillText('HOW A NUCLEAR POWER STATION WORKS',W/2,22);
 
     const baseY=H*0.75;
 
     // 1. Reactor
-    ctx.fillStyle='#F4D35E';ctx.fillRect(40,baseY-120,100,120);ctx.strokeStyle='#c87533';ctx.lineWidth=2;ctx.strokeRect(40,baseY-120,100,120);
-    ctx.fillStyle='#1a1f2e';ctx.font='600 10px Oswald';ctx.textAlign='center';
+    ctx.fillStyle='#4a3fc2';ctx.fillRect(40,baseY-120,100,120);ctx.strokeStyle='#c87533';ctx.lineWidth=2;ctx.strokeRect(40,baseY-120,100,120);
+    ctx.fillStyle='#1a2747';ctx.font='600 10px Oswald';ctx.textAlign='center';
     ctx.fillText('REACTOR',90,baseY-70);
     ctx.fillStyle='#4a5568';ctx.font='500 9px Outfit';
     ctx.fillText('Fission',90,baseY-55);ctx.fillText('heats water',90,baseY-43);
@@ -62,8 +60,8 @@ function draw(ts){
     for(let i=0;i<2;i++){ctx.fillStyle='#4a5568';ctx.fillRect(72+i*20,crY,6,40)}
 
     // Arrow
-    ctx.beginPath();ctx.moveTo(140,baseY-60);ctx.lineTo(170,baseY-60);ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.stroke();
-    ctx.beginPath();ctx.moveTo(170,baseY-60);ctx.lineTo(164,baseY-65);ctx.lineTo(164,baseY-55);ctx.closePath();ctx.fillStyle='#637EA1';ctx.fill();
+    ctx.beginPath();ctx.moveTo(140,baseY-60);ctx.lineTo(170,baseY-60);ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(170,baseY-60);ctx.lineTo(164,baseY-65);ctx.lineTo(164,baseY-55);ctx.closePath();ctx.fillStyle='#1835b4';ctx.fill();
 
     // 2. Heat exchanger / steam
     ctx.fillStyle='#4a90d9';ctx.fillRect(180,baseY-110,80,100);ctx.strokeStyle='#356ba1';ctx.lineWidth=2;ctx.strokeRect(180,baseY-110,80,100);
@@ -76,37 +74,37 @@ function draw(ts){
     }
 
     // Arrow
-    ctx.beginPath();ctx.moveTo(260,baseY-60);ctx.lineTo(300,baseY-60);ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.stroke();
-    ctx.beginPath();ctx.moveTo(300,baseY-60);ctx.lineTo(294,baseY-65);ctx.lineTo(294,baseY-55);ctx.closePath();ctx.fillStyle='#637EA1';ctx.fill();
+    ctx.beginPath();ctx.moveTo(260,baseY-60);ctx.lineTo(300,baseY-60);ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(300,baseY-60);ctx.lineTo(294,baseY-65);ctx.lineTo(294,baseY-55);ctx.closePath();ctx.fillStyle='#1835b4';ctx.fill();
     ctx.fillStyle='#4a5568';ctx.font='500 9px Outfit';ctx.fillText('Steam',280,baseY-70);
 
     // 3. Turbine
-    ctx.beginPath();ctx.arc(350,baseY-60,40,0,Math.PI*2);ctx.fillStyle='#e5dfe0';ctx.fill();ctx.strokeStyle='#4a5568';ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.arc(350,baseY-60,40,0,Math.PI*2);ctx.fillStyle='#d4d8e5';ctx.fill();ctx.strokeStyle='#4a5568';ctx.lineWidth=2;ctx.stroke();
     // Spinning blades
     for(let i=0;i<6;i++){
         const a=i*Math.PI/3+animT*3;
-        ctx.beginPath();ctx.moveTo(350,baseY-60);ctx.lineTo(350+Math.cos(a)*35,baseY-60+Math.sin(a)*35);ctx.strokeStyle='#637EA1';ctx.lineWidth=3;ctx.stroke();
+        ctx.beginPath();ctx.moveTo(350,baseY-60);ctx.lineTo(350+Math.cos(a)*35,baseY-60+Math.sin(a)*35);ctx.strokeStyle='#1835b4';ctx.lineWidth=3;ctx.stroke();
     }
-    ctx.fillStyle='#1a1f2e';ctx.font='600 10px Oswald';ctx.textAlign='center';ctx.fillText('TURBINE',350,baseY+5);
+    ctx.fillStyle='#1a2747';ctx.font='600 10px Oswald';ctx.textAlign='center';ctx.fillText('TURBINE',350,baseY+5);
 
     // Arrow
-    ctx.beginPath();ctx.moveTo(390,baseY-60);ctx.lineTo(430,baseY-60);ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.stroke();
-    ctx.beginPath();ctx.moveTo(430,baseY-60);ctx.lineTo(424,baseY-65);ctx.lineTo(424,baseY-55);ctx.closePath();ctx.fillStyle='#637EA1';ctx.fill();
+    ctx.beginPath();ctx.moveTo(390,baseY-60);ctx.lineTo(430,baseY-60);ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(430,baseY-60);ctx.lineTo(424,baseY-65);ctx.lineTo(424,baseY-55);ctx.closePath();ctx.fillStyle='#1835b4';ctx.fill();
     ctx.fillStyle='#4a5568';ctx.font='500 9px Outfit';ctx.fillText('Kinetic',410,baseY-70);ctx.fillText('energy',410,baseY-82);
 
     // 4. Generator
-    ctx.beginPath();ctx.arc(480,baseY-60,35,0,Math.PI*2);ctx.fillStyle='#F5E6E8';ctx.fill();ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle='#637EA1';ctx.font='600 10px Oswald';ctx.textAlign='center';ctx.fillText('GEN',480,baseY-55);
-    ctx.fillStyle='#1a1f2e';ctx.font='600 10px Oswald';ctx.fillText('GENERATOR',480,baseY+5);
+    ctx.beginPath();ctx.arc(480,baseY-60,35,0,Math.PI*2);ctx.fillStyle='#e8ecf8';ctx.fill();ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#1835b4';ctx.font='600 10px Oswald';ctx.textAlign='center';ctx.fillText('GEN',480,baseY-55);
+    ctx.fillStyle='#1a2747';ctx.font='600 10px Oswald';ctx.fillText('GENERATOR',480,baseY+5);
 
     // Arrow
-    ctx.beginPath();ctx.moveTo(515,baseY-60);ctx.lineTo(560,baseY-60);ctx.strokeStyle='#637EA1';ctx.lineWidth=2;ctx.stroke();
-    ctx.beginPath();ctx.moveTo(560,baseY-60);ctx.lineTo(554,baseY-65);ctx.lineTo(554,baseY-55);ctx.closePath();ctx.fillStyle='#637EA1';ctx.fill();
+    ctx.beginPath();ctx.moveTo(515,baseY-60);ctx.lineTo(560,baseY-60);ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(560,baseY-60);ctx.lineTo(554,baseY-65);ctx.lineTo(554,baseY-55);ctx.closePath();ctx.fillStyle='#1835b4';ctx.fill();
     ctx.fillStyle='#4a5568';ctx.font='500 9px Outfit';ctx.fillText('Electricity',540,baseY-70);
 
     // 5. Transformer & grid
-    ctx.fillStyle='#F4D35E';ctx.fillRect(570,baseY-85,50,50);
-    ctx.fillStyle='#1a1f2e';ctx.font='600 9px Oswald';ctx.textAlign='center';ctx.fillText('STEP-UP',595,baseY-60);
+    ctx.fillStyle='#4a3fc2';ctx.fillRect(570,baseY-85,50,50);
+    ctx.fillStyle='#1a2747';ctx.font='600 9px Oswald';ctx.textAlign='center';ctx.fillText('STEP-UP',595,baseY-60);
 
     // Power lines
     ctx.strokeStyle='#4a5568';ctx.lineWidth=2;
@@ -118,14 +116,14 @@ function draw(ts){
     });
 
     // Houses
-    ctx.fillStyle='#637EA1';
+    ctx.fillStyle='#1835b4';
     ctx.beginPath();ctx.moveTo(700,baseY-90);ctx.lineTo(730,baseY-110);ctx.lineTo(760,baseY-90);ctx.closePath();ctx.fill();
     ctx.fillRect(705,baseY-90,50,50);
-    ctx.fillStyle='#F4D35E';ctx.fillRect(715,baseY-80,12,12);ctx.fillRect(737,baseY-80,12,12);
-    ctx.fillStyle='#1a1f2e';ctx.font='600 10px Oswald';ctx.textAlign='center';ctx.fillText('HOMES',730,baseY+5);
+    ctx.fillStyle='#4a3fc2';ctx.fillRect(715,baseY-80,12,12);ctx.fillRect(737,baseY-80,12,12);
+    ctx.fillStyle='#1a2747';ctx.font='600 10px Oswald';ctx.textAlign='center';ctx.fillText('HOMES',730,baseY+5);
 
     // Energy flow label
-    ctx.fillStyle='#637EA1';ctx.font='500 11px Outfit';ctx.textAlign='center';
+    ctx.fillStyle='#1835b4';ctx.font='500 11px Outfit';ctx.textAlign='center';
     ctx.fillText('Nuclear → Heat → Kinetic → Electrical',W/2,H-10);
 
     requestAnimationFrame(draw);

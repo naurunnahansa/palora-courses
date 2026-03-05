@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Radiation Hazards & Safety</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',system-ui,sans-serif;background:#FFF;padding:10px 12px;color:#1a1f2e}.container{max-width:550px;margin:0 auto}h1{font-family:'Oswald',sans-serif;font-size:1.0rem;color:#637EA1;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #e5dfe0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.table-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1px;background:#e5dfe0;border-radius:5px;overflow:hidden;margin-top:10px;font-size:.7rem}.table-grid div{background:#fff;padding:6px;text-align:center}.table-grid .header{background:#637EA1;color:#fff;font-family:'Oswald',sans-serif;font-size:.75rem;text-transform:uppercase}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#637EA1}</style>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: system-ui, -apple-system, sans-serif;background: #fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width: 100%;margin:0 auto}h1{font-family: system-ui, -apple-system, sans-serif;font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px;margin-bottom:10px;background:#fff}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.table-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1px;background:#d4d8e5;border-radius:5px;overflow:hidden;margin-top:10px;font-size:.7rem}.table-grid div{background:#fff;padding:6px;text-align:center}.table-grid .header{background:#1835b4;color:#fff;font-family: system-ui, -apple-system, sans-serif;font-size:.75rem;text-transform:uppercase}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
 </head>
 <body>
 <div class="container">
@@ -13,10 +11,10 @@
     <div class="card" style="padding:8px"><canvas id="canvas" width="1060" height="400"></canvas></div>
     <div class="table-grid">
         <div class="header">Property</div><div class="header">Alpha (α)</div><div class="header">Beta (β)</div><div class="header">Gamma (γ)</div>
-        <div style="font-weight:600;color:#637EA1">Stopped by</div><div>Paper / skin</div><div>Aluminium (few mm)</div><div>Thick lead / concrete</div>
-        <div style="font-weight:600;color:#637EA1">Ionising power</div><div>Strongest</div><div>Moderate</div><div>Weakest</div>
-        <div style="font-weight:600;color:#637EA1">Range in air</div><div>~5 cm</div><div>~1 m</div><div>Infinite</div>
-        <div style="font-weight:600;color:#637EA1">Charge</div><div>+2</div><div>-1</div><div>0</div>
+        <div style="font-weight:600;color:#1835b4">Stopped by</div><div>Paper / skin</div><div>Aluminium (few mm)</div><div>Thick lead / concrete</div>
+        <div style="font-weight:600;color:#1835b4">Ionising power</div><div>Strongest</div><div>Moderate</div><div>Weakest</div>
+        <div style="font-weight:600;color:#1835b4">Range in air</div><div>~5 cm</div><div>~1 m</div><div>Infinite</div>
+        <div style="font-weight:600;color:#1835b4">Charge</div><div>+2</div><div>-1</div><div>0</div>
     </div>
     <div class="info"><strong>Safety precautions:</strong> Keep distance from sources, minimise exposure time, use shielding (lead aprons, lead-lined containers), handle with tongs, never point sources at people.</div>
 </div>
@@ -39,10 +37,10 @@ function draw(ts){
     // Row positions
     const rows=[{y:H*0.2,label:'Alpha (α)',color:'#dc3545',sym:'α'},
                 {y:H*0.5,label:'Beta (β)',color:'#4a90d9',sym:'β'},
-                {y:H*0.8,label:'Gamma (γ)',color:'#F4D35E',sym:'γ'}];
+                {y:H*0.8,label:'Gamma (γ)',color:'#4a3fc2',sym:'γ'}];
 
     // Source
-    ctx.fillStyle='#637EA1';ctx.font='600 12px Oswald';ctx.textAlign='center';
+    ctx.fillStyle='#1835b4';ctx.font='600 12px Oswald';ctx.textAlign='center';
     ctx.fillText('SOURCE',sourceX,H*0.05+12);
 
     // Barriers
@@ -62,7 +60,7 @@ function draw(ts){
     rows.forEach((r,ri)=>{
         // Source dot
         ctx.beginPath();ctx.arc(sourceX,r.y,12,0,Math.PI*2);ctx.fillStyle=r.color;ctx.fill();
-        ctx.fillStyle=ri===2?'#1a1f2e':'#fff';ctx.font='700 12px Oswald';ctx.textAlign='center';ctx.fillText(r.sym,sourceX,r.y+4);
+        ctx.fillStyle=ri===2?'#1a2747':'#fff';ctx.font='700 12px Oswald';ctx.textAlign='center';ctx.fillText(r.sym,sourceX,r.y+4);
 
         // Label
         ctx.fillStyle=r.color;ctx.font='500 11px Outfit';ctx.textAlign='left';ctx.fillText(r.label,sourceX-40,r.y-20);
@@ -98,7 +96,7 @@ function draw(ts){
     });
 
     // Title
-    ctx.fillStyle='#637EA1';ctx.font='600 14px Oswald';ctx.textAlign='center';
+    ctx.fillStyle='#1835b4';ctx.font='600 14px Oswald';ctx.textAlign='center';
     ctx.fillText('PENETRATING POWER OF RADIATION',W/2,18);
 
     requestAnimationFrame(draw);

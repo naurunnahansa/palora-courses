@@ -4,42 +4,41 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Concentration Calculator</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Outfit', sans-serif; background: #fafbfc; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
-  .container { max-width: 550px; width: 100%; }
-  .card { background: #fff; border: 1px solid #e5dfe0; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-  .btn { background: #637EA1; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #fafbfc; color: #1a2747; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: system-ui, -apple-system, sans-serif; }
+  .container { max-width: 100%; width: 100%; }
+  .card { background: #fff; border: 1px solid #d4d8e5; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .btn { background: #1835b4; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
   .btn:hover { background: #506a8a; }
-  .chip { display: inline-block; background: #F5E6E8; color: #1a1f2e; border: 1px solid #e5dfe0; border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin: 4px; }
-  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .chip { display: inline-block; background: #e8ecf8; color: #1a2747; border: 1px solid #d4d8e5; border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin: 4px; }
+  .chip:hover, .chip.active { background: #1835b4; color: #fff; border-color: #1835b4; }
   h1 { font-size: 26px; margin-bottom: 4px; }
-  .subtitle { color: #637EA1; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+  .subtitle { color: #1835b4; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
 
   .slider-group { margin-bottom: 18px; }
   .slider-group label { display: flex; justify-content: space-between; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
-  .slider-group label span { color: #637EA1; font-weight: 400; }
-  input[type=range] { -webkit-appearance: none; width: 100%; height: 8px; border-radius: 4px; background: #e5dfe0; outline: none; }
-  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #637EA1; cursor: pointer; border: 3px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+  .slider-group label span { color: #1835b4; font-weight: 400; }
+  input[type=range] { -webkit-appearance: none; width: 100%; height: 8px; border-radius: 4px; background: #d4d8e5; outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 3px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
 
   .mode-toggle { display: flex; gap: 8px; margin-bottom: 16px; }
-  .mode-btn { flex: 1; text-align: center; padding: 10px; border-radius: 10px; border: 1px solid #e5dfe0; background: #fafbfc; cursor: pointer; font-weight: 500; font-size: 14px; transition: all 0.2s; }
-  .mode-btn.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .mode-btn { flex: 1; text-align: center; padding: 10px; border-radius: 10px; border: 1px solid #d4d8e5; background: #fafbfc; cursor: pointer; font-weight: 500; font-size: 14px; transition: all 0.2s; }
+  .mode-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
 
   .mr-input { margin-bottom: 14px; }
   .mr-input label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
-  .mr-input input { width: 100%; padding: 10px 14px; border: 1px solid #e5dfe0; border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 15px; background: #fafbfc; }
-  .mr-input input:focus { outline: none; border-color: #637EA1; }
+  .mr-input input { width: 100%; padding: 10px 14px; border: 1px solid #d4d8e5; border-radius: 10px; font-family: system-ui, -apple-system, sans-serif; font-size: 15px; background: #fafbfc; }
+  .mr-input input:focus { outline: none; border-color: #1835b4; }
 
   .readout-row { display: flex; gap: 10px; margin-top: 16px; }
-  .readout { flex: 1; background: #F5E6E8; border-radius: 12px; padding: 14px; text-align: center; }
-  .readout .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #637EA1; }
-  .readout .value { font-family: 'Oswald', sans-serif; font-size: 26px; margin-top: 4px; color: #1a1f2e; }
-  .readout .unit { font-size: 12px; color: #637EA1; }
+  .readout { flex: 1; background: #e8ecf8; border-radius: 12px; padding: 14px; text-align: center; }
+  .readout .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #1835b4; }
+  .readout .value { font-family: system-ui, -apple-system, sans-serif; font-size: 26px; margin-top: 4px; color: #1a2747; }
+  .readout .unit { font-size: 12px; color: #1835b4; }
 
-  .formula-display { text-align: center; font-family: 'Oswald', sans-serif; font-size: 18px; color: #637EA1; margin: 10px 0 6px; }
+  .formula-display { text-align: center; font-family: system-ui, -apple-system, sans-serif; font-size: 18px; color: #1835b4; margin: 10px 0 6px; }
 
   .beaker-wrap { display: flex; justify-content: center; margin: 16px 0; }
   .beaker-wrap canvas { border-radius: 12px; background: #fafbfc; }
@@ -155,7 +154,7 @@ function drawBeaker(conc, maxConc) {
   ctx.lineTo(bx, by + bh);
   ctx.lineTo(bx + bw, by + bh);
   ctx.lineTo(bx + bw, by);
-  ctx.strokeStyle = '#637EA1';
+  ctx.strokeStyle = '#1835b4';
   ctx.lineWidth = 3;
   ctx.stroke();
 
@@ -163,12 +162,12 @@ function drawBeaker(conc, maxConc) {
   ctx.beginPath();
   ctx.moveTo(bx, by);
   ctx.lineTo(bx - 10, by - 8);
-  ctx.strokeStyle = '#637EA1';
+  ctx.strokeStyle = '#1835b4';
   ctx.lineWidth = 3;
   ctx.stroke();
 
   // Graduation marks
-  ctx.strokeStyle = '#e5dfe0';
+  ctx.strokeStyle = '#d4d8e5';
   ctx.lineWidth = 1;
   for (let i = 1; i <= 4; i++) {
     const yy = by + bh - (bh * i / 5);
@@ -192,7 +191,7 @@ function drawBeaker(conc, maxConc) {
 
   // Label
   ctx.font = '500 13px Outfit';
-  ctx.fillStyle = '#637EA1';
+  ctx.fillStyle = '#1835b4';
   ctx.textAlign = 'center';
   ctx.fillText('Solution', bx + bw / 2, by + bh + 22);
 }
