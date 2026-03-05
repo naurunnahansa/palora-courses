@@ -202,14 +202,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "I_1 = I_2 = I_3 = ... = I_{total}"
+            "text": "$$I_1 = I_2 = I_3 = ... = I_{total}$$"
           }
         ]
       },
@@ -258,14 +255,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "V_{total} = V_1 + V_2 + V_3 + ..."
+            "text": "$$V_{total} = V_1 + V_2 + V_3 + ...$$"
           }
         ]
       },
@@ -305,14 +299,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "R_{total} = R_1 + R_2 + R_3 + ..."
+            "text": "$$R_{total} = R_1 + R_2 + R_3 + ...$$"
           }
         ]
       },
@@ -479,14 +470,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\frac{V_1}{V_2} = \\frac{R_1}{R_2}"
+            "text": "$$\\frac{V_1}{V_2} = \\frac{R_1}{R_2}$$"
           }
         ]
       },
@@ -509,14 +497,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "V_1 = V_{total} \\times \\frac{R_1}{R_{total}}"
+            "text": "$$V_1 = V_{total} \\times \\frac{R_1}{R_{total}}$$"
           }
         ]
       },
@@ -1150,14 +1135,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "V_{out} = V_{in} \\times \\frac{R_2}{R_1 + R_2}"
+            "text": "$$V_{out} = V_{in} \\times \\frac{R_2}{R_1 + R_2}$$"
           }
         ]
       },
@@ -1970,22 +1952,170 @@
       {
         "type": "table",
         "content": [
-          { "type": "tableRow", "content": [
-            { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Property" }] }] },
-            { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Series Rule" }] }] }
-          ]},
-          { "type": "tableRow", "content": [
-            { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Current" }] }] },
-            { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Same throughout: $I_1 = I_2 = I_3$" }] }] }
-          ]},
-          { "type": "tableRow", "content": [
-            { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Voltage" }] }] },
-            { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Adds up: $V_T = V_1 + V_2 + V_3$" }] }] }
-          ]},
-          { "type": "tableRow", "content": [
-            { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Resistance" }] }] },
-            { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Adds up: $R_T = R_1 + R_2 + R_3$" }] }] }
-          ]}
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Property"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Series Rule"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Current"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Same throughout: $I_1 = I_2 = I_3$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Voltage"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Adds up: $V_T = V_1 + V_2 + V_3$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Resistance"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Adds up: $R_T = R_1 + R_2 + R_3$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         ]
       },
       {

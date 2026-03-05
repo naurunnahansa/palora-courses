@@ -63,14 +63,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "v = f\\lambda"
+            "text": "$$v = f\\lambda$$"
           }
         ]
       },
@@ -354,14 +351,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "f = \\frac{v}{\\lambda}"
+            "text": "$$f = \\frac{v}{\\lambda}$$"
           }
         ]
       },
@@ -380,14 +374,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\lambda = \\frac{v}{f}"
+            "text": "$$\\lambda = \\frac{v}{f}$$"
           }
         ]
       },
@@ -426,14 +417,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "v = \\frac{\\lambda}{T}"
+            "text": "$$v = \\frac{\\lambda}{T}$$"
           }
         ]
       },
@@ -559,30 +547,252 @@
       {
         "type": "table",
         "content": [
-          { "type": "tableRow", "content": [
-              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Medium" }] }] },
-              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Speed (m/s)" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Air (20\u00b0C)" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "343" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Air (0\u00b0C)" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "331" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Water" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "1480" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Concrete" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "3400" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Steel" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "5100" }] }] }
-          ] }
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Medium"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Speed (m/s)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Air (20°C)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "343"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Air (0°C)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "331"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Water"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "1480"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Concrete"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "3400"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Steel"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "5100"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         ]
       },
       {
@@ -609,26 +819,211 @@
       {
         "type": "table",
         "content": [
-          { "type": "tableRow", "content": [
-              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Medium" }] }] },
-              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Speed (m/s)" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Vacuum" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "3.0 \u00d7 10\u2078" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Air" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "\u2248 3.0 \u00d7 10\u2078" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Water" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "2.25 \u00d7 10\u2078" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Glass" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "2.0 \u00d7 10\u2078" }] }] }
-          ] }
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Medium"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Speed (m/s)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Vacuum"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "3.0 × 10⁸"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Air"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "≈ 3.0 × 10⁸"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Water"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "2.25 × 10⁸"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Glass"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "2.0 × 10⁸"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         ]
       },
       {
@@ -727,14 +1122,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "v = f\\lambda = 440 \\times 0.78 = 343 \\text{ m/s}"
+            "text": "$$v = f\\lambda = 440 \\times 0.78 = 343 \\text{ m/s}$$"
           }
         ]
       },
@@ -771,26 +1163,20 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "f = 100 \\text{ MHz} = 100 \\times 10^6 \\text{ Hz}"
+            "text": "$$f = 100 \\text{ MHz} = 100 \\times 10^6 \\text{ Hz}$$"
           }
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\lambda = \\frac{v}{f} = \\frac{3 \\times 10^8}{100 \\times 10^6} = 3 \\text{ m}"
+            "text": "$$\\lambda = \\frac{v}{f} = \\frac{3 \\times 10^8}{100 \\times 10^6} = 3 \\text{ m}$$"
           }
         ]
       },
@@ -831,14 +1217,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "f = \\frac{v}{\\lambda} = \\frac{4}{2} = 2 \\text{ Hz}"
+            "text": "$$f = \\frac{v}{\\lambda} = \\frac{4}{2} = 2 \\text{ Hz}$$"
           }
         ]
       },
@@ -852,14 +1235,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "T = \\frac{1}{f} = \\frac{1}{2} = 0.5 \\text{ s}"
+            "text": "$$T = \\frac{1}{f} = \\frac{1}{2} = 0.5 \\text{ s}$$"
           }
         ]
       },
@@ -925,26 +1305,20 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\lambda = 600 \\text{ nm} = 600 \\times 10^{-9} \\text{ m} = 6 \\times 10^{-7} \\text{ m}"
+            "text": "$$\\lambda = 600 \\text{ nm} = 600 \\times 10^{-9} \\text{ m} = 6 \\times 10^{-7} \\text{ m}$$"
           }
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "f = \\frac{c}{\\lambda} = \\frac{3 \\times 10^8}{6 \\times 10^{-7}} = 5 \\times 10^{14} \\text{ Hz}"
+            "text": "$$f = \\frac{c}{\\lambda} = \\frac{3 \\times 10^8}{6 \\times 10^{-7}} = 5 \\times 10^{14} \\text{ Hz}$$"
           }
         ]
       },
@@ -985,14 +1359,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\lambda_A = \\frac{v_A}{f} = \\frac{200}{50} = 4 \\text{ m}"
+            "text": "$$\\lambda_A = \\frac{v_A}{f} = \\frac{200}{50} = 4 \\text{ m}$$"
           }
         ]
       },
@@ -1006,14 +1377,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\lambda_B = \\frac{v_B}{f} = \\frac{400}{50} = 8 \\text{ m}"
+            "text": "$$\\lambda_B = \\frac{v_B}{f} = \\frac{400}{50} = 8 \\text{ m}$$"
           }
         ]
       },
@@ -1059,26 +1427,20 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "f = 2 \\text{ MHz} = 2 \\times 10^6 \\text{ Hz}"
+            "text": "$$f = 2 \\text{ MHz} = 2 \\times 10^6 \\text{ Hz}$$"
           }
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\lambda = \\frac{v}{f} = \\frac{1540}{2 \\times 10^6} = 7.7 \\times 10^{-4} \\text{ m} = 0.77 \\text{ mm}"
+            "text": "$$\\lambda = \\frac{v}{f} = \\frac{1540}{2 \\times 10^6} = 7.7 \\times 10^{-4} \\text{ m} = 0.77 \\text{ mm}$$"
           }
         ]
       },

@@ -672,14 +672,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "n_1 \\sin i = n_2 \\sin r"
+            "text": "$$n_1 \\sin i = n_2 \\sin r$$"
           }
         ]
       },
@@ -693,14 +690,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\frac{\\sin i}{\\sin r} = \\frac{n_2}{n_1} = \\frac{v_1}{v_2}"
+            "text": "$$\\frac{\\sin i}{\\sin r} = \\frac{n_2}{n_1} = \\frac{v_1}{v_2}$$"
           }
         ]
       },
@@ -845,14 +839,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "n = \\frac{c}{v} = \\frac{\\text{speed of light in vacuum}}{\\text{speed of light in medium}}"
+            "text": "$$n = \\frac{c}{v} = \\frac{\\text{speed of light in vacuum}}{\\text{speed of light in medium}}$$"
           }
         ]
       },
@@ -893,30 +884,252 @@
       {
         "type": "table",
         "content": [
-          { "type": "tableRow", "content": [
-              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Material" }] }] },
-              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Refractive Index" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Vacuum" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "1.00" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Air" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "1.0003 (\u2248 1.00)" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Water" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "1.33" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Glass" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "1.5 - 1.9" }] }] }
-          ] },
-          { "type": "tableRow", "content": [
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Diamond" }] }] },
-              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "2.42" }] }] }
-          ] }
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Material"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Refractive Index"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Vacuum"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "1.00"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Air"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "1.0003 (≈ 1.00)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Water"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "1.33"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Glass"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "1.5 - 1.9"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Diamond"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "2.42"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         ]
       },
       {
@@ -977,50 +1190,38 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "n_1 \\sin i = n_2 \\sin r"
+            "text": "$$n_1 \\sin i = n_2 \\sin r$$"
           }
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "1.0 \\times \\sin 45° = 1.5 \\times \\sin r"
+            "text": "$$1.0 \\times \\sin 45° = 1.5 \\times \\sin r$$"
           }
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\sin r = \\frac{\\sin 45°}{1.5} = \\frac{0.707}{1.5} = 0.471"
+            "text": "$$\\sin r = \\frac{\\sin 45°}{1.5} = \\frac{0.707}{1.5} = 0.471$$"
           }
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "r = \\sin^{-1}(0.471) = 28.1°"
+            "text": "$$r = \\sin^{-1}(0.471) = 28.1°$$"
           }
         ]
       },
@@ -1057,26 +1258,20 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "n = \\frac{c}{v}"
+            "text": "$$n = \\frac{c}{v}$$"
           }
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "v = \\frac{c}{n} = \\frac{3 \\times 10^8}{1.33} = 2.26 \\times 10^8 \\text{ m/s}"
+            "text": "$$v = \\frac{c}{n} = \\frac{3 \\times 10^8}{1.33} = 2.26 \\times 10^8 \\text{ m/s}$$"
           }
         ]
       },
@@ -1117,26 +1312,20 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\frac{\\lambda_{air}}{\\lambda_{glass}} = \\frac{v_{air}}{v_{glass}} = n_{glass}"
+            "text": "$$\\frac{\\lambda_{air}}{\\lambda_{glass}} = \\frac{v_{air}}{v_{glass}} = n_{glass}$$"
           }
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\lambda_{glass} = \\frac{\\lambda_{air}}{n} = \\frac{600}{1.5} = 400 \\text{ nm}"
+            "text": "$$\\lambda_{glass} = \\frac{\\lambda_{air}}{n} = \\frac{600}{1.5} = 400 \\text{ nm}$$"
           }
         ]
       },
@@ -1202,38 +1391,29 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "1.33 \\times \\sin 30° = 1.0 \\times \\sin r"
+            "text": "$$1.33 \\times \\sin 30° = 1.0 \\times \\sin r$$"
           }
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\sin r = 1.33 \\times 0.5 = 0.665"
+            "text": "$$\\sin r = 1.33 \\times 0.5 = 0.665$$"
           }
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "r = \\sin^{-1}(0.665) = 41.7°"
+            "text": "$$r = \\sin^{-1}(0.665) = 41.7°$$"
           }
         ]
       },
@@ -1314,14 +1494,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\sin c = \\frac{n_2}{n_1}"
+            "text": "$$\\sin c = \\frac{n_2}{n_1}$$"
           }
         ]
       },
@@ -1611,14 +1788,11 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "math"
-        },
+        "type": "paragraph",
         "content": [
           {
             "type": "text",
-            "text": "\\text{Apparent depth} = \\frac{\\text{Real depth}}{n}"
+            "text": "$$\\text{Apparent depth} = \\frac{\\text{Real depth}}{n}$$"
           }
         ]
       },
