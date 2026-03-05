@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homologous Series Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:#f0f2f5;color:#1a1f2e;min-height:100vh;display:flex;justify-content:center;padding:20px;}
+h1,h2,h3,h4{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
+.container{max-width:550px;width:100%;margin:0 auto;}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #e5dfe0;padding:24px;margin-bottom:16px;}
+.card-title{font-size:1.3rem;color:#637EA1;margin-bottom:4px;}
+.card-subtitle{font-size:0.85rem;color:#888;margin-bottom:16px;}
+canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #e5dfe0;display:block;margin:10px 0;}
+.btn{background:#637EA1;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:0.9rem;cursor:pointer;transition:all 0.2s;}
+.btn:hover{background:#506a8a;}
+.chip{display:inline-block;padding:6px 14px;border-radius:20px;border:1.5px solid #e5dfe0;font-size:0.82rem;cursor:pointer;transition:all 0.2s;margin:3px;background:#fff;font-family:'Outfit',sans-serif;}
+.chip:hover,.chip.active{background:#637EA1;color:#fff;border-color:#637EA1;}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px;}
+.info-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f2f5;font-size:0.88rem;}
+.info-row:last-child{border-bottom:none;}
+.info-label{color:#888;font-weight:500;}
+.info-value{color:#1a1f2e;font-weight:600;}
+.highlight{color:#637EA1;font-weight:700;}
+.member-tabs{display:flex;gap:4px;margin:10px 0;}
+.member-chip{display:inline-block;padding:5px 12px;border-radius:16px;border:1.5px solid #e5dfe0;font-size:0.78rem;cursor:pointer;transition:all 0.2s;background:#fff;font-family:'Outfit',sans-serif;}
+.member-chip:hover,.member-chip.active{background:#F5E6E8;border-color:#637EA1;color:#637EA1;}
+.functional-group{background:#F5E6E8;border-radius:8px;padding:8px 12px;margin:8px 0;font-size:0.85rem;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h2 class="card-title">Homologous Series Explorer</h2>
+    <p class="card-subtitle">Explore the first four members of each organic family</p>
+    <div class="tabs" id="familyTabs"></div>
+    <div class="functional-group" id="funcGroup"></div>
+    <div class="member-tabs" id="memberTabs"></div>
+    <canvas id="canvas" width="510" height="280"></canvas>
+    <div id="infoPanel"></div>
+  </div>
+</div>
+<script>
+const families = {
+  Alkanes: {
+    general: 'C<sub>n</sub>H<sub>2n+2</sub>',
+    funcGroup: 'No functional group (C-C and C-H single bonds only)',
+    members: [
+      { name:'Methane', formula:'CH\u2084', carbons:1 },
+      { name:'Ethane', formula:'C\u2082H\u2086', carbons:2 },
+      { name:'Propane', formula:'C\u2083H\u2088', carbons:3 },
+      { name:'Butane', formula:'C\u2084H\u2081\u2080', carbons:4 }
+    ]
+  },
+  Alkenes: {
+    general: 'C<sub>n</sub>H<sub>2n</sub>',
+    funcGroup: 'C=C double bond',
+    members: [
+      { name:'Ethene', formula:'C\u2082H\u2084', carbons:2 },
+      { name:'Propene', formula:'C\u2083H\u2086', carbons:3 },
+      { name:'Butene', formula:'C\u2084H\u2088', carbons:4 },
+      { name:'Pentene', formula:'C\u2085H\u2081\u2080', carbons:5 }
+    ]
+  },
+  Alcohols: {
+    general: 'C<sub>n</sub>H<sub>2n+1</sub>OH',
+    funcGroup: '-OH (hydroxyl group)',
+    members: [
+      { name:'Methanol', formula:'CH\u2083OH', carbons:1 },
+      { name:'Ethanol', formula:'C\u2082H\u2085OH', carbons:2 },
+      { name:'Propan-1-ol', formula:'C\u2083H\u2087OH', carbons:3 },
+      { name:'Butan-1-ol', formula:'C\u2084H\u2089OH', carbons:4 }
+    ]
+  },
+  'Carboxylic Acids': {
+    general: 'C<sub>n</sub>H<sub>2n+1</sub>COOH',
+    funcGroup: '-COOH (carboxyl group)',
+    members: [
+      { name:'Methanoic Acid', formula:'HCOOH', carbons:1 },
+      { name:'Ethanoic Acid', formula:'CH\u2083COOH', carbons:2 },
+      { name:'Propanoic Acid', formula:'C\u2082H\u2085COOH', carbons:3 },
+      { name:'Butanoic Acid', formula:'C\u2083H\u2087COOH', carbons:4 }
+    ]
+  }
+};
+
+let currentFamily = 'Alkanes';
+let currentMember = 0;
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+function init() {
+  const tabsEl = document.getElementById('familyTabs');
+  Object.keys(families).forEach(f => {
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (f === currentFamily ? ' active' : '');
+    chip.textContent = f;
+    chip.onclick = () => { currentFamily = f; currentMember = 0; update(); };
+    tabsEl.appendChild(chip);
+  });
+  update();
+}
+
+function update() {
+  document.querySelectorAll('#familyTabs .chip').forEach(c => {
+    c.classList.toggle('active', c.textContent === currentFamily);
+  });
+  const fam = families[currentFamily];
+  document.getElementById('funcGroup').innerHTML = '<strong>Functional Group:</strong> ' + fam.funcGroup + ' &nbsp;|&nbsp; <strong>General Formula:</strong> ' + fam.general;
+  const mt = document.getElementById('memberTabs');
+  mt.innerHTML = '';
+  fam.members.forEach((m, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'member-chip' + (i === currentMember ? ' active' : '');
+    chip.textContent = m.name;
+    chip.onclick = () => { currentMember = i; update(); };
+    mt.appendChild(chip);
+  });
+  const m = fam.members[currentMember];
+  document.getElementById('infoPanel').innerHTML =
+    '<div class="info-row"><span class="info-label">Name</span><span class="info-value">' + m.name + '</span></div>' +
+    '<div class="info-row"><span class="info-label">Molecular Formula</span><span class="info-value">' + m.formula + '</span></div>' +
+    '<div class="info-row"><span class="info-label">Family</span><span class="info-value highlight">' + currentFamily + '</span></div>';
+  drawStructure();
+}
+
+function drawStructure() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+  const fam = families[currentFamily];
+  const m = fam.members[currentMember];
+  const n = m.carbons;
+
+  const bondLen = 50;
+  const startX = W / 2 - ((n - 1) * bondLen) / 2;
+  const startY = H / 2;
+
+  ctx.lineWidth = 2;
+  ctx.font = '600 14px Outfit';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  const carbonPositions = [];
+  for (let i = 0; i < n; i++) {
+    carbonPositions.push({ x: startX + i * bondLen, y: startY });
+  }
+
+  // Draw C-C bonds
+  for (let i = 0; i < n - 1; i++) {
+    const isDouble = (currentFamily === 'Alkenes' && i === 0);
+    ctx.strokeStyle = isDouble ? '#637EA1' : '#1a1f2e';
+    ctx.lineWidth = isDouble ? 2.5 : 2;
+    if (isDouble) {
+      ctx.beginPath();
+      ctx.moveTo(carbonPositions[i].x, carbonPositions[i].y - 4);
+      ctx.lineTo(carbonPositions[i + 1].x, carbonPositions[i + 1].y - 4);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(carbonPositions[i].x, carbonPositions[i].y + 4);
+      ctx.lineTo(carbonPositions[i + 1].x, carbonPositions[i + 1].y + 4);
+      ctx.stroke();
+    } else {
+      ctx.beginPath();
+      ctx.moveTo(carbonPositions[i].x, carbonPositions[i].y);
+      ctx.lineTo(carbonPositions[i + 1].x, carbonPositions[i + 1].y);
+      ctx.stroke();
+    }
+    ctx.lineWidth = 2;
+  }
+
+  // Draw H bonds on each carbon
+  ctx.strokeStyle = '#999';
+  ctx.fillStyle = '#999';
+  ctx.font = '500 12px Outfit';
+
+  for (let i = 0; i < n; i++) {
+    const cx = carbonPositions[i].x, cy = carbonPositions[i].y;
+    let hCount;
+    if (currentFamily === 'Alkanes') {
+      hCount = (i === 0 || i === n - 1) ? 3 : 2;
+      if (n === 1) hCount = 4;
+    } else if (currentFamily === 'Alkenes') {
+      if (n === 2) { hCount = 2; }
+      else if (i === 0) hCount = 2;
+      else if (i === 1) hCount = 1;
+      else if (i === n - 1) hCount = 3;
+      else hCount = 2;
+    } else if (currentFamily === 'Alcohols') {
+      if (n === 1) hCount = 3;
+      else if (i === n - 1) hCount = 2;
+      else if (i === 0) hCount = 3;
+      else hCount = 2;
+    } else { // Carboxylic Acids
+      if (i === n - 1) hCount = 0; // COOH carbon
+      else if (n === 1) hCount = 0;
+      else if (i === 0) hCount = 3;
+      else hCount = 2;
+    }
+
+    const hPositions = [];
+    if (hCount >= 1) hPositions.push({ dx: 0, dy: -30 });
+    if (hCount >= 2) hPositions.push({ dx: 0, dy: 30 });
+    if (hCount >= 3) {
+      if (i === 0 && n > 1) hPositions.push({ dx: -30, dy: 0 });
+      else if (i === n - 1) hPositions.push({ dx: 30, dy: 0 });
+      else hPositions.push({ dx: 0, dy: -30 });
+    }
+    if (hCount >= 4) hPositions.push({ dx: -30, dy: 0 });
+
+    hPositions.forEach(h => {
+      ctx.strokeStyle = '#bbb';
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + h.dx * 0.65, cy + h.dy * 0.65);
+      ctx.stroke();
+      ctx.fillStyle = '#888';
+      ctx.fillText('H', cx + h.dx, cy + h.dy);
+    });
+  }
+
+  // Draw functional group for Alcohols
+  if (currentFamily === 'Alcohols') {
+    const last = carbonPositions[n - 1];
+    ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(last.x + 35, last.y); ctx.stroke();
+    ctx.fillStyle = '#637EA1'; ctx.font = '700 14px Outfit';
+    ctx.fillText('OH', last.x + 50, last.y);
+    ctx.lineWidth = 2;
+  }
+
+  // Draw functional group for Carboxylic Acids
+  if (currentFamily === 'Carboxylic Acids') {
+    const last = carbonPositions[n - 1];
+    // Double bond O above
+    ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(last.x - 3, last.y); ctx.lineTo(last.x - 3, last.y - 28); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(last.x + 3, last.y); ctx.lineTo(last.x + 3, last.y - 28); ctx.stroke();
+    ctx.fillStyle = '#637EA1'; ctx.font = '700 14px Outfit';
+    ctx.fillText('O', last.x, last.y - 40);
+    // OH to the right
+    ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(last.x + 35, last.y); ctx.stroke();
+    ctx.fillText('OH', last.x + 50, last.y);
+    ctx.lineWidth = 2;
+    // H on the single-carbon acid
+    if (n === 1) {
+      ctx.strokeStyle = '#bbb'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(last.x - 35, last.y); ctx.stroke();
+      ctx.fillStyle = '#888'; ctx.font = '500 12px Outfit';
+      ctx.fillText('H', last.x - 45, last.y);
+    }
+  }
+
+  // Draw C labels
+  ctx.fillStyle = '#1a1f2e'; ctx.font = '700 15px Outfit';
+  carbonPositions.forEach(p => {
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(p.x, p.y, 10, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#1a1f2e';
+    ctx.fillText('C', p.x, p.y);
+  });
+
+  // Title
+  ctx.fillStyle = '#637EA1'; ctx.font = '600 13px Outfit'; ctx.textAlign = 'left';
+  ctx.fillText('Structural Formula: ' + m.name, 14, 22);
+}
+
+canvas.width = 510; canvas.height = 280;
+init();
+</script>
+</body>
+</html>

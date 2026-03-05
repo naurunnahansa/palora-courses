@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronic Configuration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; }
+        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .btn { background: #637EA1; color: #fff; border: none; border-radius: 4px; padding: 6px 14px; font-family: 'Outfit'; font-size: 0.8rem; cursor: pointer; }
+        .btn:hover { background: #506a8a; }
+        .chip { background: #fff; border: 1px solid #e5dfe0; border-radius: 4px; padding: 3px 8px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        .element-grid { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 4px; justify-content: center; }
+        .readout-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+        .key-point { background: #f0f7ff; border-left: 3px solid #637EA1; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
+        .shell-info { display: flex; gap: 6px; justify-content: center; margin-top: 6px; }
+        .shell-badge { background: #f7fafc; border: 1px solid #e5dfe0; border-radius: 4px; padding: 4px 8px; text-align: center; font-size: 0.7rem; min-width: 60px; }
+        .shell-badge.filled { border-color: #637EA1; background: #edf2f7; }
+        .shell-badge .sname { font-family: 'Oswald', sans-serif; color: #637EA1; font-size: 0.8rem; }
+        .shell-badge .scount { font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Electronic Configuration</h1>
+
+    <div class="card">
+        <div class="card-title">Select Element (Z = 1 to 20)</div>
+        <div class="element-grid" id="elemGrid"></div>
+    </div>
+
+    <div class="card">
+        <canvas id="configCanvas" width="520" height="310"></canvas>
+        <div class="shell-info" id="shellInfo"></div>
+    </div>
+
+    <div class="readout-row">
+        <div class="readout">
+            <div class="label">Element</div>
+            <div class="value" id="rElem">H</div>
+        </div>
+        <div class="readout">
+            <div class="label">Configuration</div>
+            <div class="value" id="rConfig">1</div>
+        </div>
+        <div class="readout">
+            <div class="label">Group / Period</div>
+            <div class="value" id="rGroup">1 / 1</div>
+        </div>
+    </div>
+
+    <div class="key-point" id="keyPoint">
+        Electrons fill shells from the innermost outward: 1st shell holds up to 2, 2nd and 3rd hold up to 8, 4th holds up to 2 (for elements 1-20).
+    </div>
+</div>
+
+<script>
+const elements = [
+    {z:1,sym:'H',name:'Hydrogen',group:1,period:1},
+    {z:2,sym:'He',name:'Helium',group:0,period:1},
+    {z:3,sym:'Li',name:'Lithium',group:1,period:2},
+    {z:4,sym:'Be',name:'Beryllium',group:2,period:2},
+    {z:5,sym:'B',name:'Boron',group:3,period:2},
+    {z:6,sym:'C',name:'Carbon',group:4,period:2},
+    {z:7,sym:'N',name:'Nitrogen',group:5,period:2},
+    {z:8,sym:'O',name:'Oxygen',group:6,period:2},
+    {z:9,sym:'F',name:'Fluorine',group:7,period:2},
+    {z:10,sym:'Ne',name:'Neon',group:0,period:2},
+    {z:11,sym:'Na',name:'Sodium',group:1,period:3},
+    {z:12,sym:'Mg',name:'Magnesium',group:2,period:3},
+    {z:13,sym:'Al',name:'Aluminium',group:3,period:3},
+    {z:14,sym:'Si',name:'Silicon',group:4,period:3},
+    {z:15,sym:'P',name:'Phosphorus',group:5,period:3},
+    {z:16,sym:'S',name:'Sulfur',group:6,period:3},
+    {z:17,sym:'Cl',name:'Chlorine',group:7,period:3},
+    {z:18,sym:'Ar',name:'Argon',group:0,period:3},
+    {z:19,sym:'K',name:'Potassium',group:1,period:4},
+    {z:20,sym:'Ca',name:'Calcium',group:2,period:4}
+];
+
+let selected = 0;
+let angle = 0;
+
+const canvas = document.getElementById('configCanvas');
+const ctx = canvas.getContext('2d');
+
+// Build grid
+const grid = document.getElementById('elemGrid');
+elements.forEach((el, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (i === 0 ? ' active' : '');
+    chip.textContent = el.sym;
+    chip.title = el.name;
+    chip.onclick = () => { selected = i; document.querySelectorAll('.element-grid .chip').forEach((c, j) => c.classList.toggle('active', j === i)); updateDisplay(); };
+    grid.appendChild(chip);
+});
+
+function getConfig(z) {
+    const maxPerShell = [2, 8, 8, 2];
+    let rem = z;
+    const config = [];
+    for (let i = 0; i < maxPerShell.length && rem > 0; i++) {
+        const inShell = Math.min(rem, maxPerShell[i]);
+        config.push(inShell);
+        rem -= inShell;
+    }
+    return config;
+}
+
+function updateDisplay() {
+    const el = elements[selected];
+    const config = getConfig(el.z);
+    document.getElementById('rElem').textContent = el.sym + ' (' + el.name + ')';
+    document.getElementById('rConfig').textContent = config.join(', ');
+    const groupLabel = el.group === 0 ? '0 (Noble Gas)' : el.group;
+    document.getElementById('rGroup').textContent = groupLabel + ' / ' + el.period;
+
+    // Shell badges
+    const shellNames = ['1st Shell (K)', '2nd Shell (L)', '3rd Shell (M)', '4th Shell (N)'];
+    const maxPerShell = [2, 8, 8, 2];
+    const info = document.getElementById('shellInfo');
+    info.innerHTML = '';
+    config.forEach((count, i) => {
+        const badge = document.createElement('div');
+        badge.className = 'shell-badge' + (count === maxPerShell[i] ? ' filled' : '');
+        badge.innerHTML = '<div class="sname">' + shellNames[i] + '</div><div class="scount">' + count + ' / ' + maxPerShell[i] + '</div>';
+        info.appendChild(badge);
+    });
+
+    // Key point
+    const outerElectrons = config[config.length - 1];
+    let note = el.name + ' has ' + el.z + ' electrons in ' + config.length + ' shell' + (config.length > 1 ? 's' : '') + '. ';
+    note += 'The outer shell has <strong>' + outerElectrons + ' electron' + (outerElectrons !== 1 ? 's' : '') + '</strong>. ';
+    if (el.group === 0) note += 'Noble gas: full outer shell, very stable and unreactive.';
+    else if (el.group <= 3) note += 'Group ' + el.group + ': tends to <strong>lose ' + el.group + ' electron' + (el.group !== 1 ? 's' : '') + '</strong> to form a ' + el.group + '+ ion.';
+    else note += 'Group ' + el.group + ': tends to <strong>gain ' + (8 - el.group) + ' electron' + ((8 - el.group) !== 1 ? 's' : '') + '</strong> to form a ' + (8 - el.group) + '&minus; ion.';
+    document.getElementById('keyPoint').innerHTML = note;
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const el = elements[selected];
+    const config = getConfig(el.z);
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const shellRadii = [50, 88, 120, 150];
+    const maxPerShell = [2, 8, 8, 2];
+
+    // Draw shells
+    for (let i = 0; i < config.length; i++) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, shellRadii[i], 0, Math.PI * 2);
+        const full = config[i] === maxPerShell[i];
+        ctx.strokeStyle = full ? '#637EA1' : '#dde3ea';
+        ctx.lineWidth = full ? 1.5 : 1;
+        ctx.setLineDash(full ? [] : [4, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Shell label
+        ctx.fillStyle = '#a0aec0';
+        ctx.font = '10px Outfit';
+        ctx.textAlign = 'left';
+        ctx.fillText('n=' + (i + 1), cx + shellRadii[i] + 4, cy - 4);
+    }
+
+    // Nucleus
+    const nucR = Math.max(16, Math.min(28, 10 + el.z * 0.7));
+    const nucGrad = ctx.createRadialGradient(cx - 2, cy - 2, 2, cx, cy, nucR);
+    nucGrad.addColorStop(0, '#ffeaa7');
+    nucGrad.addColorStop(1, '#fdcb6e');
+    ctx.beginPath();
+    ctx.arc(cx, cy, nucR, 0, Math.PI * 2);
+    ctx.fillStyle = nucGrad;
+    ctx.fill();
+    ctx.strokeStyle = '#e17055';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Nucleus text
+    ctx.fillStyle = '#2d3436';
+    ctx.font = 'bold 12px Oswald';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(el.sym, cx, cy);
+
+    // Electrons
+    for (let s = 0; s < config.length; s++) {
+        const count = config[s];
+        const r = shellRadii[s];
+        for (let e = 0; e < count; e++) {
+            const a = (e / count) * Math.PI * 2 + angle * (1.2 - s * 0.15);
+            const ex = cx + Math.cos(a) * r;
+            const ey = cy + Math.sin(a) * r;
+
+            // Glow
+            ctx.beginPath();
+            ctx.arc(ex, ey, 8, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(99,126,161,0.12)';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(ex, ey, 5.5, 0, Math.PI * 2);
+            ctx.fillStyle = '#637EA1';
+            ctx.fill();
+
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 6px Outfit';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('e\u207B', ex, ey);
+        }
+    }
+
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'alphabetic';
+
+    // Config text on canvas
+    ctx.font = '13px Oswald';
+    ctx.fillStyle = '#637EA1';
+    ctx.textAlign = 'center';
+    ctx.fillText('Configuration: ' + config.join(', '), cx, canvas.height - 10);
+    ctx.textAlign = 'start';
+
+    angle += 0.01;
+    requestAnimationFrame(draw);
+}
+
+updateDisplay();
+draw();
+</script>
+</body>
+</html>

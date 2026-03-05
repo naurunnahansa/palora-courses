@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maxwell-Boltzmann Distribution</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
+  .container { max-width: 550px; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
+  h1 { font-size: 1.5rem; color: #637EA1; margin-bottom: 4px; }
+  .subtitle { font-size: 0.85rem; color: #888; margin-bottom: 16px; }
+  canvas { width: 100%; background: #fafbfc; border-radius: 12px; border: 1px solid #e5dfe0; display: block; }
+  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  .btn:hover { background: #506a8a; }
+  .chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; border: 1.5px solid #e5dfe0; background: #fff; cursor: pointer; transition: all 0.2s; margin: 3px; }
+  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .controls { margin-top: 14px; }
+  .control-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+  .control-row label { font-size: 0.82rem; font-weight: 500; min-width: 120px; }
+  input[type="range"] { flex: 1; accent-color: #637EA1; min-width: 120px; }
+  .value-badge { font-size: 0.78rem; background: #F5E6E8; padding: 2px 10px; border-radius: 10px; font-weight: 600; min-width: 55px; text-align: center; }
+  .toggle-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .info-box { background: #F5E6E8; border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; line-height: 1.5; margin-top: 12px; }
+  .info-box strong { color: #637EA1; }
+  .stats-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .stat-card { flex: 1; min-width: 100px; background: #F5E6E8; border-radius: 10px; padding: 10px 12px; text-align: center; }
+  .stat-card .val { font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 700; color: #637EA1; }
+  .stat-card .lbl { font-size: 0.72rem; color: #888; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Maxwell-Boltzmann Distribution</h1>
+    <p class="subtitle">Explore how temperature affects the distribution of molecular kinetic energies</p>
+    <canvas id="canvas" width="1000" height="650"></canvas>
+    <div class="controls">
+      <div class="control-row">
+        <label>Temperature T&#8321;</label>
+        <input type="range" id="t1Slider" min="200" max="800" value="300" oninput="draw()">
+        <span class="value-badge" id="t1Val">300 K</span>
+      </div>
+      <div class="control-row">
+        <label>Activation Energy (Ea)</label>
+        <input type="range" id="eaSlider" min="20" max="90" value="55" oninput="draw()">
+        <span class="value-badge" id="eaVal">55</span>
+      </div>
+      <div class="toggle-row">
+        <span class="chip" id="compareChip" onclick="toggleCompare()">Compare Two Temperatures</span>
+      </div>
+      <div id="t2Row" class="control-row" style="display:none;">
+        <label>Temperature T&#8322;</label>
+        <input type="range" id="t2Slider" min="200" max="800" value="500" oninput="draw()">
+        <span class="value-badge" id="t2Val">500 K</span>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="val" id="pct1">--</div>
+        <div class="lbl">% particles with E &ge; Ea (T&#8321;)</div>
+      </div>
+      <div class="stat-card" id="pct2Card" style="display:none;">
+        <div class="val" id="pct2">--</div>
+        <div class="lbl">% particles with E &ge; Ea (T&#8322;)</div>
+      </div>
+    </div>
+    <div class="info-box" id="info">
+      <strong>Key idea:</strong> At higher temperatures the distribution flattens and shifts right, meaning a greater proportion of molecules have energy equal to or exceeding the activation energy.
+    </div>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+let showCompare = false;
+
+function toggleCompare() {
+  showCompare = !showCompare;
+  document.getElementById('compareChip').classList.toggle('active', showCompare);
+  document.getElementById('t2Row').style.display = showCompare ? 'flex' : 'none';
+  document.getElementById('pct2Card').style.display = showCompare ? 'block' : 'none';
+  draw();
+}
+
+// Maxwell-Boltzmann-like distribution: f(E) = C * sqrt(E) * exp(-E / (k*T))
+// We use a simplified version scaled for visual clarity
+function mb(E, T) {
+  const kT = T / 300 * 20; // scaled
+  return Math.sqrt(E) * Math.exp(-E / kT);
+}
+
+function getMaxY(T) {
+  let max = 0;
+  for (let e = 0; e <= 100; e += 0.5) {
+    max = Math.max(max, mb(e, T));
+  }
+  return max;
+}
+
+function getPctAboveEa(T, Ea) {
+  let total = 0, above = 0;
+  for (let e = 0; e <= 100; e += 0.2) {
+    const v = mb(e, T);
+    total += v;
+    if (e >= Ea) above += v;
+  }
+  return (above / total * 100);
+}
+
+function draw() {
+  const T1 = +document.getElementById('t1Slider').value;
+  const T2 = +document.getElementById('t2Slider').value;
+  const Ea = +document.getElementById('eaSlider').value;
+  document.getElementById('t1Val').textContent = T1 + ' K';
+  document.getElementById('t2Val').textContent = T2 + ' K';
+  document.getElementById('eaVal').textContent = Ea;
+
+  ctx.clearRect(0, 0, W, H);
+  const pad = { l: 70, r: 40, t: 40, b: 60 };
+  const plotW = W - pad.l - pad.r;
+  const plotH = H - pad.t - pad.b;
+
+  // Find max y for scaling
+  let maxY = getMaxY(T1);
+  if (showCompare) maxY = Math.max(maxY, getMaxY(T2));
+  maxY *= 1.1;
+
+  const toX = (e) => pad.l + (e / 100) * plotW;
+  const toY = (v) => pad.t + plotH - (v / maxY) * plotH;
+
+  // Axes
+  ctx.strokeStyle = '#1a1f2e';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(pad.l, pad.t);
+  ctx.lineTo(pad.l, H - pad.b);
+  ctx.lineTo(W - pad.r, H - pad.b);
+  ctx.stroke();
+
+  ctx.font = '600 22px Oswald';
+  ctx.fillStyle = '#1a1f2e';
+  ctx.save();
+  ctx.translate(24, pad.t + plotH / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center';
+  ctx.fillText('Number of Particles', 0, 0);
+  ctx.restore();
+  ctx.textAlign = 'center';
+  ctx.fillText('Kinetic Energy', pad.l + plotW / 2, H - 12);
+
+  // Draw shaded area for T1 above Ea
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(toX(Ea), toY(0));
+  for (let e = Ea; e <= 100; e += 0.5) {
+    ctx.lineTo(toX(e), toY(mb(e, T1)));
+  }
+  ctx.lineTo(toX(100), toY(0));
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(99,126,161,0.2)';
+  ctx.fill();
+  ctx.restore();
+
+  // Shaded area for T2
+  if (showCompare) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(toX(Ea), toY(0));
+    for (let e = Ea; e <= 100; e += 0.5) {
+      ctx.lineTo(toX(e), toY(mb(e, T2)));
+    }
+    ctx.lineTo(toX(100), toY(0));
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(212,68,85,0.15)';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // T1 curve
+  ctx.strokeStyle = '#637EA1';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  for (let e = 0; e <= 100; e += 0.5) {
+    const x = toX(e), y = toY(mb(e, T1));
+    e === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // T2 curve
+  if (showCompare) {
+    ctx.strokeStyle = '#d45';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    for (let e = 0; e <= 100; e += 0.5) {
+      const x = toX(e), y = toY(mb(e, T2));
+      e === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  // Ea line
+  ctx.save();
+  ctx.setLineDash([8, 6]);
+  ctx.strokeStyle = '#e8a030';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(toX(Ea), pad.t);
+  ctx.lineTo(toX(Ea), H - pad.b);
+  ctx.stroke();
+  ctx.restore();
+
+  ctx.font = '600 20px Oswald';
+  ctx.fillStyle = '#e8a030';
+  ctx.textAlign = 'center';
+  ctx.fillText('Ea', toX(Ea), pad.t - 10);
+
+  // Legend
+  ctx.font = '500 18px Outfit';
+  ctx.textAlign = 'left';
+  const lx = pad.l + 20, ly = pad.t + 30;
+  ctx.fillStyle = '#637EA1';
+  ctx.fillRect(lx, ly - 6, 20, 4);
+  ctx.fillText('T\u2081 = ' + T1 + ' K', lx + 28, ly);
+  if (showCompare) {
+    ctx.fillStyle = '#d45';
+    ctx.fillRect(lx, ly + 20, 20, 4);
+    ctx.fillText('T\u2082 = ' + T2 + ' K', lx + 28, ly + 26);
+  }
+
+  // Shaded area label
+  ctx.font = '400 16px Outfit';
+  ctx.fillStyle = 'rgba(99,126,161,0.8)';
+  ctx.textAlign = 'left';
+  ctx.fillText('Particles with', toX(Ea) + 10, pad.t + plotH * 0.45);
+  ctx.fillText('E \u2265 Ea', toX(Ea) + 10, pad.t + plotH * 0.45 + 20);
+
+  // Stats
+  const pct1 = getPctAboveEa(T1, Ea);
+  document.getElementById('pct1').textContent = pct1.toFixed(1) + '%';
+  if (showCompare) {
+    const pct2 = getPctAboveEa(T2, Ea);
+    document.getElementById('pct2').textContent = pct2.toFixed(1) + '%';
+  }
+}
+
+draw();
+</script>
+</body>
+</html>

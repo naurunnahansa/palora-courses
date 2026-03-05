@@ -254,14 +254,253 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "text"
-        },
+        "type": "table",
         "content": [
           {
-            "type": "text",
-            "text": "| Device | Typical Current |\n|--------|----------------|\n| LED | 20 mA |\n| Phone charger | 1-2 A |\n| Kettle | 10-13 A |\n| Electric shower | 30-45 A |\n| Lightning bolt | ~30,000 A |"
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Device"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Typical Current"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "LED"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "20 mA"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Phone charger"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "1-2 A"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Kettle"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "10-13 A"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Electric shower"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "30-45 A"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Lightning bolt"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "~30,000 A"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -400,16 +639,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "        Conventional current\n        -------->\n   +|  ________________________  |-\n    |  |                      |  |\n    |--+    [  LAMP  ]        +--|\n   -|  |________________________|  |+\n        <--------\n        Electron flow"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Current_Flow.svg",
+          "alt": "Diagram showing conventional current direction from positive to negative and electron flow from negative to positive",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "paragraph",
@@ -669,16 +905,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "          I           I           I\n   + |--->---[R1]--->---[R2]--->---| -\n     |  (A1)       (A2)       (A3) |\n     |_________________________________|\n\n   A1 = A2 = A3  (current same everywhere)"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/1/11/Resistors_in_series.svg",
+          "alt": "Series circuit showing current is the same at all points, measured by ammeters",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "heading",
@@ -736,16 +969,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "                  I1 -->[R1]---\n                 /             \\\n   + |---I_total----I2 -->[R2]---+---I_total---| -\n     |           \\             /               |\n     |            I3 -->[R3]---                |\n     |____________________________________________|\n\n   I_total = I1 + I2 + I3"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/0/09/Resistors_in_parallel.svg",
+          "alt": "Parallel circuit showing current splitting between branches and recombining",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "heading",
@@ -958,16 +1188,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "   + |--------[A]--------[LAMP]--------| -\n     |                                  |\n     |__________________________________|\n\n   Ammeter (A) in SERIES with the lamp"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Resistors_in_Series.svg",
+          "alt": "Circuit diagram showing an ammeter connected in series with a lamp",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "paragraph",

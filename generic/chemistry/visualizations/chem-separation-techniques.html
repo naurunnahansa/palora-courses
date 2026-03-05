@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Separation Techniques</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: 'Oswald', sans-serif; font-size: 0.9rem; color: #637EA1; }
+        .btn { background: #637EA1; color: #fff; border: none; border-radius: 4px; padding: 6px 14px; font-family: 'Outfit'; font-size: 0.8rem; cursor: pointer; }
+        .btn:hover { background: #506a8a; }
+        .chip { background: #fff; border: 1px solid #e5dfe0; border-radius: 4px; padding: 5px 10px; font-size: 0.72rem; cursor: pointer; transition: all 0.2s; }
+        .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        .chip-row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+        .readout-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+        .key-point { background: #f0f7ff; border-left: 3px solid #637EA1; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Separation Techniques</h1>
+
+    <div class="card">
+        <div class="card-title">Choose Technique</div>
+        <div class="chip-row" id="techRow"></div>
+    </div>
+
+    <div class="card">
+        <canvas id="sepCanvas" width="520" height="340"></canvas>
+    </div>
+
+    <div class="readout-row">
+        <div class="readout">
+            <div class="label">Technique</div>
+            <div class="value" id="rTech">Filtration</div>
+        </div>
+        <div class="readout">
+            <div class="label">Mixture Type</div>
+            <div class="value" id="rMix">Insoluble Solid + Liquid</div>
+        </div>
+        <div class="readout">
+            <div class="label">Principle</div>
+            <div class="value" id="rPrinc" style="font-size:0.78rem;">Particle size</div>
+        </div>
+    </div>
+
+    <div class="key-point" id="keyPoint"></div>
+</div>
+
+<script>
+const techniques = [
+    {
+        name: 'Filtration',
+        mixture: 'Insoluble Solid + Liquid',
+        principle: 'Particle size',
+        example: 'Sand from water',
+        note: 'Filtration separates an <strong>insoluble solid</strong> from a liquid. The mixture is poured through filter paper; small liquid molecules pass through while larger solid particles are trapped as the <strong>residue</strong>. The liquid collected is the <strong>filtrate</strong>.'
+    },
+    {
+        name: 'Distillation',
+        mixture: 'Soluble Solid + Liquid / Liquids',
+        principle: 'Boiling point difference',
+        example: 'Salt water or ethanol/water',
+        note: 'Distillation separates liquids with <strong>different boiling points</strong>, or a dissolved solid from a solvent. The liquid is heated, evaporates, then <strong>condenses</strong> back in a separate container. Simple distillation works for large boiling point differences.'
+    },
+    {
+        name: 'Chromatography',
+        mixture: 'Dissolved Substances',
+        principle: 'Solubility / Adsorption',
+        example: 'Ink dyes, food colouring',
+        note: 'Chromatography separates dissolved substances based on how well they travel through a <strong>stationary phase</strong> (paper) carried by a <strong>mobile phase</strong> (solvent). More soluble substances travel further. Used to identify unknown substances by comparing R_f values.'
+    },
+    {
+        name: 'Evaporation',
+        mixture: 'Dissolved Solid + Liquid',
+        principle: 'Boiling point difference',
+        example: 'Salt from salt water',
+        note: 'Evaporation separates a <strong>dissolved solid</strong> from a solution by heating. The solvent evaporates, leaving the solid behind as crystals. Used when the solid is wanted and the liquid is not. Gentle heating (crystallisation) gives larger, purer crystals.'
+    }
+];
+
+let current = 0;
+let t = 0;
+const canvas = document.getElementById('sepCanvas');
+const ctx = canvas.getContext('2d');
+
+// Build chips
+const row = document.getElementById('techRow');
+techniques.forEach((tech, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (i === 0 ? ' active' : '');
+    chip.textContent = tech.name;
+    chip.onclick = () => { current = i; t = 0; document.querySelectorAll('.chip-row .chip').forEach((c, j) => c.classList.toggle('active', j === i)); updateDisplay(); };
+    row.appendChild(chip);
+});
+
+function updateDisplay() {
+    const tech = techniques[current];
+    document.getElementById('rTech').textContent = tech.name;
+    document.getElementById('rMix').textContent = tech.mixture;
+    document.getElementById('rPrinc').textContent = tech.principle;
+    document.getElementById('keyPoint').innerHTML = tech.note;
+}
+
+// Particle helpers
+function drawParticles(arr) {
+    arr.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.c;
+        ctx.fill();
+    });
+}
+
+// Filtration particles
+let filtParticles = [];
+function initFiltration() {
+    filtParticles = [];
+    for (let i = 0; i < 25; i++) {
+        filtParticles.push({ x: 180 + Math.random() * 80, y: 60 + Math.random() * 80, r: 3 + Math.random() * 3, c: '#c0a060', vy: 0.3 + Math.random() * 0.5, stopped: false });
+    }
+    for (let i = 0; i < 40; i++) {
+        filtParticles.push({ x: 170 + Math.random() * 100, y: 50 + Math.random() * 90, r: 2, c: '#74b9ff', vy: 0.5 + Math.random() * 0.4, stopped: false, isLiquid: true });
+    }
+}
+initFiltration();
+
+function drawFiltration() {
+    const W = canvas.width, H = canvas.height;
+    // Funnel
+    ctx.strokeStyle = '#636e72';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(160, 50); ctx.lineTo(210, 170);
+    ctx.moveTo(280, 50); ctx.lineTo(230, 170);
+    ctx.lineTo(230, 230); ctx.moveTo(210, 170); ctx.lineTo(210, 230);
+    ctx.stroke();
+
+    // Filter paper (zig-zag)
+    ctx.strokeStyle = '#dfe6e9';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(165, 120);
+    for (let x = 165; x <= 275; x += 8) {
+        ctx.lineTo(x + 4, 116);
+        ctx.lineTo(x + 8, 120);
+    }
+    ctx.stroke();
+
+    // Label
+    ctx.fillStyle = '#636e72';
+    ctx.font = '10px Outfit';
+    ctx.fillText('Filter paper', 286, 120);
+    ctx.fillText('Residue (sand)', 286, 108);
+
+    // Beaker below
+    ctx.strokeStyle = '#636e72';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(185, 235); ctx.lineTo(185, 310); ctx.lineTo(255, 310); ctx.lineTo(255, 235);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(116,185,255,0.3)';
+    ctx.fillRect(186, 270, 68, 39);
+
+    ctx.fillStyle = '#636e72';
+    ctx.font = '10px Outfit';
+    ctx.fillText('Filtrate', 194, 295);
+
+    // Particles
+    filtParticles.forEach(p => {
+        if (!p.stopped) {
+            p.y += p.vy;
+            // Sand stops at filter
+            if (!p.isLiquid && p.y > 115) { p.y = 112 + Math.random() * 5; p.stopped = true; }
+            // Liquid passes through
+            if (p.isLiquid && p.y > 310) { p.y = 60; p.x = 170 + Math.random() * 100; }
+        }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.c;
+        ctx.fill();
+    });
+
+    // Mixture label
+    ctx.fillStyle = '#637EA1';
+    ctx.font = 'bold 11px Outfit';
+    ctx.fillText('Sand + Water mixture', 155, 42);
+
+    // Arrow
+    ctx.fillStyle = '#637EA1';
+    ctx.beginPath();
+    ctx.moveTo(220, 155); ctx.lineTo(215, 145); ctx.lineTo(225, 145); ctx.closePath(); ctx.fill();
+}
+
+// Distillation
+let distDrops = [];
+function initDistillation() {
+    distDrops = [];
+    for (let i = 0; i < 12; i++) {
+        distDrops.push({ x: 80 + Math.random() * 60, y: 200 + Math.random() * 60, phase: 0, t: Math.random() * 200 });
+    }
+}
+initDistillation();
+
+function drawDistillation() {
+    // Flask
+    ctx.strokeStyle = '#636e72';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.ellipse(110, 260, 50, 40, 0, 0, Math.PI); // bottom
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(60, 260); ctx.lineTo(60, 180);
+    ctx.moveTo(160, 260); ctx.lineTo(160, 180);
+    ctx.moveTo(60, 180); ctx.lineTo(90, 180);
+    ctx.moveTo(130, 180); ctx.lineTo(160, 180);
+    ctx.stroke();
+
+    // Neck
+    ctx.beginPath();
+    ctx.moveTo(90, 180); ctx.lineTo(90, 130); ctx.lineTo(130, 130); ctx.lineTo(130, 180);
+    ctx.stroke();
+
+    // Liquid in flask
+    ctx.fillStyle = 'rgba(116,185,255,0.4)';
+    ctx.beginPath();
+    ctx.ellipse(110, 260, 48, 38, 0, 0, Math.PI);
+    ctx.lineTo(62, 220); ctx.lineTo(158, 220);
+    ctx.closePath();
+    ctx.fill();
+
+    // Bunsen flame
+    ctx.fillStyle = '#fdcb6e';
+    ctx.beginPath();
+    ctx.moveTo(100, 305); ctx.quadraticCurveTo(110, 280, 120, 305);
+    ctx.fill();
+    ctx.fillStyle = '#e17055';
+    ctx.beginPath();
+    ctx.moveTo(105, 305); ctx.quadraticCurveTo(110, 290, 115, 305);
+    ctx.fill();
+    ctx.fillStyle = '#636e72';
+    ctx.font = '10px Outfit';
+    ctx.fillText('Heat', 100, 320);
+
+    // Condenser tube
+    ctx.strokeStyle = '#636e72';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(130, 130); ctx.lineTo(320, 130); ctx.lineTo(380, 200); ctx.lineTo(380, 250);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(130, 138); ctx.lineTo(312, 138); ctx.lineTo(372, 208); ctx.lineTo(372, 250);
+    ctx.stroke();
+
+    // Water jacket label
+    ctx.fillStyle = '#74b9ff';
+    ctx.font = '10px Outfit';
+    ctx.fillText('Condenser', 220, 122);
+    ctx.fillText('(cold water jacket)', 210, 154);
+
+    // Collection beaker
+    ctx.strokeStyle = '#636e72';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(355, 255); ctx.lineTo(355, 310); ctx.lineTo(400, 310); ctx.lineTo(400, 255);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(116,185,255,0.25)';
+    const fillH = Math.min(40, t * 0.08);
+    ctx.fillRect(356, 310 - fillH, 43, fillH);
+    ctx.fillStyle = '#636e72';
+    ctx.font = '10px Outfit';
+    ctx.fillText('Distillate', 354, 325);
+
+    // Steam bubbles
+    const bubbleY = 220 - (t % 80);
+    if (bubbleY > 140) {
+        ctx.beginPath();
+        ctx.arc(110, bubbleY, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(200,200,255,0.5)';
+        ctx.fill();
+    }
+
+    // Drops in condenser
+    distDrops.forEach(d => {
+        d.t += 0.7;
+        const progress = (d.t % 300) / 300;
+        let dx, dy;
+        if (progress < 0.6) {
+            dx = 130 + (320 - 130) * (progress / 0.6);
+            dy = 134;
+        } else {
+            const p2 = (progress - 0.6) / 0.4;
+            dx = 320 + (380 - 320) * p2;
+            dy = 134 + (250 - 134) * p2;
+        }
+        ctx.beginPath();
+        ctx.arc(dx, dy, 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#74b9ff';
+        ctx.fill();
+    });
+
+    // Labels
+    ctx.fillStyle = '#637EA1';
+    ctx.font = 'bold 11px Outfit';
+    ctx.fillText('Salt water', 72, 248);
+
+    // Arrows
+    ctx.fillStyle = '#e17055';
+    ctx.font = '9px Outfit';
+    ctx.fillText('Steam rises', 92, 165);
+    ctx.fillStyle = '#74b9ff';
+    ctx.fillText('Condenses to liquid', 240, 170);
+}
+
+// Chromatography
+function drawChromatography() {
+    // Beaker
+    ctx.strokeStyle = '#636e72';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(150, 80); ctx.lineTo(150, 310); ctx.lineTo(370, 310); ctx.lineTo(370, 80);
+    ctx.stroke();
+
+    // Solvent level
+    const solventY = 280;
+    ctx.fillStyle = 'rgba(116,185,255,0.15)';
+    ctx.fillRect(151, solventY, 218, 29);
+    ctx.fillStyle = '#74b9ff';
+    ctx.font = '10px Outfit';
+    ctx.fillText('Solvent', 240, 300);
+
+    // Paper strip
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(245, 85, 30, 200);
+    ctx.strokeStyle = '#ccc';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(245, 85, 30, 200);
+
+    // Pencil line (start line)
+    ctx.strokeStyle = '#aaa';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.moveTo(245, 270); ctx.lineTo(275, 270);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#636e72';
+    ctx.font = '9px Outfit';
+    ctx.fillText('Start line', 280, 273);
+
+    // Solvent front
+    const frontY = Math.max(120, 270 - t * 0.3);
+    ctx.strokeStyle = '#74b9ff';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.moveTo(245, frontY); ctx.lineTo(275, frontY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    if (frontY < 260) { ctx.fillStyle = '#74b9ff'; ctx.font = '9px Outfit'; ctx.fillText('Solvent front', 280, frontY + 3); }
+
+    // Ink spots separating
+    const colors = ['#e74c3c', '#2ecc71', '#3498db', '#f39c12'];
+    const rfs = [0.85, 0.6, 0.4, 0.2]; // Rf values
+    const spotOrigY = 270;
+    colors.forEach((col, i) => {
+        const maxTravel = spotOrigY - frontY;
+        const travel = Math.min(maxTravel * rfs[i], (t * 0.3) * rfs[i]);
+        const sy = spotOrigY - travel;
+        const spread = Math.min(8, travel * 0.1);
+        ctx.beginPath();
+        ctx.ellipse(260, sy, 10, Math.max(2, spread), 0, 0, Math.PI * 2);
+        ctx.fillStyle = col + '88';
+        ctx.fill();
+    });
+
+    // Original spot
+    ctx.beginPath();
+    ctx.arc(260, 270, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#2d3436';
+    ctx.fill();
+    ctx.fillStyle = '#636e72';
+    ctx.font = '9px Outfit';
+    ctx.fillText('Ink spot', 280, 288);
+
+    // Labels
+    ctx.fillStyle = '#637EA1';
+    ctx.font = 'bold 11px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('Paper Chromatography', 260, 100);
+    ctx.textAlign = 'start';
+
+    // Rf explanation
+    if (frontY < 200) {
+        ctx.fillStyle = '#4a5568';
+        ctx.font = '10px Outfit';
+        ctx.fillText('R_f = distance by spot / distance by solvent', 152, 330);
+    }
+}
+
+// Evaporation
+let evapBubbles = [];
+function drawEvaporation() {
+    // Evaporating dish
+    ctx.strokeStyle = '#636e72';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(140, 200);
+    ctx.quadraticCurveTo(260, 280, 380, 200);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(140, 200); ctx.lineTo(140, 195);
+    ctx.moveTo(380, 200); ctx.lineTo(380, 195);
+    ctx.stroke();
+
+    // Solution level decreasing
+    const level = Math.max(0, 1 - t * 0.001);
+    if (level > 0.05) {
+        ctx.fillStyle = 'rgba(116,185,255,0.3)';
+        ctx.beginPath();
+        const yOff = (1 - level) * 30;
+        ctx.moveTo(155 + yOff, 200 - 5 + yOff * 0.5);
+        ctx.quadraticCurveTo(260, 250 - yOff * 1.5, 365 - yOff, 200 - 5 + yOff * 0.5);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    // Crystals appearing
+    if (level < 0.7) {
+        const numCrystals = Math.min(12, Math.floor((0.7 - level) * 30));
+        ctx.fillStyle = '#fff';
+        ctx.strokeStyle = '#636e72';
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < numCrystals; i++) {
+            const cx = 200 + (i % 6) * 25 + (i > 5 ? 12 : 0);
+            const cy = 210 + Math.floor(i / 6) * 12;
+            ctx.beginPath();
+            // Draw a small crystal shape
+            ctx.moveTo(cx, cy - 4);
+            ctx.lineTo(cx + 4, cy);
+            ctx.lineTo(cx, cy + 4);
+            ctx.lineTo(cx - 4, cy);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
+    }
+
+    // Bunsen flame
+    ctx.fillStyle = '#fdcb6e';
+    ctx.beginPath();
+    ctx.moveTo(250, 290); ctx.quadraticCurveTo(260, 260, 270, 290);
+    ctx.fill();
+    ctx.fillStyle = '#e17055';
+    ctx.beginPath();
+    ctx.moveTo(255, 290); ctx.quadraticCurveTo(260, 272, 265, 290);
+    ctx.fill();
+
+    // Tripod
+    ctx.strokeStyle = '#636e72';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(170, 240); ctx.lineTo(200, 290);
+    ctx.moveTo(350, 240); ctx.lineTo(320, 290);
+    ctx.moveTo(170, 240); ctx.lineTo(350, 240);
+    ctx.stroke();
+
+    // Steam rising
+    for (let i = 0; i < 5; i++) {
+        const sx = 220 + i * 20 + Math.sin(t * 0.03 + i) * 8;
+        const sy = 170 - (t * 0.5 + i * 15) % 100;
+        const alpha = Math.max(0, 1 - ((170 - sy) / 100));
+        ctx.beginPath();
+        ctx.arc(sx, sy, 4, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(200,210,220,${alpha * 0.5})`;
+        ctx.fill();
+    }
+
+    // Labels
+    ctx.fillStyle = '#636e72';
+    ctx.font = '10px Outfit';
+    ctx.fillText('Evaporating dish', 340, 188);
+    ctx.fillText('Heat', 252, 305);
+    ctx.fillText('Tripod + gauze', 355, 245);
+
+    if (level < 0.5) {
+        ctx.fillStyle = '#637EA1';
+        ctx.font = '10px Outfit';
+        ctx.fillText('Salt crystals forming', 270, 218);
+    }
+
+    ctx.fillStyle = '#637EA1';
+    ctx.font = 'bold 11px Outfit';
+    ctx.textAlign = 'center';
+    ctx.fillText('Evaporation of Salt Water', 260, 80);
+    ctx.textAlign = 'start';
+
+    // Steam label
+    ctx.fillStyle = '#aaa';
+    ctx.font = '10px Outfit';
+    ctx.fillText('Water vapour escapes', 200, 100);
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    t++;
+
+    switch (current) {
+        case 0: drawFiltration(); break;
+        case 1: drawDistillation(); break;
+        case 2: drawChromatography(); break;
+        case 3: drawEvaporation(); break;
+    }
+
+    requestAnimationFrame(draw);
+}
+
+updateDisplay();
+draw();
+</script>
+</body>
+</html>

@@ -493,16 +493,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "  Absorption Spectra Comparison\n\n  Laboratory (stationary source):\n  |---|----|-----|---|--------|---------|\n  V   B    G     Y   O        R\n       ^    ^         ^\n       |    |         |   dark absorption lines\n\n  Distant galaxy (red-shifted):\n  |------|----|-----|---|--------|----- |\n  V      B    G     Y   O        R\n            ^    ^         ^\n            |    |         |   same pattern, shifted RIGHT\n\n  --> All lines shifted towards red end\n  --> Greater shift = faster recession = greater distance"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Redshift_blueshift.svg",
+          "alt": "Comparison of absorption spectra showing red shift: dark absorption lines shifted towards the red end of the spectrum for a distant galaxy compared to a laboratory reference spectrum",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "heading",
@@ -830,16 +827,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "  Hubble's Law: v = H_0 x d\n\n  Recession\n  velocity    /\n  v (km/s)   /\n       |    / *\n       |   / *\n       |  /*\n       | /*\n       |/*\n       |*____________\n       0   Distance d (Mpc)\n\n  Gradient = H_0 (Hubble constant)\n           = approx 70 km/s per Mpc\n\n  Key: Each * represents a galaxy.\n  More distant galaxies recede faster."
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Hubble_constant.JPG",
+          "alt": "Hubble's Law graph showing the linear relationship between galaxy recession velocity and distance",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "heading",
@@ -1381,7 +1375,7 @@
           },
           {
             "type": "text",
-            "text": " A galaxy has red shift z = 0.02. Calculate its recession velocity. (c = 3 × 10⁸ m/s)"
+            "text": " A galaxy has red shift z = 0.02. Calculate its recession velocity. (c = 3 \u00d7 10\u2078 m/s)"
           }
         ]
       },
@@ -1492,7 +1486,7 @@
                 "content": [
                   {
                     "type": "text",
-                    "text": "So galaxy B, with 3× the red shift, is roughly 3× further away"
+                    "text": "So galaxy B, with 3\u00d7 the red shift, is roughly 3\u00d7 further away"
                   }
                 ]
               }
@@ -1627,7 +1621,7 @@
                 "content": [
                   {
                     "type": "text",
-                    "text": "The cosmic microwave background provides additional evidence—it's the cooled afterglow of this hot, dense beginning"
+                    "text": "The cosmic microwave background provides additional evidence\u2014it's the cooled afterglow of this hot, dense beginning"
                   }
                 ]
               }
@@ -1648,14 +1642,212 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "text"
-        },
+        "type": "table",
         "content": [
           {
-            "type": "text",
-            "text": "| Evidence | What it Shows |\n|----------|---------------|\n| Red shift of galaxies | Universe is expanding |\n| Hubble's law | Expansion rate is uniform |\n| Cosmic microwave background | Hot early universe has cooled |\n| Abundance of light elements | Conditions in early universe |"
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Evidence"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "What it Shows"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Red shift of galaxies"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Universe is expanding"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Hubble's law"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Expansion rate is uniform"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Cosmic microwave background"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Hot early universe has cooled"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Abundance of light elements"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Conditions in early universe"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -1691,7 +1883,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — The galaxies themselves aren't moving much. Space itself is expanding, carrying galaxies with it."
+                    "text": " \u2014 The galaxies themselves aren't moving much. Space itself is expanding, carrying galaxies with it."
                   }
                 ]
               }
@@ -1719,7 +1911,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — The universe includes all of space. It's not expanding into pre-existing space—space itself is stretching."
+                    "text": " \u2014 The universe includes all of space. It's not expanding into pre-existing space\u2014space itself is stretching."
                   }
                 ]
               }
@@ -1747,7 +1939,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — The Big Bang happened everywhere. Every point in space was at the origin."
+                    "text": " \u2014 The Big Bang happened everywhere. Every point in space was at the origin."
                   }
                 ]
               }
@@ -1775,7 +1967,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — Red shift means the wavelength of light has increased. The object itself doesn't change colour."
+                    "text": " \u2014 Red shift means the wavelength of light has increased. The object itself doesn't change colour."
                   }
                 ]
               }
@@ -1803,7 +1995,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — Local structures (galaxies, solar systems, atoms) are held together by forces much stronger than the expansion."
+                    "text": " \u2014 Local structures (galaxies, solar systems, atoms) are held together by forces much stronger than the expansion."
                   }
                 ]
               }
@@ -2081,7 +2273,7 @@
                 "content": [
                   {
                     "type": "text",
-                    "text": "Hubble's law: v = H₀d (velocity proportional to distance)"
+                    "text": "Hubble's law: v = H\u2080d (velocity proportional to distance)"
                   }
                 ]
               }
@@ -2137,7 +2329,7 @@
                 "content": [
                   {
                     "type": "text",
-                    "text": "No centre to the expansion—it happens everywhere"
+                    "text": "No centre to the expansion\u2014it happens everywhere"
                   }
                 ]
               }
@@ -2177,7 +2369,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — the entire absorption spectrum is shifted towards the red end (recall)"
+                    "text": " \u2014 the entire absorption spectrum is shifted towards the red end (recall)"
                   }
                 ]
               }
@@ -2218,7 +2410,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — using z = Δλ / λ (calculation)"
+                    "text": " \u2014 using z = \u0394\u03bb / \u03bb (calculation)"
                   }
                 ]
               }
@@ -2240,11 +2432,11 @@
           },
           {
             "type": "text",
-            "text": " v = zc = 0.02 × 3 × 10⁸ = "
+            "text": " v = zc = 0.02 \u00d7 3 \u00d7 10\u2078 = "
           },
           {
             "type": "text",
-            "text": "6 × 10⁶ m/s (6000 km/s)",
+            "text": "6 \u00d7 10\u2076 m/s (6000 km/s)",
             "marks": [
               {
                 "type": "bold"
@@ -2253,7 +2445,7 @@
           },
           {
             "type": "text",
-            "text": " — using v = zc for v << c (calculation)"
+            "text": " \u2014 using v = zc for v << c (calculation)"
           }
         ]
       },
@@ -2268,7 +2460,7 @@
                 "content": [
                   {
                     "type": "text",
-                    "text": "Hubble's law states that the recession velocity of a galaxy is directly proportional to its distance from us: v = H₀d, where H₀ ≈ 70 km/s per Mpc. This is significant because it shows the universe is expanding uniformly — the further away a galaxy is, the faster it recedes — implying everything was once much closer together.",
+                    "text": "Hubble's law states that the recession velocity of a galaxy is directly proportional to its distance from us: v = H\u2080d, where H\u2080 \u2248 70 km/s per Mpc. This is significant because it shows the universe is expanding uniformly \u2014 the further away a galaxy is, the faster it recedes \u2014 implying everything was once much closer together.",
                     "marks": [
                       {
                         "type": "bold"
@@ -2277,7 +2469,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — provides evidence for the Big Bang (recall + explanation)"
+                    "text": " \u2014 provides evidence for the Big Bang (recall + explanation)"
                   }
                 ]
               }
@@ -2305,7 +2497,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — no preferred direction rules out a local explosion (explanation)"
+                    "text": " \u2014 no preferred direction rules out a local explosion (explanation)"
                   }
                 ]
               }
@@ -2333,7 +2525,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — 2D analogy for 3D expansion (explanation)"
+                    "text": " \u2014 2D analogy for 3D expansion (explanation)"
                   }
                 ]
               }
@@ -2361,7 +2553,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — discovered 1965 by Penzias and Wilson (explanation)"
+                    "text": " \u2014 discovered 1965 by Penzias and Wilson (explanation)"
                   }
                 ]
               }
@@ -2388,7 +2580,7 @@
                 "content": [
                   {
                     "type": "text",
-                    "text": "By Hubble's law (v = H₀d), recession velocity is proportional to distance. Since Galaxy X is twice as far away as Galaxy Y, Galaxy X has twice the recession velocity of Galaxy Y.",
+                    "text": "By Hubble's law (v = H\u2080d), recession velocity is proportional to distance. Since Galaxy X is twice as far away as Galaxy Y, Galaxy X has twice the recession velocity of Galaxy Y.",
                     "marks": [
                       {
                         "type": "bold"
@@ -2397,7 +2589,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — direct proportionality from Hubble's law (application)"
+                    "text": " \u2014 direct proportionality from Hubble's law (application)"
                   }
                 ]
               }

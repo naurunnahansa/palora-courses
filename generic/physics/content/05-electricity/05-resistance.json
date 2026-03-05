@@ -254,14 +254,42 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "text"
-        },
+        "type": "table",
         "content": [
           {
-            "type": "text",
-            "text": "| Component | Typical Resistance |\n|-----------|-------------------|\n| Connecting wire | < 1 Ω |\n| Light bulb | 100-1000 Ω |\n| Heating element | 10-100 Ω |\n| Human body (dry) | 10,000-100,000 Ω |"
+            "type": "tableRow",
+            "content": [
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Component" }] }] },
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Typical Resistance" }] }] }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Connecting wire" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "< 1 \u03a9" }] }] }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Light bulb" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "100-1000 \u03a9" }] }] }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Heating element" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "10-100 \u03a9" }] }] }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Human body (dry)" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "10,000-100,000 \u03a9" }] }] }
+            ]
           }
         ]
       },
@@ -348,16 +376,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "  Wire cross-section:\n\n   (+)   e--->  (+)     (+)\n      (+)    e--->   (+)\n   (+)    (+)  e--->    (+)\n      (+)   e--->  (+)\n\n   (+) = fixed positive ions in lattice\n   e---> = free electrons drifting\n   Collisions with ions cause resistance"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/4/49/Electron_flow_in_a_conductor.svg",
+          "alt": "Cross-section of a wire showing free electrons drifting through a lattice of fixed positive ions, illustrating how collisions cause electrical resistance",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "heading",
@@ -605,14 +630,42 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "text"
-        },
+        "type": "table",
         "content": [
           {
-            "type": "text",
-            "text": "| Material | Resistivity (Ω·m) |\n|----------|-------------------|\n| Copper | $1.7 \\times 10^{-8}$ |\n| Aluminium | $2.8 \\times 10^{-8}$ |\n| Nichrome | $1.1 \\times 10^{-6}$ |\n| Glass | $10^{10}$ - $10^{14}$ |"
+            "type": "tableRow",
+            "content": [
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Material" }] }] },
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Resistivity (\u03a9\u00b7m)" }] }] }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Copper" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "$1.7 \\times 10^{-8}$" }] }] }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Aluminium" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "$2.8 \\times 10^{-8}$" }] }] }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Nichrome" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "$1.1 \\times 10^{-6}$" }] }] }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Glass" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "$10^{10}$ - $10^{14}$" }] }] }
+            ]
           }
         ]
       },
@@ -996,16 +1049,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "  Fixed resistor (IEC symbol):\n      +--------+\n  ----|        |----\n      +--------+"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Resistor_symbol_IEC.svg",
+          "alt": "IEC circuit symbol for a fixed resistor (rectangular box)",
+          "width": "50%",
+          "align": "center"
+        }
       },
       {
         "type": "heading",
@@ -1081,16 +1131,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "  Variable resistor:\n          |\n          v (arrow)\n      +--------+\n  ----|        |----\n      +--------+"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/9/90/Variable_resistor_symbol.svg",
+          "alt": "Circuit symbol for a variable resistor (rectangular box with an arrow through it)",
+          "width": "50%",
+          "align": "center"
+        }
       },
       {
         "type": "paragraph",

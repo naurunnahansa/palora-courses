@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rate of Reaction Graph Plotter</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
+  .container { max-width: 550px; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
+  h1 { font-size: 1.5rem; color: #637EA1; margin-bottom: 4px; }
+  .subtitle { font-size: 0.85rem; color: #888; margin-bottom: 16px; }
+  canvas { width: 100%; background: #fafbfc; border-radius: 12px; border: 1px solid #e5dfe0; display: block; }
+  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  .btn:hover { background: #506a8a; }
+  .btn.outline { background: transparent; color: #637EA1; border: 1.5px solid #637EA1; }
+  .btn.outline:hover { background: #637EA1; color: #fff; }
+  .chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; border: 1.5px solid #e5dfe0; background: #fff; cursor: pointer; transition: all 0.2s; margin: 3px; }
+  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .controls { margin-top: 14px; }
+  .toggle-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .legend { margin-top: 12px; font-size: 0.78rem; line-height: 1.8; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-swatch { width: 24px; height: 4px; border-radius: 2px; }
+  .info-box { background: #F5E6E8; border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; line-height: 1.5; margin-top: 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Rate of Reaction Graphs</h1>
+    <p class="subtitle">Compare how different conditions affect the volume of gas produced over time</p>
+    <canvas id="canvas" width="1000" height="700"></canvas>
+    <div class="controls">
+      <p style="font-size:0.82rem;font-weight:600;margin-bottom:6px;">Add a condition curve:</p>
+      <div class="toggle-row">
+        <span class="chip" onclick="addCurve('conc')">Higher Concentration</span>
+        <span class="chip" onclick="addCurve('temp')">Higher Temperature</span>
+        <span class="chip" onclick="addCurve('catalyst')">Add Catalyst</span>
+        <span class="chip" onclick="addCurve('sa')">Larger Surface Area</span>
+      </div>
+      <div class="toggle-row">
+        <button class="btn outline" onclick="resetCurves()">Clear All Curves</button>
+      </div>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="info-box" id="info">Click a condition above to overlay a new rate curve on the graph. All curves reach the same final volume because the same amount of reactant is used.</div>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+const pad = { l: 80, r: 40, t: 40, b: 70 };
+
+const curves = [];
+const baseParams = { rate: 0.03, maxVol: 90, label: 'Original', color: '#1a1f2e', dash: [] };
+
+const presets = {
+  conc: { rate: 0.06, maxVol: 90, label: 'Higher concentration', color: '#637EA1', dash: [] },
+  temp: { rate: 0.07, maxVol: 90, label: 'Higher temperature', color: '#d45', dash: [] },
+  catalyst: { rate: 0.065, maxVol: 90, label: 'With catalyst', color: '#5cb85c', dash: [10, 6] },
+  sa: { rate: 0.055, maxVol: 90, label: 'Larger surface area', color: '#e8a030', dash: [] }
+};
+
+const explanations = {
+  conc: 'Higher concentration means more particles per unit volume, so collisions are more frequent and the reaction is faster. The same total gas is produced.',
+  temp: 'Higher temperature gives particles more kinetic energy, so more collisions exceed the activation energy. The reaction rate increases significantly.',
+  catalyst: 'A catalyst provides an alternative pathway with a lower activation energy. More particles can react, increasing rate without being consumed.',
+  sa: 'Larger surface area (e.g. powder vs lumps) exposes more reactant particles to collisions, increasing the rate of reaction.'
+};
+
+function addCurve(type) {
+  // Prevent duplicates
+  if (curves.some(c => c.label === presets[type].label)) return;
+  curves.push({ ...presets[type] });
+  document.getElementById('info').innerHTML = '<strong>' + presets[type].label + ':</strong> ' + explanations[type];
+  draw();
+}
+
+function resetCurves() {
+  curves.length = 0;
+  document.getElementById('info').textContent = 'Click a condition above to overlay a new rate curve on the graph.';
+  draw();
+}
+
+function gasVolume(t, rate, maxVol) {
+  return maxVol * (1 - Math.exp(-rate * t));
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  const plotW = W - pad.l - pad.r;
+  const plotH = H - pad.t - pad.b;
+  const maxTime = 150;
+  const maxVol = 100;
+
+  // Grid
+  ctx.strokeStyle = '#eee';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 5; i++) {
+    const y = pad.t + (i / 5) * plotH;
+    ctx.beginPath();
+    ctx.moveTo(pad.l, y);
+    ctx.lineTo(W - pad.r, y);
+    ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = '#1a1f2e';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(pad.l, pad.t);
+  ctx.lineTo(pad.l, H - pad.b);
+  ctx.lineTo(W - pad.r, H - pad.b);
+  ctx.stroke();
+
+  // Labels
+  ctx.font = '600 22px Oswald';
+  ctx.fillStyle = '#1a1f2e';
+  ctx.save();
+  ctx.translate(26, pad.t + plotH / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center';
+  ctx.fillText('Volume of Gas (cm\u00B3)', 0, 0);
+  ctx.restore();
+  ctx.textAlign = 'center';
+  ctx.fillText('Time (s)', pad.l + plotW / 2, H - 15);
+
+  // Y tick labels
+  ctx.font = '400 16px Outfit';
+  ctx.textAlign = 'right';
+  for (let i = 0; i <= 5; i++) {
+    const v = (5 - i) * 20;
+    const y = pad.t + (i / 5) * plotH;
+    ctx.fillText(v, pad.l - 10, y + 5);
+  }
+
+  // X tick labels
+  ctx.textAlign = 'center';
+  for (let i = 0; i <= 5; i++) {
+    const t = (i / 5) * maxTime;
+    const x = pad.l + (i / 5) * plotW;
+    ctx.fillText(Math.round(t), x, H - pad.b + 22);
+  }
+
+  const toX = (t) => pad.l + (t / maxTime) * plotW;
+  const toY = (v) => pad.t + plotH - (v / maxVol) * plotH;
+
+  // Draw base curve
+  const allCurves = [baseParams, ...curves];
+  allCurves.forEach(c => {
+    ctx.save();
+    ctx.strokeStyle = c.color;
+    ctx.lineWidth = 3;
+    ctx.setLineDash(c.dash);
+    ctx.beginPath();
+    for (let t = 0; t <= maxTime; t += 0.5) {
+      const v = gasVolume(t, c.rate, c.maxVol);
+      const x = toX(t), y = toY(v);
+      t === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  // Legend
+  let legendHtml = '';
+  allCurves.forEach(c => {
+    const dashStyle = c.dash.length ? 'border-top: 2px dashed ' + c.color : 'background: ' + c.color;
+    const swatchStyle = c.dash.length
+      ? `width:24px;height:0;border-top:3px dashed ${c.color};`
+      : `width:24px;height:4px;border-radius:2px;background:${c.color};`;
+    legendHtml += `<div class="legend-item"><span style="${swatchStyle}"></span>${c.label}</div>`;
+  });
+  document.getElementById('legend').innerHTML = legendHtml;
+}
+
+draw();
+</script>
+</body>
+</html>

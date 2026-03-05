@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Displacement Reaction Predictor</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Outfit', sans-serif; background: #fafbfc; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
+  .container { max-width: 550px; width: 100%; }
+  .card { background: #fff; border: 1px solid #e5dfe0; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .btn { background: #637EA1; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; width: 100%; }
+  .btn:hover { background: #506a8a; }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  .subtitle { color: #637EA1; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+
+  .select-group { margin-bottom: 14px; }
+  .select-group label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .select-group select {
+    width: 100%; padding: 10px 14px; border: 1px solid #e5dfe0; border-radius: 10px;
+    font-family: 'Outfit', sans-serif; font-size: 15px; background: #fafbfc; color: #1a1f2e;
+    -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23637EA1' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+  .select-group select:focus { outline: none; border-color: #637EA1; }
+
+  .result-banner { padding: 16px; border-radius: 12px; text-align: center; margin-top: 16px; font-weight: 600; }
+  .result-banner.yes { background: #e6f7e9; color: #27ae60; }
+  .result-banner.no { background: #fde8e8; color: #c0392b; }
+
+  .equation-display { margin-top: 14px; padding: 16px; background: #F5E6E8; border-radius: 12px; }
+  .equation-display .eq-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #637EA1; margin-bottom: 4px; }
+  .equation-display .eq-text { font-family: 'Oswald', sans-serif; font-size: 16px; color: #1a1f2e; }
+
+  .canvas-wrap { display: flex; justify-content: center; margin: 16px 0; }
+  .canvas-wrap canvas { border-radius: 12px; background: #fafbfc; border: 1px solid #e5dfe0; }
+
+  .explanation { font-size: 13px; color: #637EA1; margin-top: 10px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Displacement Reactions</h1>
+    <p class="subtitle">Predict whether a displacement reaction will occur</p>
+  </div>
+
+  <div class="card">
+    <div class="select-group">
+      <label>Metal added</label>
+      <select id="metalSelect">
+        <option value="">-- Select metal --</option>
+      </select>
+    </div>
+    <div class="select-group">
+      <label>Metal salt solution</label>
+      <select id="saltSelect">
+        <option value="">-- Select salt solution --</option>
+      </select>
+    </div>
+    <button class="btn" onclick="predict()">Predict Reaction</button>
+  </div>
+
+  <div class="card" id="resultCard" style="display:none;">
+    <div class="canvas-wrap">
+      <canvas id="testTube" width="200" height="280"></canvas>
+    </div>
+    <div id="resultBanner"></div>
+    <div id="equations"></div>
+    <p class="explanation" id="explanation"></p>
+  </div>
+</div>
+
+<script>
+const reactivityOrder = ['K','Na','Ca','Mg','Al','Zn','Fe','Sn','Pb','H','Cu','Ag','Au','Pt'];
+
+const metalNames = {
+  K: 'Potassium', Na: 'Sodium', Ca: 'Calcium', Mg: 'Magnesium', Al: 'Aluminium',
+  Zn: 'Zinc', Fe: 'Iron', Sn: 'Tin', Pb: 'Lead', Cu: 'Copper', Ag: 'Silver', Au: 'Gold', Pt: 'Platinum'
+};
+
+const metalValency = { K:1, Na:1, Ca:2, Mg:2, Al:3, Zn:2, Fe:2, Sn:2, Pb:2, Cu:2, Ag:1, Au:3, Pt:2 };
+
+const saltAnions = {
+  Cu: { formula: 'SO\u2084', name: 'sulfate', symbol: 'SO4', valency: 2, color: '#3498db' },
+  Ag: { formula: 'NO\u2083', name: 'nitrate', symbol: 'NO3', valency: 1, color: '#bdc3c7' },
+  Zn: { formula: 'SO\u2084', name: 'sulfate', symbol: 'SO4', valency: 2, color: '#ecf0f1' },
+  Fe: { formula: 'SO\u2084', name: 'sulfate', symbol: 'SO4', valency: 2, color: '#a8d5a2' },
+  Pb: { formula: 'NO\u2083', name: 'nitrate', symbol: 'NO3', valency: 1, color: '#ecf0f1' },
+  Mg: { formula: 'SO\u2084', name: 'sulfate', symbol: 'SO4', valency: 2, color: '#ecf0f1' },
+  Sn: { formula: 'Cl', name: 'chloride', symbol: 'Cl', valency: 1, color: '#ecf0f1' }
+};
+
+// Populate dropdowns
+const addableMetals = ['Mg','Al','Zn','Fe','Sn','Pb','Cu','Ag'];
+const saltMetals = ['Cu','Ag','Zn','Fe','Pb','Mg','Sn'];
+
+const metalSel = document.getElementById('metalSelect');
+const saltSel = document.getElementById('saltSelect');
+
+addableMetals.forEach(m => {
+  const o = document.createElement('option');
+  o.value = m;
+  o.textContent = metalNames[m] + ' (' + m + ')';
+  metalSel.appendChild(o);
+});
+
+saltMetals.forEach(m => {
+  const a = saltAnions[m];
+  const v = metalValency[m];
+  const av = a.valency;
+  let saltFormula;
+  if (v === av) saltFormula = m + a.symbol;
+  else if (v === 1 && av === 2) saltFormula = m + '\u2082' + a.symbol;
+  else if (v === 2 && av === 1) saltFormula = m + '(' + a.formula + ')\u2082';
+  else if (v === 1 && av === 1) saltFormula = m + a.symbol;
+  else saltFormula = m + a.symbol;
+
+  const o = document.createElement('option');
+  o.value = m;
+  o.textContent = metalNames[m] + ' ' + a.name + ' (' + saltFormula + ')';
+  saltSel.appendChild(o);
+});
+
+function getReactivityIndex(sym) {
+  return reactivityOrder.indexOf(sym);
+}
+
+function predict() {
+  const metal = metalSel.value;
+  const saltMetal = saltSel.value;
+  if (!metal || !saltMetal) return;
+
+  const resultCard = document.getElementById('resultCard');
+  resultCard.style.display = 'block';
+
+  const mIdx = getReactivityIndex(metal);
+  const sIdx = getReactivityIndex(saltMetal);
+  const reacts = mIdx < sIdx && metal !== saltMetal;
+
+  const banner = document.getElementById('resultBanner');
+  const eqDiv = document.getElementById('equations');
+  const expl = document.getElementById('explanation');
+
+  if (metal === saltMetal) {
+    banner.className = 'result-banner no';
+    banner.textContent = 'No reaction \u2014 same metal!';
+    eqDiv.innerHTML = '';
+    expl.textContent = 'A metal cannot displace itself from its own salt solution.';
+    drawTestTube(false, '#ecf0f1', '#ecf0f1');
+    return;
+  }
+
+  if (reacts) {
+    banner.className = 'result-banner yes';
+    banner.textContent = '\u2714 Reaction occurs! ' + metalNames[metal] + ' displaces ' + metalNames[saltMetal];
+
+    const a = saltAnions[saltMetal];
+    const wordEq = metalNames[metal] + ' + ' + metalNames[saltMetal] + ' ' + a.name +
+      ' \u2192 ' + metalNames[metal] + ' ' + a.name + ' + ' + metalNames[saltMetal];
+
+    eqDiv.innerHTML = `
+      <div class="equation-display">
+        <div class="eq-label">Word equation</div>
+        <div class="eq-text">${wordEq}</div>
+      </div>`;
+
+    expl.textContent = metalNames[metal] + ' is more reactive than ' + metalNames[saltMetal] +
+      ' (higher in the reactivity series), so it can displace ' + metalNames[saltMetal] +
+      ' from its salt solution. The ' + metalNames[saltMetal] + ' is deposited as a solid.';
+
+    drawTestTube(true, a.color, '#a0522d');
+  } else {
+    banner.className = 'result-banner no';
+    banner.textContent = '\u2718 No reaction';
+    eqDiv.innerHTML = '';
+    expl.textContent = metalNames[metal] + ' is less reactive than ' + metalNames[saltMetal] +
+      ' (lower in the reactivity series), so it cannot displace ' + metalNames[saltMetal] +
+      ' from its salt solution.';
+    drawTestTube(false, saltAnions[saltMetal]?.color || '#ecf0f1', '#ecf0f1');
+  }
+
+  resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+let animTime = 0;
+let animFrame;
+function drawTestTube(reacting, solutionColor, depositColor) {
+  cancelAnimationFrame(animFrame);
+  animTime = 0;
+
+  function frame() {
+    animTime += 0.03;
+    const canvas = document.getElementById('testTube');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    const tx = 70, ty = 30, tw = 60, th = 200;
+
+    // Test tube
+    ctx.beginPath();
+    ctx.moveTo(tx, ty);
+    ctx.lineTo(tx, ty + th - 30);
+    ctx.quadraticCurveTo(tx, ty + th, tx + tw / 2, ty + th);
+    ctx.quadraticCurveTo(tx + tw, ty + th, tx + tw, ty + th - 30);
+    ctx.lineTo(tx + tw, ty);
+    ctx.strokeStyle = '#637EA1';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // Solution fill
+    const fillTop = ty + 50;
+    ctx.beginPath();
+    ctx.moveTo(tx + 2, fillTop);
+    ctx.lineTo(tx + 2, ty + th - 30);
+    ctx.quadraticCurveTo(tx + 2, ty + th - 2, tx + tw / 2, ty + th - 2);
+    ctx.quadraticCurveTo(tx + tw - 2, ty + th - 2, tx + tw - 2, ty + th - 30);
+    ctx.lineTo(tx + tw - 2, fillTop);
+    ctx.closePath();
+
+    if (reacting) {
+      const progress = Math.min(1, animTime * 0.5);
+      const r1 = parseInt(solutionColor.slice(1, 3), 16) || 100;
+      const g1 = parseInt(solutionColor.slice(3, 5), 16) || 100;
+      const b1 = parseInt(solutionColor.slice(5, 7), 16) || 100;
+      const fade = 1 - progress * 0.6;
+      ctx.fillStyle = `rgba(${r1}, ${g1}, ${b1}, ${0.3 + fade * 0.3})`;
+      ctx.fill();
+
+      // Deposit at bottom
+      if (progress > 0.2) {
+        const dp = Math.min(1, (progress - 0.2) / 0.6);
+        ctx.beginPath();
+        ctx.moveTo(tx + 10, ty + th - 15);
+        ctx.quadraticCurveTo(tx + tw / 2, ty + th - 2, tx + tw - 10, ty + th - 15);
+        ctx.quadraticCurveTo(tx + tw / 2, ty + th - 2 - dp * 25, tx + 10, ty + th - 15);
+        ctx.fillStyle = depositColor;
+        ctx.globalAlpha = dp * 0.8;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      // Bubbles
+      if (progress < 0.9) {
+        for (let i = 0; i < 3; i++) {
+          const bt = (animTime * 1.5 + i * 0.3) % 1;
+          const bx2 = tx + 15 + Math.sin(animTime * 3 + i) * 15 + 15;
+          const by2 = ty + th - 30 - bt * 120;
+          ctx.beginPath();
+          ctx.arc(bx2, by2, 2 + bt * 2, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(99,126,161,${(1 - bt) * 0.3})`;
+          ctx.fill();
+        }
+      }
+    } else {
+      ctx.fillStyle = solutionColor + '55';
+      ctx.fill();
+    }
+
+    // Metal strip in tube
+    ctx.fillStyle = '#aaa';
+    ctx.fillRect(tx + tw / 2 - 5, ty + 20, 10, 80);
+    ctx.strokeStyle = '#888';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(tx + tw / 2 - 5, ty + 20, 10, 80);
+
+    // Labels
+    ctx.font = '500 12px Outfit';
+    ctx.fillStyle = '#637EA1';
+    ctx.textAlign = 'center';
+    ctx.fillText('Metal', tx + tw / 2, ty + 15);
+    ctx.fillText('Solution', tx + tw / 2, ty + th + 20);
+
+    if (reacting && animTime < 3) {
+      animFrame = requestAnimationFrame(frame);
+    }
+  }
+  frame();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Chatelier's Principle</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
+  .container { max-width: 550px; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
+  h1 { font-size: 1.5rem; color: #637EA1; margin-bottom: 4px; }
+  .subtitle { font-size: 0.85rem; color: #888; margin-bottom: 16px; }
+  canvas { width: 100%; background: #fafbfc; border-radius: 12px; border: 1px solid #e5dfe0; display: block; }
+  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  .btn:hover { background: #506a8a; }
+  .chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; border: 1.5px solid #e5dfe0; background: #fff; cursor: pointer; transition: all 0.2s; margin: 3px; }
+  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .controls { margin-top: 14px; }
+  .toggle-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .section-label { font-family: 'Oswald', sans-serif; font-size: 0.9rem; font-weight: 600; margin: 12px 0 6px; color: #637EA1; }
+  .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+  .shift-indicator { text-align: center; margin: 14px 0; padding: 14px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 600; transition: all 0.4s; }
+  .shift-right { background: #e8f5e9; color: #388e3c; }
+  .shift-left { background: #fce4ec; color: #c62828; }
+  .shift-none { background: #f5f5f5; color: #888; }
+  .info-box { background: #F5E6E8; border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; line-height: 1.5; margin-top: 12px; }
+  .info-box strong { color: #637EA1; }
+  .equation-display { background: #fafbfc; border-radius: 10px; padding: 12px; text-align: center; font-size: 1rem; font-weight: 600; border: 1px solid #e5dfe0; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Le Chatelier's Principle</h1>
+    <p class="subtitle">See how changing conditions shifts the position of equilibrium</p>
+    <div class="toggle-row">
+      <span class="chip active" data-rxn="haber" onclick="selectRxn('haber')">N&#8322;+3H&#8322; &#8652; 2NH&#8323;</span>
+      <span class="chip" data-rxn="n2o4" onclick="selectRxn('n2o4')">N&#8322;O&#8324; &#8652; 2NO&#8322;</span>
+    </div>
+    <div class="equation-display" id="eqDisplay"></div>
+    <div class="shift-indicator shift-none" id="shiftInd">Equilibrium established</div>
+    <canvas id="canvas" width="1000" height="450"></canvas>
+    <div class="controls">
+      <p class="section-label">Change conditions:</p>
+      <div class="btn-grid">
+        <button class="btn" onclick="applyChange('tempUp')">Increase Temperature</button>
+        <button class="btn" onclick="applyChange('tempDown')">Decrease Temperature</button>
+        <button class="btn" onclick="applyChange('pressUp')">Increase Pressure</button>
+        <button class="btn" onclick="applyChange('pressDown')">Decrease Pressure</button>
+        <button class="btn" onclick="applyChange('addReactant')">Add Reactant</button>
+        <button class="btn" onclick="applyChange('removeReactant')">Remove Reactant</button>
+        <button class="btn" onclick="applyChange('addProduct')">Add Product</button>
+        <button class="btn" onclick="applyChange('removeProduct')">Remove Product</button>
+      </div>
+      <button class="btn" style="width:100%;background:#888;" onclick="resetEq()">Reset Equilibrium</button>
+    </div>
+    <div class="info-box" id="info"></div>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+
+const rxns = {
+  haber: {
+    equation: 'N\u2082(g) + 3H\u2082(g) \u21CC 2NH\u2083(g)    \u0394H = -92 kJ/mol',
+    exothermic: true,
+    molesLeft: 4, // 1+3
+    molesRight: 2,
+    species: [
+      { name: 'N\u2082', side: 'left', base: 0.3, color: '#637EA1' },
+      { name: 'H\u2082', side: 'left', base: 0.5, color: '#7aa3c7' },
+      { name: 'NH\u2083', side: 'right', base: 0.4, color: '#d45' }
+    ]
+  },
+  n2o4: {
+    equation: 'N\u2082O\u2084(g) \u21CC 2NO\u2082(g)    \u0394H = +57 kJ/mol',
+    exothermic: false,
+    molesLeft: 1,
+    molesRight: 2,
+    species: [
+      { name: 'N\u2082O\u2084', side: 'left', base: 0.5, color: '#637EA1' },
+      { name: 'NO\u2082', side: 'right', base: 0.4, color: '#d45' }
+    ]
+  }
+};
+
+let currentRxn = 'haber';
+let concentrations = [];
+let targetConc = [];
+let shiftDir = 'none';
+let shiftText = 'Equilibrium established';
+let explanationText = '';
+
+function selectRxn(key) {
+  currentRxn = key;
+  document.querySelectorAll('.chip[data-rxn]').forEach(c => c.classList.toggle('active', c.dataset.rxn === key));
+  resetEq();
+}
+
+function resetEq() {
+  const rxn = rxns[currentRxn];
+  document.getElementById('eqDisplay').textContent = rxn.equation;
+  concentrations = rxn.species.map(s => s.base);
+  targetConc = [...concentrations];
+  shiftDir = 'none';
+  shiftText = 'Equilibrium established';
+  explanationText = 'Select a condition change to see how the equilibrium shifts according to Le Chatelier\'s principle.';
+  updateUI();
+}
+
+function applyChange(action) {
+  const rxn = rxns[currentRxn];
+  targetConc = rxn.species.map(s => s.base);
+  const shift = 0.2;
+
+  let dir = 'none';
+  let expl = '';
+
+  switch (action) {
+    case 'tempUp':
+      if (rxn.exothermic) {
+        dir = 'left';
+        expl = 'Increasing temperature favours the endothermic (reverse) direction to absorb the extra heat. Equilibrium shifts LEFT.';
+      } else {
+        dir = 'right';
+        expl = 'Increasing temperature favours the endothermic (forward) direction to absorb the extra heat. Equilibrium shifts RIGHT.';
+      }
+      break;
+    case 'tempDown':
+      if (rxn.exothermic) {
+        dir = 'right';
+        expl = 'Decreasing temperature favours the exothermic (forward) direction to release heat. Equilibrium shifts RIGHT.';
+      } else {
+        dir = 'left';
+        expl = 'Decreasing temperature favours the exothermic (reverse) direction to release heat. Equilibrium shifts LEFT.';
+      }
+      break;
+    case 'pressUp':
+      if (rxn.molesLeft > rxn.molesRight) {
+        dir = 'right';
+        expl = 'Increasing pressure favours the side with fewer moles of gas (products: ' + rxn.molesRight + ' moles vs reactants: ' + rxn.molesLeft + ' moles). Equilibrium shifts RIGHT.';
+      } else if (rxn.molesLeft < rxn.molesRight) {
+        dir = 'left';
+        expl = 'Increasing pressure favours the side with fewer moles of gas (reactants: ' + rxn.molesLeft + ' moles vs products: ' + rxn.molesRight + ' moles). Equilibrium shifts LEFT.';
+      } else {
+        dir = 'none';
+        expl = 'Equal moles of gas on both sides, so pressure change has no effect on equilibrium position.';
+      }
+      break;
+    case 'pressDown':
+      if (rxn.molesLeft > rxn.molesRight) {
+        dir = 'left';
+        expl = 'Decreasing pressure favours the side with more moles of gas (reactants: ' + rxn.molesLeft + ' moles). Equilibrium shifts LEFT.';
+      } else if (rxn.molesLeft < rxn.molesRight) {
+        dir = 'right';
+        expl = 'Decreasing pressure favours the side with more moles of gas (products: ' + rxn.molesRight + ' moles). Equilibrium shifts RIGHT.';
+      } else {
+        dir = 'none';
+        expl = 'Equal moles of gas on both sides, so pressure change has no effect on equilibrium position.';
+      }
+      break;
+    case 'addReactant':
+      dir = 'right';
+      expl = 'Adding more reactant increases reactant concentration. The system shifts RIGHT to use up the excess reactant.';
+      break;
+    case 'removeReactant':
+      dir = 'left';
+      expl = 'Removing reactant decreases reactant concentration. The system shifts LEFT to replace the removed reactant.';
+      break;
+    case 'addProduct':
+      dir = 'left';
+      expl = 'Adding more product increases product concentration. The system shifts LEFT to use up the excess product.';
+      break;
+    case 'removeProduct':
+      dir = 'right';
+      expl = 'Removing product decreases product concentration. The system shifts RIGHT to replace the removed product.';
+      break;
+  }
+
+  shiftDir = dir;
+  if (dir === 'right') {
+    shiftText = '\u2192 Equilibrium shifts RIGHT (towards products)';
+    rxn.species.forEach((s, i) => {
+      targetConc[i] = s.side === 'right' ? s.base + shift : Math.max(0.08, s.base - shift * 0.6);
+    });
+  } else if (dir === 'left') {
+    shiftText = '\u2190 Equilibrium shifts LEFT (towards reactants)';
+    rxn.species.forEach((s, i) => {
+      targetConc[i] = s.side === 'left' ? s.base + shift : Math.max(0.08, s.base - shift * 0.6);
+    });
+  } else {
+    shiftText = 'No shift \u2014 no effect on equilibrium position';
+  }
+  explanationText = expl;
+  updateUI();
+}
+
+function updateUI() {
+  const ind = document.getElementById('shiftInd');
+  ind.textContent = shiftText;
+  ind.className = 'shift-indicator shift-' + shiftDir;
+  document.getElementById('info').innerHTML = '<strong>Explanation:</strong> ' + explanationText;
+}
+
+function animate() {
+  // Smoothly interpolate concentrations
+  for (let i = 0; i < concentrations.length; i++) {
+    concentrations[i] += (targetConc[i] - concentrations[i]) * 0.04;
+  }
+  drawBars();
+  requestAnimationFrame(animate);
+}
+
+function drawBars() {
+  ctx.clearRect(0, 0, W, H);
+  const rxn = rxns[currentRxn];
+  const n = rxn.species.length;
+  const pad = { l: 80, r: 40, t: 30, b: 60 };
+  const plotW = W - pad.l - pad.r;
+  const plotH = H - pad.t - pad.b;
+  const barW = Math.min(plotW / (n * 2), 120);
+  const gap = (plotW - barW * n) / (n + 1);
+
+  // Axes
+  ctx.strokeStyle = '#1a1f2e';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(pad.l, pad.t);
+  ctx.lineTo(pad.l, H - pad.b);
+  ctx.lineTo(W - pad.r, H - pad.b);
+  ctx.stroke();
+
+  ctx.font = '600 20px Oswald';
+  ctx.fillStyle = '#1a1f2e';
+  ctx.save();
+  ctx.translate(26, pad.t + plotH / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center';
+  ctx.fillText('Concentration', 0, 0);
+  ctx.restore();
+
+  // Dashed line for original equilibrium
+  ctx.save();
+  ctx.setLineDash([6, 6]);
+  ctx.strokeStyle = '#ccc';
+  ctx.lineWidth = 1;
+  rxn.species.forEach((s, i) => {
+    const baseH = (s.base / 1) * plotH;
+    const y = pad.t + plotH - baseH;
+    const x = pad.l + gap + i * (barW + gap);
+    ctx.beginPath();
+    ctx.moveTo(x - 10, y);
+    ctx.lineTo(x + barW + 10, y);
+    ctx.stroke();
+  });
+  ctx.restore();
+
+  // Bars
+  rxn.species.forEach((s, i) => {
+    const x = pad.l + gap + i * (barW + gap);
+    const h = (concentrations[i] / 1) * plotH;
+    const y = pad.t + plotH - h;
+
+    const grad = ctx.createLinearGradient(0, y, 0, pad.t + plotH);
+    grad.addColorStop(0, s.color);
+    grad.addColorStop(1, s.color + '66');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    roundedRect(ctx, x, y, barW, h, 6);
+    ctx.fill();
+
+    // Label
+    ctx.font = '600 22px Oswald';
+    ctx.fillStyle = '#1a1f2e';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.name, x + barW / 2, H - pad.b + 28);
+
+    // Side label
+    ctx.font = '400 14px Outfit';
+    ctx.fillStyle = '#aaa';
+    ctx.fillText(s.side === 'left' ? '(reactant)' : '(product)', x + barW / 2, H - pad.b + 46);
+
+    // Value
+    ctx.font = '500 16px Outfit';
+    ctx.fillStyle = s.color;
+    ctx.fillText(concentrations[i].toFixed(2), x + barW / 2, y - 10);
+  });
+
+  // Divider between reactants and products
+  const leftCount = rxn.species.filter(s => s.side === 'left').length;
+  const divX = pad.l + gap + leftCount * (barW + gap) - gap / 2;
+  ctx.save();
+  ctx.setLineDash([8, 6]);
+  ctx.strokeStyle = '#ddd';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(divX, pad.t);
+  ctx.lineTo(divX, H - pad.b);
+  ctx.stroke();
+  ctx.restore();
+
+  ctx.font = '500 16px Outfit';
+  ctx.fillStyle = '#bbb';
+  ctx.textAlign = 'center';
+  ctx.fillText('Reactants', (pad.l + divX) / 2, pad.t + 20);
+  ctx.fillText('Products', (divX + W - pad.r) / 2, pad.t + 20);
+}
+
+function roundedRect(ctx, x, y, w, h, r) {
+  r = Math.min(r, h / 2, w / 2);
+  if (h < 1) return;
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h);
+  ctx.lineTo(x, y + h);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+resetEq();
+animate();
+</script>
+</body>
+</html>

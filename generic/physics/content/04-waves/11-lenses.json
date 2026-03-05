@@ -532,28 +532,48 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "text"
-        },
+        "type": "table",
         "content": [
-          {
-            "type": "text",
-            "text": "| Object Position | Image Position | Image Properties |\n|-----------------|----------------|------------------|\n| Beyond 2F | Between F and 2F | Real, inverted, smaller |\n| At 2F | At 2F | Real, inverted, same size |\n| Between F and 2F | Beyond 2F | Real, inverted, larger |\n| At F | At infinity | No image (rays parallel) |\n| Between F and lens | Same side as object | Virtual, upright, larger |"
-          }
+          { "type": "tableRow", "content": [
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Object Position" }] }] },
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Image Position" }] }] },
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Image Properties" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Beyond 2F" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Between F and 2F" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Real, inverted, smaller" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "At 2F" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "At 2F" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Real, inverted, same size" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Between F and 2F" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Beyond 2F" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Real, inverted, larger" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "At F" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "At infinity" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "No image (rays parallel)" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Between F and lens" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Same side as object" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Virtual, upright, larger" }] }] }
+          ] }
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "  Object beyond 2F:\n\n    |                  |  |                |\n    | object           | )| image          |\n    |─↑──              | )|   ──↓─         |\n    |                  | )|                |\n   2F        F         C         F        2F\n  ──────────────────────────────────────────→ axis\n     (large object)        (small, real,\n                            inverted image)"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Lens3.svg",
+          "alt": "Converging (convex) lens ray diagram showing an object beyond 2F forming a real, inverted, diminished image between F and 2F",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "blockquote",
@@ -793,16 +813,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "  Diverging lens — any object position:\n\n         |  image    |  |     | object\n         |  (small,  |(  |     |─↑──\n         |   upright)|(  |     |\n         |  ──↑─     |(  |     |\n         F           C         F\n  ───────────────────────────────────→ axis\n    (virtual image, same side as object,\n     always upright and diminished)"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Lens1.svg",
+          "alt": "Diverging (concave) lens ray diagram showing a virtual, upright, diminished image formed on the same side as the object",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "heading",

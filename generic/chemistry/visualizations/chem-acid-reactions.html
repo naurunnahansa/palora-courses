@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acid Reaction Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3 { font-family: 'Oswald', sans-serif; }
+  .container { max-width: 550px; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
+  h1 { color: #637EA1; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
+  .subtitle { text-align: center; color: #888; font-size: 0.85rem; margin-bottom: 16px; }
+  canvas { width: 100%; background: #fafbfc; border-radius: 10px; display: block; }
+  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.85rem; transition: background 0.2s; }
+  .btn:hover { background: #4f6a8a; }
+  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #e5dfe0; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
+  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .info-box { background: #F5E6E8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.6; }
+  .info-box strong { color: #637EA1; }
+  .chip-group { display: flex; flex-wrap: wrap; gap: 2px; margin-bottom: 10px; }
+  .chip-group-label { font-size: 0.75rem; color: #888; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; }
+  .eq-box { background: #fafbfc; border: 1px solid #e5dfe0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 0.85rem; line-height: 1.8; }
+  .eq-box .label { font-size: 0.7rem; color: #888; text-transform: uppercase; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Acid Reaction Explorer</h1>
+    <p class="subtitle">Select a reaction type, acid, and reactant</p>
+    <div class="chip-group-label">Reaction Type</div>
+    <div class="chip-group" id="typeChips"></div>
+    <div class="chip-group-label">Acid</div>
+    <div class="chip-group" id="acidChips"></div>
+    <div class="chip-group-label">Reactant</div>
+    <div class="chip-group" id="reactantChips"></div>
+  </div>
+  <div class="card">
+    <canvas id="rxnCanvas" width="502" height="220"></canvas>
+    <div class="eq-box" id="eqBox">
+      <div class="label">Select options above to see the reaction</div>
+    </div>
+    <div class="info-box" id="infoBox">
+      Choose a reaction type, an acid, and a reactant to explore different acid reactions and their products.
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('rxnCanvas');
+const ctx = canvas.getContext('2d');
+
+const reactionTypes = [
+  { id: 'metal', label: 'Acid + Metal' },
+  { id: 'oxide', label: 'Acid + Metal Oxide' },
+  { id: 'carbonate', label: 'Acid + Carbonate' },
+  { id: 'alkali', label: 'Acid + Alkali' }
+];
+
+const acids = [
+  { id: 'HCl', label: 'HCl', name: 'hydrochloric acid', anion: 'chloride', formula_anion: 'Cl' },
+  { id: 'H2SO4', label: 'H\u2082SO\u2084', name: 'sulfuric acid', anion: 'sulfate', formula_anion: 'SO4' },
+  { id: 'HNO3', label: 'HNO\u2083', name: 'nitric acid', anion: 'nitrate', formula_anion: 'NO3' }
+];
+
+const reactants = {
+  metal: [
+    { id: 'Mg', label: 'Magnesium (Mg)', name: 'magnesium', valency: 2 },
+    { id: 'Zn', label: 'Zinc (Zn)', name: 'zinc', valency: 2 },
+    { id: 'Fe', label: 'Iron (Fe)', name: 'iron', valency: 2 },
+  ],
+  oxide: [
+    { id: 'CuO', label: 'Copper oxide (CuO)', name: 'copper oxide', metal: 'copper', valency: 2 },
+    { id: 'MgO', label: 'Magnesium oxide (MgO)', name: 'magnesium oxide', metal: 'magnesium', valency: 2 },
+    { id: 'ZnO', label: 'Zinc oxide (ZnO)', name: 'zinc oxide', metal: 'zinc', valency: 2 },
+  ],
+  carbonate: [
+    { id: 'CaCO3', label: 'Calcium carbonate (CaCO\u2083)', name: 'calcium carbonate', metal: 'calcium', valency: 2 },
+    { id: 'Na2CO3', label: 'Sodium carbonate (Na\u2082CO\u2083)', name: 'sodium carbonate', metal: 'sodium', valency: 1 },
+    { id: 'MgCO3', label: 'Magnesium carbonate (MgCO\u2083)', name: 'magnesium carbonate', metal: 'magnesium', valency: 2 },
+  ],
+  alkali: [
+    { id: 'NaOH', label: 'Sodium hydroxide (NaOH)', name: 'sodium hydroxide', metal: 'sodium', valency: 1 },
+    { id: 'KOH', label: 'Potassium hydroxide (KOH)', name: 'potassium hydroxide', metal: 'potassium', valency: 1 },
+    { id: 'Ca(OH)2', label: 'Calcium hydroxide (Ca(OH)\u2082)', name: 'calcium hydroxide', metal: 'calcium', valency: 2 },
+  ]
+};
+
+let selectedType = null, selectedAcid = null, selectedReactant = null;
+let bubbles = [];
+let animFrame = null;
+
+function getSaltName(acid, metalName) {
+  return metalName + ' ' + acid.anion;
+}
+
+function getReaction() {
+  if (!selectedType || !selectedAcid || !selectedReactant) return null;
+  const a = acids.find(x => x.id === selectedAcid);
+  const r = reactants[selectedType].find(x => x.id === selectedReactant);
+  const metalName = selectedType === 'metal' ? r.name : r.metal;
+  const salt = getSaltName(a, metalName);
+  let word = '', products = '', gas = null, obs = '';
+
+  if (selectedType === 'metal') {
+    word = `${a.name} + ${r.name} \u2192 ${salt} + hydrogen`;
+    products = `${salt} + H\u2082`;
+    gas = 'hydrogen';
+    obs = 'The metal dissolves. Bubbles of hydrogen gas are produced (squeaky pop test).';
+  } else if (selectedType === 'oxide') {
+    word = `${a.name} + ${r.name} \u2192 ${salt} + water`;
+    products = `${salt} + H\u2082O`;
+    gas = null;
+    obs = 'The metal oxide dissolves. The solution may change colour (e.g. blue with copper).';
+  } else if (selectedType === 'carbonate') {
+    word = `${a.name} + ${r.name} \u2192 ${salt} + water + carbon dioxide`;
+    products = `${salt} + H\u2082O + CO\u2082`;
+    gas = 'CO2';
+    obs = 'Effervescence (fizzing) as carbon dioxide gas is produced. Limewater turns milky.';
+  } else if (selectedType === 'alkali') {
+    word = `${a.name} + ${r.name} \u2192 ${salt} + water`;
+    products = `${salt} + H\u2082O`;
+    gas = null;
+    obs = 'No visible change. This is a neutralisation reaction.';
+  }
+  return { word, products, gas, obs, salt };
+}
+
+function buildChips(containerId, items, groupKey) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  items.forEach(item => {
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.textContent = item.label;
+    chip.dataset.id = item.id;
+    chip.addEventListener('click', () => {
+      c.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
+      chip.classList.add('active');
+      if (groupKey === 'type') {
+        selectedType = item.id;
+        selectedReactant = null;
+        buildChips('reactantChips', reactants[item.id], 'reactant');
+      } else if (groupKey === 'acid') {
+        selectedAcid = item.id;
+      } else {
+        selectedReactant = item.id;
+      }
+      update();
+    });
+    c.appendChild(chip);
+  });
+}
+
+function update() {
+  const rxn = getReaction();
+  const eqBox = document.getElementById('eqBox');
+  const infoBox = document.getElementById('infoBox');
+
+  if (!rxn) {
+    eqBox.innerHTML = '<div class="label">Select all options above to see the reaction</div>';
+    infoBox.textContent = 'Choose a reaction type, an acid, and a reactant to explore different acid reactions.';
+    drawTube(null);
+    return;
+  }
+
+  eqBox.innerHTML = `
+    <div class="label">Word Equation</div>
+    <div>${rxn.word}</div>
+    <div class="label" style="margin-top:8px;">Products</div>
+    <div><strong>${rxn.products}</strong></div>
+  `;
+  infoBox.innerHTML = `<strong>Observations:</strong> ${rxn.obs}<br><strong>Salt produced:</strong> ${rxn.salt}`;
+  bubbles = [];
+  drawTube(rxn);
+}
+
+function drawTube(rxn) {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  // Test tube
+  const tx = 180, ty = 30, tw = 80, th = 160;
+  ctx.strokeStyle = '#637EA1';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(tx, ty);
+  ctx.lineTo(tx, ty + th - 20);
+  ctx.quadraticCurveTo(tx, ty + th + 10, tx + tw / 2, ty + th + 10);
+  ctx.quadraticCurveTo(tx + tw, ty + th + 10, tx + tw, ty + th - 20);
+  ctx.lineTo(tx + tw, ty);
+  ctx.stroke();
+
+  // Liquid
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(tx + 1, ty);
+  ctx.lineTo(tx + 1, ty + th - 20);
+  ctx.quadraticCurveTo(tx + 1, ty + th + 9, tx + tw / 2, ty + th + 9);
+  ctx.quadraticCurveTo(tx + tw - 1, ty + th + 9, tx + tw - 1, ty + th - 20);
+  ctx.lineTo(tx + tw - 1, ty);
+  ctx.closePath();
+  ctx.clip();
+  const liqTop = ty + 50;
+  ctx.fillStyle = rxn ? 'rgba(99,126,161,0.2)' : 'rgba(200,200,200,0.1)';
+  ctx.fillRect(tx, liqTop, tw, th);
+
+  // Bubbles for gas-producing reactions
+  if (rxn && rxn.gas) {
+    if (bubbles.length < 15) {
+      bubbles.push({ x: tx + 20 + Math.random() * 40, y: ty + th, r: 2 + Math.random() * 4, speed: 0.5 + Math.random() * 1.5 });
+    }
+    bubbles.forEach(b => {
+      b.y -= b.speed;
+      b.x += (Math.random() - 0.5) * 0.5;
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(99,126,161,0.4)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    });
+    bubbles = bubbles.filter(b => b.y > liqTop - 10);
+  }
+  ctx.restore();
+
+  // Labels
+  ctx.font = '500 11px Outfit';
+  ctx.fillStyle = '#637EA1';
+  ctx.textAlign = 'center';
+  if (rxn) {
+    ctx.fillText('Reaction mixture', tx + tw / 2, ty + th + 30);
+    if (rxn.gas) {
+      ctx.fillStyle = '#888';
+      ctx.fillText(rxn.gas === 'hydrogen' ? 'H\u2082 gas \u2191' : 'CO\u2082 gas \u2191', tx + tw / 2, ty - 6);
+    }
+  } else {
+    ctx.fillText('Test tube', tx + tw / 2, ty + th + 30);
+  }
+
+  // General pattern (right side)
+  ctx.font = '600 12px Oswald';
+  ctx.fillStyle = '#637EA1';
+  ctx.textAlign = 'left';
+  const px = 310, py = 50;
+  ctx.fillText('General Patterns:', px, py);
+  ctx.font = '400 10px Outfit';
+  ctx.fillStyle = '#1a1f2e';
+  const patterns = [
+    'acid + metal \u2192 salt + H\u2082',
+    'acid + metal oxide \u2192 salt + H\u2082O',
+    'acid + carbonate \u2192 salt + H\u2082O + CO\u2082',
+    'acid + alkali \u2192 salt + H\u2082O'
+  ];
+  patterns.forEach((p, i) => {
+    ctx.fillStyle = selectedType === ['metal','oxide','carbonate','alkali'][i] ? '#637EA1' : '#aaa';
+    ctx.font = selectedType === ['metal','oxide','carbonate','alkali'][i] ? '600 10px Outfit' : '400 10px Outfit';
+    ctx.fillText(p, px, py + 20 + i * 18);
+  });
+
+  if (rxn && rxn.gas) {
+    requestAnimationFrame(() => drawTube(rxn));
+  }
+}
+
+buildChips('typeChips', reactionTypes, 'type');
+buildChips('acidChips', acids, 'acid');
+buildChips('reactantChips', [], 'reactant');
+drawTube(null);
+</script>
+</body>
+</html>

@@ -891,15 +891,32 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "text"
-        },
+        "type": "table",
         "content": [
-          {
-            "type": "text",
-            "text": "| Material | Refractive Index |\n|----------|------------------|\n| Vacuum | 1.00 |\n| Air | 1.0003 (≈ 1.00) |\n| Water | 1.33 |\n| Glass | 1.5 - 1.9 |\n| Diamond | 2.42 |"
-          }
+          { "type": "tableRow", "content": [
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Material" }] }] },
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Refractive Index" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Vacuum" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "1.00" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Air" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "1.0003 (\u2248 1.00)" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Water" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "1.33" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Glass" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "1.5 - 1.9" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Diamond" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "2.42" }] }] }
+          ] }
         ]
       },
       {

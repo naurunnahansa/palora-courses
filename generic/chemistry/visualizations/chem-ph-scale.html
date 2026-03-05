@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive pH Scale</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3 { font-family: 'Oswald', sans-serif; }
+  .container { max-width: 550px; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
+  h1 { color: #637EA1; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
+  .subtitle { text-align: center; color: #888; font-size: 0.85rem; margin-bottom: 16px; }
+  canvas { width: 100%; background: #fafbfc; border-radius: 10px; display: block; }
+  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.85rem; transition: background 0.2s; }
+  .btn:hover { background: #4f6a8a; }
+  .chip { display: inline-block; padding: 6px 12px; border-radius: 20px; border: 1.5px solid #e5dfe0; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; }
+  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .substances { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; margin-top: 12px; }
+  .info-box { background: #F5E6E8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.5; }
+  .info-box strong { color: #637EA1; }
+  .ion-bars { display: flex; gap: 16px; margin-top: 14px; align-items: flex-end; height: 80px; }
+  .ion-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
+  .ion-bar { width: 100%; border-radius: 6px 6px 0 0; transition: height 0.4s ease; min-height: 4px; }
+  .ion-bar.h-plus { background: linear-gradient(to top, #e74c3c, #f39c12); }
+  .ion-bar.oh-minus { background: linear-gradient(to top, #2980b9, #8e44ad); }
+  .ion-label { font-size: 0.75rem; font-weight: 600; margin-top: 4px; color: #637EA1; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Interactive pH Scale</h1>
+    <p class="subtitle">Click a substance to place it on the pH scale</p>
+    <canvas id="phCanvas" width="502" height="200"></canvas>
+    <div class="substances" id="substances"></div>
+  </div>
+  <div class="card">
+    <h3 style="font-size:1rem; color:#637EA1; margin-bottom:8px;">Ion Concentration</h3>
+    <div style="display:flex; gap:16px;">
+      <div class="ion-bar-wrap">
+        <div class="ion-bar h-plus" id="hBar" style="height:50%;"></div>
+        <div class="ion-label">H<sup>+</sup> ions</div>
+      </div>
+      <div class="ion-bar-wrap">
+        <div class="ion-bar oh-minus" id="ohBar" style="height:50%;"></div>
+        <div class="ion-label">OH<sup>-</sup> ions</div>
+      </div>
+    </div>
+    <div class="info-box" id="infoBox">
+      Click a substance above to see its pH and ion concentrations.
+    </div>
+  </div>
+</div>
+
+<script>
+const substances = [
+  { name: 'Battery Acid', ph: 1 },
+  { name: 'Lemon Juice', ph: 2 },
+  { name: 'Vinegar', ph: 3 },
+  { name: 'Pure Water', ph: 7 },
+  { name: 'Baking Soda', ph: 9 },
+  { name: 'Bleach', ph: 13 },
+  { name: 'Oven Cleaner', ph: 14 }
+];
+
+let selected = null;
+let placed = [];
+
+const canvas = document.getElementById('phCanvas');
+const ctx = canvas.getContext('2d');
+
+function phColor(ph) {
+  const colors = ['#ff0000','#ff4400','#ff8800','#ffbb00','#ffee00','#ccff00','#66ff00','#00cc00','#009966','#006699','#0033cc','#2200cc','#4400aa','#660088','#880066'];
+  const i = Math.min(14, Math.max(0, Math.round(ph)));
+  return colors[i];
+}
+
+function getPhCategory(ph) {
+  if (ph <= 2) return 'Strong Acid';
+  if (ph <= 6) return 'Weak Acid';
+  if (ph === 7) return 'Neutral';
+  if (ph <= 11) return 'Weak Alkali';
+  return 'Strong Alkali';
+}
+
+function draw() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const scaleY = 70, scaleH = 50, padL = 30, padR = 20;
+  const scaleW = W - padL - padR;
+
+  // Draw gradient scale
+  for (let i = 0; i < scaleW; i++) {
+    const ph = (i / scaleW) * 14;
+    ctx.fillStyle = phColor(ph);
+    ctx.fillRect(padL + i, scaleY, 1, scaleH);
+  }
+  ctx.strokeStyle = '#e5dfe0';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(padL, scaleY, scaleW, scaleH);
+
+  // Draw numbers 0-14
+  ctx.fillStyle = '#1a1f2e';
+  ctx.font = '600 13px Outfit';
+  ctx.textAlign = 'center';
+  for (let i = 0; i <= 14; i++) {
+    const x = padL + (i / 14) * scaleW;
+    ctx.fillText(i, x, scaleY + scaleH + 18);
+    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+    ctx.beginPath();
+    ctx.moveTo(x, scaleY);
+    ctx.lineTo(x, scaleY + scaleH);
+    ctx.stroke();
+  }
+
+  // Category labels
+  ctx.font = '500 10px Outfit';
+  ctx.fillStyle = '#c0392b';
+  ctx.textAlign = 'center';
+  ctx.fillText('Strong Acid', padL + (1/14)*scaleW, scaleY - 6);
+  ctx.fillStyle = '#e67e22';
+  ctx.fillText('Weak Acid', padL + (4/14)*scaleW, scaleY - 6);
+  ctx.fillStyle = '#27ae60';
+  ctx.fillText('Neutral', padL + (7/14)*scaleW, scaleY - 6);
+  ctx.fillStyle = '#2980b9';
+  ctx.fillText('Weak Alkali', padL + (10/14)*scaleW, scaleY - 6);
+  ctx.fillStyle = '#8e44ad';
+  ctx.fillText('Strong Alkali', padL + (13/14)*scaleW, scaleY - 6);
+
+  // pH label
+  ctx.font = '600 14px Oswald';
+  ctx.fillStyle = '#637EA1';
+  ctx.textAlign = 'left';
+  ctx.fillText('pH', 4, scaleY + scaleH / 2 + 5);
+
+  // Placed substances
+  placed.forEach(s => {
+    const x = padL + (s.ph / 14) * scaleW;
+    ctx.fillStyle = phColor(s.ph);
+    ctx.beginPath();
+    ctx.moveTo(x, scaleY - 10);
+    ctx.lineTo(x - 6, scaleY - 22);
+    ctx.lineTo(x + 6, scaleY - 22);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Label below scale
+    ctx.save();
+    ctx.translate(x, scaleY + scaleH + 32);
+    ctx.rotate(-0.5);
+    ctx.font = '500 9px Outfit';
+    ctx.fillStyle = '#1a1f2e';
+    ctx.textAlign = 'left';
+    ctx.fillText(s.name, 0, 0);
+    ctx.restore();
+  });
+
+  // Highlight selected
+  if (selected !== null) {
+    const s = substances[selected];
+    const x = padL + (s.ph / 14) * scaleW;
+    ctx.strokeStyle = '#1a1f2e';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([4, 3]);
+    ctx.beginPath();
+    ctx.moveTo(x, scaleY);
+    ctx.lineTo(x, scaleY + scaleH);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+}
+
+function updateInfo(s) {
+  const hBar = document.getElementById('hBar');
+  const ohBar = document.getElementById('ohBar');
+  const hPct = Math.max(5, ((14 - s.ph) / 14) * 100);
+  const ohPct = Math.max(5, (s.ph / 14) * 100);
+  hBar.style.height = hPct + '%';
+  ohBar.style.height = ohPct + '%';
+
+  const cat = getPhCategory(s.ph);
+  document.getElementById('infoBox').innerHTML = `
+    <strong>${s.name}</strong> has a pH of <strong>${s.ph}</strong><br>
+    Classification: <strong>${cat}</strong><br>
+    H<sup>+</sup> concentration: ${s.ph < 7 ? 'High' : s.ph === 7 ? 'Equal' : 'Low'} &nbsp;|&nbsp;
+    OH<sup>-</sup> concentration: ${s.ph > 7 ? 'High' : s.ph === 7 ? 'Equal' : 'Low'}
+  `;
+}
+
+function buildChips() {
+  const cont = document.getElementById('substances');
+  substances.forEach((s, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.textContent = s.name;
+    chip.style.borderLeftColor = phColor(s.ph);
+    chip.style.borderLeftWidth = '3px';
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      selected = i;
+      if (!placed.find(p => p.name === s.name)) placed.push(s);
+      updateInfo(s);
+      draw();
+    });
+    cont.appendChild(chip);
+  });
+}
+
+buildChips();
+draw();
+</script>
+</body>
+</html>

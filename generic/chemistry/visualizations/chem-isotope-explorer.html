@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isotope Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; }
+        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .btn { background: #637EA1; color: #fff; border: none; border-radius: 4px; padding: 6px 14px; font-family: 'Outfit'; font-size: 0.8rem; cursor: pointer; }
+        .btn:hover { background: #506a8a; }
+        .chip { background: #fff; border: 1px solid #e5dfe0; border-radius: 4px; padding: 3px 8px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        .chip-row { display: flex; gap: 6px; margin-bottom: 8px; justify-content: center; }
+        .readout-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
+        .slider-label { font-size: 0.72rem; color: #4a5568; margin-bottom: 2px; }
+        .key-point { background: #f0f7ff; border-left: 3px solid #637EA1; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
+        .legend { display: flex; gap: 10px; justify-content: center; margin-top: 6px; font-size: 0.65rem; color: #4a5568; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; vertical-align: middle; margin-right: 3px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Isotope Explorer</h1>
+
+    <div class="card">
+        <div class="card-title">Choose Element</div>
+        <div class="chip-row" id="elemRow"></div>
+    </div>
+
+    <div class="card">
+        <canvas id="isoCanvas" width="520" height="280"></canvas>
+        <div class="legend">
+            <span><span class="legend-dot" style="background:#e74c3c;"></span>Proton (+)</span>
+            <span><span class="legend-dot" style="background:#95a5a6;"></span>Neutron (0)</span>
+            <span><span class="legend-dot" style="background:#637EA1;"></span>Electron</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="slider-label">Neutrons: <strong id="nVal">0</strong></div>
+        <input type="range" id="neutronSlider" min="0" max="2" value="0">
+        <div id="isotopeName" style="text-align:center;font-size:0.8rem;margin-top:4px;font-weight:600;color:#637EA1;"></div>
+    </div>
+
+    <div class="readout-row">
+        <div class="readout">
+            <div class="label">Protons</div>
+            <div class="value" id="rProtons">1</div>
+        </div>
+        <div class="readout">
+            <div class="label">Neutrons</div>
+            <div class="value" id="rNeutrons">0</div>
+        </div>
+        <div class="readout">
+            <div class="label">Mass Number</div>
+            <div class="value" id="rMass">1</div>
+        </div>
+        <div class="readout">
+            <div class="label">Abundance</div>
+            <div class="value" id="rAbund">99.98%</div>
+        </div>
+    </div>
+
+    <div class="key-point" id="keyPoint">
+        Isotopes are atoms of the <strong>same element</strong> (same number of protons) but with <strong>different numbers of neutrons</strong>. They have the same chemical properties but different masses.
+    </div>
+</div>
+
+<script>
+const data = {
+    H: {
+        z: 1, sym: 'H', name: 'Hydrogen',
+        isotopes: [
+            { n: 0, name: 'Protium (H-1)', abundance: '99.98%', note: 'Most common hydrogen. No neutrons.' },
+            { n: 1, name: 'Deuterium (H-2)', abundance: '0.02%', note: 'Heavy hydrogen. Used in nuclear reactors.' },
+            { n: 2, name: 'Tritium (H-3)', abundance: 'Trace', note: 'Radioactive isotope. Half-life ~12 years.' }
+        ]
+    },
+    C: {
+        z: 6, sym: 'C', name: 'Carbon',
+        isotopes: [
+            { n: 6, name: 'Carbon-12', abundance: '98.9%', note: 'Standard for atomic mass unit (amu).' },
+            { n: 7, name: 'Carbon-13', abundance: '1.1%', note: 'Stable isotope used in NMR spectroscopy.' },
+            { n: 8, name: 'Carbon-14', abundance: 'Trace', note: 'Radioactive. Used in carbon dating.' }
+        ]
+    },
+    O: {
+        z: 8, sym: 'O', name: 'Oxygen',
+        isotopes: [
+            { n: 8, name: 'Oxygen-16', abundance: '99.76%', note: 'Most common oxygen isotope.' },
+            { n: 9, name: 'Oxygen-17', abundance: '0.04%', note: 'Only stable oxygen isotope with nuclear spin.' },
+            { n: 10, name: 'Oxygen-18', abundance: '0.20%', note: 'Used in climate studies (ice cores).' }
+        ]
+    }
+};
+
+let currentElem = 'H';
+let currentIsoIdx = 0;
+let angle = 0;
+
+const canvas = document.getElementById('isoCanvas');
+const ctx = canvas.getContext('2d');
+const slider = document.getElementById('neutronSlider');
+
+// Build element chips
+const row = document.getElementById('elemRow');
+['H', 'C', 'O'].forEach((sym, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (i === 0 ? ' active' : '');
+    chip.textContent = data[sym].name + ' (' + sym + ')';
+    chip.onclick = () => {
+        currentElem = sym;
+        currentIsoIdx = 0;
+        slider.value = 0;
+        document.querySelectorAll('.chip-row .chip').forEach((c, j) => c.classList.toggle('active', j === i));
+        updateDisplay();
+    };
+    row.appendChild(chip);
+});
+
+slider.addEventListener('input', () => {
+    currentIsoIdx = parseInt(slider.value);
+    updateDisplay();
+});
+
+function getConfig(e) {
+    const shells = [2, 8, 8, 2];
+    let remaining = e;
+    const config = [];
+    for (let i = 0; i < shells.length && remaining > 0; i++) {
+        const inShell = Math.min(remaining, shells[i]);
+        config.push(inShell);
+        remaining -= inShell;
+    }
+    return config;
+}
+
+function updateDisplay() {
+    const el = data[currentElem];
+    const iso = el.isotopes[currentIsoIdx];
+    document.getElementById('nVal').textContent = iso.n;
+    document.getElementById('isotopeName').textContent = iso.name;
+    document.getElementById('rProtons').textContent = el.z;
+    document.getElementById('rNeutrons').textContent = iso.n;
+    document.getElementById('rMass').textContent = el.z + iso.n;
+    document.getElementById('rAbund').textContent = iso.abundance;
+    document.getElementById('keyPoint').innerHTML = iso.note + ' <br><em style="color:#637EA1;">Same ' + el.z + ' protons = still ' + el.name + '. Different neutrons = different isotope.</em>';
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const el = data[currentElem];
+    const iso = el.isotopes[currentIsoIdx];
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+
+    // Draw shells
+    const config = getConfig(el.z);
+    const shellRadii = [55, 90, 125];
+    for (let i = 0; i < config.length; i++) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, shellRadii[i], 0, Math.PI * 2);
+        ctx.strokeStyle = '#e5dfe0';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    // Draw nucleus
+    const total = el.z + iso.n;
+    const nucR = Math.max(16, Math.min(34, 10 + total * 0.8));
+
+    const nucGrad = ctx.createRadialGradient(cx - 3, cy - 3, 2, cx, cy, nucR);
+    nucGrad.addColorStop(0, '#ffeaa7');
+    nucGrad.addColorStop(1, '#fdcb6e');
+    ctx.beginPath();
+    ctx.arc(cx, cy, nucR, 0, Math.PI * 2);
+    ctx.fillStyle = nucGrad;
+    ctx.fill();
+    ctx.strokeStyle = '#e17055';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Nucleons
+    if (total <= 20) {
+        const nucleons = [];
+        for (let i = 0; i < el.z; i++) nucleons.push('p');
+        for (let i = 0; i < iso.n; i++) nucleons.push('n');
+        const spacing = nucR * 0.6;
+        nucleons.forEach((t, i) => {
+            const a = (i / total) * Math.PI * 2 + angle * 0.08;
+            const dist = total === 1 ? 0 : spacing * (0.3 + 0.7 * ((i % 3 + 1) / 3));
+            const nx = cx + Math.cos(a) * dist;
+            const ny = cy + Math.sin(a) * dist;
+            const nr = Math.min(5, nucR * 0.28);
+            ctx.beginPath();
+            ctx.arc(nx, ny, nr, 0, Math.PI * 2);
+            ctx.fillStyle = t === 'p' ? '#e74c3c' : '#95a5a6';
+            ctx.fill();
+        });
+    } else {
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = 'bold 10px Outfit';
+        ctx.textAlign = 'center';
+        ctx.fillText(el.z + 'p', cx, cy - 3);
+        ctx.fillStyle = '#636e72';
+        ctx.fillText(iso.n + 'n', cx, cy + 9);
+        ctx.textAlign = 'start';
+    }
+
+    // Electrons
+    for (let s = 0; s < config.length; s++) {
+        const count = config[s];
+        const r = shellRadii[s];
+        for (let e = 0; e < count; e++) {
+            const a = (e / count) * Math.PI * 2 + angle * (1 + s * 0.25);
+            const ex = cx + Math.cos(a) * r;
+            const ey = cy + Math.sin(a) * r;
+            ctx.beginPath();
+            ctx.arc(ex, ey, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#637EA1';
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 6px Outfit';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('e\u207B', ex, ey);
+        }
+    }
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'alphabetic';
+
+    // Notation top-left
+    ctx.font = 'bold 18px Oswald';
+    ctx.fillStyle = '#637EA1';
+    ctx.fillText(el.sym, 40, 38);
+    ctx.font = '12px Oswald';
+    ctx.fillStyle = '#e74c3c';
+    ctx.fillText(el.z, 22, 28);
+    ctx.fillStyle = '#4a5568';
+    ctx.fillText(el.z + iso.n, 22, 42);
+
+    angle += 0.012;
+    requestAnimationFrame(draw);
+}
+
+updateDisplay();
+draw();
+</script>
+</body>
+</html>

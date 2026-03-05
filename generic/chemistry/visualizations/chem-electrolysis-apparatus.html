@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electrolysis Apparatus</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Outfit', sans-serif; background: #fafbfc; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
+  .container { max-width: 550px; width: 100%; }
+  .card { background: #fff; border: 1px solid #e5dfe0; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .btn { background: #637EA1; color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  .btn:hover { background: #506a8a; }
+  .chip { display: inline-block; background: #F5E6E8; color: #1a1f2e; border: 1px solid #e5dfe0; border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin: 4px; }
+  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  .subtitle { color: #637EA1; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+
+  .electrolyte-select { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .canvas-wrap { display: flex; justify-content: center; margin: 12px 0; }
+  .canvas-wrap canvas { border-radius: 12px; background: #fafbfc; border: 1px solid #e5dfe0; }
+
+  .products-row { display: flex; gap: 12px; margin-top: 14px; }
+  .product-card { flex: 1; border-radius: 12px; padding: 14px; text-align: center; }
+  .product-card.cathode { background: #e8f0fe; }
+  .product-card.anode { background: #fde8e8; }
+  .product-card .elec-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .product-card.cathode .elec-label { color: #2962ff; }
+  .product-card.anode .elec-label { color: #c62828; }
+  .product-card .product-name { font-family: 'Oswald', sans-serif; font-size: 18px; margin-bottom: 4px; }
+  .product-card .half-eq { font-size: 12px; color: #637EA1; font-style: italic; }
+
+  .info-row { display: flex; gap: 10px; margin-top: 12px; }
+  .info-item { flex: 1; background: #F5E6E8; border-radius: 10px; padding: 10px; text-align: center; }
+  .info-item .il { font-size: 11px; font-weight: 600; color: #637EA1; text-transform: uppercase; }
+  .info-item .iv { font-family: 'Oswald', sans-serif; font-size: 15px; margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Electrolysis Apparatus</h1>
+    <p class="subtitle">Animated electrolysis with ion movement, products, and half-equations</p>
+    <div class="electrolyte-select" id="elSelect"></div>
+  </div>
+
+  <div class="card">
+    <div class="canvas-wrap">
+      <canvas id="apparatus" width="500" height="380"></canvas>
+    </div>
+
+    <div class="products-row">
+      <div class="product-card cathode">
+        <div class="elec-label">Cathode (−)</div>
+        <div class="product-name" id="cathProd">--</div>
+        <div class="half-eq" id="cathEq">--</div>
+      </div>
+      <div class="product-card anode">
+        <div class="elec-label">Anode (+)</div>
+        <div class="product-name" id="anodProd">--</div>
+        <div class="half-eq" id="anodEq">--</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-item">
+        <div class="il">Electrolyte</div>
+        <div class="iv" id="elName">--</div>
+      </div>
+      <div class="info-item">
+        <div class="il">State</div>
+        <div class="iv" id="elState">--</div>
+      </div>
+      <div class="info-item">
+        <div class="il">Ions present</div>
+        <div class="iv" id="elIons">--</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const electrolytes = [
+  {
+    name: 'Molten PbBr\u2082',
+    formula: 'PbBr\u2082',
+    state: 'Molten',
+    color: 'rgba(200,170,50,0.35)',
+    ions: 'Pb\u00b2\u207a, Br\u207b',
+    cations: [{ label: 'Pb\u00b2\u207a', color: '#888' }],
+    anions: [{ label: 'Br\u207b', color: '#a05020' }],
+    cathode: { product: 'Lead (Pb)', eq: 'Pb\u00b2\u207a + 2e\u207b \u2192 Pb' },
+    anode: { product: 'Bromine (Br\u2082)', eq: '2Br\u207b \u2192 Br\u2082 + 2e\u207b' }
+  },
+  {
+    name: 'NaCl solution',
+    formula: 'NaCl (aq)',
+    state: 'Aqueous',
+    color: 'rgba(99,126,161,0.18)',
+    ions: 'Na\u207a, Cl\u207b, H\u207a, OH\u207b',
+    cations: [{ label: 'Na\u207a', color: '#637EA1' }, { label: 'H\u207a', color: '#2ecc71' }],
+    anions: [{ label: 'Cl\u207b', color: '#27ae60' }, { label: 'OH\u207b', color: '#e74c3c' }],
+    cathode: { product: 'Hydrogen (H\u2082)', eq: '2H\u207a + 2e\u207b \u2192 H\u2082' },
+    anode: { product: 'Chlorine (Cl\u2082)', eq: '2Cl\u207b \u2192 Cl\u2082 + 2e\u207b' }
+  },
+  {
+    name: 'CuSO\u2084 solution',
+    formula: 'CuSO\u2084 (aq)',
+    state: 'Aqueous',
+    color: 'rgba(50,130,200,0.25)',
+    ions: 'Cu\u00b2\u207a, SO\u2084\u00b2\u207b, H\u207a, OH\u207b',
+    cations: [{ label: 'Cu\u00b2\u207a', color: '#2980b9' }],
+    anions: [{ label: 'SO\u2084\u00b2\u207b', color: '#c0392b' }, { label: 'OH\u207b', color: '#e74c3c' }],
+    cathode: { product: 'Copper (Cu)', eq: 'Cu\u00b2\u207a + 2e\u207b \u2192 Cu' },
+    anode: { product: 'Oxygen (O\u2082)', eq: '4OH\u207b \u2192 O\u2082 + 2H\u2082O + 4e\u207b' }
+  }
+];
+
+let currentEl = 0;
+let time = 0;
+let animId;
+
+const elSelect = document.getElementById('elSelect');
+electrolytes.forEach((e, i) => {
+  const c = document.createElement('span');
+  c.className = 'chip' + (i === 0 ? ' active' : '');
+  c.textContent = e.name;
+  c.onclick = () => {
+    currentEl = i;
+    document.querySelectorAll('.chip').forEach((ch, j) => ch.classList.toggle('active', j === i));
+    updateInfo();
+  };
+  elSelect.appendChild(c);
+});
+
+function updateInfo() {
+  const e = electrolytes[currentEl];
+  document.getElementById('cathProd').textContent = e.cathode.product;
+  document.getElementById('cathEq').textContent = e.cathode.eq;
+  document.getElementById('anodProd').textContent = e.anode.product;
+  document.getElementById('anodEq').textContent = e.anode.eq;
+  document.getElementById('elName').textContent = e.formula;
+  document.getElementById('elState').textContent = e.state;
+  document.getElementById('elIons').textContent = e.ions;
+}
+
+// Ion particles
+let particles = [];
+function resetParticles() {
+  particles = [];
+  const e = electrolytes[currentEl];
+  // Create cation particles (move toward cathode = left)
+  for (let i = 0; i < 8; i++) {
+    const c = e.cations[i % e.cations.length];
+    particles.push({
+      x: 150 + Math.random() * 200,
+      y: 160 + Math.random() * 140,
+      vx: -(0.3 + Math.random() * 0.4),
+      vy: (Math.random() - 0.5) * 0.5,
+      label: c.label,
+      color: c.color,
+      type: 'cation'
+    });
+  }
+  // Create anion particles (move toward anode = right)
+  for (let i = 0; i < 8; i++) {
+    const a = e.anions[i % e.anions.length];
+    particles.push({
+      x: 150 + Math.random() * 200,
+      y: 160 + Math.random() * 140,
+      vx: 0.3 + Math.random() * 0.4,
+      vy: (Math.random() - 0.5) * 0.5,
+      label: a.label,
+      color: a.color,
+      type: 'anion'
+    });
+  }
+}
+
+function draw() {
+  const canvas = document.getElementById('apparatus');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const e = electrolytes[currentEl];
+  time += 0.02;
+
+  // Power supply
+  ctx.fillStyle = '#e5dfe0';
+  ctx.strokeStyle = '#637EA1';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.roundRect(190, 8, 120, 40, 8);
+  ctx.fill();
+  ctx.stroke();
+  ctx.font = '600 13px Oswald';
+  ctx.fillStyle = '#1a1f2e';
+  ctx.textAlign = 'center';
+  ctx.fillText('DC POWER SUPPLY', 250, 33);
+
+  // Wires from power supply to electrodes
+  ctx.strokeStyle = '#637EA1';
+  ctx.lineWidth = 2.5;
+  // Left wire (to cathode -)
+  ctx.beginPath();
+  ctx.moveTo(210, 48);
+  ctx.lineTo(210, 70);
+  ctx.lineTo(140, 70);
+  ctx.lineTo(140, 140);
+  ctx.stroke();
+  // Right wire (to anode +)
+  ctx.beginPath();
+  ctx.moveTo(290, 48);
+  ctx.lineTo(290, 70);
+  ctx.lineTo(360, 70);
+  ctx.lineTo(360, 140);
+  ctx.stroke();
+
+  // Labels on wires
+  ctx.font = '700 16px Oswald';
+  ctx.fillStyle = '#2962ff';
+  ctx.textAlign = 'center';
+  ctx.fillText('\u2212', 130, 90);
+  ctx.fillStyle = '#c62828';
+  ctx.fillText('+', 370, 90);
+
+  // Beaker
+  const bx = 80, by = 140, bw = 340, bh = 200;
+  ctx.fillStyle = e.color;
+  ctx.fillRect(bx, by, bw, bh);
+  ctx.strokeStyle = '#637EA1';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(bx, by);
+  ctx.lineTo(bx, by + bh);
+  ctx.lineTo(bx + bw, by + bh);
+  ctx.lineTo(bx + bw, by);
+  ctx.stroke();
+
+  // Electrodes
+  ctx.fillStyle = '#555';
+  // Cathode (left)
+  ctx.fillRect(130, 110, 20, 200);
+  // Anode (right)
+  ctx.fillRect(350, 110, 20, 200);
+
+  // Electrode labels
+  ctx.font = '500 12px Outfit';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#2962ff';
+  ctx.fillText('Cathode', 140, 330);
+  ctx.fillStyle = '#c62828';
+  ctx.fillText('Anode', 360, 330);
+
+  // Electron flow arrows along wires
+  const pulse = (Math.sin(time * 3) + 1) / 2;
+  ctx.fillStyle = `rgba(99,126,161,${0.4 + pulse * 0.5})`;
+  // Arrow dots on left wire (electrons flow from supply to cathode)
+  for (let i = 0; i < 4; i++) {
+    const t = ((time * 0.5 + i * 0.25) % 1);
+    const wx = 210 - (210 - 140) * t;
+    const wy = 50 + 20 * t;
+    ctx.beginPath();
+    ctx.arc(wx - 30 * t, 70, 3.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Ion particles
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    // Bounce
+    if (p.type === 'cation') {
+      if (p.x < 155) { p.x = 150 + Math.random() * 200; p.y = 160 + Math.random() * 130; }
+    } else {
+      if (p.x > 345) { p.x = 150 + Math.random() * 200; p.y = 160 + Math.random() * 130; }
+    }
+    if (p.y < 150) p.vy = Math.abs(p.vy);
+    if (p.y > 320) p.vy = -Math.abs(p.vy);
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 14, 0, Math.PI * 2);
+    ctx.fillStyle = p.color + '33';
+    ctx.fill();
+    ctx.strokeStyle = p.color;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.font = '600 10px Outfit';
+    ctx.fillStyle = p.color;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(p.label, p.x, p.y);
+  });
+
+  // Bubbles at electrodes
+  const numBubbles = 3;
+  for (let i = 0; i < numBubbles; i++) {
+    const bt = (time * 1.5 + i * 0.33) % 1;
+    const by2 = 300 - bt * 120;
+    const alpha = 1 - bt;
+    // Cathode bubbles
+    ctx.beginPath();
+    ctx.arc(140 + Math.sin(time + i) * 5, by2, 3 + bt * 3, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(41,98,255,${alpha * 0.3})`;
+    ctx.fill();
+    // Anode bubbles
+    ctx.beginPath();
+    ctx.arc(360 + Math.sin(time + i + 1) * 5, by2, 3 + bt * 3, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(198,40,40,${alpha * 0.3})`;
+    ctx.fill();
+  }
+
+  // Electrolyte label
+  ctx.font = '500 14px Outfit';
+  ctx.fillStyle = '#637EA1';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillText(e.formula, 250, 360);
+
+  animId = requestAnimationFrame(draw);
+}
+
+resetParticles();
+updateInfo();
+
+// Watch for electrolyte changes
+let lastEl = 0;
+function checkAndDraw() {
+  if (currentEl !== lastEl) {
+    lastEl = currentEl;
+    resetParticles();
+  }
+  draw();
+}
+
+cancelAnimationFrame(animId);
+checkAndDraw();
+
+// Override draw to include check
+const origDraw = draw;
+draw = function() {
+  if (currentEl !== lastEl) {
+    lastEl = currentEl;
+    resetParticles();
+  }
+  const canvas = document.getElementById('apparatus');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const e = electrolytes[currentEl];
+  time += 0.02;
+
+  // Power supply
+  ctx.fillStyle = '#e5dfe0';
+  ctx.strokeStyle = '#637EA1';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.roundRect(190, 8, 120, 40, 8);
+  ctx.fill();
+  ctx.stroke();
+  ctx.font = '600 13px Oswald';
+  ctx.fillStyle = '#1a1f2e';
+  ctx.textAlign = 'center';
+  ctx.fillText('DC POWER SUPPLY', 250, 33);
+
+  ctx.strokeStyle = '#637EA1';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(210, 48);
+  ctx.lineTo(210, 70);
+  ctx.lineTo(140, 70);
+  ctx.lineTo(140, 140);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(290, 48);
+  ctx.lineTo(290, 70);
+  ctx.lineTo(360, 70);
+  ctx.lineTo(360, 140);
+  ctx.stroke();
+
+  ctx.font = '700 16px Oswald';
+  ctx.fillStyle = '#2962ff';
+  ctx.textAlign = 'center';
+  ctx.fillText('\u2212', 130, 90);
+  ctx.fillStyle = '#c62828';
+  ctx.fillText('+', 370, 90);
+
+  const bx = 80, by = 140, bw = 340, bh = 200;
+  ctx.fillStyle = e.color;
+  ctx.fillRect(bx, by, bw, bh);
+  ctx.strokeStyle = '#637EA1';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(bx, by);
+  ctx.lineTo(bx, by + bh);
+  ctx.lineTo(bx + bw, by + bh);
+  ctx.lineTo(bx + bw, by);
+  ctx.stroke();
+
+  ctx.fillStyle = '#555';
+  ctx.fillRect(130, 110, 20, 200);
+  ctx.fillRect(350, 110, 20, 200);
+
+  ctx.font = '500 12px Outfit';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#2962ff';
+  ctx.fillText('Cathode (\u2212)', 140, 330);
+  ctx.fillStyle = '#c62828';
+  ctx.fillText('Anode (+)', 360, 330);
+
+  // Animated electron dots along wires
+  for (let i = 0; i < 5; i++) {
+    const t = ((time * 0.8 + i * 0.2) % 1);
+    ctx.fillStyle = `rgba(99,126,161,${0.6})`;
+    ctx.beginPath();
+    // Left wire segments: (210,48)->(210,70)->(140,70)->(140,140)
+    let px, py;
+    if (t < 0.33) {
+      const lt = t / 0.33;
+      px = 210; py = 48 + lt * 22;
+    } else if (t < 0.66) {
+      const lt = (t - 0.33) / 0.33;
+      px = 210 - lt * 70; py = 70;
+    } else {
+      const lt = (t - 0.66) / 0.34;
+      px = 140; py = 70 + lt * 70;
+    }
+    ctx.arc(px, py, 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Ion particles
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    if (p.type === 'cation') {
+      if (p.x < 155) { p.x = 160 + Math.random() * 180; p.y = 160 + Math.random() * 130; }
+    } else {
+      if (p.x > 345) { p.x = 160 + Math.random() * 180; p.y = 160 + Math.random() * 130; }
+    }
+    if (p.y < 150) p.vy = Math.abs(p.vy);
+    if (p.y > 320) p.vy = -Math.abs(p.vy);
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 16, 0, Math.PI * 2);
+    ctx.fillStyle = p.color + '22';
+    ctx.fill();
+    ctx.strokeStyle = p.color;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.font = '600 10px Outfit';
+    ctx.fillStyle = p.color;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(p.label, p.x, p.y);
+  });
+
+  // Bubbles at electrodes
+  for (let i = 0; i < 4; i++) {
+    const bt = (time * 1.2 + i * 0.25) % 1;
+    const by2 = 310 - bt * 140;
+    const alpha = (1 - bt) * 0.5;
+    ctx.beginPath();
+    ctx.arc(140 + Math.sin(time * 2 + i) * 6, by2, 2 + bt * 4, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(41,98,255,${alpha})`;
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(360 + Math.sin(time * 2 + i + 2) * 6, by2, 2 + bt * 4, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(198,40,40,${alpha})`;
+    ctx.fill();
+  }
+
+  ctx.font = '500 14px Outfit';
+  ctx.fillStyle = '#637EA1';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillText(e.formula, 250, 365);
+
+  animId = requestAnimationFrame(draw);
+};
+
+cancelAnimationFrame(animId);
+draw();
+</script>
+</body>
+</html>

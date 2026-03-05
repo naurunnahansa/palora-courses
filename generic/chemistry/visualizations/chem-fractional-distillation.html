@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fractional Distillation</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:#f0f2f5;color:#1a1f2e;min-height:100vh;display:flex;justify-content:center;padding:20px;}
+h1,h2,h3,h4{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
+.container{max-width:550px;width:100%;margin:0 auto;}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #e5dfe0;padding:24px;margin-bottom:16px;}
+.card-title{font-size:1.3rem;color:#637EA1;margin-bottom:4px;}
+.card-subtitle{font-size:0.85rem;color:#888;margin-bottom:16px;}
+canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #e5dfe0;display:block;margin:10px 0;cursor:pointer;}
+.info-box{background:#F5E6E8;border-radius:10px;padding:14px;margin-top:10px;display:none;}
+.info-box.show{display:block;}
+.info-box h4{color:#637EA1;margin-bottom:6px;font-size:0.95rem;}
+.info-row{display:flex;justify-content:space-between;padding:5px 0;font-size:0.84rem;border-bottom:1px solid rgba(0,0,0,0.06);}
+.info-row:last-child{border-bottom:none;}
+.info-label{color:#888;font-weight:500;}
+.info-value{color:#1a1f2e;font-weight:600;}
+.hint{font-size:0.78rem;color:#aaa;text-align:center;margin-top:6px;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h2 class="card-title">Fractional Distillation</h2>
+    <p class="card-subtitle">Click a fraction to learn about its properties</p>
+    <canvas id="canvas" width="510" height="520"></canvas>
+    <p class="hint">Click on any fraction label to see details</p>
+    <div class="info-box" id="infoBox"></div>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = 510; canvas.height = 520;
+
+const fractions = [
+  { name:'Refinery Gases', boil:'< 25 \u00b0C', chains:'C\u2081 - C\u2084', uses:'Heating, cooking fuel (LPG)', props:'Very low boiling point, highly flammable gas', color:'#e8d0f0', y:0 },
+  { name:'Petrol / Gasoline', boil:'25 - 75 \u00b0C', chains:'C\u2085 - C\u2088', uses:'Fuel for cars', props:'Volatile liquid, very flammable', color:'#d0e0f0', y:0 },
+  { name:'Naphtha', boil:'75 - 150 \u00b0C', chains:'C\u2088 - C\u2081\u2082', uses:'Making chemicals, plastics', props:'Liquid, used as chemical feedstock', color:'#d0f0d8', y:0 },
+  { name:'Kerosene', boil:'150 - 240 \u00b0C', chains:'C\u2081\u2082 - C\u2081\u2085', uses:'Jet fuel, heating', props:'Less volatile liquid', color:'#f0f0c0', y:0 },
+  { name:'Diesel', boil:'240 - 350 \u00b0C', chains:'C\u2081\u2085 - C\u2082\u2080', uses:'Fuel for lorries, buses, trains', props:'Thicker liquid, less flammable', color:'#f0dca0', y:0 },
+  { name:'Fuel Oil', boil:'350 - 500 \u00b0C', chains:'C\u2082\u2080 - C\u2084\u2080', uses:'Ships, power stations', props:'Viscous, dark liquid', color:'#e0c090', y:0 },
+  { name:'Bitumen', boil:'> 500 \u00b0C', chains:'C\u2084\u2080+', uses:'Roads, roofing', props:'Solid/semi-solid at room temperature', color:'#b0a080', y:0 }
+];
+
+let selected = -1;
+let bubbles = [];
+for (let i = 0; i < 15; i++) bubbles.push({ x: Math.random()*40+175, y: 480 + Math.random()*30, r: 2+Math.random()*3, speed: 0.3+Math.random()*0.5 });
+
+function draw() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+  // Column
+  const colX = 150, colW = 90, colTop = 30, colBot = 490;
+  const colH = colBot - colTop;
+
+  // Temperature gradient
+  const grad = ctx.createLinearGradient(colX, colTop, colX, colBot);
+  grad.addColorStop(0, '#88b8e8');
+  grad.addColorStop(1, '#e85050');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(colX, colTop, colW, colH, 8);
+  ctx.fill();
+  ctx.strokeStyle = '#637EA1'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.roundRect(colX, colTop, colW, colH, 8); ctx.stroke();
+
+  // Temperature labels
+  ctx.fillStyle = '#fff'; ctx.font = '600 11px Outfit'; ctx.textAlign = 'center';
+  ctx.fillText('COOL', colX + colW/2, colTop + 18);
+  ctx.fillText('HOT', colX + colW/2, colBot - 10);
+
+  // Crude oil inlet
+  ctx.fillStyle = '#3a2a1a'; ctx.font = '500 11px Outfit'; ctx.textAlign = 'right';
+  ctx.fillText('Crude Oil', colX - 10, colBot - 10);
+  ctx.strokeStyle = '#3a2a1a'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(colX - 5, colBot - 15); ctx.lineTo(colX, colBot - 15); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(colX - 8, colBot - 15);
+  ctx.lineTo(colX - 14, colBot - 19); ctx.lineTo(colX - 14, colBot - 11); ctx.closePath();
+  ctx.fillStyle = '#3a2a1a'; ctx.fill();
+
+  // Fractions
+  const fH = colH / fractions.length;
+  fractions.forEach((f, i) => {
+    const fy = colTop + i * fH;
+    f.y = fy;
+    const isSelected = i === selected;
+
+    // Tray line
+    ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(colX + 2, fy + fH); ctx.lineTo(colX + colW - 2, fy + fH); ctx.stroke();
+
+    // Output pipe
+    ctx.strokeStyle = isSelected ? '#637EA1' : '#aaa'; ctx.lineWidth = isSelected ? 3 : 2;
+    const pipeY = fy + fH / 2;
+    ctx.beginPath(); ctx.moveTo(colX + colW, pipeY); ctx.lineTo(colX + colW + 30, pipeY); ctx.stroke();
+
+    // Arrow
+    ctx.beginPath();
+    ctx.moveTo(colX+colW+30, pipeY);
+    ctx.lineTo(colX+colW+24, pipeY-4);
+    ctx.lineTo(colX+colW+24, pipeY+4);
+    ctx.closePath();
+    ctx.fillStyle = isSelected ? '#637EA1' : '#aaa'; ctx.fill();
+
+    // Fraction label
+    ctx.fillStyle = isSelected ? '#637EA1' : '#1a1f2e';
+    ctx.font = (isSelected ? '700' : '500') + ' 12px Outfit';
+    ctx.textAlign = 'left';
+    ctx.fillText(f.name, colX + colW + 36, pipeY + 4);
+
+    // Colored dot
+    ctx.fillStyle = f.color;
+    ctx.beginPath(); ctx.arc(colX + colW + 30, pipeY, 5, 0, Math.PI*2); ctx.fill();
+    ctx.strokeStyle = '#999'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(colX + colW + 30, pipeY, 5, 0, Math.PI*2); ctx.stroke();
+  });
+
+  // Bubbles animation
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  bubbles.forEach(b => {
+    ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fill();
+    b.y -= b.speed;
+    if (b.y < colTop + 10) { b.y = colBot - 10; b.x = Math.random()*60 + colX + 15; }
+  });
+
+  requestAnimationFrame(draw);
+}
+
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const mx = (e.clientX - rect.left) * scaleX;
+  const my = (e.clientY - rect.top) * scaleY;
+
+  const colH = 460 / fractions.length;
+  fractions.forEach((f, i) => {
+    const fy = f.y;
+    if (my >= fy && my <= fy + colH && mx > 100) {
+      selected = i;
+      const ib = document.getElementById('infoBox');
+      ib.className = 'info-box show';
+      ib.innerHTML =
+        '<h4>' + f.name + '</h4>' +
+        '<div class="info-row"><span class="info-label">Boiling Range</span><span class="info-value">' + f.boil + '</span></div>' +
+        '<div class="info-row"><span class="info-label">Chain Length</span><span class="info-value">' + f.chains + '</span></div>' +
+        '<div class="info-row"><span class="info-label">Uses</span><span class="info-value">' + f.uses + '</span></div>' +
+        '<div class="info-row"><span class="info-label">Properties</span><span class="info-value">' + f.props + '</span></div>';
+    }
+  });
+});
+
+draw();
+</script>
+</body>
+</html>

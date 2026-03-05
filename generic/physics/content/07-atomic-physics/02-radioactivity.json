@@ -34,7 +34,7 @@
         "content": [
           {
             "type": "text",
-            "text": "Some atomic nuclei are unstable and spontaneously emit particles and energy—a process called radioactive decay. Discovered by Henri Becquerel in 1896 and studied extensively by Marie Curie, radioactivity has applications from medicine to power generation, but also presents hazards that must be understood and managed."
+            "text": "Some atomic nuclei are unstable and spontaneously emit particles and energy\u2014a process called radioactive decay. Discovered by Henri Becquerel in 1896 and studied extensively by Marie Curie, radioactivity has applications from medicine to power generation, but also presents hazards that must be understood and managed."
           }
         ]
       },
@@ -358,7 +358,7 @@
         "content": [
           {
             "type": "text",
-            "text": "Alpha Radiation (α)"
+            "text": "Alpha Radiation (\u03b1)"
           }
         ]
       },
@@ -394,7 +394,7 @@
           },
           {
             "type": "text",
-            "text": " α or "
+            "text": " \u03b1 or "
           },
           {
             "type": "text",
@@ -511,16 +511,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "   Alpha Particle (Helium-4 Nucleus)\n   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n        +---+---+\n        | p⁺| n |\n        +---+---+\n        | n | p⁺|\n        +---+---+\n\n   2 protons (p⁺) + 2 neutrons (n)\n   Charge: +2    Mass number: 4\n   Symbol: ⁴₂He"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/7/79/Alpha_Decay.svg",
+          "alt": "Alpha decay diagram showing an alpha particle (helium-4 nucleus with 2 protons and 2 neutrons) emitted from an unstable nucleus",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "heading",
@@ -530,7 +527,7 @@
         "content": [
           {
             "type": "text",
-            "text": "Beta Radiation (β⁻)"
+            "text": "Beta Radiation (\u03b2\u207b)"
           }
         ]
       },
@@ -566,7 +563,7 @@
           },
           {
             "type": "text",
-            "text": " β⁻ or "
+            "text": " \u03b2\u207b or "
           },
           {
             "type": "text",
@@ -604,7 +601,7 @@
                 "content": [
                   {
                     "type": "text",
-                    "text": "Charge: −1"
+                    "text": "Charge: \u22121"
                   }
                 ]
               }
@@ -690,7 +687,7 @@
         "content": [
           {
             "type": "text",
-            "text": "Gamma Radiation (γ)"
+            "text": "Gamma Radiation (\u03b3)"
           }
         ]
       },
@@ -726,7 +723,7 @@
           },
           {
             "type": "text",
-            "text": " γ"
+            "text": " \u03b3"
           }
         ]
       },
@@ -846,14 +843,623 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "text"
-        },
+        "type": "table",
         "content": [
           {
-            "type": "text",
-            "text": "| Property | Alpha (α) | Beta (β) | Gamma (γ) |\n|----------|-----------|----------|----------|\n| Nature | Helium nucleus | Electron | EM wave |\n| Charge | +2 | −1 | 0 |\n| Mass | 4 | ~0 | 0 |\n| Speed | Slow | Fast | Speed of light |\n| Ionising | Strong | Medium | Weak |\n| Penetration | Paper | Aluminium | Lead/concrete |\n| Range (air) | ~5 cm | ~1 m | Very long |"
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Property"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Alpha (\u03b1)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Beta (\u03b2)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Gamma (\u03b3)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Nature"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Helium nucleus"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Electron"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "EM wave"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Charge"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "+2"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "\u22121"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "0"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Mass"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "4"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "~0"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "0"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Speed"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Slow"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Fast"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Speed of light"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Ionising"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Strong"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Medium"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Weak"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Penetration"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Paper"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Aluminium"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Lead/concrete"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Range (air)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "~5 cm"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "~1 m"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Very long"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -861,9 +1467,9 @@
         "type": "comparisonTable",
         "attrs": {
           "title": "Alpha vs Beta vs Gamma Radiation",
-          "leftHeader": "Alpha (α)",
-          "rightHeader": "Gamma (γ)",
-          "centerHeader": "Beta (β)",
+          "leftHeader": "Alpha (\u03b1)",
+          "rightHeader": "Gamma (\u03b3)",
+          "centerHeader": "Beta (\u03b2)",
           "leftColor": "neutral",
           "rightColor": "neutral",
           "centerColor": "neutral",
@@ -871,7 +1477,7 @@
             {
               "label": "Charge",
               "left": "+2",
-              "center": "−1",
+              "center": "\u22121",
               "right": "0"
             },
             {
@@ -927,7 +1533,7 @@
         "content": [
           {
             "type": "text",
-            "text": "Geiger-Müller Tube"
+            "text": "Geiger-M\u00fcller Tube"
           }
         ]
       },
@@ -1688,7 +2294,7 @@
           },
           {
             "type": "text",
-            "text": " Total count rate = 450/5 = 90 counts per minute Background = 50/5 = 10 counts per minute Corrected count rate = 90 − 10 = "
+            "text": " Total count rate = 450/5 = 90 counts per minute Background = 50/5 = 10 counts per minute Corrected count rate = 90 \u2212 10 = "
           },
           {
             "type": "text",
@@ -1773,7 +2379,7 @@
                         "content": [
                           {
                             "type": "text",
-                            "text": "If count drops to background → alpha source"
+                            "text": "If count drops to background \u2192 alpha source"
                           }
                         ]
                       }
@@ -1806,7 +2412,7 @@
                         "content": [
                           {
                             "type": "text",
-                            "text": "If count drops to background → beta source"
+                            "text": "If count drops to background \u2192 beta source"
                           }
                         ]
                       }
@@ -2032,7 +2638,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — This is a Hollywood myth. Most radioactive materials look ordinary."
+                    "text": " \u2014 This is a Hollywood myth. Most radioactive materials look ordinary."
                   }
                 ]
               }
@@ -2060,7 +2666,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — Most radiation is natural (background radiation)."
+                    "text": " \u2014 Most radiation is natural (background radiation)."
                   }
                 ]
               }
@@ -2088,7 +2694,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — We're exposed to background radiation constantly. It's high doses that are dangerous."
+                    "text": " \u2014 We're exposed to background radiation constantly. It's high doses that are dangerous."
                   }
                 ]
               }
@@ -2116,7 +2722,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — Decay is spontaneous and cannot be controlled."
+                    "text": " \u2014 Decay is spontaneous and cannot be controlled."
                   }
                 ]
               }
@@ -2144,7 +2750,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — Physical conditions don't affect nuclear decay rates."
+                    "text": " \u2014 Physical conditions don't affect nuclear decay rates."
                   }
                 ]
               }
@@ -2293,7 +2899,7 @@
                 "content": [
                   {
                     "type": "text",
-                    "text": "Describe how a Geiger-Müller tube detects radiation."
+                    "text": "Describe how a Geiger-M\u00fcller tube detects radiation."
                   }
                 ]
               }
@@ -2357,7 +2963,7 @@
                 "content": [
                   {
                     "type": "text",
-                    "text": "Alpha (α): helium nucleus, +2 charge, stopped by paper, strongly ionising"
+                    "text": "Alpha (\u03b1): helium nucleus, +2 charge, stopped by paper, strongly ionising"
                   }
                 ]
               }
@@ -2371,7 +2977,7 @@
                 "content": [
                   {
                     "type": "text",
-                    "text": "Beta (β): electron, −1 charge, stopped by aluminium, moderately ionising"
+                    "text": "Beta (\u03b2): electron, \u22121 charge, stopped by aluminium, moderately ionising"
                   }
                 ]
               }
@@ -2385,7 +2991,7 @@
                 "content": [
                   {
                     "type": "text",
-                    "text": "Gamma (γ): EM wave, no charge, reduced by thick lead, weakly ionising"
+                    "text": "Gamma (\u03b3): EM wave, no charge, reduced by thick lead, weakly ionising"
                   }
                 ]
               }
@@ -2399,7 +3005,7 @@
                 "content": [
                   {
                     "type": "text",
-                    "text": "Detection: Geiger-Müller tube, photographic film, cloud chamber"
+                    "text": "Detection: Geiger-M\u00fcller tube, photographic film, cloud chamber"
                   }
                 ]
               }
@@ -2481,7 +3087,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — recall of particle properties (definition)"
+                    "text": " \u2014 recall of particle properties (definition)"
                   }
                 ]
               }
@@ -2509,7 +3115,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — penetration and ionisation are inversely related (comparison)"
+                    "text": " \u2014 penetration and ionisation are inversely related (comparison)"
                   }
                 ]
               }
@@ -2537,7 +3143,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — any three natural sources acceptable (recall)"
+                    "text": " \u2014 any three natural sources acceptable (recall)"
                   }
                 ]
               }
@@ -2556,7 +3162,7 @@
                 "content": [
                   {
                     "type": "text",
-                    "text": "Total count rate = 320/4 = 80 counts/min. Background = 80/4 = 20 counts/min. Corrected count rate = 80 − 20 = 60 counts per minute.",
+                    "text": "Total count rate = 320/4 = 80 counts/min. Background = 80/4 = 20 counts/min. Corrected count rate = 80 \u2212 20 = 60 counts per minute.",
                     "marks": [
                       {
                         "type": "bold"
@@ -2565,7 +3171,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — subtract background rate from total rate (calculation)"
+                    "text": " \u2014 subtract background rate from total rate (calculation)"
                   }
                 ]
               }
@@ -2593,7 +3199,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — high ionising ability leads to low penetration (reasoning)"
+                    "text": " \u2014 high ionising ability leads to low penetration (reasoning)"
                   }
                 ]
               }
@@ -2621,7 +3227,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — ionisation of gas produces detectable electrical signal (description)"
+                    "text": " \u2014 ionisation of gas produces detectable electrical signal (description)"
                   }
                 ]
               }
@@ -2657,7 +3263,7 @@
                   },
                   {
                     "type": "text",
-                    "text": " — ensures only the source activity is recorded (reasoning)"
+                    "text": " \u2014 ensures only the source activity is recorded (reasoning)"
                   }
                 ]
               }

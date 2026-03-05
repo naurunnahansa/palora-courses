@@ -719,15 +719,38 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "text"
-        },
+        "type": "table",
         "content": [
-          {
-            "type": "text",
-            "text": "| Radio Type | Frequency | Wavelength | Diffraction |\n|------------|-----------|------------|-------------|\n| Long wave AM | 150-280 kHz | 1-2 km | Excellent |\n| Medium wave | 0.5-1.6 MHz | 200-600 m | Good |\n| FM | 88-108 MHz | ~3 m | Limited |\n| Mobile/WiFi | GHz range | cm | Very limited |"
-          }
+          { "type": "tableRow", "content": [
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Radio Type" }] }] },
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Frequency" }] }] },
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Wavelength" }] }] },
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Diffraction" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Long wave AM" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "150-280 kHz" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "1-2 km" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Excellent" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Medium wave" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "0.5-1.6 MHz" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "200-600 m" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Good" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "FM" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "88-108 MHz" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "~3 m" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Limited" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Mobile/WiFi" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "GHz range" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "cm" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Very limited" }] }] }
+          ] }
         ]
       },
       {
@@ -879,16 +902,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "  Intensity pattern on screen:\n\n  dim  dim  dim | BRIGHT | dim  dim  dim\n  ─── ──── ────|████████|──── ──── ───\n               |  wide  |\n               | central|\n               | maximum|\n  secondary    |        |    secondary\n  maxima       |        |    maxima"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Single-slit-diffraction-graph.svg",
+          "alt": "Single slit diffraction intensity pattern showing a wide central maximum with smaller secondary maxima on either side",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "heading",

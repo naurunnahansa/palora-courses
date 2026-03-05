@@ -634,16 +634,13 @@
         ]
       },
       {
-        "type": "codeBlock",
+        "type": "imageEmbed",
         "attrs": {
-          "language": "text"
-        },
-        "content": [
-          {
-            "type": "text",
-            "text": "                    🛰 Satellite\n                   /         \\\n     microwaves  /             \\  microwaves\n        uplink /                 \\ downlink\n              /                   \\\n   [Transmitter]            [Receiver dish]\n    (Earth station)          (home/station)"
-          }
-        ]
+          "src": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Satellite_Communication_Scetch.svg",
+          "alt": "Satellite communication diagram showing microwave uplink from a ground transmitter to a satellite and downlink to a receiver dish",
+          "width": "75%",
+          "align": "center"
+        }
       },
       {
         "type": "paragraph",
@@ -2518,15 +2515,48 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "text"
-        },
+        "type": "table",
         "content": [
-          {
-            "type": "text",
-            "text": "| Application | Type Used | Why |\n|-------------|-----------|-----|\n| WiFi | Radio/Microwaves | Penetrates walls |\n| Cooking | Microwaves | Absorbed by water |\n| Night vision | Infrared | Emitted by warm objects |\n| Seeing | Visible light | Eyes detect it |\n| Sterilisation | UV/Gamma | Kills microorganisms |\n| Bone imaging | X-rays | Pass through soft tissue |\n| Cancer treatment | X-rays/Gamma | Kill cells |"
-          }
+          { "type": "tableRow", "content": [
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Application" }] }] },
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Type Used" }] }] },
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Why" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "WiFi" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Radio/Microwaves" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Penetrates walls" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Cooking" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Microwaves" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Absorbed by water" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Night vision" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Infrared" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Emitted by warm objects" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Seeing" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Visible light" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Eyes detect it" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Sterilisation" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "UV/Gamma" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Kills microorganisms" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Bone imaging" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "X-rays" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Pass through soft tissue" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Cancer treatment" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "X-rays/Gamma" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Kill cells" }] }] }
+          ] }
         ]
       },
       {
@@ -2839,15 +2869,40 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "text"
-        },
+        "type": "table",
         "content": [
-          {
-            "type": "text",
-            "text": "| Wave Type | Main Uses |\n|-----------|----------|\n| Radio | Broadcasting, WiFi, mobile phones |\n| Microwaves | Cooking, satellites, radar, phones |\n| Infrared | Remote controls, heating, thermal imaging |\n| Visible | Seeing, photography, optical fibres |\n| UV | Sterilisation, security marks, fluorescence |\n| X-rays | Medical imaging, security, cancer treatment |\n| Gamma | Cancer treatment, sterilisation, medical imaging |"
-          }
+          { "type": "tableRow", "content": [
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Wave Type" }] }] },
+              { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Main Uses" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Radio" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Broadcasting, WiFi, mobile phones" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Microwaves" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Cooking, satellites, radar, phones" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Infrared" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Remote controls, heating, thermal imaging" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Visible" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Seeing, photography, optical fibres" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "UV" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Sterilisation, security marks, fluorescence" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "X-rays" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Medical imaging, security, cancer treatment" }] }] }
+          ] },
+          { "type": "tableRow", "content": [
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Gamma" }] }] },
+              { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Cancer treatment, sterilisation, medical imaging" }] }] }
+          ] }
         ]
       },
       {

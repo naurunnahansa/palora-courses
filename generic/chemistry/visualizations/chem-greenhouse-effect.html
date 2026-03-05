@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greenhouse Effect</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:#f0f2f5;color:#1a1f2e;min-height:100vh;display:flex;justify-content:center;padding:20px;}
+h1,h2,h3,h4{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
+.container{max-width:550px;width:100%;margin:0 auto;}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #e5dfe0;padding:24px;margin-bottom:16px;}
+.card-title{font-size:1.3rem;color:#637EA1;margin-bottom:4px;}
+.card-subtitle{font-size:0.85rem;color:#888;margin-bottom:16px;}
+canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #e5dfe0;display:block;margin:10px 0;}
+.slider-row{display:flex;align-items:center;gap:12px;margin:10px 0;}
+.slider-row label{font-size:0.85rem;font-weight:600;color:#637EA1;min-width:80px;}
+.slider-row input[type=range]{flex:1;accent-color:#637EA1;}
+.slider-row .val{font-size:0.9rem;font-weight:700;min-width:60px;text-align:right;}
+.temp-display{text-align:center;padding:14px;background:#F5E6E8;border-radius:10px;margin:10px 0;}
+.temp-display .temp{font-family:'Oswald',sans-serif;font-size:2rem;color:#637EA1;}
+.temp-display .lbl{font-size:0.78rem;color:#888;}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+.compare-box{border-radius:10px;padding:12px;font-size:0.82rem;}
+.compare-box.natural{background:#e8f4ea;border:1px solid #b8dabb;}
+.compare-box.enhanced{background:#fce8e8;border:1px solid #e8b8b8;}
+.compare-box h4{font-size:0.85rem;margin-bottom:4px;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h2 class="card-title">Greenhouse Effect</h2>
+    <p class="card-subtitle">Adjust CO2 levels to see the impact on global temperature</p>
+    <canvas id="canvas" width="510" height="360"></canvas>
+    <div class="slider-row">
+      <label>CO\u2082 Level</label>
+      <input type="range" id="co2Slider" min="280" max="800" value="420" oninput="updateScene()">
+      <span class="val" id="co2Val">420 ppm</span>
+    </div>
+    <div class="temp-display">
+      <div class="lbl">Average Global Temperature</div>
+      <div class="temp" id="tempVal">15.2 &deg;C</div>
+    </div>
+    <div class="compare">
+      <div class="compare-box natural">
+        <h4>Natural Greenhouse</h4>
+        <p>Without any greenhouse effect, Earth would be about -18 &deg;C. Natural levels of CO\u2082, H\u2082O and CH\u2084 warm Earth to ~15 &deg;C, making life possible.</p>
+      </div>
+      <div class="compare-box enhanced">
+        <h4>Enhanced Greenhouse</h4>
+        <p>Burning fossil fuels adds extra CO\u2082. More heat is trapped, raising global temperatures. This leads to climate change, ice melting and rising sea levels.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = 510; canvas.height = 360;
+
+let co2 = 420;
+let t = 0;
+let arrows = [];
+
+// Create initial arrows
+function makeArrows() {
+  arrows = [];
+  // Incoming solar
+  for (let i = 0; i < 5; i++) {
+    arrows.push({ type:'solar', x: 80 + i*90, y: -20 - i*30, speed: 1.2, active: true });
+  }
+  // Reflected IR
+  for (let i = 0; i < 4; i++) {
+    arrows.push({ type:'ir', x: 100 + i*100, y: 280, speed: -1.0, active: true, bounced: false });
+  }
+}
+makeArrows();
+
+function updateScene() {
+  co2 = parseInt(document.getElementById('co2Slider').value);
+  document.getElementById('co2Val').textContent = co2 + ' ppm';
+  const temp = 14 + (co2 - 280) * 0.006;
+  document.getElementById('tempVal').innerHTML = temp.toFixed(1) + ' &deg;C';
+}
+
+function draw() {
+  t++;
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  // Sky gradient
+  const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
+  skyGrad.addColorStop(0, '#0a1628');
+  skyGrad.addColorStop(0.4, '#1a3a5c');
+  skyGrad.addColorStop(0.7, '#6aa8d0');
+  skyGrad.addColorStop(1, '#4a8855');
+  ctx.fillStyle = skyGrad; ctx.fillRect(0, 0, W, H);
+
+  // Earth surface
+  ctx.fillStyle = '#3a7744';
+  ctx.fillRect(0, H - 60, W, 60);
+  ctx.fillStyle = '#2a6634';
+  ctx.fillRect(0, H - 60, W, 4);
+
+  // Ocean
+  ctx.fillStyle = '#2868a8';
+  ctx.fillRect(200, H - 60, 150, 60);
+
+  // Sun
+  const sunGlow = ctx.createRadialGradient(60, 40, 10, 60, 40, 60);
+  sunGlow.addColorStop(0, '#ffee55');
+  sunGlow.addColorStop(0.5, 'rgba(255,200,50,0.3)');
+  sunGlow.addColorStop(1, 'rgba(255,200,50,0)');
+  ctx.fillStyle = sunGlow; ctx.beginPath(); ctx.arc(60, 40, 60, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#ffe844'; ctx.beginPath(); ctx.arc(60, 40, 22, 0, Math.PI*2); ctx.fill();
+
+  // Atmosphere layer
+  const atmOpacity = 0.05 + (co2 - 280) / 800 * 0.25;
+  const atmY = 100;
+  const atmH = 120;
+  ctx.fillStyle = `rgba(200,180,150,${atmOpacity})`;
+  ctx.fillRect(0, atmY, W, atmH);
+
+  // CO2 molecules in atmosphere
+  const numMolecules = Math.floor((co2 - 200) / 30);
+  ctx.font = '600 9px Outfit'; ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.textAlign = 'center';
+  for (let i = 0; i < numMolecules; i++) {
+    const mx = ((i * 73 + t * 0.3) % (W + 40)) - 20;
+    const my = atmY + 20 + (i * 37 % atmH * 0.7) + Math.sin(t * 0.02 + i) * 5;
+    ctx.fillText('CO\u2082', mx, my);
+  }
+
+  // Atmosphere label
+  ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '500 10px Outfit'; ctx.textAlign = 'left';
+  ctx.fillText('ATMOSPHERE', 10, atmY + 14);
+
+  // Animated arrows - solar incoming (yellow, downward)
+  const trapChance = (co2 - 280) / 520 * 0.7 + 0.15;
+
+  arrows.forEach(a => {
+    if (a.type === 'solar') {
+      a.y += a.speed;
+      if (a.y > H - 70) { a.y = -30; a.x = 60 + Math.random() * 400; }
+      // Yellow arrow
+      ctx.strokeStyle = 'rgba(255,238,80,0.7)'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(a.x, a.y + 20); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(a.x, a.y+20); ctx.lineTo(a.x-4, a.y+14); ctx.moveTo(a.x, a.y+20); ctx.lineTo(a.x+4, a.y+14); ctx.stroke();
+    }
+    if (a.type === 'ir') {
+      a.y += a.speed;
+      // If hitting atmosphere, chance to bounce back
+      if (a.y < atmY + atmH && a.y > atmY && !a.bounced && a.speed < 0) {
+        if (Math.random() < trapChance * 0.04) {
+          a.speed = 0.8;
+          a.bounced = true;
+        }
+      }
+      if (a.y < -20) { a.y = H - 70; a.bounced = false; a.speed = -1.0; a.x = 80 + Math.random() * 380; }
+      if (a.y > H - 60) { a.y = H - 70; a.bounced = false; a.speed = -1.0; a.x = 80 + Math.random() * 380; }
+
+      const irColor = a.bounced ? 'rgba(255,80,80,0.7)' : 'rgba(255,120,60,0.6)';
+      ctx.strokeStyle = irColor; ctx.lineWidth = 2;
+      const dir = a.speed < 0 ? -1 : 1;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(a.x, a.y + 16 * dir); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y + 16 * dir);
+      ctx.lineTo(a.x - 4, a.y + 10 * dir);
+      ctx.moveTo(a.x, a.y + 16 * dir);
+      ctx.lineTo(a.x + 4, a.y + 10 * dir);
+      ctx.stroke();
+    }
+  });
+
+  // Legend
+  ctx.font = '500 10px Outfit'; ctx.textAlign = 'left';
+  ctx.strokeStyle = '#ffe850'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(W-140, 16); ctx.lineTo(W-120, 16); ctx.stroke();
+  ctx.fillStyle = '#ffe850'; ctx.fillText('Solar radiation', W-115, 19);
+
+  ctx.strokeStyle = '#ff7844'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(W-140, 32); ctx.lineTo(W-120, 32); ctx.stroke();
+  ctx.fillStyle = '#ff7844'; ctx.fillText('Infrared (IR)', W-115, 35);
+
+  ctx.strokeStyle = '#ff5050'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(W-140, 48); ctx.lineTo(W-120, 48); ctx.stroke();
+  ctx.fillStyle = '#ff5050'; ctx.fillText('Trapped IR', W-115, 51);
+
+  requestAnimationFrame(draw);
+}
+
+updateScene();
+draw();
+</script>
+</body>
+</html>

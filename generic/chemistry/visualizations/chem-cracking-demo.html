@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cracking Demonstration</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:#f0f2f5;color:#1a1f2e;min-height:100vh;display:flex;justify-content:center;padding:20px;}
+h1,h2,h3,h4{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
+.container{max-width:550px;width:100%;margin:0 auto;}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.08);border:1px solid #e5dfe0;padding:24px;margin-bottom:16px;}
+.card-title{font-size:1.3rem;color:#637EA1;margin-bottom:4px;}
+.card-subtitle{font-size:0.85rem;color:#888;margin-bottom:16px;}
+canvas{width:100%;background:#fafbfc;border-radius:10px;border:1px solid #e5dfe0;display:block;margin:10px 0;}
+.btn{background:#637EA1;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:0.9rem;cursor:pointer;transition:all 0.2s;display:inline-block;}
+.btn:hover{background:#506a8a;}
+.chip{display:inline-block;padding:6px 14px;border-radius:20px;border:1.5px solid #e5dfe0;font-size:0.82rem;cursor:pointer;transition:all 0.2s;margin:3px;background:#fff;font-family:'Outfit',sans-serif;}
+.chip:hover,.chip.active{background:#637EA1;color:#fff;border-color:#637EA1;}
+.tabs{display:flex;gap:6px;margin-bottom:12px;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.info-cell{background:#F5E6E8;border-radius:8px;padding:10px;font-size:0.82rem;}
+.info-cell .label{color:#888;font-weight:500;font-size:0.75rem;}
+.info-cell .value{color:#1a1f2e;font-weight:600;margin-top:2px;}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h2 class="card-title">Cracking Demonstration</h2>
+    <p class="card-subtitle">See how long-chain hydrocarbons are broken into useful shorter molecules</p>
+    <div class="tabs">
+      <span class="chip active" id="thermalTab" onclick="setMode('thermal')">Thermal Cracking</span>
+      <span class="chip" id="catalyticTab" onclick="setMode('catalytic')">Catalytic Cracking</span>
+    </div>
+    <canvas id="canvas" width="510" height="280"></canvas>
+    <div class="controls">
+      <button class="btn" id="crackBtn" onclick="startCrack()">Crack the Molecule</button>
+      <button class="btn" style="background:#aaa;" onclick="resetAnim()">Reset</button>
+    </div>
+    <div class="info-grid" id="infoGrid"></div>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = 510; canvas.height = 280;
+
+let mode = 'thermal';
+let animProgress = 0;
+let animating = false;
+let cracked = false;
+
+const modes = {
+  thermal: {
+    conditions: '700-1000 \u00b0C, high pressure',
+    catalyst: 'None',
+    reactant: 'Decane (C\u2081\u2080H\u2082\u2082)',
+    products: 'Octane (C\u2088H\u2081\u2088) + Ethene (C\u2082H\u2084)',
+    prodUses: 'Octane: petrol fuel | Ethene: making polymers (polyethene)',
+    breakPoint: 8,
+    total: 10,
+    productA: 8,
+    productB: 2,
+    productBDouble: true
+  },
+  catalytic: {
+    conditions: '500 \u00b0C, slight pressure',
+    catalyst: 'Zeolite (aluminium oxide / silicon dioxide)',
+    reactant: 'Decane (C\u2081\u2080H\u2082\u2082)',
+    products: 'Pentane (C\u2085H\u2081\u2082) + Pentene (C\u2085H\u2081\u2080)',
+    prodUses: 'Pentane: petrol blending | Pentene: making polymers',
+    breakPoint: 5,
+    total: 10,
+    productA: 5,
+    productB: 5,
+    productBDouble: true
+  }
+};
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('thermalTab').className = 'chip' + (m==='thermal'?' active':'');
+  document.getElementById('catalyticTab').className = 'chip' + (m==='catalytic'?' active':'');
+  resetAnim();
+}
+
+function resetAnim() {
+  animProgress = 0; animating = false; cracked = false;
+  updateInfo();
+  draw();
+}
+
+function startCrack() {
+  if (animating || cracked) return;
+  animating = true;
+  animate();
+}
+
+function animate() {
+  if (!animating) return;
+  animProgress += 0.02;
+  if (animProgress >= 1) { animProgress = 1; animating = false; cracked = true; }
+  draw();
+  if (animating) requestAnimationFrame(animate);
+}
+
+function draw() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#fafbfc'; ctx.fillRect(0, 0, W, H);
+
+  const m = modes[mode];
+  const bondLen = 36;
+  const cRadius = 8;
+  const yCenter = H / 2;
+
+  if (animProgress < 0.01) {
+    // Full chain
+    const startX = W/2 - ((m.total-1)*bondLen)/2;
+    drawChain(startX, yCenter, m.total, '#1a1f2e', false, -1);
+    ctx.fillStyle = '#637EA1'; ctx.font = '600 12px Outfit'; ctx.textAlign = 'center';
+    ctx.fillText(m.reactant, W/2, 24);
+  } else {
+    // Breaking apart
+    const breakIdx = m.breakPoint;
+    const startXA = W/2 - ((m.total-1)*bondLen)/2;
+    const sep = animProgress * 40;
+
+    // Flash at break point
+    if (animProgress < 0.5) {
+      const flash = Math.sin(animProgress * Math.PI * 6) * 0.5 + 0.5;
+      ctx.fillStyle = `rgba(255,100,50,${flash * 0.3})`;
+      const bx = startXA + (breakIdx - 0.5) * bondLen;
+      ctx.beginPath(); ctx.arc(bx, yCenter, 20 + flash*10, 0, Math.PI*2); ctx.fill();
+    }
+
+    // Product A (left, moves left)
+    const offA = -sep;
+    drawChain(startXA + offA, yCenter, m.productA, '#637EA1', false, -1);
+
+    // Product B (right, moves right)
+    const startXB = startXA + breakIdx * bondLen + sep;
+    drawChain(startXB, yCenter, m.productB, '#d45', m.productBDouble, 0);
+
+    // Break indicator
+    if (animProgress < 1) {
+      ctx.strokeStyle = '#e55'; ctx.lineWidth = 2; ctx.setLineDash([4,4]);
+      const bx = startXA + (breakIdx - 0.5) * bondLen;
+      ctx.beginPath(); ctx.moveTo(bx, yCenter-40); ctx.lineTo(bx, yCenter+40); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // Labels
+    ctx.font = '600 11px Outfit'; ctx.textAlign = 'center';
+    if (cracked) {
+      ctx.fillStyle = '#637EA1';
+      ctx.fillText('Alkane product', startXA + offA + ((m.productA-1)*bondLen)/2, 24);
+      ctx.fillStyle = '#d45';
+      ctx.fillText('Alkene product', startXB + ((m.productB-1)*bondLen)/2, 24);
+    }
+  }
+
+  // Conditions label
+  ctx.fillStyle = '#888'; ctx.font = '500 10px Outfit'; ctx.textAlign = 'left';
+  ctx.fillText(mode === 'thermal' ? 'Thermal: high temp + pressure' : 'Catalytic: lower temp + zeolite catalyst', 10, H - 10);
+}
+
+function drawChain(sx, sy, n, color, hasDouble, doubleIdx) {
+  const bondLen = 36;
+  ctx.lineWidth = 2; ctx.lineCap = 'round';
+  for (let i = 0; i < n - 1; i++) {
+    const x1 = sx + i*bondLen, x2 = sx + (i+1)*bondLen;
+    if (hasDouble && i === doubleIdx) {
+      ctx.strokeStyle = color;
+      ctx.beginPath(); ctx.moveTo(x1, sy-4); ctx.lineTo(x2, sy-4); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x1, sy+4); ctx.lineTo(x2, sy+4); ctx.stroke();
+    } else {
+      ctx.strokeStyle = color;
+      ctx.beginPath(); ctx.moveTo(x1, sy); ctx.lineTo(x2, sy); ctx.stroke();
+    }
+  }
+  // C atoms
+  ctx.font = '700 11px Outfit'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for (let i = 0; i < n; i++) {
+    const cx = sx + i*bondLen;
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(cx, sy, 9, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = color;
+    ctx.fillText('C', cx, sy);
+  }
+}
+
+function updateInfo() {
+  const m = modes[mode];
+  document.getElementById('infoGrid').innerHTML =
+    '<div class="info-cell"><div class="label">Conditions</div><div class="value">' + m.conditions + '</div></div>' +
+    '<div class="info-cell"><div class="label">Catalyst</div><div class="value">' + m.catalyst + '</div></div>' +
+    '<div class="info-cell"><div class="label">Products</div><div class="value">' + m.products + '</div></div>' +
+    '<div class="info-cell"><div class="label">Uses of Products</div><div class="value">' + m.prodUses + '</div></div>';
+}
+
+updateInfo();
+draw();
+</script>
+</body>
+</html>

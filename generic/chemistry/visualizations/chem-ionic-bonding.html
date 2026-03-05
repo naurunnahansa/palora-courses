@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ionic Bonding</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: 'Oswald', sans-serif; font-size: 0.9rem; color: #637EA1; }
+        .btn { background: #637EA1; color: #fff; border: none; border-radius: 4px; padding: 6px 14px; font-family: 'Outfit'; font-size: 0.8rem; cursor: pointer; }
+        .btn:hover { background: #506a8a; }
+        .chip { background: #fff; border: 1px solid #e5dfe0; border-radius: 4px; padding: 5px 10px; font-size: 0.72rem; cursor: pointer; transition: all 0.2s; }
+        .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        .chip-row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+        .readout-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 8px; }
+        .key-point { background: #f0f7ff; border-left: 3px solid #637EA1; padding: 6px 10px; font-size: 0.75rem; border-radius: 0 4px 4px 0; margin-top: 8px; line-height: 1.4; }
+        .controls { display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Ionic Bonding - Electron Transfer</h1>
+
+    <div class="card">
+        <div class="card-title">Select Compound</div>
+        <div class="chip-row" id="compRow"></div>
+    </div>
+
+    <div class="card">
+        <canvas id="ionicCanvas" width="520" height="340"></canvas>
+        <div class="controls">
+            <button class="btn" id="animBtn" onclick="toggleAnim()">Transfer Electrons</button>
+            <button class="btn" onclick="resetAnim()" style="background:#95a5a6;">Reset</button>
+        </div>
+    </div>
+
+    <div class="readout-row">
+        <div class="readout">
+            <div class="label">Metal Ion</div>
+            <div class="value" id="rMetal">Na+</div>
+        </div>
+        <div class="readout">
+            <div class="label">Non-Metal Ion</div>
+            <div class="value" id="rNonMetal">Cl-</div>
+        </div>
+    </div>
+
+    <div class="key-point" id="keyPoint">
+        In ionic bonding, metals <strong>lose</strong> electrons to form positive ions (cations), and non-metals <strong>gain</strong> electrons to form negative ions (anions). The oppositely charged ions are held together by strong <strong>electrostatic attraction</strong>.
+    </div>
+</div>
+
+<script>
+const compounds = [
+    {
+        name: 'NaCl',
+        metal: { sym: 'Na', z: 11, config: [2, 8, 1], lose: 1, ion: 'Na\u207A' },
+        nonmetal: { sym: 'Cl', z: 17, config: [2, 8, 7], gain: 1, ion: 'Cl\u207B' },
+        ratio: [1, 1],
+        note: 'Sodium loses 1 electron to chlorine. Na becomes Na\u207A (2,8) and Cl becomes Cl\u207B (2,8,8). Both achieve stable noble gas configurations.'
+    },
+    {
+        name: 'MgO',
+        metal: { sym: 'Mg', z: 12, config: [2, 8, 2], lose: 2, ion: 'Mg\u00B2\u207A' },
+        nonmetal: { sym: 'O', z: 8, config: [2, 6], gain: 2, ion: 'O\u00B2\u207B' },
+        ratio: [1, 1],
+        note: 'Magnesium loses 2 electrons to oxygen. Mg becomes Mg\u00B2\u207A (2,8) and O becomes O\u00B2\u207B (2,8). Stronger bond due to higher charges.'
+    },
+    {
+        name: 'CaF\u2082',
+        metal: { sym: 'Ca', z: 20, config: [2, 8, 8, 2], lose: 2, ion: 'Ca\u00B2\u207A' },
+        nonmetal: { sym: 'F', z: 9, config: [2, 7], gain: 1, ion: 'F\u207B' },
+        ratio: [1, 2],
+        note: 'Calcium loses 2 electrons, one to each fluorine atom. Ca becomes Ca\u00B2\u207A (2,8,8). Each F becomes F\u207B (2,8). Ratio 1:2 because Ca has 2 electrons to lose.'
+    }
+];
+
+let current = 0;
+let animProgress = 0; // 0 to 1
+let animating = false;
+let angle = 0;
+
+const canvas = document.getElementById('ionicCanvas');
+const ctx = canvas.getContext('2d');
+
+// Build chips
+const row = document.getElementById('compRow');
+compounds.forEach((comp, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (i === 0 ? ' active' : '');
+    chip.textContent = comp.name;
+    chip.onclick = () => { current = i; animProgress = 0; animating = false; document.querySelectorAll('.chip-row .chip').forEach((c, j) => c.classList.toggle('active', j === i)); updateDisplay(); };
+    row.appendChild(chip);
+});
+
+function updateDisplay() {
+    const comp = compounds[current];
+    document.getElementById('rMetal').textContent = comp.metal.ion;
+    document.getElementById('rNonMetal').textContent = comp.nonmetal.ion + (comp.ratio[1] > 1 ? ' (x' + comp.ratio[1] + ')' : '');
+    document.getElementById('keyPoint').innerHTML = comp.note;
+}
+
+function toggleAnim() {
+    if (animProgress >= 1) { resetAnim(); return; }
+    animating = !animating;
+    document.getElementById('animBtn').textContent = animating ? 'Pause' : 'Transfer Electrons';
+}
+
+function resetAnim() {
+    animProgress = 0;
+    animating = false;
+    document.getElementById('animBtn').textContent = 'Transfer Electrons';
+}
+
+function drawAtomDiagram(cx, cy, config, sym, transferElectrons, isAfter, isMetal, chargeLabel) {
+    const shellRadii = [22, 40, 58, 74];
+
+    // Draw shells
+    for (let i = 0; i < config.length; i++) {
+        if (config[i] === 0) continue;
+        ctx.beginPath();
+        ctx.arc(cx, cy, shellRadii[i], 0, Math.PI * 2);
+        ctx.strokeStyle = '#dde3ea';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+    }
+
+    // Nucleus
+    const nucR = 14;
+    ctx.beginPath();
+    ctx.arc(cx, cy, nucR, 0, Math.PI * 2);
+    ctx.fillStyle = isMetal ? '#e74c3c22' : '#637EA122';
+    ctx.fill();
+    ctx.strokeStyle = isMetal ? '#e74c3c' : '#637EA1';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.fillStyle = isMetal ? '#e74c3c' : '#637EA1';
+    ctx.font = 'bold 11px Oswald';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(sym, cx, cy);
+
+    // Electrons
+    const dotR = 3.5;
+    const transferringShell = isMetal ? config.length - 1 : config.length - 1;
+    for (let s = 0; s < config.length; s++) {
+        let count = config[s];
+        const r = shellRadii[s];
+        const isTransferShell = s === transferringShell;
+
+        for (let e = 0; e < count; e++) {
+            const a = (e / Math.max(count, 1)) * Math.PI * 2 - Math.PI / 2 + angle * 0.3;
+            let ex = cx + Math.cos(a) * r;
+            let ey = cy + Math.sin(a) * r;
+
+            // For transferring electrons
+            let isTransferring = false;
+            if (isTransferShell && isMetal) {
+                const outerCount = config[s];
+                const transferIdx = outerCount - transferElectrons;
+                if (e >= transferIdx) isTransferring = true;
+            }
+
+            if (isTransferring && animProgress > 0) continue; // These are drawn separately
+
+            const isCross = !isMetal && isTransferShell && e >= (config[s] - transferElectrons) && isAfter;
+
+            ctx.beginPath();
+            ctx.arc(ex, ey, dotR, 0, Math.PI * 2);
+            ctx.fillStyle = isCross ? '#e74c3c' : (isMetal ? '#e74c3c' : '#637EA1');
+            ctx.fill();
+
+            if (isCross) {
+                // Cross symbol for gained electron
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(ex - 2, ey - 2); ctx.lineTo(ex + 2, ey + 2);
+                ctx.moveTo(ex + 2, ey - 2); ctx.lineTo(ex - 2, ey + 2);
+                ctx.stroke();
+            }
+        }
+    }
+
+    // Charge label
+    if (isAfter && chargeLabel) {
+        ctx.fillStyle = isMetal ? '#e74c3c' : '#637EA1';
+        ctx.font = 'bold 12px Oswald';
+        ctx.textAlign = 'center';
+        ctx.fillText(chargeLabel, cx, cy - nucR - 10);
+    }
+
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'alphabetic';
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const comp = compounds[current];
+    const W = canvas.width;
+    const H = canvas.height;
+
+    if (animating && animProgress < 1) {
+        animProgress = Math.min(1, animProgress + 0.006);
+        if (animProgress >= 1) {
+            animating = false;
+            document.getElementById('animBtn').textContent = 'Reset';
+        }
+    }
+
+    const isAfter = animProgress >= 1;
+
+    // Calculate positions
+    const metalX = 140 - animProgress * 10;
+    const metalY = H / 2;
+
+    if (comp.ratio[1] === 1) {
+        // 1:1 ratio (NaCl, MgO)
+        const nonMetalX = 380 + animProgress * 10;
+        const nonMetalY = H / 2;
+
+        // Metal atom config (remove outer electrons after transfer)
+        let metalConfig = [...comp.metal.config];
+        let nonMetalConfig = [...comp.nonmetal.config];
+
+        if (isAfter) {
+            metalConfig[metalConfig.length - 1] -= comp.metal.lose;
+            if (metalConfig[metalConfig.length - 1] === 0) metalConfig.pop();
+            nonMetalConfig[nonMetalConfig.length - 1] += comp.nonmetal.gain;
+        }
+
+        drawAtomDiagram(metalX, metalY, metalConfig, comp.metal.sym, comp.metal.lose, isAfter, true, isAfter ? comp.metal.ion : null);
+        drawAtomDiagram(nonMetalX, nonMetalY, nonMetalConfig, comp.nonmetal.sym, comp.nonmetal.gain, isAfter, false, isAfter ? comp.nonmetal.ion : null);
+
+        // Animate transferring electrons
+        if (animProgress > 0 && animProgress < 1) {
+            const outerShellR = [22, 40, 58, 74][comp.metal.config.length - 1];
+            for (let i = 0; i < comp.metal.lose; i++) {
+                const startConfig = comp.metal.config;
+                const outerCount = startConfig[startConfig.length - 1];
+                const eIdx = outerCount - comp.metal.lose + i;
+                const startA = (eIdx / outerCount) * Math.PI * 2 - Math.PI / 2;
+                const sx = metalX + Math.cos(startA) * outerShellR;
+                const sy = metalY + Math.sin(startA) * outerShellR;
+
+                const targetShellR = [22, 40, 58, 74][comp.nonmetal.config.length - 1];
+                const targetConfig = comp.nonmetal.config;
+                const targetCount = targetConfig[targetConfig.length - 1] + i;
+                const endA = (targetCount / (targetConfig[targetConfig.length - 1] + comp.nonmetal.gain)) * Math.PI * 2 - Math.PI / 2;
+                const ex = nonMetalX + Math.cos(endA) * targetShellR;
+                const ey = nonMetalY + Math.sin(endA) * targetShellR;
+
+                const px = sx + (ex - sx) * animProgress;
+                const py = sy + (ey - sy) * animProgress - Math.sin(animProgress * Math.PI) * 40;
+
+                // Trail
+                ctx.beginPath();
+                ctx.arc(px, py, 6, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(231,76,60,0.15)';
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.arc(px, py, 4, 0, Math.PI * 2);
+                ctx.fillStyle = '#e74c3c';
+                ctx.fill();
+            }
+        }
+
+        // Arrow
+        if (animProgress > 0) {
+            ctx.strokeStyle = '#e7504088';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(metalX + 80, metalY);
+            ctx.lineTo(nonMetalX - 80, nonMetalY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Arrow head
+            ctx.fillStyle = '#e7504088';
+            ctx.beginPath();
+            ctx.moveTo(nonMetalX - 80, nonMetalY);
+            ctx.lineTo(nonMetalX - 88, nonMetalY - 5);
+            ctx.lineTo(nonMetalX - 88, nonMetalY + 5);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = '10px Outfit';
+            ctx.textAlign = 'center';
+            ctx.fillText(comp.metal.lose + ' electron' + (comp.metal.lose > 1 ? 's' : '') + ' transferred', W / 2, metalY - 50);
+            ctx.textAlign = 'start';
+        }
+
+    } else {
+        // 1:2 ratio (CaF2)
+        const nm1X = 350 + animProgress * 10;
+        const nm1Y = H / 2 - 65;
+        const nm2X = 350 + animProgress * 10;
+        const nm2Y = H / 2 + 65;
+
+        let metalConfig = [...comp.metal.config];
+        let nm1Config = [...comp.nonmetal.config];
+        let nm2Config = [...comp.nonmetal.config];
+
+        if (isAfter) {
+            metalConfig[metalConfig.length - 1] -= comp.metal.lose;
+            if (metalConfig[metalConfig.length - 1] === 0) metalConfig.pop();
+            nm1Config[nm1Config.length - 1] += comp.nonmetal.gain;
+            nm2Config[nm2Config.length - 1] += comp.nonmetal.gain;
+        }
+
+        drawAtomDiagram(metalX, metalY, metalConfig, comp.metal.sym, comp.metal.lose, isAfter, true, isAfter ? comp.metal.ion : null);
+        drawAtomDiagram(nm1X, nm1Y, nm1Config, comp.nonmetal.sym, comp.nonmetal.gain, isAfter, false, isAfter ? comp.nonmetal.ion : null);
+        drawAtomDiagram(nm2X, nm2Y, nm2Config, comp.nonmetal.sym, comp.nonmetal.gain, isAfter, false, isAfter ? comp.nonmetal.ion : null);
+
+        // Animate electrons
+        if (animProgress > 0 && animProgress < 1) {
+            const outerShellR = [22, 40, 58, 74][comp.metal.config.length - 1];
+            for (let i = 0; i < comp.metal.lose; i++) {
+                const outerCount = comp.metal.config[comp.metal.config.length - 1];
+                const eIdx = outerCount - comp.metal.lose + i;
+                const startA = (eIdx / outerCount) * Math.PI * 2 - Math.PI / 2;
+                const sx = metalX + Math.cos(startA) * outerShellR;
+                const sy = metalY + Math.sin(startA) * outerShellR;
+
+                const targetY = i === 0 ? nm1Y : nm2Y;
+                const targetX = i === 0 ? nm1X : nm2X;
+                const targetShellR = [22, 40, 58, 74][comp.nonmetal.config.length - 1];
+                const targetCount = comp.nonmetal.config[comp.nonmetal.config.length - 1];
+                const endA = (targetCount / (targetCount + 1)) * Math.PI * 2 - Math.PI / 2;
+                const ex = targetX + Math.cos(endA) * targetShellR;
+                const ey = targetY + Math.sin(endA) * targetShellR;
+
+                const px = sx + (ex - sx) * animProgress;
+                const py = sy + (ey - sy) * animProgress - Math.sin(animProgress * Math.PI) * 30;
+
+                ctx.beginPath();
+                ctx.arc(px, py, 4, 0, Math.PI * 2);
+                ctx.fillStyle = '#e74c3c';
+                ctx.fill();
+            }
+        }
+
+        // Arrows
+        if (animProgress > 0) {
+            ctx.strokeStyle = '#e7504066';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath(); ctx.moveTo(metalX + 70, metalY - 20); ctx.lineTo(nm1X - 70, nm1Y + 10); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(metalX + 70, metalY + 20); ctx.lineTo(nm2X - 70, nm2Y - 10); ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = '10px Outfit';
+            ctx.textAlign = 'center';
+            ctx.fillText('1 e\u207B to each F', W / 2 + 10, metalY);
+            ctx.textAlign = 'start';
+        }
+    }
+
+    // Labels
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '10px Outfit';
+    ctx.textAlign = 'center';
+    if (!isAfter) {
+        ctx.fillText('Atoms (before transfer)', W / 2, 20);
+    } else {
+        ctx.fillText('Ions (after transfer) - held by electrostatic attraction', W / 2, 20);
+    }
+    ctx.textAlign = 'start';
+
+    // Legend
+    ctx.fillStyle = '#e74c3c';
+    ctx.font = '9px Outfit';
+    ctx.fillText('\u25CF Metal electron (dot)', 10, H - 10);
+    ctx.fillStyle = '#637EA1';
+    ctx.fillText('\u25CF Non-metal electron (dot)', 160, H - 10);
+    ctx.fillStyle = '#e74c3c';
+    ctx.fillText('\u2573 Transferred electron (cross)', 340, H - 10);
+
+    angle += 0.008;
+    requestAnimationFrame(draw);
+}
+
+updateDisplay();
+draw();
+</script>
+</body>
+</html>

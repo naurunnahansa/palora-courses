@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atom Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; background: #FFFFFF; padding: 10px 12px; color: #1a1f2e; }
+        .container { max-width: 550px; margin: 0 auto; }
+        h1 { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card { border-radius: 5px; border: 1px solid #e5dfe0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px; margin-bottom: 10px; background: #fff; }
+        .card-title { font-family: 'Oswald', sans-serif; font-size: 0.85rem; color: #637EA1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        canvas { display: block; margin: 0 auto; border-radius: 4px; background: #fafbfc; }
+        .readout { background: #F5E6E8; border-radius: 5px; padding: 8px; text-align: center; }
+        .readout .label { font-size: 0.68rem; color: #4a5568; }
+        .readout .value { font-family: 'Oswald', sans-serif; font-size: 1.0rem; color: #637EA1; }
+        input[type="range"] { width: 100%; accent-color: #637EA1; }
+        .btn { background: #637EA1; color: #fff; border: none; border-radius: 4px; padding: 6px 14px; font-family: 'Outfit'; font-size: 0.8rem; cursor: pointer; }
+        .btn:hover { background: #506a8a; }
+        .btn-sm { padding: 4px 10px; font-size: 0.72rem; }
+        .chip { background: #fff; border: 1px solid #e5dfe0; border-radius: 4px; padding: 3px 8px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+        .element-grid { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+        .readout-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+        .controls-row { display: flex; gap: 6px; align-items: center; justify-content: center; margin-top: 6px; flex-wrap: wrap; }
+        .control-group { display: flex; align-items: center; gap: 3px; }
+        .control-group span { font-size: 0.7rem; color: #4a5568; min-width: 58px; }
+        .legend { display: flex; gap: 10px; justify-content: center; margin-top: 6px; font-size: 0.65rem; color: #4a5568; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; vertical-align: middle; margin-right: 3px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Interactive Atom Builder</h1>
+
+    <div class="card">
+        <div class="card-title">Select Element</div>
+        <div class="element-grid" id="elementGrid"></div>
+    </div>
+
+    <div class="card">
+        <canvas id="atomCanvas" width="520" height="340"></canvas>
+        <div class="legend">
+            <span><span class="legend-dot" style="background:#e74c3c;"></span>Proton (+)</span>
+            <span><span class="legend-dot" style="background:#95a5a6;"></span>Neutron (0)</span>
+            <span><span class="legend-dot" style="background:#637EA1;"></span>Electron (&minus;)</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Manual Adjust</div>
+        <div class="controls-row">
+            <div class="control-group">
+                <span>Protons</span>
+                <button class="btn btn-sm" onclick="adjust('p',-1)">&minus;</button>
+                <span id="pCount" style="min-width:20px;text-align:center;font-weight:600;">1</span>
+                <button class="btn btn-sm" onclick="adjust('p',1)">+</button>
+            </div>
+            <div class="control-group">
+                <span>Neutrons</span>
+                <button class="btn btn-sm" onclick="adjust('n',-1)">&minus;</button>
+                <span id="nCount" style="min-width:20px;text-align:center;font-weight:600;">0</span>
+                <button class="btn btn-sm" onclick="adjust('n',1)">+</button>
+            </div>
+            <div class="control-group">
+                <span>Electrons</span>
+                <button class="btn btn-sm" onclick="adjust('e',-1)">&minus;</button>
+                <span id="eCount" style="min-width:20px;text-align:center;font-weight:600;">1</span>
+                <button class="btn btn-sm" onclick="adjust('e',1)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="readout-row">
+        <div class="readout">
+            <div class="label">Atomic Number (Z)</div>
+            <div class="value" id="atomicNum">1</div>
+        </div>
+        <div class="readout">
+            <div class="label">Mass Number (A)</div>
+            <div class="value" id="massNum">1</div>
+        </div>
+        <div class="readout">
+            <div class="label">Config</div>
+            <div class="value" id="configText">1</div>
+        </div>
+    </div>
+    <div class="readout-row" style="margin-top:6px;">
+        <div class="readout">
+            <div class="label">Element</div>
+            <div class="value" id="elemName">Hydrogen</div>
+        </div>
+        <div class="readout">
+            <div class="label">Charge</div>
+            <div class="value" id="chargeText">0</div>
+        </div>
+        <div class="readout">
+            <div class="label">Symbol</div>
+            <div class="value" id="symbolText">H</div>
+        </div>
+    </div>
+</div>
+
+<script>
+const elements = [
+    {z:1,sym:'H',name:'Hydrogen',n:0},
+    {z:2,sym:'He',name:'Helium',n:2},
+    {z:3,sym:'Li',name:'Lithium',n:4},
+    {z:4,sym:'Be',name:'Beryllium',n:5},
+    {z:5,sym:'B',name:'Boron',n:6},
+    {z:6,sym:'C',name:'Carbon',n:6},
+    {z:7,sym:'N',name:'Nitrogen',n:7},
+    {z:8,sym:'O',name:'Oxygen',n:8},
+    {z:9,sym:'F',name:'Fluorine',n:10},
+    {z:10,sym:'Ne',name:'Neon',n:10},
+    {z:11,sym:'Na',name:'Sodium',n:12},
+    {z:12,sym:'Mg',name:'Magnesium',n:12},
+    {z:13,sym:'Al',name:'Aluminium',n:14},
+    {z:14,sym:'Si',name:'Silicon',n:14},
+    {z:15,sym:'P',name:'Phosphorus',n:16},
+    {z:16,sym:'S',name:'Sulfur',n:16},
+    {z:17,sym:'Cl',name:'Chlorine',n:18},
+    {z:18,sym:'Ar',name:'Argon',n:22},
+    {z:19,sym:'K',name:'Potassium',n:20},
+    {z:20,sym:'Ca',name:'Calcium',n:20}
+];
+
+let protons = 1, neutrons = 0, electrons = 1;
+let angle = 0;
+const canvas = document.getElementById('atomCanvas');
+const ctx = canvas.getContext('2d');
+
+// Build element chips
+const grid = document.getElementById('elementGrid');
+elements.forEach((el, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (i === 0 ? ' active' : '');
+    chip.textContent = el.sym;
+    chip.dataset.idx = i;
+    chip.onclick = () => selectElement(i);
+    grid.appendChild(chip);
+});
+
+function selectElement(idx) {
+    const el = elements[idx];
+    protons = el.z;
+    neutrons = el.n;
+    electrons = el.z;
+    document.querySelectorAll('.element-grid .chip').forEach((c,i) => c.classList.toggle('active', i === idx));
+    updateDisplay();
+}
+
+function adjust(type, delta) {
+    if (type === 'p') protons = Math.max(1, Math.min(20, protons + delta));
+    if (type === 'n') neutrons = Math.max(0, Math.min(30, neutrons + delta));
+    if (type === 'e') electrons = Math.max(0, Math.min(20, electrons + delta));
+    // Highlight matching element
+    document.querySelectorAll('.element-grid .chip').forEach((c,i) => c.classList.toggle('active', elements[i].z === protons));
+    updateDisplay();
+}
+
+function getConfig(e) {
+    const shells = [2, 8, 8, 2];
+    let remaining = e;
+    const config = [];
+    for (let i = 0; i < shells.length && remaining > 0; i++) {
+        const inShell = Math.min(remaining, shells[i]);
+        config.push(inShell);
+        remaining -= inShell;
+    }
+    return config;
+}
+
+function updateDisplay() {
+    document.getElementById('pCount').textContent = protons;
+    document.getElementById('nCount').textContent = neutrons;
+    document.getElementById('eCount').textContent = electrons;
+    document.getElementById('atomicNum').textContent = protons;
+    document.getElementById('massNum').textContent = protons + neutrons;
+    document.getElementById('configText').textContent = getConfig(electrons).join(',') || '0';
+
+    const charge = protons - electrons;
+    document.getElementById('chargeText').textContent = charge === 0 ? '0' : (charge > 0 ? '+' + charge : charge);
+
+    const match = elements.find(el => el.z === protons);
+    document.getElementById('elemName').textContent = match ? match.name : '?';
+    document.getElementById('symbolText').textContent = match ? match.sym : '?';
+}
+
+function drawAtom() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+
+    // Draw shells
+    const config = getConfig(electrons);
+    const shellRadii = [55, 95, 135, 165];
+    for (let i = 0; i < config.length; i++) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, shellRadii[i], 0, Math.PI * 2);
+        ctx.strokeStyle = '#e5dfe0';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Shell label
+        ctx.fillStyle = '#a0aec0';
+        ctx.font = '10px Outfit';
+        ctx.fillText('n=' + (i + 1), cx + shellRadii[i] + 4, cy - 4);
+    }
+
+    // Draw nucleus
+    const nucleonCount = protons + neutrons;
+    const nucRadius = Math.max(14, Math.min(32, 8 + nucleonCount * 0.7));
+
+    // Gradient for nucleus
+    const nucGrad = ctx.createRadialGradient(cx - 3, cy - 3, 2, cx, cy, nucRadius);
+    nucGrad.addColorStop(0, '#ffeaa7');
+    nucGrad.addColorStop(1, '#fdcb6e');
+    ctx.beginPath();
+    ctx.arc(cx, cy, nucRadius, 0, Math.PI * 2);
+    ctx.fillStyle = nucGrad;
+    ctx.fill();
+    ctx.strokeStyle = '#e17055';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Draw nucleons inside nucleus
+    const totalNucleons = protons + neutrons;
+    if (totalNucleons <= 12) {
+        const nucleons = [];
+        for (let i = 0; i < protons; i++) nucleons.push('p');
+        for (let i = 0; i < neutrons; i++) nucleons.push('n');
+        const r = nucRadius * 0.6;
+        nucleons.forEach((type, i) => {
+            const a = (i / totalNucleons) * Math.PI * 2 + angle * 0.1;
+            const dist = totalNucleons === 1 ? 0 : r * (0.4 + 0.6 * ((i % 3) / 2));
+            const nx = cx + Math.cos(a) * dist;
+            const ny = cy + Math.sin(a) * dist;
+            const nr = Math.min(5, nucRadius * 0.3);
+            ctx.beginPath();
+            ctx.arc(nx, ny, nr, 0, Math.PI * 2);
+            ctx.fillStyle = type === 'p' ? '#e74c3c' : '#95a5a6';
+            ctx.fill();
+        });
+    } else {
+        // Too many - show counts
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = 'bold 10px Outfit';
+        ctx.textAlign = 'center';
+        ctx.fillText(protons + 'p', cx, cy - 3);
+        ctx.fillStyle = '#636e72';
+        ctx.fillText(neutrons + 'n', cx, cy + 9);
+        ctx.textAlign = 'start';
+    }
+
+    // Draw electrons
+    for (let s = 0; s < config.length; s++) {
+        const count = config[s];
+        const r = shellRadii[s];
+        for (let e = 0; e < count; e++) {
+            const a = (e / count) * Math.PI * 2 + angle * (1 + s * 0.3);
+            const ex = cx + Math.cos(a) * r;
+            const ey = cy + Math.sin(a) * r;
+
+            // Glow
+            ctx.beginPath();
+            ctx.arc(ex, ey, 8, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(99,126,161,0.15)';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(ex, ey, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#637EA1';
+            ctx.fill();
+
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 6px Outfit';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('e\u207B', ex, ey);
+        }
+    }
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'alphabetic';
+
+    angle += 0.012;
+    requestAnimationFrame(drawAtom);
+}
+
+updateDisplay();
+drawAtom();
+</script>
+</body>
+</html>

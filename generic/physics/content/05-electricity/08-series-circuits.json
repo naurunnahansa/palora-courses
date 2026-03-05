@@ -1968,15 +1968,24 @@
         ]
       },
       {
-        "type": "codeBlock",
-        "attrs": {
-          "language": "text"
-        },
+        "type": "table",
         "content": [
-          {
-            "type": "text",
-            "text": "| Property | Series Rule |\n|----------|-------------|\n| Current | Same throughout: $I_1 = I_2 = I_3$ |\n| Voltage | Adds up: $V_T = V_1 + V_2 + V_3$ |\n| Resistance | Adds up: $R_T = R_1 + R_2 + R_3$ |"
-          }
+          { "type": "tableRow", "content": [
+            { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Property" }] }] },
+            { "type": "tableHeader", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Series Rule" }] }] }
+          ]},
+          { "type": "tableRow", "content": [
+            { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Current" }] }] },
+            { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Same throughout: $I_1 = I_2 = I_3$" }] }] }
+          ]},
+          { "type": "tableRow", "content": [
+            { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Voltage" }] }] },
+            { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Adds up: $V_T = V_1 + V_2 + V_3$" }] }] }
+          ]},
+          { "type": "tableRow", "content": [
+            { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Resistance" }] }] },
+            { "type": "tableCell", "attrs": { "colspan": 1, "rowspan": 1 }, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Adds up: $R_T = R_1 + R_2 + R_3$" }] }] }
+          ]}
         ]
       },
       {

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Group 1 Alkali Metals Reactivity</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Outfit', sans-serif; background: #f0f2f5; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3 { font-family: 'Oswald', sans-serif; }
+  .container { max-width: 550px; width: 100%; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #e5dfe0; padding: 24px; margin-bottom: 18px; }
+  h1 { color: #637EA1; font-size: 1.5rem; text-align: center; margin-bottom: 6px; }
+  .subtitle { text-align: center; color: #888; font-size: 0.85rem; margin-bottom: 16px; }
+  canvas { width: 100%; background: #fafbfc; border-radius: 10px; display: block; }
+  .btn { background: #637EA1; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.85rem; transition: background 0.2s; }
+  .btn:hover { background: #4f6a8a; }
+  .chip { display: inline-block; padding: 8px 18px; border-radius: 20px; border: 1.5px solid #e5dfe0; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; margin: 3px; background: #fff; user-select: none; font-weight: 600; }
+  .chip:hover, .chip.active { background: #637EA1; color: #fff; border-color: #637EA1; }
+  .info-box { background: #F5E6E8; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; line-height: 1.6; }
+  .info-box strong { color: #637EA1; }
+  .chip-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 14px; }
+  .btn-row { display: flex; gap: 10px; justify-content: center; margin-top: 14px; }
+  .eq-box { background: #fafbfc; border: 1px solid #e5dfe0; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 0.85rem; text-align: center; }
+  .trend-arrow { display: flex; align-items: center; justify-content: center; margin-top: 14px; gap: 10px; }
+  .trend-arrow .arrow { width: 40px; height: 120px; position: relative; }
+  .trend-arrow .arrow::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 16px solid #e74c3c; }
+  .trend-arrow .arrow-bar { width: 6px; height: 110px; background: linear-gradient(to bottom, #f9e79f, #e74c3c); margin: 0 auto; border-radius: 3px; }
+  .trend-labels { display: flex; flex-direction: column; justify-content: space-between; height: 120px; font-size: 0.75rem; color: #888; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Group 1: Alkali Metals + Water</h1>
+    <p class="subtitle">Select a metal and click "React" to see what happens</p>
+    <div class="chip-row" id="metalChips"></div>
+    <canvas id="rxnCanvas" width="502" height="280"></canvas>
+    <div class="btn-row">
+      <button class="btn" id="reactBtn">React!</button>
+      <button class="btn" id="resetBtn" style="background:#888;">Reset</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="eq-box" id="eqBox">Select a metal above</div>
+    <div class="info-box" id="infoBox">
+      Group 1 metals (alkali metals) react with water to produce a metal hydroxide and hydrogen gas. Reactivity increases down the group.
+    </div>
+    <div class="trend-arrow">
+      <div class="trend-labels">
+        <span>Less reactive</span>
+        <span style="font-weight:600;">Li</span>
+        <span style="font-weight:600;">Na</span>
+        <span style="font-weight:600;">K</span>
+        <span>More reactive</span>
+      </div>
+      <div class="arrow">
+        <div class="arrow-bar"></div>
+      </div>
+      <div style="font-size:0.8rem; color:#637EA1; font-weight:600; writing-mode:vertical-lr; text-orientation:mixed;">REACTIVITY INCREASES</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('rxnCanvas');
+const ctx = canvas.getContext('2d');
+
+const metals = [
+  {
+    sym: 'Li', name: 'Lithium', z: 3,
+    eq: '2Li(s) + 2H\u2082O(l) \u2192 2LiOH(aq) + H\u2082(g)',
+    word: 'lithium + water \u2192 lithium hydroxide + hydrogen',
+    obs: 'Gentle fizzing. Lithium floats and moves slowly on the surface. It gradually gets smaller as it reacts. No flame.',
+    vigor: 1, flame: false, flameColor: '', melts: false
+  },
+  {
+    sym: 'Na', name: 'Sodium', z: 11,
+    eq: '2Na(s) + 2H\u2082O(l) \u2192 2NaOH(aq) + H\u2082(g)',
+    word: 'sodium + water \u2192 sodium hydroxide + hydrogen',
+    obs: 'Vigorous fizzing. Sodium melts into a shiny ball and whizzes across the surface. May occasionally ignite with a yellow flame.',
+    vigor: 2, flame: false, flameColor: '#f1c40f', melts: true
+  },
+  {
+    sym: 'K', name: 'Potassium', z: 19,
+    eq: '2K(s) + 2H\u2082O(l) \u2192 2KOH(aq) + H\u2082(g)',
+    word: 'potassium + water \u2192 potassium hydroxide + hydrogen',
+    obs: 'Very vigorous reaction. Potassium instantly catches fire with a lilac/purple flame. It melts, spits, and may explode. Very dangerous.',
+    vigor: 3, flame: true, flameColor: '#9b59b6', melts: true
+  }
+];
+
+let selectedMetal = null;
+let animating = false;
+let frame = 0;
+let bubbles = [];
+let metalY = 0, metalSize = 0;
+let animId = null;
+
+function buildChips() {
+  const cont = document.getElementById('metalChips');
+  metals.forEach((m, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.textContent = m.sym + ' - ' + m.name;
+    chip.addEventListener('click', () => {
+      cont.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      selectedMetal = i;
+      resetAnim();
+      updateInfo();
+    });
+    cont.appendChild(chip);
+  });
+}
+
+function updateInfo() {
+  if (selectedMetal === null) return;
+  const m = metals[selectedMetal];
+  document.getElementById('eqBox').innerHTML = `<div style="font-size:0.7rem;color:#888;text-transform:uppercase;font-weight:600;">Word Equation</div>${m.word}<br><div style="font-size:0.7rem;color:#888;text-transform:uppercase;font-weight:600;margin-top:6px;">Symbol Equation</div>${m.eq}`;
+  document.getElementById('infoBox').innerHTML = `<strong>Observations for ${m.name}:</strong> ${m.obs}`;
+}
+
+function resetAnim() {
+  animating = false;
+  frame = 0;
+  bubbles = [];
+  metalY = 60;
+  metalSize = 20;
+  if (animId) cancelAnimationFrame(animId);
+  drawScene();
+}
+
+function drawScene() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  // Water trough
+  const wx = 100, wy = 130, ww = 300, wh = 130;
+  ctx.fillStyle = 'rgba(52,152,219,0.15)';
+  ctx.fillRect(wx, wy, ww, wh);
+  ctx.strokeStyle = '#637EA1';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(wx, wy, ww, wh);
+
+  // Water label
+  ctx.font = '500 11px Outfit';
+  ctx.fillStyle = '#3498db';
+  ctx.textAlign = 'center';
+  ctx.fillText('Water', wx + ww / 2, wy + wh + 18);
+
+  // Water surface line
+  ctx.strokeStyle = 'rgba(52,152,219,0.4)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 3]);
+  ctx.beginPath(); ctx.moveTo(wx, wy); ctx.lineTo(wx + ww, wy); ctx.stroke();
+  ctx.setLineDash([]);
+
+  if (selectedMetal === null) {
+    ctx.font = '500 13px Outfit';
+    ctx.fillStyle = '#aaa';
+    ctx.textAlign = 'center';
+    ctx.fillText('Select a metal and click React', W / 2, 80);
+    return;
+  }
+
+  const m = metals[selectedMetal];
+
+  if (!animating) {
+    // Metal piece above water
+    ctx.fillStyle = '#bdc3c7';
+    ctx.fillRect(W / 2 - 10, 60, 20, 20);
+    ctx.font = '700 12px Oswald';
+    ctx.fillStyle = '#1a1f2e';
+    ctx.textAlign = 'center';
+    ctx.fillText(m.sym, W / 2, 75);
+    return;
+  }
+
+  // Animated state
+  const progress = Math.min(frame / 180, 1);
+
+  // Metal on surface (shrinking)
+  const remaining = Math.max(0, 1 - progress * 1.2);
+  if (remaining > 0) {
+    const mx = W / 2 + Math.sin(frame * 0.1 * m.vigor) * (20 * m.vigor);
+    const my = wy - 5;
+    const size = 20 * remaining;
+
+    if (m.melts && progress > 0.1) {
+      // Melted ball
+      ctx.fillStyle = '#bdc3c7';
+      ctx.beginPath();
+      ctx.arc(mx, my, size / 2, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      ctx.fillStyle = '#bdc3c7';
+      ctx.fillRect(mx - size / 2, my - size / 2, size, size);
+    }
+
+    // Flame
+    if (m.flame && progress > 0.05) {
+      const flameH = 25 + Math.random() * 15;
+      const grad = ctx.createRadialGradient(mx, my - 10, 2, mx, my - 10, flameH);
+      grad.addColorStop(0, m.flameColor);
+      grad.addColorStop(0.5, m.flameColor + '88');
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(mx, my - 15, flameH, 0, Math.PI * 2);
+      ctx.fill();
+      // Flame label
+      ctx.font = '500 10px Outfit';
+      ctx.fillStyle = m.flameColor;
+      ctx.textAlign = 'center';
+      ctx.fillText('Lilac flame', mx, my - 45);
+    }
+  }
+
+  // Bubbles
+  const bubbleRate = m.vigor * 3;
+  if (frame % Math.max(1, 4 - m.vigor) === 0 && progress < 0.95) {
+    for (let i = 0; i < bubbleRate; i++) {
+      bubbles.push({
+        x: W / 2 + (Math.random() - 0.5) * 60 * m.vigor,
+        y: wy + 10 + Math.random() * 50,
+        r: 1 + Math.random() * 3,
+        speed: 0.5 + Math.random() * 1.5
+      });
+    }
+  }
+  bubbles.forEach(b => {
+    b.y -= b.speed;
+    b.x += (Math.random() - 0.5) * 0.8;
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(52,152,219,0.3)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  });
+  bubbles = bubbles.filter(b => b.y > wy - 30);
+
+  // H2 gas label
+  if (progress > 0.1) {
+    ctx.font = '500 10px Outfit';
+    ctx.fillStyle = '#888';
+    ctx.textAlign = 'center';
+    ctx.fillText('H\u2082 gas \u2191', W / 2, wy - 30);
+  }
+
+  // Vigor label
+  const labels = ['Gentle fizzing', 'Vigorous reaction', 'VERY vigorous! Flame!'];
+  ctx.font = '600 12px Outfit';
+  ctx.fillStyle = ['#27ae60', '#e67e22', '#e74c3c'][m.vigor - 1];
+  ctx.textAlign = 'center';
+  ctx.fillText(labels[m.vigor - 1], W / 2, 30);
+
+  if (progress >= 1) {
+    ctx.font = '600 13px Outfit';
+    ctx.fillStyle = '#637EA1';
+    ctx.fillText('Reaction complete', W / 2, 50);
+    ctx.font = '400 10px Outfit';
+    ctx.fillStyle = '#888';
+    ctx.fillText('Solution now contains ' + m.name.toLowerCase() + ' hydroxide', W / 2, H - 15);
+    animating = false;
+    return;
+  }
+
+  frame++;
+  animId = requestAnimationFrame(drawScene);
+}
+
+document.getElementById('reactBtn').addEventListener('click', () => {
+  if (selectedMetal === null) return;
+  resetAnim();
+  animating = true;
+  frame = 0;
+  drawScene();
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  resetAnim();
+});
+
+buildChips();
+drawScene();
+</script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metal Extraction Methods</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Outfit', sans-serif; background: #fafbfc; color: #1a1f2e; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
+  h1, h2, h3, h4 { font-family: 'Oswald', sans-serif; }
+  .container { max-width: 550px; width: 100%; }
+  .card { background: #fff; border: 1px solid #e5dfe0; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  .subtitle { color: #637EA1; font-size: 14px; margin-bottom: 16px; font-weight: 400; }
+
+  .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 16px; }
+  .metal-cell {
+    aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border-radius: 10px; cursor: pointer; transition: all 0.2s; border: 2px solid transparent;
+    font-size: 12px; position: relative;
+  }
+  .metal-cell:hover { transform: scale(1.08); }
+  .metal-cell.active { border-color: #1a1f2e; transform: scale(1.08); }
+  .metal-cell .sym { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 600; }
+  .metal-cell .name { font-size: 9px; font-weight: 400; }
+
+  .cell-electrolysis { background: #dce7f5; }
+  .cell-carbon { background: #ffecd2; }
+  .cell-native { background: #d4edda; }
+  .cell-carbon-ref { background: #e5dfe0; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+  .legend-swatch { width: 16px; height: 16px; border-radius: 4px; }
+
+  .divider-label { text-align: center; font-size: 12px; color: #637EA1; font-weight: 600; margin: 10px 0 6px; display: flex; align-items: center; gap: 8px; }
+  .divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: #e5dfe0; }
+
+  .detail-card { background: #fff; border: 1px solid #e5dfe0; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .detail-title { font-family: 'Oswald', sans-serif; font-size: 22px; color: #637EA1; margin-bottom: 12px; }
+  .detail-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
+  .detail-label { font-weight: 600; font-size: 13px; min-width: 100px; color: #637EA1; padding-top: 2px; }
+  .detail-value { font-size: 14px; flex: 1; line-height: 1.5; }
+
+  .method-badge { display: inline-block; padding: 5px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+  .badge-electrolysis { background: #dce7f5; color: #2962ff; }
+  .badge-carbon { background: #ffecd2; color: #e65100; }
+  .badge-native { background: #d4edda; color: #1b5e20; }
+
+  .reactivity-bar { margin-top: 16px; }
+  .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .bar-sym { font-family: 'Oswald', sans-serif; font-size: 14px; width: 28px; text-align: right; }
+  .bar-fill { height: 18px; border-radius: 4px; transition: width 0.4s; }
+  .bar-row.highlight .bar-sym { font-weight: 700; color: #637EA1; }
+  .bar-row.carbon-row .bar-sym { color: #e65100; font-weight: 700; }
+  .bar-row.carbon-row .bar-fill { background: #e65100 !important; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Metal Extraction Methods</h1>
+    <p class="subtitle">Click a metal to see how it is extracted and why</p>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-swatch" style="background:#dce7f5;"></div> Electrolysis</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#ffecd2;"></div> Carbon reduction</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#d4edda;"></div> Found native</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#e5dfe0;"></div> Carbon (reference)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="divider-label">More reactive than carbon -- Electrolysis required</div>
+    <div class="grid" id="gridTop"></div>
+    <div class="divider-label">Carbon position</div>
+    <div class="grid" id="gridCarbon" style="grid-template-columns: 1fr;"></div>
+    <div class="divider-label">Less reactive than carbon -- Carbon reduction or native</div>
+    <div class="grid" id="gridBottom"></div>
+  </div>
+
+  <div class="detail-card" id="detailCard" style="display:none;"></div>
+
+  <div class="card">
+    <h3 style="font-size:16px;margin-bottom:10px;">Reactivity vs Carbon</h3>
+    <div class="reactivity-bar" id="reactivityBar"></div>
+  </div>
+</div>
+
+<script>
+const metals = [
+  { sym: 'K', name: 'Potassium', method: 'electrolysis', ore: 'Sylvite (KCl)',
+    why: 'Potassium is more reactive than carbon, so carbon cannot reduce it. Electrolysis of molten KCl is needed.',
+    eq: '2KCl \u2192 2K + Cl\u2082 (electrolysis)', reactivity: 95 },
+  { sym: 'Na', name: 'Sodium', method: 'electrolysis', ore: 'Rock salt (NaCl)',
+    why: 'Sodium is more reactive than carbon. Electrolysis of molten NaCl is required.',
+    eq: '2NaCl \u2192 2Na + Cl\u2082 (electrolysis)', reactivity: 90 },
+  { sym: 'Ca', name: 'Calcium', method: 'electrolysis', ore: 'Limestone (CaCO\u2083)',
+    why: 'Calcium is more reactive than carbon. Must be extracted by electrolysis of molten CaCl\u2082.',
+    eq: 'CaCl\u2082 \u2192 Ca + Cl\u2082 (electrolysis)', reactivity: 85 },
+  { sym: 'Mg', name: 'Magnesium', method: 'electrolysis', ore: 'Dolomite / seawater',
+    why: 'Magnesium is more reactive than carbon. Extracted by electrolysis of molten MgCl\u2082.',
+    eq: 'MgCl\u2082 \u2192 Mg + Cl\u2082 (electrolysis)', reactivity: 80 },
+  { sym: 'Al', name: 'Aluminium', method: 'electrolysis', ore: 'Bauxite (Al\u2082O\u2083)',
+    why: 'Aluminium is more reactive than carbon. Extracted by electrolysis of Al\u2082O\u2083 dissolved in molten cryolite.',
+    eq: '2Al\u2082O\u2083 \u2192 4Al + 3O\u2082 (electrolysis)', reactivity: 70 },
+  { sym: 'C', name: 'Carbon', method: 'reference', ore: '\u2014',
+    why: 'Carbon is the reference point. Metals above carbon require electrolysis; metals below can be reduced by carbon.',
+    eq: '\u2014', reactivity: 55, isCarbon: true },
+  { sym: 'Zn', name: 'Zinc', method: 'carbon', ore: 'Sphalerite (ZnS)',
+    why: 'Zinc is less reactive than carbon, so carbon can reduce zinc oxide in a furnace.',
+    eq: 'ZnO + C \u2192 Zn + CO', reactivity: 50 },
+  { sym: 'Fe', name: 'Iron', method: 'carbon', ore: 'Haematite (Fe\u2082O\u2083)',
+    why: 'Iron is less reactive than carbon. Reduced by carbon (coke) in a blast furnace.',
+    eq: 'Fe\u2082O\u2083 + 3C \u2192 2Fe + 3CO (or with CO)', reactivity: 40 },
+  { sym: 'Sn', name: 'Tin', method: 'carbon', ore: 'Cassiterite (SnO\u2082)',
+    why: 'Tin is less reactive than carbon. Reduced by heating with carbon.',
+    eq: 'SnO\u2082 + 2C \u2192 Sn + 2CO', reactivity: 30 },
+  { sym: 'Pb', name: 'Lead', method: 'carbon', ore: 'Galena (PbS)',
+    why: 'Lead is less reactive than carbon. Reduced by heating with carbon.',
+    eq: '2PbO + C \u2192 2Pb + CO\u2082', reactivity: 25 },
+  { sym: 'Cu', name: 'Copper', method: 'carbon', ore: 'Chalcopyrite (CuFeS\u2082)',
+    why: 'Copper is much less reactive than carbon. Can be reduced by carbon or found native. Also purified by electrolysis.',
+    eq: 'CuO + C \u2192 Cu + CO', reactivity: 15 },
+  { sym: 'Ag', name: 'Silver', method: 'native', ore: 'Found as native element or argentite (Ag\u2082S)',
+    why: 'Silver is very unreactive. Often found as the pure element in nature.',
+    eq: 'Found native \u2014 no reduction needed', reactivity: 8 },
+  { sym: 'Au', name: 'Gold', method: 'native', ore: 'Found as native element (gold nuggets)',
+    why: 'Gold is extremely unreactive. Found as pure metal in nature.',
+    eq: 'Found native \u2014 no reduction needed', reactivity: 3 },
+  { sym: 'Pt', name: 'Platinum', method: 'native', ore: 'Found as native element',
+    why: 'Platinum is extremely unreactive. Found as pure metal in nature.',
+    eq: 'Found native \u2014 no reduction needed', reactivity: 2 }
+];
+
+const cellClass = { electrolysis: 'cell-electrolysis', carbon: 'cell-carbon', native: 'cell-native', reference: 'cell-carbon-ref' };
+
+const gridTop = document.getElementById('gridTop');
+const gridCarbon = document.getElementById('gridCarbon');
+const gridBottom = document.getElementById('gridBottom');
+
+metals.forEach((m, i) => {
+  const cell = document.createElement('div');
+  cell.className = 'metal-cell ' + cellClass[m.method];
+  cell.innerHTML = `<span class="sym">${m.sym}</span><span class="name">${m.name}</span>`;
+  cell.onclick = () => showDetail(i, cell);
+  cell.dataset.idx = i;
+
+  if (m.isCarbon) {
+    gridCarbon.appendChild(cell);
+    cell.style.maxWidth = '70px';
+    cell.style.margin = '0 auto';
+  } else if (m.method === 'electrolysis') {
+    gridTop.appendChild(cell);
+  } else {
+    gridBottom.appendChild(cell);
+  }
+});
+
+// Reactivity bar
+const barEl = document.getElementById('reactivityBar');
+metals.forEach(m => {
+  const row = document.createElement('div');
+  row.className = 'bar-row' + (m.isCarbon ? ' carbon-row' : '');
+  const colors = { electrolysis: '#5a8ec4', carbon: '#e6a23c', native: '#4caf50', reference: '#e65100' };
+  row.innerHTML = `<span class="bar-sym">${m.sym}</span>
+    <div class="bar-fill" style="width:${m.reactivity}%;background:${colors[m.method]};border-radius:4px;"></div>`;
+  barEl.appendChild(row);
+});
+
+function showDetail(i, cell) {
+  document.querySelectorAll('.metal-cell').forEach(c => c.classList.remove('active'));
+  cell.classList.add('active');
+
+  // Highlight bar
+  document.querySelectorAll('.bar-row').forEach((r, j) => r.classList.toggle('highlight', j === i));
+
+  const m = metals[i];
+  const dc = document.getElementById('detailCard');
+  dc.style.display = 'block';
+
+  const badgeClass = { electrolysis: 'badge-electrolysis', carbon: 'badge-carbon', native: 'badge-native', reference: 'badge-carbon' };
+
+  dc.innerHTML = `
+    <div class="detail-title">${m.sym} \u2014 ${m.name}</div>
+    <div class="detail-row">
+      <div class="detail-label">Method</div>
+      <div class="detail-value"><span class="method-badge ${badgeClass[m.method]}">${m.method === 'reference' ? 'Reference element' : m.method === 'electrolysis' ? 'Electrolysis' : m.method === 'carbon' ? 'Carbon reduction' : 'Found native'}</span></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Ore / Source</div>
+      <div class="detail-value">${m.ore}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Why?</div>
+      <div class="detail-value">${m.why}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Equation</div>
+      <div class="detail-value" style="font-family:'Oswald',sans-serif;font-size:15px;">${m.eq}</div>
+    </div>
+  `;
+  dc.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>
