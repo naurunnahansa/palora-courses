@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cell Cycle</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; cursor: pointer; }
+        .info-panel { background: #fff; border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px 12px; font-size: 0.78rem; min-height: 50px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 8px; }
+        .info-panel h3 { color: #1835b4; margin-bottom: 4px; font-size: 0.85rem; }
+        .controls { text-align: center; margin-bottom: 8px; }
+        .btn { background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 18px; font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+        .btn:hover { background: #122a8a; }
+        .btn:disabled { background: #a0a8c0; cursor: default; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>The Cell Cycle</h1>
+    <div class="desc">Click each phase segment or press Play to animate a cell progressing through the cycle</div>
+    <canvas id="cv" width="420" height="420"></canvas>
+    <div class="controls">
+        <button class="btn" id="playBtn" onclick="togglePlay()">Play</button>
+    </div>
+    <div class="info-panel" id="info">Click a phase to learn more about it.</div>
+    <div class="note"><strong>Checkpoints</strong> (marked as small circles) ensure the cell is ready before progressing: G1/S checkpoint verifies DNA integrity, G2/M checkpoint confirms DNA replication is complete, and the Metaphase checkpoint ensures chromosomes are correctly attached to spindle fibres.</div>
+</div>
+<script>
+const canvas = document.getElementById('cv');
+const ctx = canvas.getContext('2d');
+const info = document.getElementById('info');
+const playBtn = document.getElementById('playBtn');
+
+const cx = canvas.width / 2, cy = canvas.height / 2, R = 155, rInner = 85;
+const TAU = Math.PI * 2;
+const startAngle = -Math.PI / 2; // 12 o'clock
+
+const phases = [
+    { id: 'G1', frac: 0.40, color: '#6baed6', label: 'G1', title: 'G1 Phase (Gap 1)', desc: 'The cell grows in size, produces organelles and proteins, and carries out its normal functions. This is the longest phase. The G1/S checkpoint at the end ensures the cell is large enough and DNA is undamaged before replication begins.' },
+    { id: 'S',  frac: 0.30, color: '#3182bd', label: 'S',  title: 'S Phase (Synthesis)', desc: 'DNA replication occurs: each chromosome is duplicated to form two identical sister chromatids joined at the centromere. The cell now has twice the normal amount of DNA.' },
+    { id: 'G2', frac: 0.15, color: '#1835b4', label: 'G2', title: 'G2 Phase (Gap 2)', desc: 'The cell continues to grow and produces proteins needed for mitosis (e.g. tubulin for spindle fibres). The G2/M checkpoint verifies that DNA replication is complete and undamaged.' },
+    { id: 'M',  frac: 0.15, color: '#d45050', label: 'M',  title: 'M Phase (Mitosis + Cytokinesis)', desc: 'The nucleus divides (mitosis) and then the cytoplasm divides (cytokinesis), producing two genetically identical daughter cells. The metaphase checkpoint ensures all chromosomes are attached to spindle fibres before anaphase proceeds.' }
+];
+
+/* Compute angles */
+let cum = 0;
+phases.forEach(p => { p.startA = startAngle + cum * TAU; cum += p.frac; p.endA = startAngle + cum * TAU; });
+
+/* Checkpoints at boundaries */
+const checkpoints = [
+    { angle: phases[0].endA, label: 'G1/S', desc: 'Checks DNA integrity' },
+    { angle: phases[2].endA, label: 'G2/M', desc: 'Checks replication complete' },
+    { angle: phases[2].endA + phases[3].frac * TAU * 0.45, label: 'M', desc: 'Metaphase checkpoint' }
+];
+
+let selected = -1;
+let animAngle = null;
+let playing = false;
+let animId = null;
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    /* Draw segments */
+    phases.forEach((p, i) => {
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, R, p.startA, p.endA);
+        ctx.closePath();
+        ctx.fillStyle = (selected === i) ? lighten(p.color, 0.25) : p.color;
+        ctx.fill();
+        ctx.strokeStyle = '#fcfcfe'; ctx.lineWidth = 2; ctx.stroke();
+
+        /* Inner circle cutout later; draw label */
+        let midA = (p.startA + p.endA) / 2;
+        let lr = (R + rInner) / 2 + 5;
+        let lx = cx + Math.cos(midA) * lr, ly = cy + Math.sin(midA) * lr;
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 14px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(p.label, lx, ly);
+    });
+
+    /* Cut inner circle */
+    ctx.beginPath(); ctx.arc(cx, cy, rInner, 0, TAU);
+    ctx.fillStyle = '#fcfcfe'; ctx.fill();
+
+    /* Inner text */
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 13px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('CELL', cx, cy - 8);
+    ctx.fillText('CYCLE', cx, cy + 8);
+
+    /* Interphase bracket */
+    let bracketR = R + 18;
+    ctx.beginPath();
+    ctx.arc(cx, cy, bracketR, phases[0].startA, phases[2].endA);
+    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 2; ctx.setLineDash([]); ctx.stroke();
+    /* bracket ticks */
+    [phases[0].startA, phases[2].endA].forEach(a => {
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(a) * (bracketR - 5), cy + Math.sin(a) * (bracketR - 5));
+        ctx.lineTo(cx + Math.cos(a) * (bracketR + 5), cy + Math.sin(a) * (bracketR + 5));
+        ctx.stroke();
+    });
+    let midBracket = (phases[0].startA + phases[2].endA) / 2;
+    let bx = cx + Math.cos(midBracket) * (bracketR + 14), by = cy + Math.sin(midBracket) * (bracketR + 14);
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 11px system-ui';
+    ctx.fillText('Interphase', bx, by);
+
+    /* Checkpoints */
+    checkpoints.forEach(cp => {
+        let cpx = cx + Math.cos(cp.angle) * R, cpy = cy + Math.sin(cp.angle) * R;
+        ctx.beginPath(); ctx.arc(cpx, cpy, 7, 0, TAU);
+        ctx.fillStyle = '#f5c542'; ctx.fill();
+        ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 8px system-ui';
+        ctx.fillText('CP', cpx, cpy + 3);
+    });
+
+    /* Animated dot */
+    if (animAngle !== null) {
+        let ax = cx + Math.cos(animAngle) * ((R + rInner) / 2);
+        let ay = cy + Math.sin(animAngle) * ((R + rInner) / 2);
+        ctx.beginPath(); ctx.arc(ax, ay, 7, 0, TAU);
+        ctx.fillStyle = '#f5c542'; ctx.fill();
+        ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 2; ctx.stroke();
+    }
+}
+
+function lighten(hex, amt) {
+    let r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+    r = Math.min(255, r + (255 - r) * amt); g = Math.min(255, g + (255 - g) * amt); b = Math.min(255, b + (255 - b) * amt);
+    return `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
+}
+
+canvas.addEventListener('click', e => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / rect.width) - cx;
+    const my = (e.clientY - rect.top) * (canvas.height / rect.height) - cy;
+    const dist = Math.sqrt(mx * mx + my * my);
+    if (dist < rInner || dist > R + 5) { selected = -1; info.innerHTML = 'Click a phase to learn more.'; draw(); return; }
+    let angle = Math.atan2(my, mx);
+    /* normalise to start from -PI/2 going clockwise */
+    let norm = angle - startAngle; if (norm < 0) norm += TAU;
+    let cum = 0;
+    for (let i = 0; i < phases.length; i++) {
+        cum += phases[i].frac;
+        if (norm <= cum * TAU) {
+            selected = i;
+            info.innerHTML = `<h3>${phases[i].title}</h3>${phases[i].desc}`;
+            draw(); return;
+        }
+    }
+});
+
+function togglePlay() {
+    if (playing) { playing = false; cancelAnimationFrame(animId); animAngle = null; playBtn.textContent = 'Play'; draw(); return; }
+    playing = true; playBtn.textContent = 'Stop';
+    animAngle = startAngle;
+    const speed = 0.008;
+    function step() {
+        if (!playing) return;
+        animAngle += speed;
+        if (animAngle > startAngle + TAU) animAngle = startAngle;
+        /* highlight current phase */
+        let norm = animAngle - startAngle; if (norm < 0) norm += TAU;
+        let cum = 0;
+        for (let i = 0; i < phases.length; i++) {
+            cum += phases[i].frac;
+            if (norm <= cum * TAU + 0.01) {
+                if (selected !== i) { selected = i; info.innerHTML = `<h3>${phases[i].title}</h3>${phases[i].desc}`; }
+                break;
+            }
+        }
+        draw();
+        animId = requestAnimationFrame(step);
+    }
+    step();
+}
+
+draw();
+</script>
+</body>
+</html>

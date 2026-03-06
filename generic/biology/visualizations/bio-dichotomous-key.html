@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dichotomous Key</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fcfcfe;
+    color: #1a2747;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 8px; text-align: center; }
+  .subtitle { font-size: 0.9rem; color: #6b7a99; margin-bottom: 20px; text-align: center; }
+  .key-container {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .question-card {
+    background: #e8ecf8;
+    border: 1.5px solid #d4d8e5;
+    border-radius: 12px;
+    padding: 20px 24px;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 0.35s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .question-text {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #1a2747;
+  }
+  .btn-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    padding: 10px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    font-family: inherit;
+  }
+  .btn:hover { transform: scale(1.05); }
+  .btn-yes { background: #1835b4; color: #fff; }
+  .btn-yes:hover { background: #2244cc; }
+  .btn-no { background: #fff; color: #1835b4; border: 2px solid #1835b4; }
+  .btn-no:hover { background: #e8ecf8; }
+  .result-card {
+    background: #1835b4;
+    border-radius: 14px;
+    padding: 28px 24px;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    animation: fadeIn 0.4s ease;
+  }
+  .result-emoji { font-size: 3rem; margin-bottom: 10px; }
+  .result-name { font-size: 1.4rem; font-weight: 700; margin-bottom: 6px; }
+  .result-desc { font-size: 0.9rem; opacity: 0.9; }
+  .btn-reset {
+    margin-top: 14px;
+    padding: 10px 32px;
+    background: #fff;
+    color: #1835b4;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+  .btn-reset:hover { background: #e8ecf8; border-color: #e8ecf8; }
+  .path-trail {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+    min-height: 28px;
+  }
+  .path-item {
+    background: #d4d8e5;
+    color: #1a2747;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+  .path-item.answer { background: #1835b4; color: #fff; }
+</style>
+</head>
+<body>
+
+<h1>Dichotomous Key</h1>
+<p class="subtitle">Answer Yes or No to identify the organism. Follow the branching path.</p>
+
+<div class="path-trail" id="trail"></div>
+<div class="key-container" id="keyContainer"></div>
+
+<script>
+const tree = {
+  q: 'Does it have a backbone?',
+  yes: {
+    q: 'Does it have feathers?',
+    yes: { result: 'Bird', emoji: '🐦', desc: 'Vertebrate with feathers, wings, and a beak. Lays eggs.' },
+    no: {
+      q: 'Does it have scales?',
+      yes: {
+        q: 'Does it live in water?',
+        yes: { result: 'Fish', emoji: '🐟', desc: 'Aquatic vertebrate with scales, fins, and gills.' },
+        no: { result: 'Reptile', emoji: '🦎', desc: 'Vertebrate with dry scales. Lays eggs on land.' }
+      },
+      no: {
+        q: 'Does it have fur or hair?',
+        yes: { result: 'Mammal', emoji: '🐇', desc: 'Vertebrate with fur/hair. Feeds young with milk.' },
+        no: { result: 'Amphibian', emoji: '🐸', desc: 'Vertebrate with moist skin. Lives in water and on land.' }
+      }
+    }
+  },
+  no: {
+    q: 'Does it have legs?',
+    yes: {
+      q: 'Does it have exactly 6 legs?',
+      yes: { result: 'Insect', emoji: '🐜', desc: 'Invertebrate with 6 legs, 3 body segments, and an exoskeleton.' },
+      no: { result: 'Arachnid', emoji: '🕷️', desc: 'Invertebrate with 8 legs and 2 body segments (e.g. spider).' }
+    },
+    no: { result: 'Worm', emoji: '🪱', desc: 'Soft-bodied invertebrate with no legs.' }
+  }
+};
+
+let path = [];
+const container = document.getElementById('keyContainer');
+const trail = document.getElementById('trail');
+
+function renderNode(node) {
+  updateTrail();
+  if (node.result) {
+    container.innerHTML = `
+      <div class="result-card">
+        <div class="result-emoji">${node.emoji}</div>
+        <div class="result-name">${node.result}</div>
+        <div class="result-desc">${node.desc}</div>
+        <button class="btn-reset" onclick="reset()">Reset</button>
+      </div>`;
+    return;
+  }
+  container.innerHTML = `
+    <div class="question-card">
+      <div class="question-text">${node.q}</div>
+      <div class="btn-row">
+        <button class="btn btn-yes" id="btnYes">Yes</button>
+        <button class="btn btn-no" id="btnNo">No</button>
+      </div>
+    </div>`;
+  document.getElementById('btnYes').addEventListener('click', () => {
+    path.push({ q: node.q, a: 'Yes' });
+    renderNode(node.yes);
+  });
+  document.getElementById('btnNo').addEventListener('click', () => {
+    path.push({ q: node.q, a: 'No' });
+    renderNode(node.no);
+  });
+}
+
+function updateTrail() {
+  trail.innerHTML = path.map(p =>
+    `<span class="path-item">${shorten(p.q)}</span><span class="path-item answer">${p.a}</span>`
+  ).join('');
+}
+
+function shorten(q) {
+  return q.length > 30 ? q.slice(0, 28) + '...' : q;
+}
+
+function reset() {
+  path = [];
+  renderNode(tree);
+}
+
+reset();
+</script>
+
+</body>
+</html>

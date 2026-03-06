@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aerobic vs Anaerobic Respiration</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        .toggle { display: flex; gap: 0; justify-content: center; margin-bottom: 10px; }
+        .toggle .btn { padding: 6px 14px; border: 1.5px solid #1835b4; background: #fff; color: #1835b4; font-size: 0.72rem; font-weight: 600; cursor: pointer; }
+        .toggle .btn:first-child { border-radius: 5px 0 0 5px; }
+        .toggle .btn:last-child { border-radius: 0 5px 5px 0; }
+        .toggle .btn.active { background: #1835b4; color: #fff; }
+        .pathways { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+        .pathway { border: 2px solid #d4d8e5; border-radius: 8px; padding: 10px; transition: all 0.3s; background: #fff; }
+        .pathway.highlight { border-color: var(--c); background: var(--bg); }
+        .pathway h3 { font-size: 0.78rem; text-align: center; margin-bottom: 6px; padding: 4px; border-radius: 4px; }
+        .flow-item { text-align: center; padding: 5px 4px; margin: 3px 0; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
+        .flow-arrow { text-align: center; color: #1835b4; font-size: 0.9rem; }
+        .tag { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 0.6rem; font-weight: 600; }
+        .atp-bar-section { margin-bottom: 8px; }
+        .atp-label { font-size: 0.7rem; font-weight: 600; margin-bottom: 2px; display: flex; justify-content: space-between; }
+        .atp-bar { height: 18px; border-radius: 4px; background: #e8ecf8; overflow: hidden; margin-bottom: 4px; }
+        .atp-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: #fff; font-weight: 700; transition: width 0.5s; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Aerobic vs Anaerobic Respiration</h1>
+    <div class="desc">Compare the three pathways of cellular respiration</div>
+    <div class="toggle">
+        <button class="btn" id="btn0" onclick="highlight(0)">All</button>
+        <button class="btn" id="btn1" onclick="highlight(1)">Aerobic</button>
+        <button class="btn" id="btn2" onclick="highlight(2)">Anaerobic (Animals)</button>
+        <button class="btn" id="btn3" onclick="highlight(3)">Anaerobic (Yeast)</button>
+    </div>
+    <div class="pathways">
+        <div class="pathway" id="pw0" style="--c:#3498db;--bg:rgba(52,152,219,0.08);">
+            <h3 style="background:#3498db;color:#fff;">Aerobic Respiration</h3>
+            <div class="flow-item" style="background:#e8ecf8;">Glucose + O<sub>2</sub></div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="flow-item" style="background:#dbeafe;">Cytoplasm (glycolysis)</div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="flow-item" style="background:#dbeafe;">Mitochondria (Krebs + ETC)</div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="flow-item" style="background:#e8ecf8;">CO<sub>2</sub> + H<sub>2</sub>O</div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="flow-item" style="background:#3498db;color:#fff;font-size:0.85rem;">36-38 ATP</div>
+            <div style="text-align:center;margin-top:4px;"><span class="tag" style="background:#3498db;color:#fff;">Requires O<sub>2</sub></span></div>
+        </div>
+        <div class="pathway" id="pw1" style="--c:#e67e22;--bg:rgba(230,126,34,0.08);">
+            <h3 style="background:#e67e22;color:#fff;">Anaerobic (Animals)</h3>
+            <div class="flow-item" style="background:#fef5e7;">Glucose</div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="flow-item" style="background:#fef5e7;">Cytoplasm only</div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="flow-item" style="background:#fef5e7;"><em>No mitochondria step</em></div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="flow-item" style="background:#fef5e7;">Lactic acid</div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="flow-item" style="background:#e67e22;color:#fff;font-size:0.85rem;">2 ATP</div>
+            <div style="text-align:center;margin-top:4px;"><span class="tag" style="background:#e67e22;color:#fff;">No O<sub>2</sub></span></div>
+        </div>
+        <div class="pathway" id="pw2" style="--c:#27ae60;--bg:rgba(39,174,96,0.08);">
+            <h3 style="background:#27ae60;color:#fff;">Anaerobic (Yeast/Plants)</h3>
+            <div class="flow-item" style="background:#e8f8ef;">Glucose</div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="flow-item" style="background:#e8f8ef;">Cytoplasm only</div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="flow-item" style="background:#e8f8ef;"><em>No mitochondria step</em></div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="flow-item" style="background:#e8f8ef;">Ethanol + CO<sub>2</sub></div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="flow-item" style="background:#27ae60;color:#fff;font-size:0.85rem;">2 ATP</div>
+            <div style="text-align:center;margin-top:4px;"><span class="tag" style="background:#27ae60;color:#fff;">No O<sub>2</sub></span></div>
+        </div>
+    </div>
+    <div class="atp-bar-section">
+        <div class="atp-label"><span>ATP yield comparison</span></div>
+        <div class="atp-bar"><div class="atp-fill" id="bar0" style="width:100%;background:#3498db;">Aerobic: 38 ATP</div></div>
+        <div class="atp-bar"><div class="atp-fill" id="bar1" style="width:5.3%;background:#e67e22;">2</div></div>
+        <div class="atp-bar"><div class="atp-fill" id="bar2" style="width:5.3%;background:#27ae60;">2</div></div>
+    </div>
+    <div class="note" id="note">
+        <strong>Key comparison:</strong> Aerobic respiration produces ~19x more ATP per glucose molecule than anaerobic. Anaerobic is faster but much less efficient. Lactic acid must later be broken down (requiring oxygen — the "oxygen debt"). Fermentation in yeast is used in bread-making (CO<sub>2</sub>) and brewing (ethanol).
+    </div>
+</div>
+<script>
+function highlight(i) {
+    document.querySelectorAll('.toggle .btn').forEach((b,j) => b.className = j===i?'btn active':'btn');
+    const pws = [document.getElementById('pw0'), document.getElementById('pw1'), document.getElementById('pw2')];
+    if (i === 0) {
+        pws.forEach(p => { p.classList.remove('highlight'); p.style.opacity = '1'; });
+    } else {
+        pws.forEach((p, j) => {
+            if (j === i-1) { p.classList.add('highlight'); p.style.opacity = '1'; }
+            else { p.classList.remove('highlight'); p.style.opacity = '0.35'; }
+        });
+    }
+}
+highlight(0);
+</script>
+</body>
+</html>

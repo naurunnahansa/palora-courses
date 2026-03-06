@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Levels of Protein Structure</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .panel { border: 2px solid #d4d8e5; border-radius: 8px; padding: 10px; cursor: pointer; transition: all 0.3s; background: #fff; }
+        .panel:hover, .panel.active { border-color: #1835b4; background: #e8ecf8; }
+        .panel h3 { font-size: 0.78rem; color: #1835b4; margin-bottom: 6px; text-align: center; }
+        .panel canvas { display: block; margin: 0 auto; }
+        .arrow-row { display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 8px; }
+        .arrow-row .step { font-size: 0.65rem; background: #e8ecf8; padding: 3px 8px; border-radius: 10px; color: #1835b4; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .arrow-row .step.active { background: #1835b4; color: #fff; }
+        .arrow-row .arr { color: #1835b4; font-weight: bold; }
+        .info-box { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; min-height: 50px; }
+        .info-box strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Levels of Protein Structure</h1>
+    <div class="desc">Click each level to explore how proteins fold from simple chains to complex assemblies</div>
+    <div class="arrow-row">
+        <span class="step active" onclick="select(0)">Primary</span><span class="arr">&rarr;</span>
+        <span class="step" onclick="select(1)">Secondary</span><span class="arr">&rarr;</span>
+        <span class="step" onclick="select(2)">Tertiary</span><span class="arr">&rarr;</span>
+        <span class="step" onclick="select(3)">Quaternary</span>
+    </div>
+    <div class="panels">
+        <div class="panel active" id="p0" onclick="select(0)"><h3>Primary Structure</h3><canvas id="c0" width="240" height="140"></canvas></div>
+        <div class="panel" id="p1" onclick="select(1)"><h3>Secondary Structure</h3><canvas id="c1" width="240" height="140"></canvas></div>
+        <div class="panel" id="p2" onclick="select(2)"><h3>Tertiary Structure</h3><canvas id="c2" width="240" height="140"></canvas></div>
+        <div class="panel" id="p3" onclick="select(3)"><h3>Quaternary Structure</h3><canvas id="c3" width="240" height="140"></canvas></div>
+    </div>
+    <div class="info-box" id="info"><strong>Primary Structure:</strong> A linear sequence of amino acids joined by peptide bonds. The specific order is determined by the gene (DNA base sequence). Even one amino acid change can alter the protein's function.</div>
+</div>
+<script>
+const infos = [
+    '<strong>Primary Structure:</strong> A linear sequence of amino acids joined by peptide bonds. The specific order is determined by the gene (DNA base sequence). Even one amino acid change can alter the protein\'s function.',
+    '<strong>Secondary Structure:</strong> The chain folds into regular patterns: <strong>alpha helices</strong> (coiled ribbons) and <strong>beta pleated sheets</strong> (zigzag arrows). These are held by hydrogen bonds between backbone N-H and C=O groups.',
+    '<strong>Tertiary Structure:</strong> The overall 3D shape of a single polypeptide. Stabilised by: <strong>disulfide bridges</strong> (covalent, strong), <strong>ionic bonds</strong>, <strong>hydrogen bonds</strong>, and <strong>hydrophobic interactions</strong> between R-groups.',
+    '<strong>Quaternary Structure:</strong> Two or more polypeptide subunits assemble into a functional protein. Example: <strong>haemoglobin</strong> has 4 subunits (2 alpha + 2 beta chains), each carrying a haem group with Fe\u00b2\u207a for oxygen binding.'
+];
+const aaColors = ['#e74c3c','#3498db','#2ecc71','#f39c12','#9b59b6','#1abc9c','#e67e22','#e74c3c','#3498db','#2ecc71','#f39c12','#9b59b6'];
+const aaLabels = ['Ala','Gly','Val','Leu','Ser','Pro','Phe','Asp','Lys','Thr','Ile','Met'];
+
+function select(i) {
+    document.querySelectorAll('.panel').forEach((p,j) => p.classList.toggle('active', j===i));
+    document.querySelectorAll('.step').forEach((s,j) => s.classList.toggle('active', j===i));
+    document.getElementById('info').innerHTML = infos[i];
+}
+
+function drawAll() {
+    drawPrimary();
+    drawSecondary();
+    drawTertiary();
+    drawQuaternary();
+}
+
+function drawPrimary() {
+    const c = document.getElementById('c0'), ctx = c.getContext('2d');
+    ctx.clearRect(0,0,c.width,c.height);
+    const n = 10, r = 10, startX = 15, y = 70, gap = 22;
+    for (let i = 0; i < n; i++) {
+        const x = startX + i * gap;
+        if (i < n-1) { ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x+r, y); ctx.lineTo(x+gap-r, y); ctx.stroke(); }
+        ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fillStyle = aaColors[i]; ctx.fill(); ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 6px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(aaLabels[i], x, y);
+    }
+    ctx.fillStyle = '#4a5568'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Peptide bonds', c.width/2, y+25);
+    ctx.fillText('N-terminus', 15, y-20); ctx.fillText('C-terminus', startX+(n-1)*gap, y-20);
+    // small arrow
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(15, y+35); ctx.lineTo(startX+(n-1)*gap, y+35); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(startX+(n-1)*gap-5, y+31); ctx.lineTo(startX+(n-1)*gap, y+35); ctx.lineTo(startX+(n-1)*gap-5, y+39); ctx.stroke();
+    ctx.fillStyle = '#1835b4'; ctx.font = '8px system-ui'; ctx.fillText('Amino acid sequence', c.width/2, y+48);
+}
+
+function drawSecondary() {
+    const c = document.getElementById('c1'), ctx = c.getContext('2d');
+    ctx.clearRect(0,0,c.width,c.height);
+    // Alpha helix
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('\u03B1-Helix', 65, 15);
+    ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    for (let t = 0; t < 4*Math.PI; t += 0.1) {
+        const x = 65 + Math.sin(t)*20, y = 20 + t*7;
+        t===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    // H-bond dashes
+    ctx.strokeStyle = '#3498db'; ctx.lineWidth = 1; ctx.setLineDash([3,3]);
+    for (let i = 0; i < 3; i++) {
+        const t = Math.PI/2 + i*2*Math.PI;
+        ctx.beginPath(); ctx.moveTo(65-20, 20+t*7); ctx.lineTo(65+20, 20+(t+Math.PI)*7); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#3498db'; ctx.font = '7px system-ui'; ctx.fillText('H-bonds', 65, 125);
+
+    // Beta sheet
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 9px system-ui';
+    ctx.fillText('\u03B2-Sheet', 180, 15);
+    for (let s = 0; s < 3; s++) {
+        const x = 150 + s*30;
+        ctx.strokeStyle = '#2ecc71'; ctx.lineWidth = 3;
+        ctx.beginPath();
+        for (let yy = 25; yy < 105; yy += 2) {
+            const xo = x + Math.sin(yy*0.3)*5;
+            yy===25 ? ctx.moveTo(xo, yy) : ctx.lineTo(xo, yy);
+        }
+        ctx.stroke();
+        // arrow head
+        const dir = s%2===0 ? 1 : -1;
+        const tipY = s%2===0 ? 105 : 25;
+        ctx.beginPath(); ctx.moveTo(x-6, tipY-dir*8); ctx.lineTo(x, tipY); ctx.lineTo(x+6, tipY-dir*8); ctx.fillStyle = '#2ecc71'; ctx.fill();
+    }
+    // H-bonds between strands
+    ctx.strokeStyle = '#3498db'; ctx.lineWidth = 1; ctx.setLineDash([3,3]);
+    for (let yy = 35; yy < 100; yy += 15) {
+        ctx.beginPath(); ctx.moveTo(155, yy); ctx.lineTo(175, yy); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(185, yy+7); ctx.lineTo(205, yy+7); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#3498db'; ctx.font = '7px system-ui'; ctx.fillText('H-bonds', 180, 125);
+}
+
+function drawTertiary() {
+    const c = document.getElementById('c2'), ctx = c.getContext('2d');
+    ctx.clearRect(0,0,c.width,c.height);
+    const cx = 120, cy = 70;
+    // Globular shape
+    ctx.beginPath(); ctx.ellipse(cx, cy, 70, 55, 0, 0, Math.PI*2); ctx.fillStyle = 'rgba(24,53,180,0.08)'; ctx.fill(); ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2; ctx.stroke();
+    // Internal bonds
+    const bonds = [
+        {x1:75,y1:40,x2:165,y2:40,label:'Disulfide bridge',color:'#e74c3c',style:'solid'},
+        {x1:80,y1:60,x2:160,y2:80,label:'Ionic bond',color:'#f39c12',style:'solid'},
+        {x1:90,y1:95,x2:150,y2:95,label:'H-bond',color:'#3498db',style:'dash'},
+        {x1:100,y1:50,x2:140,y2:65,label:'Hydrophobic',color:'#2ecc71',style:'dot'}
+    ];
+    bonds.forEach((b,i) => {
+        ctx.strokeStyle = b.color; ctx.lineWidth = 2;
+        if (b.style==='dash') ctx.setLineDash([4,4]);
+        else if (b.style==='dot') ctx.setLineDash([2,2]);
+        else ctx.setLineDash([]);
+        ctx.beginPath(); ctx.moveTo(b.x1,b.y1); ctx.lineTo(b.x2,b.y2); ctx.stroke();
+        ctx.setLineDash([]);
+        // dots at ends
+        [b.x1,b.x2].forEach((x,j)=>{
+            const y = j===0?b.y1:b.y2;
+            ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fillStyle=b.color; ctx.fill();
+        });
+    });
+    // Legend
+    ctx.font = '7px system-ui'; ctx.textAlign = 'left';
+    bonds.forEach((b,i) => {
+        const ly = 18 + i*14;
+        ctx.fillStyle = b.color; ctx.fillRect(5, ly-4, 12, 3);
+        ctx.fillStyle = '#4a5568'; ctx.fillText(b.label, 20, ly);
+    });
+    ctx.fillStyle = '#1835b4'; ctx.font = '8px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('R-group interactions', cx, 135);
+}
+
+function drawQuaternary() {
+    const c = document.getElementById('c3'), ctx = c.getContext('2d');
+    ctx.clearRect(0,0,c.width,c.height);
+    const cx = 120, cy = 65;
+    const subs = [
+        {x: cx-30, y: cy-25, r: 28, color: 'rgba(231,76,60,0.3)', border: '#e74c3c', label: '\u03B11'},
+        {x: cx+30, y: cy-25, r: 28, color: 'rgba(52,152,219,0.3)', border: '#3498db', label: '\u03B12'},
+        {x: cx-30, y: cy+25, r: 28, color: 'rgba(46,204,113,0.3)', border: '#2ecc71', label: '\u03B21'},
+        {x: cx+30, y: cy+25, r: 28, color: 'rgba(243,156,18,0.3)', border: '#f39c12', label: '\u03B22'}
+    ];
+    subs.forEach(s => {
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+        ctx.fillStyle = s.color; ctx.fill(); ctx.strokeStyle = s.border; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(s.label, s.x, s.y);
+    });
+    // Haem groups
+    subs.forEach(s => {
+        ctx.beginPath(); ctx.arc(s.x, s.y+8, 5, 0, Math.PI*2);
+        ctx.fillStyle = '#8b0000'; ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.font = '5px system-ui'; ctx.fillText('Fe', s.x, s.y+8);
+    });
+    ctx.fillStyle = '#1835b4'; ctx.font = '8px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+    ctx.fillText('Haemoglobin (4 subunits)', cx, 120);
+    ctx.fillStyle = '#8b0000'; ctx.font = '7px system-ui';
+    ctx.fillText('Haem group with Fe\u00b2\u207a', cx, 132);
+}
+
+drawAll();
+</script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Nitrogen Cycle</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: pointer; }
+        .info-panel { background: #fff; border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px 12px; font-size: 0.78rem; min-height: 50px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 8px; }
+        .info-panel strong { color: #1835b4; }
+        .legend { display: flex; justify-content: center; gap: 14px; margin-bottom: 8px; font-size: 0.7rem; font-weight: 600; flex-wrap: wrap; }
+        .legend span { display: flex; align-items: center; gap: 4px; }
+        .legend .dot { width: 10px; height: 4px; border-radius: 2px; display: inline-block; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>The Nitrogen Cycle</h1>
+    <div class="desc">Click any process arrow to learn about the bacteria involved and conditions required</div>
+    <div class="legend">
+        <span><span class="dot" style="background:#7b2d8e;"></span> Nitrogen fixation</span>
+        <span><span class="dot" style="background:#2272b5;"></span> Nitrification</span>
+        <span><span class="dot" style="background:#22a355;"></span> Assimilation</span>
+        <span><span class="dot" style="background:#e68a00;"></span> Feeding</span>
+        <span><span class="dot" style="background:#8B6914;"></span> Decomposition</span>
+        <span><span class="dot" style="background:#d42525;"></span> Denitrification</span>
+    </div>
+    <canvas id="cv" width="560" height="460"></canvas>
+    <div class="info-panel" id="info">Click an arrow or reservoir to explore how nitrogen cycles through ecosystems.</div>
+    <div class="note"><strong>Key concept:</strong> Although 78% of the atmosphere is nitrogen gas (N&#8322;), most organisms cannot use it directly. It must first be "fixed" into ammonium (NH&#8324;&#8314;) or nitrates (NO&#8323;&#8315;) by bacteria before plants can absorb it.</div>
+</div>
+<script>
+const canvas = document.getElementById('cv');
+const ctx = canvas.getContext('2d');
+const infoEl = document.getElementById('info');
+const W = canvas.width, H = canvas.height;
+
+const reservoirs = [
+    { id: 'atm',     x: 180, y: 15,  w: 200, h: 40, label: 'Atmosphere (N\u2082 \u2014 78%)', color: '#c6ddf7', desc: 'The atmosphere is the largest nitrogen reservoir. N\u2082 is very stable due to its triple covalent bond and cannot be used directly by most organisms.' },
+    { id: 'plants',  x: 40,  y: 170, w: 120, h: 45, label: 'Plants',              color: '#b8e6c4', desc: 'Plants absorb nitrate ions (NO\u2083\u207b) from soil through their roots by active transport. They use nitrogen to build amino acids and proteins.' },
+    { id: 'animals', x: 400, y: 170, w: 120, h: 45, label: 'Animals',             color: '#f7d9b8', desc: 'Animals obtain nitrogen by eating plants (or other animals). Nitrogen is found in proteins and nucleic acids.' },
+    { id: 'dead',    x: 350, y: 310, w: 140, h: 40, label: 'Dead Matter / Waste', color: '#d4c4a8', desc: 'Dead organisms, faeces, and urine contain nitrogen-rich organic compounds that are returned to the soil.' },
+    { id: 'nh4',     x: 200, y: 310, w: 120, h: 36, label: 'Ammonium (NH\u2084\u207a)', color: '#e8d8f0', desc: 'Ammonium ions in the soil, produced by decomposition of organic matter (ammonification) or by nitrogen-fixing bacteria.' },
+    { id: 'no2',     x: 120, y: 380, w: 110, h: 32, label: 'Nitrite (NO\u2082\u207b)',   color: '#d0e0f5', desc: 'Nitrite is an intermediate compound formed during nitrification. It is converted to nitrate by Nitrobacter bacteria.' },
+    { id: 'no3',     x: 30,  y: 310, w: 120, h: 36, label: 'Nitrate (NO\u2083\u207b)',   color: '#b8d4f0', desc: 'Nitrate ions are the main form of nitrogen absorbed by plant roots. They are produced by nitrifying bacteria in well-aerated soil.' }
+];
+
+const processes = [
+    { id: 'fix_bact', from: 'atm', to: 'nh4',  color: '#7b2d8e', label: 'Nitrogen\nfixation', desc: '<strong>Nitrogen fixation (biological):</strong> Rhizobium bacteria in root nodules of leguminous plants convert N\u2082 \u2192 NH\u2083 (ammonia), which forms NH\u2084\u207a in soil. This is a mutualistic relationship \u2014 the bacteria get sugars from the plant.', ctrlDx: -80, ctrlDy: 60 },
+    { id: 'fix_light', from: 'atm', to: 'nh4', color: '#7b2d8e', label: 'Lightning\nfixation', desc: '<strong>Nitrogen fixation (lightning):</strong> The energy from lightning can split N\u2082 molecules, which then combine with oxygen to form nitrogen oxides. These dissolve in rain and enter the soil as nitrates.', ctrlDx: 40, ctrlDy: 80 },
+    { id: 'nitr1',   from: 'nh4',  to: 'no2',  color: '#2272b5', label: 'Nitrosomonas', desc: '<strong>Nitrification (step 1):</strong> Nitrosomonas bacteria oxidise ammonium ions (NH\u2084\u207a) to nitrite ions (NO\u2082\u207b). This is an aerobic process requiring well-aerated soil.', ctrlDx: 0, ctrlDy: 20 },
+    { id: 'nitr2',   from: 'no2',  to: 'no3',  color: '#2272b5', label: 'Nitrobacter',  desc: '<strong>Nitrification (step 2):</strong> Nitrobacter bacteria oxidise nitrite ions (NO\u2082\u207b) to nitrate ions (NO\u2083\u207b). Also aerobic. Together, nitrification converts ammonium to the form plants can absorb.', ctrlDx: 0, ctrlDy: 20 },
+    { id: 'assim',   from: 'no3',  to: 'plants', color: '#22a355', label: 'Assimilation',desc: '<strong>Assimilation:</strong> Plants absorb nitrate ions (NO\u2083\u207b) from soil via active transport through root hair cells. They use the nitrogen to synthesise amino acids, proteins, and nucleic acids.', ctrlDx: -30, ctrlDy: -30 },
+    { id: 'feed',    from: 'plants', to: 'animals', color: '#e68a00', label: 'Feeding', desc: '<strong>Feeding:</strong> Nitrogen passes from plants to animals through ingestion. Herbivores eat plants; carnivores eat other animals. Nitrogen is found in proteins, DNA, and other biomolecules.', ctrlDx: 0, ctrlDy: -20 },
+    { id: 'death_a', from: 'animals', to: 'dead', color: '#8B6914', label: 'Death /\nExcretion', desc: '<strong>Death and excretion:</strong> When animals die or excrete waste (urine, faeces), nitrogen-containing organic compounds are added to the soil.', ctrlDx: 20, ctrlDy: 10 },
+    { id: 'death_p', from: 'plants', to: 'dead', color: '#8B6914', label: 'Death', desc: '<strong>Death:</strong> When plants die, their nitrogen-containing organic matter falls to the ground and becomes part of the soil organic matter.', ctrlDx: 40, ctrlDy: 40 },
+    { id: 'decomp',  from: 'dead', to: 'nh4',   color: '#8B6914', label: 'Decomposition\n(ammonification)', desc: '<strong>Decomposition / Ammonification:</strong> Decomposers (saprophytic bacteria and fungi) break down proteins and other nitrogen compounds in dead matter, releasing ammonium ions (NH\u2084\u207a) into the soil.', ctrlDx: 0, ctrlDy: 0 },
+    { id: 'denitr',  from: 'no3',  to: 'atm',   color: '#d42525', label: 'Denitrification', desc: '<strong>Denitrification:</strong> Denitrifying bacteria (e.g. Pseudomonas) convert nitrate ions (NO\u2083\u207b) back to nitrogen gas (N\u2082), which returns to the atmosphere. This occurs in waterlogged, anaerobic soil conditions.', ctrlDx: -80, ctrlDy: -50 }
+];
+
+let particles = [];
+let selected = null;
+
+function getR(id) { return reservoirs.find(r => r.id === id); }
+function getC(id) { let r = getR(id); return { x: r.x + r.w / 2, y: r.y + r.h / 2 }; }
+
+function getEdge(id, tx, ty) {
+    let r = getR(id), cx = r.x + r.w / 2, cy = r.y + r.h / 2;
+    let angle = Math.atan2(ty - cy, tx - cx);
+    let hw = r.w / 2 + 4, hh = r.h / 2 + 4;
+    let sx = Math.abs(Math.cos(angle)) > 0.001 ? hw / Math.abs(Math.cos(angle)) : 1e9;
+    let sy = Math.abs(Math.sin(angle)) > 0.001 ? hh / Math.abs(Math.sin(angle)) : 1e9;
+    let s = Math.min(sx, sy);
+    return { x: cx + Math.cos(angle) * s, y: cy + Math.sin(angle) * s };
+}
+
+function roundRect(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.arcTo(x + w, y, x + w, y + r, r);
+    ctx.lineTo(x + w, y + h - r); ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+    ctx.lineTo(x + r, y + h); ctx.arcTo(x, y + h, x, y + h - r, r);
+    ctx.lineTo(x, y + r); ctx.arcTo(x, y, x + r, y, r); ctx.closePath();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    /* Soil region */
+    ctx.fillStyle = '#f5f0e0';
+    ctx.fillRect(0, 260, W, H - 260);
+    ctx.fillStyle = '#8B6914'; ctx.globalAlpha = 0.15;
+    ctx.fillRect(0, 260, W, 2); ctx.globalAlpha = 1;
+    ctx.fillStyle = '#8B6914'; ctx.font = '10px system-ui'; ctx.textAlign = 'left';
+    ctx.fillText('SOIL', 8, 275);
+
+    /* Arrows */
+    processes.forEach(p => {
+        let fc = getC(p.from), tc = getC(p.to);
+        let fp = getEdge(p.from, tc.x + (p.ctrlDx || 0), tc.y + (p.ctrlDy || 0));
+        let tp = getEdge(p.to, fc.x + (p.ctrlDx || 0), fc.y + (p.ctrlDy || 0));
+        let cpx = (fp.x + tp.x) / 2 + (p.ctrlDx || 0);
+        let cpy = (fp.y + tp.y) / 2 + (p.ctrlDy || 0);
+
+        let isSel = selected && selected.id === p.id;
+        ctx.beginPath();
+        ctx.moveTo(fp.x, fp.y); ctx.quadraticCurveTo(cpx, cpy, tp.x, tp.y);
+        ctx.strokeStyle = isSel ? p.color : alpha(p.color, 0.55);
+        ctx.lineWidth = isSel ? 3.5 : 2; ctx.stroke();
+
+        /* arrowhead */
+        let t = 0.9;
+        let ax = (1-t)*(1-t)*fp.x + 2*(1-t)*t*cpx + t*t*tp.x;
+        let ay = (1-t)*(1-t)*fp.y + 2*(1-t)*t*cpy + t*t*tp.y;
+        let angle = Math.atan2(tp.y - ay, tp.x - ax);
+        ctx.beginPath();
+        ctx.moveTo(tp.x, tp.y);
+        ctx.lineTo(tp.x - 9*Math.cos(angle-0.4), tp.y - 9*Math.sin(angle-0.4));
+        ctx.lineTo(tp.x - 9*Math.cos(angle+0.4), tp.y - 9*Math.sin(angle+0.4));
+        ctx.closePath(); ctx.fillStyle = isSel ? p.color : alpha(p.color, 0.55); ctx.fill();
+
+        /* label */
+        ctx.fillStyle = '#1a2747'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+        let lx = (fp.x + 2*cpx + tp.x)/4, ly = (fp.y + 2*cpy + tp.y)/4;
+        p.label.split('\n').forEach((ln, i) => ctx.fillText(ln, lx, ly + i * 11));
+
+        p._fp = fp; p._tp = tp; p._cpx = cpx; p._cpy = cpy;
+    });
+
+    /* Reservoirs */
+    reservoirs.forEach(r => {
+        roundRect(r.x, r.y, r.w, r.h, 7);
+        ctx.fillStyle = r.color; ctx.fill();
+        ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+        let lines = r.label.split('\n');
+        lines.forEach((ln, i) => ctx.fillText(ln, r.x + r.w/2, r.y + r.h/2 + 4 + (i - (lines.length-1)/2)*13));
+    });
+
+    /* Particles */
+    particles.forEach(p => {
+        ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI*2);
+        ctx.fillStyle = p.color; ctx.globalAlpha = 0.75; ctx.fill(); ctx.globalAlpha = 1;
+    });
+}
+
+function alpha(hex, a) {
+    let r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+    return `rgba(${r},${g},${b},${a})`;
+}
+
+function spawnParticles() {
+    processes.forEach(p => {
+        if (Math.random() > 0.025 || !p._fp) return;
+        particles.push({ t: 0, fp: p._fp, tp: p._tp, cpx: p._cpx, cpy: p._cpy, color: p.color, x: p._fp.x, y: p._fp.y });
+    });
+}
+
+function updateParticles() {
+    particles = particles.filter(p => p.t <= 1);
+    particles.forEach(p => {
+        p.t += 0.012;
+        let t = p.t;
+        p.x = (1-t)*(1-t)*p.fp.x + 2*(1-t)*t*p.cpx + t*t*p.tp.x;
+        p.y = (1-t)*(1-t)*p.fp.y + 2*(1-t)*t*p.cpy + t*t*p.tp.y;
+    });
+}
+
+function animate() {
+    spawnParticles(); updateParticles(); draw();
+    requestAnimationFrame(animate);
+}
+
+canvas.addEventListener('click', e => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (W / rect.width);
+    const my = (e.clientY - rect.top) * (H / rect.height);
+
+    for (let r of reservoirs) {
+        if (mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h) {
+            selected = null; infoEl.innerHTML = `<strong>${r.label}:</strong> ${r.desc}`; return;
+        }
+    }
+
+    let closest = null, closestDist = 18;
+    for (let p of processes) {
+        if (!p._fp) continue;
+        for (let t = 0; t <= 1; t += 0.02) {
+            let px = (1-t)*(1-t)*p._fp.x + 2*(1-t)*t*p._cpx + t*t*p._tp.x;
+            let py = (1-t)*(1-t)*p._fp.y + 2*(1-t)*t*p._cpy + t*t*p._tp.y;
+            if (Math.hypot(mx-px, my-py) < closestDist) { closestDist = Math.hypot(mx-px, my-py); closest = p; }
+        }
+    }
+    if (closest) { selected = closest; infoEl.innerHTML = closest.desc; }
+    else { selected = null; infoEl.innerHTML = 'Click an arrow or reservoir to explore how nitrogen cycles through ecosystems.'; }
+});
+
+animate();
+</script>
+</body>
+</html>

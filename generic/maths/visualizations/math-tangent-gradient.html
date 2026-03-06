@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient of a Curve</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}
+.container{max-width:100%;margin:0 auto}
+h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.slider-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.slider-row label{font-size:.78rem;font-weight:600;min-width:70px;color:#1835b4}
+.slider-row input[type=range]{flex:1;accent-color:#1835b4}
+.slider-row .val{font-size:.85rem;min-width:40px;text-align:right;color:#1835b4}
+.toggle-row{display:flex;gap:6px;margin-bottom:8px;justify-content:center}
+.toggle-btn{padding:5px 12px;border:1px solid #d4d8e5;border-radius:4px;background:#e8ecf8;color:#1835b4;font-size:.75rem;cursor:pointer;font-family:system-ui;font-weight:600}
+.toggle-btn.active{background:#1835b4;color:#fff;border-color:#1835b4}
+.equation-display{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;font-size:.95rem;color:#1835b4;margin-bottom:8px;font-weight:600}
+canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;width:100%;cursor:ew-resize}
+.readouts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px}
+.readout{background:#e8ecf8;border-radius:5px;padding:6px 8px;text-align:center}
+.readout .label{font-size:.65rem;color:#4a5568}
+.readout .value{font-size:.82rem;color:#1835b4;font-weight:600}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#1835b4}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Gradient of a Curve</h1>
+    <div class="card">
+        <div class="card-title">Select Curve</div>
+        <div class="toggle-row">
+            <button class="toggle-btn active" onclick="setCurve(0)">y = x\u00b2</button>
+            <button class="toggle-btn" onclick="setCurve(1)">y = x\u00b3</button>
+            <button class="toggle-btn" onclick="setCurve(2)">y = sin(x)</button>
+            <button class="toggle-btn" onclick="setCurve(3)">y = x\u00b3 - 3x</button>
+        </div>
+        <div class="slider-row">
+            <label>Point (x)</label>
+            <input type="range" id="slX" min="-4" max="4" step="0.05" value="1">
+            <span class="val" id="valX">1</span>
+        </div>
+    </div>
+    <div class="card">
+        <div class="equation-display" id="eqDisplay">Curve: y = x\u00b2</div>
+    </div>
+    <div class="card" style="padding:8px">
+        <canvas id="canvas" width="1060" height="1060"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Tangent Details</div>
+        <div class="readouts">
+            <div class="readout"><div class="label">Point on Curve</div><div class="value" id="point"></div></div>
+            <div class="readout"><div class="label">Gradient at Point</div><div class="value" id="gradient"></div></div>
+            <div class="readout"><div class="label">Tangent Equation</div><div class="value" id="tangentEq"></div></div>
+        </div>
+    </div>
+    <div class="info">Drag the slider or click the graph to move the point. The <strong>tangent line</strong> shows the gradient at that point.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const slX=document.getElementById('slX');
+const W=canvas.width,H=canvas.height,scale=60;
+const cxC=W/2,cyC=H/2;
+let curveIdx=0;
+const curves=[
+    {name:'y = x\u00b2',f:x=>x*x,fp:x=>2*x},
+    {name:'y = x\u00b3',f:x=>x*x*x,fp:x=>3*x*x},
+    {name:'y = sin(x)',f:x=>Math.sin(x),fp:x=>Math.cos(x)},
+    {name:'y = x\u00b3 - 3x',f:x=>x*x*x-3*x,fp:x=>3*x*x-3}
+];
+
+function setCurve(i){
+    curveIdx=i;
+    document.querySelectorAll('.toggle-btn').forEach((b,j)=>b.className='toggle-btn'+(j===i?' active':''));
+    draw();
+}
+slX.addEventListener('input',draw);
+function toCanvas(x,y){return[cxC+x*scale,cyC-y*scale];}
+function fmt(v){return parseFloat(v.toFixed(3));}
+
+function draw(){
+    const xVal=parseFloat(slX.value);
+    document.getElementById('valX').textContent=fmt(xVal);
+    const curve=curves[curveIdx];
+    const yVal=curve.f(xVal);
+    const grad=curve.fp(xVal);
+
+    document.getElementById('eqDisplay').textContent='Curve: '+curve.name;
+    document.getElementById('point').textContent='('+fmt(xVal)+', '+fmt(yVal)+')';
+    document.getElementById('gradient').textContent=fmt(grad);
+
+    // Tangent equation: y - y1 = m(x - x1) => y = mx + (y1 - mx1)
+    const tC=yVal-grad*xVal;
+    let tEq='y = ';
+    if(grad===0)tEq+=fmt(tC);
+    else{
+        tEq+=fmt(grad)+'x';
+        if(tC>0)tEq+=' + '+fmt(tC);else if(tC<0)tEq+=' - '+fmt(Math.abs(tC));
+    }
+    document.getElementById('tangentEq').textContent=tEq;
+
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+    const range=Math.ceil(W/(2*scale));
+    // Grid
+    ctx.strokeStyle='#f0eeef';ctx.lineWidth=1;
+    for(let i=-range;i<=range;i++){
+        ctx.beginPath();ctx.moveTo(cxC+i*scale,0);ctx.lineTo(cxC+i*scale,H);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(0,cyC+i*scale);ctx.lineTo(W,cyC+i*scale);ctx.stroke();
+    }
+    ctx.strokeStyle='#ccc';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(0,cyC);ctx.lineTo(W,cyC);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cxC,0);ctx.lineTo(cxC,H);ctx.stroke();
+    ctx.fillStyle='#999';ctx.font='13px system-ui';ctx.textAlign='center';
+    for(let i=-range;i<=range;i++){
+        if(i===0)continue;
+        ctx.fillText(i,cxC+i*scale,cyC+18);
+        ctx.textAlign='right';ctx.fillText(i,cxC-8,cyC-i*scale+5);ctx.textAlign='center';
+    }
+
+    // Curve
+    ctx.strokeStyle='#1835b4';ctx.lineWidth=3;ctx.beginPath();let first=true;
+    for(let px=0;px<=W;px+=2){
+        const x=(px-cxC)/scale;
+        const y=curve.f(x);
+        const py=cyC-y*scale;
+        if(py<-300||py>H+300){first=true;continue;}
+        if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+
+    // Tangent line
+    const tLen=range+2;
+    const tx1=xVal-tLen,ty1=grad*(tx1-xVal)+yVal;
+    const tx2=xVal+tLen,ty2=grad*(tx2-xVal)+yVal;
+    const[tpx1,tpy1]=toCanvas(tx1,ty1),[tpx2,tpy2]=toCanvas(tx2,ty2);
+    ctx.strokeStyle='#c27878';ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.moveTo(tpx1,tpy1);ctx.lineTo(tpx2,tpy2);ctx.stroke();
+
+    // Point on curve
+    const[px,py]=toCanvas(xVal,yVal);
+    ctx.beginPath();ctx.arc(px,py,8,0,Math.PI*2);ctx.fillStyle='#d4a843';ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+
+    // Gradient label near point
+    ctx.fillStyle='#1a2747';ctx.font='bold 13px system-ui';ctx.textAlign='left';
+    ctx.fillText('gradient = '+fmt(grad),px+14,py-14);
+    ctx.font='12px system-ui';ctx.fillStyle='#c27878';
+    ctx.fillText('tangent: '+tEq,px+14,py+2);
+}
+
+// Click/drag on canvas to move point
+canvas.addEventListener('mousedown',startDrag);
+canvas.addEventListener('mousemove',onDrag);
+canvas.addEventListener('mouseup',()=>dragging=false);
+canvas.addEventListener('mouseleave',()=>dragging=false);
+let dragging=false;
+function startDrag(e){dragging=true;updateFromMouse(e);}
+function onDrag(e){if(dragging)updateFromMouse(e);}
+function updateFromMouse(e){
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)*(W/rect.width);
+    const x=(mx-cxC)/scale;
+    const clamped=Math.max(-4,Math.min(4,x));
+    slX.value=clamped;
+    draw();
+}
+draw();
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=w+'px';}
+window.addEventListener('resize',resize);resize();
+</script>
+</body>
+</html>

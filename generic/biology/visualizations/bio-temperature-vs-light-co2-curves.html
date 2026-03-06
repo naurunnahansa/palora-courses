@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature vs Light &amp; CO₂ as Limiting Factors</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; }
+        .legend { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+        .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 600; }
+        .legend-swatch { width: 20px; height: 3px; border-radius: 2px; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Temperature vs Light &amp; CO&#8322; as Limiting Factors</h1>
+    <div class="desc">Comparing how light intensity and temperature each affect photosynthesis rate</div>
+    <canvas id="graphCanvas" width="530" height="280"></canvas>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#1835b4;"></div>Light Intensity Effect</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#e74c3c;"></div>Temperature Effect</div>
+    </div>
+    <div class="note">
+        <strong>Key idea:</strong> Light intensity causes a plateau (another factor becomes limiting). Temperature shows an optimum, then enzymes denature causing a sharp decline.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('graphCanvas');
+const ctx = canvas.getContext('2d');
+let hoverX = null;
+
+const pad = { top: 35, right: 15, bottom: 45, left: 45 };
+const gap = 30;
+
+function lightRate(x) { return 8 * (1 - Math.exp(-0.05 * x)); }
+function tempRate(t) {
+    const opt = 37;
+    if (t <= opt) return 8 * Math.exp(-0.003 * Math.pow(t - opt, 2));
+    return 8 * Math.exp(-0.01 * Math.pow(t - opt, 2));
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const totalW = canvas.width - pad.left - pad.right;
+    const halfW = (totalW - gap) / 2;
+    const gh = canvas.height - pad.top - pad.bottom;
+
+    // Left graph: Light intensity
+    const lx0 = pad.left, ly0 = pad.top;
+    const lxMax = 100, lyMax = 10;
+
+    function lxToC(x) { return lx0 + (x / lxMax) * halfW; }
+    function lyToC(y) { return ly0 + ((lyMax - y) / lyMax) * gh; }
+
+    // Right graph: Temperature
+    const rx0 = pad.left + halfW + gap;
+    const rxMin = 0, rxMax = 60, ryMax = 10;
+
+    function rxToC(x) { return rx0 + ((x - rxMin) / (rxMax - rxMin)) * halfW; }
+    function ryToC(y) { return ly0 + ((ryMax - y) / ryMax) * gh; }
+
+    // Draw both axis sets
+    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5;
+    // Left axes
+    ctx.beginPath();
+    ctx.moveTo(lx0, ly0); ctx.lineTo(lx0, ly0 + gh); ctx.lineTo(lx0 + halfW, ly0 + gh);
+    ctx.stroke();
+    // Right axes
+    ctx.beginPath();
+    ctx.moveTo(rx0, ly0); ctx.lineTo(rx0, ly0 + gh); ctx.lineTo(rx0 + halfW, ly0 + gh);
+    ctx.stroke();
+
+    // Left grid & labels
+    ctx.fillStyle = '#4a5568'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+    for (let x = 0; x <= lxMax; x += 25) {
+        const cx = lxToC(x);
+        ctx.strokeStyle = '#e8e8e8'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(cx, ly0); ctx.lineTo(cx, ly0 + gh); ctx.stroke();
+        ctx.fillText(x, cx, ly0 + gh + 12);
+    }
+    ctx.textAlign = 'right';
+    for (let y = 0; y <= lyMax; y += 2) {
+        const cy = lyToC(y);
+        ctx.strokeStyle = '#e8e8e8'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(lx0, cy); ctx.lineTo(lx0 + halfW, cy); ctx.stroke();
+        ctx.fillText(y, lx0 - 4, cy + 3);
+    }
+
+    // Right grid & labels
+    ctx.textAlign = 'center';
+    for (let x = 0; x <= rxMax; x += 10) {
+        const cx = rxToC(x);
+        ctx.strokeStyle = '#e8e8e8'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(cx, ly0); ctx.lineTo(cx, ly0 + gh); ctx.stroke();
+        ctx.fillText(x + '\u00b0', cx, ly0 + gh + 12);
+    }
+    ctx.textAlign = 'right';
+    for (let y = 0; y <= ryMax; y += 2) {
+        const cy = ryToC(y);
+        ctx.strokeStyle = '#e8e8e8'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(rx0, cy); ctx.lineTo(rx0 + halfW, cy); ctx.stroke();
+        ctx.fillText(y, rx0 - 4, cy + 3);
+    }
+
+    // Graph titles
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Light Intensity Effect', lx0 + halfW / 2, ly0 - 12);
+    ctx.fillStyle = '#e74c3c';
+    ctx.fillText('Temperature Effect', rx0 + halfW / 2, ly0 - 12);
+
+    // X-axis labels
+    ctx.fillStyle = '#1a2747'; ctx.font = '9px system-ui';
+    ctx.fillText('Light Intensity', lx0 + halfW / 2, ly0 + gh + 30);
+    ctx.fillText('Temperature (\u00b0C)', rx0 + halfW / 2, ly0 + gh + 30);
+
+    // Y-axis labels
+    ctx.save(); ctx.translate(lx0 - 30, ly0 + gh / 2); ctx.rotate(-Math.PI / 2);
+    ctx.font = '9px system-ui'; ctx.fillStyle = '#1a2747'; ctx.fillText('Rate', 0, 0); ctx.restore();
+    ctx.save(); ctx.translate(rx0 - 30, ly0 + gh / 2); ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Rate', 0, 0); ctx.restore();
+
+    // Left curve
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for (let x = 0; x <= lxMax; x += 0.5) {
+        const cx = lxToC(x), cy = lyToC(lightRate(x));
+        x === 0 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+    }
+    ctx.stroke();
+
+    // Left annotation: plateau
+    ctx.fillStyle = '#4a5568'; ctx.font = 'italic 8px system-ui'; ctx.textAlign = 'left';
+    ctx.fillText('Plateau = another', lxToC(55), lyToC(7.2));
+    ctx.fillText('factor limiting', lxToC(55), lyToC(7.2) + 11);
+
+    // Right curve
+    ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for (let t = 0; t <= rxMax; t += 0.5) {
+        const cx = rxToC(t), cy = ryToC(tempRate(t));
+        t === 0 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+    }
+    ctx.stroke();
+
+    // Right annotation: denaturation
+    ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(rxToC(37), ly0); ctx.lineTo(rxToC(37), ly0 + gh); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#e74c3c'; ctx.font = '8px system-ui'; ctx.textAlign = 'left';
+    ctx.fillText('Optimum', rxToC(38), ly0 + 14);
+    ctx.fillText('~37\u00b0C', rxToC(38), ly0 + 24);
+
+    ctx.fillStyle = '#c0392b'; ctx.font = 'italic 8px system-ui';
+    ctx.fillText('Enzymes', rxToC(44), lyToC(4));
+    ctx.fillText('denature', rxToC(44), lyToC(4) + 11);
+
+    // Hover
+    if (hoverX !== null) {
+        const rect = canvas.getBoundingClientRect();
+        const mx = hoverX;
+
+        // Check which graph
+        if (mx >= lx0 && mx <= lx0 + halfW) {
+            const x = ((mx - lx0) / halfW) * lxMax;
+            const val = lightRate(x);
+            ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath(); ctx.moveTo(mx, ly0); ctx.lineTo(mx, ly0 + gh); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.beginPath(); ctx.arc(mx, lyToC(val), 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#1835b4'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+
+            const lines = [`Light: ${x.toFixed(1)}`, `Rate: ${val.toFixed(2)}`];
+            ctx.font = '10px system-ui';
+            const tw = Math.max(...lines.map(l => ctx.measureText(l).width)) + 14;
+            let bx = mx + 10; if (bx + tw > lx0 + halfW) bx = mx - tw - 10;
+            ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.roundRect(bx, ly0 + 10, tw, 40, 4); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#1a2747'; ctx.textAlign = 'left';
+            lines.forEach((l, i) => ctx.fillText(l, bx + 7, ly0 + 24 + i * 15));
+        } else if (mx >= rx0 && mx <= rx0 + halfW) {
+            const t = rxMin + ((mx - rx0) / halfW) * (rxMax - rxMin);
+            const val = tempRate(t);
+            ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath(); ctx.moveTo(mx, ly0); ctx.lineTo(mx, ly0 + gh); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.beginPath(); ctx.arc(mx, ryToC(val), 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#e74c3c'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+
+            const lines = [`Temp: ${t.toFixed(1)}\u00b0C`, `Rate: ${val.toFixed(2)}`];
+            ctx.font = '10px system-ui';
+            const tw = Math.max(...lines.map(l => ctx.measureText(l).width)) + 14;
+            let bx = mx + 10; if (bx + tw > rx0 + halfW) bx = mx - tw - 10;
+            ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.roundRect(bx, ly0 + 10, tw, 40, 4); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#1a2747'; ctx.textAlign = 'left';
+            lines.forEach((l, i) => ctx.fillText(l, bx + 7, ly0 + 24 + i * 15));
+        }
+    }
+}
+
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    hoverX = (e.clientX - rect.left) * (canvas.width / rect.width);
+    draw();
+});
+canvas.addEventListener('mouseleave', () => { hoverX = null; draw(); });
+
+function resize() {
+    const w = Math.min(530, window.innerWidth - 24);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 280 / 530) + 'px';
+}
+window.addEventListener('resize', resize);
+resize();
+draw();
+</script>
+</body>
+</html>

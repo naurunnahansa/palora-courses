@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exponential Graphs</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}
+.container{max-width:100%;margin:0 auto}
+h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.slider-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.slider-row label{font-size:.78rem;font-weight:600;min-width:60px;color:#1835b4}
+.slider-row input[type=range]{flex:1;accent-color:#1835b4}
+.slider-row .val{font-size:.85rem;min-width:36px;text-align:right;color:#1835b4}
+.equation-display{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;font-size:1.0rem;color:#1835b4;margin-bottom:8px;font-weight:600}
+.toggle-row{display:flex;gap:6px;margin-bottom:8px;align-items:center;justify-content:center}
+.toggle-btn{padding:5px 12px;border:1px solid #d4d8e5;border-radius:4px;background:#e8ecf8;color:#1835b4;font-size:.75rem;cursor:pointer;font-family:system-ui}
+.toggle-btn.active{background:#1835b4;color:#fff;border-color:#1835b4}
+canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;width:100%}
+.readouts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px}
+.readout{background:#e8ecf8;border-radius:5px;padding:6px 8px;text-align:center}
+.readout .label{font-size:.65rem;color:#4a5568}
+.readout .value{font-size:.82rem;color:#1835b4;font-weight:600}
+.legend{display:flex;gap:12px;justify-content:center;margin-top:8px;font-size:.75rem}
+.legend-item{display:flex;align-items:center;gap:4px}
+.legend-dot{width:12px;height:3px;border-radius:2px}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#1835b4}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Exponential Graphs</h1>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="equation-display" id="eqDisplay">y = 2\u02e3</div>
+        <div class="slider-row">
+            <label>Base (a)</label>
+            <input type="range" id="slA" min="0.1" max="5" step="0.1" value="2">
+            <span class="val" id="valA">2</span>
+        </div>
+        <div class="toggle-row">
+            <span style="font-size:.78rem;font-weight:600;color:#1835b4">Show y = a\u207b\u02e3:</span>
+            <button class="toggle-btn" id="btnInv" onclick="toggleInverse()">Off</button>
+        </div>
+    </div>
+    <div class="card" style="padding:8px">
+        <canvas id="canvas" width="1060" height="1060"></canvas>
+        <div class="legend" id="legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#1835b4"></div>y = a\u02e3</div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-title">Properties</div>
+        <div class="readouts">
+            <div class="readout"><div class="label">Behaviour</div><div class="value" id="behaviour"></div></div>
+            <div class="readout"><div class="label">Passes Through</div><div class="value" id="passThrough"></div></div>
+            <div class="readout"><div class="label">Asymptote</div><div class="value" id="asymptote"></div></div>
+        </div>
+    </div>
+    <div class="info">When <strong>a > 1</strong>: exponential growth. When <strong>0 < a < 1</strong>: exponential decay. Always passes through (0, 1).</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const slA=document.getElementById('slA');
+const W=canvas.width,H=canvas.height,scale=50;
+const cxC=W/2,cyC=H*0.7;
+let showInverse=false;
+
+slA.addEventListener('input',draw);
+function toggleInverse(){
+    showInverse=!showInverse;
+    document.getElementById('btnInv').textContent=showInverse?'On':'Off';
+    document.getElementById('btnInv').className='toggle-btn'+(showInverse?' active':'');
+    draw();
+}
+function toCanvas(x,y){return[cxC+x*scale,cyC-y*scale];}
+function fmt(v){return parseFloat(v.toFixed(3));}
+
+function draw(){
+    const a=parseFloat(slA.value);
+    document.getElementById('valA').textContent=a;
+    document.getElementById('eqDisplay').textContent='y = '+a+'\u02e3'+(showInverse?'  and  y = '+a+'\u207b\u02e3':'');
+    document.getElementById('behaviour').textContent=a>1?'Growth curve':a<1?'Decay curve':'y = 1 (constant)';
+    document.getElementById('passThrough').textContent='(0, 1)';
+    document.getElementById('asymptote').textContent='y = 0 (x-axis)';
+
+    // Legend
+    let leg='<div class="legend-item"><div class="legend-dot" style="background:#1835b4"></div>y = '+a+'\u02e3</div>';
+    if(showInverse)leg+='<div class="legend-item"><div class="legend-dot" style="background:#c27878"></div>y = '+a+'\u207b\u02e3</div>';
+    document.getElementById('legend').innerHTML=leg;
+
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+    const range=Math.ceil(W/(2*scale));
+
+    // Grid
+    ctx.strokeStyle='#f0eeef';ctx.lineWidth=1;
+    for(let i=-range;i<=range;i++){
+        ctx.beginPath();ctx.moveTo(cxC+i*scale,0);ctx.lineTo(cxC+i*scale,H);ctx.stroke();
+    }
+    for(let i=-5;i<=20;i++){
+        const py=cyC-i*scale;
+        ctx.beginPath();ctx.moveTo(0,py);ctx.lineTo(W,py);ctx.stroke();
+    }
+    // Axes
+    ctx.strokeStyle='#ccc';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(0,cyC);ctx.lineTo(W,cyC);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cxC,0);ctx.lineTo(cxC,H);ctx.stroke();
+    ctx.fillStyle='#999';ctx.font='13px system-ui';ctx.textAlign='center';
+    for(let i=-range;i<=range;i++){
+        if(i===0)continue;
+        ctx.fillText(i,cxC+i*scale,cyC+18);
+    }
+    ctx.textAlign='right';
+    for(let i=1;i<=15;i++){
+        const py=cyC-i*scale;if(py<10)break;
+        ctx.fillText(i,cxC-8,py+5);
+    }
+
+    // Asymptote y=0
+    ctx.setLineDash([6,4]);ctx.strokeStyle='rgba(200,50,50,0.4)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(0,cyC);ctx.lineTo(W,cyC);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(200,50,50,0.6)';ctx.font='12px system-ui';ctx.textAlign='left';
+    ctx.fillText('asymptote: y = 0',10,cyC-8);
+
+    // y = a^x
+    drawCurve(x=>Math.pow(a,x),'#1835b4');
+    // y = a^(-x)
+    if(showInverse)drawCurve(x=>Math.pow(a,-x),'#c27878');
+
+    // Mark (0,1)
+    const[px,py]=toCanvas(0,1);
+    ctx.beginPath();ctx.arc(px,py,7,0,Math.PI*2);ctx.fillStyle='#7aab7a';ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#1a2747';ctx.font='bold 12px system-ui';ctx.textAlign='left';
+    ctx.fillText('(0, 1)',px+12,py-6);
+}
+
+function drawCurve(fn,color){
+    ctx.strokeStyle=color;ctx.lineWidth=3;ctx.beginPath();let first=true;
+    for(let px=0;px<=W;px+=2){
+        const x=(px-cxC)/scale;
+        const y=fn(x);
+        const py=cyC-y*scale;
+        if(py<-200||py>H+200||!isFinite(y)){first=true;continue;}
+        if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+}
+draw();
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=w+'px';}
+window.addEventListener('resize',resize);resize();
+</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arc Length &amp; Sector Area</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width:100%;margin:0 auto}h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.slider-row{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:.82rem}.slider-row input[type=range]{flex:1;accent-color:#1835b4}.slider-row .val{min-width:55px;text-align:center;font-weight:600;color:#1835b4}.formulas{display:grid;grid-template-columns:1fr;gap:6px;margin-top:8px}.formula-item{background:#e8ecf8;border-radius:5px;padding:10px 12px;font-size:.82rem;line-height:1.6}.formula-item .label{font-size:.72rem;color:#6b7db3;text-transform:uppercase;letter-spacing:.03em}.formula-item .formula{color:#4a5568;font-size:.78rem}.formula-item .value{font-weight:700;color:#1835b4;font-size:1rem}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Arc Length &amp; Sector Area</h1>
+    <div class="card" style="padding:8px"><canvas id="cv" width="800" height="800"></canvas></div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row"><span>Radius r:</span><input type="range" id="rSlider" min="1" max="20" value="10" step="0.5"><span class="val" id="rVal">10 cm</span></div>
+        <div class="slider-row"><span>Angle &theta;:</span><input type="range" id="aSlider" min="1" max="360" value="90"><span class="val" id="aVal">90&deg;</span></div>
+    </div>
+    <div class="card">
+        <div class="card-title">Calculations</div>
+        <div class="formulas">
+            <div class="formula-item">
+                <div class="label">Arc Length</div>
+                <div class="formula" id="arcFormula">= (&theta;/360) &times; 2&pi;r</div>
+                <div class="formula" id="arcSub"></div>
+                <div class="value" id="arcVal"></div>
+            </div>
+            <div class="formula-item">
+                <div class="label">Sector Area</div>
+                <div class="formula" id="secFormula">= (&theta;/360) &times; &pi;r&sup2;</div>
+                <div class="formula" id="secSub"></div>
+                <div class="value" id="secVal"></div>
+            </div>
+            <div class="formula-item">
+                <div class="label">Full Circle Reference</div>
+                <div class="formula" id="fullRef"></div>
+            </div>
+        </div>
+    </div>
+    <div class="info">The arc length is the fraction of the circumference. The sector area is the fraction of the total circle area. Both use <strong>&theta;/360</strong> as the fraction.</div>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let radius=10,angle=90;
+
+function resize(){const w=Math.min(500,cv.parentElement.clientWidth-16);cv.style.width=w+'px';cv.style.height=w+'px'}
+resize();window.addEventListener('resize',resize);
+
+const rSlider=document.getElementById('rSlider'),aSlider=document.getElementById('aSlider');
+
+function draw(){
+    const W=cv.width,H=cv.height,cx=W/2,cy=H/2;
+    const maxR=W*0.4;
+    const drawR=maxR*(radius/20);
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    const startA=-Math.PI/2;
+    const endA=startA+angle*Math.PI/180;
+
+    // Full circle outline (faint)
+    ctx.beginPath();ctx.arc(cx,cy,drawR,0,Math.PI*2);ctx.strokeStyle='#d4d8e5';ctx.lineWidth=1;ctx.stroke();
+
+    // Sector fill
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,drawR,startA,endA);ctx.closePath();
+    ctx.fillStyle='#1835b430';ctx.fill();
+
+    // Arc (thick, colored)
+    ctx.beginPath();ctx.arc(cx,cy,drawR,startA,endA);ctx.strokeStyle='#e74c3c';ctx.lineWidth=4;ctx.stroke();
+
+    // Radii lines
+    ctx.strokeStyle='#1835b4';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+drawR*Math.cos(startA),cy+drawR*Math.sin(startA));ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+drawR*Math.cos(endA),cy+drawR*Math.sin(endA));ctx.stroke();
+
+    // Angle arc
+    const angleR=Math.min(40,drawR*0.25);
+    ctx.beginPath();ctx.arc(cx,cy,angleR,startA,endA);ctx.strokeStyle='#f39c12';ctx.lineWidth=2;ctx.stroke();
+    // Angle label
+    const midA=(startA+endA)/2;
+    ctx.fillStyle='#f39c12';ctx.font='bold 14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(angle+'°',cx+(angleR+18)*Math.cos(midA),cy+(angleR+18)*Math.sin(midA));
+
+    // Radius label
+    const rMid=drawR/2;
+    const rAngle=startA+0.15;
+    ctx.fillStyle='#1835b4';ctx.font='bold 13px system-ui';
+    ctx.fillText('r = '+radius,cx+rMid*Math.cos(rAngle)+20,cy+rMid*Math.sin(rAngle));
+
+    // Arc length label
+    const arcMid=(startA+endA)/2;
+    ctx.fillStyle='#e74c3c';ctx.font='bold 12px system-ui';
+    const arcLen=(angle/360)*2*Math.PI*radius;
+    ctx.fillText('arc = '+arcLen.toFixed(2)+' cm',cx+(drawR+25)*Math.cos(arcMid),cy+(drawR+25)*Math.sin(arcMid));
+
+    // Center dot
+    ctx.beginPath();ctx.arc(cx,cy,4,0,Math.PI*2);ctx.fillStyle='#1835b4';ctx.fill();
+
+    // Update calculations
+    const frac=angle+'/360';
+    const circumference=2*Math.PI*radius;
+    const fullArea=Math.PI*radius*radius;
+    const sectorArea=(angle/360)*fullArea;
+
+    document.getElementById('arcSub').innerHTML='= ('+frac+') &times; 2&pi;('+radius+')';
+    document.getElementById('arcVal').textContent=arcLen.toFixed(2)+' cm';
+    document.getElementById('secSub').innerHTML='= ('+frac+') &times; &pi;('+radius+')&sup2;';
+    document.getElementById('secVal').textContent=sectorArea.toFixed(2)+' cm\u00B2';
+    document.getElementById('fullRef').innerHTML='Circumference = 2&pi;('+radius+') = '+circumference.toFixed(2)+' cm &nbsp;|&nbsp; Area = &pi;('+radius+')&sup2; = '+fullArea.toFixed(2)+' cm&sup2;';
+}
+
+rSlider.addEventListener('input',function(){radius=+this.value;document.getElementById('rVal').textContent=radius+' cm';draw()});
+aSlider.addEventListener('input',function(){angle=+this.value;document.getElementById('aVal').textContent=angle+'°';draw()});
+draw();
+</script>
+</body>
+</html>

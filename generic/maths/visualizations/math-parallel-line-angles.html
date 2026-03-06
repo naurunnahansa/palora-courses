@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angles in Parallel Lines</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width:100%;margin:0 auto}h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;cursor:pointer}.slider-row{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:.82rem}.slider-row input[type=range]{flex:1;accent-color:#1835b4}.slider-row .val{min-width:42px;text-align:center;font-weight:600;color:#1835b4}.result-box{background:#e8ecf8;border-radius:5px;padding:8px 12px;font-size:.82rem;color:#1a2747;margin-top:8px;line-height:1.7}.result-box strong{color:#1835b4}.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;font-size:.75rem}.legend span{display:flex;align-items:center;gap:4px}.legend .dot{width:10px;height:10px;border-radius:50%;display:inline-block}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Angles in Parallel Lines</h1>
+    <div class="card" style="padding:8px"><canvas id="cv" width="800" height="600"></canvas></div>
+    <div class="card">
+        <div class="card-title">Transversal Angle</div>
+        <div class="slider-row"><span>30&deg;</span><input type="range" id="angleSlider" min="30" max="150" value="60"><span class="val" id="angleVal">60&deg;</span></div>
+    </div>
+    <div class="card">
+        <div class="card-title">Angle Relationships</div>
+        <div class="legend">
+            <span><span class="dot" style="background:#e74c3c"></span> Corresponding (equal)</span>
+            <span><span class="dot" style="background:#2ecc71"></span> Alternate (equal)</span>
+            <span><span class="dot" style="background:#f39c12"></span> Co-interior (sum 180&deg;)</span>
+        </div>
+        <div class="result-box" id="info">Click an angle to see its relationships.</div>
+    </div>
+    <div class="info">Click any angle label (a&ndash;h) on the diagram. Use the slider to change the transversal angle.</div>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d'),slider=document.getElementById('angleSlider'),angleVal=document.getElementById('angleVal'),infoBox=document.getElementById('info');
+let W,H,transAngle=60,selected=-1;
+const colors={acute:'#1835b4',obtuse:'#6b7db3'};
+const relColors={corresponding:'#e74c3c',alternate:'#2ecc71',cointerior:'#f39c12'};
+const labels='abcdefgh'.split('');
+let angleRegions=[];
+
+function resize(){const w=Math.min(600,cv.parentElement.clientWidth-16);cv.style.width=w+'px';cv.style.height=(w*0.75)+'px';W=cv.width;H=cv.height}
+resize();window.addEventListener('resize',resize);
+
+function getAngles(t){
+    const a=t,b=180-t;
+    return[a,b,b,a, a,b,b,a];
+}
+function getRelationships(i){
+    const pairs={corresponding:[[0,4],[1,5],[2,6],[3,7]],alternate:[[0,7],[1,6],[2,5],[3,4]],cointerior:[[0,6],[1,7],[2,4],[3,5]]};
+    const result=[];
+    for(const[type,ps]of Object.entries(pairs)){for(const p of ps){if(p[0]===i||p[1]===i){const other=p[0]===i?p[1]:p[0];result.push({type,other,pair:p})}}}
+    return result;
+}
+
+function draw(){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+    const y1=H*0.32,y2=H*0.68,mx=W/2;
+    const rad=transAngle*Math.PI/180;
+    const dx=300,dy=dx*Math.tan(Math.PI-rad);
+    const tx1=mx-300,ty1=y1-(dy*((y1-H/2)/((y2-y1)/2+300*Math.tan(rad-Math.PI/2)))),tx2=mx+300;
+    const slope=Math.tan(Math.PI-rad);
+    const transX1=mx-280/Math.abs(Math.cos(rad)),transY1=(y1+y2)/2+280*Math.sin(rad)*Math.sign(Math.cos(rad));
+    const transX2=mx+280/Math.abs(Math.cos(rad)),transY2=(y1+y2)/2-280*Math.sin(rad)*Math.sign(Math.cos(rad));
+    const ix1=mx+(y1-(y1+y2)/2)/Math.tan(rad),iy1=y1;
+    const ix2=mx+(y2-(y1+y2)/2)/Math.tan(rad),iy2=y2;
+
+    // Parallel lines
+    ctx.strokeStyle='#1a2747';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(40,y1);ctx.lineTo(W-40,y1);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(40,y2);ctx.lineTo(W-40,y2);ctx.stroke();
+    // Arrows for parallel
+    for(const y of[y1,y2]){ctx.fillStyle='#1a2747';ctx.beginPath();ctx.moveTo(W-50,y-5);ctx.lineTo(W-40,y);ctx.lineTo(W-50,y+5);ctx.fill()}
+
+    // Transversal
+    const halfLen=340;
+    const midX=mx,midY=(y1+y2)/2;
+    const cosA=Math.cos(rad),sinA=Math.sin(rad);
+    const tA={x:midX-halfLen*cosA,y:midY+halfLen*sinA};
+    const tB={x:midX+halfLen*cosA,y:midY-halfLen*sinA};
+    ctx.strokeStyle='#1a2747';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(tA.x,tA.y);ctx.lineTo(tB.x,tB.y);ctx.stroke();
+
+    // Intersection points
+    const t1=((y1-midY)/(tA.y-midY));const p1={x:midX+t1*(tA.x-midX),y:y1};
+    const t2=((y2-midY)/(tA.y-midY));const p2={x:midX+t2*(tA.x-midX),y:y2};
+
+    const angles=getAngles(transAngle);
+    angleRegions=[];
+    const arcR=35;
+
+    // Draw angles at each intersection
+    // At p1: angles a,b,c,d; At p2: angles e,f,g,h
+    // Angle a: between right-going line and upward transversal (acute, top-right)
+    const lineAngleRight=0,lineAngleLeft=Math.PI;
+    const transUp=Math.atan2(tB.y-p1.y,tB.x-p1.x);
+    const transDown=Math.atan2(tA.y-p1.y,tA.x-p1.x);
+    const transUp2=Math.atan2(tB.y-p2.y,tB.x-p2.x);
+    const transDown2=Math.atan2(tA.y-p2.y,tA.x-p2.x);
+
+    // Angle positions: [startAngle, endAngle, intersection point, label position multiplier]
+    const angleConfigs=[
+        // At p1: a(top-right), b(top-left), c(bottom-left), d(bottom-right)
+        {start:transUp,end:0,p:p1,idx:0},
+        {start:Math.PI,end:transUp+2*Math.PI,p:p1,idx:1},
+        {start:transDown,end:Math.PI,p:p1,idx:2},
+        {start:0,end:transDown,p:p1,idx:3},
+        // At p2: e(top-right), f(top-left), g(bottom-left), h(bottom-right)
+        {start:transUp2,end:0,p:p2,idx:4},
+        {start:Math.PI,end:transUp2+2*Math.PI,p:p2,idx:5},
+        {start:transDown2,end:Math.PI,p:p2,idx:6},
+        {start:0,end:transDown2,p:p2,idx:7}
+    ];
+
+    const rels=selected>=0?getRelationships(selected):[];
+    const highlightSet=new Set();
+    let highlightColors={};
+    if(selected>=0){
+        highlightSet.add(selected);
+        highlightColors[selected]='#1835b4';
+        for(const r of rels){highlightSet.add(r.other);highlightColors[r.other]=relColors[r.type]}
+    }
+
+    for(const ac of angleConfigs){
+        let s=ac.start,e=ac.end;
+        if(e<s)e+=2*Math.PI;
+        const mid=(s+e)/2;
+        const r=arcR+(highlightSet.has(ac.idx)?5:0);
+        const lw=highlightSet.has(ac.idx)?3:1.5;
+        const col=highlightSet.has(ac.idx)?highlightColors[ac.idx]:'#aab';
+
+        // Fill arc
+        if(highlightSet.has(ac.idx)){
+            ctx.beginPath();ctx.moveTo(ac.p.x,ac.p.y);ctx.arc(ac.p.x,ac.p.y,r,s,e);ctx.closePath();
+            ctx.fillStyle=highlightColors[ac.idx]+'30';ctx.fill();
+        }
+        ctx.beginPath();ctx.arc(ac.p.x,ac.p.y,r,s,e);ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.stroke();
+
+        // Label
+        const lr=r+18;
+        const lx=ac.p.x+lr*Math.cos(mid),ly=ac.p.y+lr*Math.sin(mid);
+        ctx.font='bold 14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillStyle=highlightSet.has(ac.idx)?highlightColors[ac.idx]:'#1a2747';
+        ctx.fillText(labels[ac.idx]+'='+angles[ac.idx].toFixed(0)+'°',lx,ly);
+
+        angleRegions.push({x:ac.p.x+arcR*Math.cos(mid),y:ac.p.y+arcR*Math.sin(mid),idx:ac.idx,cx:lx,cy:ly});
+    }
+
+    // Parallel marks
+    for(const y of[y1,y2]){
+        ctx.strokeStyle='#1835b4';ctx.lineWidth=1.5;
+        ctx.beginPath();ctx.moveTo(85,y-6);ctx.lineTo(92,y+6);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(90,y-6);ctx.lineTo(97,y+6);ctx.stroke();
+    }
+
+    // Update info
+    if(selected>=0){
+        let html='<strong>Angle '+labels[selected]+' = '+angles[selected].toFixed(0)+'&deg;</strong><br>';
+        for(const r of rels){
+            const tName=r.type==='cointerior'?'Co-interior':r.type.charAt(0).toUpperCase()+r.type.slice(1);
+            const rel=r.type==='cointerior'?'sum to 180&deg;':'are equal';
+            html+='<span style="color:'+relColors[r.type]+'">&#9679;</span> <strong>'+tName+'</strong> with <strong>'+labels[r.other]+'</strong> ('+labels[r.pair[0]]+' &amp; '+labels[r.pair[1]]+' '+rel+'): '+labels[r.other]+' = '+angles[r.other].toFixed(0)+'&deg;<br>';
+        }
+        infoBox.innerHTML=html;
+    }
+}
+
+cv.addEventListener('click',function(e){
+    const rect=cv.getBoundingClientRect();
+    const sx=cv.width/rect.width,sy=cv.height/rect.height;
+    const mx=(e.clientX-rect.left)*sx,my=(e.clientY-rect.top)*sy;
+    let best=-1,bestD=50;
+    for(const ar of angleRegions){
+        const d=Math.hypot(mx-ar.x,my-ar.y);
+        if(d<bestD){bestD=d;best=ar.idx}
+    }
+    selected=best;
+    if(best<0)infoBox.innerHTML='Click an angle to see its relationships.';
+    draw();
+});
+
+slider.addEventListener('input',function(){transAngle=+this.value;angleVal.textContent=transAngle+'°';draw()});
+draw();
+</script>
+</body>
+</html>

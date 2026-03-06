@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restriction Enzymes & Sticky Ends</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .controls { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+        .btn { padding: 6px 16px; border: none; border-radius: 4px; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+        .btn-primary { background: #1835b4; color: #fff; }
+        .btn-primary:hover { background: #122a8a; }
+        .btn-secondary { background: #e8ecf8; color: #1835b4; border: 1.5px solid #1835b4; }
+        .btn-secondary:hover { background: #d4d8e5; }
+        .step-label { font-size: 0.82rem; font-weight: 700; color: #1835b4; min-width: 200px; text-align: center; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Restriction Enzymes &amp; Sticky Ends</h1>
+    <div class="desc">How EcoRI cuts DNA at a specific recognition sequence to produce sticky ends</div>
+    <canvas id="c" width="560" height="380"></canvas>
+    <div class="controls">
+        <button class="btn btn-primary" id="btnPlay" onclick="togglePlay()">&#9654; Auto Play</button>
+        <button class="btn btn-primary" onclick="nextStep()">Next Step &rarr;</button>
+        <button class="btn btn-secondary" onclick="reset()">Reset</button>
+    </div>
+    <div class="step-label" id="stepLabel">Click Next Step to begin</div>
+    <div class="note" style="margin-top:6px;">
+        <strong>EcoRI recognition sequence:</strong> 5'-GAATTC-3' / 3'-CTTAAG-5'. The staggered cut produces single-stranded <strong>sticky ends</strong> with complementary bases that can pair with other fragments cut by the same enzyme.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const stepLabel = document.getElementById('stepLabel');
+
+// DNA sequence for display
+const topStrand =    ['A','T','G','C','G','A','A','T','T','C','G','T','A','C'];
+const bottomStrand = ['T','A','C','G','C','T','T','A','A','G','C','A','T','G'];
+// Recognition site: indices 5-10 (GAATTC on top)
+
+const baseColors = { A: '#e74c3c', T: '#e74c3c', C: '#2980b9', G: '#2980b9' };
+
+let step = 0; // 0=intact, 1=highlight, 2=cut, 3=separate, 4=new DNA approaches, 5=ligase joins
+let animT = 0;
+let playing = false;
+let playTimer = null;
+
+const stepDescriptions = [
+    'Double-stranded DNA with the EcoRI recognition sequence',
+    'EcoRI enzyme recognises the palindromic sequence GAATTC / CTTAAG',
+    'EcoRI cuts between G and A on each strand in a staggered pattern',
+    'The two fragments separate, revealing single-stranded sticky ends (AATT)',
+    'A second DNA fragment with complementary sticky ends approaches',
+    'DNA ligase seals the sugar-phosphate backbone, joining the fragments',
+];
+
+function drawBase(x, y, letter, highlight, dim) {
+    const r = 10;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = highlight ? '#f9e79f' : (dim ? '#eee' : '#f8f9fc');
+    ctx.fill();
+    ctx.strokeStyle = highlight ? '#f39c12' : (dim ? '#ccc' : baseColors[letter]);
+    ctx.lineWidth = highlight ? 2 : 1.5;
+    ctx.stroke();
+    ctx.font = 'bold 10px system-ui';
+    ctx.fillStyle = dim ? '#bbb' : baseColors[letter];
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(letter, x, y);
+}
+
+function drawBond(x, y1, y2, highlight, dim) {
+    ctx.strokeStyle = highlight ? '#f39c12' : (dim ? '#ddd' : '#a0aec0');
+    ctx.lineWidth = highlight ? 2.5 : 1.5;
+    ctx.beginPath();
+    ctx.moveTo(x, y1 + 10);
+    ctx.lineTo(x, y2 - 10);
+    ctx.stroke();
+}
+
+function drawBackbone(x1, x2, y, color) {
+    ctx.strokeStyle = color || '#4a5568';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(x1, y);
+    ctx.lineTo(x2, y);
+    ctx.stroke();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const startX = 65;
+    const spacing = 32;
+    const topY = 100;
+    const botY = 150;
+    const recStart = 5, recEnd = 10; // recognition indices
+    const cutTop = 5; // cut between index 5 and 6 on top (G|AATTC)
+    const cutBot = 9; // cut between index 9 and 10 on bottom (CTTAA|G)
+
+    // Labels
+    ctx.font = '10px system-ui';
+    ctx.fillStyle = '#4a5568';
+    ctx.textAlign = 'left';
+    ctx.fillText("5'", startX - 20, topY);
+    ctx.fillText("3'", startX - 20, botY);
+    ctx.textAlign = 'right';
+    ctx.fillText("3'", startX + 14 * spacing + 16, topY);
+    ctx.fillText("5'", startX + 14 * spacing + 16, botY);
+
+    if (step <= 2) {
+        // Intact or highlighting or cutting
+        const sepDist = step === 2 ? 12 : 0;
+
+        for (let i = 0; i < 14; i++) {
+            const x = startX + i * spacing;
+            const inRec = i >= recStart && i < recEnd;
+            const hl = step >= 1 && inRec;
+
+            // Determine if on left or right of cut
+            const leftSide = i <= cutTop;
+            const rightSide = i > cutTop;
+            let offsetX = 0;
+            if (step === 2) {
+                offsetX = leftSide ? -sepDist / 2 : sepDist / 2;
+            }
+
+            drawBase(x + offsetX, topY, topStrand[i], hl, false);
+            drawBase(x + offsetX, botY, bottomStrand[i], hl, false);
+
+            // Bond (break at cut points)
+            const topCut = step === 2 && i >= cutTop + 1 && i <= cutBot;
+            const botCut = step === 2 && i >= cutTop + 1 && i <= cutBot;
+            if (!(step === 2 && ((i >= cutTop + 1 && i <= cutBot - 1)))) {
+                drawBond(x + offsetX, topY, botY, hl, false);
+            }
+        }
+
+        // Backbones
+        if (step < 2) {
+            drawBackbone(startX - 12, startX + 13 * spacing + 12, topY - 14, '#4a5568');
+            drawBackbone(startX - 12, startX + 13 * spacing + 12, botY + 14, '#4a5568');
+        } else {
+            // Cut backbones
+            // Top: cut between 5 and 6
+            drawBackbone(startX - 12 - sepDist/2, startX + cutTop * spacing + 10 - sepDist/2, topY - 14, '#4a5568');
+            drawBackbone(startX + (cutTop + 1) * spacing - 10 + sepDist/2, startX + 13 * spacing + 12 + sepDist/2, topY - 14, '#4a5568');
+            // Bottom: cut between 9 and 10
+            drawBackbone(startX - 12 - sepDist/2, startX + cutBot * spacing + 10 - sepDist/2, botY + 14, '#4a5568');
+            drawBackbone(startX + (cutBot + 1) * spacing - 10 + sepDist/2, startX + 13 * spacing + 12 + sepDist/2, botY + 14, '#4a5568');
+
+            // Cut marks
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([3, 3]);
+            const cutX1 = startX + (cutTop + 0.5) * spacing;
+            const cutX2 = startX + (cutBot + 0.5) * spacing;
+            ctx.beginPath(); ctx.moveTo(cutX1, topY - 20); ctx.lineTo(cutX1, topY + 5); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(cutX2, botY - 5); ctx.lineTo(cutX2, botY + 20); ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Scissors
+            ctx.font = '16px system-ui';
+            ctx.fillStyle = '#e74c3c';
+            ctx.textAlign = 'center';
+            ctx.fillText('\u2702', cutX1, topY - 24);
+            ctx.fillText('\u2702', cutX2, botY + 30);
+        }
+
+        // Recognition label
+        if (step >= 1) {
+            ctx.fillStyle = '#f39c12';
+            ctx.font = 'bold 10px system-ui';
+            ctx.textAlign = 'center';
+            ctx.fillText('EcoRI recognition site', startX + 7.5 * spacing, topY - 34);
+            ctx.strokeStyle = '#f39c12';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(startX + recStart * spacing, topY - 26);
+            ctx.lineTo(startX + (recEnd - 1) * spacing, topY - 26);
+            ctx.stroke();
+        }
+
+    } else if (step === 3) {
+        // Separated fragments with sticky ends visible
+        const gap = 60;
+        // Left fragment: top 0-5, bottom 0-9
+        const lx = 20;
+        for (let i = 0; i <= cutTop; i++) {
+            const x = lx + i * spacing;
+            drawBase(x, topY, topStrand[i], false, false);
+        }
+        for (let i = 0; i <= cutBot; i++) {
+            const x = lx + i * spacing;
+            drawBase(x, botY, bottomStrand[i], i > cutTop, false);
+            if (i <= cutTop) drawBond(x, topY, botY, false, false);
+        }
+        drawBackbone(lx - 10, lx + cutTop * spacing + 10, topY - 14);
+        drawBackbone(lx - 10, lx + cutBot * spacing + 10, botY + 14);
+
+        // Sticky end label (left fragment)
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = 'bold 9px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('Sticky end', lx + (cutTop + cutBot + 2) / 2 * spacing / 2 + 80, botY + 32);
+
+        // Right fragment: top 6-13, bottom 10-13
+        const rx = lx + (cutBot + 1) * spacing + gap;
+        for (let i = cutTop + 1; i < 14; i++) {
+            const x = rx + (i - cutTop - 1) * spacing;
+            drawBase(x, topY, topStrand[i], i < recEnd, false);
+            if (i >= recEnd) {
+                drawBase(x, botY, bottomStrand[i], false, false);
+                drawBond(x, topY, botY, false, false);
+            }
+        }
+        for (let i = cutBot + 1; i < 14; i++) {
+            const x = rx + (i - cutTop - 1) * spacing;
+            if (i < 14) {
+                drawBase(x, botY, bottomStrand[i], false, false);
+            }
+        }
+        drawBackbone(rx - 10, rx + (13 - cutTop - 1) * spacing + 10, topY - 14);
+        drawBackbone(rx + (cutBot - cutTop - 1) * spacing - 10, rx + (13 - cutTop - 1) * spacing + 10, botY + 14);
+
+        // Sticky end label (right fragment)
+        ctx.fillText('Sticky end', rx + 1.5 * spacing, topY - 30);
+
+        // Overall label
+        ctx.font = 'bold 11px system-ui';
+        ctx.fillStyle = '#1835b4';
+        ctx.textAlign = 'center';
+        ctx.fillText('Sticky ends have complementary base pairs (AATT)', canvas.width / 2, 50);
+
+    } else if (step === 4) {
+        // New DNA approaches from right
+        const lx = 20;
+        for (let i = 0; i <= cutTop; i++) {
+            const x = lx + i * spacing;
+            drawBase(x, topY, topStrand[i], false, false);
+        }
+        for (let i = 0; i <= cutBot; i++) {
+            const x = lx + i * spacing;
+            drawBase(x, botY, bottomStrand[i], i > cutTop, false);
+            if (i <= cutTop) drawBond(x, topY, botY, false, false);
+        }
+        drawBackbone(lx - 10, lx + cutTop * spacing + 10, topY - 14);
+        drawBackbone(lx - 10, lx + cutBot * spacing + 10, botY + 14);
+
+        // New fragment approaching (different bases outside, same sticky ends)
+        const newTop = ['A','A','T','T','G','C','A','T'];
+        const newBot = ['C','G','T','A'];
+        const rx = lx + (cutBot + 1) * spacing + 20;
+        // Sticky end part
+        for (let i = 0; i < 4; i++) {
+            const x = rx + i * spacing;
+            drawBase(x, topY, newTop[i], true, false);
+        }
+        for (let i = 0; i < newBot.length; i++) {
+            const x = rx + (i + 4) * spacing;
+            drawBase(x, topY, newTop[i + 4], false, false);
+            drawBase(x, botY, newBot[i], false, false);
+            drawBond(x, topY, botY, false, false);
+        }
+        // Bottom sticky end complement
+        drawBackbone(rx - 10, rx + 7 * spacing + 10, topY - 14);
+        drawBackbone(rx + 4 * spacing - 10, rx + 7 * spacing + 10, botY + 14);
+
+        // Arrow showing approach
+        ctx.strokeStyle = '#27ae60';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 3]);
+        ctx.beginPath();
+        ctx.moveTo(rx - 5, topY + 25);
+        ctx.lineTo(lx + cutTop * spacing + 20, topY + 25);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.font = '12px system-ui';
+        ctx.fillStyle = '#27ae60';
+        ctx.textAlign = 'center';
+        ctx.fillText('\u2190 complementary sticky ends pair up', canvas.width / 2, topY + 40);
+
+        ctx.font = 'bold 10px system-ui';
+        ctx.fillStyle = '#1835b4';
+        ctx.textAlign = 'center';
+        ctx.fillText('New DNA fragment with matching sticky ends approaches', canvas.width / 2, 50);
+
+    } else if (step === 5) {
+        // Joined DNA
+        const allTop = ['A','T','G','C','G','A','A','T','T','C','G','C','A','T'];
+        const allBot = ['T','A','C','G','C','T','T','A','A','G','C','G','T','A'];
+        const lx = 55;
+        for (let i = 0; i < allTop.length; i++) {
+            const x = lx + i * spacing;
+            drawBase(x, topY, allTop[i], false, false);
+            drawBase(x, botY, allBot[i], false, false);
+            drawBond(x, topY, botY, false, false);
+        }
+        drawBackbone(lx - 10, lx + 13 * spacing + 10, topY - 14, '#27ae60');
+        drawBackbone(lx - 10, lx + 13 * spacing + 10, botY + 14, '#27ae60');
+
+        // Ligase labels
+        ctx.font = 'bold 10px system-ui';
+        ctx.fillStyle = '#27ae60';
+        ctx.textAlign = 'center';
+        ctx.fillText('DNA ligase seals the sugar-phosphate backbone', canvas.width / 2, 50);
+
+        // Highlight join points
+        ctx.strokeStyle = '#27ae60';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([3, 3]);
+        const joinX1 = lx + 5.5 * spacing;
+        ctx.beginPath(); ctx.moveTo(joinX1, topY - 22); ctx.lineTo(joinX1, topY - 16); ctx.stroke();
+        const joinX2 = lx + 9.5 * spacing;
+        ctx.beginPath(); ctx.moveTo(joinX2, botY + 16); ctx.lineTo(joinX2, botY + 22); ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.font = '8px system-ui';
+        ctx.fillStyle = '#27ae60';
+        ctx.fillText('sealed', joinX1, topY - 26);
+        ctx.fillText('sealed', joinX2, botY + 30);
+    }
+
+    // Draw step description box
+    ctx.fillStyle = '#f8f9fc';
+    ctx.strokeStyle = '#d4d8e5';
+    ctx.lineWidth = 1;
+    const boxY = 250;
+    const boxH = 100;
+    ctx.fillRect(20, boxY, canvas.width - 40, boxH);
+    ctx.strokeRect(20, boxY, canvas.width - 40, boxH);
+
+    ctx.font = 'bold 11px system-ui';
+    ctx.fillStyle = '#1835b4';
+    ctx.textAlign = 'center';
+    ctx.fillText(`Step ${step + 1} of ${stepDescriptions.length}`, canvas.width / 2, boxY + 20);
+    ctx.font = '11px system-ui';
+    ctx.fillStyle = '#1a2747';
+
+    // Word wrap description
+    const desc = stepDescriptions[step];
+    const words = desc.split(' ');
+    let line = '', lineY = boxY + 42;
+    const maxW = canvas.width - 80;
+    for (const word of words) {
+        const test = line + word + ' ';
+        if (ctx.measureText(test).width > maxW && line) {
+            ctx.fillText(line.trim(), canvas.width / 2, lineY);
+            line = word + ' ';
+            lineY += 16;
+        } else {
+            line = test;
+        }
+    }
+    if (line.trim()) ctx.fillText(line.trim(), canvas.width / 2, lineY);
+}
+
+function nextStep() {
+    if (step < stepDescriptions.length - 1) {
+        step++;
+        stepLabel.textContent = `Step ${step + 1} / ${stepDescriptions.length}`;
+        draw();
+    }
+}
+
+function togglePlay() {
+    if (playing) {
+        playing = false;
+        clearInterval(playTimer);
+        document.getElementById('btnPlay').innerHTML = '&#9654; Auto Play';
+        return;
+    }
+    playing = true;
+    document.getElementById('btnPlay').innerHTML = '&#9724; Stop';
+    if (step >= stepDescriptions.length - 1) step = -1;
+    playTimer = setInterval(() => {
+        step++;
+        if (step >= stepDescriptions.length) {
+            step = stepDescriptions.length - 1;
+            playing = false;
+            clearInterval(playTimer);
+            document.getElementById('btnPlay').innerHTML = '&#9654; Auto Play';
+        }
+        stepLabel.textContent = `Step ${step + 1} / ${stepDescriptions.length}`;
+        draw();
+    }, 2000);
+}
+
+function reset() {
+    step = 0;
+    playing = false;
+    clearInterval(playTimer);
+    document.getElementById('btnPlay').innerHTML = '&#9654; Auto Play';
+    stepLabel.textContent = 'Step 1 / ' + stepDescriptions.length;
+    draw();
+}
+
+draw();
+</script>
+</body>
+</html>

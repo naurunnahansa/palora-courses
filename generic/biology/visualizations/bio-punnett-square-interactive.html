@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punnett Square</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        .input-row { display: flex; gap: 8px; justify-content: center; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+        .input-group { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .input-group label { font-size: 0.72rem; font-weight: 600; color: #1835b4; }
+        select, input[type="text"] { padding: 5px 8px; border: 1px solid #d4d8e5; border-radius: 4px; font-size: 0.8rem; font-family: inherit; color: #1a2747; background: #fff; }
+        select:focus, input:focus { outline: none; border-color: #1835b4; }
+        .grid-container { display: flex; justify-content: center; margin-bottom: 12px; }
+        table { border-collapse: collapse; }
+        th, td { width: 60px; height: 50px; text-align: center; border: 2px solid #d4d8e5; font-size: 1rem; font-weight: 700; }
+        th { background: #1835b4; color: #fff; font-size: 0.9rem; }
+        th.corner { background: #0f2480; }
+        .homo-dom { background: #1835b4; color: #fff; }
+        .hetero { background: #5b8def; color: #fff; }
+        .homo-rec { background: #c8d6f5; color: #1a2747; }
+        .results { border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px; margin-bottom: 8px; }
+        .results h3 { font-size: 0.85rem; color: #1835b4; margin-bottom: 6px; }
+        .result-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 0.8rem; border-bottom: 1px solid #e8ecf8; }
+        .result-row:last-child { border-bottom: none; }
+        .ratio-bar { display: flex; height: 24px; border-radius: 4px; overflow: hidden; margin: 6px 0; }
+        .ratio-bar div { display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; color: #fff; transition: width 0.3s; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Punnett Square</h1>
+    <div class="desc">Interactive Genetic Cross Tool</div>
+    <div class="input-row">
+        <div class="input-group">
+            <label>Parent 1</label>
+            <select id="p1" onchange="update()"><option value="AA">AA (Homozygous dominant)</option><option value="Aa" selected>Aa (Heterozygous)</option><option value="aa">aa (Homozygous recessive)</option></select>
+        </div>
+        <span style="font-size:1.2rem;color:#1835b4;font-weight:700;">&times;</span>
+        <div class="input-group">
+            <label>Parent 2</label>
+            <select id="p2" onchange="update()"><option value="AA">AA (Homozygous dominant)</option><option value="Aa" selected>Aa (Heterozygous)</option><option value="aa">aa (Homozygous recessive)</option></select>
+        </div>
+    </div>
+    <div class="input-row">
+        <div class="input-group">
+            <label>Dominant trait</label>
+            <input type="text" id="domTrait" value="Tall" onchange="update()" style="width:80px;">
+        </div>
+        <div class="input-group">
+            <label>Recessive trait</label>
+            <input type="text" id="recTrait" value="Short" onchange="update()" style="width:80px;">
+        </div>
+    </div>
+    <div class="grid-container">
+        <table id="punnett"></table>
+    </div>
+    <div class="results" id="results"></div>
+    <div class="note">
+        <strong>Key:</strong> Homozygous dominant (AA) = dark, Heterozygous (Aa) = medium, Homozygous recessive (aa) = light. The dominant allele (A) masks the recessive allele (a).
+    </div>
+</div>
+<script>
+function getGametes(genotype) {
+    if (genotype === 'AA') return ['A', 'A'];
+    if (genotype === 'Aa') return ['A', 'a'];
+    return ['a', 'a'];
+}
+
+function normalizeGenotype(a1, a2) {
+    if (a1 === 'A' || a2 === 'A') {
+        if (a1 === 'a' || a2 === 'a') return 'Aa';
+        return 'AA';
+    }
+    return 'aa';
+}
+
+function getClass(g) {
+    if (g === 'AA') return 'homo-dom';
+    if (g === 'Aa') return 'hetero';
+    return 'homo-rec';
+}
+
+function update() {
+    const p1 = document.getElementById('p1').value;
+    const p2 = document.getElementById('p2').value;
+    const dom = document.getElementById('domTrait').value || 'Tall';
+    const rec = document.getElementById('recTrait').value || 'Short';
+
+    const g1 = getGametes(p1);
+    const g2 = getGametes(p2);
+
+    // Build Punnett square
+    const offspring = [];
+    let html = '<tr><th class="corner">P</th>';
+    for (const a of g2) html += `<th>${a}</th>`;
+    html += '</tr>';
+
+    for (const a1 of g1) {
+        html += `<tr><th>${a1}</th>`;
+        for (const a2 of g2) {
+            const g = normalizeGenotype(a1, a2);
+            offspring.push(g);
+            html += `<td class="${getClass(g)}">${g}</td>`;
+        }
+        html += '</tr>';
+    }
+    document.getElementById('punnett').innerHTML = html;
+
+    // Count genotypes
+    const counts = { AA: 0, Aa: 0, aa: 0 };
+    offspring.forEach(g => counts[g]++);
+    const total = offspring.length;
+
+    // Genotype ratio
+    const gParts = [];
+    if (counts.AA > 0) gParts.push(`${counts.AA} AA`);
+    if (counts.Aa > 0) gParts.push(`${counts.Aa} Aa`);
+    if (counts.aa > 0) gParts.push(`${counts.aa} aa`);
+    const genotypeRatio = gParts.join(' : ');
+
+    // Phenotype
+    const domCount = counts.AA + counts.Aa;
+    const recCount = counts.aa;
+    const pParts = [];
+    if (domCount > 0) pParts.push(`${domCount} ${dom}`);
+    if (recCount > 0) pParts.push(`${recCount} ${rec}`);
+    const phenotypeRatio = pParts.join(' : ');
+
+    const domPct = ((domCount / total) * 100).toFixed(0);
+    const recPct = ((recCount / total) * 100).toFixed(0);
+
+    // Simplify fractions
+    function simplify(n, d) {
+        const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+        const g = gcd(n, d);
+        return `${n / g}/${d / g}`;
+    }
+
+    let resHTML = `<h3>Results</h3>`;
+    resHTML += `<div class="result-row"><span><strong>Genotype ratio:</strong></span><span>${genotypeRatio}</span></div>`;
+    resHTML += `<div class="result-row"><span><strong>Phenotype ratio:</strong></span><span>${phenotypeRatio}</span></div>`;
+    resHTML += `<div class="result-row"><span>${dom} (AA or Aa):</span><span>${domPct}% (${simplify(domCount, total)})</span></div>`;
+    resHTML += `<div class="result-row"><span>${rec} (aa):</span><span>${recPct}% (${simplify(recCount, total)})</span></div>`;
+
+    // Visual bar
+    resHTML += `<div class="ratio-bar">`;
+    if (domCount > 0) resHTML += `<div style="width:${domPct}%;background:#1835b4">${dom} ${domPct}%</div>`;
+    if (recCount > 0) resHTML += `<div style="width:${recPct}%;background:#c8d6f5;color:#1a2747">${rec} ${recPct}%</div>`;
+    resHTML += `</div>`;
+
+    // Genotype breakdown bar
+    resHTML += `<div class="ratio-bar">`;
+    const aaPct = (counts.AA / total * 100).toFixed(0);
+    const aaPctHet = (counts.Aa / total * 100).toFixed(0);
+    const aaPctRec = (counts.aa / total * 100).toFixed(0);
+    if (counts.AA > 0) resHTML += `<div style="width:${aaPct}%;background:#1835b4">AA ${aaPct}%</div>`;
+    if (counts.Aa > 0) resHTML += `<div style="width:${aaPctHet}%;background:#5b8def">Aa ${aaPctHet}%</div>`;
+    if (counts.aa > 0) resHTML += `<div style="width:${aaPctRec}%;background:#c8d6f5;color:#1a2747">aa ${aaPctRec}%</div>`;
+    resHTML += `</div>`;
+
+    document.getElementById('results').innerHTML = resHTML;
+}
+
+update();
+</script>
+</body>
+</html>

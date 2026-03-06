@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Endocrine System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        .main { display: flex; gap: 8px; }
+        canvas { display: block; border: 1px solid #d4d8e5; border-radius: 5px; flex-shrink: 0; cursor: pointer; }
+        .info-panel { flex: 1; min-width: 0; }
+        .info-card { background: #e8ecf8; border-radius: 5px; padding: 10px; font-size: 0.72rem; }
+        .info-card h3 { color: #1835b4; font-size: 0.85rem; margin-bottom: 6px; }
+        .info-card .row { margin-bottom: 5px; }
+        .info-card .row strong { color: #1835b4; }
+        .toggle { display: flex; gap: 4px; justify-content: center; margin-bottom: 8px; }
+        .toggle .btn { padding: 5px 14px; border: 1.5px solid #1835b4; border-radius: 5px; background: #fff; color: #1835b4; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+        .toggle .btn.active { background: #1835b4; color: #fff; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>The Endocrine System</h1>
+    <div class="desc">Click each gland to learn about its hormones and target organs</div>
+    <div class="toggle">
+        <button class="btn active" id="btnF" onclick="setSex('female')">Female</button>
+        <button class="btn" id="btnM" onclick="setSex('male')">Male</button>
+    </div>
+    <div class="main">
+        <canvas id="canvas" width="220" height="420"></canvas>
+        <div class="info-panel">
+            <div class="info-card" id="info">
+                <h3>Select a gland</h3>
+                <p>Click on any highlighted gland on the body diagram to see details about the hormones it produces, target organs, and effects.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let sex = 'female', selected = null;
+
+const glands = {
+    pituitary: { x: 110, y: 52, r: 8, label: 'Pituitary', color: '#e74c3c',
+        info: '<h3>Pituitary Gland</h3><div class="row"><strong>Location:</strong> Base of the brain</div><div class="row"><strong>Hormones:</strong> GH (growth hormone), ADH (antidiuretic hormone), FSH, LH, TSH, ACTH</div><div class="row"><strong>Targets:</strong> Bones/muscles (GH), kidneys (ADH), thyroid (TSH), adrenals (ACTH), gonads (FSH/LH)</div><div class="row"><strong>Effects:</strong> Controls growth, water reabsorption, stimulates other endocrine glands. Often called the "master gland".</div>',
+        targets: [{x:110,y:110},{x:110,y:230},{x:110,y:340}]
+    },
+    thyroid: { x: 110, y: 110, r: 12, label: 'Thyroid', color: '#3498db',
+        info: '<h3>Thyroid Gland</h3><div class="row"><strong>Location:</strong> Neck, in front of trachea</div><div class="row"><strong>Hormones:</strong> Thyroxine (T4), Triiodothyronine (T3)</div><div class="row"><strong>Targets:</strong> Most body cells</div><div class="row"><strong>Effects:</strong> Controls basal metabolic rate. Stimulates growth and brain development in children. Regulates body temperature and heart rate.</div>',
+        targets: [{x:60,y:200},{x:160,y:200},{x:110,y:300}]
+    },
+    adrenal: { x: 110, y: 230, r: 10, label: 'Adrenal', color: '#f39c12',
+        info: '<h3>Adrenal Glands</h3><div class="row"><strong>Location:</strong> On top of each kidney</div><div class="row"><strong>Hormones:</strong> Adrenaline (epinephrine), Cortisol, Aldosterone</div><div class="row"><strong>Targets:</strong> Heart, lungs, liver, blood vessels, kidneys</div><div class="row"><strong>Effects:</strong> Adrenaline triggers "fight or flight": increased heart rate, dilated pupils, glycogen &rarr; glucose conversion. Cortisol manages long-term stress response.</div>',
+        targets: [{x:110,y:170},{x:70,y:170},{x:150,y:170}]
+    },
+    pancreas: { x: 130, y: 270, r: 12, label: 'Pancreas', color: '#2ecc71',
+        info: '<h3>Pancreas</h3><div class="row"><strong>Location:</strong> Behind the stomach</div><div class="row"><strong>Hormones:</strong> Insulin (beta cells), Glucagon (alpha cells)</div><div class="row"><strong>Targets:</strong> Liver, muscle cells, fat cells</div><div class="row"><strong>Effects:</strong> <strong>Insulin</strong>: lowers blood glucose (stimulates uptake and glycogen storage). <strong>Glucagon</strong>: raises blood glucose (glycogen &rarr; glucose). Together they maintain blood glucose homeostasis.</div>',
+        targets: [{x:90,y:250},{x:110,y:200}]
+    },
+    gonads: { x: 110, y: 345, r: 10, label: '', color: '#9b59b6',
+        infoF: '<h3>Ovaries</h3><div class="row"><strong>Location:</strong> Lower abdomen (pelvis)</div><div class="row"><strong>Hormones:</strong> Oestrogen, Progesterone</div><div class="row"><strong>Targets:</strong> Uterus, breasts, bones, brain</div><div class="row"><strong>Effects:</strong> <strong>Oestrogen</strong>: develops secondary sexual characteristics, repairs uterine lining. <strong>Progesterone</strong>: maintains uterine lining for pregnancy. Both regulate the menstrual cycle.</div>',
+        infoM: '<h3>Testes</h3><div class="row"><strong>Location:</strong> Scrotum (outside body cavity)</div><div class="row"><strong>Hormones:</strong> Testosterone</div><div class="row"><strong>Targets:</strong> Muscles, bones, reproductive organs, brain</div><div class="row"><strong>Effects:</strong> Develops male secondary sexual characteristics (deeper voice, facial hair, muscle growth). Stimulates sperm production. Maintains sex drive.</div>',
+        targets: [{x:110,y:280},{x:70,y:300},{x:150,y:300}]
+    }
+};
+
+function setSex(s) {
+    sex = s;
+    document.getElementById('btnF').className = s==='female'?'btn active':'btn';
+    document.getElementById('btnM').className = s==='male'?'btn active':'btn';
+    selected = null;
+    document.getElementById('info').innerHTML = '<h3>Select a gland</h3><p>Click on any highlighted gland on the body diagram to see details.</p>';
+    draw();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Body outline
+    ctx.strokeStyle = '#b0bec5'; ctx.lineWidth = 2; ctx.fillStyle = '#f5f7fa';
+    ctx.beginPath();
+    // Head
+    ctx.arc(110, 35, 22, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    // Neck
+    ctx.fillRect(100, 57, 20, 20); ctx.strokeRect(100, 57, 20, 20);
+    // Torso
+    ctx.beginPath(); ctx.moveTo(70, 77); ctx.lineTo(65, 200); ctx.lineTo(75, 310);
+    ctx.lineTo(95, 380); ctx.lineTo(105, 380); ctx.lineTo(110, 320);
+    ctx.lineTo(115, 380); ctx.lineTo(125, 380); ctx.lineTo(145, 310);
+    ctx.lineTo(155, 200); ctx.lineTo(150, 77); ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    // Arms
+    ctx.beginPath(); ctx.moveTo(70, 85); ctx.lineTo(40, 200); ctx.lineTo(45, 205);
+    ctx.lineTo(78, 100); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(150, 85); ctx.lineTo(180, 200); ctx.lineTo(175, 205);
+    ctx.lineTo(142, 100); ctx.closePath(); ctx.fill(); ctx.stroke();
+
+    // Draw glands
+    Object.keys(glands).forEach(key => {
+        const g = glands[key];
+        const isSelected = selected === key;
+        // Gland marker
+        ctx.beginPath();
+        if (key === 'adrenal') {
+            // Two glands
+            ctx.arc(90, g.y, g.r*0.7, 0, Math.PI*2); ctx.moveTo(130+g.r*0.7, g.y); ctx.arc(130, g.y, g.r*0.7, 0, Math.PI*2);
+        } else if (key === 'gonads') {
+            if (sex === 'female') {
+                ctx.arc(90, g.y, g.r*0.7, 0, Math.PI*2); ctx.moveTo(130+g.r*0.7, g.y); ctx.arc(130, g.y, g.r*0.7, 0, Math.PI*2);
+            } else {
+                ctx.arc(100, g.y+20, g.r*0.7, 0, Math.PI*2); ctx.moveTo(120+g.r*0.7, g.y+20); ctx.arc(120, g.y+20, g.r*0.7, 0, Math.PI*2);
+            }
+        } else {
+            ctx.arc(g.x, g.y, g.r, 0, Math.PI*2);
+        }
+        ctx.fillStyle = isSelected ? g.color : g.color+'66';
+        ctx.fill();
+        ctx.strokeStyle = g.color; ctx.lineWidth = isSelected ? 3 : 1.5; ctx.stroke();
+
+        // Label
+        let lbl = g.label || (sex === 'female' ? 'Ovaries' : 'Testes');
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'left';
+        const lx = key==='pancreas' ? g.x+16 : (key==='pituitary' ? g.x+12 : g.x+16);
+        const ly = key==='adrenal'||key==='gonads' ? g.y+4 : g.y+4;
+        ctx.fillText(lbl, lx, ly);
+
+        // Target arrows if selected
+        if (isSelected && g.targets) {
+            ctx.strokeStyle = g.color; ctx.lineWidth = 1.5; ctx.setLineDash([4,4]);
+            g.targets.forEach(t => {
+                ctx.beginPath(); ctx.moveTo(g.x, g.y); ctx.lineTo(t.x, t.y); ctx.stroke();
+                // arrowhead
+                const ang = Math.atan2(t.y-g.y, t.x-g.x);
+                ctx.beginPath();
+                ctx.moveTo(t.x, t.y);
+                ctx.lineTo(t.x-8*Math.cos(ang-0.4), t.y-8*Math.sin(ang-0.4));
+                ctx.moveTo(t.x, t.y);
+                ctx.lineTo(t.x-8*Math.cos(ang+0.4), t.y-8*Math.sin(ang+0.4));
+                ctx.stroke();
+            });
+            ctx.setLineDash([]);
+        }
+    });
+}
+
+canvas.addEventListener('click', function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX-rect.left)*(canvas.width/rect.width);
+    const my = (e.clientY-rect.top)*(canvas.height/rect.height);
+    selected = null;
+    Object.keys(glands).forEach(key => {
+        const g = glands[key];
+        const checkPoints = key==='adrenal' ? [{x:90,y:g.y},{x:130,y:g.y}] :
+            key==='gonads' ? (sex==='female' ? [{x:90,y:g.y},{x:130,y:g.y}] : [{x:100,y:g.y+20},{x:120,y:g.y+20}]) :
+            [{x:g.x,y:g.y}];
+        checkPoints.forEach(p => {
+            if (Math.hypot(mx-p.x, my-p.y) < 18) selected = key;
+        });
+    });
+    if (selected) {
+        const g = glands[selected];
+        let html = selected==='gonads' ? (sex==='female'?g.infoF:g.infoM) : g.info;
+        document.getElementById('info').innerHTML = html;
+    } else {
+        document.getElementById('info').innerHTML = '<h3>Select a gland</h3><p>Click on any highlighted gland on the body diagram to see details.</p>';
+    }
+    draw();
+});
+
+draw();
+</script>
+</body>
+</html>

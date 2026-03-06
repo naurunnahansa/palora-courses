@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Types of Gene Mutation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        .toggle { display: flex; gap: 0; justify-content: center; margin-bottom: 10px; }
+        .toggle .btn { padding: 7px 16px; border: 1.5px solid #1835b4; background: #fff; color: #1835b4; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+        .toggle .btn:first-child { border-radius: 5px 0 0 5px; }
+        .toggle .btn:last-child { border-radius: 0 5px 5px 0; }
+        .toggle .btn.active { background: #1835b4; color: #fff; }
+        .seq-row { display: flex; gap: 2px; justify-content: center; margin-bottom: 4px; flex-wrap: wrap; }
+        .seq-row .base { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 0.75rem; font-weight: 700; border: 1.5px solid #d4d8e5; }
+        .seq-row .base.changed { border-color: #e74c3c; background: #fde8e8; color: #e74c3c; }
+        .seq-row .base.inserted { border-color: #e74c3c; background: #e74c3c; color: #fff; }
+        .seq-row .base.deleted { border-color: #e74c3c; background: #fde8e8; color: #e74c3c; text-decoration: line-through; opacity: 0.4; }
+        .seq-row .base.frameshift { border-color: #f39c12; background: #fef5e7; color: #f39c12; }
+        .label { font-size: 0.7rem; font-weight: 600; color: #1835b4; text-align: center; margin: 6px 0 3px; }
+        .arrow-down { text-align: center; color: #1835b4; font-size: 1.2rem; margin: 2px 0; }
+        .codon-group { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-bottom: 4px; }
+        .codon { border: 1px solid #d4d8e5; border-radius: 4px; padding: 3px 6px; font-size: 0.7rem; text-align: center; background: #fff; }
+        .codon.changed { border-color: #e74c3c; background: #fde8e8; }
+        .codon.frameshift { border-color: #f39c12; background: #fef5e7; }
+        .codon .aa { display: block; font-weight: 700; color: #1835b4; }
+        .codon.changed .aa, .codon.frameshift .aa { color: #e74c3c; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; margin-top: 8px; }
+        .note strong { color: #1835b4; }
+        .section { margin-bottom: 6px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Types of Gene Mutation</h1>
+    <div class="desc">See how base changes affect the amino acid sequence</div>
+    <div class="toggle">
+        <button class="btn active" id="btn0" onclick="setMut(0)">Original</button>
+        <button class="btn" id="btn1" onclick="setMut(1)">Substitution</button>
+        <button class="btn" id="btn2" onclick="setMut(2)">Insertion</button>
+        <button class="btn" id="btn3" onclick="setMut(3)">Deletion</button>
+    </div>
+    <div id="display"></div>
+    <div class="note" id="note"><strong>Original sequence:</strong> The normal DNA template strand is read by RNA polymerase to produce mRNA. Each mRNA codon is translated into one amino acid.</div>
+</div>
+<script>
+const codonTable = {
+    'AUG':'Met','GCA':'Ala','UUC':'Phe','GAA':'Glu','CGU':'Arg','AAG':'Lys',
+    'GCU':'Ala','UCA':'Ser','AGC':'Ser','CAA':'Gln','AAU':'Asn','GCC':'Ala',
+    'UCG':'Ser','CAG':'Gln','UAC':'Tyr','CGG':'Arg','AAA':'Lys','GCG':'Ala',
+    'UCU':'Ser','UCC':'Ser','GAG':'Glu','CGA':'Arg','CGC':'Arg','AGA':'Arg',
+    'AGG':'Arg','UUU':'Phe','UUA':'Leu','UUG':'Leu','CUU':'Leu','CUC':'Leu',
+    'CUA':'Leu','CUG':'Leu','AUU':'Ile','AUC':'Ile','AUA':'Ile','GUU':'Val',
+    'GUC':'Val','GUA':'Val','GUG':'Val','UAU':'Tyr','CAU':'His','CAC':'His',
+    'AAC':'Asn','GAU':'Asp','GAC':'Asp','UGU':'Cys','UGC':'Cys','UGG':'Trp',
+    'AGU':'Ser','CCU':'Pro','CCC':'Pro','CCA':'Pro','CCG':'Pro','ACU':'Thr',
+    'ACC':'Thr','ACA':'Thr','ACG':'Thr','GGU':'Gly','GGC':'Gly','GGA':'Gly',
+    'GGG':'Gly','UAA':'STOP','UAG':'STOP','UGA':'STOP'
+};
+
+// DNA template: TAC CGT AAG CTT (reads 3' to 5')
+// mRNA:         AUG GCA UUC GAA
+// Amino acids:  Met Ala Phe Glu
+const origDNA = ['T','A','C','C','G','T','A','A','G','C','T','T'];
+const complement = {'A':'T','T':'A','G':'C','C':'G'};
+const dnaToRNA = {'A':'U','T':'A','G':'C','C':'G'};
+
+function getMRNA(dna) {
+    return dna.map(b => dnaToRNA[b] || '?');
+}
+
+function getCodons(mrna) {
+    const codons = [];
+    for (let i = 0; i < mrna.length-2; i += 3) {
+        const codon = mrna[i]+mrna[i+1]+mrna[i+2];
+        codons.push({ bases: codon, aa: codonTable[codon] || '?' });
+    }
+    return codons;
+}
+
+const mutations = [
+    { name:'Original', dna: [...origDNA], changes: [], type: 'none',
+      note: '<strong>Original sequence:</strong> The normal DNA template strand is read to produce mRNA. Each triplet codon specifies one amino acid. This is the reference sequence.' },
+    { name:'Substitution', dna: ['T','A','C','C','G','T','A','A','C','C','T','T'], changes: [8], type: 'sub',
+      note: '<strong>Substitution (point mutation):</strong> One base is replaced by another (G&rarr;C at position 9). This changes one codon. It may be <strong>silent</strong> (same amino acid), <strong>missense</strong> (different amino acid), or <strong>nonsense</strong> (creates a stop codon). Here: Phe &rarr; changed amino acid (missense).' },
+    { name:'Insertion', dna: ['T','A','C','C','C','G','T','A','A','G','C','T','T'], changes: [4], type: 'ins',
+      note: '<strong>Insertion:</strong> An extra base (C) is inserted at position 5. This causes a <strong>frameshift</strong> &mdash; every codon after the insertion is shifted by one base, changing all downstream amino acids. Frameshifts usually produce non-functional proteins.' },
+    { name:'Deletion', dna: ['T','A','C','G','T','A','A','G','C','T','T'], changes: [3], type: 'del',
+      note: '<strong>Deletion:</strong> One base (C at position 4) is removed. This also causes a <strong>frameshift</strong> &mdash; all subsequent codons are shifted, producing completely different amino acids downstream. Like insertion, usually very harmful.' }
+];
+
+let current = 0;
+
+function setMut(i) {
+    current = i;
+    document.querySelectorAll('.toggle .btn').forEach((b,j) => b.className = j===i?'btn active':'btn');
+    render();
+}
+
+function render() {
+    const m = mutations[current];
+    const origMRNA = getMRNA(origDNA);
+    const origCodons = getCodons(origMRNA);
+    const mrna = getMRNA(m.dna);
+    const codons = getCodons(mrna);
+
+    let html = '';
+
+    // DNA template strand
+    html += '<div class="label">DNA Template Strand (3\' &rarr; 5\')</div>';
+    html += '<div class="seq-row">';
+    m.dna.forEach((b, i) => {
+        let cls = 'base';
+        if (m.type==='sub' && m.changes.includes(i)) cls += ' changed';
+        if (m.type==='ins' && i===m.changes[0]) cls += ' inserted';
+        html += `<div class="${cls}">${b}</div>`;
+    });
+    if (m.type==='del') {
+        // Show original with deletion marked
+        html = '<div class="label">DNA Template Strand (3\' &rarr; 5\')</div><div class="seq-row">';
+        origDNA.forEach((b, i) => {
+            let cls = 'base';
+            if (i===m.changes[0]) cls += ' deleted';
+            html += `<div class="${cls}">${b}</div>`;
+        });
+    }
+    html += '</div>';
+
+    html += '<div class="arrow-down">&darr;</div>';
+
+    // mRNA
+    html += '<div class="label">mRNA (5\' &rarr; 3\')</div>';
+    html += '<div class="seq-row">';
+    mrna.forEach((b, i) => {
+        let cls = 'base';
+        if (m.type==='sub') {
+            const origB = getMRNA(origDNA)[i];
+            if (b !== origB) cls += ' changed';
+        } else if (m.type==='ins' || m.type==='del') {
+            // After the change point, everything is frameshifted
+            const changeIdx = m.changes[0];
+            const mrnaCIdx = m.type==='ins' ? changeIdx : changeIdx;
+            if (i >= mrnaCIdx && current !== 0) cls += ' frameshift';
+        }
+        html += `<div class="${cls}">${b}</div>`;
+    });
+    html += '</div>';
+
+    html += '<div class="arrow-down">&darr;</div>';
+
+    // Codons and amino acids
+    html += '<div class="label">Codons &rarr; Amino Acids</div>';
+    html += '<div class="codon-group">';
+    codons.forEach((c, i) => {
+        let cls = 'codon';
+        if (current !== 0) {
+            if (i < origCodons.length && c.aa !== origCodons[i].aa) {
+                cls += m.type==='sub' ? ' changed' : ' frameshift';
+            } else if (i >= origCodons.length) {
+                cls += ' frameshift';
+            }
+        }
+        html += `<div class="${cls}"><span>${c.bases}</span><span class="aa">${c.aa}</span></div>`;
+    });
+    html += '</div>';
+
+    // Original comparison
+    if (current !== 0) {
+        html += '<div class="label" style="color:#4a5568;margin-top:8px;">Original for comparison</div>';
+        html += '<div class="codon-group">';
+        origCodons.forEach(c => {
+            html += `<div class="codon"><span>${c.bases}</span><span class="aa">${c.aa}</span></div>`;
+        });
+        html += '</div>';
+    }
+
+    document.getElementById('display').innerHTML = html;
+    document.getElementById('note').innerHTML = m.note;
+}
+
+render();
+</script>
+</body>
+</html>

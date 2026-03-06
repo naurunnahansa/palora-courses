@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The ATP Cycle</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>The ATP Cycle</h1>
+    <div class="desc">Continuous cycle of ATP hydrolysis and synthesis powers all cellular processes</div>
+    <canvas id="canvas" width="520" height="400"></canvas>
+    <div class="note">
+        <strong>ATP (adenosine triphosphate)</strong> is the universal energy currency of cells. Hydrolysis of one phosphate bond releases ~30.5 kJ/mol. The cycle turns over rapidly: a human uses and regenerates approximately their body weight in ATP each day.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const cx = 260, cy = 185, R = 120;
+let angle = 0;
+let hoverZone = null;
+
+const zones = [
+    { id:'atp', angle: -Math.PI/2, label:'ATP', sub:'Adenosine Triphosphate', color:'#2ecc71' },
+    { id:'hydrolysis', angle: 0, label:'Hydrolysis', sub:'ATPase + H\u2082O', color:'#e74c3c' },
+    { id:'adp', angle: Math.PI/2, label:'ADP + Pi', sub:'+ Energy Released', color:'#e67e22' },
+    { id:'synthesis', angle: Math.PI, label:'Synthesis', sub:'ATP Synthase', color:'#3498db' }
+];
+
+const uses = [
+    { label:'Muscle contraction', angle: -0.8, icon:'\uD83D\uDCAA' },
+    { label:'Active transport', angle: -0.3, icon:'\u2B06' },
+    { label:'Protein synthesis', angle: 0.3, icon:'\uD83E\uDDEC' },
+    { label:'Nerve impulses', angle: 0.8, icon:'\u26A1' }
+];
+
+function drawArrow(x1, y1, x2, y2, color, width) {
+    const ang = Math.atan2(y2-y1, x2-x1);
+    ctx.strokeStyle = color; ctx.lineWidth = width;
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2-10*Math.cos(ang-0.35), y2-10*Math.sin(ang-0.35));
+    ctx.lineTo(x2-10*Math.cos(ang+0.35), y2-10*Math.sin(ang+0.35));
+    ctx.closePath(); ctx.fillStyle = color; ctx.fill();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Cycle arrows (curved)
+    ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI*2); ctx.stroke();
+
+    // Direction arrows on the circle
+    for (let a = 0; a < 4; a++) {
+        const ang = -Math.PI/2 + a * Math.PI/2 + Math.PI/4;
+        const ax = cx + Math.cos(ang)*R, ay = cy + Math.sin(ang)*R;
+        const tangent = ang + Math.PI/2;
+        ctx.beginPath();
+        ctx.moveTo(ax+8*Math.cos(tangent), ay+8*Math.sin(tangent));
+        ctx.lineTo(ax+12*Math.cos(tangent-0.5), ay+12*Math.sin(tangent-0.5));
+        ctx.lineTo(ax+12*Math.cos(tangent+0.5), ay+12*Math.sin(tangent+0.5));
+        ctx.closePath(); ctx.fillStyle = '#1835b4'; ctx.fill();
+    }
+
+    // Zone nodes
+    zones.forEach(z => {
+        const x = cx + Math.cos(z.angle) * R;
+        const y = cy + Math.sin(z.angle) * R;
+        const isHover = hoverZone === z.id;
+        const r = isHover ? 38 : 32;
+        ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2);
+        ctx.fillStyle = isHover ? z.color : z.color + '22';
+        ctx.fill();
+        ctx.strokeStyle = z.color; ctx.lineWidth = isHover ? 3 : 2; ctx.stroke();
+        ctx.fillStyle = isHover ? '#fff' : '#1a2747';
+        ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(z.label, x, y - 5);
+        ctx.font = '7px system-ui'; ctx.fillStyle = isHover ? '#fff' : '#4a5568';
+        ctx.fillText(z.sub, x, y + 9);
+        ctx.textBaseline = 'alphabetic';
+    });
+
+    // Hydrolysis label (right side: ATP -> ADP + Pi)
+    ctx.fillStyle = '#e74c3c'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('HYDROLYSIS', cx + R + 55, cy - 30);
+    ctx.font = '7px system-ui'; ctx.fillStyle = '#4a5568';
+    ctx.fillText('ATPase enzyme', cx + R + 55, cy - 18);
+    ctx.fillText('ATP + H\u2082O \u2192 ADP + Pi', cx + R + 55, cy - 6);
+    ctx.fillText('+ Energy', cx + R + 55, cy + 6);
+
+    // Synthesis label (left side: ADP + Pi -> ATP)
+    ctx.fillStyle = '#3498db'; ctx.font = 'bold 9px system-ui';
+    ctx.fillText('SYNTHESIS', cx - R - 55, cy - 30);
+    ctx.font = '7px system-ui'; ctx.fillStyle = '#4a5568';
+    ctx.fillText('ATP synthase', cx - R - 55, cy - 18);
+    ctx.fillText('ADP + Pi + Energy', cx - R - 55, cy - 6);
+    ctx.fillText('\u2192 ATP', cx - R - 55, cy + 6);
+
+    // Energy from respiration (left bottom)
+    ctx.fillStyle = '#3498db'; ctx.font = '8px system-ui';
+    drawArrow(cx - R - 90, cy + 60, cx - R - 30, cy + 25, '#3498db', 2);
+    ctx.fillText('Energy from', cx - R - 75, cy + 75);
+    ctx.fillText('respiration', cx - R - 75, cy + 87);
+
+    // Energy released uses (right side)
+    ctx.fillStyle = '#e74c3c'; ctx.font = '8px system-ui';
+    uses.forEach((u, i) => {
+        const ux = cx + R + 90, uy = cy + 40 + i * 28;
+        drawArrow(cx + R + 30, cy + 25, ux - 30, uy - 3, '#e74c3c88', 1.5);
+        ctx.fillStyle = '#1a2747'; ctx.font = '8px system-ui'; ctx.textAlign = 'left';
+        ctx.fillText(u.label, ux - 25, uy);
+    });
+    ctx.fillStyle = '#e74c3c'; ctx.font = 'bold 8px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Energy used for:', cx + R + 75, cy + 25);
+
+    // Animated energy particle
+    const px = cx + Math.cos(angle) * R;
+    const py = cy + Math.sin(angle) * R;
+    ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI*2);
+    const grad = ctx.createRadialGradient(px, py, 0, px, py, 6);
+    grad.addColorStop(0, '#f39c12'); grad.addColorStop(1, '#f39c1200');
+    ctx.fillStyle = grad; ctx.fill();
+    ctx.beginPath(); ctx.arc(px, py, 4, 0, Math.PI*2);
+    ctx.fillStyle = '#f39c12'; ctx.fill();
+
+    // ATP molecule diagram at top
+    const atpX = cx, atpY = 30;
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 8px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('ATP Structure:', atpX - 60, atpY);
+    // Adenosine
+    ctx.beginPath(); ctx.roundRect(atpX - 30, atpY - 10, 45, 20, 3);
+    ctx.fillStyle = '#e8ecf8'; ctx.fill(); ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.fillStyle = '#1835b4'; ctx.font = '7px system-ui'; ctx.fillText('Adenosine', atpX - 7, atpY + 4);
+    // Three phosphates
+    ['P','P','P'].forEach((p, i) => {
+        const px2 = atpX + 25 + i*22;
+        ctx.beginPath(); ctx.arc(px2, atpY, 9, 0, Math.PI*2);
+        ctx.fillStyle = i < 2 ? '#2ecc71' : '#f39c12'; ctx.fill();
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 8px system-ui'; ctx.fillText(p, px2, atpY + 3);
+        if (i > 0) {
+            ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(px2-10, atpY); ctx.lineTo(px2-12, atpY); ctx.stroke();
+            ctx.fillStyle = '#e74c3c'; ctx.font = '6px system-ui';
+            ctx.fillText('~', px2 - 11, atpY - 5);
+        }
+    });
+    ctx.fillStyle = '#e74c3c'; ctx.font = '6px system-ui';
+    ctx.fillText('High-energy bonds', atpX + 47, atpY + 18);
+
+    angle += 0.02;
+    if (angle > Math.PI*2) angle -= Math.PI*2;
+    requestAnimationFrame(draw);
+}
+
+canvas.addEventListener('mousemove', function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX-rect.left)*(canvas.width/rect.width);
+    const my = (e.clientY-rect.top)*(canvas.height/rect.height);
+    hoverZone = null;
+    zones.forEach(z => {
+        const x = cx + Math.cos(z.angle)*R, y = cy + Math.sin(z.angle)*R;
+        if (Math.hypot(mx-x, my-y) < 35) hoverZone = z.id;
+    });
+});
+
+canvas.addEventListener('mouseleave', () => { hoverZone = null; });
+
+draw();
+</script>
+</body>
+</html>

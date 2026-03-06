@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Straight Line y = mx + c</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}
+.container{max-width:100%;margin:0 auto}
+h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.slider-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.slider-row label{font-size:.78rem;font-weight:600;min-width:55px;color:#1835b4}
+.slider-row input[type=range]{flex:1;accent-color:#1835b4}
+.slider-row .val{font-size:.85rem;min-width:36px;text-align:right;color:#1835b4}
+.equation-display{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;font-size:1.0rem;color:#1835b4;margin-bottom:8px;font-weight:600}
+canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;width:100%}
+.readouts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px}
+.readout{background:#e8ecf8;border-radius:5px;padding:6px 8px;text-align:center}
+.readout .label{font-size:.65rem;color:#4a5568}
+.readout .value{font-size:.82rem;color:#1835b4;font-weight:600}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#1835b4}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Straight Line y = mx + c</h1>
+    <div class="card">
+        <div class="card-title">Equation Parameters</div>
+        <div class="equation-display" id="eqDisplay">y = x</div>
+        <div class="slider-row">
+            <label>Gradient m</label>
+            <input type="range" id="slM" min="-5" max="5" step="0.25" value="1">
+            <span class="val" id="valM">1</span>
+        </div>
+        <div class="slider-row">
+            <label>Intercept c</label>
+            <input type="range" id="slC" min="-10" max="10" step="0.5" value="0">
+            <span class="val" id="valC">0</span>
+        </div>
+    </div>
+    <div class="card" style="padding:8px">
+        <canvas id="canvas" width="1060" height="1060"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Key Features</div>
+        <div class="readouts">
+            <div class="readout"><div class="label">Gradient (m)</div><div class="value" id="gradVal"></div></div>
+            <div class="readout"><div class="label">y-intercept</div><div class="value" id="yintVal"></div></div>
+            <div class="readout"><div class="label">x-intercept</div><div class="value" id="xintVal"></div></div>
+        </div>
+    </div>
+    <div class="info">Adjust the <strong>gradient</strong> and <strong>y-intercept</strong> sliders. The gradient triangle shows rise/run.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const slM=document.getElementById('slM'),slC=document.getElementById('slC');
+const W=canvas.width,H=canvas.height,scale=50;
+const cx=W/2,cy=H/2;
+[slM,slC].forEach(s=>s.addEventListener('input',draw));
+function toCanvas(x,y){return[cx+x*scale,cy-y*scale];}
+function fmt(v){return parseFloat(v.toFixed(3));}
+
+function draw(){
+    const m=parseFloat(slM.value),c=parseFloat(slC.value);
+    document.getElementById('valM').textContent=m;
+    document.getElementById('valC').textContent=c;
+
+    // Equation
+    let eq='y = ';
+    if(m===0)eq+=c;
+    else{
+        if(m===-1)eq+='-x';else if(m===1)eq+='x';else eq+=m+'x';
+        if(c>0)eq+=' + '+c;else if(c<0)eq+=' - '+Math.abs(c);
+    }
+    document.getElementById('eqDisplay').textContent=eq;
+    document.getElementById('gradVal').textContent=m;
+    document.getElementById('yintVal').textContent='(0, '+c+')';
+    const xint=m!==0?fmt(-c/m):'None';
+    document.getElementById('xintVal').textContent=m!==0?'('+xint+', 0)':'None (horizontal)';
+
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+    const range=Math.ceil(W/(2*scale));
+
+    // Grid
+    ctx.strokeStyle='#f0eeef';ctx.lineWidth=1;
+    for(let i=-range;i<=range;i++){
+        ctx.beginPath();ctx.moveTo(cx+i*scale,0);ctx.lineTo(cx+i*scale,H);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(0,cy+i*scale);ctx.lineTo(W,cy+i*scale);ctx.stroke();
+    }
+    // Axes
+    ctx.strokeStyle='#ccc';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
+    // Axis labels
+    ctx.fillStyle='#999';ctx.font='13px system-ui';ctx.textAlign='center';
+    for(let i=-range;i<=range;i++){
+        if(i===0)continue;
+        ctx.fillText(i,cx+i*scale,cy+18);
+        ctx.textAlign='right';ctx.fillText(i,cx-8,cy-i*scale+5);ctx.textAlign='center';
+    }
+
+    // Line
+    const x1=-range-2,y1=m*x1+c,x2=range+2,y2=m*x2+c;
+    const[px1,py1]=toCanvas(x1,y1),[px2,py2]=toCanvas(x2,y2);
+    ctx.strokeStyle='#1835b4';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(px1,py1);ctx.lineTo(px2,py2);ctx.stroke();
+
+    // y-intercept point
+    const[yix,yiy]=toCanvas(0,c);
+    ctx.beginPath();ctx.arc(yix,yiy,7,0,Math.PI*2);ctx.fillStyle='#7aab7a';ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#1a2747';ctx.font='bold 12px system-ui';ctx.textAlign='left';
+    ctx.fillText('(0, '+c+')',yix+12,yiy-8);
+
+    // x-intercept point
+    if(m!==0){
+        const xi=-c/m;
+        const[xpx,xpy]=toCanvas(xi,0);
+        ctx.beginPath();ctx.arc(xpx,xpy,7,0,Math.PI*2);ctx.fillStyle='#d4a843';ctx.fill();
+        ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+        ctx.fillStyle='#1a2747';ctx.font='bold 12px system-ui';ctx.textAlign='left';
+        ctx.fillText('('+fmt(xi)+', 0)',xpx+12,xpy+18);
+    }
+
+    // Gradient triangle
+    if(m!==0){
+        const triX=1;const triY1=m*triX+c;const triY2=m*(triX+1)+c;
+        const run=1,rise=m;
+        const[ax1,ay1]=toCanvas(triX,triY1);
+        const[ax2,ay2]=toCanvas(triX+run,triY1);
+        const[ax3,ay3]=toCanvas(triX+run,triY2);
+        ctx.fillStyle='rgba(24,53,180,0.1)';
+        ctx.beginPath();ctx.moveTo(ax1,ay1);ctx.lineTo(ax2,ay2);ctx.lineTo(ax3,ay3);ctx.closePath();ctx.fill();
+        ctx.strokeStyle='rgba(24,53,180,0.6)';ctx.lineWidth=2;ctx.setLineDash([4,3]);
+        ctx.beginPath();ctx.moveTo(ax1,ay1);ctx.lineTo(ax2,ay2);ctx.lineTo(ax3,ay3);ctx.closePath();ctx.stroke();
+        ctx.setLineDash([]);
+        // Labels
+        ctx.fillStyle='#1835b4';ctx.font='bold 12px system-ui';ctx.textAlign='center';
+        ctx.fillText('run = '+run,(ax1+ax2)/2,ay1+18);
+        ctx.textAlign='left';
+        ctx.fillText('rise = '+fmt(rise),ax2+8,(ay2+ay3)/2+4);
+    }
+}
+draw();
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=w+'px';}
+window.addEventListener('resize',resize);resize();
+</script>
+</body>
+</html>

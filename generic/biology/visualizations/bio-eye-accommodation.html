@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Eye: Accommodation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .toggle { display: flex; gap: 0; justify-content: center; margin-bottom: 8px; }
+        .toggle .btn { padding: 7px 20px; border: 1.5px solid #1835b4; background: #fff; color: #1835b4; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .toggle .btn:first-child { border-radius: 5px 0 0 5px; }
+        .toggle .btn:last-child { border-radius: 0 5px 5px 0; }
+        .toggle .btn.active { background: #1835b4; color: #fff; }
+        .info-box { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; }
+        .info-box strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>The Eye: Accommodation</h1>
+    <div class="desc">Toggle between near and far vision to see how the lens changes shape</div>
+    <div class="toggle">
+        <button class="btn active" id="btnNear" onclick="setView('near')">Near Object</button>
+        <button class="btn" id="btnFar" onclick="setView('far')">Far Object</button>
+    </div>
+    <canvas id="canvas" width="520" height="280"></canvas>
+    <div class="info-box" id="info">
+        <strong>Near vision:</strong> Ciliary muscles <strong>contract</strong> &rarr; suspensory ligaments go <strong>slack</strong> &rarr; lens becomes <strong>fat and round</strong> &rarr; refracts light more strongly to focus on nearby objects.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let view = 'near', t = 0, targetT = 0;
+
+const infos = {
+    near: '<strong>Near vision:</strong> Ciliary muscles <strong>contract</strong> &rarr; suspensory ligaments go <strong>slack</strong> &rarr; lens becomes <strong>fat and round</strong> &rarr; refracts light more strongly to focus on nearby objects.',
+    far: '<strong>Far vision:</strong> Ciliary muscles <strong>relax</strong> &rarr; suspensory ligaments pulled <strong>taut</strong> &rarr; lens becomes <strong>thin and flat</strong> &rarr; refracts light less to focus on distant objects.'
+};
+
+function setView(v) {
+    view = v;
+    targetT = v === 'near' ? 0 : 1;
+    document.getElementById('btnNear').className = v==='near'?'btn active':'btn';
+    document.getElementById('btnFar').className = v==='far'?'btn active':'btn';
+    document.getElementById('info').innerHTML = infos[v];
+}
+
+function lerp(a, b, f) { return a + (b-a)*f; }
+
+function draw() {
+    // Smooth transition
+    t += (targetT - t) * 0.08;
+    if (Math.abs(t - targetT) < 0.005) t = targetT;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const cx = 280, cy = 140, eyeRx = 110, eyeRy = 100;
+
+    // Eyeball
+    ctx.beginPath(); ctx.ellipse(cx, cy, eyeRx, eyeRy, 0, 0, Math.PI*2);
+    ctx.fillStyle = '#f0f4ff'; ctx.fill();
+    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 2; ctx.stroke();
+
+    // Cornea bulge
+    ctx.beginPath(); ctx.ellipse(cx-eyeRx+8, cy, 20, eyeRy*0.55, 0, -Math.PI/2, Math.PI/2);
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5; ctx.stroke();
+    ctx.fillStyle = '#1835b4'; ctx.font = '8px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Cornea', cx-eyeRx-10, cy-eyeRy*0.55-5);
+
+    // Retina (back wall)
+    ctx.beginPath(); ctx.ellipse(cx, cy, eyeRx, eyeRy, 0, -0.6, 0.6);
+    ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 3; ctx.stroke();
+    ctx.fillStyle = '#e74c3c'; ctx.font = '8px system-ui';
+    ctx.fillText('Retina', cx+eyeRx+5, cy-20);
+
+    // Optic nerve
+    ctx.strokeStyle = '#f39c12'; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(cx+eyeRx-2, cy+10); ctx.lineTo(cx+eyeRx+35, cy+30); ctx.stroke();
+    ctx.fillStyle = '#f39c12'; ctx.font = '8px system-ui';
+    ctx.fillText('Optic nerve', cx+eyeRx+20, cy+48);
+
+    // Vitreous humour label
+    ctx.fillStyle = 'rgba(24,53,180,0.15)'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Vitreous humour', cx+40, cy+80);
+
+    // Iris
+    const irisX = cx - eyeRx + 35;
+    ctx.fillStyle = '#5b7fd4';
+    ctx.beginPath(); ctx.ellipse(irisX, cy-30, 5, 18, 0.1, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(irisX, cy+30, 5, 18, -0.1, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#1835b4'; ctx.font = '8px system-ui'; ctx.textAlign = 'right';
+    ctx.fillText('Iris', irisX-10, cy-42);
+
+    // Pupil
+    ctx.fillStyle = '#1a2747'; ctx.font = '7px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Pupil', irisX, cy);
+
+    // Lens - changes shape based on t
+    const lensX = cx - eyeRx + 55;
+    const lensW = lerp(18, 8, t); // fat when near (t=0), thin when far (t=1)
+    const lensH = lerp(38, 42, t);
+    ctx.beginPath(); ctx.ellipse(lensX, cy, lensW, lensH, 0, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(52,152,219,0.25)'; ctx.fill();
+    ctx.strokeStyle = '#3498db'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#3498db'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Lens', lensX, cy + lensH + 14);
+    ctx.font = '7px system-ui'; ctx.fillStyle = '#4a5568';
+    ctx.fillText(t < 0.5 ? '(fat/round)' : '(thin/flat)', lensX, cy + lensH + 24);
+
+    // Ciliary muscles
+    const cmR = lensH + 12;
+    ctx.strokeStyle = t < 0.5 ? '#e74c3c' : '#95a5a6';
+    ctx.lineWidth = t < 0.5 ? 4 : 2;
+    ctx.beginPath(); ctx.arc(lensX, cy, cmR, -0.8, -0.3); ctx.stroke();
+    ctx.beginPath(); ctx.arc(lensX, cy, cmR, 0.3, 0.8); ctx.stroke();
+    ctx.fillStyle = '#e74c3c'; ctx.font = '7px system-ui';
+    ctx.fillText('Ciliary muscles', lensX, cy - cmR - 8);
+    ctx.fillText(t < 0.5 ? '(contracted)' : '(relaxed)', lensX, cy - cmR + 2);
+
+    // Suspensory ligaments
+    const ligStyle = t < 0.5 ? { dash: [4,4], w: 1, color: '#95a5a6' } : { dash: [], w: 2, color: '#1a2747' };
+    ctx.strokeStyle = ligStyle.color; ctx.lineWidth = ligStyle.w; ctx.setLineDash(ligStyle.dash);
+    ctx.beginPath(); ctx.moveTo(lensX, cy-lensH); ctx.lineTo(lensX, cy-cmR); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(lensX, cy+lensH); ctx.lineTo(lensX, cy+cmR); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(lensX-lensW, cy-lensH*0.6); ctx.lineTo(lensX-12, cy-cmR+5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(lensX-lensW, cy+lensH*0.6); ctx.lineTo(lensX-12, cy+cmR-5); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#4a5568'; ctx.font = '7px system-ui';
+    ctx.fillText('Suspensory', lensX-35, cy-cmR+6);
+    ctx.fillText('ligaments', lensX-35, cy-cmR+15);
+    ctx.fillText(t < 0.5 ? '(slack)' : '(taut)', lensX-35, cy-cmR+24);
+
+    // Light rays
+    const objX = 20, focalX = cx + eyeRx - 15;
+    ctx.strokeStyle = '#f39c12'; ctx.lineWidth = 1.5; ctx.globalAlpha = 0.6;
+    const rays = [-20, 0, 20];
+    rays.forEach(offset => {
+        ctx.beginPath();
+        ctx.moveTo(objX, cy + offset);
+        ctx.lineTo(lensX - lensW, cy + offset * 0.7);
+        // Refract through lens to converge on retina
+        ctx.lineTo(focalX, cy);
+        ctx.stroke();
+    });
+    ctx.globalAlpha = 1;
+
+    // Object
+    ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(objX, cy+25); ctx.lineTo(objX, cy-25); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(objX-5, cy-20); ctx.lineTo(objX, cy-25); ctx.lineTo(objX+5, cy-20); ctx.stroke();
+    ctx.fillStyle = '#e74c3c'; ctx.font = '8px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText(t < 0.5 ? 'Near' : 'Far', objX, cy+38);
+    ctx.fillText('object', objX, cy+48);
+
+    // Focal point on retina
+    ctx.beginPath(); ctx.arc(focalX, cy, 4, 0, Math.PI*2);
+    ctx.fillStyle = '#f39c12'; ctx.fill();
+    ctx.fillStyle = '#f39c12'; ctx.font = '7px system-ui';
+    ctx.fillText('Focus', focalX, cy+15);
+
+    if (Math.abs(t - targetT) > 0.005) requestAnimationFrame(draw);
+}
+
+setView('near');
+requestAnimationFrame(draw);
+// Also handle transition animation
+setInterval(() => { if (Math.abs(t-targetT)>0.005) draw(); }, 30);
+</script>
+</body>
+</html>

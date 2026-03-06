@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parallel & Perpendicular Lines</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}
+.container{max-width:100%;margin:0 auto}
+h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.slider-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.slider-row label{font-size:.78rem;font-weight:600;min-width:80px;color:#1835b4}
+.slider-row input[type=range]{flex:1;accent-color:#1835b4}
+.slider-row .val{font-size:.85rem;min-width:36px;text-align:right;color:#1835b4}
+.toggle-row{display:flex;gap:6px;margin-bottom:8px;justify-content:center}
+.toggle-btn{padding:6px 16px;border:1px solid #d4d8e5;border-radius:4px;background:#e8ecf8;color:#1835b4;font-size:.78rem;cursor:pointer;font-weight:600;font-family:system-ui}
+.toggle-btn.active{background:#1835b4;color:#fff;border-color:#1835b4}
+.equation-display{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;font-size:.88rem;color:#1835b4;margin-bottom:8px;font-weight:600}
+canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;width:100%}
+.readouts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.readout{background:#e8ecf8;border-radius:5px;padding:6px 8px;text-align:center}
+.readout .label{font-size:.65rem;color:#4a5568}
+.readout .value{font-size:.82rem;color:#1835b4;font-weight:600}
+.verify-box{background:#fafbfc;border-radius:5px;padding:8px 12px;text-align:center;font-size:.82rem;margin-top:8px}
+.verify-box .pass{color:#2a6e2a;font-weight:600}
+.verify-box .info-text{color:#4a5568}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#1835b4}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Parallel & Perpendicular Lines</h1>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="toggle-row">
+            <button class="toggle-btn active" id="btnPar" onclick="setMode('parallel')">Parallel</button>
+            <button class="toggle-btn" id="btnPerp" onclick="setMode('perpendicular')">Perpendicular</button>
+        </div>
+        <div class="slider-row">
+            <label>Gradient m\u2081</label>
+            <input type="range" id="slM1" min="-5" max="5" step="0.25" value="2">
+            <span class="val" id="valM1">2</span>
+        </div>
+        <div class="slider-row">
+            <label>Intercept c\u2081</label>
+            <input type="range" id="slC1" min="-8" max="8" step="0.5" value="1">
+            <span class="val" id="valC1">1</span>
+        </div>
+        <div class="slider-row">
+            <label>Intercept c\u2082</label>
+            <input type="range" id="slC2" min="-8" max="8" step="0.5" value="-2">
+            <span class="val" id="valC2">-2</span>
+        </div>
+    </div>
+    <div class="card">
+        <div class="equation-display" id="eq1">Line 1: y = 2x + 1</div>
+        <div class="equation-display" id="eq2" style="background:#fce8e8;color:#c27878">Line 2: y = 2x - 2</div>
+    </div>
+    <div class="card" style="padding:8px">
+        <canvas id="canvas" width="1060" height="1060"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Gradient Analysis</div>
+        <div class="readouts">
+            <div class="readout"><div class="label">m\u2081</div><div class="value" id="m1Val"></div></div>
+            <div class="readout"><div class="label">m\u2082</div><div class="value" id="m2Val"></div></div>
+        </div>
+        <div class="verify-box" id="verify"></div>
+    </div>
+    <div class="info"><strong>Parallel:</strong> m\u2081 = m\u2082 | <strong>Perpendicular:</strong> m\u2081 \u00d7 m\u2082 = -1</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const slM1=document.getElementById('slM1'),slC1=document.getElementById('slC1'),slC2=document.getElementById('slC2');
+const W=canvas.width,H=canvas.height,scale=50;
+const cxC=W/2,cyC=H/2;
+let mode='parallel';
+
+function setMode(m){
+    mode=m;
+    document.getElementById('btnPar').className='toggle-btn'+(m==='parallel'?' active':'');
+    document.getElementById('btnPerp').className='toggle-btn'+(m==='perpendicular'?' active':'');
+    draw();
+}
+[slM1,slC1,slC2].forEach(s=>s.addEventListener('input',draw));
+function toCanvas(x,y){return[cxC+x*scale,cyC-y*scale];}
+function fmt(v){return parseFloat(v.toFixed(3));}
+function eqStr(m,c,label){
+    let s=label+': y = ';
+    if(m===0)return s+c;
+    if(m===-1)s+='-x';else if(m===1)s+='x';else s+=fmt(m)+'x';
+    if(c>0)s+=' + '+c;else if(c<0)s+=' - '+Math.abs(c);
+    return s;
+}
+
+function draw(){
+    const m1=parseFloat(slM1.value),c1=parseFloat(slC1.value),c2=parseFloat(slC2.value);
+    document.getElementById('valM1').textContent=m1;
+    document.getElementById('valC1').textContent=c1;
+    document.getElementById('valC2').textContent=c2;
+
+    let m2;
+    if(mode==='parallel')m2=m1;
+    else m2=m1!==0?fmt(-1/m1):Infinity;
+
+    document.getElementById('eq1').textContent=eqStr(m1,c1,'Line 1');
+    document.getElementById('eq2').textContent=isFinite(m2)?eqStr(m2,c2,'Line 2'):'Line 2: x = 0 (vertical)';
+    document.getElementById('m1Val').textContent=fmt(m1);
+    document.getElementById('m2Val').textContent=isFinite(m2)?fmt(m2):'\u221e';
+
+    const verify=document.getElementById('verify');
+    if(mode==='parallel'){
+        verify.innerHTML='<span class="info-text">Parallel check: m\u2081 = m\u2082 \u2192 '+fmt(m1)+' = '+fmt(m2)+'</span><br><span class="pass">\u2713 Lines are parallel (same gradient)</span>';
+    } else {
+        const product=m1*m2;
+        if(m1===0){
+            verify.innerHTML='<span class="info-text">When m\u2081 = 0, perpendicular line is vertical (undefined gradient)</span>';
+        } else {
+            verify.innerHTML='<span class="info-text">Perpendicular check: m\u2081 \u00d7 m\u2082 = '+fmt(m1)+' \u00d7 '+fmt(m2)+' = '+fmt(product)+'</span><br><span class="pass">\u2713 Product = -1, lines are perpendicular</span>';
+        }
+    }
+
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+    const range=Math.ceil(W/(2*scale));
+    // Grid
+    ctx.strokeStyle='#f0eeef';ctx.lineWidth=1;
+    for(let i=-range;i<=range;i++){
+        ctx.beginPath();ctx.moveTo(cxC+i*scale,0);ctx.lineTo(cxC+i*scale,H);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(0,cyC+i*scale);ctx.lineTo(W,cyC+i*scale);ctx.stroke();
+    }
+    ctx.strokeStyle='#ccc';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(0,cyC);ctx.lineTo(W,cyC);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cxC,0);ctx.lineTo(cxC,H);ctx.stroke();
+    ctx.fillStyle='#999';ctx.font='13px system-ui';ctx.textAlign='center';
+    for(let i=-range;i<=range;i++){
+        if(i===0)continue;
+        ctx.fillText(i,cxC+i*scale,cyC+18);
+        ctx.textAlign='right';ctx.fillText(i,cxC-8,cyC-i*scale+5);ctx.textAlign='center';
+    }
+
+    // Line 1
+    drawLine(m1,c1,'#1835b4',3);
+    // Line 2
+    if(isFinite(m2)){
+        drawLine(m2,c2,'#c27878',3);
+    } else {
+        // Vertical line at x=0 offset by c2 for visibility
+        ctx.strokeStyle='#c27878';ctx.lineWidth=3;
+        ctx.beginPath();ctx.moveTo(cxC,0);ctx.lineTo(cxC,H);ctx.stroke();
+    }
+
+    // Right angle marker for perpendicular
+    if(mode==='perpendicular'&&isFinite(m2)&&m1!==0){
+        // Find intersection
+        const xi=(c2-c1)/(m1-m2);
+        const yi=m1*xi+c1;
+        const[ipx,ipy]=toCanvas(xi,yi);
+        // Draw small square
+        const sz=15;
+        const angle1=Math.atan(m1),angle2=Math.atan(m2);
+        ctx.save();ctx.translate(ipx,ipy);
+        ctx.strokeStyle='#d4a843';ctx.lineWidth=2;
+        const dx1=Math.cos(angle1)*sz,dy1=-Math.sin(angle1)*sz;
+        const dx2=Math.cos(angle2)*sz,dy2=-Math.sin(angle2)*sz;
+        ctx.beginPath();
+        ctx.moveTo(dx1,dy1);ctx.lineTo(dx1+dx2,dy1+dy2);ctx.lineTo(dx2,dy2);
+        ctx.stroke();
+        ctx.restore();
+    }
+}
+
+function drawLine(m,c,color,lw){
+    const range=Math.ceil(W/(2*scale))+2;
+    const x1=-range,y1=m*x1+c,x2=range,y2=m*x2+c;
+    const[px1,py1]=toCanvas(x1,y1),[px2,py2]=toCanvas(x2,y2);
+    ctx.strokeStyle=color;ctx.lineWidth=lw;
+    ctx.beginPath();ctx.moveTo(px1,py1);ctx.lineTo(px2,py2);ctx.stroke();
+}
+draw();
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=w+'px';}
+window.addEventListener('resize',resize);resize();
+</script>
+</body>
+</html>

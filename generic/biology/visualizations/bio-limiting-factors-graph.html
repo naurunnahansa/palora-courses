@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limiting Factors of Photosynthesis</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; }
+        .slider-group { border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px 10px; margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; }
+        .slider-label .val { color: #1835b4; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #d4d8e5; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .legend { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+        .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 600; }
+        .legend-swatch { width: 20px; height: 3px; border-radius: 2px; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Limiting Factors of Photosynthesis</h1>
+    <div class="desc">How light intensity, CO&#8322; concentration and temperature interact</div>
+    <canvas id="graphCanvas" width="530" height="320"></canvas>
+    <div class="slider-group">
+        <div class="slider-label"><span>Temperature</span><span class="val" id="tempVal">25&#176;C</span></div>
+        <input type="range" id="tempSlider" min="0" max="2" value="1" oninput="update()">
+        <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:#4a5568;margin-top:2px;">
+            <span>15&#176;C</span><span>25&#176;C</span><span>35&#176;C</span>
+        </div>
+    </div>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#27ae60;"></div>High CO&#8322; (0.1%)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#1835b4;"></div>Medium CO&#8322; (0.04%)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#e67e22;"></div>Low CO&#8322; (0.01%)</div>
+    </div>
+    <div class="note">
+        <strong>Limiting factors:</strong> At low light, light intensity limits the rate. At high light, CO&#8322; concentration or temperature becomes limiting, causing the curve to plateau.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('graphCanvas');
+const ctx = canvas.getContext('2d');
+let hoverX = null;
+let tempIdx = 1;
+const temps = [15, 25, 35];
+const tempLabels = ['15\u00b0C', '25\u00b0C', '35\u00b0C'];
+
+const pad = { top: 30, right: 20, bottom: 50, left: 55 };
+const xMax = 100, yMax = 12;
+
+const curves = [
+    { label: 'Low CO\u2082 (0.01%)', color: '#e67e22', k: 0.04, maxRate: [3.5, 4, 3.2] },
+    { label: 'Med CO\u2082 (0.04%)', color: '#1835b4', k: 0.035, maxRate: [6, 7.5, 6.5] },
+    { label: 'High CO\u2082 (0.1%)', color: '#27ae60', k: 0.03, maxRate: [8, 10, 8.5] }
+];
+
+function rate(curve, x) {
+    const m = curve.maxRate[tempIdx];
+    return m * (1 - Math.exp(-curve.k * x));
+}
+
+function xToCanvas(x) { return pad.left + (x / xMax) * (canvas.width - pad.left - pad.right); }
+function yToCanvas(y) { return pad.top + ((yMax - y) / yMax) * (canvas.height - pad.top - pad.bottom); }
+function canvasToX(cx) { return ((cx - pad.left) / (canvas.width - pad.left - pad.right)) * xMax; }
+
+function update() {
+    tempIdx = parseInt(document.getElementById('tempSlider').value);
+    document.getElementById('tempVal').innerHTML = tempLabels[tempIdx];
+    draw();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Axes
+    ctx.strokeStyle = '#1a2747';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, canvas.height - pad.bottom);
+    ctx.lineTo(canvas.width - pad.right, canvas.height - pad.bottom);
+    ctx.stroke();
+
+    // Grid
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '10px system-ui';
+    ctx.textAlign = 'center';
+    for (let x = 0; x <= xMax; x += 20) {
+        const cx = xToCanvas(x);
+        ctx.strokeStyle = '#e0e0e0'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+        ctx.fillText(x, cx, canvas.height - pad.bottom + 14);
+    }
+    ctx.textAlign = 'right';
+    for (let y = 0; y <= yMax; y += 2) {
+        const cy = yToCanvas(y);
+        ctx.strokeStyle = '#e0e0e0'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(canvas.width - pad.right, cy); ctx.stroke();
+        ctx.fillText(y, pad.left - 6, cy + 3);
+    }
+
+    // Axis labels
+    ctx.fillStyle = '#1a2747';
+    ctx.font = 'bold 11px system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText('Light Intensity (arbitrary units)', canvas.width / 2, canvas.height - 5);
+    ctx.save();
+    ctx.translate(14, canvas.height / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Rate of Photosynthesis', 0, 0);
+    ctx.restore();
+
+    // Draw curves
+    curves.forEach((curve) => {
+        ctx.strokeStyle = curve.color;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        for (let x = 0; x <= xMax; x += 0.5) {
+            const cx = xToCanvas(x), cy = yToCanvas(rate(curve, x));
+            x === 0 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+        }
+        ctx.stroke();
+    });
+
+    // Annotations
+    ctx.font = '9px system-ui';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#4a5568';
+    ctx.fillText('Light is limiting', xToCanvas(5), pad.top + 15);
+    ctx.fillText('CO\u2082 is limiting', xToCanvas(65), pad.top + 15);
+
+    // Arrows for annotations
+    ctx.strokeStyle = '#4a5568';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(xToCanvas(28), pad.top + 12);
+    ctx.lineTo(xToCanvas(15), pad.top + 30);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(xToCanvas(85), pad.top + 12);
+    ctx.lineTo(xToCanvas(85), pad.top + 30);
+    ctx.stroke();
+
+    // Temperature note at 35C
+    if (tempIdx === 2) {
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = 'italic 9px system-ui';
+        ctx.textAlign = 'right';
+        ctx.fillText('Enzyme denaturation reduces rates', canvas.width - pad.right - 5, canvas.height - pad.bottom - 10);
+    }
+
+    // Hover
+    if (hoverX !== null && hoverX >= 0 && hoverX <= xMax) {
+        const x = hoverX;
+        const cx = xToCanvas(x);
+        ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+        ctx.setLineDash([]);
+
+        const vals = curves.map(c => rate(c, x));
+        curves.forEach((c, i) => {
+            ctx.beginPath();
+            ctx.arc(cx, yToCanvas(vals[i]), 4, 0, Math.PI * 2);
+            ctx.fillStyle = c.color; ctx.fill();
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+        });
+
+        const lines = [`Light: ${x.toFixed(1)}`, ...curves.map((c, i) => `${c.label}: ${vals[i].toFixed(2)}`)];
+        ctx.font = '10px system-ui';
+        const tw = Math.max(...lines.map(l => ctx.measureText(l).width)) + 16;
+        const th = lines.length * 15 + 10;
+        let bx = cx + 12;
+        if (bx + tw > canvas.width - pad.right) bx = cx - tw - 12;
+        ctx.fillStyle = 'rgba(255,255,255,0.95)';
+        ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.roundRect(bx, pad.top + 10, tw, th, 4); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#1a2747'; ctx.textAlign = 'left';
+        lines.forEach((l, i) => ctx.fillText(l, bx + 8, pad.top + 24 + i * 15));
+    }
+}
+
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+    hoverX = canvasToX(mx);
+    if (hoverX < 0 || hoverX > xMax) hoverX = null;
+    draw();
+});
+canvas.addEventListener('mouseleave', () => { hoverX = null; draw(); });
+
+function resize() {
+    const w = Math.min(530, window.innerWidth - 24);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 320 / 530) + 'px';
+}
+window.addEventListener('resize', resize);
+resize();
+draw();
+</script>
+</body>
+</html>

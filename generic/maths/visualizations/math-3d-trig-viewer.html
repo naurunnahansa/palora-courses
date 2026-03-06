@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Trigonometry</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width:100%;margin:0 auto}h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.slider-row{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:.82rem}.slider-row input[type=range]{flex:1;accent-color:#1835b4}.slider-row .val{min-width:42px;text-align:center;font-weight:600;color:#1835b4}.steps{display:grid;grid-template-columns:1fr;gap:6px;margin-top:8px}.step{background:#e8ecf8;border-radius:5px;padding:8px 12px;font-size:.82rem;line-height:1.6}.step .label{font-size:.72rem;color:#6b7db3;text-transform:uppercase;letter-spacing:.03em;font-weight:600}.step .value{font-weight:700;color:#1835b4;font-size:.95rem}.step .calc{color:#4a5568;font-size:.78rem}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
+</head>
+<body>
+<div class="container">
+    <h1>3D Trigonometry</h1>
+    <div class="card" style="padding:8px"><canvas id="cv" width="800" height="700"></canvas></div>
+    <div class="card">
+        <div class="card-title">Cuboid Dimensions</div>
+        <div class="slider-row"><span>Length (l):</span><input type="range" id="lSlider" min="2" max="12" value="6"><span class="val" id="lVal">6</span></div>
+        <div class="slider-row"><span>Width (w):</span><input type="range" id="wSlider" min="2" max="12" value="4"><span class="val" id="wVal">4</span></div>
+        <div class="slider-row"><span>Height (h):</span><input type="range" id="hSlider" min="2" max="12" value="5"><span class="val" id="hVal">5</span></div>
+    </div>
+    <div class="card">
+        <div class="card-title">Step-by-Step Calculation</div>
+        <div class="steps">
+            <div class="step">
+                <div class="label">Step 1: Base Diagonal (d)</div>
+                <div class="calc" id="step1Calc"></div>
+                <div class="value" id="step1Val"></div>
+            </div>
+            <div class="step">
+                <div class="label">Step 2: Space Diagonal (D)</div>
+                <div class="calc" id="step2Calc"></div>
+                <div class="value" id="step2Val"></div>
+            </div>
+            <div class="step">
+                <div class="label">Step 3: Angle Between Space Diagonal and Base (&theta;)</div>
+                <div class="calc" id="step3Calc"></div>
+                <div class="value" id="step3Val"></div>
+            </div>
+        </div>
+    </div>
+    <div class="info">In 3D trigonometry, find the <strong>space diagonal</strong> using two applications of Pythagoras: first in the base, then vertically.</div>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let L=6,Wi=4,Hi=5;
+
+function resize(){const w=Math.min(500,cv.parentElement.clientWidth-16);cv.style.width=w+'px';cv.style.height=(w*0.875)+'px'}
+resize();window.addEventListener('resize',resize);
+
+// Isometric projection helpers
+const isoAngle=Math.PI/6;
+function iso(x,y,z){
+    return{
+        x:400+(x-y)*Math.cos(isoAngle)*22,
+        y:400-(x+y)*Math.sin(isoAngle)*22+z*(-22)
+    };
+}
+
+function drawLine3D(x1,y1,z1,x2,y2,z2,color,lw,dash){
+    const a=iso(x1,y1,z1),b=iso(x2,y2,z2);
+    ctx.strokeStyle=color||'#1a2747';ctx.lineWidth=lw||1.5;
+    if(dash){ctx.setLineDash(dash)}
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+    if(dash){ctx.setLineDash([])}
+}
+
+function drawLabel3D(x,y,z,text,color,dx,dy){
+    const p=iso(x,y,z);
+    ctx.fillStyle=color||'#1a2747';ctx.font='bold 12px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(text,p.x+(dx||0),p.y+(dy||0));
+}
+
+function draw(){
+    const W=cv.width,H=cv.height;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Cuboid vertices: (0,0,0) to (L,Wi,Hi)
+    // Base: z=0; Top: z=Hi
+    // Hidden edges (dashed)
+    drawLine3D(0,Wi,0,L,Wi,0,'#d4d8e5',1,[4,4]);
+    drawLine3D(L,Wi,0,L,0,0,'#d4d8e5',1,[4,4]);
+    drawLine3D(L,Wi,0,L,Wi,Hi,'#d4d8e5',1,[4,4]);
+
+    // Base face (fill)
+    const b0=iso(0,0,0),b1=iso(L,0,0),b2=iso(L,Wi,0),b3=iso(0,Wi,0);
+    ctx.beginPath();ctx.moveTo(b0.x,b0.y);ctx.lineTo(b1.x,b1.y);ctx.lineTo(b2.x,b2.y);ctx.lineTo(b3.x,b3.y);ctx.closePath();
+    ctx.fillStyle='#1835b410';ctx.fill();
+
+    // Visible edges
+    drawLine3D(0,0,0,L,0,0,'#1a2747',2);
+    drawLine3D(0,0,0,0,Wi,0,'#1a2747',2);
+    drawLine3D(0,0,0,0,0,Hi,'#1a2747',2);
+    drawLine3D(L,0,0,L,0,Hi,'#1a2747',2);
+    drawLine3D(0,Wi,0,0,Wi,Hi,'#1a2747',2);
+    drawLine3D(0,0,Hi,L,0,Hi,'#1a2747',2);
+    drawLine3D(0,0,Hi,0,Wi,Hi,'#1a2747',2);
+    drawLine3D(L,0,Hi,L,Wi,Hi,'#1a2747',2);
+    drawLine3D(0,Wi,Hi,L,Wi,Hi,'#1a2747',2);
+
+    // Base diagonal (Step 1)
+    drawLine3D(0,0,0,L,Wi,0,'#e74c3c',3);
+    drawLabel3D(L/2,Wi/2,0,'d','#e74c3c',0,16);
+
+    // Right triangle in base (shaded)
+    const t0=iso(0,0,0),t1=iso(L,0,0),t2=iso(L,Wi,0);
+    ctx.beginPath();ctx.moveTo(t0.x,t0.y);ctx.lineTo(t1.x,t1.y);ctx.lineTo(t2.x,t2.y);ctx.closePath();
+    ctx.fillStyle='#e74c3c15';ctx.fill();
+    ctx.strokeStyle='#e74c3c';ctx.lineWidth=1;ctx.stroke();
+
+    // Right angle marker at (L,0,0)
+    const ra=iso(L,0,0),rb=iso(L-0.8,0,0),rc=iso(L-0.8,0.8,0),rd=iso(L,0.8,0);
+    ctx.beginPath();ctx.moveTo(rb.x,rb.y);ctx.lineTo(rc.x,rc.y);ctx.lineTo(rd.x,rd.y);ctx.strokeStyle='#e74c3c';ctx.lineWidth=1;ctx.stroke();
+
+    // Height line from (L,Wi,0) to (L,Wi,Hi)
+    // Already drawn as cuboid edge
+
+    // Space diagonal (Step 2)
+    drawLine3D(0,0,0,L,Wi,Hi,'#2ecc71',3);
+    drawLabel3D(L/2,Wi/2,Hi/2,'D','#2ecc71',-15,-10);
+
+    // Vertical right triangle (shaded)
+    const v0=iso(0,0,0),v1=iso(L,Wi,0),v2=iso(L,Wi,Hi);
+    ctx.beginPath();ctx.moveTo(v0.x,v0.y);ctx.lineTo(v1.x,v1.y);ctx.lineTo(v2.x,v2.y);ctx.closePath();
+    ctx.fillStyle='#2ecc7115';ctx.fill();
+
+    // Height line
+    drawLine3D(L,Wi,0,L,Wi,Hi,'#f39c12',2.5);
+    drawLabel3D(L,Wi,Hi/2,'h','#f39c12',18,0);
+
+    // Angle theta at origin
+    const baseDiag=Math.sqrt(L*L+Wi*Wi);
+    const theta=Math.atan2(Hi,baseDiag);
+    const arcR=30;
+    const pBase=iso(L,Wi,0),pOrig=iso(0,0,0);
+    const baseAngle=Math.atan2(pBase.y-pOrig.y,pBase.x-pOrig.x);
+    const topP=iso(L,Wi,Hi);
+    const topAngle=Math.atan2(topP.y-pOrig.y,topP.x-pOrig.x);
+    ctx.beginPath();ctx.arc(pOrig.x,pOrig.y,arcR,topAngle,baseAngle);ctx.strokeStyle='#f39c12';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#f39c12';ctx.font='bold 12px system-ui';ctx.textAlign='center';
+    const midAngle=(topAngle+baseAngle)/2;
+    ctx.fillText('\u03B8',pOrig.x+arcR*1.4*Math.cos(midAngle),pOrig.y+arcR*1.4*Math.sin(midAngle));
+
+    // Vertex labels
+    drawLabel3D(0,0,0,'O','#1a2747',-12,12);
+    drawLabel3D(L,0,0,'','#1a2747',12,12);
+    drawLabel3D(L,Wi,Hi,'P','#1a2747',12,-8);
+
+    // Dimension labels on edges
+    drawLabel3D(L/2,0,0,'l = '+L,'#1a2747',0,18);
+    drawLabel3D(0,Wi/2,0,'w = '+Wi,'#1a2747',-18,8);
+    drawLabel3D(0,0,Hi/2,'h = '+Hi,'#1a2747',-22,0);
+
+    // Update calculations
+    const d=Math.sqrt(L*L+Wi*Wi);
+    const D=Math.sqrt(L*L+Wi*Wi+Hi*Hi);
+    const thetaDeg=Math.atan2(Hi,d)*180/Math.PI;
+
+    document.getElementById('step1Calc').innerHTML='d = &radic;(l&sup2; + w&sup2;) = &radic;('+L+'&sup2; + '+Wi+'&sup2;) = &radic;'+(L*L+Wi*Wi);
+    document.getElementById('step1Val').textContent='d = '+d.toFixed(3);
+    document.getElementById('step2Calc').innerHTML='D = &radic;(d&sup2; + h&sup2;) = &radic;('+d.toFixed(2)+'&sup2; + '+Hi+'&sup2;) = &radic;'+(L*L+Wi*Wi+Hi*Hi)+'<br>Or directly: D = &radic;(l&sup2; + w&sup2; + h&sup2;) = &radic;('+L+'&sup2; + '+Wi+'&sup2; + '+Hi+'&sup2;)';
+    document.getElementById('step2Val').textContent='D = '+D.toFixed(3);
+    document.getElementById('step3Calc').innerHTML='tan(&theta;) = h / d = '+Hi+' / '+d.toFixed(3)+' = '+(Hi/d).toFixed(4)+'<br>&theta; = tan\u207B\u00B9('+(Hi/d).toFixed(4)+')';
+    document.getElementById('step3Val').textContent='\u03B8 = '+thetaDeg.toFixed(1)+'°';
+}
+
+document.getElementById('lSlider').addEventListener('input',function(){L=+this.value;document.getElementById('lVal').textContent=L;draw()});
+document.getElementById('wSlider').addEventListener('input',function(){Wi=+this.value;document.getElementById('wVal').textContent=Wi;draw()});
+document.getElementById('hSlider').addEventListener('input',function(){Hi=+this.value;document.getElementById('hVal').textContent=Hi;draw()});
+draw();
+</script>
+</body>
+</html>

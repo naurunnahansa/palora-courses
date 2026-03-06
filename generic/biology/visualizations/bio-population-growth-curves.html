@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Population Growth Curves</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; background: #fff; }
+        .controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 8px; flex-wrap: wrap; }
+        .btn { padding: 6px 14px; border: 2px solid #1835b4; border-radius: 5px; background: #fff; color: #1835b4; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn.active, .btn:hover { background: #1835b4; color: #fff; }
+        .slider-group { border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px 10px; margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; }
+        .slider-label .val { color: #1835b4; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #d4d8e5; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Population Growth Curves</h1>
+    <div class="desc">J-curve (Exponential) vs S-curve (Logistic)</div>
+    <div class="controls">
+        <button class="btn active" id="btnS" onclick="setCurve('s')">S-curve (Logistic)</button>
+        <button class="btn" id="btnJ" onclick="setCurve('j')">J-curve (Exponential)</button>
+    </div>
+    <canvas id="c" width="530" height="340"></canvas>
+    <div class="slider-group">
+        <div class="slider-label"><span>Growth Rate (r)</span><span class="val" id="rVal">0.05</span></div>
+        <input type="range" id="rSlider" min="1" max="10" value="5" oninput="update()">
+    </div>
+    <div class="slider-group" id="kGroup">
+        <div class="slider-label"><span>Carrying Capacity (K)</span><span class="val" id="kVal">500</span></div>
+        <input type="range" id="kSlider" min="200" max="1000" step="50" value="500" oninput="update()">
+    </div>
+    <div class="note">
+        <strong>Logistic growth:</strong> dN/dt = rN(K-N)/K. Population levels off at carrying capacity due to environmental resistance.<br>
+        <strong>Exponential growth:</strong> dN/dt = rN. Unlimited resources, no carrying capacity.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let curveType = 's', hoverX = null;
+let r = 0.05, K = 500;
+const pad = { top: 30, right: 25, bottom: 50, left: 60 };
+const tMax = 200, N0 = 10;
+
+function setCurve(t) {
+    curveType = t;
+    document.getElementById('btnS').classList.toggle('active', t === 's');
+    document.getElementById('btnJ').classList.toggle('active', t === 'j');
+    document.getElementById('kGroup').style.opacity = t === 's' ? 1 : 0.4;
+    draw();
+}
+
+function update() {
+    r = parseInt(document.getElementById('rSlider').value) / 100;
+    K = parseInt(document.getElementById('kSlider').value);
+    document.getElementById('rVal').textContent = r.toFixed(2);
+    document.getElementById('kVal').textContent = K;
+    draw();
+}
+
+function popAt(t) {
+    if (curveType === 'j') return N0 * Math.exp(r * t);
+    return K / (1 + ((K - N0) / N0) * Math.exp(-r * t));
+}
+
+function yMax() { return curveType === 'j' ? Math.max(K * 1.5, popAt(tMax) * 1.1) : K * 1.3; }
+
+function xToC(x) { return pad.left + (x / tMax) * (canvas.width - pad.left - pad.right); }
+function yToC(y) { return pad.top + ((yMax() - y) / yMax()) * (canvas.height - pad.top - pad.bottom); }
+function cToX(cx) { return ((cx - pad.left) / (canvas.width - pad.left - pad.right)) * tMax; }
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const gw = canvas.width - pad.left - pad.right;
+    const gh = canvas.height - pad.top - pad.bottom;
+    const ym = yMax();
+
+    // Axes
+    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, canvas.height - pad.bottom);
+    ctx.lineTo(canvas.width - pad.right, canvas.height - pad.bottom); ctx.stroke();
+
+    // Grid and labels
+    ctx.fillStyle = '#4a5568'; ctx.font = '10px system-ui';
+    ctx.textAlign = 'center';
+    for (let t = 0; t <= tMax; t += 40) {
+        const cx = xToC(t);
+        ctx.strokeStyle = '#e8ecf8'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+        ctx.fillText(t, cx, canvas.height - pad.bottom + 14);
+    }
+    ctx.textAlign = 'right';
+    const yStep = Math.ceil(ym / 5 / 50) * 50;
+    for (let y = 0; y <= ym; y += yStep) {
+        const cy = yToC(y);
+        if (cy < pad.top) continue;
+        ctx.strokeStyle = '#e8ecf8'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(canvas.width - pad.right, cy); ctx.stroke();
+        ctx.fillStyle = '#4a5568';
+        ctx.fillText(y, pad.left - 6, cy + 4);
+    }
+
+    // Axis labels
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Time', canvas.width / 2, canvas.height - 5);
+    ctx.save(); ctx.translate(14, canvas.height / 2); ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Population Size (N)', 0, 0); ctx.restore();
+
+    // Carrying capacity line (always show for S, show faintly for J)
+    if (curveType === 's') {
+        ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 1.5; ctx.setLineDash([6, 4]);
+        ctx.beginPath(); ctx.moveTo(pad.left, yToC(K)); ctx.lineTo(canvas.width - pad.right, yToC(K)); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#e74c3c'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'left';
+        ctx.fillText('K = ' + K, canvas.width - pad.right - 55, yToC(K) - 5);
+    }
+
+    // Environmental resistance shading (between curve and K for S-curve)
+    if (curveType === 's') {
+        ctx.beginPath();
+        for (let t = 0; t <= tMax; t += 1) {
+            const pop = Math.min(popAt(t), ym);
+            const cy = yToC(pop);
+            t === 0 ? ctx.moveTo(xToC(t), cy) : ctx.lineTo(xToC(t), cy);
+        }
+        ctx.lineTo(xToC(tMax), yToC(K));
+        ctx.lineTo(pad.left, yToC(K));
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(231,76,60,0.08)';
+        ctx.fill();
+    }
+
+    // Population curve
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for (let t = 0; t <= tMax; t += 0.5) {
+        const pop = popAt(t);
+        if (pop > ym * 1.2) break;
+        const cx = xToC(t), cy = yToC(Math.min(pop, ym));
+        t === 0 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+    }
+    ctx.stroke();
+
+    // Phase labels for S-curve
+    if (curveType === 's') {
+        ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+        // Find inflection point
+        const tInflect = Math.log((K - N0) / N0) / r;
+        const lagEnd = tInflect * 0.3;
+        const expEnd = tInflect * 1.5;
+
+        ctx.fillStyle = 'rgba(39,174,96,0.15)';
+        ctx.fillRect(xToC(0), pad.top, xToC(lagEnd) - pad.left, gh);
+        ctx.fillStyle = 'rgba(24,53,180,0.08)';
+        ctx.fillRect(xToC(lagEnd), pad.top, xToC(expEnd) - xToC(lagEnd), gh);
+        ctx.fillStyle = 'rgba(231,76,60,0.06)';
+        ctx.fillRect(xToC(expEnd), pad.top, canvas.width - pad.right - xToC(expEnd), gh);
+
+        ctx.fillStyle = '#1e8449'; ctx.fillText('Lag', xToC(lagEnd / 2), pad.top + 14);
+        ctx.fillStyle = '#1835b4'; ctx.fillText('Exponential', xToC((lagEnd + expEnd) / 2), pad.top + 14);
+        ctx.fillStyle = '#c0392b'; ctx.fillText('Stationary', xToC((expEnd + tMax) / 2), pad.top + 14);
+
+        // Environmental resistance label
+        ctx.fillStyle = '#e74c3c'; ctx.font = '9px system-ui';
+        ctx.fillText('Environmental', xToC(tMax * 0.7), yToC(K * 0.85));
+        ctx.fillText('resistance', xToC(tMax * 0.7), yToC(K * 0.85) + 12);
+    }
+
+    // Hover tooltip
+    if (hoverX !== null && hoverX >= 0 && hoverX <= tMax) {
+        const pop = popAt(hoverX);
+        if (pop <= ym * 1.2) {
+            const cx = xToC(hoverX), cy = yToC(Math.min(pop, ym));
+            ctx.strokeStyle = 'rgba(0,0,0,0.2)'; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
+            ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#1835b4'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+            const lines = ['t = ' + Math.round(hoverX), 'N = ' + Math.round(pop)];
+            ctx.font = '10px system-ui';
+            const tw = 85, th = 36;
+            let bx = cx + 12; if (bx + tw > canvas.width - pad.right) bx = cx - tw - 12;
+            ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.roundRect(bx, cy - 20, tw, th, 4); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#1a2747'; ctx.textAlign = 'left';
+            lines.forEach((l, i) => ctx.fillText(l, bx + 8, cy - 6 + i * 15));
+        }
+    }
+}
+
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+    hoverX = cToX(mx);
+    if (hoverX < 0 || hoverX > tMax) hoverX = null;
+    draw();
+});
+canvas.addEventListener('mouseleave', () => { hoverX = null; draw(); });
+
+function resize() { const w = Math.min(530, window.innerWidth - 24); canvas.style.width = w + 'px'; canvas.style.height = (w * 340 / 530) + 'px'; }
+window.addEventListener('resize', resize); resize(); update();
+</script>
+</body>
+</html>

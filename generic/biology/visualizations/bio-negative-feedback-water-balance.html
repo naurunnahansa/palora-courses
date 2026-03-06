@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negative Feedback: Water Balance (ADH)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .controls { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+        .btn { padding: 6px 16px; border: none; border-radius: 4px; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+        .btn-primary { background: #1835b4; color: #fff; }
+        .btn-primary:hover { background: #122a8a; }
+        .btn-secondary { background: #e8ecf8; color: #1835b4; border: 1.5px solid #1835b4; }
+        .btn-secondary:hover { background: #d4d8e5; }
+        .btn.active { background: #1835b4; color: #fff; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Negative Feedback: Water Balance (ADH)</h1>
+    <div class="desc">The hypothalamus and ADH regulate blood water concentration via negative feedback</div>
+    <canvas id="c" width="560" height="420"></canvas>
+    <div class="controls">
+        <button class="btn btn-secondary active" id="btnDilute" onclick="setScenario('dilute')">Too Much Water</button>
+        <button class="btn btn-secondary" id="btnConc" onclick="setScenario('concentrated')">Too Little Water</button>
+        <button class="btn btn-primary" id="btnPlay" onclick="play()">&#9654; Play</button>
+    </div>
+    <div class="note">
+        <strong>Negative feedback:</strong> The response always counteracts the change, returning blood water level to its set point. ADH = Antidiuretic Hormone.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let scenario = 'dilute';
+let activeStep = -1;
+let playing = false;
+let playTimer = null;
+
+const diluteSteps = [
+    'Normal blood\nwater level',
+    'Blood too\ndilute',
+    'Detected by\nhypothalamus',
+    'Pituitary releases\nLESS ADH',
+    'Collecting duct\nLESS permeable',
+    'More dilute\nurine produced',
+    'More water\nlost',
+];
+
+const concSteps = [
+    'Normal blood\nwater level',
+    'Blood too\nconcentrated',
+    'Detected by\nhypothalamus',
+    'Pituitary releases\nMORE ADH',
+    'Collecting duct\nMORE permeable',
+    'More concentrated\nurine produced',
+    'Less water\nlost',
+];
+
+function getSteps() { return scenario === 'dilute' ? diluteSteps : concSteps; }
+function getColor() { return scenario === 'dilute' ? '#2980b9' : '#e67e22'; }
+function getLightColor() { return scenario === 'dilute' ? '#d6eaf8' : '#fdebd0'; }
+
+function getPositions() {
+    const cx = 280, cy = 215;
+    const rx = 190, ry = 150;
+    const n = 7;
+    const positions = [];
+    for (let i = 0; i < n; i++) {
+        const angle = -Math.PI / 2 + (i / n) * Math.PI * 2;
+        positions.push({
+            x: cx + Math.cos(angle) * rx,
+            y: cy + Math.sin(angle) * ry
+        });
+    }
+    return positions;
+}
+
+function wrapText(text, x, y, maxW, lineH) {
+    const lines = text.split('\n');
+    const totalH = lines.length * lineH;
+    let startY = y - totalH / 2 + lineH / 2;
+    lines.forEach((line, i) => {
+        ctx.fillText(line, x, startY + i * lineH);
+    });
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const steps = getSteps();
+    const positions = getPositions();
+    const color = getColor();
+    const lightColor = getLightColor();
+
+    // Draw arrows between steps
+    for (let i = 0; i < steps.length; i++) {
+        const from = positions[i];
+        const to = positions[(i + 1) % steps.length];
+        const dx = to.x - from.x, dy = to.y - from.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const ux = dx / dist, uy = dy / dist;
+        const startX = from.x + ux * 42, startY = from.y + uy * 28;
+        const endX = to.x - ux * 42, endY = to.y - uy * 28;
+
+        const isActive = activeStep >= 0 && (i <= activeStep || (activeStep === steps.length - 1));
+        ctx.strokeStyle = isActive ? color : '#d4d8e5';
+        ctx.lineWidth = isActive ? 2.5 : 1.5;
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.stroke();
+
+        // Arrowhead
+        const aLen = 8;
+        const ax = endX - ux * aLen, ay = endY - uy * aLen;
+        ctx.fillStyle = isActive ? color : '#d4d8e5';
+        ctx.beginPath();
+        ctx.moveTo(endX, endY);
+        ctx.lineTo(ax - uy * 4, ay + ux * 4);
+        ctx.lineTo(ax + uy * 4, ay - ux * 4);
+        ctx.fill();
+    }
+
+    // Draw step boxes
+    for (let i = 0; i < steps.length; i++) {
+        const p = positions[i];
+        const isActive = i <= activeStep || activeStep === -1;
+        const isCurrent = i === activeStep;
+        const w = 82, h = 44;
+
+        ctx.fillStyle = isCurrent ? lightColor : (isActive ? '#f8f9fc' : '#f0f0f4');
+        ctx.strokeStyle = isCurrent ? color : (isActive ? color : '#d4d8e5');
+        ctx.lineWidth = isCurrent ? 2.5 : 1.5;
+        ctx.beginPath();
+        if (i === 0) {
+            // Rounded rect for normal state
+            const r = 22;
+            ctx.ellipse(p.x, p.y, w / 2 + 4, h / 2 + 4, 0, 0, Math.PI * 2);
+        } else {
+            const r = 6;
+            ctx.moveTo(p.x - w/2 + r, p.y - h/2);
+            ctx.arcTo(p.x + w/2, p.y - h/2, p.x + w/2, p.y + h/2, r);
+            ctx.arcTo(p.x + w/2, p.y + h/2, p.x - w/2, p.y + h/2, r);
+            ctx.arcTo(p.x - w/2, p.y + h/2, p.x - w/2, p.y - h/2, r);
+            ctx.arcTo(p.x - w/2, p.y - h/2, p.x + w/2, p.y - h/2, r);
+        }
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = isCurrent ? color : (isActive ? '#1a2747' : '#999');
+        ctx.font = isCurrent ? 'bold 10px system-ui' : '10px system-ui';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        wrapText(steps[i], p.x, p.y, w, 12);
+    }
+
+    // Center label
+    ctx.font = 'bold 12px system-ui';
+    ctx.fillStyle = color;
+    ctx.textAlign = 'center';
+    ctx.fillText(scenario === 'dilute' ? 'TOO MUCH WATER' : 'TOO LITTLE WATER', 280, 215);
+    ctx.font = '10px system-ui';
+    ctx.fillStyle = '#4a5568';
+    ctx.fillText('Negative Feedback Loop', 280, 232);
+}
+
+function setScenario(s) {
+    scenario = s;
+    activeStep = -1;
+    playing = false;
+    if (playTimer) clearInterval(playTimer);
+    document.getElementById('btnDilute').classList.toggle('active', s === 'dilute');
+    document.getElementById('btnConc').classList.toggle('active', s === 'concentrated');
+    document.getElementById('btnPlay').innerHTML = '&#9654; Play';
+    draw();
+}
+
+function play() {
+    if (playing) {
+        playing = false;
+        clearInterval(playTimer);
+        document.getElementById('btnPlay').innerHTML = '&#9654; Play';
+        return;
+    }
+    playing = true;
+    activeStep = -1;
+    document.getElementById('btnPlay').innerHTML = '&#9724; Stop';
+    playTimer = setInterval(() => {
+        activeStep++;
+        if (activeStep >= getSteps().length) {
+            activeStep = -1;
+            playing = false;
+            clearInterval(playTimer);
+            document.getElementById('btnPlay').innerHTML = '&#9654; Play';
+        }
+        draw();
+    }, 900);
+}
+
+draw();
+</script>
+</body>
+</html>

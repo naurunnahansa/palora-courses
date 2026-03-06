@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bell Jar Experiment: CO₂ and Photosynthesis</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fcfcfe;
+    color: #1a2747;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 8px; text-align: center; }
+  .subtitle { font-size: 0.9rem; color: #6b7a99; margin-bottom: 24px; text-align: center; max-width: 600px; line-height: 1.5; }
+  .jars-row {
+    display: flex; gap: 28px; flex-wrap: wrap; justify-content: center;
+    width: 100%; max-width: 750px;
+  }
+  .jar-panel {
+    flex: 1; min-width: 280px; max-width: 350px;
+    background: #e8ecf8; border: 1.5px solid #d4d8e5; border-radius: 14px;
+    padding: 18px 16px; display: flex; flex-direction: column; align-items: center;
+  }
+  .jar-label {
+    font-weight: 700; font-size: 1rem; color: #1835b4; margin-bottom: 4px;
+  }
+  .jar-type { font-size: 0.82rem; color: #6b7a99; margin-bottom: 12px; }
+  svg { max-width: 100%; height: auto; }
+  .tooltip {
+    position: absolute; background: #1a2747; color: #fff; padding: 8px 12px;
+    border-radius: 8px; font-size: 0.8rem; max-width: 200px; pointer-events: none;
+    opacity: 0; transition: opacity 0.2s; z-index: 10; line-height: 1.4;
+  }
+  .hoverable { cursor: pointer; }
+  .hoverable:hover { filter: brightness(1.15); }
+  .results-panel {
+    margin-top: 24px; width: 100%; max-width: 750px;
+    background: #e8ecf8; border: 1.5px solid #d4d8e5; border-radius: 14px;
+    padding: 18px 24px;
+  }
+  .results-title { font-weight: 700; color: #1835b4; margin-bottom: 8px; font-size: 1rem; }
+  .result-row {
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .result-item {
+    flex: 1; min-width: 220px; padding: 10px 14px;
+    border-radius: 8px; font-size: 0.88rem; line-height: 1.5;
+  }
+  .result-neg { background: #fce4e4; border: 1px solid #e8a0a0; }
+  .result-pos { background: #d8f0d8; border: 1px solid #a0d0a0; }
+  .note { margin-top: 16px; font-size: 0.8rem; color: #6b7a99; text-align: center; max-width: 600px; }
+</style>
+</head>
+<body>
+
+<h1>Bell Jar Experiment: CO&#8322; and Photosynthesis</h1>
+<p class="subtitle">This experiment tests whether carbon dioxide is needed for photosynthesis. Hover over parts of the apparatus to learn their purpose.</p>
+
+<div class="jars-row">
+  <div class="jar-panel">
+    <div class="jar-label">Experimental</div>
+    <div class="jar-type">No CO&#8322; available</div>
+    <svg viewBox="0 0 240 280" width="240" id="svgExp">
+      <!-- Base plate -->
+      <rect x="30" y="240" width="180" height="18" rx="4" fill="#888" stroke="#666" stroke-width="1.5" class="hoverable" data-tip="Sealed base plate — keeps the bell jar airtight"/>
+      <!-- Soda lime dish -->
+      <ellipse cx="120" cy="232" rx="40" ry="10" fill="#f0e68c" stroke="#c8b400" stroke-width="1.5" class="hoverable" data-tip="Soda lime — absorbs CO₂ from the air inside the jar"/>
+      <text x="120" y="236" text-anchor="middle" font-size="9" fill="#8B6914" font-weight="600">Soda lime</text>
+      <!-- Pot -->
+      <rect x="90" y="195" width="60" height="40" rx="4" fill="#8B6914" stroke="#5a4510" stroke-width="1.5" class="hoverable" data-tip="Plant pot with soil"/>
+      <!-- Stem -->
+      <rect x="117" y="165" width="6" height="32" fill="#3a7d3a"/>
+      <!-- Leaves -->
+      <ellipse cx="105" cy="158" rx="22" ry="10" fill="#4a9e4a" class="hoverable" data-tip="Plant leaf — being tested for starch production"/>
+      <ellipse cx="135" cy="152" rx="20" ry="9" fill="#4a9e4a"/>
+      <ellipse cx="120" cy="144" rx="18" ry="10" fill="#4a9e4a"/>
+      <!-- Bell jar dome -->
+      <path d="M50 245 Q50 60 120 40 Q190 60 190 245" fill="none" stroke="#7ab8e0" stroke-width="3" class="hoverable" data-tip="Glass bell jar — transparent to allow light through"/>
+      <path d="M50 245 Q50 60 120 40 Q190 60 190 245" fill="rgba(200,225,245,0.15)"/>
+      <!-- Label -->
+      <text x="120" y="25" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="700">No CO&#8322;</text>
+    </svg>
+  </div>
+
+  <div class="jar-panel">
+    <div class="jar-label">Control</div>
+    <div class="jar-type">CO&#8322; available</div>
+    <svg viewBox="0 0 240 280" width="240" id="svgCtrl">
+      <!-- Base plate -->
+      <rect x="30" y="240" width="180" height="18" rx="4" fill="#888" stroke="#666" stroke-width="1.5" class="hoverable" data-tip="Sealed base plate"/>
+      <!-- Water dish (control) -->
+      <ellipse cx="120" cy="232" rx="40" ry="10" fill="#8ec4f0" stroke="#5a9ec8" stroke-width="1.5" class="hoverable" data-tip="Dish of water — does NOT absorb CO₂ (acts as a control)"/>
+      <text x="120" y="236" text-anchor="middle" font-size="9" fill="#2a6fa0" font-weight="600">Water</text>
+      <!-- Pot -->
+      <rect x="90" y="195" width="60" height="40" rx="4" fill="#8B6914" stroke="#5a4510" stroke-width="1.5" class="hoverable" data-tip="Plant pot with soil"/>
+      <!-- Stem -->
+      <rect x="117" y="165" width="6" height="32" fill="#3a7d3a"/>
+      <!-- Leaves -->
+      <ellipse cx="105" cy="158" rx="22" ry="10" fill="#4a9e4a" class="hoverable" data-tip="Plant leaf — will be tested for starch"/>
+      <ellipse cx="135" cy="152" rx="20" ry="9" fill="#4a9e4a"/>
+      <ellipse cx="120" cy="144" rx="18" ry="10" fill="#4a9e4a"/>
+      <!-- Bell jar dome -->
+      <path d="M50 245 Q50 60 120 40 Q190 60 190 245" fill="none" stroke="#7ab8e0" stroke-width="3" class="hoverable" data-tip="Glass bell jar — transparent to allow light through"/>
+      <path d="M50 245 Q50 60 120 40 Q190 60 190 245" fill="rgba(200,225,245,0.15)"/>
+      <!-- Label -->
+      <text x="120" y="25" text-anchor="middle" font-size="11" fill="#27ae60" font-weight="700">CO&#8322; present</text>
+    </svg>
+  </div>
+</div>
+
+<div class="results-panel">
+  <div class="results-title">Results (after testing leaves with iodine)</div>
+  <div class="result-row">
+    <div class="result-item result-neg">
+      <strong>Experimental (no CO&#8322;):</strong><br>
+      Leaf stays <strong>brown/yellow</strong> with iodine.<br>
+      No starch produced. Photosynthesis did not occur.
+    </div>
+    <div class="result-item result-pos">
+      <strong>Control (CO&#8322; present):</strong><br>
+      Leaf turns <strong>blue-black</strong> with iodine.<br>
+      Starch present. Photosynthesis occurred normally.
+    </div>
+  </div>
+</div>
+
+<p class="note">Conclusion: Carbon dioxide is required for photosynthesis. Without CO&#8322;, the plant cannot produce starch.</p>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const tooltip = document.getElementById('tooltip');
+
+document.querySelectorAll('.hoverable').forEach(el => {
+  el.addEventListener('mouseenter', e => {
+    const tip = el.getAttribute('data-tip');
+    if (!tip) return;
+    tooltip.textContent = tip;
+    tooltip.style.opacity = '1';
+    positionTooltip(e);
+  });
+  el.addEventListener('mousemove', positionTooltip);
+  el.addEventListener('mouseleave', () => { tooltip.style.opacity = '0'; });
+});
+
+function positionTooltip(e) {
+  const x = e.clientX + 14;
+  const y = e.clientY - 10;
+  tooltip.style.left = x + 'px';
+  tooltip.style.top = y + 'px';
+  tooltip.style.position = 'fixed';
+}
+</script>
+
+</body>
+</html>

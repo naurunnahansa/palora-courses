@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using Rooting Powder (Auxin) for Plant Cuttings</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 10px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        .stage-area { border: 1px solid #d4d8e5; border-radius: 5px; background: #fff; margin-bottom: 10px; overflow: hidden; }
+        .stage-title { background: #e8ecf8; padding: 6px 10px; font-size: 0.8rem; font-weight: 700; color: #1835b4; text-align: center; }
+        canvas { display: block; width: 100%; margin: 0 auto; }
+        .stage-desc { padding: 6px 10px; font-size: 0.72rem; color: #4a5568; text-align: center; background: #f7f8fc; border-top: 1px solid #d4d8e5; min-height: 32px; line-height: 1.4; }
+        .controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; }
+        .step-btn { padding: 6px 18px; background: #1835b4; color: #fff; border: none; border-radius: 4px; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
+        .step-btn:hover { background: #122a8a; }
+        .step-btn:disabled { background: #aab; cursor: default; }
+        .steps-indicator { display: flex; gap: 6px; justify-content: center; margin-bottom: 10px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #d4d8e5; transition: background 0.3s; }
+        .dot.active { background: #1835b4; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<h1>Rooting Powder (Auxin) for Cuttings</h1>
+<div class="desc">How synthetic auxin is used to propagate plants from stem cuttings</div>
+<div class="steps-indicator" id="dots"></div>
+<div class="stage-area">
+    <div class="stage-title" id="stageTitle">Step 1 of 5: Take a Cutting</div>
+    <canvas id="canvas" width="400" height="280"></canvas>
+    <div class="stage-desc" id="stageDesc">Cut a healthy stem from the parent plant at an angle using a sharp, clean blade.</div>
+</div>
+<div class="controls">
+    <button class="step-btn" id="prevBtn" onclick="prevStep()" disabled>&larr; Previous</button>
+    <button class="step-btn" id="nextBtn" onclick="nextStep()">Next Step &rarr;</button>
+</div>
+<div class="note">
+    <strong>Auxin</strong> (rooting powder) stimulates cell division at the cut surface, promoting root growth from the cutting.
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const titles = [
+    'Step 1 of 5: Take a Cutting',
+    'Step 2 of 5: Remove Lower Leaves',
+    'Step 3 of 5: Dip in Rooting Powder',
+    'Step 4 of 5: Plant in Compost',
+    'Step 5 of 5: Roots Develop'
+];
+const descs = [
+    'Cut a healthy stem from the parent plant at an angle using a sharp, clean blade.',
+    'Strip the leaves from the lower half of the cutting to reduce water loss and expose nodes.',
+    'Dip the cut end into rooting powder (synthetic auxin) to stimulate root formation.',
+    'Insert the cutting into moist compost, firm the soil around it gently.',
+    'Over several weeks, roots develop from the cut end where auxin was applied.'
+];
+let step = 0;
+
+function initDots() {
+    const container = document.getElementById('dots');
+    container.innerHTML = '';
+    for (let i = 0; i < 5; i++) {
+        const d = document.createElement('div');
+        d.className = 'dot' + (i === 0 ? ' active' : '');
+        container.appendChild(d);
+    }
+}
+
+function updateDots() {
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((d, i) => d.classList.toggle('active', i <= step));
+}
+
+function drawLeaf(x, y, angle, scale) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(scale, scale);
+    ctx.fillStyle = '#27ae60';
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(12, -8, 24, 0);
+    ctx.quadraticCurveTo(12, 8, 0, 0);
+    ctx.fill();
+    ctx.strokeStyle = '#1e8449';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(22, 0);
+    ctx.stroke();
+    ctx.restore();
+}
+
+function drawStem(x, y, h, hasLowerLeaves, hasUpperLeaves) {
+    // Stem
+    ctx.strokeStyle = '#2ecc40';
+    ctx.lineWidth = 6;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, y - h);
+    ctx.stroke();
+
+    // Angled cut at bottom
+    ctx.strokeStyle = '#2ecc40';
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(x - 4, y + 2);
+    ctx.lineTo(x + 4, y - 2);
+    ctx.stroke();
+
+    // Nodes
+    const nodePositions = [0.25, 0.5, 0.75];
+    for (const t of nodePositions) {
+        const ny = y - h * t;
+        ctx.fillStyle = '#1e8449';
+        ctx.beginPath();
+        ctx.arc(x, ny, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Upper leaves
+    if (hasUpperLeaves) {
+        drawLeaf(x + 3, y - h * 0.75, -0.3, 1);
+        drawLeaf(x - 3, y - h * 0.75, Math.PI + 0.3, 1);
+        drawLeaf(x + 3, y - h * 0.65, -0.5, 0.8);
+    }
+
+    // Lower leaves
+    if (hasLowerLeaves) {
+        drawLeaf(x + 3, y - h * 0.5, -0.3, 1);
+        drawLeaf(x - 3, y - h * 0.5, Math.PI + 0.3, 1);
+        drawLeaf(x + 3, y - h * 0.25, -0.4, 0.9);
+        drawLeaf(x - 3, y - h * 0.25, Math.PI + 0.4, 0.9);
+    }
+}
+
+function drawPot(x, y, w, h) {
+    ctx.fillStyle = '#a0522d';
+    ctx.beginPath();
+    ctx.moveTo(x - w/2, y);
+    ctx.lineTo(x + w/2, y);
+    ctx.lineTo(x + w/2 - 5, y + h);
+    ctx.lineTo(x - w/2 + 5, y + h);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = '#6b3410';
+    ctx.fillRect(x - w/2 - 2, y - 4, w + 4, 7);
+    // Soil
+    ctx.fillStyle = '#5c3317';
+    ctx.fillRect(x - w/2 + 3, y, w - 6, 8);
+}
+
+function drawRoots(x, y, progress) {
+    ctx.strokeStyle = '#c0a060';
+    ctx.lineWidth = 1.5;
+    const roots = [
+        { dx: -15, dy: 25 }, { dx: -8, dy: 30 }, { dx: 0, dy: 28 },
+        { dx: 8, dy: 32 }, { dx: 14, dy: 22 }, { dx: -12, dy: 18 },
+        { dx: 5, dy: 20 }, { dx: -5, dy: 35 }
+    ];
+    for (const r of roots) {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.quadraticCurveTo(x + r.dx * 0.5 * progress, y + r.dy * 0.5 * progress, x + r.dx * progress, y + r.dy * progress);
+        ctx.stroke();
+    }
+}
+
+function drawStep(s) {
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#f7f8fc';
+    ctx.fillRect(0, 0, w, h);
+
+    const cx = w / 2;
+
+    if (s === 0) {
+        // Parent plant on left, cutting being taken
+        // Parent plant
+        ctx.strokeStyle = '#2ecc40';
+        ctx.lineWidth = 8;
+        ctx.beginPath();
+        ctx.moveTo(100, 230);
+        ctx.lineTo(100, 80);
+        ctx.stroke();
+        // Parent leaves
+        drawLeaf(103, 100, -0.3, 1.3);
+        drawLeaf(97, 120, Math.PI + 0.3, 1.3);
+        drawLeaf(103, 140, -0.3, 1.2);
+        drawLeaf(97, 160, Math.PI + 0.3, 1.2);
+        drawLeaf(103, 180, -0.3, 1.1);
+        drawLeaf(97, 200, Math.PI + 0.3, 1.1);
+
+        // Cut line with scissors icon
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath();
+        ctx.moveTo(80, 155);
+        ctx.lineTo(120, 145);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = 'bold 18px system-ui';
+        ctx.fillText('\u2702', 122, 152);
+
+        // Separated cutting on right
+        drawStem(260, 230, 100, true, true);
+
+        // Arrow
+        ctx.fillStyle = '#1835b4';
+        ctx.font = '11px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('Cut at an angle', cx, 265);
+
+    } else if (s === 1) {
+        // Cutting with lower leaves being removed
+        drawStem(160, 230, 120, false, true);
+
+        // Falling leaves
+        ctx.globalAlpha = 0.4;
+        drawLeaf(220, 180, 0.8, 1);
+        drawLeaf(240, 200, 1.2, 0.9);
+        drawLeaf(100, 190, -0.6, 0.9);
+        drawLeaf(80, 210, -1.0, 0.8);
+        ctx.globalAlpha = 1;
+
+        // Arrows showing removal
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(163, 175);
+        ctx.lineTo(210, 178);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(157, 175);
+        ctx.lineTo(110, 185);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = '10px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('Remove lower leaves', cx, 265);
+
+    } else if (s === 2) {
+        // Dipping in rooting powder
+        drawStem(140, 155, 100, false, true);
+
+        // Container of rooting powder
+        ctx.fillStyle = '#e8ecf8';
+        ctx.strokeStyle = '#1835b4';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(240, 160, 100, 70, 4);
+        ctx.fill();
+        ctx.stroke();
+        // Powder inside
+        ctx.fillStyle = '#f5e6c8';
+        ctx.fillRect(244, 190, 92, 36);
+        // Label
+        ctx.fillStyle = '#1835b4';
+        ctx.font = 'bold 9px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('Rooting Powder', 290, 178);
+        ctx.font = '8px system-ui';
+        ctx.fillStyle = '#666';
+        ctx.fillText('(synthetic auxin)', 290, 188);
+
+        // Cutting being dipped - show angled
+        ctx.save();
+        ctx.translate(230, 195);
+        ctx.rotate(0.3);
+        ctx.strokeStyle = '#2ecc40';
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, -60);
+        ctx.stroke();
+        // Powder on tip
+        ctx.fillStyle = '#e8c870';
+        ctx.beginPath();
+        ctx.arc(0, 2, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // Arrow
+        ctx.fillStyle = '#1835b4';
+        ctx.font = '11px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('Dip cut end in rooting powder', cx, 265);
+
+    } else if (s === 3) {
+        // Planted in compost
+        const potX = cx, potY = 175;
+        drawPot(potX, potY, 80, 55);
+
+        // Cutting in soil
+        ctx.strokeStyle = '#2ecc40';
+        ctx.lineWidth = 5;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(potX, potY + 5);
+        ctx.lineTo(potX, potY - 80);
+        ctx.stroke();
+        // Tip
+        ctx.fillStyle = '#27ae60';
+        ctx.beginPath();
+        ctx.arc(potX, potY - 80, 3, 0, Math.PI * 2);
+        ctx.fill();
+        // Upper leaves
+        drawLeaf(potX + 3, potY - 65, -0.3, 1);
+        drawLeaf(potX - 3, potY - 65, Math.PI + 0.3, 1);
+
+        // Auxin dot at base
+        ctx.fillStyle = '#e8c870';
+        ctx.beginPath();
+        ctx.arc(potX, potY + 3, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#1835b4';
+        ctx.font = '11px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('Plant in moist compost', cx, 265);
+
+    } else if (s === 4) {
+        // Roots develop
+        const potX = cx, potY = 175;
+        drawPot(potX, potY, 80, 55);
+
+        // Cutting
+        ctx.strokeStyle = '#2ecc40';
+        ctx.lineWidth = 5;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(potX, potY + 5);
+        ctx.lineTo(potX, potY - 80);
+        ctx.stroke();
+        ctx.fillStyle = '#27ae60';
+        ctx.beginPath();
+        ctx.arc(potX, potY - 80, 3, 0, Math.PI * 2);
+        ctx.fill();
+        drawLeaf(potX + 3, potY - 65, -0.3, 1);
+        drawLeaf(potX - 3, potY - 65, Math.PI + 0.3, 1);
+        // New small leaves
+        drawLeaf(potX + 3, potY - 50, -0.3, 0.6);
+        drawLeaf(potX - 3, potY - 50, Math.PI + 0.3, 0.6);
+
+        // Roots
+        drawRoots(potX, potY + 5, 1);
+
+        // Highlight label
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = 'bold 10px system-ui';
+        ctx.textAlign = 'left';
+        ctx.fillText('New roots!', potX + 30, potY + 30);
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 2]);
+        ctx.beginPath();
+        ctx.moveTo(potX + 28, potY + 27);
+        ctx.lineTo(potX + 10, potY + 18);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#1835b4';
+        ctx.font = '11px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('Auxin stimulates root growth at the cut surface', cx, 265);
+    }
+}
+
+function updateUI() {
+    document.getElementById('stageTitle').textContent = titles[step];
+    document.getElementById('stageDesc').textContent = descs[step];
+    document.getElementById('prevBtn').disabled = step === 0;
+    document.getElementById('nextBtn').disabled = step === 4;
+    document.getElementById('nextBtn').textContent = step === 4 ? 'Complete' : 'Next Step \u2192';
+    updateDots();
+    drawStep(step);
+}
+
+function nextStep() { if (step < 4) { step++; updateUI(); } }
+function prevStep() { if (step > 0) { step--; updateUI(); } }
+
+initDots();
+updateUI();
+</script>
+</body>
+</html>

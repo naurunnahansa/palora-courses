@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genetic Engineering: Making Human Insulin</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .controls { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px; }
+        .btn { padding: 6px 16px; border: none; border-radius: 4px; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+        .btn-primary { background: #1835b4; color: #fff; }
+        .btn-primary:hover { background: #122a8a; }
+        .btn-secondary { background: #e8ecf8; color: #1835b4; border: 1.5px solid #1835b4; }
+        .btn-secondary:hover { background: #d4d8e5; }
+        .step-info { text-align: center; min-height: 36px; padding: 6px; font-size: 0.78rem; color: #1a2747; background: #e8ecf8; border-radius: 5px; margin-bottom: 8px; }
+        .step-info strong { color: #1835b4; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Genetic Engineering: Making Human Insulin</h1>
+    <div class="desc">How recombinant DNA technology produces human insulin in bacteria</div>
+    <canvas id="c" width="560" height="360"></canvas>
+    <div class="step-info" id="info">Click <strong>Next Step</strong> or <strong>Play</strong> to begin the process.</div>
+    <div class="controls">
+        <button class="btn btn-primary" id="btnPlay" onclick="togglePlay()">&#9654; Play</button>
+        <button class="btn btn-primary" onclick="nextStep()">Next Step &rarr;</button>
+        <button class="btn btn-secondary" onclick="reset()">Reset</button>
+    </div>
+    <div class="note">
+        <strong>Key enzymes:</strong> Restriction enzymes cut DNA at specific sequences. Ligase enzyme joins DNA fragments together. The same restriction enzyme must be used on both human DNA and the plasmid.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const info = document.getElementById('info');
+
+const steps = [
+    { title: 'Step 1: Identify insulin gene', desc: 'The gene for insulin is located on <strong>human chromosome 11</strong>. It codes for the insulin protein.' },
+    { title: 'Step 2: Cut out insulin gene', desc: 'A <strong>restriction enzyme</strong> cuts the insulin gene out of the human DNA, producing sticky ends.' },
+    { title: 'Step 3: Cut open bacterial plasmid', desc: 'The <strong>same restriction enzyme</strong> is used to cut open a circular bacterial plasmid, creating complementary sticky ends.' },
+    { title: 'Step 4: Insert gene into plasmid', desc: '<strong>Ligase enzyme</strong> joins the insulin gene into the plasmid. The sticky ends base-pair and are sealed. This creates a <strong>recombinant plasmid</strong>.' },
+    { title: 'Step 5: Insert into bacterium', desc: 'The recombinant plasmid is inserted into a <strong>bacterial cell</strong> (transformation).' },
+    { title: 'Step 6: Bacteria multiply', desc: 'Bacteria <strong>reproduce rapidly</strong> in a fermenter. Each daughter cell contains the insulin gene and produces human insulin.' },
+    { title: 'Step 7: Harvest insulin', desc: 'Human insulin is <strong>extracted and purified</strong> from the bacterial culture, ready for medical use by diabetic patients.' },
+];
+
+let currentStep = -1;
+let playing = false;
+let playTimer = null;
+
+function drawCell(x, y, r, label) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = '#dce8f8';
+    ctx.fill();
+    ctx.strokeStyle = '#1835b4';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    if (label) {
+        ctx.font = '8px system-ui';
+        ctx.fillStyle = '#1a2747';
+        ctx.textAlign = 'center';
+        ctx.fillText(label, x, y + r + 12);
+    }
+}
+
+function drawDNA(x, y, w, geneStart, geneEnd, cut) {
+    // Double helix simplified as two lines with rungs
+    ctx.strokeStyle = '#4a5568';
+    ctx.lineWidth = 2;
+    const h = 6;
+    ctx.beginPath(); ctx.moveTo(x, y - h); ctx.lineTo(x + w, y - h); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x, y + h); ctx.lineTo(x + w, y + h); ctx.stroke();
+    // Rungs
+    for (let i = 4; i < w; i += 8) {
+        const inGene = (x + i >= geneStart && x + i <= geneEnd);
+        ctx.strokeStyle = inGene ? '#e74c3c' : '#a0aec0';
+        ctx.lineWidth = inGene ? 2.5 : 1.5;
+        ctx.beginPath(); ctx.moveTo(x + i, y - h); ctx.lineTo(x + i, y + h); ctx.stroke();
+    }
+    // Gene highlight
+    if (geneStart !== undefined) {
+        ctx.fillStyle = 'rgba(231,76,60,0.15)';
+        ctx.fillRect(geneStart, y - h - 4, geneEnd - geneStart, h * 2 + 8);
+        ctx.font = 'bold 8px system-ui';
+        ctx.fillStyle = '#e74c3c';
+        ctx.textAlign = 'center';
+        ctx.fillText('Insulin gene', (geneStart + geneEnd) / 2, y - h - 8);
+    }
+    if (cut) {
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(geneStart, y - 16); ctx.lineTo(geneStart, y + 16); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(geneEnd, y - 16); ctx.lineTo(geneEnd, y + 16); ctx.stroke();
+        ctx.setLineDash([]);
+        // Scissors icon
+        ctx.font = '14px system-ui';
+        ctx.fillText('\u2702', geneStart - 2, y - 18);
+        ctx.fillText('\u2702', geneEnd - 2, y - 18);
+    }
+}
+
+function drawPlasmid(x, y, r, open, hasGene) {
+    ctx.beginPath();
+    if (open) {
+        ctx.arc(x, y, r, 0.3, Math.PI * 2 - 0.3);
+    } else {
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+    }
+    ctx.strokeStyle = '#1835b4';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    if (hasGene) {
+        ctx.beginPath();
+        ctx.arc(x, y, r, -0.4, 0.4);
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+        ctx.font = 'bold 7px system-ui';
+        ctx.fillStyle = '#e74c3c';
+        ctx.textAlign = 'center';
+        ctx.fillText('Insulin', x + r + 8, y);
+        ctx.fillText('gene', x + r + 8, y + 9);
+    }
+    if (open) {
+        ctx.font = '9px system-ui';
+        ctx.fillStyle = '#1835b4';
+        ctx.textAlign = 'center';
+        ctx.fillText('\u2702', x + r + 3, y - r + 6);
+    }
+}
+
+function drawBacterium(x, y, w, h, hasPlasmid) {
+    ctx.beginPath();
+    ctx.ellipse(x, y, w, h, 0, 0, Math.PI * 2);
+    ctx.fillStyle = '#d5f5e3';
+    ctx.fill();
+    ctx.strokeStyle = '#27ae60';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    if (hasPlasmid) {
+        ctx.beginPath();
+        ctx.arc(x - 4, y, 8, 0, Math.PI * 2);
+        ctx.strokeStyle = '#1835b4';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(x - 4, y, 8, -0.3, 0.3);
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+}
+
+function drawArrow(x1, y1, x2, y2) {
+    ctx.strokeStyle = '#1835b4';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.sqrt(dx * dx + dy * dy);
+    const ux = dx / len, uy = dy / len;
+    ctx.fillStyle = '#1835b4';
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - ux * 8 - uy * 4, y2 - uy * 8 + ux * 4);
+    ctx.lineTo(x2 - ux * 8 + uy * 4, y2 - uy * 8 - ux * 4);
+    ctx.fill();
+}
+
+function drawStepIndicator(step) {
+    const stepW = canvas.width / steps.length;
+    for (let i = 0; i < steps.length; i++) {
+        const x = i * stepW + stepW / 2;
+        ctx.beginPath();
+        ctx.arc(x, 16, 9, 0, Math.PI * 2);
+        ctx.fillStyle = i <= step ? '#1835b4' : '#d4d8e5';
+        ctx.fill();
+        ctx.font = 'bold 8px system-ui';
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'center';
+        ctx.fillText(i + 1, x, 19);
+    }
+    // Connecting line
+    ctx.strokeStyle = '#d4d8e5';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(stepW / 2 + 10, 16);
+    ctx.lineTo(canvas.width - stepW / 2 - 10, 16);
+    ctx.stroke();
+    // Overlay active portion
+    if (step >= 0) {
+        ctx.strokeStyle = '#1835b4';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(stepW / 2 + 10, 16);
+        ctx.lineTo(Math.min(step * stepW + stepW / 2, canvas.width - stepW / 2 - 10), 16);
+        ctx.stroke();
+    }
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawStepIndicator(currentStep);
+    const cy = 195;
+
+    if (currentStep < 0) {
+        ctx.font = '14px system-ui';
+        ctx.fillStyle = '#a0aec0';
+        ctx.textAlign = 'center';
+        ctx.fillText('Press Next Step or Play to start', canvas.width / 2, cy);
+        return;
+    }
+
+    if (currentStep >= 0) {
+        // Step 1: Human cell with DNA
+        drawCell(80, cy - 60, 35, 'Human cell');
+        drawDNA(45, cy - 60, 70, 68, 93, false);
+    }
+
+    if (currentStep >= 1) {
+        drawArrow(120, cy - 45, 170, cy - 20);
+        // Cut gene
+        drawDNA(170, cy - 10, 90, 198, 228, true);
+        ctx.font = '9px system-ui';
+        ctx.fillStyle = '#e74c3c';
+        ctx.textAlign = 'center';
+        ctx.fillText('Restriction enzyme cuts', 215, cy + 16);
+    }
+
+    if (currentStep >= 2) {
+        // Plasmid
+        drawPlasmid(360, cy - 55, 25, true, false);
+        ctx.font = '9px system-ui';
+        ctx.fillStyle = '#1835b4';
+        ctx.textAlign = 'center';
+        ctx.fillText('Plasmid cut open', 360, cy - 55 + 38);
+        ctx.fillText('(same enzyme)', 360, cy - 55 + 48);
+    }
+
+    if (currentStep >= 3) {
+        drawArrow(260, cy, 310, cy + 40);
+        drawArrow(360, cy - 28, 360, cy + 28);
+        // Recombinant plasmid
+        drawPlasmid(360, cy + 60, 25, false, true);
+        ctx.font = 'bold 9px system-ui';
+        ctx.fillStyle = '#1835b4';
+        ctx.textAlign = 'center';
+        ctx.fillText('Recombinant plasmid', 360, cy + 98);
+        ctx.font = '8px system-ui';
+        ctx.fillStyle = '#4a5568';
+        ctx.fillText('Ligase seals backbone', 360, cy + 108);
+    }
+
+    if (currentStep >= 4) {
+        drawArrow(390, cy + 60, 440, cy + 60);
+        drawBacterium(480, cy + 60, 30, 18, true);
+        ctx.font = '9px system-ui';
+        ctx.fillStyle = '#27ae60';
+        ctx.textAlign = 'center';
+        ctx.fillText('Bacterium', 480, cy + 90);
+        ctx.fillText('transformed', 480, cy + 100);
+    }
+
+    if (currentStep >= 5) {
+        drawArrow(480, cy + 110, 480, cy + 140);
+        // Many bacteria
+        const bx = [430, 460, 490, 520, 445, 475, 505];
+        const by = [160, 155, 158, 160, 175, 172, 178];
+        for (let i = 0; i < bx.length; i++) {
+            drawBacterium(bx[i], cy + by[i] - 5, 16, 9, true);
+        }
+        ctx.font = '9px system-ui';
+        ctx.fillStyle = '#27ae60';
+        ctx.textAlign = 'center';
+        ctx.fillText('Fermenter: bacteria multiply', 475, cy + 188);
+    }
+
+    if (currentStep >= 6) {
+        drawArrow(410, cy + 170, 320, cy + 170);
+        // Insulin bottles
+        for (let i = 0; i < 3; i++) {
+            const bx = 240 - i * 40;
+            ctx.fillStyle = '#dce8f8';
+            ctx.strokeStyle = '#1835b4';
+            ctx.lineWidth = 1.5;
+            // Bottle
+            ctx.beginPath();
+            ctx.moveTo(bx - 8, cy + 155); ctx.lineTo(bx + 8, cy + 155);
+            ctx.lineTo(bx + 10, cy + 160); ctx.lineTo(bx + 10, cy + 185);
+            ctx.lineTo(bx - 10, cy + 185); ctx.lineTo(bx - 10, cy + 160);
+            ctx.closePath();
+            ctx.fill(); ctx.stroke();
+            // Label
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillRect(bx - 7, cy + 166, 14, 10);
+            ctx.font = 'bold 5px system-ui';
+            ctx.fillStyle = '#fff';
+            ctx.textAlign = 'center';
+            ctx.fillText('INSULIN', bx, cy + 173);
+        }
+        ctx.font = 'bold 10px system-ui';
+        ctx.fillStyle = '#1835b4';
+        ctx.textAlign = 'center';
+        ctx.fillText('Pure human insulin', 200, cy + 200);
+    }
+}
+
+function nextStep() {
+    if (currentStep < steps.length - 1) {
+        currentStep++;
+        info.innerHTML = `<strong>${steps[currentStep].title}:</strong> ${steps[currentStep].desc}`;
+        draw();
+    }
+}
+
+function togglePlay() {
+    if (playing) {
+        playing = false;
+        clearInterval(playTimer);
+        document.getElementById('btnPlay').innerHTML = '&#9654; Play';
+        return;
+    }
+    playing = true;
+    document.getElementById('btnPlay').innerHTML = '&#9724; Stop';
+    if (currentStep >= steps.length - 1) { currentStep = -1; }
+    playTimer = setInterval(() => {
+        currentStep++;
+        if (currentStep >= steps.length) {
+            playing = false;
+            clearInterval(playTimer);
+            document.getElementById('btnPlay').innerHTML = '&#9654; Play';
+            currentStep = steps.length - 1;
+        }
+        info.innerHTML = `<strong>${steps[currentStep].title}:</strong> ${steps[currentStep].desc}`;
+        draw();
+    }, 1500);
+}
+
+function reset() {
+    currentStep = -1;
+    playing = false;
+    clearInterval(playTimer);
+    document.getElementById('btnPlay').innerHTML = '&#9654; Play';
+    info.innerHTML = 'Click <strong>Next Step</strong> or <strong>Play</strong> to begin the process.';
+    draw();
+}
+
+draw();
+</script>
+</body>
+</html>

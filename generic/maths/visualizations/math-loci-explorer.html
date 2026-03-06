@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loci</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width:100%;margin:0 auto}h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;cursor:crosshair}.btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.btn{padding:8px 6px;border:1px solid #d4d8e5;border-radius:5px;background:#e8ecf8;font-size:.76rem;cursor:pointer;text-align:center;color:#1a2747;font-family:system-ui;line-height:1.3}.btn.active{background:#1835b4;color:#fff;border-color:#1835b4}.btn-clear{grid-column:1/-1;background:#fafbfc;color:#e74c3c;border-color:#e74c3c40}.result-box{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;font-size:.82rem;color:#1835b4;margin-top:8px}.slider-row{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:.82rem}.slider-row input[type=range]{flex:1;accent-color:#1835b4}.slider-row .val{min-width:42px;text-align:center;font-weight:600;color:#1835b4}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Loci</h1>
+    <div class="card" style="padding:8px"><canvas id="cv" width="800" height="800"></canvas></div>
+    <div class="card">
+        <div class="card-title">Select Locus Type</div>
+        <div class="btn-grid">
+            <button class="btn active" data-mode="0">Fixed distance from a point</button>
+            <button class="btn" data-mode="1">Fixed distance from a line</button>
+            <button class="btn" data-mode="2">Equidistant from two points</button>
+            <button class="btn" data-mode="3">Equidistant from two lines</button>
+            <button class="btn btn-clear" id="clearBtn">Clear All</button>
+        </div>
+        <div class="slider-row" id="distRow"><span>Distance:</span><input type="range" id="distSlider" min="30" max="200" value="100"><span class="val" id="distVal">100</span></div>
+    </div>
+    <div class="result-box" id="infoBox">Click on the canvas to place a point.</div>
+    <div class="info">A <strong>locus</strong> is the set of all points that satisfy a given condition. Click on the canvas to place elements.</div>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let W=cv.width,H=cv.height;
+let mode=0,dist=100;
+let points=[],lines=[];
+const infoBox=document.getElementById('infoBox');
+const distSlider=document.getElementById('distSlider');
+
+function resize(){const w=Math.min(500,cv.parentElement.clientWidth-16);cv.style.width=w+'px';cv.style.height=w+'px'}
+resize();window.addEventListener('resize',resize);
+
+const btns=document.querySelectorAll('.btn[data-mode]');
+btns.forEach(b=>b.addEventListener('click',function(){btns.forEach(x=>x.classList.remove('active'));this.classList.add('active');mode=+this.dataset.mode;clearAll();updateInfo()}));
+document.getElementById('clearBtn').addEventListener('click',clearAll);
+distSlider.addEventListener('input',function(){dist=+this.value;document.getElementById('distVal').textContent=dist;draw()});
+
+function clearAll(){points=[];lines=[];draw();updateInfo()}
+
+function updateInfo(){
+    const msgs=['Click to place a point. The locus is a circle at fixed distance.',
+        'Click two points to define a line. The locus is two parallel lines at fixed distance.',
+        'Click to place two points. The locus is the perpendicular bisector.',
+        'Click to place two lines (4 clicks: 2 per line). The locus is the angle bisector.'];
+    infoBox.textContent=msgs[mode];
+    document.getElementById('distRow').style.display=(mode<=1)?'flex':'none';
+}
+updateInfo();
+
+function drawGrid(){
+    ctx.strokeStyle='#e8ecf8';ctx.lineWidth=1;
+    for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+    for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+}
+
+function drawPoint(x,y,color,label){
+    ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fillStyle=color||'#1835b4';ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    if(label){ctx.fillStyle='#1a2747';ctx.font='bold 14px system-ui';ctx.textAlign='center';ctx.fillText(label,x,y-14)}
+}
+
+function drawLineSeg(p1,p2,color){
+    const dx=p2.x-p1.x,dy=p2.y-p1.y,len=Math.hypot(dx,dy);
+    const ux=dx/len,uy=dy/len;
+    ctx.strokeStyle=color||'#1a2747';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(p1.x-ux*1000,p1.y-uy*1000);ctx.lineTo(p1.x+ux*1000,p1.y+uy*1000);ctx.stroke();
+}
+
+function draw(){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+    drawGrid();
+
+    if(mode===0){
+        if(points.length>=1){
+            drawPoint(points[0].x,points[0].y,'#1835b4','P');
+            ctx.beginPath();ctx.arc(points[0].x,points[0].y,dist,0,Math.PI*2);
+            ctx.strokeStyle='#e74c3c';ctx.lineWidth=2.5;ctx.setLineDash([8,5]);ctx.stroke();ctx.setLineDash([]);
+            // Distance label
+            ctx.fillStyle='#e74c3c';ctx.font='bold 12px system-ui';ctx.textAlign='left';
+            ctx.fillText('r = '+dist,points[0].x+dist+8,points[0].y);
+            infoBox.textContent='Locus: all points at distance '+dist+' from P form a circle.';
+        }
+    } else if(mode===1){
+        if(points.length>=2){
+            const p1=points[0],p2=points[1];
+            drawLineSeg(p1,p2,'#1835b4');
+            drawPoint(p1.x,p1.y,'#1835b4');drawPoint(p2.x,p2.y,'#1835b4');
+            const dx=p2.x-p1.x,dy=p2.y-p1.y,len=Math.hypot(dx,dy);
+            const nx=-dy/len,ny=dx/len;
+            ctx.strokeStyle='#e74c3c';ctx.lineWidth=2.5;ctx.setLineDash([8,5]);
+            ctx.beginPath();ctx.moveTo(p1.x+nx*dist-dx*10,p1.y+ny*dist-dy*10);ctx.lineTo(p2.x+nx*dist+dx*10,p2.y+ny*dist+dy*10);ctx.stroke();
+            ctx.beginPath();ctx.moveTo(p1.x-nx*dist-dx*10,p1.y-ny*dist-dy*10);ctx.lineTo(p2.x-nx*dist+dx*10,p2.y-ny*dist+dy*10);ctx.stroke();
+            ctx.setLineDash([]);
+            infoBox.textContent='Locus: two parallel lines at distance '+dist+' from the original line.';
+        } else if(points.length===1){
+            drawPoint(points[0].x,points[0].y,'#1835b4');
+            infoBox.textContent='Click a second point to define the line.';
+        }
+    } else if(mode===2){
+        if(points.length>=2){
+            const p1=points[0],p2=points[1];
+            drawPoint(p1.x,p1.y,'#1835b4','A');drawPoint(p2.x,p2.y,'#e74c3c','B');
+            // Line between
+            ctx.strokeStyle='#d4d8e5';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+            ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();ctx.setLineDash([]);
+            // Midpoint
+            const mx=(p1.x+p2.x)/2,my=(p1.y+p2.y)/2;
+            ctx.beginPath();ctx.arc(mx,my,4,0,Math.PI*2);ctx.fillStyle='#f39c12';ctx.fill();
+            // Perpendicular bisector
+            const dx=p2.x-p1.x,dy=p2.y-p1.y;
+            const nx=-dy,ny=dx;
+            ctx.strokeStyle='#2ecc71';ctx.lineWidth=2.5;ctx.setLineDash([8,5]);
+            ctx.beginPath();ctx.moveTo(mx-nx*2,my-ny*2);ctx.lineTo(mx+nx*2,my+ny*2);ctx.stroke();ctx.setLineDash([]);
+            infoBox.textContent='Locus: the perpendicular bisector of AB. Every point on this line is equidistant from A and B.';
+        } else if(points.length===1){
+            drawPoint(points[0].x,points[0].y,'#1835b4','A');
+            infoBox.textContent='Click to place the second point B.';
+        }
+    } else if(mode===3){
+        for(let i=0;i<points.length;i++){
+            drawPoint(points[i].x,points[i].y,i<2?'#1835b4':'#e74c3c');
+        }
+        if(points.length>=2){drawLineSeg(points[0],points[1],'#1835b4')}
+        if(points.length>=4){
+            drawLineSeg(points[2],points[3],'#e74c3c');
+            // Find intersection
+            const p1=points[0],p2=points[1],p3=points[2],p4=points[3];
+            const d1x=p2.x-p1.x,d1y=p2.y-p1.y,d2x=p4.x-p3.x,d2y=p4.y-p3.y;
+            const det=d1x*d2y-d1y*d2x;
+            if(Math.abs(det)>0.01){
+                const t=((p3.x-p1.x)*d2y-(p3.y-p1.y)*d2x)/det;
+                const ix=p1.x+t*d1x,iy=p1.y+t*d1y;
+                const a1=Math.atan2(d1y,d1x),a2=Math.atan2(d2y,d2x);
+                const bisect1=(a1+a2)/2,bisect2=bisect1+Math.PI/2;
+                ctx.strokeStyle='#2ecc71';ctx.lineWidth=2.5;ctx.setLineDash([8,5]);
+                for(const ba of[bisect1,bisect2]){
+                    ctx.beginPath();ctx.moveTo(ix-Math.cos(ba)*600,iy-Math.sin(ba)*600);ctx.lineTo(ix+Math.cos(ba)*600,iy+Math.sin(ba)*600);ctx.stroke();
+                }
+                ctx.setLineDash([]);
+                ctx.beginPath();ctx.arc(ix,iy,5,0,Math.PI*2);ctx.fillStyle='#f39c12';ctx.fill();
+            }
+            infoBox.textContent='Locus: the angle bisectors. Every point on these lines is equidistant from both lines.';
+        } else {
+            const needed=4-points.length;
+            infoBox.textContent='Click '+needed+' more point(s) to define two lines (2 points each).';
+        }
+    }
+}
+
+cv.addEventListener('click',function(e){
+    const rect=cv.getBoundingClientRect();
+    const sx=cv.width/rect.width,sy=cv.height/rect.height;
+    const mx=(e.clientX-rect.left)*sx,my=(e.clientY-rect.top)*sy;
+    const maxPts=[1,2,2,4];
+    if(points.length<maxPts[mode]){points.push({x:mx,y:my})}
+    draw();
+});
+
+draw();
+</script>
+</body>
+</html>

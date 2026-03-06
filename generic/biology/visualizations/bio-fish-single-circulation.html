@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Single Circulation in Fish</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fcfcfe;
+    color: #1a2747;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 6px; text-align: center; }
+  .subtitle { font-size: 0.9rem; color: #6b7a99; margin-bottom: 20px; text-align: center; }
+  .diagram { width: 100%; max-width: 640px; }
+  svg { width: 100%; height: auto; }
+  .note-box {
+    margin-top: 16px;
+    background: #e8ecf8;
+    border: 1.5px solid #d4d8e5;
+    border-radius: 10px;
+    padding: 14px 18px;
+    max-width: 540px;
+    width: 100%;
+  }
+  .note-box p { font-size: 0.85rem; line-height: 1.5; }
+  .note-box .highlight { color: #1835b4; font-weight: 600; }
+  .note-box .compare { color: #6b7a99; font-style: italic; margin-top: 6px; }
+</style>
+</head>
+<body>
+<h1>Single Circulation in Fish</h1>
+<p class="subtitle">Blood passes through the heart only once per complete circuit</p>
+<div class="diagram">
+  <svg viewBox="0 0 600 440" id="svg">
+    <defs>
+      <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+        <polygon points="0,0 8,3 0,6" fill="#d03030"/>
+      </marker>
+      <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+        <polygon points="0,0 8,3 0,6" fill="#2050c0"/>
+      </marker>
+    </defs>
+
+    <!-- Heart -->
+    <rect x="40" y="170" width="130" height="120" rx="18" fill="#e8ecf8" stroke="#1835b4" stroke-width="2"/>
+    <text x="105" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="#1835b4" font-family="system-ui">HEART</text>
+    <line x1="40" y1="230" x2="170" y2="230" stroke="#d4d8e5" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="105" y="222" text-anchor="middle" font-size="11" fill="#1a2747" font-family="system-ui">Atrium</text>
+    <text x="105" y="260" text-anchor="middle" font-size="11" fill="#1a2747" font-family="system-ui">Ventricle</text>
+    <text x="105" y="305" text-anchor="middle" font-size="10" fill="#6b7a99" font-family="system-ui">(2 chambers)</text>
+
+    <!-- Gills -->
+    <rect x="230" y="30" width="160" height="80" rx="14" fill="#ffe8e8" stroke="#d03030" stroke-width="2"/>
+    <text x="310" y="62" text-anchor="middle" font-size="13" font-weight="700" fill="#d03030" font-family="system-ui">GILLS</text>
+    <text x="310" y="80" text-anchor="middle" font-size="10" fill="#1a2747" font-family="system-ui">Gas exchange</text>
+    <text x="310" y="95" text-anchor="middle" font-size="10" fill="#6b7a99" font-family="system-ui">O&#8322; in, CO&#8322; out</text>
+
+    <!-- Body -->
+    <rect x="420" y="170" width="140" height="120" rx="14" fill="#e0f0e0" stroke="#308030" stroke-width="2"/>
+    <text x="490" y="218" text-anchor="middle" font-size="13" font-weight="700" fill="#308030" font-family="system-ui">BODY</text>
+    <text x="490" y="238" text-anchor="middle" font-size="10" fill="#1a2747" font-family="system-ui">Organs &amp; Tissues</text>
+    <text x="490" y="255" text-anchor="middle" font-size="10" fill="#6b7a99" font-family="system-ui">O&#8322; delivered</text>
+
+    <!-- Paths -->
+    <!-- Heart to Gills (deoxygenated going up-right) -->
+    <path id="pathHG" d="M 170,210 Q 200,70 230,70" fill="none" stroke="#2050c0" stroke-width="3" marker-end="url(#arrowBlue)" opacity="0.5"/>
+    <text x="175" y="128" font-size="9" fill="#2050c0" font-family="system-ui" transform="rotate(-50,175,128)">Deoxygenated</text>
+
+    <!-- Gills to Body (oxygenated going right-down) -->
+    <path id="pathGB" d="M 390,70 Q 520,70 490,170" fill="none" stroke="#d03030" stroke-width="3" marker-end="url(#arrowRed)" opacity="0.5"/>
+    <text x="455" y="118" font-size="9" fill="#d03030" font-family="system-ui">Oxygenated</text>
+
+    <!-- Body back to Heart (deoxygenated going left-down) -->
+    <path id="pathBH" d="M 420,270 Q 300,400 105,290" fill="none" stroke="#2050c0" stroke-width="3" marker-end="url(#arrowBlue)" opacity="0.5"/>
+    <text x="270" y="370" font-size="9" fill="#2050c0" font-family="system-ui">Deoxygenated blood returns</text>
+
+    <!-- Key -->
+    <rect x="20" y="390" width="12" height="12" rx="3" fill="#d03030"/>
+    <text x="38" y="401" font-size="10" fill="#1a2747" font-family="system-ui">Oxygenated blood</text>
+    <rect x="170" y="390" width="12" height="12" rx="3" fill="#2050c0"/>
+    <text x="188" y="401" font-size="10" fill="#1a2747" font-family="system-ui">Deoxygenated blood</text>
+
+    <!-- Single loop label -->
+    <text x="300" y="430" text-anchor="middle" font-size="12" font-weight="600" fill="#1835b4" font-family="system-ui">SINGLE LOOP</text>
+  </svg>
+</div>
+<div class="note-box">
+  <p><span class="highlight">Blood passes through the heart ONCE per circuit.</span> After gas exchange at the gills, blood flows directly to the body at low pressure, then returns to the heart.</p>
+  <p class="compare">vs. Double circulation (mammals): blood passes through the heart TWICE per circuit, allowing higher pressure delivery to body tissues.</p>
+</div>
+
+<script>
+const svg = document.getElementById("svg");
+const paths = [
+  { id: "pathHG", color: "#2050c0", dur: 2200 },
+  { id: "pathGB", color: "#d03030", dur: 2200 },
+  { id: "pathBH", color: "#2050c0", dur: 2800 }
+];
+
+function createDot(pathEl, color, delay) {
+  const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  dot.setAttribute("r", "4.5");
+  dot.setAttribute("fill", color);
+  dot.setAttribute("opacity", "0.85");
+  svg.appendChild(dot);
+
+  const len = pathEl.getTotalLength();
+  let start = null;
+  const speed = 0.06; // px per ms
+
+  function animate(ts) {
+    if (!start) start = ts;
+    const elapsed = (ts - start + delay) % (len / speed);
+    const progress = (elapsed * speed) % len;
+    const pt = pathEl.getPointAtLength(progress);
+    dot.setAttribute("cx", pt.x);
+    dot.setAttribute("cy", pt.y);
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+}
+
+paths.forEach(p => {
+  const el = document.getElementById(p.id);
+  for (let i = 0; i < 3; i++) {
+    createDot(el, p.color, i * 1200);
+  }
+});
+</script>
+</body>
+</html>

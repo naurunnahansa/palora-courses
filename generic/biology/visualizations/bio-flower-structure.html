@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Structure</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        .main { display: flex; gap: 8px; }
+        canvas { display: block; border: 1px solid #d4d8e5; border-radius: 5px; flex-shrink: 0; cursor: pointer; }
+        .side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+        .toggle { display: flex; gap: 0; margin-bottom: 8px; justify-content: center; }
+        .toggle .btn { padding: 6px 14px; border: 1.5px solid #1835b4; background: #fff; color: #1835b4; font-size: 0.72rem; font-weight: 600; cursor: pointer; }
+        .toggle .btn:first-child { border-radius: 5px 0 0 5px; }
+        .toggle .btn:last-child { border-radius: 0 5px 5px 0; }
+        .toggle .btn.active { background: #1835b4; color: #fff; }
+        .info-card { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.7rem; }
+        .info-card h3 { color: #1835b4; font-size: 0.82rem; margin-bottom: 4px; }
+        .info-card .row { margin-bottom: 3px; }
+        .info-card .row strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Flower Structure</h1>
+    <div class="desc">Click each part to learn its function. Toggle pollination type to see adaptations.</div>
+    <div class="toggle">
+        <button class="btn active" id="btnInsect" onclick="setType('insect')">Insect-Pollinated</button>
+        <button class="btn" id="btnWind" onclick="setType('wind')">Wind-Pollinated</button>
+    </div>
+    <div class="main">
+        <canvas id="canvas" width="280" height="340"></canvas>
+        <div class="side">
+            <div class="info-card" id="info">
+                <h3>Select a part</h3>
+                <p>Click on any labelled part of the flower diagram to see its function and role in reproduction.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let pollType = 'insect', selected = null;
+
+const parts = {
+    petal: { label:'Petal', color:'#e74c3c',
+        insect:'<h3>Petals</h3><div class="row"><strong>Structure:</strong> Large, brightly coloured, often scented</div><div class="row"><strong>Function:</strong> Attract insect pollinators with colour and scent. May have nectar guides (UV patterns) to direct insects to nectaries.</div>',
+        wind:'<h3>Petals</h3><div class="row"><strong>Structure:</strong> Small, dull/green, or absent entirely</div><div class="row"><strong>Function:</strong> No need to attract pollinators. Reduced petals allow wind to access reproductive parts easily.</div>' },
+    sepal: { label:'Sepal', color:'#27ae60',
+        insect:'<h3>Sepals</h3><div class="row"><strong>Structure:</strong> Green leaf-like structures at the base</div><div class="row"><strong>Function:</strong> Protect the flower bud before it opens. Collectively called the calyx.</div>',
+        wind:'<h3>Sepals</h3><div class="row"><strong>Structure:</strong> Small, green</div><div class="row"><strong>Function:</strong> Same protective role in bud stage. May be reduced in wind-pollinated flowers.</div>' },
+    anther: { label:'Anther', color:'#f39c12',
+        insect:'<h3>Anther (part of stamen)</h3><div class="row"><strong>Structure:</strong> Located inside the flower, firm and sticky pollen</div><div class="row"><strong>Function:</strong> Produces pollen grains (male gametes). Positioned to brush against visiting insects. Pollen is sticky/spiky to attach to insect bodies.</div>',
+        wind:'<h3>Anther (part of stamen)</h3><div class="row"><strong>Structure:</strong> Hangs outside the flower on long flexible filaments, loosely attached</div><div class="row"><strong>Function:</strong> Produces large quantities of light, smooth pollen that is easily carried by wind. Dangles freely to catch air currents.</div>' },
+    filament: { label:'Filament', color:'#d4a017',
+        insect:'<h3>Filament</h3><div class="row"><strong>Structure:</strong> Stalk supporting the anther, positioned inside petals</div><div class="row"><strong>Function:</strong> Holds anther at the right position to dust pollen onto visiting insects.</div>',
+        wind:'<h3>Filament</h3><div class="row"><strong>Structure:</strong> Long and flexible, extends beyond the flower</div><div class="row"><strong>Function:</strong> Allows anther to hang freely and sway in the wind, releasing pollen into air currents.</div>' },
+    stigma: { label:'Stigma', color:'#9b59b6',
+        insect:'<h3>Stigma (top of carpel)</h3><div class="row"><strong>Structure:</strong> Small, sticky surface inside the flower</div><div class="row"><strong>Function:</strong> Receives pollen. Sticky surface traps pollen grains from visiting insects. Located where insects must brush past it.</div>',
+        wind:'<h3>Stigma (top of carpel)</h3><div class="row"><strong>Structure:</strong> Large, feathery, extends outside the flower</div><div class="row"><strong>Function:</strong> Large feathery surface area to catch wind-borne pollen. Hangs outside to maximise exposure to air currents.</div>' },
+    style: { label:'Style', color:'#8e44ad',
+        insect:'<h3>Style</h3><div class="row"><strong>Structure:</strong> Tube connecting stigma to ovary</div><div class="row"><strong>Function:</strong> Pollen tube grows down through the style to reach the ovule for fertilisation.</div>',
+        wind:'<h3>Style</h3><div class="row"><strong>Structure:</strong> Same tube connecting stigma to ovary</div><div class="row"><strong>Function:</strong> Same role: pollen tube grows down to reach ovule. May be longer in wind-pollinated flowers.</div>' },
+    ovary: { label:'Ovary', color:'#1835b4',
+        insect:'<h3>Ovary</h3><div class="row"><strong>Structure:</strong> Swollen base of the carpel, contains ovules</div><div class="row"><strong>Function:</strong> Contains ovules (female gametes). After fertilisation, ovary develops into the fruit, ovules become seeds.</div>',
+        wind:'<h3>Ovary</h3><div class="row"><strong>Structure:</strong> Same structure containing ovules</div><div class="row"><strong>Function:</strong> Same role: ovules develop into seeds after fertilisation. Ovary wall becomes the fruit.</div>' },
+    ovule: { label:'Ovule', color:'#2980b9',
+        insect:'<h3>Ovules</h3><div class="row"><strong>Structure:</strong> Small structures inside the ovary containing the egg cell</div><div class="row"><strong>Function:</strong> Each ovule contains an egg cell (female gamete). After fertilisation by pollen, each ovule develops into a seed.</div>',
+        wind:'<h3>Ovules</h3><div class="row"><strong>Structure:</strong> Same as insect-pollinated</div><div class="row"><strong>Function:</strong> Same reproductive function. Develop into seeds after fertilisation.</div>' }
+};
+
+// Hit regions (approximate for click detection)
+const hitRegions = {
+    petal: { cx: 140, cy: 100, r: 50 },
+    sepal: { cx: 140, cy: 255, r: 30 },
+    anther: { cx: 90, cy: 120, r: 18 },
+    filament: { cx: 95, cy: 160, r: 12 },
+    stigma: { cx: 160, cy: 85, r: 15 },
+    style: { cx: 155, cy: 170, r: 12 },
+    ovary: { cx: 145, cy: 230, r: 22 },
+    ovule: { cx: 145, cy: 230, r: 10 }
+};
+
+function setType(t) {
+    pollType = t;
+    document.getElementById('btnInsect').className = t==='insect'?'btn active':'btn';
+    document.getElementById('btnWind').className = t==='wind'?'btn active':'btn';
+    if (selected) {
+        document.getElementById('info').innerHTML = parts[selected][pollType];
+    }
+    draw();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const cx = 140, baseY = 280;
+    const isWind = pollType === 'wind';
+
+    // Stem
+    ctx.strokeStyle = '#27ae60'; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(cx, baseY); ctx.lineTo(cx, 330); ctx.stroke();
+
+    // Receptacle
+    ctx.beginPath(); ctx.ellipse(cx, baseY-5, 25, 10, 0, 0, Math.PI*2);
+    ctx.fillStyle = '#27ae60'; ctx.fill();
+
+    // Sepals
+    const selSepal = selected === 'sepal';
+    ctx.fillStyle = selSepal ? '#27ae60' : '#27ae6088';
+    for (let a = -0.8; a <= 0.8; a += 0.4) {
+        ctx.beginPath();
+        ctx.ellipse(cx + Math.sin(a)*30, baseY - 15 + Math.cos(a)*5, 12, 25, a*0.5, 0, Math.PI*2);
+        ctx.fill();
+    }
+
+    // Ovary
+    const selOvary = selected === 'ovary' || selected === 'ovule';
+    ctx.beginPath(); ctx.ellipse(cx+5, baseY-30, 20, 25, 0, 0, Math.PI*2);
+    ctx.fillStyle = selOvary ? '#1835b4' : 'rgba(24,53,180,0.3)';
+    ctx.fill(); ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 1.5; ctx.stroke();
+    // Ovules inside
+    ctx.beginPath(); ctx.arc(cx, baseY-32, 4, 0, Math.PI*2); ctx.fillStyle = '#2980b9'; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx+10, baseY-28, 4, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx+3, baseY-22, 4, 0, Math.PI*2); ctx.fill();
+
+    // Petals
+    const selPetal = selected === 'petal';
+    if (!isWind) {
+        // Large colourful petals
+        const petalAngles = [-1.2, -0.6, 0, 0.6, 1.2];
+        petalAngles.forEach(a => {
+            ctx.save(); ctx.translate(cx, baseY-50); ctx.rotate(a);
+            ctx.beginPath(); ctx.ellipse(0, -60, 22, 55, 0, 0, Math.PI*2);
+            ctx.fillStyle = selPetal ? '#e74c3ccc' : '#e74c3c55';
+            ctx.fill(); ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 1; ctx.stroke();
+            ctx.restore();
+        });
+    } else {
+        // Small/absent petals
+        const pa2 = [-0.5, 0.5];
+        pa2.forEach(a => {
+            ctx.save(); ctx.translate(cx, baseY-50); ctx.rotate(a);
+            ctx.beginPath(); ctx.ellipse(0, -25, 6, 18, 0, 0, Math.PI*2);
+            ctx.fillStyle = selPetal ? '#a0a0a0cc' : '#a0a0a055';
+            ctx.fill(); ctx.strokeStyle = '#999'; ctx.lineWidth = 1; ctx.stroke();
+            ctx.restore();
+        });
+    }
+
+    // Style
+    const selStyle = selected === 'style';
+    ctx.strokeStyle = selStyle ? '#8e44ad' : '#8e44ad88'; ctx.lineWidth = selStyle ? 3 : 2;
+    ctx.beginPath(); ctx.moveTo(cx+10, baseY-55); ctx.quadraticCurveTo(cx+15, baseY-90, cx+20, baseY-120); ctx.stroke();
+
+    // Stigma
+    const selStigma = selected === 'stigma';
+    if (!isWind) {
+        ctx.beginPath(); ctx.arc(cx+20, baseY-125, selStigma?8:6, 0, Math.PI*2);
+        ctx.fillStyle = selStigma ? '#9b59b6' : '#9b59b688'; ctx.fill();
+    } else {
+        // Feathery stigma
+        ctx.strokeStyle = selStigma ? '#9b59b6' : '#9b59b688'; ctx.lineWidth = 2;
+        for (let a = -0.8; a <= 0.8; a += 0.3) {
+            ctx.beginPath(); ctx.moveTo(cx+20, baseY-125);
+            ctx.lineTo(cx+20+Math.cos(a)*20, baseY-125-Math.sin(a)*20-10); ctx.stroke();
+        }
+    }
+
+    // Stamen (filament + anther)
+    const selFil = selected === 'filament';
+    const selAnth = selected === 'anther';
+    const stamens = isWind ? [{bx:-35,by:-80,ax:-40,ay:-130},{bx:35,by:-80,ax:45,ay:-135}]
+        : [{bx:-25,by:-60,ax:-20,ay:-100},{bx:-15,by:-55,ax:-5,ay:-95}];
+    stamens.forEach(s => {
+        ctx.strokeStyle = selFil ? '#d4a017' : '#d4a01788'; ctx.lineWidth = selFil ? 3 : 2;
+        ctx.beginPath(); ctx.moveTo(cx+s.bx*0.3, baseY-50);
+        ctx.quadraticCurveTo(cx+s.bx, baseY+s.by, cx+s.ax, baseY+s.ay); ctx.stroke();
+        // Anther
+        ctx.beginPath(); ctx.ellipse(cx+s.ax, baseY+s.ay, isWind?5:6, isWind?12:8, isWind?0.3:0, 0, Math.PI*2);
+        ctx.fillStyle = selAnth ? '#f39c12' : '#f39c1288'; ctx.fill();
+        ctx.strokeStyle = '#f39c12'; ctx.lineWidth = 1; ctx.stroke();
+    });
+
+    // Labels with lines
+    const labels = [
+        { part:'petal', lx: 10, ly: isWind?185:80, px: isWind?cx-8:cx-20, py: isWind?baseY-65:baseY-100 },
+        { part:'sepal', lx: 10, ly: 270, px: cx-20, py: baseY-15 },
+        { part:'stigma', lx: 200, ly: 50, px: cx+20, py: baseY-125 },
+        { part:'style', lx: 210, ly: 110, px: cx+15, py: baseY-90 },
+        { part:'ovary', lx: 210, ly: 175, px: cx+25, py: baseY-30 },
+        { part:'ovule', lx: 210, ly: 210, px: cx+10, py: baseY-28 },
+        { part:'anther', lx: 10, ly: isWind?115:130, px: cx+stamens[0].ax, py: baseY+stamens[0].ay },
+        { part:'filament', lx: 10, ly: isWind?155:165, px: cx+stamens[0].bx*0.7, py: baseY-60 }
+    ];
+
+    labels.forEach(l => {
+        const isSel = selected === l.part;
+        ctx.strokeStyle = isSel ? parts[l.part].color : '#b0bec5'; ctx.lineWidth = 1;
+        ctx.setLineDash([2,2]); ctx.beginPath(); ctx.moveTo(l.lx+35, l.ly); ctx.lineTo(l.px, l.py); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = isSel ? parts[l.part].color : '#4a5568';
+        ctx.font = (isSel?'bold ':'') + '8px system-ui'; ctx.textAlign = l.lx < cx ? 'left' : 'left';
+        ctx.fillText(parts[l.part].label, l.lx, l.ly+3);
+    });
+}
+
+canvas.addEventListener('click', function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX-rect.left)*(canvas.width/rect.width);
+    const my = (e.clientY-rect.top)*(canvas.height/rect.height);
+    selected = null;
+    // Check label areas and hit regions
+    Object.keys(hitRegions).forEach(key => {
+        const h = hitRegions[key];
+        if (Math.hypot(mx-h.cx, my-h.cy) < h.r + 15) selected = key;
+    });
+    if (selected) {
+        document.getElementById('info').innerHTML = parts[selected][pollType];
+    } else {
+        document.getElementById('info').innerHTML = '<h3>Select a part</h3><p>Click on any labelled part of the flower diagram.</p>';
+    }
+    draw();
+});
+
+draw();
+</script>
+</body>
+</html>

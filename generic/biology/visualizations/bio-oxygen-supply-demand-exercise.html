@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oxygen Supply &amp; Demand During Exercise</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; }
+        .legend { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+        .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 600; }
+        .legend-swatch { width: 20px; height: 3px; border-radius: 2px; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Oxygen Supply &amp; Demand During Exercise</h1>
+    <div class="desc">Showing oxygen deficit during exercise and EPOC during recovery</div>
+    <canvas id="graphCanvas" width="530" height="320"></canvas>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#1835b4;"></div>O&#8322; Supply</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#e74c3c;"></div>O&#8322; Demand</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:rgba(231,76,60,0.2);border:1px solid #e74c3c;"></div>Oxygen Deficit</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:rgba(52,152,219,0.2);border:1px solid #3498db;"></div>EPOC</div>
+    </div>
+    <div class="note">
+        <strong>Oxygen deficit:</strong> During exercise, O&#8322; demand exceeds supply. The body uses anaerobic respiration to make up the shortfall. After exercise, elevated O&#8322; intake (EPOC) repays this oxygen debt.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('graphCanvas');
+const ctx = canvas.getContext('2d');
+let hoverX = null;
+
+const pad = { top: 30, right: 20, bottom: 50, left: 55 };
+const xMin = 0, xMax = 20, yMax = 10;
+
+// Rest: 0-3, Exercise: 3-12, Recovery: 12-20
+function o2Demand(t) {
+    if (t <= 3) return 2;
+    if (t <= 3.5) return 2 + (8 - 2) * ((t - 3) / 0.5); // quick jump
+    if (t <= 12) return 8;
+    if (t <= 12.5) return 8 - (8 - 2) * ((t - 12) / 0.5); // quick drop
+    return 2;
+}
+
+function o2Supply(t) {
+    if (t <= 3) return 2;
+    if (t <= 6) {
+        // Gradual rise
+        const progress = (t - 3) / 3;
+        return 2 + (6.5 - 2) * (1 - Math.exp(-2 * progress));
+    }
+    if (t <= 12) return 6.5;
+    if (t <= 12) return 6.5;
+    // Recovery: stays elevated then drops
+    if (t <= 15) {
+        const progress = (t - 12) / 3;
+        return 6.5 - (6.5 - 3.5) * progress;
+    }
+    if (t <= 20) {
+        const progress = (t - 15) / 5;
+        return 3.5 - (3.5 - 2) * (1 - Math.exp(-2 * progress));
+    }
+    return 2;
+}
+
+function xToCanvas(x) { return pad.left + ((x - xMin) / (xMax - xMin)) * (canvas.width - pad.left - pad.right); }
+function yToCanvas(y) { return pad.top + ((yMax - y) / yMax) * (canvas.height - pad.top - pad.bottom); }
+function canvasToX(cx) { return xMin + ((cx - pad.left) / (canvas.width - pad.left - pad.right)) * (xMax - xMin); }
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Phase backgrounds
+    ctx.fillStyle = 'rgba(200,200,200,0.08)';
+    ctx.fillRect(xToCanvas(0), pad.top, xToCanvas(3) - xToCanvas(0), canvas.height - pad.top - pad.bottom);
+    ctx.fillStyle = 'rgba(231,76,60,0.05)';
+    ctx.fillRect(xToCanvas(3), pad.top, xToCanvas(12) - xToCanvas(3), canvas.height - pad.top - pad.bottom);
+    ctx.fillStyle = 'rgba(52,152,219,0.05)';
+    ctx.fillRect(xToCanvas(12), pad.top, xToCanvas(20) - xToCanvas(12), canvas.height - pad.top - pad.bottom);
+
+    // Phase labels
+    ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#7f8c8d';
+    ctx.fillText('REST', xToCanvas(1.5), pad.top + 14);
+    ctx.fillStyle = '#e74c3c';
+    ctx.fillText('EXERCISE', xToCanvas(7.5), pad.top + 14);
+    ctx.fillStyle = '#3498db';
+    ctx.fillText('RECOVERY', xToCanvas(16), pad.top + 14);
+
+    // Shade oxygen deficit (exercise phase: demand > supply)
+    ctx.beginPath();
+    const step = 0.2;
+    for (let t = 3; t <= 12; t += step) {
+        const d = o2Demand(t), s = o2Supply(t);
+        if (d > s) {
+            ctx.moveTo(xToCanvas(t), yToCanvas(s));
+            ctx.lineTo(xToCanvas(t), yToCanvas(d));
+        }
+    }
+    // Fill properly with polygon
+    ctx.closePath();
+    // Redo as polygon
+    ctx.beginPath();
+    for (let t = 3; t <= 12; t += step) {
+        const cx = xToCanvas(t), cy = yToCanvas(o2Demand(t));
+        t === 3 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+    }
+    for (let t = 12; t >= 3; t -= step) {
+        const cx = xToCanvas(t), cy = yToCanvas(Math.min(o2Supply(t), o2Demand(t)));
+        ctx.lineTo(cx, cy);
+    }
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(231,76,60,0.15)';
+    ctx.fill();
+
+    // Shade EPOC (recovery phase: supply > demand)
+    ctx.beginPath();
+    for (let t = 12; t <= 20; t += step) {
+        const cx = xToCanvas(t), cy = yToCanvas(o2Supply(t));
+        t === 12 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+    }
+    for (let t = 20; t >= 12; t -= step) {
+        const cx = xToCanvas(t), cy = yToCanvas(Math.min(o2Supply(t), o2Demand(t)));
+        ctx.lineTo(cx, cy);
+    }
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(52,152,219,0.15)';
+    ctx.fill();
+
+    // Axes
+    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, canvas.height - pad.bottom);
+    ctx.lineTo(canvas.width - pad.right, canvas.height - pad.bottom);
+    ctx.stroke();
+
+    // Grid
+    ctx.fillStyle = '#4a5568'; ctx.font = '10px system-ui'; ctx.textAlign = 'center';
+    for (let x = 0; x <= xMax; x += 2) {
+        const cx = xToCanvas(x);
+        ctx.strokeStyle = '#e0e0e0'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+        ctx.fillText(x, cx, canvas.height - pad.bottom + 14);
+    }
+    ctx.textAlign = 'right';
+    for (let y = 0; y <= yMax; y += 2) {
+        const cy = yToCanvas(y);
+        ctx.strokeStyle = '#e0e0e0'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(canvas.width - pad.right, cy); ctx.stroke();
+        ctx.fillText(y, pad.left - 6, cy + 3);
+    }
+
+    // Axis labels
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Time (minutes)', canvas.width / 2, canvas.height - 5);
+    ctx.save(); ctx.translate(14, canvas.height / 2); ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Rate (arbitrary units)', 0, 0); ctx.restore();
+
+    // Area labels
+    ctx.font = 'italic 9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#c0392b';
+    ctx.fillText('Oxygen', xToCanvas(6), yToCanvas(5.5));
+    ctx.fillText('deficit', xToCanvas(6), yToCanvas(5.5) + 12);
+    ctx.fillStyle = '#2980b9';
+    ctx.fillText('EPOC (Oxygen debt', xToCanvas(16), yToCanvas(3.5));
+    ctx.fillText('repayment)', xToCanvas(16), yToCanvas(3.5) + 12);
+
+    // Phase boundary lines
+    ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    [3, 12].forEach(t => {
+        ctx.beginPath(); ctx.moveTo(xToCanvas(t), pad.top); ctx.lineTo(xToCanvas(t), canvas.height - pad.bottom); ctx.stroke();
+    });
+    ctx.setLineDash([]);
+
+    // O2 demand curve (red)
+    ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for (let t = 0; t <= xMax; t += 0.1) {
+        const cx = xToCanvas(t), cy = yToCanvas(o2Demand(t));
+        t === 0 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+    }
+    ctx.stroke();
+
+    // O2 supply curve (blue)
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for (let t = 0; t <= xMax; t += 0.1) {
+        const cx = xToCanvas(t), cy = yToCanvas(o2Supply(t));
+        t === 0 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+    }
+    ctx.stroke();
+
+    // Hover
+    if (hoverX !== null && hoverX >= xMin && hoverX <= xMax) {
+        const t = hoverX;
+        const demand = o2Demand(t);
+        const supply = o2Supply(t);
+        const cx = xToCanvas(t);
+
+        ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+        ctx.setLineDash([]);
+
+        [[demand, '#e74c3c'], [supply, '#1835b4']].forEach(([val, col]) => {
+            ctx.beginPath(); ctx.arc(cx, yToCanvas(val), 4, 0, Math.PI * 2);
+            ctx.fillStyle = col; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+        });
+
+        const phase = t <= 3 ? 'Rest' : t <= 12 ? 'Exercise' : 'Recovery';
+        const lines = [`Time: ${t.toFixed(1)} min (${phase})`, `O\u2082 Demand: ${demand.toFixed(2)}`, `O\u2082 Supply: ${supply.toFixed(2)}`];
+        ctx.font = '10px system-ui';
+        const tw = Math.max(...lines.map(l => ctx.measureText(l).width)) + 16;
+        const th = lines.length * 15 + 10;
+        let bx = cx + 12;
+        if (bx + tw > canvas.width - pad.right) bx = cx - tw - 12;
+        ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.roundRect(bx, pad.top + 30, tw, th, 4); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#1a2747'; ctx.textAlign = 'left';
+        lines.forEach((l, i) => ctx.fillText(l, bx + 8, pad.top + 44 + i * 15));
+    }
+}
+
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+    hoverX = canvasToX(mx);
+    if (hoverX < xMin || hoverX > xMax) hoverX = null;
+    draw();
+});
+canvas.addEventListener('mouseleave', () => { hoverX = null; draw(); });
+
+function resize() {
+    const w = Math.min(530, window.innerWidth - 24);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 320 / 530) + 'px';
+}
+window.addEventListener('resize', resize);
+resize();
+draw();
+</script>
+</body>
+</html>

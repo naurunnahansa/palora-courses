@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water Pathways Through the Root</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fcfcfe;
+    color: #1a2747;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 6px; text-align: center; }
+  .subtitle { font-size: 0.9rem; color: #6b7a99; margin-bottom: 16px; text-align: center; max-width: 540px; }
+  .controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .toggle-btn {
+    padding: 8px 18px;
+    border: 2px solid #d4d8e5;
+    border-radius: 8px;
+    background: #e8ecf8;
+    color: #1a2747;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  .toggle-btn:hover { border-color: #1835b4; }
+  .toggle-btn.active-sym { background: #2ecc71; color: #fff; border-color: #2ecc71; }
+  .toggle-btn.active-apo { background: #3498db; color: #fff; border-color: #3498db; }
+  .toggle-btn.active-vac { background: #e67e22; color: #fff; border-color: #e67e22; }
+  .toggle-btn.active-all { background: #1835b4; color: #fff; border-color: #1835b4; }
+  .diagram { width: 100%; max-width: 660px; }
+  svg { width: 100%; height: auto; }
+  .cell-wall { fill: #f0ece0; stroke: #c0b898; stroke-width: 1.2; }
+  .cytoplasm { fill: #e0f5e0; stroke: #90c890; stroke-width: 0.8; }
+  .vacuole { fill: #d0e8f8; stroke: #80b0d8; stroke-width: 0.8; }
+  .lbl {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 10px;
+    fill: #1a2747;
+  }
+  .lbl-bold {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 11.5px;
+    font-weight: 700;
+    fill: #1835b4;
+  }
+  .path-line { transition: opacity 0.3s; }
+  .dimmed { opacity: 0.1; }
+  .key-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+    font-size: 0.82rem;
+  }
+  .key-swatch {
+    width: 28px;
+    height: 4px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .key-box {
+    margin-top: 14px;
+    background: #e8ecf8;
+    border: 1.5px solid #d4d8e5;
+    border-radius: 10px;
+    padding: 14px 18px;
+    max-width: 600px;
+    width: 100%;
+  }
+  .key-box h3 { font-size: 0.9rem; color: #1835b4; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<h1>Water Pathways Through the Root</h1>
+<p class="subtitle">Three routes water can take from root hair cells to the xylem</p>
+<div class="controls">
+  <button class="toggle-btn active-all" id="btnAll" onclick="showPath('all')">Show All</button>
+  <button class="toggle-btn" id="btnSym" onclick="showPath('symplast')">Symplast</button>
+  <button class="toggle-btn" id="btnApo" onclick="showPath('apoplast')">Apoplast</button>
+  <button class="toggle-btn" id="btnVac" onclick="showPath('vacuolar')">Vacuolar</button>
+</div>
+<div class="diagram">
+  <svg viewBox="0 0 660 360" id="svg">
+    <defs>
+      <marker id="arrGrn" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+        <polygon points="0,0 7,2.5 0,5" fill="#2ecc71"/>
+      </marker>
+      <marker id="arrBlu" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+        <polygon points="0,0 7,2.5 0,5" fill="#3498db"/>
+      </marker>
+      <marker id="arrOrn" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+        <polygon points="0,0 7,2.5 0,5" fill="#e67e22"/>
+      </marker>
+    </defs>
+
+    <!-- Soil on left -->
+    <rect x="0" y="0" width="60" height="360" fill="#d4b88c" opacity="0.2"/>
+    <text x="30" y="180" text-anchor="middle" class="lbl-bold" fill="#906020" transform="rotate(-90,30,180)">SOIL</text>
+
+    <!-- Root hair cell -->
+    <rect x="60" y="100" width="70" height="160" rx="8" class="cell-wall"/>
+    <rect x="66" y="106" width="58" height="148" rx="5" class="cytoplasm"/>
+    <ellipse cx="95" cy="180" rx="18" ry="50" class="vacuole"/>
+    <!-- Root hair extension -->
+    <rect x="30" y="155" width="36" height="30" rx="4" class="cell-wall"/>
+    <rect x="34" y="159" width="28" height="22" rx="3" class="cytoplasm"/>
+    <text x="95" y="85" text-anchor="middle" class="lbl-bold">Root Hair Cell</text>
+
+    <!-- Cortex cells (3) -->
+    <g id="cortex">
+      <rect x="145" y="100" width="65" height="160" rx="6" class="cell-wall"/>
+      <rect x="150" y="105" width="55" height="150" rx="4" class="cytoplasm"/>
+      <ellipse cx="178" cy="180" rx="14" ry="40" class="vacuole"/>
+
+      <rect x="225" y="100" width="65" height="160" rx="6" class="cell-wall"/>
+      <rect x="230" y="105" width="55" height="150" rx="4" class="cytoplasm"/>
+      <ellipse cx="258" cy="180" rx="14" ry="40" class="vacuole"/>
+
+      <rect x="305" y="100" width="65" height="160" rx="6" class="cell-wall"/>
+      <rect x="310" y="105" width="55" height="150" rx="4" class="cytoplasm"/>
+      <ellipse cx="338" cy="180" rx="14" ry="40" class="vacuole"/>
+    </g>
+    <text x="258" y="85" text-anchor="middle" class="lbl-bold">Cortex Cells</text>
+
+    <!-- Endodermis -->
+    <rect x="385" y="90" width="55" height="180" rx="6" class="cell-wall" stroke="#b03030" stroke-width="1.5"/>
+    <rect x="390" y="95" width="45" height="170" rx="4" class="cytoplasm"/>
+    <!-- Casparian strip -->
+    <rect x="383" y="90" width="6" height="180" rx="2" fill="#d03030" opacity="0.7"/>
+    <text x="412" y="80" text-anchor="middle" class="lbl-bold" fill="#c03030">Endodermis</text>
+    <text x="412" y="290" text-anchor="middle" class="lbl" fill="#c03030" font-weight="600">Casparian Strip</text>
+    <line x1="387" y1="275" x2="387" y2="270" stroke="#c03030" stroke-width="1"/>
+    <path d="M 387,275 L 387,268" stroke="#c03030" stroke-width="1" marker-end=""/>
+
+    <!-- Pericycle + Xylem -->
+    <rect x="455" y="110" width="50" height="140" rx="6" fill="#e0d8f0" stroke="#8060b0" stroke-width="1.2"/>
+    <text x="480" y="175" text-anchor="middle" class="lbl" fill="#8060b0">Pericycle</text>
+
+    <rect x="520" y="100" width="60" height="160" rx="6" fill="#c0daf8" stroke="#3060b0" stroke-width="2"/>
+    <text x="550" y="170" text-anchor="middle" class="lbl-bold" fill="#3060b0">Xylem</text>
+    <!-- Xylem vessel pattern -->
+    <circle cx="540" cy="190" r="8" fill="none" stroke="#3060b0" stroke-width="1.5"/>
+    <circle cx="558" cy="190" r="8" fill="none" stroke="#3060b0" stroke-width="1.5"/>
+    <!-- Upward arrow -->
+    <text x="550" y="145" text-anchor="middle" class="lbl" fill="#3060b0" font-size="16">&uarr;</text>
+    <text x="550" y="85" text-anchor="middle" class="lbl" fill="#3060b0">to stem</text>
+
+    <!-- SYMPLAST PATHWAY (green) - through cytoplasm via plasmodesmata -->
+    <g id="symplast" class="path-line">
+      <path d="M 95,150 L 95,130 Q 100,118 120,118 L 155,118 Q 160,118 163,125 L 163,135"
+        fill="none" stroke="#2ecc71" stroke-width="3" marker-end="url(#arrGrn)" opacity="0.8"/>
+      <path d="M 163,140 L 163,155 Q 168,165 185,162 L 235,155 Q 242,153 243,145 L 243,130"
+        fill="none" stroke="#2ecc71" stroke-width="3" marker-end="url(#arrGrn)" opacity="0.8"/>
+      <path d="M 243,125 L 243,118 Q 248,112 265,115 L 315,120 Q 323,122 323,130 L 323,140"
+        fill="none" stroke="#2ecc71" stroke-width="3" marker-end="url(#arrGrn)" opacity="0.8"/>
+      <path d="M 323,145 L 323,155 Q 330,162 350,158 L 395,150 Q 402,148 402,140 L 402,130"
+        fill="none" stroke="#2ecc71" stroke-width="3" marker-end="url(#arrGrn)" opacity="0.8"/>
+      <path d="M 402,125 L 402,118 Q 410,110 430,115 L 460,120 Q 470,122 475,130 L 475,145"
+        fill="none" stroke="#2ecc71" stroke-width="3" marker-end="url(#arrGrn)" opacity="0.8"/>
+      <path d="M 475,150 L 490,155 Q 505,160 520,165"
+        fill="none" stroke="#2ecc71" stroke-width="3" marker-end="url(#arrGrn)" opacity="0.8"/>
+      <text x="200" y="50" class="lbl" fill="#2ecc71" font-weight="600" font-size="11">Symplast: through cytoplasm (via plasmodesmata)</text>
+    </g>
+
+    <!-- APOPLAST PATHWAY (blue) - through cell walls, blocked at Casparian strip -->
+    <g id="apoplast" class="path-line">
+      <path d="M 60,250 L 145,250 L 225,252 L 305,250 L 375,252"
+        fill="none" stroke="#3498db" stroke-width="3" stroke-dasharray="8,4" opacity="0.8"/>
+      <!-- Blocked symbol at Casparian strip -->
+      <line x1="380" y1="240" x2="390" y2="260" stroke="#d03030" stroke-width="3"/>
+      <line x1="390" y1="240" x2="380" y2="260" stroke="#d03030" stroke-width="3"/>
+      <text x="395" y="320" class="lbl" fill="#d03030" font-weight="600">BLOCKED!</text>
+      <text x="395" y="335" class="lbl" fill="#d03030">Must switch to</text>
+      <text x="395" y="348" class="lbl" fill="#d03030">symplast here</text>
+      <!-- Continues via symplast after strip -->
+      <path d="M 402,250 Q 420,250 440,240 L 460,230 Q 480,220 500,210 L 520,200"
+        fill="none" stroke="#3498db" stroke-width="2.5" stroke-dasharray="4,4" marker-end="url(#arrBlu)" opacity="0.6"/>
+      <text x="200" y="330" class="lbl" fill="#3498db" font-weight="600" font-size="11">Apoplast: through cell walls (blocked at Casparian strip)</text>
+    </g>
+
+    <!-- VACUOLAR PATHWAY (orange) - through vacuoles -->
+    <g id="vacuolar" class="path-line">
+      <path d="M 95,200 L 95,215 Q 100,230 120,228 L 160,220 Q 175,218 178,200 L 178,180"
+        fill="none" stroke="#e67e22" stroke-width="3" marker-end="url(#arrOrn)" opacity="0.8"/>
+      <path d="M 178,175 L 178,160 Q 185,145 210,150 L 240,158 Q 255,162 258,175 L 258,195"
+        fill="none" stroke="#e67e22" stroke-width="3" marker-end="url(#arrOrn)" opacity="0.8"/>
+      <path d="M 258,200 L 258,215 Q 265,230 290,225 L 320,215 Q 335,210 338,195 L 338,175"
+        fill="none" stroke="#e67e22" stroke-width="3" marker-end="url(#arrOrn)" opacity="0.8"/>
+      <path d="M 338,170 L 338,155 Q 345,140 370,145 L 400,155 Q 415,160 420,170 L 435,180 Q 470,195 520,185"
+        fill="none" stroke="#e67e22" stroke-width="3" marker-end="url(#arrOrn)" opacity="0.8"/>
+      <text x="200" y="345" class="lbl" fill="#e67e22" font-weight="600" font-size="11">Vacuolar: through vacuoles of each cell</text>
+    </g>
+  </svg>
+</div>
+<div class="key-box">
+  <h3>Pathway Descriptions</h3>
+  <div class="key-item"><span class="key-swatch" style="background:#2ecc71"></span><strong>Symplast:</strong> Water moves through cytoplasm, crossing between cells via plasmodesmata.</div>
+  <div class="key-item"><span class="key-swatch" style="background:#3498db"></span><strong>Apoplast:</strong> Water moves through cell walls and intercellular spaces. Blocked by the Casparian strip at the endodermis.</div>
+  <div class="key-item"><span class="key-swatch" style="background:#e67e22"></span><strong>Vacuolar:</strong> Water passes through the vacuoles of cells by osmosis, from cell to cell.</div>
+</div>
+
+<script>
+function showPath(which) {
+  const sym = document.getElementById("symplast");
+  const apo = document.getElementById("apoplast");
+  const vac = document.getElementById("vacuolar");
+  const btns = { all: "btnAll", symplast: "btnSym", apoplast: "btnApo", vacuolar: "btnVac" };
+
+  // Reset buttons
+  document.querySelectorAll(".toggle-btn").forEach(b => {
+    b.className = "toggle-btn";
+  });
+
+  if (which === "all") {
+    sym.classList.remove("dimmed");
+    apo.classList.remove("dimmed");
+    vac.classList.remove("dimmed");
+    document.getElementById("btnAll").classList.add("active-all");
+  } else {
+    sym.classList.toggle("dimmed", which !== "symplast");
+    apo.classList.toggle("dimmed", which !== "apoplast");
+    vac.classList.toggle("dimmed", which !== "vacuolar");
+    const activeClass = which === "symplast" ? "active-sym" : which === "apoplast" ? "active-apo" : "active-vac";
+    document.getElementById(btns[which]).classList.add(activeClass);
+  }
+}
+</script>
+</body>
+</html>

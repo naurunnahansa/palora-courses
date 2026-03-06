@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Transpiration Stream</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fcfcfe;
+    color: #1a2747;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 6px; text-align: center; }
+  .subtitle { font-size: 0.9rem; color: #6b7a99; margin-bottom: 20px; text-align: center; max-width: 520px; }
+  .diagram { width: 100%; max-width: 560px; }
+  svg { width: 100%; height: auto; }
+  .label {
+    font-family: system-ui, -apple-system, sans-serif;
+    fill: #1a2747;
+    font-size: 11px;
+  }
+  .label-bold {
+    font-family: system-ui, -apple-system, sans-serif;
+    fill: #1835b4;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .process-tag {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 10.5px;
+    font-weight: 600;
+  }
+  .key-box {
+    margin-top: 16px;
+    background: #e8ecf8;
+    border: 1.5px solid #d4d8e5;
+    border-radius: 10px;
+    padding: 14px 18px;
+    max-width: 520px;
+    width: 100%;
+  }
+  .key-box h3 { font-size: 0.9rem; color: #1835b4; margin-bottom: 6px; }
+  .key-box p { font-size: 0.82rem; line-height: 1.55; margin: 3px 0; }
+</style>
+</head>
+<body>
+<h1>The Transpiration Stream</h1>
+<p class="subtitle">Water moves from soil through roots, up the stem via xylem, and evaporates from leaves</p>
+<div class="diagram">
+  <svg viewBox="0 0 480 640" id="svg">
+    <!-- Sky area -->
+    <rect x="0" y="0" width="480" height="100" fill="#eef4ff" opacity="0.4"/>
+    <!-- Ground -->
+    <rect x="0" y="520" width="480" height="120" fill="#d4b88c" rx="0" opacity="0.25"/>
+    <line x1="0" y1="520" x2="480" y2="520" stroke="#b09060" stroke-width="1.5"/>
+
+    <!-- Leaf (top) -->
+    <ellipse cx="240" cy="80" rx="130" ry="55" fill="#6ab04c" opacity="0.25" stroke="#4a8a2c" stroke-width="1.5"/>
+    <text x="240" y="55" text-anchor="middle" class="label-bold">LEAF</text>
+    <!-- Stomata openings -->
+    <ellipse cx="180" cy="100" rx="10" ry="5" fill="none" stroke="#4a8a2c" stroke-width="1"/>
+    <ellipse cx="240" cy="110" rx="10" ry="5" fill="none" stroke="#4a8a2c" stroke-width="1"/>
+    <ellipse cx="300" cy="100" rx="10" ry="5" fill="none" stroke="#4a8a2c" stroke-width="1"/>
+    <!-- Evaporation arrows from stomata -->
+    <line x1="180" y1="95" x2="170" y2="35" stroke="#70b8e8" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arrowWater)"/>
+    <line x1="240" y1="105" x2="240" y2="30" stroke="#70b8e8" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arrowWater)"/>
+    <line x1="300" y1="95" x2="310" y2="35" stroke="#70b8e8" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arrowWater)"/>
+    <text x="350" y="42" class="process-tag" fill="#2080c0">Transpiration</text>
+    <text x="350" y="56" class="label" fill="#6b7a99">(water vapour lost)</text>
+    <text x="115" y="70" class="process-tag" fill="#2080c0">Evaporation</text>
+
+    <defs>
+      <marker id="arrowWater" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+        <polygon points="0,0 7,2.5 0,5" fill="#70b8e8"/>
+      </marker>
+      <marker id="arrowUp" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+        <polygon points="0,0 7,2.5 0,5" fill="#1835b4"/>
+      </marker>
+    </defs>
+
+    <!-- Stem / Xylem -->
+    <rect x="228" y="130" width="24" height="390" rx="4" fill="#c0daf0" stroke="#5090c0" stroke-width="1.5"/>
+    <text x="210" y="155" text-anchor="end" class="label-bold">STEM</text>
+    <text x="210" y="170" text-anchor="end" class="label" fill="#5090c0">(Xylem vessels)</text>
+
+    <!-- Xylem inner lines -->
+    <line x1="234" y1="135" x2="234" y2="515" stroke="#5090c0" stroke-width="0.7" stroke-dasharray="2,4"/>
+    <line x1="240" y1="135" x2="240" y2="515" stroke="#5090c0" stroke-width="0.7" stroke-dasharray="2,4"/>
+    <line x1="246" y1="135" x2="246" y2="515" stroke="#5090c0" stroke-width="0.7" stroke-dasharray="2,4"/>
+
+    <!-- Cohesion-tension label -->
+    <text x="270" y="310" class="process-tag" fill="#1835b4">Adhesion &amp;</text>
+    <text x="270" y="324" class="process-tag" fill="#1835b4">Cohesion</text>
+    <text x="270" y="340" class="label" fill="#6b7a99">(water molecules</text>
+    <text x="270" y="354" class="label" fill="#6b7a99">pull each other up)</text>
+
+    <!-- Upward arrows in xylem -->
+    <line x1="240" y1="490" x2="240" y2="200" stroke="#1835b4" stroke-width="1.5" marker-end="url(#arrowUp)" opacity="0.5"/>
+
+    <!-- Root hairs -->
+    <rect x="228" y="520" width="24" height="60" rx="3" fill="#c0daf0" stroke="#5090c0" stroke-width="1.5"/>
+    <!-- Root branches -->
+    <line x1="228" y1="560" x2="170" y2="590" stroke="#5090c0" stroke-width="2"/>
+    <line x1="252" y1="560" x2="310" y2="590" stroke="#5090c0" stroke-width="2"/>
+    <!-- Root hairs (small lines) -->
+    <line x1="170" y1="590" x2="140" y2="588" stroke="#5090c0" stroke-width="1"/>
+    <line x1="170" y1="590" x2="145" y2="600" stroke="#5090c0" stroke-width="1"/>
+    <line x1="170" y1="590" x2="150" y2="580" stroke="#5090c0" stroke-width="1"/>
+    <line x1="310" y1="590" x2="340" y2="588" stroke="#5090c0" stroke-width="1"/>
+    <line x1="310" y1="590" x2="335" y2="600" stroke="#5090c0" stroke-width="1"/>
+    <line x1="310" y1="590" x2="330" y2="580" stroke="#5090c0" stroke-width="1"/>
+
+    <text x="240" y="550" text-anchor="middle" class="label-bold">ROOTS</text>
+
+    <!-- Water absorption arrows -->
+    <line x1="120" y1="600" x2="160" y2="592" stroke="#70b8e8" stroke-width="1.5" marker-end="url(#arrowWater)"/>
+    <line x1="360" y1="600" x2="320" y2="592" stroke="#70b8e8" stroke-width="1.5" marker-end="url(#arrowWater)"/>
+
+    <text x="80" y="580" class="process-tag" fill="#2080c0">Osmosis</text>
+    <text x="55" y="596" class="label" fill="#6b7a99">(water absorbed</text>
+    <text x="55" y="610" class="label" fill="#6b7a99">from soil)</text>
+
+    <!-- Soil water dots -->
+    <circle cx="100" cy="560" r="3" fill="#70b8e8" opacity="0.5"/>
+    <circle cx="80" cy="580" r="2.5" fill="#70b8e8" opacity="0.5"/>
+    <circle cx="120" cy="575" r="2" fill="#70b8e8" opacity="0.5"/>
+    <circle cx="380" cy="565" r="3" fill="#70b8e8" opacity="0.5"/>
+    <circle cx="360" cy="585" r="2.5" fill="#70b8e8" opacity="0.5"/>
+  </svg>
+</div>
+<div class="key-box">
+  <h3>Key Processes</h3>
+  <p><strong>Transpiration:</strong> Evaporation of water from leaf surfaces through stomata, creating a pull.</p>
+  <p><strong>Cohesion-tension:</strong> Water molecules stick together (cohesion) and to xylem walls (adhesion), forming a continuous column pulled upward.</p>
+  <p><strong>Osmosis:</strong> Water enters root hair cells from the soil down a water potential gradient.</p>
+</div>
+
+<script>
+const svg = document.getElementById("svg");
+const pathStartY = 560, pathEndY = 130;
+const numDots = 12;
+const dots = [];
+
+for (let i = 0; i < numDots; i++) {
+  const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  dot.setAttribute("r", "3.5");
+  dot.setAttribute("fill", "#3399dd");
+  dot.setAttribute("opacity", "0.7");
+  dot.setAttribute("cx", 240);
+  svg.appendChild(dot);
+  dots.push({ el: dot, offset: i / numDots });
+}
+
+function animate(ts) {
+  const cycle = 6000;
+  const t = (ts % cycle) / cycle;
+  dots.forEach(d => {
+    const pos = (t + d.offset) % 1;
+    const y = pathStartY - pos * (pathStartY - pathEndY);
+    const wobble = Math.sin(pos * Math.PI * 6) * 2;
+    d.el.setAttribute("cx", 240 + wobble);
+    d.el.setAttribute("cy", y);
+    d.el.setAttribute("opacity", 0.4 + 0.4 * Math.sin(pos * Math.PI));
+  });
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>

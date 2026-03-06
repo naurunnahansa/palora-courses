@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stages of Mitosis</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .controls { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .btn { background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 16px; font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+        .btn:hover { background: #122a8a; }
+        .btn:disabled { background: #a0a8c0; cursor: default; }
+        .dots { display: flex; gap: 6px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #d4d8e5; cursor: pointer; transition: background 0.2s; }
+        .dot.active { background: #1835b4; }
+        .toggle-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; font-size: 0.75rem; font-weight: 600; }
+        .toggle-btn { padding: 4px 12px; border-radius: 4px; border: 1px solid #d4d8e5; cursor: pointer; background: #fff; color: #1a2747; }
+        .toggle-btn.active { background: #1835b4; color: #fff; border-color: #1835b4; }
+        .info-panel { background: #fff; border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px 12px; font-size: 0.78rem; min-height: 50px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        .info-panel h3 { color: #1835b4; margin-bottom: 4px; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Stages of Mitosis</h1>
+    <div class="desc">Step through the stages of cell division</div>
+    <canvas id="cv" width="480" height="340"></canvas>
+    <div class="controls">
+        <button class="btn" id="prevBtn" onclick="go(-1)">Back</button>
+        <div class="dots" id="dots"></div>
+        <button class="btn" id="nextBtn" onclick="go(1)">Next</button>
+    </div>
+    <div class="toggle-row">
+        <span class="toggle-btn active" id="tAnimal" onclick="setType('animal')">Animal cell</span>
+        <span class="toggle-btn" id="tPlant" onclick="setType('plant')">Plant cell</span>
+    </div>
+    <div class="info-panel" id="info"></div>
+</div>
+<script>
+const canvas = document.getElementById('cv');
+const ctx = canvas.getContext('2d');
+const infoEl = document.getElementById('info');
+const dotsEl = document.getElementById('dots');
+const W = canvas.width, H = canvas.height;
+const cx = W / 2, cy = H / 2;
+
+let stage = 0;
+let cellType = 'animal';
+
+const stages = [
+    { name: 'Interphase', desc: 'The cell is in its normal state. The nucleus is intact with a visible nucleolus. DNA exists as loosely coiled chromatin (not yet condensed into visible chromosomes). Two centrioles are present near the nucleus. The cell grows and carries out its functions. DNA replicates during the S phase of interphase.' },
+    { name: 'Prophase', desc: 'Chromatin condenses into visible chromosomes (each consisting of two sister chromatids joined at a centromere). The nuclear membrane begins to break down. Centrioles move to opposite poles and spindle fibres begin to form between them.' },
+    { name: 'Metaphase', desc: 'Chromosomes line up along the cell equator (the metaphase plate). Spindle fibres from each pole attach to the centromere of each chromosome. The metaphase checkpoint ensures every chromosome is attached before proceeding.' },
+    { name: 'Anaphase', desc: 'The centromeres split and sister chromatids are pulled apart to opposite poles by the shortening spindle fibres. The cell begins to elongate as the poles move further apart.' },
+    { name: 'Telophase & Cytokinesis', desc: 'Two new nuclear membranes form around each set of chromosomes. Chromosomes decondense back into chromatin. In animal cells, a cleavage furrow pinches the cell in two. In plant cells, a cell plate forms across the middle, becoming a new cell wall. Two genetically identical daughter cells are produced.' }
+];
+
+/* Build dots */
+stages.forEach((_, i) => {
+    let d = document.createElement('span');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => { stage = i; render(); };
+    dotsEl.appendChild(d);
+});
+
+function setType(t) {
+    cellType = t;
+    document.getElementById('tAnimal').className = 'toggle-btn' + (t === 'animal' ? ' active' : '');
+    document.getElementById('tPlant').className = 'toggle-btn' + (t === 'plant' ? ' active' : '');
+    render();
+}
+
+function go(d) { stage = Math.max(0, Math.min(stages.length - 1, stage + d)); render(); }
+
+function render() {
+    document.getElementById('prevBtn').disabled = stage === 0;
+    document.getElementById('nextBtn').disabled = stage === stages.length - 1;
+    dotsEl.querySelectorAll('.dot').forEach((d, i) => d.className = 'dot' + (i === stage ? ' active' : ''));
+    infoEl.innerHTML = `<h3>${stages[stage].name}</h3>${stages[stage].desc}`;
+    drawCell();
+}
+
+const CHR_COL = '#1835b4';
+const SPIN_COL = '#999';
+const NUC_COL = 'rgba(24,53,180,0.12)';
+const CELL_COL = '#e8ecf8';
+const MEMBRANE_COL = '#6baed6';
+const CENTRI_COL = '#d45050';
+
+function drawCell() {
+    ctx.clearRect(0, 0, W, H);
+
+    /* stage label at top */
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 14px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText(stages[stage].name, cx, 22);
+
+    if (stage === 0) drawInterphase();
+    else if (stage === 1) drawProphase();
+    else if (stage === 2) drawMetaphase();
+    else if (stage === 3) drawAnaphase();
+    else drawTelophase();
+}
+
+function cellOutline(stretchX, stretchY, splitOffset) {
+    splitOffset = splitOffset || 0;
+    ctx.save();
+    if (splitOffset === 0) {
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, 120 * (stretchX || 1), 100 * (stretchY || 1), 0, 0, Math.PI * 2);
+        ctx.fillStyle = CELL_COL; ctx.fill();
+        ctx.strokeStyle = MEMBRANE_COL; ctx.lineWidth = 2.5; ctx.stroke();
+    }
+    ctx.restore();
+}
+
+function nucleus(x, y, r, opacity) {
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(24,53,180,${opacity || 0.12})`; ctx.fill();
+    ctx.setLineDash([3, 3]); ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 1.5; ctx.stroke(); ctx.setLineDash([]);
+}
+
+function nucleolus(x, y) {
+    ctx.beginPath(); ctx.arc(x, y, 8, 0, Math.PI * 2);
+    ctx.fillStyle = '#3b5cc6'; ctx.fill();
+}
+
+function chromatin(x, y, r) {
+    ctx.strokeStyle = '#5a7ad4'; ctx.lineWidth = 1.5;
+    const seed = 42;
+    for (let i = 0; i < 8; i++) {
+        ctx.beginPath();
+        let a = (seed + i * 47) % 360 * Math.PI / 180;
+        let sx = x + Math.cos(a) * r * 0.3, sy = y + Math.sin(a) * r * 0.3;
+        ctx.moveTo(sx, sy);
+        for (let j = 1; j <= 4; j++) {
+            let na = a + j * 0.8; let nr = r * (0.2 + j * 0.18);
+            ctx.lineTo(x + Math.cos(na) * nr, y + Math.sin(na) * nr);
+        }
+        ctx.stroke();
+    }
+}
+
+function chromosome(x, y, angle, size) {
+    ctx.save(); ctx.translate(x, y); ctx.rotate(angle);
+    ctx.strokeStyle = CHR_COL; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    /* X shape: two sister chromatids */
+    let s = size || 14;
+    ctx.beginPath(); ctx.moveTo(-s, -s); ctx.lineTo(0, 0); ctx.lineTo(-s, s); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(s, -s); ctx.lineTo(0, 0); ctx.lineTo(s, s); ctx.stroke();
+    /* centromere dot */
+    ctx.beginPath(); ctx.arc(0, 0, 2.5, 0, Math.PI * 2); ctx.fillStyle = CENTRI_COL; ctx.fill();
+    ctx.restore();
+}
+
+function centriole(x, y) {
+    ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2);
+    ctx.fillStyle = CENTRI_COL; ctx.fill();
+    /* radiating lines */
+    ctx.strokeStyle = CENTRI_COL; ctx.lineWidth = 1;
+    for (let a = 0; a < Math.PI * 2; a += Math.PI / 4) {
+        ctx.beginPath(); ctx.moveTo(x + Math.cos(a) * 5, y + Math.sin(a) * 5);
+        ctx.lineTo(x + Math.cos(a) * 12, y + Math.sin(a) * 12); ctx.stroke();
+    }
+}
+
+function spindleFibre(x1, y1, x2, y2) {
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+    ctx.strokeStyle = SPIN_COL; ctx.lineWidth = 1; ctx.setLineDash([3, 4]); ctx.stroke(); ctx.setLineDash([]);
+}
+
+function drawInterphase() {
+    cellOutline();
+    nucleus(cx, cy, 50, 0.12);
+    nucleolus(cx + 10, cy - 10);
+    chromatin(cx, cy, 40);
+    centriole(cx + 70, cy - 30);
+    centriole(cx + 80, cy - 20);
+    label(cx + 70, cy - 48, 'Centrioles');
+    label(cx + 30, cy - 5, 'Nucleolus');
+    label(cx - 55, cy - 55, 'Nuclear\nmembrane');
+    label(cx - 50, cy + 20, 'Chromatin');
+}
+
+function drawProphase() {
+    cellOutline();
+    /* fading nucleus */
+    ctx.beginPath(); ctx.arc(cx, cy, 50, 0, Math.PI * 2);
+    ctx.setLineDash([6, 6]); ctx.strokeStyle = 'rgba(24,53,180,0.3)'; ctx.lineWidth = 1.5; ctx.stroke(); ctx.setLineDash([]);
+    /* chromosomes condensed */
+    const chrPos = [[-20,-25],[20,-20],[-15,15],[15,20],[0,-5],[5,10]];
+    chrPos.forEach(([dx, dy], i) => chromosome(cx + dx, cy + dy, i * 0.5, 12));
+    /* centrioles at poles */
+    centriole(cx - 100, cy); centriole(cx + 100, cy);
+    /* spindle forming */
+    for (let i = -2; i <= 2; i++) {
+        spindleFibre(cx - 100, cy, cx - 30, cy + i * 15);
+        spindleFibre(cx + 100, cy, cx + 30, cy + i * 15);
+    }
+    label(cx, cy + 60, 'Chromosomes\ncondensing');
+    label(cx - 100, cy - 20, 'Centriole');
+    label(cx + 100, cy - 20, 'Centriole');
+    label(cx, cy - 55, 'Nuclear membrane\nbreaking down');
+}
+
+function drawMetaphase() {
+    cellOutline(1.1, 1);
+    centriole(cx - 110, cy); centriole(cx + 110, cy);
+    /* chromosomes at equator */
+    const yPos = [-35, -20, -5, 10, 25, 40];
+    yPos.forEach((dy, i) => {
+        chromosome(cx, cy + dy - 3, 0, 11);
+        spindleFibre(cx - 110, cy, cx - 8, cy + dy - 3);
+        spindleFibre(cx + 110, cy, cx + 8, cy + dy - 3);
+    });
+    /* metaphase plate line */
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(cx, cy - 65); ctx.lineTo(cx, cy + 65); ctx.stroke(); ctx.setLineDash([]);
+    label(cx, cy + 75, 'Metaphase plate');
+    label(cx - 110, cy - 20, 'Centriole');
+    label(cx + 65, cy - 50, 'Spindle fibres\nattached to\ncentromeres');
+}
+
+function drawAnaphase() {
+    cellOutline(1.25, 0.9);
+    centriole(cx - 130, cy); centriole(cx + 130, cy);
+    /* chromatids pulled apart */
+    const yPos = [-30, -15, 0, 15, 30, 45];
+    yPos.forEach((dy, i) => {
+        /* left set: single chromatids (V shape) */
+        drawChromatid(cx - 55, cy + dy - 5, -1);
+        drawChromatid(cx + 55, cy + dy - 5, 1);
+        spindleFibre(cx - 130, cy, cx - 50, cy + dy - 5);
+        spindleFibre(cx + 130, cy, cx + 50, cy + dy - 5);
+    });
+    label(cx, cy + 70, 'Sister chromatids\npulled to opposite poles');
+    /* arrows showing movement */
+    ctx.fillStyle = '#d45050'; ctx.font = 'bold 18px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('\u2190', cx - 80, cy); ctx.fillText('\u2192', cx + 80, cy);
+}
+
+function drawChromatid(x, y, dir) {
+    ctx.save(); ctx.translate(x, y);
+    ctx.strokeStyle = CHR_COL; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(0, -8); ctx.lineTo(dir * 5, 0); ctx.lineTo(0, 8); ctx.stroke();
+    ctx.restore();
+}
+
+function drawTelophase() {
+    ctx.save();
+    if (cellType === 'animal') {
+        /* two cells with cleavage furrow */
+        /* left cell */
+        ctx.beginPath(); ctx.ellipse(cx - 65, cy, 70, 85, 0, 0, Math.PI * 2);
+        ctx.fillStyle = CELL_COL; ctx.fill(); ctx.strokeStyle = MEMBRANE_COL; ctx.lineWidth = 2.5; ctx.stroke();
+        /* right cell */
+        ctx.beginPath(); ctx.ellipse(cx + 65, cy, 70, 85, 0, 0, Math.PI * 2);
+        ctx.fillStyle = CELL_COL; ctx.fill(); ctx.strokeStyle = MEMBRANE_COL; ctx.lineWidth = 2.5; ctx.stroke();
+        /* cleavage furrow */
+        ctx.strokeStyle = MEMBRANE_COL; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(cx, cy - 85); ctx.lineTo(cx, cy + 85); ctx.stroke();
+        label(cx, cy + 95, 'Cleavage furrow');
+    } else {
+        /* plant: cell plate */
+        ctx.beginPath();
+        ctx.rect(cx - 140, cy - 85, 280, 170);
+        ctx.fillStyle = CELL_COL; ctx.fill(); ctx.strokeStyle = '#5aa55a'; ctx.lineWidth = 3; ctx.stroke();
+        /* cell plate */
+        ctx.setLineDash([5, 4]); ctx.strokeStyle = '#5aa55a'; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(cx, cy - 85); ctx.lineTo(cx, cy + 85); ctx.stroke(); ctx.setLineDash([]);
+        /* vesicles */
+        for (let y = cy - 70; y <= cy + 70; y += 20) {
+            ctx.beginPath(); ctx.arc(cx, y, 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#8bc48b'; ctx.fill();
+        }
+        label(cx, cy + 95, 'Cell plate forming');
+    }
+    /* nuclei reforming */
+    nucleus(cx - 65, cy, 30, 0.12);
+    nucleus(cx + 65, cy, 30, 0.12);
+    /* decondensing chromatin */
+    chromatin(cx - 65, cy, 22);
+    chromatin(cx + 65, cy, 22);
+    label(cx - 65, cy - 50, 'Nuclear membrane\nreforming');
+    label(cx + 65, cy - 50, 'Chromosomes\ndecondensing');
+    ctx.restore();
+}
+
+function label(x, y, text) {
+    ctx.fillStyle = '#4a5568'; ctx.font = '10px system-ui'; ctx.textAlign = 'center';
+    const lines = text.split('\n');
+    lines.forEach((ln, i) => ctx.fillText(ln, x, y + i * 12));
+}
+
+render();
+</script>
+</body>
+</html>

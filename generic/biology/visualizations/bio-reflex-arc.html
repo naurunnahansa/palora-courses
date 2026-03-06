@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Reflex Arc</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; background: #fff; }
+        .controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 8px; flex-wrap: wrap; }
+        .btn { padding: 6px 16px; border: 2px solid #1835b4; border-radius: 5px; background: #1835b4; color: #fff; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn:hover { background: #0f2480; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 8px; }
+        .note strong { color: #1835b4; }
+        .step-label { text-align: center; font-size: 0.82rem; font-weight: 600; color: #1835b4; margin-bottom: 4px; min-height: 1.3em; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>The Reflex Arc</h1>
+    <div class="desc">Stimulus &rarr; Receptor &rarr; Sensory neurone &rarr; Relay neurone &rarr; Motor neurone &rarr; Effector</div>
+    <div class="controls">
+        <button class="btn" id="btnTrigger" onclick="triggerReflex()">&#9889; Trigger Reflex</button>
+    </div>
+    <div class="step-label" id="stepLabel">Press "Trigger Reflex" to start</div>
+    <canvas id="c" width="540" height="400"></canvas>
+    <div class="note">
+        <strong>Reflex = fast, automatic, protective, does NOT involve the conscious brain.</strong><br>
+        The impulse travels via the spinal cord, not the brain, making the response extremely rapid.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let progress = -1; // -1 = idle
+let animId = null;
+const labels = [
+    'Stimulus: hand touches hot object',
+    'Receptor: pain receptor in skin detects heat',
+    'Sensory neurone carries impulse to spinal cord',
+    'Synapse: neurotransmitter crosses gap',
+    'Relay neurone in spinal cord grey matter',
+    'Synapse: neurotransmitter crosses gap',
+    'Motor neurone carries impulse to effector',
+    'Effector: muscle contracts, hand withdraws'
+];
+
+// Define pathway points
+const path = [
+    { x: 80, y: 350 },   // 0: stimulus (hand/finger)
+    { x: 80, y: 310 },   // 1: receptor
+    { x: 100, y: 260 },  // 2: sensory neurone start
+    { x: 170, y: 190 },  // 3: along sensory
+    { x: 240, y: 140 },  // 4: dorsal root ganglion
+    { x: 290, y: 120 },  // 5: synapse 1
+    { x: 310, y: 140 },  // 6: relay neurone
+    { x: 330, y: 160 },  // 7: synapse 2
+    { x: 360, y: 180 },  // 8: motor neurone start
+    { x: 410, y: 240 },  // 9: along motor
+    { x: 440, y: 300 },  // 10: motor end
+    { x: 460, y: 340 },  // 11: effector (muscle)
+];
+
+function triggerReflex() {
+    progress = 0;
+    if (animId) cancelAnimationFrame(animId);
+    animate();
+}
+
+function animate() {
+    if (progress < 0) return;
+    progress += 0.004;
+    if (progress >= 1) { progress = 1; }
+    draw();
+    if (progress < 1) animId = requestAnimationFrame(animate);
+}
+
+function drawSpinalCord() {
+    const sx = 300, sy = 150;
+    // White matter (outer oval)
+    ctx.beginPath();
+    ctx.ellipse(sx, sy, 70, 55, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(200,200,220,0.3)';
+    ctx.fill();
+    ctx.strokeStyle = '#8e99a4'; ctx.lineWidth = 2; ctx.stroke();
+
+    // Grey matter H-shape (butterfly)
+    ctx.beginPath();
+    // Left dorsal horn
+    ctx.moveTo(sx - 15, sy - 5);
+    ctx.bezierCurveTo(sx - 35, sy - 10, sx - 45, sy - 30, sx - 30, sy - 40);
+    ctx.bezierCurveTo(sx - 20, sy - 45, sx - 10, sy - 30, sx - 5, sy - 10);
+    // Right dorsal horn
+    ctx.lineTo(sx + 5, sy - 10);
+    ctx.bezierCurveTo(sx + 10, sy - 30, sx + 20, sy - 45, sx + 30, sy - 40);
+    ctx.bezierCurveTo(sx + 45, sy - 30, sx + 35, sy - 10, sx + 15, sy - 5);
+    // Right ventral horn
+    ctx.lineTo(sx + 15, sy + 5);
+    ctx.bezierCurveTo(sx + 35, sy + 10, sx + 45, sy + 35, sx + 25, sy + 40);
+    ctx.bezierCurveTo(sx + 15, sy + 42, sx + 10, sy + 30, sx + 5, sy + 10);
+    // Left ventral horn
+    ctx.lineTo(sx - 5, sy + 10);
+    ctx.bezierCurveTo(sx - 10, sy + 30, sx - 15, sy + 42, sx - 25, sy + 40);
+    ctx.bezierCurveTo(sx - 45, sy + 35, sx - 35, sy + 10, sx - 15, sy + 5);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(150,150,170,0.4)';
+    ctx.fill();
+    ctx.strokeStyle = '#6b7280'; ctx.lineWidth = 1.5; ctx.stroke();
+
+    // Labels
+    ctx.fillStyle = '#4a5568'; ctx.font = '8px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Grey matter', sx, sy + 2);
+    ctx.fillStyle = '#8e99a4'; ctx.font = '7px system-ui';
+    ctx.fillText('White matter', sx, sy + 55);
+    ctx.fillText('Dorsal (back)', sx, sy - 52);
+    ctx.fillText('Ventral (front)', sx, sy + 48);
+
+    // Dorsal root label
+    ctx.fillStyle = '#4a5568'; ctx.font = '8px system-ui'; ctx.textAlign = 'right';
+    ctx.fillText('Dorsal root', sx - 55, sy - 25);
+    ctx.fillText('ganglion', sx - 55, sy - 15);
+
+    // Ventral root
+    ctx.textAlign = 'left';
+    ctx.fillText('Ventral root', sx + 55, sy + 28);
+}
+
+function drawNeurone(points, color, label, labelPos) {
+    ctx.strokeStyle = color; ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+    }
+    ctx.stroke();
+
+    // Cell body (circle at midpoint or specific point)
+    if (labelPos) {
+        ctx.beginPath();
+        ctx.arc(labelPos.x, labelPos.y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = color; ctx.fill();
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+    }
+
+    // Label
+    if (label && labelPos) {
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 8px system-ui';
+        ctx.textAlign = labelPos.align || 'center';
+        ctx.fillText(label, labelPos.tx || labelPos.x, (labelPos.ty || labelPos.y) - 12);
+    }
+}
+
+function drawSynapse(x, y) {
+    ctx.fillStyle = 'rgba(255,200,50,0.4)';
+    ctx.beginPath(); ctx.arc(x, y, 8, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#c8940a'; ctx.lineWidth = 1; ctx.stroke();
+    // Vesicles
+    for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.arc(x - 4 + i * 4, y - 2, 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#f39c12'; ctx.fill();
+    }
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Step label
+    if (progress >= 0) {
+        const stepIdx = Math.min(7, Math.floor(progress * 8));
+        document.getElementById('stepLabel').textContent = labels[stepIdx];
+    }
+
+    // Hot object (stimulus)
+    ctx.fillStyle = '#e74c3c';
+    ctx.beginPath(); ctx.arc(60, 365, 18, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('HOT', 60, 369);
+    ctx.fillStyle = '#1a2747'; ctx.font = '8px system-ui';
+    ctx.fillText('Stimulus', 60, 390);
+
+    // Hand shape
+    ctx.fillStyle = '#f5cba7';
+    ctx.beginPath();
+    ctx.roundRect(70, 335, 35, 25, 5);
+    ctx.fill();
+    ctx.strokeStyle = '#d4a574'; ctx.lineWidth = 1; ctx.stroke();
+    // Fingers
+    for (let i = 0; i < 4; i++) {
+        ctx.beginPath();
+        ctx.roundRect(72 + i * 8, 325, 6, 15, 3);
+        ctx.fill(); ctx.stroke();
+    }
+
+    // Receptor
+    ctx.beginPath(); ctx.arc(path[1].x, path[1].y, 8, 0, Math.PI * 2);
+    ctx.fillStyle = '#e74c3c'; ctx.fill();
+    ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 8px system-ui'; ctx.textAlign = 'left';
+    ctx.fillText('Receptor', path[1].x + 12, path[1].y + 4);
+    ctx.font = '7px system-ui'; ctx.fillStyle = '#4a5568';
+    ctx.fillText('(pain receptor in skin)', path[1].x + 12, path[1].y + 15);
+
+    // Spinal cord
+    drawSpinalCord();
+
+    // Sensory neurone
+    drawNeurone(
+        [path[1], path[2], path[3], path[4], path[5]],
+        '#2ecc71', 'Sensory neurone',
+        { x: path[4].x, y: path[4].y, tx: path[3].x - 20, ty: path[3].y - 5, align: 'right' }
+    );
+
+    // Synapses
+    drawSynapse(path[5].x, path[5].y);
+    drawSynapse(path[7].x, path[7].y);
+
+    // Relay neurone
+    drawNeurone(
+        [path[5], path[6], path[7]],
+        '#9b59b6', 'Relay neurone',
+        { x: path[6].x, y: path[6].y, tx: path[6].x, ty: path[6].y - 20, align: 'center' }
+    );
+
+    // Motor neurone
+    drawNeurone(
+        [path[7], path[8], path[9], path[10], path[11]],
+        '#3498db', 'Motor neurone',
+        { x: path[9].x, y: path[9].y, tx: path[9].x + 20, ty: path[9].y, align: 'left' }
+    );
+
+    // Effector (muscle)
+    ctx.fillStyle = '#e74c3c';
+    ctx.beginPath();
+    ctx.ellipse(path[11].x, path[11].y, 25, 12, 0.3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 8px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('MUSCLE', path[11].x, path[11].y + 3);
+    ctx.fillStyle = '#1a2747'; ctx.font = '8px system-ui';
+    ctx.fillText('Effector', path[11].x, path[11].y + 20);
+    ctx.font = '7px system-ui'; ctx.fillStyle = '#4a5568';
+    ctx.fillText('(contracts = hand withdraws)', path[11].x, path[11].y + 30);
+
+    // Animated impulse
+    if (progress >= 0 && progress < 1) {
+        const totalPts = path.length;
+        const idx = progress * (totalPts - 1);
+        const i = Math.floor(idx);
+        const frac = idx - i;
+        if (i < totalPts - 1) {
+            const px = path[i].x + (path[i + 1].x - path[i].x) * frac;
+            const py = path[i].y + (path[i + 1].y - path[i].y) * frac;
+
+            // Glow
+            const gradient = ctx.createRadialGradient(px, py, 0, px, py, 20);
+            gradient.addColorStop(0, 'rgba(241,196,15,0.8)');
+            gradient.addColorStop(1, 'rgba(241,196,15,0)');
+            ctx.beginPath(); ctx.arc(px, py, 20, 0, Math.PI * 2);
+            ctx.fillStyle = gradient; ctx.fill();
+
+            // Pulse dot
+            ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI * 2);
+            ctx.fillStyle = '#f1c40f'; ctx.fill();
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+
+            // Trail
+            for (let t = 1; t <= 5; t++) {
+                const ti = idx - t * 0.5;
+                if (ti < 0) continue;
+                const tj = Math.floor(ti);
+                const tf = ti - tj;
+                if (tj < totalPts - 1) {
+                    const tx = path[tj].x + (path[tj + 1].x - path[tj].x) * tf;
+                    const ty = path[tj].y + (path[tj + 1].y - path[tj].y) * tf;
+                    ctx.beginPath(); ctx.arc(tx, ty, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(241,196,15,${0.5 - t * 0.08})`;
+                    ctx.fill();
+                }
+            }
+        }
+    }
+
+    // Hand withdrawal animation
+    if (progress > 0.85) {
+        const wp = (progress - 0.85) / 0.15;
+        const handShift = wp * 40;
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = '#f5cba7';
+        ctx.beginPath();
+        ctx.roundRect(70 + handShift, 335 - handShift * 1.5, 35, 25, 5);
+        ctx.fill();
+        ctx.restore();
+        // Arrow showing withdrawal
+        ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(95, 340);
+        ctx.lineTo(110 + handShift * 0.5, 320 - handShift);
+        ctx.stroke();
+        ctx.fillStyle = '#e74c3c'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'left';
+        ctx.fillText('WITHDRAWAL', 115 + handShift * 0.5, 315 - handShift);
+    }
+
+    // Spinal cord label
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Spinal Cord Cross-Section', 300, 85);
+}
+
+function resize() { const w = Math.min(540, window.innerWidth - 24); canvas.style.width = w + 'px'; canvas.style.height = (w * 400 / 540) + 'px'; }
+window.addEventListener('resize', resize); resize(); draw();
+</script>
+</body>
+</html>

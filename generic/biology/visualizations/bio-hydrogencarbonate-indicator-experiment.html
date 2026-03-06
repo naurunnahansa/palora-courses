@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hydrogencarbonate Indicator Experiment</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fcfcfe;
+    color: #1a2747;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 8px; text-align: center; }
+  .subtitle { font-size: 0.9rem; color: #6b7a99; margin-bottom: 20px; text-align: center; max-width: 620px; line-height: 1.5; }
+  .tubes-row {
+    display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;
+    width: 100%; max-width: 800px; margin-bottom: 24px;
+  }
+  .tube-card {
+    flex: 1; min-width: 165px; max-width: 200px;
+    background: #e8ecf8; border: 1.5px solid #d4d8e5; border-radius: 12px;
+    padding: 14px 10px 16px; display: flex; flex-direction: column; align-items: center;
+    transition: box-shadow 0.2s;
+  }
+  .tube-card:hover { box-shadow: 0 2px 12px rgba(24,53,180,0.12); }
+  .tube-title { font-weight: 700; font-size: 0.9rem; color: #1835b4; margin-bottom: 2px; text-align: center; }
+  .tube-condition { font-size: 0.78rem; color: #6b7a99; margin-bottom: 10px; text-align: center; min-height: 32px; }
+  svg { max-width: 100%; height: auto; }
+  .tube-result { font-size: 0.82rem; text-align: center; margin-top: 8px; font-weight: 600; line-height: 1.4; }
+  .tube-explain { font-size: 0.75rem; color: #6b7a99; text-align: center; margin-top: 4px; line-height: 1.3; }
+  .color-key {
+    width: 100%; max-width: 600px;
+    background: #e8ecf8; border: 1.5px solid #d4d8e5; border-radius: 12px;
+    padding: 16px 20px; margin-bottom: 16px;
+  }
+  .key-title { font-weight: 700; color: #1835b4; margin-bottom: 10px; font-size: 0.95rem; text-align: center; }
+  .key-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .key-item {
+    display: flex; align-items: center; gap: 8px; font-size: 0.85rem;
+  }
+  .key-swatch {
+    width: 28px; height: 18px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.15);
+  }
+  .note { margin-top: 14px; font-size: 0.8rem; color: #6b7a99; text-align: center; max-width: 600px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<h1>Hydrogencarbonate Indicator Experiment</h1>
+<p class="subtitle">Hydrogencarbonate indicator changes colour based on CO&#8322; concentration. This experiment shows the effects of photosynthesis and respiration on CO&#8322; levels.</p>
+
+<div class="color-key">
+  <div class="key-title">Colour Key: Hydrogencarbonate Indicator</div>
+  <div class="key-row">
+    <div class="key-item">
+      <div class="key-swatch" style="background:#e6c832;"></div>
+      <span><strong>Yellow</strong> = more CO&#8322; (acidic)</span>
+    </div>
+    <div class="key-item">
+      <div class="key-swatch" style="background:#d45a28;"></div>
+      <span><strong>Orange/Red</strong> = normal CO&#8322;</span>
+    </div>
+    <div class="key-item">
+      <div class="key-swatch" style="background:#9b30a0;"></div>
+      <span><strong>Purple</strong> = less CO&#8322; (alkaline)</span>
+    </div>
+  </div>
+</div>
+
+<div class="tubes-row">
+  <!-- Tube 1: Plant in light -->
+  <div class="tube-card">
+    <div class="tube-title">Tube 1</div>
+    <div class="tube-condition">Plant in bright light</div>
+    <svg viewBox="0 0 90 200" width="80">
+      <!-- Light rays -->
+      <line x1="10" y1="15" x2="30" y2="35" stroke="#FFD93D" stroke-width="1.5"/>
+      <line x1="45" y1="5" x2="45" y2="30" stroke="#FFD93D" stroke-width="1.5"/>
+      <line x1="80" y1="15" x2="60" y2="35" stroke="#FFD93D" stroke-width="1.5"/>
+      <!-- Test tube -->
+      <rect x="25" y="40" width="40" height="120" rx="4" fill="#e8e0f0" stroke="#8898c4" stroke-width="1.5"/>
+      <path d="M25 160 Q25 175 45 175 Q65 175 65 160" fill="#e8e0f0" stroke="#8898c4" stroke-width="1.5"/>
+      <!-- Indicator solution -->
+      <rect x="28" y="70" width="34" height="88" rx="2" fill="#9b30a0" opacity="0.7"/>
+      <path d="M28 158 Q28 172 45 172 Q62 172 62 158" fill="#9b30a0" opacity="0.7"/>
+      <!-- Stopper -->
+      <rect x="28" y="36" width="34" height="10" rx="3" fill="#c0392b" opacity="0.8"/>
+      <!-- Plant inside -->
+      <rect x="43" y="100" width="4" height="40" fill="#3a7d3a"/>
+      <ellipse cx="38" cy="98" rx="8" ry="5" fill="#4a9e4a"/>
+      <ellipse cx="52" cy="94" rx="7" ry="4" fill="#4a9e4a"/>
+      <ellipse cx="45" cy="88" rx="6" ry="4" fill="#4a9e4a"/>
+    </svg>
+    <div class="tube-result" style="color:#9b30a0;">Turns purple</div>
+    <div class="tube-explain">Photosynthesis removes CO&#8322;, making the solution more alkaline.</div>
+  </div>
+
+  <!-- Tube 2: Plant in dark -->
+  <div class="tube-card">
+    <div class="tube-title">Tube 2</div>
+    <div class="tube-condition">Plant in dark (wrapped in foil)</div>
+    <svg viewBox="0 0 90 200" width="80">
+      <!-- Dark cover (foil) -->
+      <rect x="18" y="28" width="54" height="155" rx="6" fill="#999" stroke="#777" stroke-width="1.5" opacity="0.4"/>
+      <!-- Test tube -->
+      <rect x="25" y="40" width="40" height="120" rx="4" fill="#e8e0d8" stroke="#8898c4" stroke-width="1.5"/>
+      <path d="M25 160 Q25 175 45 175 Q65 175 65 160" fill="#e8e0d8" stroke="#8898c4" stroke-width="1.5"/>
+      <!-- Indicator solution (yellow) -->
+      <rect x="28" y="70" width="34" height="88" rx="2" fill="#e6c832" opacity="0.7"/>
+      <path d="M28 158 Q28 172 45 172 Q62 172 62 158" fill="#e6c832" opacity="0.7"/>
+      <!-- Stopper -->
+      <rect x="28" y="36" width="34" height="10" rx="3" fill="#c0392b" opacity="0.8"/>
+      <!-- Plant inside -->
+      <rect x="43" y="100" width="4" height="40" fill="#3a7d3a"/>
+      <ellipse cx="38" cy="98" rx="8" ry="5" fill="#4a9e4a"/>
+      <ellipse cx="52" cy="94" rx="7" ry="4" fill="#4a9e4a"/>
+      <!-- Foil label -->
+      <text x="45" y="20" text-anchor="middle" font-size="8" fill="#666" font-weight="600">Foil cover</text>
+    </svg>
+    <div class="tube-result" style="color:#b8960a;">Turns yellow</div>
+    <div class="tube-explain">Only respiration occurs (no light for photosynthesis), adding CO&#8322; and making solution more acidic.</div>
+  </div>
+
+  <!-- Tube 3: Control (no plant) -->
+  <div class="tube-card">
+    <div class="tube-title">Tube 3</div>
+    <div class="tube-condition">No plant (control)</div>
+    <svg viewBox="0 0 90 200" width="80">
+      <!-- Light rays -->
+      <line x1="10" y1="15" x2="30" y2="35" stroke="#FFD93D" stroke-width="1.5"/>
+      <line x1="45" y1="5" x2="45" y2="30" stroke="#FFD93D" stroke-width="1.5"/>
+      <line x1="80" y1="15" x2="60" y2="35" stroke="#FFD93D" stroke-width="1.5"/>
+      <!-- Test tube -->
+      <rect x="25" y="40" width="40" height="120" rx="4" fill="#f0e4d8" stroke="#8898c4" stroke-width="1.5"/>
+      <path d="M25 160 Q25 175 45 175 Q65 175 65 160" fill="#f0e4d8" stroke="#8898c4" stroke-width="1.5"/>
+      <!-- Indicator solution (stays orange) -->
+      <rect x="28" y="70" width="34" height="88" rx="2" fill="#d45a28" opacity="0.7"/>
+      <path d="M28 158 Q28 172 45 172 Q62 172 62 158" fill="#d45a28" opacity="0.7"/>
+      <!-- Stopper -->
+      <rect x="28" y="36" width="34" height="10" rx="3" fill="#c0392b" opacity="0.8"/>
+      <!-- No plant, just indicator -->
+    </svg>
+    <div class="tube-result" style="color:#d45a28;">Stays orange/red</div>
+    <div class="tube-explain">No living organism, so CO&#8322; levels remain unchanged. This is the control.</div>
+  </div>
+
+  <!-- Tube 4: Plant + animal in light -->
+  <div class="tube-card">
+    <div class="tube-title">Tube 4</div>
+    <div class="tube-condition">Plant + small animal in light</div>
+    <svg viewBox="0 0 90 200" width="80">
+      <!-- Light rays -->
+      <line x1="10" y1="15" x2="30" y2="35" stroke="#FFD93D" stroke-width="1.5"/>
+      <line x1="45" y1="5" x2="45" y2="30" stroke="#FFD93D" stroke-width="1.5"/>
+      <line x1="80" y1="15" x2="60" y2="35" stroke="#FFD93D" stroke-width="1.5"/>
+      <!-- Test tube -->
+      <rect x="25" y="40" width="40" height="120" rx="4" fill="#e8e0f0" stroke="#8898c4" stroke-width="1.5"/>
+      <path d="M25 160 Q25 175 45 175 Q65 175 65 160" fill="#e8e0f0" stroke="#8898c4" stroke-width="1.5"/>
+      <!-- Indicator (purple if photosynthesis dominates) -->
+      <rect x="28" y="70" width="34" height="88" rx="2" fill="#9b30a0" opacity="0.55"/>
+      <path d="M28 158 Q28 172 45 172 Q62 172 62 158" fill="#9b30a0" opacity="0.55"/>
+      <!-- Stopper -->
+      <rect x="28" y="36" width="34" height="10" rx="3" fill="#c0392b" opacity="0.8"/>
+      <!-- Plant -->
+      <rect x="35" y="105" width="3" height="35" fill="#3a7d3a"/>
+      <ellipse cx="32" cy="102" rx="6" ry="4" fill="#4a9e4a"/>
+      <ellipse cx="40" cy="98" rx="5" ry="3" fill="#4a9e4a"/>
+      <!-- Small animal (snail) -->
+      <ellipse cx="52" cy="140" rx="7" ry="5" fill="#b8860b" stroke="#8B6914" stroke-width="0.8"/>
+      <circle cx="57" cy="135" r="2" fill="#b8860b"/>
+    </svg>
+    <div class="tube-result" style="color:#9b30a0;">Turns purple</div>
+    <div class="tube-explain">In bright light, the plant's photosynthesis removes more CO&#8322; than the animal's respiration produces.</div>
+  </div>
+</div>
+
+<p class="note">This experiment demonstrates that photosynthesis removes CO&#8322; from the surroundings (turning the indicator purple/alkaline), while respiration adds CO&#8322; (turning it yellow/acidic). The control confirms that any colour changes are due to the organisms.</p>
+
+</body>
+</html>

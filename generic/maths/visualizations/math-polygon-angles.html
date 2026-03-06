@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angles in Polygons</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width:100%;margin:0 auto}h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.slider-row{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:.82rem}.slider-row input[type=range]{flex:1;accent-color:#1835b4}.slider-row .val{min-width:32px;text-align:center;font-weight:600;color:#1835b4}.formulas{display:grid;grid-template-columns:1fr;gap:6px;margin-top:8px}.formula-item{background:#e8ecf8;border-radius:5px;padding:8px 12px;font-size:.82rem;line-height:1.5}.formula-item .label{font-size:.72rem;color:#6b7db3;text-transform:uppercase;letter-spacing:.03em}.formula-item .value{font-weight:700;color:#1835b4;font-size:.95rem}.formula-item .calc{color:#4a5568;font-size:.78rem}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}.toggle-row{display:flex;gap:8px;margin-top:8px}.toggle-btn{flex:1;padding:6px;border:1px solid #d4d8e5;border-radius:5px;background:#e8ecf8;font-size:.78rem;cursor:pointer;text-align:center;color:#1a2747;font-family:system-ui}.toggle-btn.active{background:#1835b4;color:#fff;border-color:#1835b4}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Angles in Polygons</h1>
+    <div class="card" style="padding:8px"><canvas id="cv" width="800" height="800"></canvas></div>
+    <div class="card">
+        <div class="card-title">Number of Sides</div>
+        <div class="slider-row"><span>3</span><input type="range" id="nSlider" min="3" max="12" value="5"><span class="val" id="nVal">5</span></div>
+        <div class="toggle-row">
+            <button class="toggle-btn active" id="btnTri">Show Triangulation</button>
+            <button class="toggle-btn" id="btnExt">Show Exterior Angles</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-title">Formulas &amp; Values</div>
+        <div class="formulas">
+            <div class="formula-item"><div class="label">Polygon Name</div><div class="value" id="polyName">Pentagon</div></div>
+            <div class="formula-item"><div class="label">Sum of Interior Angles</div><div class="calc" id="sumCalc">(5 - 2) &times; 180&deg; = 3 &times; 180&deg;</div><div class="value" id="sumVal">540&deg;</div></div>
+            <div class="formula-item"><div class="label">Each Interior Angle</div><div class="calc" id="intCalc">(5 - 2) &times; 180&deg; / 5</div><div class="value" id="intVal">108&deg;</div></div>
+            <div class="formula-item"><div class="label">Each Exterior Angle</div><div class="calc" id="extCalc">360&deg; / 5</div><div class="value" id="extVal">72&deg;</div></div>
+            <div class="formula-item"><div class="label">Number of Triangles</div><div class="value" id="triVal">3</div></div>
+        </div>
+    </div>
+    <div class="info">A regular polygon with <strong>n</strong> sides can be split into <strong>(n-2)</strong> triangles from one vertex. Each triangle has angles summing to 180&deg;.</div>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const nSlider=document.getElementById('nSlider');
+const names={3:'Triangle',4:'Quadrilateral',5:'Pentagon',6:'Hexagon',7:'Heptagon',8:'Octagon',9:'Nonagon',10:'Decagon',11:'Hendecagon',12:'Dodecagon'};
+let n=5,showTri=true,showExt=false;
+
+function resize(){const w=Math.min(500,cv.parentElement.clientWidth-16);cv.style.width=w+'px';cv.style.height=w+'px'}
+resize();window.addEventListener('resize',resize);
+
+const btnTri=document.getElementById('btnTri'),btnExt=document.getElementById('btnExt');
+btnTri.onclick=()=>{showTri=!showTri;btnTri.classList.toggle('active');draw()};
+btnExt.onclick=()=>{showExt=!showExt;btnExt.classList.toggle('active');draw()};
+
+const triColors=['#e74c3c20','#2ecc7120','#3498db20','#f39c1220','#9b59b620','#1abc9c20','#e67e2220','#8e44ad20','#2c3e5020','#d3541520'];
+const triStroke=['#e74c3c','#2ecc71','#3498db','#f39c12','#9b59b6','#1abc9c','#e67e22','#8e44ad','#2c3e50','#d35415'];
+
+function getVertices(n,cx,cy,r){
+    const verts=[];
+    for(let i=0;i<n;i++){const a=-Math.PI/2+2*Math.PI*i/n;verts.push({x:cx+r*Math.cos(a),y:cy+r*Math.sin(a)})}
+    return verts;
+}
+
+function draw(){
+    const W=cv.width,H=cv.height,cx=W/2,cy=H/2,r=W*0.38;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+    const verts=getVertices(n,cx,cy,r);
+
+    // Triangulation
+    if(showTri){
+        for(let i=2;i<n;i++){
+            ctx.beginPath();ctx.moveTo(verts[0].x,verts[0].y);ctx.lineTo(verts[i-1].x,verts[i-1].y);ctx.lineTo(verts[i].x,verts[i].y);ctx.closePath();
+            ctx.fillStyle=triColors[(i-2)%triColors.length];ctx.fill();
+            ctx.strokeStyle=triStroke[(i-2)%triStroke.length];ctx.lineWidth=1.5;ctx.setLineDash([6,4]);ctx.stroke();ctx.setLineDash([]);
+        }
+    }
+
+    // Polygon
+    ctx.beginPath();
+    for(let i=0;i<=n;i++){const v=verts[i%n];i===0?ctx.moveTo(v.x,v.y):ctx.lineTo(v.x,v.y)}
+    ctx.closePath();ctx.strokeStyle='#1835b4';ctx.lineWidth=2.5;ctx.stroke();
+    ctx.fillStyle='#1835b420';ctx.fill();
+
+    // Vertices
+    for(let i=0;i<n;i++){
+        ctx.beginPath();ctx.arc(verts[i].x,verts[i].y,5,0,Math.PI*2);ctx.fillStyle='#1835b4';ctx.fill();
+    }
+
+    // Interior angle arcs
+    const intAngle=(n-2)*180/n;
+    const arcR=30;
+    for(let i=0;i<n;i++){
+        const prev=verts[(i-1+n)%n],curr=verts[i],next=verts[(i+1)%n];
+        const a1=Math.atan2(prev.y-curr.y,prev.x-curr.x);
+        const a2=Math.atan2(next.y-curr.y,next.x-curr.x);
+        let start=a2,end=a1;
+        if((end-start+2*Math.PI)%(2*Math.PI)>Math.PI){start=a1;end=a2}
+        let sweep=(end-start+2*Math.PI)%(2*Math.PI);
+        if(sweep>Math.PI){[start,end]=[a2,a1];sweep=(end-start+2*Math.PI)%(2*Math.PI)}
+        ctx.beginPath();ctx.arc(curr.x,curr.y,arcR,start,start+sweep);ctx.strokeStyle='#e74c3c';ctx.lineWidth=1.5;ctx.stroke();
+    }
+
+    // Exterior angles
+    if(showExt){
+        for(let i=0;i<n;i++){
+            const prev=verts[(i-1+n)%n],curr=verts[i],next=verts[(i+1)%n];
+            const dx=next.x-curr.x,dy=next.y-curr.y;
+            const len=Math.hypot(dx,dy);
+            const ex=curr.x-dx/len*60,ey=curr.y-dy/len*60;
+            ctx.beginPath();ctx.moveTo(curr.x,curr.y);ctx.lineTo(ex,ey);ctx.strokeStyle='#f39c12';ctx.lineWidth=2;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+            // Ext angle arc
+            const aPrev=Math.atan2(prev.y-curr.y,prev.x-curr.x);
+            const aExt=Math.atan2(ey-curr.y,ex-curr.x);
+            ctx.beginPath();ctx.arc(curr.x,curr.y,22,Math.min(aExt,aPrev),Math.max(aExt,aPrev));ctx.strokeStyle='#f39c12';ctx.lineWidth=1.5;ctx.stroke();
+        }
+    }
+
+    // Labels
+    const intSum=(n-2)*180;
+    const ext=360/n;
+    document.getElementById('polyName').textContent=names[n]||n+'-gon';
+    document.getElementById('sumCalc').innerHTML='('+n+' - 2) &times; 180&deg; = '+(n-2)+' &times; 180&deg;';
+    document.getElementById('sumVal').textContent=intSum+'°';
+    document.getElementById('intCalc').innerHTML='('+n+' - 2) &times; 180&deg; / '+n;
+    document.getElementById('intVal').textContent=intAngle.toFixed(1)+'°';
+    document.getElementById('extCalc').innerHTML='360&deg; / '+n;
+    document.getElementById('extVal').textContent=ext.toFixed(1)+'°';
+    document.getElementById('triVal').textContent=(n-2);
+}
+
+nSlider.addEventListener('input',function(){n=+this.value;document.getElementById('nVal').textContent=n;draw()});
+draw();
+</script>
+</body>
+</html>

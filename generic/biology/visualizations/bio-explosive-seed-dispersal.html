@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explosive Seed Dispersal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 10px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        .stage-area { border: 1px solid #d4d8e5; border-radius: 5px; background: #fff; margin-bottom: 10px; overflow: hidden; }
+        .stage-label { background: #e8ecf8; padding: 5px 10px; font-size: 0.78rem; font-weight: 700; color: #1835b4; text-align: center; }
+        canvas { display: block; width: 100%; }
+        .controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; }
+        .play-btn { padding: 7px 24px; background: #1835b4; color: #fff; border: none; border-radius: 4px; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+        .play-btn:hover { background: #122a8a; }
+        .info { display: flex; gap: 8px; flex-wrap: wrap; }
+        .info-card { flex: 1; min-width: 140px; background: #e8ecf8; border-radius: 5px; padding: 7px 10px; font-size: 0.7rem; color: #4a5568; text-align: center; line-height: 1.4; }
+        .info-card strong { color: #1835b4; display: block; margin-bottom: 2px; }
+    </style>
+</head>
+<body>
+<h1>Explosive Seed Dispersal</h1>
+<div class="desc">How pods use tension from uneven drying to fling seeds away from the parent plant</div>
+<div class="controls">
+    <button class="play-btn" id="playBtn" onclick="startAnimation()">Play Animation</button>
+</div>
+<div class="stage-area">
+    <div class="stage-label" id="stageLabel">Stage 1: Maturing Pod</div>
+    <canvas id="canvas" width="500" height="300"></canvas>
+</div>
+<div class="info">
+    <div class="info-card"><strong>Mechanism</strong>Uneven drying creates tension in pod walls. The outer layer dries and shrinks faster than the inner layer.</div>
+    <div class="info-card"><strong>Release</strong>Sudden splitting along seams releases stored energy, twisting pod walls rapidly.</div>
+    <div class="info-card"><strong>Advantage</strong>Seeds spread away from parent plant, reducing competition for light, water and minerals.</div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let stage = 0; // 0=mature, 1=drying, 2=splitting, 3=dispersal
+let animProgress = 0;
+let animId = null;
+let playing = false;
+let seeds = [];
+
+function initSeeds() {
+    seeds = [];
+    const seedCount = 6;
+    for (let i = 0; i < seedCount; i++) {
+        const angle = -Math.PI / 3 + (Math.PI * 2 / 3) * Math.random();
+        const speed = 2 + Math.random() * 4;
+        seeds.push({
+            x: 250, y: 140,
+            vx: Math.cos(angle) * speed * (Math.random() > 0.5 ? 1 : -1),
+            vy: -Math.abs(Math.sin(angle)) * speed - 1,
+            landed: false,
+            groundY: 240 + Math.random() * 20,
+            rotation: 0,
+            rotSpeed: (Math.random() - 0.5) * 0.3
+        });
+    }
+}
+
+function drawGround(ctx, w, h) {
+    ctx.fillStyle = '#8B7355';
+    ctx.fillRect(0, h - 40, w, 40);
+    ctx.fillStyle = '#6b5b3a';
+    for (let i = 0; i < w; i += 12) {
+        ctx.fillRect(i, h - 40, 8, 2);
+    }
+    // Grass tufts
+    ctx.strokeStyle = '#27ae60';
+    ctx.lineWidth = 1.5;
+    for (let i = 20; i < w; i += 40) {
+        for (let j = -1; j <= 1; j++) {
+            ctx.beginPath();
+            ctx.moveTo(i + j * 4, h - 40);
+            ctx.quadraticCurveTo(i + j * 6 - 3, h - 55, i + j * 3 - 5, h - 60);
+            ctx.stroke();
+        }
+    }
+}
+
+function drawPlantStem(ctx) {
+    ctx.strokeStyle = '#2ecc40';
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(250, 280);
+    ctx.quadraticCurveTo(250, 220, 250, 160);
+    ctx.stroke();
+    // Small leaves on stem
+    ctx.fillStyle = '#27ae60';
+    ctx.save();
+    ctx.translate(248, 210);
+    ctx.rotate(-0.4);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 18, 6, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+    ctx.save();
+    ctx.translate(252, 195);
+    ctx.rotate(0.5);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 16, 5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+}
+
+function drawPod(ctx, x, y, openAmount, dryness) {
+    // Pod color transitions from green to brown
+    const r = Math.round(60 + dryness * 100);
+    const g = Math.round(140 - dryness * 80);
+    const b = Math.round(40 - dryness * 20);
+    const podColor = `rgb(${r},${g},${b})`;
+    const darkColor = `rgb(${Math.max(0, r - 30)},${Math.max(0, g - 30)},${Math.max(0, b - 15)})`;
+
+    if (openAmount < 0.1) {
+        // Closed pod
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(-0.15);
+        // Pod body
+        ctx.fillStyle = podColor;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 55, 14, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = darkColor;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        // Seam line
+        ctx.strokeStyle = darkColor;
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(-52, 0);
+        ctx.lineTo(52, 0);
+        ctx.stroke();
+        // Seeds visible inside (bumps)
+        for (let i = -35; i <= 35; i += 14) {
+            ctx.fillStyle = darkColor;
+            ctx.beginPath();
+            ctx.arc(i, -3, 5, 0, Math.PI, true);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(i, 3, 5, Math.PI, Math.PI * 2, true);
+            ctx.fill();
+        }
+        // Wrinkle lines when drying
+        if (dryness > 0.3) {
+            ctx.strokeStyle = darkColor;
+            ctx.lineWidth = 0.5;
+            ctx.globalAlpha = dryness;
+            for (let i = -40; i <= 40; i += 8) {
+                ctx.beginPath();
+                ctx.moveTo(i, -12);
+                ctx.lineTo(i + 2, 12);
+                ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+        }
+        ctx.restore();
+    } else {
+        // Open/splitting pod
+        ctx.save();
+        ctx.translate(x, y);
+        const twist = openAmount * 2.5;
+
+        // Top half curling up
+        ctx.save();
+        ctx.rotate(-0.15 - twist * 0.3);
+        ctx.fillStyle = podColor;
+        ctx.beginPath();
+        ctx.ellipse(0, -openAmount * 25, 50 - openAmount * 10, 10, twist * 0.2, Math.PI, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = darkColor;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.restore();
+
+        // Bottom half curling down
+        ctx.save();
+        ctx.rotate(-0.15 + twist * 0.2);
+        ctx.fillStyle = podColor;
+        ctx.beginPath();
+        ctx.ellipse(0, openAmount * 25, 50 - openAmount * 10, 10, -twist * 0.2, 0, Math.PI);
+        ctx.fill();
+        ctx.strokeStyle = darkColor;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.restore();
+    }
+}
+
+function drawSeed(ctx, x, y, rot) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    ctx.fillStyle = '#2d5016';
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 5, 3.5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#1a3a0a';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+    ctx.restore();
+}
+
+function drawMotionLines(ctx, x, y, vx, vy) {
+    ctx.strokeStyle = 'rgba(100,100,100,0.4)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.moveTo(x - vx * (i + 1) * 3, y - vy * (i + 1) * 3);
+        ctx.lineTo(x - vx * (i + 2) * 3, y - vy * (i + 2) * 3);
+        ctx.stroke();
+    }
+}
+
+function drawDistanceMarkers(ctx, w, h) {
+    ctx.strokeStyle = '#1835b4';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 3]);
+    const baseX = 250;
+    const groundY = h - 40;
+
+    // Distance markers
+    const distances = [
+        { dx: 80, label: '1m' },
+        { dx: 160, label: '2m' }
+    ];
+    for (const d of distances) {
+        // Right
+        ctx.beginPath();
+        ctx.moveTo(baseX + d.dx, groundY - 4);
+        ctx.lineTo(baseX + d.dx, groundY + 12);
+        ctx.stroke();
+        // Left
+        ctx.beginPath();
+        ctx.moveTo(baseX - d.dx, groundY - 4);
+        ctx.lineTo(baseX - d.dx, groundY + 12);
+        ctx.stroke();
+
+        ctx.fillStyle = '#1835b4';
+        ctx.font = '9px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText(d.label, baseX + d.dx, groundY + 22);
+        ctx.fillText(d.label, baseX - d.dx, groundY + 22);
+    }
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#666';
+    ctx.font = 'italic 9px system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText('Seeds can travel up to several metres', w / 2, groundY + 34);
+}
+
+function draw() {
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#f0f5ff';
+    ctx.fillRect(0, 0, w, h);
+
+    // Sky gradient
+    const skyGrad = ctx.createLinearGradient(0, 0, 0, h - 40);
+    skyGrad.addColorStop(0, '#d6e6ff');
+    skyGrad.addColorStop(1, '#f0f5ff');
+    ctx.fillStyle = skyGrad;
+    ctx.fillRect(0, 0, w, h - 40);
+
+    drawGround(ctx, w, h);
+    drawPlantStem(ctx);
+
+    if (stage === 0) {
+        // Maturing
+        drawPod(ctx, 250, 140, 0, 0);
+        // Seeds inside shown as bumps
+    } else if (stage === 1) {
+        // Drying
+        drawPod(ctx, 250, 140, 0, animProgress);
+    } else if (stage === 2) {
+        // Splitting
+        drawPod(ctx, 250, 140, animProgress, 1);
+        // Show seeds starting to emerge
+        if (animProgress > 0.5) {
+            for (const s of seeds) {
+                drawSeed(ctx, s.x + (s.vx * (animProgress - 0.5) * 10), s.y + (s.vy * (animProgress - 0.5) * 10), s.rotation);
+            }
+        }
+    } else if (stage === 3) {
+        // Dispersal
+        drawPod(ctx, 250, 140, 1, 1);
+        for (const s of seeds) {
+            drawSeed(ctx, s.x, s.y, s.rotation);
+            if (!s.landed) {
+                drawMotionLines(ctx, s.x, s.y, s.vx, s.vy);
+            }
+        }
+        if (animProgress > 0.8) {
+            drawDistanceMarkers(ctx, w, h);
+        }
+    }
+}
+
+function animateStage(stageNum, duration, onDone) {
+    const start = performance.now();
+    stage = stageNum;
+    function tick(now) {
+        animProgress = Math.min(1, (now - start) / duration);
+        if (stageNum === 3) {
+            // Physics for seeds
+            const dt = 0.3;
+            for (const s of seeds) {
+                if (!s.landed) {
+                    s.x += s.vx * dt;
+                    s.y += s.vy * dt;
+                    s.vy += 0.15; // gravity
+                    s.rotation += s.rotSpeed;
+                    if (s.y >= s.groundY) {
+                        s.y = s.groundY;
+                        s.landed = true;
+                    }
+                }
+            }
+        }
+        draw();
+        if (animProgress < 1 || (stageNum === 3 && seeds.some(s => !s.landed))) {
+            animId = requestAnimationFrame(tick);
+        } else {
+            if (onDone) onDone();
+        }
+    }
+    animId = requestAnimationFrame(tick);
+}
+
+function startAnimation() {
+    if (playing) return;
+    playing = true;
+    document.getElementById('playBtn').textContent = 'Playing...';
+    initSeeds();
+    stage = 0;
+    animProgress = 0;
+
+    const updateLabel = (text) => { document.getElementById('stageLabel').textContent = text; };
+
+    updateLabel('Stage 1: Maturing Pod');
+    draw();
+
+    setTimeout(() => {
+        updateLabel('Stage 2: Drying - Pod walls shrink unevenly');
+        animateStage(1, 1800, () => {
+            setTimeout(() => {
+                updateLabel('Stage 3: Splitting - Tension released!');
+                animateStage(2, 1200, () => {
+                    setTimeout(() => {
+                        updateLabel('Stage 4: Dispersal - Seeds flung outward');
+                        animateStage(3, 2500, () => {
+                            playing = false;
+                            document.getElementById('playBtn').textContent = 'Play Again';
+                        });
+                    }, 300);
+                });
+            }, 400);
+        });
+    }, 1000);
+}
+
+// Initial draw
+draw();
+</script>
+</body>
+</html>

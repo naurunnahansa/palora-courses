@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cardiac Cycle</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; }
+        .tooltip { background: #fff; border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px 10px; font-size: 0.72rem; min-height: 60px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        .tooltip strong { color: #1835b4; }
+        .legend { display: flex; justify-content: center; gap: 16px; margin-bottom: 8px; font-size: 0.72rem; font-weight: 600; flex-wrap: wrap; }
+        .legend span { display: flex; align-items: center; gap: 4px; }
+        .legend .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 8px; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>The Cardiac Cycle</h1>
+    <div class="desc">Pressure changes in the left side of the heart during one cardiac cycle (~0.8 s)</div>
+    <div class="legend">
+        <span><span class="dot" style="background:#22a355;"></span> Left atrium</span>
+        <span><span class="dot" style="background:#1835b4;"></span> Left ventricle</span>
+        <span><span class="dot" style="background:#d42525;"></span> Aorta</span>
+    </div>
+    <canvas id="cv" width="560" height="340"></canvas>
+    <div class="tooltip" id="tip">Hover over the graph to see pressure values and valve states at each point in time.</div>
+    <div class="note"><strong>Key concept:</strong> Valves open and close in response to pressure differences. The AV valve closes when ventricular pressure exceeds atrial pressure (producing S1). The aortic valve closes when aortic pressure exceeds ventricular pressure (producing S2, with the dicrotic notch).</div>
+</div>
+<script>
+const canvas = document.getElementById('cv');
+const ctx = canvas.getContext('2d');
+const tip = document.getElementById('tip');
+
+const pad = { top: 50, right: 20, bottom: 50, left: 55 };
+const gw = canvas.width - pad.left - pad.right;
+const gh = canvas.height - pad.top - pad.bottom;
+const tMax = 0.8, pMax = 135;
+
+/* Valve event times */
+const avClose = 0.12;   // AV valve closes – ventricular systole begins
+const aoOpen  = 0.15;   // Aortic valve opens
+const aoClose = 0.42;   // Aortic valve closes (dicrotic notch)
+const avOpen  = 0.47;   // AV valve opens – passive filling
+
+/* Phase boundaries */
+const phases = [
+    { start: 0, end: avClose, label: 'Atrial systole' },
+    { start: avClose, end: aoClose, label: 'Ventricular systole' },
+    { start: aoClose, end: 0.8, label: 'Diastole' }
+];
+
+/* Valve events with x-positions */
+const events = [
+    { t: avClose, label: 'AV valve closes (S1)', col: '#1835b4' },
+    { t: aoOpen,  label: 'Aortic valve opens',   col: '#d42525' },
+    { t: aoClose, label: 'Aortic valve closes (S2)', col: '#d42525' },
+    { t: avOpen,  label: 'AV valve opens',        col: '#1835b4' }
+];
+
+function smooth(x, c, w) { return 1 / (1 + Math.exp(-(x - c) * w)); }
+
+function atriumP(t) {
+    /* small a-wave during atrial systole, v-wave during ventricular systole, then drop */
+    let p = 6;
+    p += 6 * Math.exp(-Math.pow((t - 0.06) / 0.04, 2)); // a-wave
+    p += 8 * Math.exp(-Math.pow((t - 0.35) / 0.08, 2)); // v-wave (filling behind closed AV)
+    p -= 4 * smooth(t, avOpen, 80); // drop when AV opens
+    return Math.max(p, 2);
+}
+
+function ventricleP(t) {
+    let p = 5;
+    /* isovolumetric contraction + systole */
+    let rise = 120 * smooth(t, 0.10, 100) * (1 - smooth(t, 0.38, 60));
+    p += rise;
+    /* rapid fall in diastole */
+    p *= (1 - 0.95 * smooth(t, 0.44, 80));
+    return Math.max(p, 2);
+}
+
+function aortaP(t) {
+    let p = 80;
+    /* rises when aortic valve opens */
+    p += 40 * smooth(t, aoOpen, 80) * (1 - smooth(t, 0.38, 30));
+    /* dicrotic notch */
+    p += 6 * Math.exp(-Math.pow((t - aoClose) / 0.012, 2));
+    /* slow decline during diastole */
+    if (t > aoClose) p -= 15 * (1 - Math.exp(-(t - aoClose) / 0.3));
+    return p;
+}
+
+function tx(t) { return pad.left + (t / tMax) * gw; }
+function py(p) { return pad.top + (1 - p / pMax) * gh; }
+
+function drawLine(fn, color, lw) {
+    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = lw;
+    for (let i = 0; i <= 400; i++) {
+        let t = (i / 400) * tMax;
+        let x = tx(t), y = py(fn(t));
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+}
+
+let hoverT = null;
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    /* Phase shading */
+    const phaseCols = ['rgba(24,53,180,0.04)', 'rgba(212,37,37,0.06)', 'rgba(34,163,85,0.04)'];
+    phases.forEach((ph, i) => {
+        ctx.fillStyle = phaseCols[i];
+        let x1 = tx(ph.start), x2 = tx(ph.end);
+        ctx.fillRect(x1, pad.top, x2 - x1, gh);
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 10px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText(ph.label, (x1 + x2) / 2, pad.top - 8);
+    });
+
+    /* Axes */
+    ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, pad.top + gh); ctx.lineTo(pad.left + gw, pad.top + gh); ctx.stroke();
+
+    /* Y ticks */
+    ctx.fillStyle = '#4a5568'; ctx.font = '10px system-ui'; ctx.textAlign = 'right';
+    for (let p = 0; p <= 130; p += 20) {
+        let y = py(p);
+        ctx.fillText(p, pad.left - 6, y + 3);
+        ctx.beginPath(); ctx.strokeStyle = '#e8ecf8'; ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + gw, y); ctx.stroke();
+    }
+    ctx.textAlign = 'center';
+    ctx.save(); ctx.translate(14, pad.top + gh / 2); ctx.rotate(-Math.PI / 2);
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 11px system-ui'; ctx.fillText('Pressure (mmHg)', 0, 0);
+    ctx.restore();
+
+    /* X ticks */
+    for (let t = 0; t <= 0.8; t += 0.1) {
+        let x = tx(t);
+        ctx.fillStyle = '#4a5568'; ctx.font = '10px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText(t.toFixed(1), x, pad.top + gh + 16);
+        ctx.beginPath(); ctx.strokeStyle = '#e8ecf8'; ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + gh); ctx.stroke();
+    }
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 11px system-ui';
+    ctx.fillText('Time (s)', pad.left + gw / 2, canvas.height - 8);
+
+    /* Valve event lines */
+    ctx.setLineDash([4, 3]);
+    events.forEach((ev, i) => {
+        let x = tx(ev.t);
+        ctx.strokeStyle = '#999'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + gh); ctx.stroke();
+        ctx.fillStyle = '#4a5568'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+        /* stagger labels */
+        let ly = pad.top + gh + 28 + (i % 2) * 12;
+        ctx.fillText(ev.label, x, ly);
+    });
+    ctx.setLineDash([]);
+
+    /* Pressure curves */
+    drawLine(atriumP, '#22a355', 2.5);
+    drawLine(ventricleP, '#1835b4', 2.5);
+    drawLine(aortaP, '#d42525', 2.5);
+
+    /* Hover */
+    if (hoverT !== null && hoverT >= 0 && hoverT <= tMax) {
+        let x = tx(hoverT);
+        ctx.setLineDash([2, 2]); ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + gh); ctx.stroke();
+        ctx.setLineDash([]);
+
+        const fns = [atriumP, ventricleP, aortaP];
+        const cols = ['#22a355', '#1835b4', '#d42525'];
+        fns.forEach((fn, i) => {
+            let y = py(fn(hoverT));
+            ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fillStyle = cols[i]; ctx.fill();
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+        });
+
+        let ap = atriumP(hoverT).toFixed(1), vp = ventricleP(hoverT).toFixed(1), aop = aortaP(hoverT).toFixed(1);
+        let avOpen_ = hoverT < avClose || hoverT >= avOpen;
+        let aoOpen_ = hoverT >= aoOpen && hoverT < aoClose;
+        tip.innerHTML = `<strong>Time:</strong> ${hoverT.toFixed(3)} s &nbsp;|&nbsp; <strong>Atrium:</strong> ${ap} mmHg &nbsp;|&nbsp; <strong>Ventricle:</strong> ${vp} mmHg &nbsp;|&nbsp; <strong>Aorta:</strong> ${aop} mmHg<br><strong>AV valve:</strong> ${avOpen_ ? 'Open' : 'Closed'} &nbsp;|&nbsp; <strong>Aortic valve:</strong> ${aoOpen_ ? 'Open' : 'Closed'}`;
+    }
+}
+
+canvas.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+    hoverT = ((mx - pad.left) / gw) * tMax;
+    draw();
+});
+canvas.addEventListener('mouseleave', () => { hoverT = null; draw(); });
+
+draw();
+</script>
+</body>
+</html>

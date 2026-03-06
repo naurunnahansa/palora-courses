@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angles of Elevation &amp; Depression</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width:100%;margin:0 auto}h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.slider-row{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:.82rem}.slider-row input[type=range]{flex:1;accent-color:#1835b4}.slider-row .val{min-width:50px;text-align:center;font-weight:600;color:#1835b4}.formulas{display:grid;grid-template-columns:1fr;gap:6px;margin-top:8px}.formula-item{background:#e8ecf8;border-radius:5px;padding:8px 12px;font-size:.82rem;line-height:1.5}.formula-item .label{font-size:.72rem;color:#6b7db3;text-transform:uppercase;letter-spacing:.03em}.formula-item .value{font-weight:700;color:#1835b4}.formula-item .calc{color:#4a5568;font-size:.78rem}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Angles of Elevation &amp; Depression</h1>
+    <div class="card" style="padding:8px"><canvas id="cv" width="900" height="600"></canvas></div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row"><span>Distance (d):</span><input type="range" id="dSlider" min="20" max="100" value="50"><span class="val" id="dVal">50 m</span></div>
+        <div class="slider-row"><span>Height (h):</span><input type="range" id="hSlider" min="10" max="80" value="40"><span class="val" id="hVal">40 m</span></div>
+    </div>
+    <div class="card">
+        <div class="card-title">Trigonometric Calculations</div>
+        <div class="formulas">
+            <div class="formula-item">
+                <div class="label">Angle of Elevation (from observer)</div>
+                <div class="calc" id="elevCalc"></div>
+                <div class="value" id="elevVal"></div>
+            </div>
+            <div class="formula-item">
+                <div class="label">Angle of Depression (from top of building)</div>
+                <div class="calc" id="depCalc"></div>
+                <div class="value" id="depVal"></div>
+            </div>
+            <div class="formula-item">
+                <div class="label">Why Are They Equal?</div>
+                <div class="calc">The horizontal lines at the observer and the top of the building are parallel. The line of sight acts as a transversal. The angles of elevation and depression are <strong>alternate angles</strong>, so they are equal.</div>
+            </div>
+            <div class="formula-item">
+                <div class="label">Line-of-Sight Distance</div>
+                <div class="calc" id="losCalc"></div>
+                <div class="value" id="losVal"></div>
+            </div>
+        </div>
+    </div>
+    <div class="info">The angle of <strong>elevation</strong> looks up from horizontal. The angle of <strong>depression</strong> looks down from horizontal. They are equal because they are <strong>alternate angles</strong> between parallel lines.</div>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let dist=50,height=40;
+
+function resize(){const w=Math.min(600,cv.parentElement.clientWidth-16);cv.style.width=w+'px';cv.style.height=(w*0.667)+'px'}
+resize();window.addEventListener('resize',resize);
+
+function draw(){
+    const W=cv.width,H=cv.height;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Scaling
+    const margin=80;
+    const maxDist=100,maxH=80;
+    const scaleX=(W-2*margin-80)/maxDist;
+    const scaleY=(H-2*margin-40)/maxH;
+    const scale=Math.min(scaleX,scaleY);
+
+    const groundY=H-margin;
+    const obsX=margin+30;
+    const obsY=groundY-20; // eye level slightly above ground
+    const buildX=obsX+dist*scale;
+    const buildTopY=groundY-height*scale;
+    const buildW=35;
+
+    // Ground
+    ctx.fillStyle='#e8ecf8';ctx.fillRect(0,groundY,W,H-groundY);
+    ctx.strokeStyle='#d4d8e5';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,groundY);ctx.lineTo(W,groundY);ctx.stroke();
+
+    // Building
+    ctx.fillStyle='#1835b420';ctx.fillRect(buildX-buildW/2,buildTopY,buildW,groundY-buildTopY);
+    ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.strokeRect(buildX-buildW/2,buildTopY,buildW,groundY-buildTopY);
+    // Windows
+    for(let wy=buildTopY+15;wy<groundY-15;wy+=25){
+        ctx.fillStyle='#e8ecf8';ctx.fillRect(buildX-8,wy,6,10);ctx.fillRect(buildX+2,wy,6,10);
+    }
+
+    // Observer (stick figure)
+    ctx.strokeStyle='#1a2747';ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(obsX,obsY-25,8,0,Math.PI*2);ctx.stroke(); // head
+    ctx.beginPath();ctx.moveTo(obsX,obsY-17);ctx.lineTo(obsX,obsY+8);ctx.stroke(); // body
+    ctx.beginPath();ctx.moveTo(obsX-10,obsY-5);ctx.lineTo(obsX+10,obsY-5);ctx.stroke(); // arms
+    ctx.beginPath();ctx.moveTo(obsX,obsY+8);ctx.lineTo(obsX-8,groundY);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(obsX,obsY+8);ctx.lineTo(obsX+8,groundY);ctx.stroke();
+
+    const eyeY=obsY-20; // eye position
+
+    // Horizontal line from observer eye level
+    ctx.strokeStyle='#2ecc71';ctx.lineWidth=1.5;ctx.setLineDash([6,4]);
+    ctx.beginPath();ctx.moveTo(obsX,eyeY);ctx.lineTo(buildX+60,eyeY);ctx.stroke();
+
+    // Horizontal line from top of building
+    ctx.strokeStyle='#f39c12';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(buildX-buildW/2-40,buildTopY);ctx.lineTo(obsX-30,buildTopY);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Line of sight (observer to top)
+    ctx.strokeStyle='#e74c3c';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(obsX,eyeY);ctx.lineTo(buildX,buildTopY);ctx.stroke();
+
+    // Angle of elevation arc
+    const elevAngle=Math.atan2(eyeY-buildTopY,buildX-obsX);
+    const arcR=50;
+    ctx.beginPath();ctx.arc(obsX,eyeY,arcR,0,-elevAngle,true);ctx.strokeStyle='#e74c3c';ctx.lineWidth=2.5;ctx.stroke();
+    const elevDeg=elevAngle*180/Math.PI;
+    ctx.fillStyle='#e74c3c';ctx.font='bold 13px system-ui';ctx.textAlign='left';
+    ctx.fillText(elevDeg.toFixed(1)+'°',obsX+arcR+5,eyeY-12);
+    ctx.font='11px system-ui';ctx.fillText('elevation',obsX+arcR+5,eyeY-0);
+
+    // Angle of depression arc (from top of building looking down)
+    ctx.beginPath();ctx.arc(buildX,buildTopY,arcR,-Math.PI,-Math.PI+elevAngle);ctx.strokeStyle='#f39c12';ctx.lineWidth=2.5;ctx.stroke();
+    ctx.fillStyle='#f39c12';ctx.font='bold 13px system-ui';ctx.textAlign='right';
+    ctx.fillText(elevDeg.toFixed(1)+'°',buildX-arcR-5,buildTopY+15);
+    ctx.font='11px system-ui';ctx.fillText('depression',buildX-arcR-5,buildTopY+28);
+
+    // Dimension labels
+    // Distance
+    ctx.strokeStyle='#1a2747';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(obsX,groundY+15);ctx.lineTo(buildX,groundY+15);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(obsX,groundY+10);ctx.lineTo(obsX,groundY+20);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(buildX,groundY+10);ctx.lineTo(buildX,groundY+20);ctx.stroke();
+    ctx.fillStyle='#1a2747';ctx.font='bold 12px system-ui';ctx.textAlign='center';
+    ctx.fillText('d = '+dist+' m',(obsX+buildX)/2,groundY+28);
+
+    // Height
+    ctx.beginPath();ctx.moveTo(buildX+buildW/2+15,groundY);ctx.lineTo(buildX+buildW/2+15,buildTopY);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(buildX+buildW/2+10,groundY);ctx.lineTo(buildX+buildW/2+20,groundY);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(buildX+buildW/2+10,buildTopY);ctx.lineTo(buildX+buildW/2+20,buildTopY);ctx.stroke();
+    ctx.textAlign='left';ctx.fillText('h = '+height+' m',buildX+buildW/2+20,(groundY+buildTopY)/2);
+
+    // "Z" shape indicator for alternate angles
+    ctx.strokeStyle='#9b59b6';ctx.lineWidth=1.5;ctx.setLineDash([3,3]);
+    ctx.beginPath();ctx.moveTo(obsX+20,eyeY);ctx.lineTo(buildX-20,buildTopY);ctx.stroke();ctx.setLineDash([]);
+
+    // Update calculations
+    const theta=Math.atan2(height,dist)*180/Math.PI;
+    const los=Math.sqrt(dist*dist+height*height);
+    document.getElementById('elevCalc').innerHTML='tan(&theta;) = opposite / adjacent = '+height+' / '+dist+' = '+(height/dist).toFixed(4)+'<br>&theta; = tan&sup1;('+(height/dist).toFixed(4)+')';
+    document.getElementById('elevVal').textContent=theta.toFixed(1)+'°';
+    document.getElementById('depCalc').innerHTML='Angle of depression = Angle of elevation (alternate angles)';
+    document.getElementById('depVal').textContent=theta.toFixed(1)+'°';
+    document.getElementById('losCalc').innerHTML='= &radic;(d&sup2; + h&sup2;) = &radic;('+dist+'&sup2; + '+height+'&sup2;) = &radic;'+(dist*dist+height*height);
+    document.getElementById('losVal').textContent=los.toFixed(2)+' m';
+}
+
+document.getElementById('dSlider').addEventListener('input',function(){dist=+this.value;document.getElementById('dVal').textContent=dist+' m';draw()});
+document.getElementById('hSlider').addEventListener('input',function(){height=+this.value;document.getElementById('hVal').textContent=height+' m';draw()});
+draw();
+</script>
+</body>
+</html>

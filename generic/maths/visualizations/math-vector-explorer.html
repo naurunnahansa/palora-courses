@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vector Explorer</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width:100%;margin:0 auto}h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;cursor:crosshair}.btn-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.btn{padding:6px 12px;border:1px solid #d4d8e5;border-radius:5px;background:#e8ecf8;font-size:.78rem;cursor:pointer;text-align:center;color:#1a2747;font-family:system-ui}.btn:hover{background:#1835b4;color:#fff}.btn.active{background:#1835b4;color:#fff}.btn-danger{background:#fafbfc;color:#e74c3c;border-color:#e74c3c40}.vector-list{margin-top:8px;font-size:.82rem;line-height:1.8}.vector-item{display:flex;align-items:center;gap:8px;padding:4px 8px;background:#fafbfc;border-radius:4px;margin-bottom:4px}.vector-item .dot{width:12px;height:12px;border-radius:50%}.vector-item .details{flex:1}.vector-item .mag{color:#4a5568;font-size:.75rem}.result-box{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;font-size:.85rem;color:#1835b4;margin-top:8px;font-weight:600}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Vector Explorer</h1>
+    <div class="card" style="padding:8px"><canvas id="cv" width="800" height="800"></canvas></div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="btn-row">
+            <button class="btn active" id="btnAdd">Add Vector</button>
+            <button class="btn" id="btnResult">Show Resultant</button>
+            <button class="btn btn-danger" id="btnClear">Clear All</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-title">Vectors</div>
+        <div class="vector-list" id="vectorList">No vectors drawn yet. Click and drag on the grid.</div>
+        <div class="result-box" id="resultBox" style="display:none"></div>
+    </div>
+    <div class="info">Click and drag on the grid to draw vectors. Vectors snap to grid points. Use <strong>Show Resultant</strong> to see the sum of all vectors.</div>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const W=cv.width,H=cv.height;
+const gs=40; // grid spacing
+const ox=W/2,oy=H/2; // origin
+const vColors=['#1835b4','#e74c3c','#2ecc71','#f39c12','#9b59b6','#3498db','#e67e22','#1abc9c'];
+let vectors=[],drawing=false,startP=null,currentP=null,showResultant=false,addMode=true;
+
+function resize(){const w=Math.min(500,cv.parentElement.clientWidth-16);cv.style.width=w+'px';cv.style.height=w+'px'}
+resize();window.addEventListener('resize',resize);
+
+function snap(x,y){
+    const gx=Math.round((x-ox)/gs)*gs+ox;
+    const gy=Math.round((y-oy)/gs)*gs+oy;
+    return{x:gx,y:gy};
+}
+function toGrid(px,py){return{x:Math.round((px-ox)/gs),y:-Math.round((py-oy)/gs)}}
+
+function drawArrow(x1,y1,x2,y2,color,lw){
+    const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy);
+    if(len<1)return;
+    ctx.strokeStyle=color;ctx.lineWidth=lw||2.5;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    const ha=10,angle=Math.atan2(dy,dx);
+    ctx.fillStyle=color;ctx.beginPath();
+    ctx.moveTo(x2,y2);
+    ctx.lineTo(x2-ha*Math.cos(angle-0.4),y2-ha*Math.sin(angle-0.4));
+    ctx.lineTo(x2-ha*Math.cos(angle+0.4),y2-ha*Math.sin(angle+0.4));
+    ctx.closePath();ctx.fill();
+}
+
+function draw(){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle='#e8ecf8';ctx.lineWidth=1;
+    for(let x=0;x<W;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+    for(let y=0;y<H;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+
+    // Axes
+    ctx.strokeStyle='#d4d8e5';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(0,oy);ctx.lineTo(W,oy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(ox,0);ctx.lineTo(ox,H);ctx.stroke();
+
+    // Axis labels
+    ctx.fillStyle='#6b7db3';ctx.font='bold 12px system-ui';ctx.textAlign='center';
+    ctx.fillText('x',W-12,oy-8);ctx.fillText('y',ox+12,14);
+    // Grid numbers
+    ctx.font='10px system-ui';ctx.fillStyle='#aab';
+    for(let i=-10;i<=10;i++){
+        if(i===0)continue;
+        ctx.fillText(i,ox+i*gs,oy+14);
+        ctx.textAlign='right';ctx.fillText(-i,ox-8,oy+i*gs+4);ctx.textAlign='center';
+    }
+
+    // Origin
+    ctx.beginPath();ctx.arc(ox,oy,3,0,Math.PI*2);ctx.fillStyle='#1a2747';ctx.fill();
+    ctx.fillStyle='#6b7db3';ctx.font='10px system-ui';ctx.textAlign='right';ctx.fillText('O',ox-6,oy+12);
+
+    // Draw vectors
+    for(let i=0;i<vectors.length;i++){
+        const v=vectors[i],c=vColors[i%vColors.length];
+        drawArrow(v.sx,v.sy,v.ex,v.ey,c,2.5);
+        // Label
+        const g=toGrid(v.ex,v.ey);
+        const gs2=toGrid(v.sx,v.sy);
+        const vx=g.x-gs2.x,vy=g.y-gs2.y;
+        const mx=(v.sx+v.ex)/2,my=(v.sy+v.ey)/2;
+        ctx.fillStyle=c;ctx.font='bold 12px system-ui';ctx.textAlign='center';
+        ctx.fillText('v'+(i+1),mx+12,my-8);
+    }
+
+    // Current drawing
+    if(drawing&&startP&&currentP){
+        const s=snap(startP.x,startP.y),e=snap(currentP.x,currentP.y);
+        ctx.strokeStyle='#1835b460';ctx.lineWidth=2;ctx.setLineDash([5,5]);
+        ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(e.x,e.y);ctx.stroke();ctx.setLineDash([]);
+    }
+
+    // Resultant
+    if(showResultant&&vectors.length>=2){
+        let rx=0,ry=0;
+        for(const v of vectors){
+            const gs1=toGrid(v.sx,v.sy),ge=toGrid(v.ex,v.ey);
+            rx+=ge.x-gs1.x;ry+=ge.y-gs1.y;
+        }
+        // Draw parallelogram construction for 2 vectors
+        if(vectors.length===2){
+            const v1=vectors[0],v2=vectors[1];
+            const g1s=toGrid(v1.sx,v1.sy),g1e=toGrid(v1.ex,v1.ey);
+            const g2s=toGrid(v2.sx,v2.sy),g2e=toGrid(v2.ex,v2.ey);
+            const dx1=g1e.x-g1s.x,dy1=g1e.y-g1s.y;
+            const dx2=g2e.x-g2s.x,dy2=g2e.y-g2s.y;
+            // Parallelogram from origin
+            const p1={x:ox+dx1*gs,y:oy-dy1*gs};
+            const p2={x:ox+dx2*gs,y:oy-dy2*gs};
+            const p3={x:ox+(dx1+dx2)*gs,y:oy-(dy1+dy2)*gs};
+            ctx.strokeStyle='#9b59b640';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+            ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p3.x,p3.y);ctx.stroke();
+            ctx.beginPath();ctx.moveTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        // Resultant arrow from origin
+        const rsx=ox,rsy=oy;
+        const rex=ox+rx*gs,rey=oy-ry*gs;
+        drawArrow(rsx,rsy,rex,rey,'#9b59b6',3);
+        ctx.fillStyle='#9b59b6';ctx.font='bold 13px system-ui';ctx.textAlign='center';
+        ctx.fillText('R',(rsx+rex)/2+14,(rsy+rey)/2-10);
+
+        const mag=Math.sqrt(rx*rx+ry*ry);
+        document.getElementById('resultBox').style.display='block';
+        document.getElementById('resultBox').innerHTML='Resultant R = ('+rx+', '+ry+') &nbsp; |R| = &radic;('+rx+'&sup2; + '+ry+'&sup2;) = '+mag.toFixed(3);
+    } else {
+        document.getElementById('resultBox').style.display='none';
+    }
+
+    // Update list
+    updateList();
+}
+
+function updateList(){
+    const el=document.getElementById('vectorList');
+    if(vectors.length===0){el.innerHTML='No vectors drawn yet. Click and drag on the grid.';return}
+    let html='';
+    for(let i=0;i<vectors.length;i++){
+        const v=vectors[i],c=vColors[i%vColors.length];
+        const gs1=toGrid(v.sx,v.sy),ge=toGrid(v.ex,v.ey);
+        const vx=ge.x-gs1.x,vy=ge.y-gs1.y;
+        const mag=Math.sqrt(vx*vx+vy*vy);
+        html+='<div class="vector-item"><span class="dot" style="background:'+c+'"></span><div class="details"><strong>v'+(i+1)+'</strong> = ('+vx+', '+vy+')<br><span class="mag">|v'+(i+1)+'| = &radic;('+vx+'&sup2; + '+vy+'&sup2;) = '+mag.toFixed(3)+'</span></div></div>';
+    }
+    el.innerHTML=html;
+}
+
+function getCanvasXY(e){
+    const rect=cv.getBoundingClientRect();
+    return{x:(e.clientX-rect.left)*cv.width/rect.width,y:(e.clientY-rect.top)*cv.height/rect.height};
+}
+
+cv.addEventListener('mousedown',function(e){
+    if(!addMode)return;
+    drawing=true;startP=getCanvasXY(e);currentP=startP;
+});
+cv.addEventListener('mousemove',function(e){
+    if(drawing){currentP=getCanvasXY(e);draw()}
+});
+cv.addEventListener('mouseup',function(e){
+    if(drawing){
+        const end=getCanvasXY(e);
+        const s=snap(startP.x,startP.y),ep=snap(end.x,end.y);
+        if(Math.hypot(ep.x-s.x,ep.y-s.y)>5){
+            vectors.push({sx:s.x,sy:s.y,ex:ep.x,ey:ep.y});
+        }
+        drawing=false;startP=null;currentP=null;draw();
+    }
+});
+
+// Touch support
+cv.addEventListener('touchstart',function(e){e.preventDefault();if(!addMode)return;drawing=true;startP=getCanvasXY(e.touches[0]);currentP=startP},{passive:false});
+cv.addEventListener('touchmove',function(e){e.preventDefault();if(drawing){currentP=getCanvasXY(e.touches[0]);draw()}},{passive:false});
+cv.addEventListener('touchend',function(e){
+    if(drawing&&currentP){
+        const s=snap(startP.x,startP.y),ep=snap(currentP.x,currentP.y);
+        if(Math.hypot(ep.x-s.x,ep.y-s.y)>5){vectors.push({sx:s.x,sy:s.y,ex:ep.x,ey:ep.y})}
+        drawing=false;startP=null;currentP=null;draw();
+    }
+});
+
+document.getElementById('btnAdd').addEventListener('click',function(){addMode=true;this.classList.add('active');draw()});
+document.getElementById('btnResult').addEventListener('click',function(){showResultant=!showResultant;this.classList.toggle('active');draw()});
+document.getElementById('btnClear').addEventListener('click',function(){vectors=[];showResultant=false;document.getElementById('btnResult').classList.remove('active');draw()});
+
+draw();
+</script>
+</body>
+</html>

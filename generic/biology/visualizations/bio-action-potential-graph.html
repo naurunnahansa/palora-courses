@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Action Potential</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; }
+        .info-box { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; min-height: 40px; }
+        .info-box strong { color: #1835b4; }
+        .legend { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 6px; font-size: 0.65rem; }
+        .legend span { display: flex; align-items: center; gap: 3px; }
+        .legend .dot { width: 8px; height: 3px; border-radius: 1px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>The Action Potential</h1>
+    <div class="desc">Hover over the graph to explore each phase of the nerve impulse</div>
+    <div class="legend">
+        <span><span class="dot" style="background:#1835b4"></span> Membrane potential</span>
+        <span><span class="dot" style="background:#e74c3c"></span> Na+ channels</span>
+        <span><span class="dot" style="background:#3498db"></span> K+ channels</span>
+    </div>
+    <canvas id="canvas" width="520" height="320"></canvas>
+    <div class="info-box" id="info">
+        <strong>Resting potential (-70mV):</strong> The neurone is at rest. Na+/K+ pump maintains -70mV by pumping 3 Na+ out and 2 K+ in. Voltage-gated Na+ and K+ channels are closed. Inside of axon is negative relative to outside.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const pad = { top: 30, right: 30, bottom: 45, left: 60 };
+const gw = canvas.width - pad.left - pad.right;
+const gh = canvas.height - pad.top - pad.bottom;
+
+// Voltage range: -90 to +50 mV, Time: 0 to 6 ms
+const vMin = -90, vMax = 50, tMax = 6;
+
+function tToX(t) { return pad.left + (t/tMax)*gw; }
+function vToY(v) { return pad.top + ((vMax-v)/(vMax-vMin))*gh; }
+function xToT(x) { return ((x-pad.left)/gw)*tMax; }
+
+// Action potential curve points (time, voltage)
+const curve = [];
+for (let t = 0; t <= 6; t += 0.02) {
+    let v;
+    if (t < 1.0) v = -70; // resting
+    else if (t < 1.3) v = -70 + (t-1.0)/0.3 * 15; // stimulus to threshold
+    else if (t < 1.5) v = -55; // threshold
+    else if (t < 2.0) v = -55 + (t-1.5)/0.5 * 95; // depolarisation
+    else if (t < 2.1) v = 40; // peak
+    else if (t < 3.0) v = 40 - (t-2.1)/0.9 * 120; // repolarisation
+    else if (t < 3.5) v = -80 + (t-3.0)/0.5 * (-5); // hyperpolarisation
+    else if (t < 4.2) v = -85 + (t-3.5)/0.7 * 15; // recovery
+    else v = -70; // back to resting
+    curve.push({t, v});
+}
+
+// Phase definitions
+const phases = [
+    { t1:0, t2:1.0, label:'Resting\nPotential', color:'#27ae60',
+      info:'<strong>Resting potential (-70mV):</strong> The neurone is at rest. The Na\u207a/K\u207a pump maintains -70mV by actively pumping 3 Na\u207a out and 2 K\u207a in. Voltage-gated Na\u207a and K\u207a channels are <strong>closed</strong>. Inside is negative relative to outside.',
+      na:'Closed', k:'Closed' },
+    { t1:1.0, t2:1.5, label:'Stimulus &\nThreshold', color:'#f39c12',
+      info:'<strong>Stimulus & Threshold (-55mV):</strong> A stimulus causes some Na\u207a channels to open. If depolarisation reaches the threshold (-55mV), an action potential is triggered (all-or-nothing). Below threshold, no action potential fires.',
+      na:'Some opening', k:'Closed' },
+    { t1:1.5, t2:2.1, label:'Depolarisation', color:'#e74c3c',
+      info:'<strong>Depolarisation (+40mV):</strong> Voltage-gated Na\u207a channels open rapidly. Na\u207a rushes <strong>into</strong> the axon down its electrochemical gradient. The membrane potential swings from -55mV to +40mV (positive inside). This is a positive feedback loop.',
+      na:'OPEN (Na\u207a rushes in)', k:'Closed' },
+    { t1:2.1, t2:3.0, label:'Repolarisation', color:'#3498db',
+      info:'<strong>Repolarisation:</strong> Na\u207a channels close (inactivate). Voltage-gated K\u207a channels open. K\u207a rushes <strong>out</strong> of the axon down its concentration gradient. Membrane potential returns towards negative values.',
+      na:'Closed (inactivated)', k:'OPEN (K\u207a rushes out)' },
+    { t1:3.0, t2:4.2, label:'Hyper-\npolarisation', color:'#9b59b6',
+      info:'<strong>Hyperpolarisation (-85mV):</strong> K\u207a channels are slow to close, so too much K\u207a leaves. The membrane potential dips below resting level ("undershoot"). During this <strong>refractory period</strong>, the neurone cannot fire again, ensuring unidirectional impulse transmission.',
+      na:'Closed', k:'Closing slowly' },
+    { t1:4.2, t2:6.0, label:'Recovery', color:'#27ae60',
+      info:'<strong>Recovery to resting potential:</strong> K\u207a channels finally close. The Na\u207a/K\u207a pump restores the original ion distribution (3 Na\u207a out, 2 K\u207a in, using ATP). Resting potential of -70mV is restored. The neurone is ready to fire again.',
+      na:'Closed', k:'Closed' }
+];
+
+let hoverT = null;
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Phase background bands
+    phases.forEach(p => {
+        ctx.fillStyle = p.color + '11';
+        ctx.fillRect(tToX(p.t1), pad.top, tToX(p.t2)-tToX(p.t1), gh);
+    });
+
+    // Refractory period
+    ctx.fillStyle = 'rgba(155,89,182,0.08)';
+    ctx.fillRect(tToX(2.1), pad.top, tToX(4.2)-tToX(2.1), gh);
+    ctx.fillStyle = '#9b59b6'; ctx.font = '7px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Refractory period', (tToX(2.1)+tToX(4.2))/2, pad.top + 12);
+
+    // Grid and axes
+    ctx.strokeStyle = '#e8ecf8'; ctx.lineWidth = 0.5;
+    for (let v = -80; v <= 40; v += 20) {
+        const y = vToY(v);
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left+gw, y); ctx.stroke();
+    }
+
+    // Axes
+    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, pad.top+gh); ctx.lineTo(pad.left+gw, pad.top+gh); ctx.stroke();
+
+    // Y axis labels
+    ctx.fillStyle = '#4a5568'; ctx.font = '8px system-ui'; ctx.textAlign = 'right';
+    for (let v = -80; v <= 40; v += 20) {
+        ctx.fillText(v+'mV', pad.left-5, vToY(v)+3);
+    }
+    // Y axis title
+    ctx.save(); ctx.translate(12, pad.top+gh/2); ctx.rotate(-Math.PI/2);
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Membrane Potential (mV)', 0, 0); ctx.restore();
+
+    // X axis labels
+    ctx.fillStyle = '#4a5568'; ctx.font = '8px system-ui'; ctx.textAlign = 'center';
+    for (let t = 0; t <= 6; t += 1) {
+        ctx.fillText(t+'ms', tToX(t), pad.top+gh+15);
+    }
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 9px system-ui';
+    ctx.fillText('Time (ms)', pad.left+gw/2, canvas.height-5);
+
+    // Threshold line
+    ctx.strokeStyle = '#f39c1266'; ctx.lineWidth = 1; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(pad.left, vToY(-55)); ctx.lineTo(pad.left+gw, vToY(-55)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#f39c12'; ctx.font = '7px system-ui'; ctx.textAlign = 'left';
+    ctx.fillText('Threshold (-55mV)', pad.left+gw-80, vToY(-55)-4);
+
+    // Resting potential line
+    ctx.strokeStyle = '#27ae6066'; ctx.lineWidth = 1; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(pad.left, vToY(-70)); ctx.lineTo(pad.left+gw, vToY(-70)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#27ae60'; ctx.font = '7px system-ui';
+    ctx.fillText('Resting (-70mV)', pad.left+5, vToY(-70)-4);
+
+    // Main curve
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    curve.forEach((p, i) => {
+        const x = tToX(p.t), y = vToY(p.v);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Phase labels at top
+    phases.forEach(p => {
+        const mx = (tToX(p.t1)+tToX(p.t2))/2;
+        ctx.fillStyle = p.color; ctx.font = 'bold 7px system-ui'; ctx.textAlign = 'center';
+        p.label.split('\n').forEach((line, i) => {
+            ctx.fillText(line, mx, canvas.height-25+i*9);
+        });
+    });
+
+    // Hover crosshair
+    if (hoverT !== null && hoverT >= 0 && hoverT <= tMax) {
+        const cp = curve.reduce((best, p) => Math.abs(p.t-hoverT) < Math.abs(best.t-hoverT) ? p : best);
+        const hx = tToX(cp.t), hy = vToY(cp.v);
+
+        ctx.strokeStyle = '#1a274744'; ctx.lineWidth = 1; ctx.setLineDash([3,3]);
+        ctx.beginPath(); ctx.moveTo(hx, pad.top); ctx.lineTo(hx, pad.top+gh); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(pad.left, hy); ctx.lineTo(pad.left+gw, hy); ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.beginPath(); ctx.arc(hx, hy, 5, 0, Math.PI*2);
+        ctx.fillStyle = '#1835b4'; ctx.fill();
+
+        // Tooltip
+        ctx.fillStyle = 'rgba(26,39,71,0.9)';
+        const tw2 = 95, th = 32;
+        const tx = Math.min(hx+10, canvas.width-tw2-5), ty = Math.max(hy-th-5, 5);
+        ctx.beginPath(); ctx.roundRect(tx, ty, tw2, th, 4); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 8px system-ui'; ctx.textAlign = 'left';
+        ctx.fillText(`t = ${cp.t.toFixed(1)} ms`, tx+5, ty+12);
+        ctx.fillText(`V = ${Math.round(cp.v)} mV`, tx+5, ty+24);
+
+        // Update phase info
+        const phase = phases.find(p => cp.t >= p.t1 && cp.t < p.t2) || phases[phases.length-1];
+        document.getElementById('info').innerHTML = phase.info +
+            `<br><span style="color:#e74c3c;">Na\u207a channels: ${phase.na}</span> | <span style="color:#3498db;">K\u207a channels: ${phase.k}</span>`;
+    }
+}
+
+canvas.addEventListener('mousemove', function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX-rect.left)*(canvas.width/rect.width);
+    hoverT = xToT(mx);
+    draw();
+});
+
+canvas.addEventListener('mouseleave', function() {
+    hoverT = null;
+    document.getElementById('info').innerHTML = '<strong>Resting potential (-70mV):</strong> The neurone is at rest. Na\u207a/K\u207a pump maintains -70mV. Hover over the graph to explore each phase.';
+    draw();
+});
+
+draw();
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Potometer Setup</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fcfcfe;
+    color: #1a2747;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 8px; text-align: center; }
+  .subtitle { font-size: 0.9rem; color: #6b7a99; margin-bottom: 20px; text-align: center; max-width: 560px; line-height: 1.5; }
+  .diagram-container {
+    width: 100%; max-width: 680px;
+    background: #e8ecf8; border: 1.5px solid #d4d8e5; border-radius: 14px;
+    padding: 20px; display: flex; justify-content: center; position: relative;
+  }
+  svg { max-width: 100%; height: auto; }
+  .label-text { font-size: 10px; fill: #1a2747; font-weight: 600; }
+  .label-small { font-size: 8.5px; fill: #6b7a99; }
+  .note-box {
+    margin-top: 18px; width: 100%; max-width: 680px;
+    background: #fff8e0; border: 1.5px solid #e6d480; border-radius: 10px;
+    padding: 14px 18px; font-size: 0.88rem; line-height: 1.5;
+  }
+  .note-box strong { color: #1835b4; }
+  .note { margin-top: 12px; font-size: 0.8rem; color: #6b7a99; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>Potometer Setup</h1>
+<p class="subtitle">A potometer measures the rate of water uptake by a plant shoot, which gives an estimate of the rate of transpiration.</p>
+
+<div class="diagram-container">
+  <svg viewBox="0 0 600 340" width="600" id="potSvg">
+    <!-- Water reservoir (beaker) -->
+    <rect x="480" y="100" width="70" height="80" rx="4" fill="#d0e8f8" stroke="#5a9ec8" stroke-width="1.5"/>
+    <ellipse cx="515" cy="100" rx="35" ry="8" fill="#b8d8f0" stroke="#5a9ec8" stroke-width="1.5"/>
+    <rect x="485" y="120" width="60" height="45" rx="2" fill="#8ec4f0" opacity="0.5"/>
+    <text x="515" y="85" text-anchor="middle" class="label-text">Water reservoir</text>
+    <text x="515" y="195" text-anchor="middle" class="label-small">(for refilling)</text>
+
+    <!-- Tube from reservoir down to capillary -->
+    <path d="M490 175 L490 210 L440 210" fill="none" stroke="#5a9ec8" stroke-width="4" stroke-linecap="round"/>
+    <path d="M490 175 L490 210 L440 210" fill="none" stroke="#8ec4f0" stroke-width="2"/>
+
+    <!-- Capillary tube (horizontal) -->
+    <rect x="80" y="205" width="360" height="10" rx="3" fill="#dde4f5" stroke="#8898c4" stroke-width="1.5"/>
+    <!-- Water in capillary -->
+    <rect x="82" y="207" width="356" height="6" rx="2" fill="#a8d4f0" opacity="0.6"/>
+
+    <!-- Scale markings on capillary -->
+    <g id="scaleMarks">
+      <line x1="100" y1="220" x2="100" y2="228" stroke="#666" stroke-width="1"/>
+      <line x1="140" y1="220" x2="140" y2="225" stroke="#999" stroke-width="0.8"/>
+      <line x1="180" y1="220" x2="180" y2="228" stroke="#666" stroke-width="1"/>
+      <line x1="220" y1="220" x2="220" y2="225" stroke="#999" stroke-width="0.8"/>
+      <line x1="260" y1="220" x2="260" y2="228" stroke="#666" stroke-width="1"/>
+      <line x1="300" y1="220" x2="300" y2="225" stroke="#999" stroke-width="0.8"/>
+      <line x1="340" y1="220" x2="340" y2="228" stroke="#666" stroke-width="1"/>
+      <line x1="380" y1="220" x2="380" y2="225" stroke="#999" stroke-width="0.8"/>
+      <line x1="420" y1="220" x2="420" y2="228" stroke="#666" stroke-width="1"/>
+      <text x="100" y="238" text-anchor="middle" font-size="7" fill="#999">0</text>
+      <text x="180" y="238" text-anchor="middle" font-size="7" fill="#999">1</text>
+      <text x="260" y="238" text-anchor="middle" font-size="7" fill="#999">2</text>
+      <text x="340" y="238" text-anchor="middle" font-size="7" fill="#999">3</text>
+      <text x="420" y="238" text-anchor="middle" font-size="7" fill="#999">4</text>
+    </g>
+    <text x="260" y="255" text-anchor="middle" class="label-text">Scale (cm)</text>
+
+    <!-- Air bubble in capillary -->
+    <rect x="150" y="207" width="18" height="6" rx="3" fill="#fff" stroke="#aab" stroke-width="0.8" id="bubble"/>
+
+    <!-- Bubble label -->
+    <line x1="159" y1="207" x2="159" y2="270" stroke="#1835b4" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="159" y="282" text-anchor="middle" class="label-text" fill="#1835b4">Air bubble</text>
+
+    <!-- Arrow showing bubble movement direction -->
+    <polygon points="120,210 108,206 108,214" fill="#1835b4" id="arrow"/>
+    <text x="90" y="196" text-anchor="middle" font-size="9" fill="#1835b4" font-weight="600">Movement</text>
+
+    <!-- Connection to shoot (left side, going up) -->
+    <path d="M80 210 L80 130 L120 130" fill="none" stroke="#5a9ec8" stroke-width="4" stroke-linecap="round"/>
+    <path d="M80 210 L80 130 L120 130" fill="none" stroke="#8ec4f0" stroke-width="2"/>
+
+    <!-- Airtight seal label -->
+    <rect x="105" y="122" width="30" height="16" rx="3" fill="#c0392b" opacity="0.8"/>
+    <text x="120" y="133" text-anchor="middle" font-size="7" fill="#fff" font-weight="600">Seal</text>
+    <text x="170" y="120" class="label-small">Airtight seal</text>
+
+    <!-- Leafy shoot -->
+    <rect x="130" y="80" width="8" height="50" fill="#3a7d3a"/>
+    <ellipse cx="114" cy="72" rx="24" ry="11" fill="#4a9e4a" transform="rotate(-15,114,72)"/>
+    <ellipse cx="150" cy="66" rx="22" ry="10" fill="#4a9e4a" transform="rotate(12,150,66)"/>
+    <ellipse cx="128" cy="54" rx="20" ry="10" fill="#4a9e4a" transform="rotate(-5,128,54)"/>
+    <ellipse cx="142" cy="42" rx="18" ry="9" fill="#3a8a3a" transform="rotate(8,142,42)"/>
+    <ellipse cx="134" cy="30" rx="14" ry="8" fill="#3a8a3a"/>
+
+    <!-- Transpiration arrows -->
+    <line x1="100" y1="58" x2="85" y2="40" stroke="#8ec4f0" stroke-width="1.2" marker-end="url(#arrowUp)"/>
+    <line x1="140" y1="24" x2="140" y2="8" stroke="#8ec4f0" stroke-width="1.2" marker-end="url(#arrowUp)"/>
+    <line x1="160" y1="55" x2="178" y2="38" stroke="#8ec4f0" stroke-width="1.2" marker-end="url(#arrowUp)"/>
+    <text x="186" y="34" font-size="8" fill="#5a9ec8" font-style="italic">Water vapour lost</text>
+
+    <defs>
+      <marker id="arrowUp" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+        <path d="M0,6 L3,0 L6,6" fill="#8ec4f0"/>
+      </marker>
+    </defs>
+
+    <!-- Leafy shoot label -->
+    <text x="134" y="100" text-anchor="middle" class="label-text">Leafy shoot</text>
+
+    <!-- Capillary tube label (top) -->
+    <text x="310" y="200" text-anchor="middle" class="label-text">Capillary tube</text>
+  </svg>
+</div>
+
+<div class="note-box">
+  <strong>Important:</strong> The potometer measures the rate of <strong>water uptake</strong>, not transpiration directly. However, most water absorbed is lost through transpiration, so it gives a good estimate. The air bubble moves towards the shoot as water is taken up. The faster the bubble moves, the greater the rate of water uptake.
+</div>
+
+<p class="note">The bubble animates to show the direction of water uptake as transpiration occurs.</p>
+
+<script>
+const bubble = document.getElementById('bubble');
+const arrow = document.getElementById('arrow');
+let bubbleX = 150;
+const minX = 90;
+const maxX = 150;
+let direction = -1;
+
+function animateBubble() {
+  bubbleX += direction * 0.15;
+  if (bubbleX <= minX) {
+    bubbleX = maxX;
+  }
+  bubble.setAttribute('x', bubbleX);
+  requestAnimationFrame(animateBubble);
+}
+
+animateBubble();
+</script>
+
+</body>
+</html>

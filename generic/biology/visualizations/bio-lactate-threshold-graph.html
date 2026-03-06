@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lactate Threshold</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; }
+        .slider-group { border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px 10px; margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; }
+        .slider-label .val { color: #1835b4; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #d4d8e5; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .legend { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+        .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 600; }
+        .legend-swatch { width: 20px; height: 12px; border-radius: 2px; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Lactate Threshold</h1>
+    <div class="desc">Blood lactate concentration vs exercise intensity</div>
+    <canvas id="graphCanvas" width="530" height="320"></canvas>
+    <div class="slider-group">
+        <div class="slider-label"><span>Fitness Level</span><span class="val" id="fitVal">Average (threshold ~60%)</span></div>
+        <input type="range" id="fitSlider" min="45" max="80" value="60" oninput="update()">
+        <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:#4a5568;margin-top:2px;">
+            <span>Untrained (~50%)</span><span>Trained (~75%)</span>
+        </div>
+    </div>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:rgba(39,174,96,0.15);border:1px solid #27ae60;"></div>Aerobic zone</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:rgba(231,76,60,0.15);border:1px solid #e74c3c;"></div>Anaerobic zone</div>
+    </div>
+    <div class="note">
+        <strong>Lactate threshold:</strong> The exercise intensity at which lactate begins to accumulate rapidly in the blood. Trained athletes have a higher threshold, allowing them to exercise at greater intensity before fatigue.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('graphCanvas');
+const ctx = canvas.getContext('2d');
+let hoverX = null;
+let threshold = 60;
+
+const pad = { top: 30, right: 20, bottom: 50, left: 55 };
+const xMin = 0, xMax = 100, yMin = 0, yMax = 12;
+
+function lactate(x) {
+    // Stays low (~1-2) until threshold, then exponential rise
+    const base = 1.0;
+    const k = 0.08; // steepness of exponential
+    if (x <= threshold * 0.7) return base + 0.005 * x;
+    // Smooth transition into exponential
+    const shift = threshold * 0.85;
+    return base + 0.005 * x + Math.max(0, 0.02 * Math.exp(k * (x - shift)));
+}
+
+function xToCanvas(x) { return pad.left + ((x - xMin) / (xMax - xMin)) * (canvas.width - pad.left - pad.right); }
+function yToCanvas(y) { return pad.top + ((yMax - y) / (yMax - yMin)) * (canvas.height - pad.top - pad.bottom); }
+function canvasToX(cx) { return xMin + ((cx - pad.left) / (canvas.width - pad.left - pad.right)) * (xMax - xMin); }
+
+function update() {
+    threshold = parseInt(document.getElementById('fitSlider').value);
+    let label = 'Average';
+    if (threshold <= 52) label = 'Untrained';
+    else if (threshold >= 70) label = 'Well-trained';
+    else if (threshold >= 62) label = 'Moderately trained';
+    document.getElementById('fitVal').textContent = label + ' (threshold ~' + threshold + '%)';
+    draw();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Find the visual threshold point (where curve inflects noticeably)
+    const threshX = threshold;
+    const threshY = lactate(threshX);
+
+    // Shaded zones
+    ctx.fillStyle = 'rgba(39,174,96,0.1)';
+    ctx.fillRect(xToCanvas(0), pad.top, xToCanvas(threshX) - xToCanvas(0), canvas.height - pad.top - pad.bottom);
+    ctx.fillStyle = 'rgba(231,76,60,0.1)';
+    ctx.fillRect(xToCanvas(threshX), pad.top, xToCanvas(100) - xToCanvas(threshX), canvas.height - pad.top - pad.bottom);
+
+    // Axes
+    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, canvas.height - pad.bottom);
+    ctx.lineTo(canvas.width - pad.right, canvas.height - pad.bottom);
+    ctx.stroke();
+
+    // Grid
+    ctx.fillStyle = '#4a5568'; ctx.font = '10px system-ui'; ctx.textAlign = 'center';
+    for (let x = 0; x <= xMax; x += 10) {
+        const cx = xToCanvas(x);
+        ctx.strokeStyle = '#e0e0e0'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+        if (x % 20 === 0) ctx.fillText(x + '%', cx, canvas.height - pad.bottom + 14);
+    }
+    ctx.textAlign = 'right';
+    for (let y = 0; y <= yMax; y += 2) {
+        const cy = yToCanvas(y);
+        ctx.strokeStyle = '#e0e0e0'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(canvas.width - pad.right, cy); ctx.stroke();
+        ctx.fillText(y, pad.left - 6, cy + 3);
+    }
+
+    // Axis labels
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Exercise Intensity (% VO\u2082 max)', canvas.width / 2, canvas.height - 5);
+    ctx.save(); ctx.translate(14, canvas.height / 2); ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Blood Lactate (mmol/L)', 0, 0); ctx.restore();
+
+    // Threshold dashed lines
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.moveTo(xToCanvas(threshX), pad.top);
+    ctx.lineTo(xToCanvas(threshX), canvas.height - pad.bottom);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(pad.left, yToCanvas(threshY));
+    ctx.lineTo(canvas.width - pad.right, yToCanvas(threshY));
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Threshold label
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Lactate Threshold', xToCanvas(threshX), pad.top - 8);
+
+    // Zone labels
+    ctx.font = 'bold 10px system-ui';
+    ctx.fillStyle = '#1e8449';
+    ctx.fillText('Aerobic Zone', xToCanvas(threshX / 2), yToCanvas(yMax - 1.5));
+    ctx.fillStyle = '#c0392b';
+    ctx.fillText('Anaerobic Zone', xToCanvas(threshX + (100 - threshX) / 2), yToCanvas(yMax - 1.5));
+
+    // Lactate curve
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for (let x = 0; x <= xMax; x += 0.5) {
+        const val = lactate(x);
+        if (val > yMax) break;
+        const cx = xToCanvas(x), cy = yToCanvas(val);
+        x === 0 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+    }
+    ctx.stroke();
+
+    // Hover
+    if (hoverX !== null && hoverX >= xMin && hoverX <= xMax) {
+        const x = hoverX;
+        const val = lactate(x);
+        if (val <= yMax) {
+            const cx = xToCanvas(x);
+
+            ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.beginPath(); ctx.arc(cx, yToCanvas(val), 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#1835b4'; ctx.fill();
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+
+            const zone = x < threshX ? 'Aerobic' : 'Anaerobic';
+            const lines = [`Intensity: ${x.toFixed(1)}% VO\u2082 max`, `Lactate: ${val.toFixed(2)} mmol/L`, `Zone: ${zone}`];
+            ctx.font = '10px system-ui';
+            const tw = Math.max(...lines.map(l => ctx.measureText(l).width)) + 16;
+            const th = lines.length * 15 + 10;
+            let bx = cx + 12;
+            if (bx + tw > canvas.width - pad.right) bx = cx - tw - 12;
+            ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.roundRect(bx, pad.top + 10, tw, th, 4); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#1a2747'; ctx.textAlign = 'left';
+            lines.forEach((l, i) => ctx.fillText(l, bx + 8, pad.top + 24 + i * 15));
+        }
+    }
+}
+
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+    hoverX = canvasToX(mx);
+    if (hoverX < xMin || hoverX > xMax) hoverX = null;
+    draw();
+});
+canvas.addEventListener('mouseleave', () => { hoverX = null; draw(); });
+
+function resize() {
+    const w = Math.min(530, window.innerWidth - 24);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 320 / 530) + 'px';
+}
+window.addEventListener('resize', resize);
+resize();
+draw();
+</script>
+</body>
+</html>

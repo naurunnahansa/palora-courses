@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Respirometer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fcfcfe;
+    color: #1a2747;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 8px; text-align: center; }
+  .subtitle { font-size: 0.9rem; color: #6b7a99; margin-bottom: 20px; text-align: center; max-width: 600px; line-height: 1.5; }
+  .diagram-container {
+    width: 100%; max-width: 720px;
+    background: #e8ecf8; border: 1.5px solid #d4d8e5; border-radius: 14px;
+    padding: 20px; display: flex; justify-content: center;
+  }
+  svg { max-width: 100%; height: auto; }
+  .note-box {
+    margin-top: 18px; width: 100%; max-width: 720px;
+    background: #fff8e0; border: 1.5px solid #e6d480; border-radius: 10px;
+    padding: 14px 18px; font-size: 0.88rem; line-height: 1.5;
+  }
+  .note-box strong { color: #1835b4; }
+  .explanation {
+    margin-top: 16px; width: 100%; max-width: 720px;
+    background: #e8ecf8; border: 1.5px solid #d4d8e5; border-radius: 10px;
+    padding: 14px 18px; font-size: 0.88rem; line-height: 1.6;
+  }
+  .explanation strong { color: #1835b4; }
+  .note { margin-top: 12px; font-size: 0.8rem; color: #6b7a99; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>Respirometer</h1>
+<p class="subtitle">Measures the rate of oxygen consumption during aerobic respiration. The animated fluid shows how the manometer responds as organisms use oxygen.</p>
+
+<div class="diagram-container">
+  <svg viewBox="0 0 640 380" width="640" id="respSvg">
+    <!-- EXPERIMENTAL TUBE (left) -->
+    <text x="140" y="22" text-anchor="middle" font-size="12" fill="#1835b4" font-weight="700">Experimental</text>
+
+    <!-- Tube body -->
+    <rect x="90" y="40" width="100" height="180" rx="8" fill="#dde4f5" stroke="#8898c4" stroke-width="2"/>
+    <rect x="90" y="40" width="100" height="180" rx="8" fill="rgba(220,230,250,0.3)"/>
+
+    <!-- Mesh/gauze -->
+    <line x1="94" y1="155" x2="186" y2="155" stroke="#999" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <text x="195" y="158" font-size="8" fill="#999">Gauze</text>
+
+    <!-- Living organisms -->
+    <circle cx="120" cy="100" r="10" fill="#8B6914" stroke="#5a4510" stroke-width="1"/>
+    <circle cx="145" cy="90" r="11" fill="#9a7520" stroke="#5a4510" stroke-width="1"/>
+    <circle cx="160" cy="110" r="9" fill="#8B6914" stroke="#5a4510" stroke-width="1"/>
+    <circle cx="130" cy="120" r="10" fill="#9a7520" stroke="#5a4510" stroke-width="1"/>
+    <circle cx="155" cy="130" r="8" fill="#8B6914" stroke="#5a4510" stroke-width="1"/>
+    <text x="140" y="72" text-anchor="middle" font-size="9" fill="#1a2747" font-weight="600">Germinating seeds</text>
+
+    <!-- Soda lime at bottom -->
+    <rect x="94" y="165" width="92" height="50" rx="4" fill="#f0e68c" stroke="#c8b400" stroke-width="1.5"/>
+    <text x="140" y="185" text-anchor="middle" font-size="9" fill="#8B6914" font-weight="600">Soda lime</text>
+    <text x="140" y="196" text-anchor="middle" font-size="7.5" fill="#8B6914">(absorbs CO&#8322;)</text>
+
+    <!-- Stopper -->
+    <rect x="100" y="33" width="80" height="12" rx="3" fill="#c0392b" opacity="0.8"/>
+    <text x="140" y="30" text-anchor="middle" font-size="8" fill="#c0392b" font-weight="600">Rubber stopper</text>
+
+    <!-- CONTROL TUBE (right) -->
+    <text x="480" y="22" text-anchor="middle" font-size="12" fill="#6b7a99" font-weight="700">Control</text>
+
+    <!-- Tube body -->
+    <rect x="430" y="40" width="100" height="180" rx="8" fill="#dde4f5" stroke="#8898c4" stroke-width="2"/>
+    <rect x="430" y="40" width="100" height="180" rx="8" fill="rgba(220,230,250,0.3)"/>
+
+    <!-- Mesh/gauze -->
+    <line x1="434" y1="155" x2="526" y2="155" stroke="#999" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+    <!-- Glass beads -->
+    <circle cx="460" cy="100" r="10" fill="#c8d8e8" stroke="#8898c4" stroke-width="1"/>
+    <circle cx="485" cy="90" r="11" fill="#b8c8d8" stroke="#8898c4" stroke-width="1"/>
+    <circle cx="500" cy="110" r="9" fill="#c8d8e8" stroke="#8898c4" stroke-width="1"/>
+    <circle cx="470" cy="120" r="10" fill="#b8c8d8" stroke="#8898c4" stroke-width="1"/>
+    <circle cx="495" cy="130" r="8" fill="#c8d8e8" stroke="#8898c4" stroke-width="1"/>
+    <text x="480" y="72" text-anchor="middle" font-size="9" fill="#6b7a99" font-weight="600">Glass beads</text>
+    <text x="480" y="82" text-anchor="middle" font-size="7.5" fill="#999">(equal volume, no respiration)</text>
+
+    <!-- Soda lime at bottom -->
+    <rect x="434" y="165" width="92" height="50" rx="4" fill="#f0e68c" stroke="#c8b400" stroke-width="1.5"/>
+    <text x="480" y="185" text-anchor="middle" font-size="9" fill="#8B6914" font-weight="600">Soda lime</text>
+    <text x="480" y="196" text-anchor="middle" font-size="7.5" fill="#8B6914">(absorbs CO&#8322;)</text>
+
+    <!-- Stopper -->
+    <rect x="440" y="33" width="80" height="12" rx="3" fill="#c0392b" opacity="0.8"/>
+
+    <!-- MANOMETER TUBE connecting both -->
+    <!-- Left horizontal from experimental -->
+    <rect x="170" y="250" width="130" height="8" rx="3" fill="#dde4f5" stroke="#8898c4" stroke-width="1.5"/>
+    <!-- U-tube vertical left -->
+    <rect x="170" y="220" width="8" height="38" rx="2" fill="#dde4f5" stroke="#8898c4" stroke-width="1.5"/>
+    <!-- Connecting tube from experimental down -->
+    <path d="M175 220 L175 210 Q175 205 180 205 L186 42" fill="none" stroke="#8898c4" stroke-width="3"/>
+
+    <!-- Right horizontal from control -->
+    <rect x="320" y="250" width="130" height="8" rx="3" fill="#dde4f5" stroke="#8898c4" stroke-width="1.5"/>
+    <!-- U-tube vertical right -->
+    <rect x="442" y="220" width="8" height="38" rx="2" fill="#dde4f5" stroke="#8898c4" stroke-width="1.5"/>
+    <!-- Connecting tube from control down -->
+    <path d="M446 220 L446 210 Q446 205 441 205 L434 42" fill="none" stroke="#8898c4" stroke-width="3"/>
+
+    <!-- Manometer U-tube center -->
+    <rect x="295" y="250" width="30" height="80" rx="4" fill="#dde4f5" stroke="#8898c4" stroke-width="1.5"/>
+
+    <!-- Colored fluid in manometer -->
+    <rect x="175" y="253" width="125" height="3" rx="1" fill="#e74c3c" id="fluidLeft"/>
+    <rect x="320" y="253" width="125" height="3" rx="1" fill="#e74c3c" id="fluidRight"/>
+    <rect x="299" y="270" width="22" height="55" rx="2" fill="#e74c3c" opacity="0.8"/>
+
+    <!-- Fluid level indicators (animated) -->
+    <rect x="299" y="265" width="22" height="8" rx="2" fill="#c0392b" id="fluidLevelLeft"/>
+    <rect x="299" y="310" width="22" height="8" rx="2" fill="#c0392b" id="fluidLevelRight"/>
+
+    <!-- Scale on manometer -->
+    <text x="335" y="275" font-size="8" fill="#999">Scale</text>
+    <line x1="325" y1="270" x2="330" y2="270" stroke="#999" stroke-width="0.8"/>
+    <line x1="325" y1="280" x2="330" y2="280" stroke="#999" stroke-width="0.8"/>
+    <line x1="325" y1="290" x2="330" y2="290" stroke="#999" stroke-width="0.8"/>
+    <line x1="325" y1="300" x2="330" y2="300" stroke="#999" stroke-width="0.8"/>
+    <line x1="325" y1="310" x2="330" y2="310" stroke="#999" stroke-width="0.8"/>
+
+    <!-- Labels -->
+    <text x="310" y="350" text-anchor="middle" font-size="10" fill="#1835b4" font-weight="600">Manometer tube</text>
+    <text x="310" y="363" text-anchor="middle" font-size="8" fill="#6b7a99">Colored fluid moves toward experimental side</text>
+
+    <!-- Arrow showing fluid movement -->
+    <polygon points="250,256 240,252 240,260" fill="#1835b4" id="fluidArrow">
+      <animateTransform attributeName="transform" type="translate" values="0,0;-12,0;0,0" dur="2s" repeatCount="indefinite"/>
+    </polygon>
+    <text x="240" y="248" text-anchor="middle" font-size="8" fill="#1835b4" font-weight="600">Fluid moves</text>
+  </svg>
+</div>
+
+<div class="note-box">
+  <strong>How it works:</strong> As the organisms respire, they use up O&#8322;. The CO&#8322; they produce is absorbed by the soda lime. This means the total gas volume in the experimental tube decreases, lowering pressure. The colored fluid in the manometer moves towards the experimental side. The control tube (with non-living glass beads) shows no change, confirming the fluid movement is due to respiration.
+</div>
+
+<div class="explanation">
+  <strong>Why soda lime?</strong> Without soda lime, CO&#8322; produced would replace the O&#8322; consumed, and the gas volume would not change. By removing CO&#8322;, only the O&#8322; decrease is measured, allowing us to calculate the rate of oxygen consumption.
+</div>
+
+<p class="note">The animated arrow shows the direction of fluid movement as oxygen is consumed.</p>
+
+<script>
+// Subtle pulsing animation on fluid levels
+const fluidLevelLeft = document.getElementById('fluidLevelLeft');
+const fluidLevelRight = document.getElementById('fluidLevelRight');
+let t = 0;
+
+function animateFluid() {
+  t += 0.02;
+  const offset = Math.sin(t) * 3;
+  fluidLevelLeft.setAttribute('y', 265 - offset);
+  fluidLevelRight.setAttribute('y', 310 + offset);
+  requestAnimationFrame(animateFluid);
+}
+
+animateFluid();
+</script>
+
+</body>
+</html>

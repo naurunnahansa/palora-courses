@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Similar Shapes</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width:100%;margin:0 auto}h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc}.slider-row{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:.82rem}.slider-row input[type=range]{flex:1;accent-color:#1835b4}.slider-row .val{min-width:42px;text-align:center;font-weight:600;color:#1835b4}.factors{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px}.factor-box{background:#e8ecf8;border-radius:5px;padding:8px;text-align:center}.factor-box .label{font-size:.7rem;color:#6b7db3;text-transform:uppercase}.factor-box .val{font-size:1rem;font-weight:700;color:#1835b4}.factor-box .desc{font-size:.72rem;color:#4a5568;margin-top:2px}.calc-panel{background:#fafbfc;border-radius:5px;padding:10px;margin-top:8px;font-size:.78rem;line-height:1.8;color:#4a5568}.calc-panel strong{color:#1835b4}.toggle-row{display:flex;gap:8px;margin-top:8px}.toggle-btn{flex:1;padding:6px;border:1px solid #d4d8e5;border-radius:5px;background:#e8ecf8;font-size:.78rem;cursor:pointer;text-align:center;color:#1a2747;font-family:system-ui}.toggle-btn.active{background:#1835b4;color:#fff;border-color:#1835b4}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Similar Shapes</h1>
+    <div class="card" style="padding:8px"><canvas id="cv" width="800" height="500"></canvas></div>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row"><span>Scale factor k:</span><input type="range" id="kSlider" min="50" max="300" value="150"><span class="val" id="kVal">1.5</span></div>
+        <div class="toggle-row">
+            <button class="toggle-btn active" id="btnRect">Rectangle</button>
+            <button class="toggle-btn" id="btnTri">Triangle</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-title">Scale Factors</div>
+        <div class="factors">
+            <div class="factor-box"><div class="label">Linear (k)</div><div class="val" id="fk">1.5</div><div class="desc">lengths</div></div>
+            <div class="factor-box"><div class="label">Area (k&sup2;)</div><div class="val" id="fk2">2.25</div><div class="desc">areas</div></div>
+            <div class="factor-box"><div class="label">Volume (k&sup3;)</div><div class="val" id="fk3">3.375</div><div class="desc">volumes</div></div>
+        </div>
+        <div class="calc-panel" id="calcPanel"></div>
+    </div>
+    <div class="info">Similar shapes have the same angles but different side lengths. All corresponding sides share the same <strong>scale factor k</strong>.</div>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let k=1.5,shapeType='rect';
+const baseW=80,baseH=50,baseA=4,baseB=3;
+
+function resize(){const w=Math.min(600,cv.parentElement.clientWidth-16);cv.style.width=w+'px';cv.style.height=(w*0.625)+'px'}
+resize();window.addEventListener('resize',resize);
+
+document.getElementById('btnRect').onclick=function(){shapeType='rect';this.classList.add('active');document.getElementById('btnTri').classList.remove('active');draw()};
+document.getElementById('btnTri').onclick=function(){shapeType='tri';this.classList.add('active');document.getElementById('btnRect').classList.remove('active');draw()};
+
+function drawDimLabel(x1,y1,x2,y2,text,offset,color){
+    const mx=(x1+x2)/2,my=(y1+y2)/2;
+    const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy);
+    const nx=-dy/len*offset,ny=dx/len*offset;
+    ctx.strokeStyle=color||'#1835b4';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+    ctx.beginPath();ctx.moveTo(x1+nx,y1+ny);ctx.lineTo(x2+nx,y2+ny);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=color||'#1835b4';ctx.font='bold 13px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(text,mx+nx,my+ny);
+}
+
+function draw(){
+    const W=cv.width,H=cv.height;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    if(shapeType==='rect'){
+        const w1=baseW,h1=baseH;
+        const w2=baseW*k,h2=baseH*k;
+        const gap=60;
+        const totalW=w1+gap+w2;
+        const startX=(W-totalW)/2;
+        const y1=(H-h1)/2,y2=(H-h2)/2;
+
+        // Original
+        ctx.fillStyle='#1835b420';ctx.fillRect(startX,y1,w1,h1);
+        ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.strokeRect(startX,y1,w1,h1);
+        ctx.fillStyle='#1a2747';ctx.font='bold 12px system-ui';ctx.textAlign='center';
+        ctx.fillText('Original',startX+w1/2,y1-12);
+        drawDimLabel(startX,y1+h1+5,startX+w1,y1+h1+5,baseA+' cm',14,'#e74c3c');
+        drawDimLabel(startX-5,y1,startX-5,y1+h1,baseB+' cm',-14,'#2ecc71');
+
+        // Scaled
+        const sx2=startX+w1+gap;
+        ctx.fillStyle='#e74c3c15';ctx.fillRect(sx2,y2,w2,h2);
+        ctx.strokeStyle='#e74c3c';ctx.lineWidth=2;ctx.strokeRect(sx2,y2,w2,h2);
+        ctx.fillStyle='#1a2747';ctx.font='bold 12px system-ui';
+        ctx.fillText('Scaled (k = '+k.toFixed(2)+')',sx2+w2/2,y2-12);
+        drawDimLabel(sx2,y2+h2+5,sx2+w2,y2+h2+5,(baseA*k).toFixed(1)+' cm',14,'#e74c3c');
+        drawDimLabel(sx2-5,y2,sx2-5,y2+h2,(baseB*k).toFixed(1)+' cm',-14,'#2ecc71');
+
+        // Ratio arrow
+        ctx.strokeStyle='#f39c12';ctx.lineWidth=1.5;ctx.setLineDash([5,3]);
+        ctx.beginPath();ctx.moveTo(startX+w1+8,H/2);ctx.lineTo(sx2-8,H/2);ctx.stroke();ctx.setLineDash([]);
+        ctx.fillStyle='#f39c12';ctx.beginPath();ctx.moveTo(sx2-8,H/2);ctx.lineTo(sx2-16,H/2-5);ctx.lineTo(sx2-16,H/2+5);ctx.fill();
+        ctx.font='bold 11px system-ui';ctx.textAlign='center';ctx.fillText('× '+k.toFixed(2),(startX+w1+sx2)/2,H/2-10);
+
+        updateCalc(baseA,baseB,baseA*baseB);
+    } else {
+        const s1=70,s2=s1*k;
+        const h1t=s1*Math.sin(Math.PI/3),h2t=s2*Math.sin(Math.PI/3);
+        const gap=60;
+        const totalW=s1+gap+s2;
+        const startX=(W-totalW)/2;
+        const by1=(H+h1t)/2,by2=(H+h2t)/2;
+
+        // Original triangle
+        const t1=[{x:startX,y:by1},{x:startX+s1,y:by1},{x:startX+s1/2,y:by1-h1t}];
+        ctx.beginPath();ctx.moveTo(t1[0].x,t1[0].y);ctx.lineTo(t1[1].x,t1[1].y);ctx.lineTo(t1[2].x,t1[2].y);ctx.closePath();
+        ctx.fillStyle='#1835b420';ctx.fill();ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.stroke();
+        ctx.fillStyle='#1a2747';ctx.font='bold 12px system-ui';ctx.textAlign='center';
+        ctx.fillText('Original',startX+s1/2,by1+18);
+        drawDimLabel(t1[0].x,t1[0].y+5,t1[1].x,t1[1].y+5,baseA+' cm',12,'#e74c3c');
+
+        // Scaled triangle
+        const ox2=startX+s1+gap;
+        const t2=[{x:ox2,y:by2},{x:ox2+s2,y:by2},{x:ox2+s2/2,y:by2-h2t}];
+        ctx.beginPath();ctx.moveTo(t2[0].x,t2[0].y);ctx.lineTo(t2[1].x,t2[1].y);ctx.lineTo(t2[2].x,t2[2].y);ctx.closePath();
+        ctx.fillStyle='#e74c3c15';ctx.fill();ctx.strokeStyle='#e74c3c';ctx.lineWidth=2;ctx.stroke();
+        ctx.fillStyle='#1a2747';ctx.font='bold 12px system-ui';
+        ctx.fillText('Scaled (k = '+k.toFixed(2)+')',ox2+s2/2,by2+18);
+        drawDimLabel(t2[0].x,t2[0].y+5,t2[1].x,t2[1].y+5,(baseA*k).toFixed(1)+' cm',12,'#e74c3c');
+
+        const area1=0.5*baseA*baseA*Math.sin(Math.PI/3);
+        updateCalc(baseA,baseA,area1);
+    }
+
+    document.getElementById('fk').textContent=k.toFixed(2);
+    document.getElementById('fk2').textContent=(k*k).toFixed(2);
+    document.getElementById('fk3').textContent=(k*k*k).toFixed(2);
+}
+
+function updateCalc(sideA,sideB,area){
+    const p=document.getElementById('calcPanel');
+    p.innerHTML='<strong>Relationships:</strong><br>'+
+        'Original side: <strong>'+sideA+' cm</strong> &rarr; Scaled side: <strong>'+(sideA*k).toFixed(1)+' cm</strong> (× '+k.toFixed(2)+')<br>'+
+        'Original area: <strong>'+area.toFixed(1)+' cm&sup2;</strong> &rarr; Scaled area: <strong>'+(area*k*k).toFixed(1)+' cm&sup2;</strong> (× '+( k*k).toFixed(2)+')<br>'+
+        'If volume existed: <strong>V&prime; = V × k&sup3; = V × '+(k*k*k).toFixed(2)+'</strong>';
+}
+
+document.getElementById('kSlider').addEventListener('input',function(){k=this.value/100;document.getElementById('kVal').textContent=k.toFixed(2);draw()});
+draw();
+</script>
+</body>
+</html>

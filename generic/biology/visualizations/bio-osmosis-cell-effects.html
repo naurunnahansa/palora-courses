@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Osmosis: Effects on Cells</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .slider-group { border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px 10px; margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; }
+        .slider-label .val { color: #1835b4; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #d4d8e5; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .labels-row { display: flex; justify-content: space-between; font-size: 0.65rem; color: #4a5568; margin-top: 2px; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+        .state-label { font-size: 0.75rem; font-weight: 700; color: #1835b4; text-align: center; margin-top: 4px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Osmosis: Effects on Cells</h1>
+    <div class="desc">Drag the slider to change the external solution concentration</div>
+    <canvas id="cellCanvas" width="530" height="380"></canvas>
+    <div class="slider-group">
+        <div class="slider-label"><span>Solution Concentration</span><span class="val" id="concVal">Isotonic</span></div>
+        <input type="range" id="concSlider" min="0" max="100" value="50" oninput="update()">
+        <div class="labels-row">
+            <span>Hypotonic (dilute)</span><span>Isotonic</span><span>Hypertonic (concentrated)</span>
+        </div>
+    </div>
+    <div class="note">
+        <strong>Key concept:</strong> Water moves by osmosis from a region of higher water potential (dilute solution) to lower water potential (concentrated solution) across a partially permeable membrane.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('cellCanvas');
+const ctx = canvas.getContext('2d');
+let conc = 50;
+
+function update() {
+    conc = parseInt(document.getElementById('concSlider').value);
+    const label = conc < 35 ? 'Hypotonic' : conc > 65 ? 'Hypertonic' : 'Isotonic';
+    document.getElementById('concVal').textContent = label;
+    draw();
+}
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function drawArrow(x1, y1, x2, y2, color, alpha) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = 2;
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.sqrt(dx * dx + dy * dy);
+    const ux = dx / len, uy = dy / len;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2 - ux * 6, y2 - uy * 6);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - ux * 8 - uy * 4, y2 - uy * 8 + ux * 4);
+    ctx.lineTo(x2 - ux * 8 + uy * 4, y2 - uy * 8 - ux * 4);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+}
+
+function drawWaterLabel(cx, cy, inward, alpha) {
+    if (alpha < 0.05) return;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.font = '600 0.55rem system-ui';
+    ctx.fillStyle = '#2b6cb0';
+    ctx.textAlign = 'center';
+    const offsets = [[-55, -20], [55, -20], [-55, 20], [55, 20]];
+    for (const [ox, oy] of offsets) {
+        const ax = cx + ox, ay = cy + oy;
+        if (inward) {
+            drawArrow(ax, ay, cx + ox * 0.4, cy + oy * 0.4, '#2b6cb0', alpha);
+        } else {
+            drawArrow(cx + ox * 0.4, cy + oy * 0.4, ax, ay, '#2b6cb0', alpha);
+        }
+    }
+    const txt = inward ? 'H\u2082O \u2192 in' : 'H\u2082O \u2192 out';
+    ctx.fillText(txt, cx, cy - 55);
+    ctx.restore();
+}
+
+function drawAnimalCell(cx, cy, factor) {
+    // factor: 0 = shrunken (crenation), 0.5 = normal, 1 = swollen/burst
+    const baseR = 42;
+    const r = baseR * lerp(0.65, 1.25, factor);
+    const crenation = factor < 0.3 ? (0.3 - factor) / 0.3 : 0;
+    const bursting = factor > 0.85 ? (factor - 0.85) / 0.15 : 0;
+
+    ctx.save();
+    // Cell body
+    ctx.beginPath();
+    if (crenation > 0) {
+        const spikes = 12;
+        for (let i = 0; i <= spikes * 2; i++) {
+            const a = (i / (spikes * 2)) * Math.PI * 2;
+            const rr = i % 2 === 0 ? r : r - crenation * 10;
+            const px = cx + Math.cos(a) * rr;
+            const py = cy + Math.sin(a) * rr;
+            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+    } else {
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    }
+    ctx.fillStyle = bursting > 0.5 ? `rgba(255,200,200,${1 - bursting * 0.6})` : '#ffe0e0';
+    ctx.fill();
+    ctx.strokeStyle = '#c53030';
+    ctx.lineWidth = 2.5;
+    if (bursting > 0.5) { ctx.setLineDash([4, 4]); }
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Nucleus
+    ctx.beginPath();
+    const nr = lerp(10, 16, factor) * 0.8;
+    ctx.arc(cx, cy, nr, 0, Math.PI * 2);
+    ctx.fillStyle = '#9b2c2c';
+    ctx.globalAlpha = 0.3;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.restore();
+}
+
+function drawPlantCell(cx, cy, factor) {
+    // factor: 0 = plasmolysed, 0.5 = normal, 1 = turgid
+    const wallW = 56, wallH = 50;
+
+    ctx.save();
+    // Cell wall (rigid, doesn't change)
+    ctx.strokeStyle = '#276749';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(cx - wallW, cy - wallH, wallW * 2, wallH * 2);
+
+    // Cell membrane
+    const memScale = lerp(0.55, 1.0, factor);
+    const mw = wallW * memScale, mh = wallH * memScale;
+    const plasmolysis = factor < 0.3;
+
+    ctx.beginPath();
+    if (plasmolysis) {
+        // rounded shrunken membrane inside
+        const rr = 8;
+        ctx.moveTo(cx - mw + rr, cy - mh);
+        ctx.arcTo(cx + mw, cy - mh, cx + mw, cy + mh, rr);
+        ctx.arcTo(cx + mw, cy + mh, cx - mw, cy + mh, rr);
+        ctx.arcTo(cx - mw, cy + mh, cx - mw, cy - mh, rr);
+        ctx.arcTo(cx - mw, cy - mh, cx + mw, cy - mh, rr);
+        ctx.closePath();
+    } else {
+        ctx.rect(cx - mw + 2, cy - mh + 2, (mw - 2) * 2, (mh - 2) * 2);
+    }
+    ctx.fillStyle = '#c6f6d5';
+    ctx.fill();
+    ctx.strokeStyle = '#c53030';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Vacuole
+    const vacScale = lerp(0.2, 0.75, factor);
+    ctx.beginPath();
+    ctx.arc(cx, cy, wallW * vacScale * 0.7, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(99,179,237,0.35)';
+    ctx.fill();
+    ctx.strokeStyle = '#3182ce';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Nucleus
+    ctx.beginPath();
+    ctx.arc(cx + 10, cy - 8, 8, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(155,44,44,0.3)';
+    ctx.fill();
+
+    // Gaps for plasmolysis
+    if (plasmolysis) {
+        ctx.font = '0.5rem system-ui';
+        ctx.fillStyle = '#718096';
+        ctx.textAlign = 'center';
+        ctx.fillText('gap', cx - wallW + 8, cy - wallH + 14);
+    }
+    ctx.restore();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // t: 0 = hypotonic, 0.5 = isotonic, 1 = hypertonic
+    const t = conc / 100;
+
+    // animal cell factor: hypotonic => swells (factor=1), isotonic => normal (0.5), hypertonic => shrinks (0)
+    const animalFactor = 1 - t;
+    // plant cell factor: hypotonic => turgid (factor=1), isotonic => normal (0.5), hypertonic => plasmolysed (0)
+    const plantFactor = 1 - t;
+
+    // Background solution coloring
+    const solutionAlpha = lerp(0.02, 0.15, t);
+    ctx.fillStyle = `rgba(255,165,0,${solutionAlpha})`;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Section labels
+    ctx.font = '600 0.7rem system-ui';
+    ctx.fillStyle = '#1835b4';
+    ctx.textAlign = 'left';
+    ctx.fillText('Animal Cell', 15, 20);
+    ctx.fillText('Plant Cell', 15, 200);
+
+    // Divider
+    ctx.strokeStyle = '#d4d8e5';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 3]);
+    ctx.beginPath(); ctx.moveTo(10, 185); ctx.lineTo(520, 185); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Animal cell
+    const acx = 160, acy = 100;
+    drawAnimalCell(acx, acy, animalFactor);
+    const waterIn = t < 0.4;
+    const waterOut = t > 0.6;
+    const arrowAlpha = waterIn ? (0.4 - t) / 0.4 : waterOut ? (t - 0.6) / 0.4 : 0;
+    drawWaterLabel(acx, acy, waterIn, arrowAlpha);
+
+    // Animal state label
+    ctx.font = '600 0.65rem system-ui';
+    ctx.fillStyle = '#c53030';
+    ctx.textAlign = 'center';
+    let animalState = 'Normal shape';
+    if (t < 0.35) animalState = animalFactor > 0.85 ? 'Lysis (bursting)' : 'Swelling';
+    if (t > 0.65) animalState = 'Crenation (shrinking)';
+    ctx.fillText(animalState, acx, acy + 65);
+
+    // Animal explanation
+    ctx.font = '0.55rem system-ui';
+    ctx.fillStyle = '#4a5568';
+    const animalExpl = t < 0.35 ? 'Water enters cell by osmosis' : t > 0.65 ? 'Water leaves cell by osmosis' : 'No net water movement';
+    ctx.fillText(animalExpl, acx, acy + 78);
+
+    // Diagram labels on right
+    ctx.font = '0.6rem system-ui';
+    ctx.fillStyle = '#4a5568';
+    ctx.textAlign = 'left';
+    const states = [
+        { label: 'Hypotonic', desc: 'Swells / Lysis', x: 310, y: 40, active: t < 0.35 },
+        { label: 'Isotonic', desc: 'Normal', x: 310, y: 80, active: t >= 0.35 && t <= 0.65 },
+        { label: 'Hypertonic', desc: 'Crenation', x: 310, y: 120, active: t > 0.65 },
+    ];
+    for (const s of states) {
+        ctx.font = s.active ? '700 0.65rem system-ui' : '0.6rem system-ui';
+        ctx.fillStyle = s.active ? '#1835b4' : '#a0aec0';
+        ctx.fillText(s.label, s.x, s.y);
+        ctx.font = '0.55rem system-ui';
+        ctx.fillText(s.desc, s.x + 5, s.y + 14);
+        if (s.active) {
+            ctx.fillStyle = '#1835b4';
+            ctx.beginPath(); ctx.arc(s.x - 8, s.y - 3, 3, 0, Math.PI * 2); ctx.fill();
+        }
+    }
+
+    // Plant cell
+    const pcx = 160, pcy = 290;
+    drawPlantCell(pcx, pcy, plantFactor);
+    drawWaterLabel(pcx, pcy, waterIn, arrowAlpha * 0.8);
+
+    // Plant state label
+    ctx.font = '600 0.65rem system-ui';
+    ctx.fillStyle = '#276749';
+    ctx.textAlign = 'center';
+    let plantState = 'Normal';
+    if (t < 0.35) plantState = 'Turgid (firm)';
+    if (t > 0.65) plantState = 'Plasmolysed';
+    ctx.fillText(plantState, pcx, pcy + 65);
+
+    ctx.font = '0.55rem system-ui';
+    ctx.fillStyle = '#4a5568';
+    const plantExpl = t < 0.35 ? 'Cell wall prevents bursting' : t > 0.65 ? 'Membrane pulls from wall' : 'No net water movement';
+    ctx.fillText(plantExpl, pcx, pcy + 78);
+
+    // Plant state indicators on right
+    const pStates = [
+        { label: 'Hypotonic', desc: 'Turgid (wall holds)', x: 310, y: 225, active: t < 0.35 },
+        { label: 'Isotonic', desc: 'Normal', x: 310, y: 265, active: t >= 0.35 && t <= 0.65 },
+        { label: 'Hypertonic', desc: 'Plasmolysis', x: 310, y: 305, active: t > 0.65 },
+    ];
+    for (const s of pStates) {
+        ctx.font = s.active ? '700 0.65rem system-ui' : '0.6rem system-ui';
+        ctx.fillStyle = s.active ? '#276749' : '#a0aec0';
+        ctx.fillText(s.label, s.x, s.y);
+        ctx.font = '0.55rem system-ui';
+        ctx.fillText(s.desc, s.x + 5, s.y + 14);
+        if (s.active) {
+            ctx.fillStyle = '#276749';
+            ctx.beginPath(); ctx.arc(s.x - 8, s.y - 3, 3, 0, Math.PI * 2); ctx.fill();
+        }
+    }
+
+    // Key at bottom
+    ctx.font = '0.55rem system-ui';
+    ctx.fillStyle = '#718096';
+    ctx.textAlign = 'center';
+    ctx.fillText('Cell membrane (red) | Cell wall (green, plant only) | Vacuole (blue)', canvas.width / 2, 370);
+}
+
+update();
+</script>
+</body>
+</html>

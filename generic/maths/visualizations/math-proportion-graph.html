@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct & Inverse Proportion</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}
+.container{max-width:100%;margin:0 auto}
+h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.slider-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.slider-row label{font-size:.78rem;font-weight:600;min-width:30px;color:#1835b4}
+.slider-row input[type=range]{flex:1;accent-color:#1835b4}
+.slider-row .val{font-size:.85rem;min-width:32px;text-align:right;color:#1835b4}
+.toggle-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.toggle-btn{padding:5px 10px;border:1px solid #d4d8e5;border-radius:4px;background:#e8ecf8;color:#1835b4;font-size:.72rem;cursor:pointer;font-family:system-ui}
+.toggle-btn.active{background:#1835b4;color:#fff;border-color:#1835b4}
+.graphs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+canvas{display:block;border-radius:4px;background:#fafbfc;width:100%}
+.equation-display{background:#e8ecf8;border-radius:5px;padding:6px 10px;text-align:center;font-size:.85rem;color:#1835b4;font-weight:600;margin-top:6px}
+.hover-info{background:#fafbfc;border-radius:5px;padding:6px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:6px}
+.hover-info strong{color:#1835b4}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#1835b4}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Direct & Inverse Proportion</h1>
+    <div class="card">
+        <div class="card-title">Controls</div>
+        <div class="slider-row">
+            <label>k</label>
+            <input type="range" id="slK" min="0.5" max="10" step="0.5" value="2">
+            <span class="val" id="valK">2</span>
+        </div>
+        <div class="toggle-row">
+            <div class="toggle-btn active" onclick="setType(0)">y \u221d x</div>
+            <div class="toggle-btn" onclick="setType(1)">y \u221d x\u00b2</div>
+            <div class="toggle-btn" onclick="setType(2)">y \u221d 1/x</div>
+            <div class="toggle-btn" onclick="setType(3)">y \u221d 1/x\u00b2</div>
+        </div>
+    </div>
+    <div class="card" style="padding:8px">
+        <div class="graphs">
+            <div>
+                <div style="text-align:center;font-size:.75rem;color:#1835b4;font-weight:600;margin-bottom:4px">Direct Proportion</div>
+                <canvas id="canvasD" width="500" height="500"></canvas>
+                <div class="equation-display" id="eqD">y = 2x</div>
+            </div>
+            <div>
+                <div style="text-align:center;font-size:.75rem;color:#1835b4;font-weight:600;margin-bottom:4px">Inverse Proportion</div>
+                <canvas id="canvasI" width="500" height="500"></canvas>
+                <div class="equation-display" id="eqI">y = 2/x</div>
+            </div>
+        </div>
+        <div class="hover-info" id="hoverInfo">Hover over a graph to see (x, y) values</div>
+    </div>
+    <div class="info">Adjust <strong>k</strong> and toggle the proportion type to explore different relationships.</div>
+</div>
+<script>
+const canvasD=document.getElementById('canvasD'),ctxD=canvasD.getContext('2d');
+const canvasI=document.getElementById('canvasI'),ctxI=canvasI.getContext('2d');
+const slK=document.getElementById('slK'),valKEl=document.getElementById('valK');
+let propType=0;
+const typeLabels=['y = kx','y = kx\u00b2','y = k/x','y = k/x\u00b2'];
+const typeFnsD=[
+    (k,x)=>k*x,
+    (k,x)=>k*x*x,
+    (k,x)=>k*x,
+    (k,x)=>k*x*x
+];
+const typeFnsI=[
+    (k,x)=>k/x,
+    (k,x)=>k/(x*x),
+    (k,x)=>k/x,
+    (k,x)=>k/(x*x)
+];
+
+function setType(t){
+    propType=t;
+    document.querySelectorAll('.toggle-btn').forEach((b,i)=>b.className='toggle-btn'+(i===t?' active':''));
+    draw();
+}
+slK.addEventListener('input',draw);
+
+function drawGraph(cvs,ct,fn,k,color,label,isInverse){
+    const W=cvs.width,H=cvs.height;
+    ct.clearRect(0,0,W,H);ct.fillStyle='#fafbfc';ct.fillRect(0,0,W,H);
+    const scale=isInverse?30:25;
+    const ox=isInverse?60:40,oy=H-40;
+    // Grid
+    ct.strokeStyle='#f0eeef';ct.lineWidth=1;
+    for(let i=0;i<=20;i++){
+        const px=ox+i*scale;if(px>W)break;
+        ct.beginPath();ct.moveTo(px,0);ct.lineTo(px,H);ct.stroke();
+        const py=oy-i*scale;if(py<0)break;
+        ct.beginPath();ct.moveTo(0,py);ct.lineTo(W,py);ct.stroke();
+    }
+    // Axes
+    ct.strokeStyle='#ccc';ct.lineWidth=2;
+    ct.beginPath();ct.moveTo(ox,0);ct.lineTo(ox,H);ct.stroke();
+    ct.beginPath();ct.moveTo(0,oy);ct.lineTo(W,oy);ct.stroke();
+    // Labels
+    ct.fillStyle='#999';ct.font='11px system-ui';ct.textAlign='center';
+    for(let i=1;i<=15;i++){
+        const px=ox+i*scale;if(px>W-10)break;
+        ct.fillText(i,px,oy+14);
+    }
+    ct.textAlign='right';
+    for(let i=1;i<=15;i++){
+        const py=oy-i*scale;if(py<10)break;
+        ct.fillText(i,ox-6,py+4);
+    }
+    // Curve
+    ct.strokeStyle=color;ct.lineWidth=3;ct.beginPath();
+    let first=true;
+    for(let px=ox+1;px<=W;px+=2){
+        const x=(px-ox)/scale;
+        if(x<=0.05&&isInverse)continue;
+        const y=fn(k,x);
+        const py=oy-y*scale;
+        if(py<-100||py>H+100){first=true;continue;}
+        if(first){ct.moveTo(px,py);first=false;}
+        else ct.lineTo(px,py);
+    }
+    ct.stroke();
+    // Origin dot
+    if(!isInverse){ct.beginPath();ct.arc(ox,oy,4,0,Math.PI*2);ct.fillStyle=color;ct.fill();}
+}
+
+function draw(){
+    const k=parseFloat(slK.value);valKEl.textContent=k;
+    let dFn,iFn,dLabel,iLabel;
+    switch(propType){
+        case 0:dFn=(kk,x)=>kk*x;iFn=(kk,x)=>kk/x;dLabel='y = '+k+'x';iLabel='y = '+k+'/x';break;
+        case 1:dFn=(kk,x)=>kk*x*x;iFn=(kk,x)=>kk/(x*x);dLabel='y = '+k+'x\u00b2';iLabel='y = '+k+'/x\u00b2';break;
+        case 2:dFn=(kk,x)=>kk*x;iFn=(kk,x)=>kk/x;dLabel='y = '+k+'x';iLabel='y = '+k+'/x';break;
+        case 3:dFn=(kk,x)=>kk*x*x;iFn=(kk,x)=>kk/(x*x);dLabel='y = '+k+'x\u00b2';iLabel='y = '+k+'/x\u00b2';break;
+    }
+    drawGraph(canvasD,ctxD,dFn,k,'#1835b4',dLabel,false);
+    drawGraph(canvasI,ctxI,iFn,k,'#c27878',iLabel,true);
+    document.getElementById('eqD').textContent=dLabel;
+    document.getElementById('eqI').textContent=iLabel;
+}
+
+function setupHover(cvs,fn,k,isInverse){
+    cvs.addEventListener('mousemove',function(e){
+        const rect=cvs.getBoundingClientRect();
+        const scaleX=cvs.width/rect.width;
+        const mx=(e.clientX-rect.left)*scaleX;
+        const my=(e.clientY-rect.top)*scaleX;
+        const scale=isInverse?30:25;
+        const ox=isInverse?60:40,oy=cvs.height-40;
+        const x=(mx-ox)/scale;
+        const kv=parseFloat(slK.value);
+        if(x>0.05){
+            let y;
+            switch(propType){
+                case 0:case 2:y=isInverse?kv/x:kv*x;break;
+                case 1:case 3:y=isInverse?kv/(x*x):kv*x*x;break;
+            }
+            document.getElementById('hoverInfo').innerHTML='<strong>x = '+x.toFixed(2)+', y = '+y.toFixed(2)+'</strong>';
+        }
+    });
+}
+setupHover(canvasD,null,null,false);
+setupHover(canvasI,null,null,true);
+draw();
+
+function resize(){
+    document.querySelectorAll('.graphs canvas').forEach(c=>{
+        const w=Math.min(260,c.parentElement.clientWidth-4);
+        c.style.width=w+'px';c.style.height=w+'px';
+    });
+}
+window.addEventListener('resize',resize);resize();
+</script>
+</body>
+</html>

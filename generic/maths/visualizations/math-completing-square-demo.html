@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completing the Square</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}
+.container{max-width:100%;margin:0 auto}
+h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.slider-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.slider-row label{font-size:.78rem;font-weight:600;min-width:24px;color:#1835b4}
+.slider-row input[type=range]{flex:1;accent-color:#1835b4}
+.slider-row .val{font-size:.85rem;min-width:32px;text-align:right;color:#1835b4}
+.equation-display{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;font-size:.95rem;color:#1835b4;margin-bottom:8px;font-weight:600}
+canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;width:100%}
+.step-box{background:#fafbfc;border-radius:5px;padding:10px 12px;margin-top:6px}
+.step{font-size:.8rem;color:#1a2747;padding:4px 0;border-bottom:1px solid #f0f0f0;line-height:1.6}
+.step:last-child{border-bottom:none}
+.step .hl{color:#1835b4;font-weight:600}
+.step .note{font-size:.72rem;color:#4a5568}
+.readouts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.readout{background:#e8ecf8;border-radius:5px;padding:6px 8px;text-align:center}
+.readout .label{font-size:.65rem;color:#4a5568}
+.readout .value{font-size:.82rem;color:#1835b4;font-weight:600}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#1835b4}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Completing the Square</h1>
+    <div class="card">
+        <div class="card-title">Quadratic: ax\u00b2 + bx + c</div>
+        <div class="equation-display" id="eqOrig">x\u00b2 + 6x + 5</div>
+        <div class="slider-row"><label>a</label><input type="range" id="slA" min="1" max="5" step="1" value="1"><span class="val" id="valA">1</span></div>
+        <div class="slider-row"><label>b</label><input type="range" id="slB" min="-10" max="10" step="1" value="6"><span class="val" id="valB">6</span></div>
+        <div class="slider-row"><label>c</label><input type="range" id="slC" min="-10" max="10" step="1" value="5"><span class="val" id="valC">5</span></div>
+    </div>
+    <div class="card">
+        <div class="card-title">Step-by-Step Transformation</div>
+        <div class="step-box" id="steps"></div>
+        <div class="equation-display" id="eqCompleted" style="background:#d4e8d4;color:#2a6e2a"></div>
+    </div>
+    <div class="card" style="padding:8px">
+        <div class="card-title" style="padding:0 4px">Geometric Representation</div>
+        <canvas id="canvas" width="800" height="500"></canvas>
+    </div>
+    <div class="card">
+        <div class="card-title">Vertex from Completed Square</div>
+        <div class="readouts">
+            <div class="readout"><div class="label">Vertex (h, k)</div><div class="value" id="vertex"></div></div>
+            <div class="readout"><div class="label">Axis of Symmetry</div><div class="value" id="axis"></div></div>
+            <div class="readout"><div class="label">Minimum/Maximum</div><div class="value" id="minmax"></div></div>
+            <div class="readout"><div class="label">y-intercept</div><div class="value" id="yint"></div></div>
+        </div>
+    </div>
+    <div class="info">The completed square form <strong>a(x + p)\u00b2 + q</strong> directly reveals the vertex at <strong>(-p, q)</strong>.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const slA=document.getElementById('slA'),slB=document.getElementById('slB'),slC=document.getElementById('slC');
+[slA,slB,slC].forEach(s=>s.addEventListener('input',draw));
+function fmt(v){return parseFloat(v.toFixed(3));}
+function sign(v){return v>=0?' + ':' - ';}
+function absV(v){return Math.abs(v);}
+
+function draw(){
+    const a=parseInt(slA.value),b=parseInt(slB.value),c=parseInt(slC.value);
+    document.getElementById('valA').textContent=a;
+    document.getElementById('valB').textContent=b;
+    document.getElementById('valC').textContent=c;
+
+    // Original equation display
+    let orig='';
+    if(a!==1)orig+=a;
+    orig+='x\u00b2';
+    if(b!==0)orig+=sign(b)+absV(b)+'x';
+    if(c!==0)orig+=sign(c)+absV(c);
+    document.getElementById('eqOrig').textContent=orig;
+
+    // Completing the square
+    const p=b/(2*a);
+    const pSq=p*p;
+    const q=c-a*pSq;
+
+    let html='';
+    html+='<div class="step"><span class="hl">Start:</span> '+orig+'</div>';
+    if(a!==1){
+        html+='<div class="step"><span class="hl">Factor out a='+a+':</span> '+a+'(x\u00b2 + '+(b/a)+'x) + '+c+'</div>';
+        html+='<div class="step"><span class="hl">Half of '+(b/a)+':</span> '+(b/(2*a))+', squared: '+fmt(pSq)+'</div>';
+        html+='<div class="step"><span class="hl">Add and subtract '+a+'\u00d7'+fmt(pSq)+'='+fmt(a*pSq)+':</span></div>';
+        let inner='(x'+sign(p)+fmt(absV(p))+')\u00b2';
+        html+='<div class="step"><span class="hl">Result:</span> '+a+inner+sign(q)+fmt(absV(q))+'</div>';
+    } else {
+        html+='<div class="step"><span class="hl">Half of b='+b+':</span> '+p+', squared: '+fmt(pSq)+'</div>';
+        html+='<div class="step"><span class="hl">Rewrite x\u00b2'+sign(b)+absV(b)+'x as:</span> (x'+sign(p)+fmt(absV(p))+')\u00b2 - '+fmt(pSq)+' <span class="note">(add and subtract '+fmt(pSq)+')</span></div>';
+        html+='<div class="step"><span class="hl">Combine constants:</span> -'+fmt(pSq)+sign(c)+absV(c)+' = '+fmt(q)+'</div>';
+        html+='<div class="step"><span class="hl">Result:</span> (x'+sign(p)+fmt(absV(p))+')\u00b2'+sign(q)+fmt(absV(q))+'</div>';
+    }
+    document.getElementById('steps').innerHTML=html;
+
+    // Completed form
+    let comp='';
+    if(a!==1)comp+=a;
+    comp+='(x'+sign(p)+fmt(absV(p))+')\u00b2'+sign(q)+fmt(absV(q));
+    document.getElementById('eqCompleted').textContent='Completed: '+comp;
+
+    // Vertex info
+    const vx=-p,vy=q;
+    document.getElementById('vertex').textContent='('+fmt(vx)+', '+fmt(vy)+')';
+    document.getElementById('axis').textContent='x = '+fmt(vx);
+    document.getElementById('minmax').textContent=(a>0?'Min':'Max')+' = '+fmt(vy);
+    document.getElementById('yint').textContent='(0, '+c+')';
+
+    // Geometric visualization
+    drawGeometric(a,b,c,p,pSq,q);
+}
+
+function drawGeometric(a,b,c,p,pSq,q){
+    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+    const unit=Math.min(50,200/Math.max(Math.abs(p)+1,3));
+    const baseX=120,baseY=80;
+    // x^2 square
+    const xSide=Math.abs(3)*unit;
+    ctx.fillStyle='rgba(24,53,180,0.15)';
+    ctx.fillRect(baseX,baseY,xSide,xSide);
+    ctx.strokeStyle='#1835b4';ctx.lineWidth=2;
+    ctx.strokeRect(baseX,baseY,xSide,xSide);
+    ctx.fillStyle='#1835b4';ctx.font='bold 14px system-ui';ctx.textAlign='center';
+    ctx.fillText('x\u00b2',baseX+xSide/2,baseY+xSide/2+5);
+    ctx.fillText('x',baseX+xSide/2,baseY-8);
+    ctx.textAlign='right';ctx.fillText('x',baseX-8,baseY+xSide/2+5);
+
+    // bx rectangle split into two halves
+    const halfB=Math.abs(b/(2*a));
+    const rectW=halfB*unit*0.6;
+    // Right rectangle (x by b/2a)
+    ctx.fillStyle='rgba(194,120,120,0.2)';
+    ctx.fillRect(baseX+xSide,baseY,rectW,xSide);
+    ctx.strokeStyle='#c27878';ctx.lineWidth=2;
+    ctx.strokeRect(baseX+xSide,baseY,rectW,xSide);
+    ctx.fillStyle='#c27878';ctx.font='bold 12px system-ui';ctx.textAlign='center';
+    ctx.fillText(fmt(halfB)+'x',baseX+xSide+rectW/2,baseY+xSide/2+5);
+    ctx.fillText(fmt(halfB),baseX+xSide+rectW/2,baseY-8);
+
+    // Bottom rectangle (b/2a by x)
+    ctx.fillStyle='rgba(194,120,120,0.2)';
+    ctx.fillRect(baseX,baseY+xSide,xSide,rectW);
+    ctx.strokeStyle='#c27878';ctx.lineWidth=2;
+    ctx.strokeRect(baseX,baseY+xSide,xSide,rectW);
+    ctx.fillStyle='#c27878';ctx.font='bold 12px system-ui';
+    ctx.fillText(fmt(halfB)+'x',baseX+xSide/2,baseY+xSide+rectW/2+5);
+    ctx.textAlign='right';ctx.fillText(fmt(halfB),baseX-8,baseY+xSide+rectW/2+5);
+
+    // Corner square (completes the square)
+    ctx.fillStyle='rgba(212,168,67,0.25)';
+    ctx.fillRect(baseX+xSide,baseY+xSide,rectW,rectW);
+    ctx.strokeStyle='#d4a843';ctx.lineWidth=2;
+    ctx.strokeRect(baseX+xSide,baseY+xSide,rectW,rectW);
+    ctx.fillStyle='#d4a843';ctx.font='bold 11px system-ui';ctx.textAlign='center';
+    ctx.fillText(fmt(pSq),baseX+xSide+rectW/2,baseY+xSide+rectW/2+4);
+
+    // Arrow and label
+    ctx.fillStyle='#d4a843';ctx.font='bold 12px system-ui';ctx.textAlign='left';
+    ctx.fillText('\u2190 This completes the square!',baseX+xSide+rectW+12,baseY+xSide+rectW/2+4);
+    ctx.fillText('Added: '+fmt(pSq),baseX+xSide+rectW+12,baseY+xSide+rectW/2+22);
+
+    // Result label
+    ctx.fillStyle='#1835b4';ctx.font='bold 14px system-ui';ctx.textAlign='center';
+    const totalSide=xSide+rectW;
+    ctx.fillText('(x + '+fmt(halfB)+')\u00b2',baseX+totalSide/2,baseY+xSide+rectW+30);
+
+    // Right side: show the vertex on a mini graph
+    const gx=W-250,gy=60,gw=210,gh=200;
+    ctx.strokeStyle='#d4d8e5';ctx.lineWidth=1;ctx.strokeRect(gx,gy,gw,gh);
+    const gcx=gx+gw/2,gcy=gy+gh*0.7;
+    const gscale=20;
+    ctx.strokeStyle='#eee';ctx.lineWidth=1;
+    for(let i=-5;i<=5;i++){
+        ctx.beginPath();ctx.moveTo(gcx+i*gscale,gy);ctx.lineTo(gcx+i*gscale,gy+gh);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(gx,gcy-i*gscale);ctx.lineTo(gx+gw,gcy-i*gscale);ctx.stroke();
+    }
+    ctx.strokeStyle='#bbb';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(gx,gcy);ctx.lineTo(gx+gw,gcy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(gcx,gy);ctx.lineTo(gcx,gy+gh);ctx.stroke();
+    // Parabola
+    ctx.strokeStyle='#1835b4';ctx.lineWidth=2.5;ctx.beginPath();let first=true;
+    for(let px=gx;px<=gx+gw;px++){
+        const x=(px-gcx)/gscale;const y=a*x*x+b*x+c;const py=gcy-y*gscale;
+        if(py<gy-20||py>gy+gh+20){first=true;continue;}
+        if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+    // Vertex
+    const vx=-p,vy=c-a*pSq;
+    const vpx=gcx+vx*gscale,vpy=gcy-vy*gscale;
+    if(vpx>gx&&vpx<gx+gw&&vpy>gy&&vpy<gy+gh){
+        ctx.beginPath();ctx.arc(vpx,vpy,5,0,Math.PI*2);ctx.fillStyle='#c27878';ctx.fill();
+        ctx.fillStyle='#1a2747';ctx.font='bold 11px system-ui';ctx.textAlign='center';
+        ctx.fillText('Vertex ('+fmt(vx)+','+fmt(vy)+')',vpx,vpy+16);
+    }
+    ctx.fillStyle='#1835b4';ctx.font='bold 13px system-ui';ctx.textAlign='center';
+    ctx.fillText('Graph showing vertex',gx+gw/2,gy-8);
+}
+draw();
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=(w*0.625)+'px';}
+window.addEventListener('resize',resize);resize();
+</script>
+</body>
+</html>

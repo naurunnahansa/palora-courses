@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compensation Point</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; }
+        .legend { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+        .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 600; }
+        .legend-swatch { width: 20px; height: 3px; border-radius: 2px; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Compensation Point</h1>
+    <div class="desc">Light intensity at which photosynthesis rate equals respiration rate</div>
+    <canvas id="graphCanvas" width="530" height="320"></canvas>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#27ae60;"></div>Photosynthesis rate</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#e74c3c;"></div>Respiration rate</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#1835b4;"></div>Net gas exchange</div>
+    </div>
+    <div class="note">
+        <strong>Compensation point:</strong> Where net gas exchange = 0. Below this, the plant releases more CO&#8322; than it absorbs. Above, it absorbs more CO&#8322; (net photosynthesis).
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('graphCanvas');
+const ctx = canvas.getContext('2d');
+let hoverX = null;
+
+const pad = { top: 30, right: 20, bottom: 50, left: 55 };
+const xMax = 100, yMin = -3, yMax = 10;
+
+function photoRate(x) { return 8 * (1 - Math.exp(-0.05 * x)); }
+function respRate() { return 2; }
+function netRate(x) { return photoRate(x) - respRate(); }
+
+function findCompensationPoint() {
+    for (let x = 0; x <= xMax; x += 0.1) {
+        if (netRate(x) >= 0) return x;
+    }
+    return 0;
+}
+
+function xToCanvas(x) { return pad.left + (x / xMax) * (canvas.width - pad.left - pad.right); }
+function yToCanvas(y) { return pad.top + ((yMax - y) / (yMax - yMin)) * (canvas.height - pad.top - pad.bottom); }
+function canvasToX(cx) { return ((cx - pad.left) / (canvas.width - pad.left - pad.right)) * xMax; }
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const gw = canvas.width - pad.left - pad.right;
+    const gh = canvas.height - pad.top - pad.bottom;
+    const compX = findCompensationPoint();
+
+    // Shaded regions
+    // Below compensation: light red
+    ctx.beginPath();
+    ctx.moveTo(xToCanvas(0), yToCanvas(0));
+    for (let x = 0; x <= compX; x += 0.5) {
+        ctx.lineTo(xToCanvas(x), yToCanvas(netRate(x)));
+    }
+    ctx.lineTo(xToCanvas(compX), yToCanvas(0));
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(231,76,60,0.12)';
+    ctx.fill();
+
+    // Above compensation: light green
+    ctx.beginPath();
+    ctx.moveTo(xToCanvas(compX), yToCanvas(0));
+    for (let x = compX; x <= xMax; x += 0.5) {
+        ctx.lineTo(xToCanvas(x), yToCanvas(netRate(x)));
+    }
+    ctx.lineTo(xToCanvas(xMax), yToCanvas(0));
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(39,174,96,0.12)';
+    ctx.fill();
+
+    // Axes
+    ctx.strokeStyle = '#1a2747';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, canvas.height - pad.bottom);
+    ctx.lineTo(canvas.width - pad.right, canvas.height - pad.bottom);
+    ctx.stroke();
+
+    // Grid lines and labels
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '10px system-ui';
+    ctx.textAlign = 'center';
+    for (let x = 0; x <= xMax; x += 20) {
+        const cx = xToCanvas(x);
+        ctx.strokeStyle = '#e0e0e0';
+        ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+        ctx.fillText(x, cx, canvas.height - pad.bottom + 14);
+    }
+    ctx.textAlign = 'right';
+    for (let y = yMin; y <= yMax; y += 2) {
+        const cy = yToCanvas(y);
+        ctx.strokeStyle = '#e0e0e0';
+        ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(canvas.width - pad.right, cy); ctx.stroke();
+        ctx.fillText(y, pad.left - 6, cy + 3);
+    }
+
+    // Zero line
+    ctx.strokeStyle = '#aaa';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(pad.left, yToCanvas(0));
+    ctx.lineTo(canvas.width - pad.right, yToCanvas(0));
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Axis labels
+    ctx.fillStyle = '#1a2747';
+    ctx.font = 'bold 11px system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText('Light Intensity (arbitrary units)', canvas.width / 2, canvas.height - 5);
+    ctx.save();
+    ctx.translate(14, canvas.height / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Rate (arbitrary units)', 0, 0);
+    ctx.restore();
+
+    // Compensation point dashed line
+    ctx.strokeStyle = '#1835b4';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.moveTo(xToCanvas(compX), pad.top);
+    ctx.lineTo(xToCanvas(compX), canvas.height - pad.bottom);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#1835b4';
+    ctx.font = 'bold 10px system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText('Compensation', xToCanvas(compX), pad.top - 8);
+    ctx.fillText('Point', xToCanvas(compX), pad.top + 2);
+
+    // Shading labels
+    ctx.font = '9px system-ui';
+    ctx.fillStyle = '#c0392b';
+    ctx.fillText('Net CO\u2082 release', xToCanvas(compX / 2), yToCanvas(-1.5));
+    ctx.fillStyle = '#1e8449';
+    ctx.fillText('Net CO\u2082 absorption', xToCanvas((compX + xMax) / 2), yToCanvas(4.5));
+
+    // Draw curves
+    function drawCurve(fn, color, width) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.beginPath();
+        for (let x = 0; x <= xMax; x += 0.5) {
+            const cx = xToCanvas(x), cy = yToCanvas(fn(x));
+            x === 0 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+        }
+        ctx.stroke();
+    }
+
+    drawCurve(photoRate, '#27ae60', 2.5);
+    drawCurve(() => respRate(), '#e74c3c', 2.5);
+    drawCurve(netRate, '#1835b4', 2);
+
+    // Hover tooltip
+    if (hoverX !== null && hoverX >= 0 && hoverX <= xMax) {
+        const x = hoverX;
+        const pr = photoRate(x);
+        const rr = respRate();
+        const nr = netRate(x);
+        const cx = xToCanvas(x);
+
+        ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Dots
+        [[pr, '#27ae60'], [rr, '#e74c3c'], [nr, '#1835b4']].forEach(([val, col]) => {
+            ctx.beginPath();
+            ctx.arc(cx, yToCanvas(val), 4, 0, Math.PI * 2);
+            ctx.fillStyle = col;
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+        });
+
+        // Tooltip box
+        const tx = cx + 10, ty = pad.top + 10;
+        const lines = [
+            `Light: ${x.toFixed(1)}`,
+            `Photo: ${pr.toFixed(2)}`,
+            `Resp: ${rr.toFixed(2)}`,
+            `Net: ${nr.toFixed(2)}`
+        ];
+        ctx.font = '10px system-ui';
+        const tw = Math.max(...lines.map(l => ctx.measureText(l).width)) + 16;
+        const th = lines.length * 15 + 10;
+        let bx = cx + 12;
+        if (bx + tw > canvas.width - pad.right) bx = cx - tw - 12;
+        ctx.fillStyle = 'rgba(255,255,255,0.95)';
+        ctx.strokeStyle = '#d4d8e5';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(bx, ty, tw, th, 4);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#1a2747';
+        ctx.textAlign = 'left';
+        lines.forEach((line, i) => {
+            ctx.fillText(line, bx + 8, ty + 14 + i * 15);
+        });
+    }
+}
+
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+    hoverX = canvasToX(mx);
+    if (hoverX < 0 || hoverX > xMax) hoverX = null;
+    draw();
+});
+canvas.addEventListener('mouseleave', () => { hoverX = null; draw(); });
+
+function resize() {
+    const w = Math.min(530, window.innerWidth - 24);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 320 / 530) + 'px';
+}
+window.addEventListener('resize', resize);
+resize();
+draw();
+</script>
+</body>
+</html>

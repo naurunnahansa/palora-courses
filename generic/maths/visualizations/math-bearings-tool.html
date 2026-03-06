@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bearings</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}.container{max-width:100%;margin:0 auto}h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;cursor:pointer}.result-box{background:#e8ecf8;border-radius:5px;padding:10px 12px;text-align:center;font-size:1.1rem;font-weight:700;color:#1835b4;margin-top:8px}.quick-btns{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}.qbtn{padding:6px;border:1px solid #d4d8e5;border-radius:5px;background:#e8ecf8;font-size:.78rem;cursor:pointer;text-align:center;color:#1a2747;font-family:system-ui}.qbtn:hover{background:#1835b4;color:#fff}.toggle-row{display:flex;gap:8px;margin-top:8px}.toggle-btn{flex:1;padding:6px;border:1px solid #d4d8e5;border-radius:5px;background:#e8ecf8;font-size:.78rem;cursor:pointer;text-align:center;color:#1a2747;font-family:system-ui}.toggle-btn.active{background:#1835b4;color:#fff;border-color:#1835b4}.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}.info strong{color:#1835b4}</style>
+</head>
+<body>
+<div class="container">
+    <h1>Bearings</h1>
+    <div class="card" style="padding:8px"><canvas id="cv" width="800" height="800"></canvas></div>
+    <div class="result-box" id="bearingDisplay">Bearing: 000&deg;</div>
+    <div class="card">
+        <div class="card-title">Mode</div>
+        <div class="toggle-row">
+            <button class="toggle-btn active" id="btnCompass">Compass Mode</button>
+            <button class="toggle-btn" id="btnGrid">Two-Point Mode</button>
+        </div>
+        <div class="card-title" style="margin-top:10px">Quick Bearings</div>
+        <div class="quick-btns">
+            <button class="qbtn" data-b="0">N (000&deg;)</button>
+            <button class="qbtn" data-b="45">NE (045&deg;)</button>
+            <button class="qbtn" data-b="90">E (090&deg;)</button>
+            <button class="qbtn" data-b="135">SE (135&deg;)</button>
+            <button class="qbtn" data-b="180">S (180&deg;)</button>
+            <button class="qbtn" data-b="225">SW (225&deg;)</button>
+            <button class="qbtn" data-b="270">W (270&deg;)</button>
+            <button class="qbtn" data-b="315">NW (315&deg;)</button>
+        </div>
+    </div>
+    <div class="info">Bearings are measured <strong>clockwise from North</strong> and written as <strong>three-figure numbers</strong> (e.g. 045&deg; not 45&deg;). Drag the arrow or click to set direction.</div>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let W=cv.width,H=cv.height;
+let bearing=0,modeType='compass',dragging=false;
+let pointA=null,pointB=null;
+
+function resize(){const w=Math.min(500,cv.parentElement.clientWidth-16);cv.style.width=w+'px';cv.style.height=w+'px'}
+resize();window.addEventListener('resize',resize);
+
+document.getElementById('btnCompass').onclick=function(){modeType='compass';this.classList.add('active');document.getElementById('btnGrid').classList.remove('active');pointA=null;pointB=null;draw()};
+document.getElementById('btnGrid').onclick=function(){modeType='grid';this.classList.add('active');document.getElementById('btnCompass').classList.remove('active');pointA=null;pointB=null;draw();updateDisplay()};
+document.querySelectorAll('.qbtn').forEach(b=>b.addEventListener('click',function(){bearing=+this.dataset.b;draw()}));
+
+function pad3(n){return String(Math.round(n)%360).padStart(3,'0')}
+
+function updateDisplay(){
+    if(modeType==='grid'&&pointA&&pointB){
+        const dx=pointB.x-pointA.x,dy=pointA.y-pointB.y;
+        const b=(Math.atan2(dx,dy)*180/Math.PI+360)%360;
+        document.getElementById('bearingDisplay').innerHTML='Bearing from A to B: <strong>'+pad3(b)+'&deg;</strong>';
+    } else {
+        document.getElementById('bearingDisplay').innerHTML='Bearing: <strong>'+pad3(bearing)+'&deg;</strong>';
+    }
+}
+
+function draw(){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+
+    if(modeType==='compass'){
+        const cx=W/2,cy=H/2,r=W*0.38;
+        // Outer circle
+        ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle='#d4d8e5';ctx.lineWidth=3;ctx.stroke();
+        ctx.beginPath();ctx.arc(cx,cy,r-15,0,Math.PI*2);ctx.strokeStyle='#e8ecf8';ctx.lineWidth=1;ctx.stroke();
+
+        // Tick marks and labels
+        const dirs=['N','030','060','E','120','150','S','210','240','W','300','330'];
+        for(let i=0;i<360;i+=5){
+            const a=(i-90)*Math.PI/180;
+            const isMajor=i%30===0;
+            const inner=r-(isMajor?25:12);
+            ctx.beginPath();ctx.moveTo(cx+inner*Math.cos(a),cy+inner*Math.sin(a));ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+            ctx.strokeStyle=isMajor?'#1a2747':'#d4d8e5';ctx.lineWidth=isMajor?2:1;ctx.stroke();
+        }
+        // Cardinal labels
+        const cardinals=[{l:'N',a:0},{l:'E',a:90},{l:'S',a:180},{l:'W',a:270}];
+        ctx.font='bold 20px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+        for(const c of cardinals){
+            const a=(c.a-90)*Math.PI/180;
+            ctx.fillStyle=c.l==='N'?'#e74c3c':'#1a2747';
+            ctx.fillText(c.l,cx+(r+25)*Math.cos(a),cy+(r+25)*Math.sin(a));
+        }
+
+        // Bearing arc (clockwise from North)
+        const startA=-Math.PI/2;
+        const endA=startA+bearing*Math.PI/180;
+        ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r*0.3,startA,endA,false);ctx.closePath();
+        ctx.fillStyle='#1835b420';ctx.fill();
+        ctx.beginPath();ctx.arc(cx,cy,r*0.3,startA,endA,false);ctx.strokeStyle='#1835b4';ctx.lineWidth=2;ctx.stroke();
+
+        // North line (thin)
+        ctx.strokeStyle='#e74c3c60';ctx.lineWidth=1;ctx.setLineDash([5,5]);
+        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx,cy-r+20);ctx.stroke();ctx.setLineDash([]);
+
+        // Arrow
+        const arrowA=(bearing-90)*Math.PI/180;
+        const arrowLen=r-20;
+        const ax=cx+arrowLen*Math.cos(arrowA),ay=cy+arrowLen*Math.sin(arrowA);
+        ctx.strokeStyle='#e74c3c';ctx.lineWidth=3;
+        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(ax,ay);ctx.stroke();
+        // Arrowhead
+        const ha=12,headA=Math.PI/6;
+        ctx.fillStyle='#e74c3c';ctx.beginPath();
+        ctx.moveTo(ax,ay);
+        ctx.lineTo(ax-ha*Math.cos(arrowA-headA),ay-ha*Math.sin(arrowA-headA));
+        ctx.lineTo(ax-ha*Math.cos(arrowA+headA),ay-ha*Math.sin(arrowA+headA));
+        ctx.closePath();ctx.fill();
+        // Center dot
+        ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);ctx.fillStyle='#1835b4';ctx.fill();
+
+        // Bearing text on arc
+        const midA=startA+(bearing*Math.PI/360);
+        ctx.fillStyle='#1835b4';ctx.font='bold 16px system-ui';ctx.textAlign='center';
+        ctx.fillText(pad3(bearing)+'°',cx+(r*0.18)*Math.cos(midA),cy+(r*0.18)*Math.sin(midA));
+    } else {
+        // Grid mode
+        const gs=40;
+        ctx.strokeStyle='#e8ecf8';ctx.lineWidth=1;
+        for(let x=0;x<W;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+        for(let y=0;y<H;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+
+        if(pointA){
+            ctx.beginPath();ctx.arc(pointA.x,pointA.y,8,0,Math.PI*2);ctx.fillStyle='#1835b4';ctx.fill();
+            ctx.fillStyle='#1a2747';ctx.font='bold 16px system-ui';ctx.textAlign='center';ctx.fillText('A',pointA.x,pointA.y-16);
+            // North line from A
+            ctx.strokeStyle='#e74c3c60';ctx.lineWidth=1;ctx.setLineDash([5,5]);
+            ctx.beginPath();ctx.moveTo(pointA.x,pointA.y);ctx.lineTo(pointA.x,20);ctx.stroke();ctx.setLineDash([]);
+            ctx.fillStyle='#e74c3c';ctx.font='bold 12px system-ui';ctx.fillText('N',pointA.x,14);
+        }
+        if(pointB){
+            ctx.beginPath();ctx.arc(pointB.x,pointB.y,8,0,Math.PI*2);ctx.fillStyle='#e74c3c';ctx.fill();
+            ctx.fillStyle='#1a2747';ctx.font='bold 16px system-ui';ctx.textAlign='center';ctx.fillText('B',pointB.x,pointB.y-16);
+            // Line A to B
+            if(pointA){
+                ctx.strokeStyle='#1835b4';ctx.lineWidth=2;
+                ctx.beginPath();ctx.moveTo(pointA.x,pointA.y);ctx.lineTo(pointB.x,pointB.y);ctx.stroke();
+                // Bearing arc
+                const dx=pointB.x-pointA.x,dy=pointA.y-pointB.y;
+                const b=(Math.atan2(dx,dy)*180/Math.PI+360)%360;
+                const startA=-Math.PI/2;const endA=startA+b*Math.PI/180;
+                ctx.beginPath();ctx.arc(pointA.x,pointA.y,40,startA,endA,false);ctx.strokeStyle='#f39c12';ctx.lineWidth=2;ctx.stroke();
+                ctx.fillStyle='#f39c12';ctx.font='bold 13px system-ui';
+                const midA2=startA+b*Math.PI/360;
+                ctx.fillText(pad3(b)+'°',pointA.x+55*Math.cos(midA2),pointA.y+55*Math.sin(midA2));
+            }
+        }
+        if(!pointA)document.getElementById('bearingDisplay').innerHTML='Click to place point <strong>A</strong>';
+        else if(!pointB)document.getElementById('bearingDisplay').innerHTML='Click to place point <strong>B</strong>';
+    }
+    updateDisplay();
+}
+
+function getCanvasXY(e){
+    const rect=cv.getBoundingClientRect();
+    return{x:(e.clientX-rect.left)*cv.width/rect.width,y:(e.clientY-rect.top)*cv.height/rect.height};
+}
+
+cv.addEventListener('mousedown',function(e){
+    const p=getCanvasXY(e);
+    if(modeType==='compass'){dragging=true;setBearing(p)}
+    else{if(!pointA)pointA=p;else if(!pointB)pointB=p;else{pointA=p;pointB=null}draw()}
+});
+cv.addEventListener('mousemove',function(e){if(dragging&&modeType==='compass'){setBearing(getCanvasXY(e))}});
+cv.addEventListener('mouseup',()=>{dragging=false});
+cv.addEventListener('touchstart',function(e){e.preventDefault();const t=e.touches[0];const p=getCanvasXY(t);if(modeType==='compass'){dragging=true;setBearing(p)}else{if(!pointA)pointA=p;else if(!pointB)pointB=p;else{pointA=p;pointB=null}draw()}},{passive:false});
+cv.addEventListener('touchmove',function(e){e.preventDefault();if(dragging&&modeType==='compass'){setBearing(getCanvasXY(e.touches[0]))}},{passive:false});
+cv.addEventListener('touchend',()=>{dragging=false});
+
+function setBearing(p){
+    const cx=W/2,cy=H/2;
+    const dx=p.x-cx,dy=p.y-cy;
+    bearing=(Math.atan2(dx,- dy)*180/Math.PI+360)%360;
+    bearing=Math.round(bearing);
+    draw();
+}
+
+draw();
+</script>
+</body>
+</html>

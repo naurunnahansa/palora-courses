@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Glucose Regulation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; background: #fff; }
+        .controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 8px; flex-wrap: wrap; }
+        .btn { padding: 6px 14px; border: 2px solid #1835b4; border-radius: 5px; background: #fff; color: #1835b4; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn.active, .btn:hover { background: #1835b4; color: #fff; }
+        .btn-blue { background: #2980b9; color: #fff; border-color: #2980b9; }
+        .btn-orange { background: #e67e22; color: #fff; border-color: #e67e22; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 8px; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Blood Glucose Regulation</h1>
+    <div class="desc">Negative Feedback Loop</div>
+    <div class="controls">
+        <button class="btn btn-blue" id="btnHigh" onclick="setScenario('high')">After Eating (High Glucose)</button>
+        <button class="btn btn-orange" id="btnLow" onclick="setScenario('low')">During Exercise (Low Glucose)</button>
+        <button class="btn active" id="btnPlay" onclick="togglePlay()">&#9654; Play</button>
+        <button class="btn" onclick="resetAnim()">Reset</button>
+    </div>
+    <canvas id="c" width="530" height="430"></canvas>
+    <div class="note">
+        <strong>Negative feedback:</strong> The response counteracts the change, returning blood glucose to its set point (~90 mg/dL). Insulin lowers glucose; glucagon raises it.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let scenario = 'high', playing = false, progress = 0, animId = null;
+
+const highSteps = [
+    'Blood glucose rises (after eating)',
+    'Pancreas detects high glucose',
+    'Beta cells release INSULIN',
+    'Liver: glucose \u2192 glycogen (glycogenesis)\nCells increase glucose uptake',
+    'Blood glucose falls back to normal'
+];
+const lowSteps = [
+    'Blood glucose falls (during exercise/fasting)',
+    'Pancreas detects low glucose',
+    'Alpha cells release GLUCAGON',
+    'Liver: glycogen \u2192 glucose (glycogenolysis)',
+    'Blood glucose rises back to normal'
+];
+
+function setScenario(s) {
+    scenario = s;
+    document.getElementById('btnHigh').classList.toggle('active', s === 'high');
+    document.getElementById('btnLow').classList.toggle('active', s === 'low');
+    resetAnim();
+}
+function togglePlay() {
+    if (playing) { playing = false; cancelAnimationFrame(animId); document.getElementById('btnPlay').innerHTML = '&#9654; Play'; return; }
+    if (progress >= 1) progress = 0;
+    playing = true; document.getElementById('btnPlay').innerHTML = '&#9646;&#9646; Pause'; animate();
+}
+function resetAnim() { playing = false; progress = 0; cancelAnimationFrame(animId); document.getElementById('btnPlay').innerHTML = '&#9654; Play'; draw(); }
+function animate() { if (!playing) return; progress += 0.002; if (progress >= 1) { progress = 1; playing = false; document.getElementById('btnPlay').innerHTML = '&#9654; Play'; } draw(); if (playing) animId = requestAnimationFrame(animate); }
+
+function drawRoundedBox(x, y, w, h, r, fill, stroke, lw) {
+    ctx.beginPath(); ctx.roundRect(x, y, w, h, r);
+    ctx.fillStyle = fill; ctx.fill();
+    ctx.strokeStyle = stroke; ctx.lineWidth = lw || 2; ctx.stroke();
+}
+
+function drawArrow(x1, y1, x2, y2, color, curved) {
+    ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.fillStyle = color;
+    ctx.beginPath();
+    if (curved) {
+        const mx = (x1 + x2) / 2 + curved;
+        const my = (y1 + y2) / 2;
+        ctx.moveTo(x1, y1);
+        ctx.quadraticCurveTo(mx, my, x2, y2);
+    } else {
+        ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+    }
+    ctx.stroke();
+    // Arrowhead
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - 10 * Math.cos(angle - 0.4), y2 - 10 * Math.sin(angle - 0.4));
+    ctx.lineTo(x2 - 10 * Math.cos(angle + 0.4), y2 - 10 * Math.sin(angle + 0.4));
+    ctx.closePath(); ctx.fill();
+}
+
+function wrapText(text, x, y, maxW, lineH) {
+    const lines = text.split('\n');
+    lines.forEach((line, i) => {
+        ctx.fillText(line, x, y + i * lineH);
+    });
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const cx = canvas.width / 2, cy = canvas.height / 2;
+    const steps = scenario === 'high' ? highSteps : lowSteps;
+    const color = scenario === 'high' ? '#2980b9' : '#e67e22';
+    const lightColor = scenario === 'high' ? 'rgba(41,128,185,0.1)' : 'rgba(230,126,34,0.1)';
+    const activeStep = Math.min(4, Math.floor(progress * 5));
+
+    // Central box
+    drawRoundedBox(cx - 80, cy - 20, 160, 40, 8, '#e8ecf8', '#1835b4', 2);
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Normal blood glucose', cx, cy - 2);
+    ctx.fillText('~90 mg/dL', cx, cy + 13);
+
+    // Position boxes in a circular layout
+    const positions = [
+        { x: cx, y: 40 },          // Step 0: top
+        { x: cx + 180, y: 120 },   // Step 1: right-top
+        { x: cx + 180, y: 260 },   // Step 2: right-bottom
+        { x: cx - 180, y: 260 },   // Step 3: left-bottom
+        { x: cx - 180, y: 120 },   // Step 4: left-top (returns to normal)
+    ];
+
+    // Draw connecting arrows
+    for (let i = 0; i < 5; i++) {
+        const from = i === 0 ? { x: cx, y: cy - 20 } : positions[i - 1];
+        const to = i === 4 ? { x: cx, y: cy + 20 } : positions[i];
+        const fromY = i === 0 ? from.y : from.y + 15;
+        const toY = i === 4 ? to.y : to.y - 15;
+        const fromX = i === 0 ? (scenario === 'high' ? cx + 80 : cx - 80) : from.x;
+        const toX = i === 4 ? (scenario === 'high' ? cx - 80 : cx + 80) : to.x;
+
+        const isActive = i <= activeStep;
+        const arrowColor = isActive ? color : '#ccc';
+
+        if (i === 0) {
+            drawArrow(fromX, fromY, toX, positions[0].y - 15, arrowColor);
+        } else if (i === 4) {
+            drawArrow(positions[3].x, positions[3].y + 15, toX, toY, arrowColor);
+        } else {
+            drawArrow(positions[i - 1].x, positions[i - 1].y + 15, positions[i].x, positions[i].y - 15, arrowColor);
+        }
+    }
+
+    // Draw step boxes
+    for (let i = 0; i < 5; i++) {
+        const pos = positions[i];
+        const isActive = i <= activeStep;
+        const boxW = 150, boxH = i === 3 ? 50 : 35;
+        const fill = isActive ? lightColor : '#f5f5f5';
+        const stroke = isActive ? color : '#ccc';
+
+        drawRoundedBox(pos.x - boxW / 2, pos.y - boxH / 2, boxW, boxH, 6, fill, stroke, isActive ? 2 : 1);
+
+        ctx.fillStyle = isActive ? '#1a2747' : '#aaa';
+        ctx.font = isActive ? 'bold 9px system-ui' : '9px system-ui';
+        ctx.textAlign = 'center';
+        wrapText(steps[i], pos.x, pos.y - (i === 3 ? 5 : 0) + 4, boxW - 10, 13);
+
+        // Step number
+        ctx.beginPath();
+        ctx.arc(pos.x - boxW / 2 + 10, pos.y - boxH / 2 + 10, 8, 0, Math.PI * 2);
+        ctx.fillStyle = isActive ? color : '#ccc';
+        ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 8px system-ui';
+        ctx.fillText(i + 1, pos.x - boxW / 2 + 10, pos.y - boxH / 2 + 13);
+    }
+
+    // Icons
+    ctx.font = '14px system-ui'; ctx.textAlign = 'center';
+    if (scenario === 'high') {
+        ctx.fillText('\u2191', positions[0].x + 80, positions[0].y + 4); // Up arrow
+        ctx.fillStyle = '#2980b9'; ctx.font = 'bold 9px system-ui';
+        ctx.fillText('INSULIN pathway', cx, 400);
+    } else {
+        ctx.fillText('\u2193', positions[0].x - 80, positions[0].y + 4); // Down arrow
+        ctx.fillStyle = '#e67e22'; ctx.font = 'bold 9px system-ui';
+        ctx.fillText('GLUCAGON pathway', cx, 400);
+    }
+
+    // Animated pulse on active step
+    if (activeStep < 5 && playing) {
+        const pos = positions[activeStep];
+        const pulse = Math.sin(Date.now() / 200) * 0.3 + 0.7;
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 50, 0, Math.PI * 2);
+        ctx.strokeStyle = color;
+        ctx.globalAlpha = pulse * 0.3;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+    }
+
+    // Glucose level indicator bar
+    const barX = 20, barY = 400, barW = canvas.width - 40, barH = 12;
+    ctx.fillStyle = '#e8ecf8'; ctx.fillRect(barX, barY, barW, barH);
+    let glucoseLevel;
+    if (scenario === 'high') {
+        glucoseLevel = 0.8 - progress * 0.3; // starts high, comes down
+    } else {
+        glucoseLevel = 0.2 + progress * 0.3; // starts low, goes up
+    }
+    const glX = barX + glucoseLevel * barW;
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.arc(glX, barY + barH / 2, 7, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 7px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('G', glX, barY + barH / 2 + 3);
+    // Normal marker
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2; ctx.setLineDash([3, 3]);
+    const normX = barX + 0.5 * barW;
+    ctx.beginPath(); ctx.moveTo(normX, barY - 3); ctx.lineTo(normX, barY + barH + 3); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#4a5568'; ctx.font = '8px system-ui';
+    ctx.fillText('Low', barX + 20, barY + barH + 12);
+    ctx.fillText('Normal', normX, barY + barH + 12);
+    ctx.textAlign = 'right';
+    ctx.fillText('High', barX + barW - 10, barY + barH + 12);
+
+    // Progress bar
+    ctx.fillStyle = '#e8ecf8'; ctx.fillRect(20, canvas.height - 8, canvas.width - 40, 4);
+    ctx.fillStyle = color; ctx.fillRect(20, canvas.height - 8, (canvas.width - 40) * progress, 4);
+}
+
+function resize() { const w = Math.min(530, window.innerWidth - 24); canvas.style.width = w + 'px'; canvas.style.height = (w * 430 / 530) + 'px'; }
+window.addEventListener('resize', resize); resize(); draw();
+</script>
+</body>
+</html>

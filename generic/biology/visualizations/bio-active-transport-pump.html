@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Transport</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 8px; }
+        .btn { padding: 6px 16px; border: none; border-radius: 5px; background: #1835b4; color: #fff; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { background: #122a8a; }
+        .btn.outline { background: #fff; color: #1835b4; border: 1.5px solid #1835b4; }
+        .step-info { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .step-info strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Active Transport</h1>
+    <div class="desc">Carrier protein pumps molecules against the concentration gradient using ATP</div>
+    <canvas id="canvas" width="520" height="340"></canvas>
+    <div class="controls">
+        <button class="btn" onclick="playAnim()">&#9654; Play</button>
+        <button class="btn outline" onclick="stepForward()">Step &rarr;</button>
+        <button class="btn outline" onclick="resetAnim()">Reset</button>
+    </div>
+    <div class="step-info" id="info"><strong>Step 1:</strong> A molecule on the low-concentration side binds to the carrier protein's binding site.</div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const steps = [
+    { msg: '<strong>Step 1:</strong> A molecule on the low-concentration side binds to the carrier protein\'s binding site.' },
+    { msg: '<strong>Step 2:</strong> ATP binds to the carrier protein on the intracellular side.' },
+    { msg: '<strong>Step 3:</strong> ATP is hydrolysed to ADP + Pi, releasing energy.' },
+    { msg: '<strong>Step 4:</strong> The protein changes shape (conformational change), opening to the other side.' },
+    { msg: '<strong>Step 5:</strong> The molecule is released on the high-concentration side. The protein resets.' }
+];
+let step = 0, animating = false, progress = 0, playing = false;
+
+function drawMembrane() {
+    // Phospholipid bilayer
+    const my = 140, h = 60;
+    for (let x = 0; x < canvas.width; x += 16) {
+        if (x > 200 && x < 320) continue; // gap for protein
+        // top layer heads
+        ctx.beginPath(); ctx.arc(x+8, my, 6, 0, Math.PI*2); ctx.fillStyle = '#5b7fd4'; ctx.fill();
+        ctx.strokeStyle = '#aab8d8'; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(x+5, my+6); ctx.lineTo(x+3, my+h-6); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x+11, my+6); ctx.lineTo(x+13, my+h-6); ctx.stroke();
+        // bottom layer heads
+        ctx.beginPath(); ctx.arc(x+8, my+h, 6, 0, Math.PI*2); ctx.fillStyle = '#5b7fd4'; ctx.fill();
+    }
+    // Labels
+    ctx.fillStyle = '#4a5568'; ctx.font = '10px system-ui'; ctx.textAlign = 'left';
+    ctx.fillText('LOW concentration', 10, 125);
+    ctx.fillText('(outside)', 10, 137);
+    ctx.fillText('HIGH concentration', 10, 225);
+    ctx.fillText('(inside)', 10, 237);
+    // Gradient arrow
+    ctx.save(); ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(480, 220); ctx.lineTo(480, 130); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(475, 138); ctx.lineTo(480, 128); ctx.lineTo(485, 138); ctx.stroke();
+    ctx.fillStyle = '#e74c3c'; ctx.font = '8px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Against', 480, 180); ctx.fillText('gradient', 480, 190);
+    ctx.restore();
+    // Passive diffusion arrows
+    ctx.strokeStyle = '#2ecc71'; ctx.lineWidth = 1; ctx.setLineDash([4,3]);
+    for (let i = 0; i < 3; i++) {
+        const ax = 370 + i*30;
+        ctx.beginPath(); ctx.moveTo(ax, 130); ctx.lineTo(ax, 215); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(ax-3, 210); ctx.lineTo(ax, 218); ctx.lineTo(ax+3, 210); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#2ecc71'; ctx.font = '7px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Passive diffusion', 400, 250);
+    ctx.fillText('(no energy)', 400, 260);
+}
+
+function drawProtein(openTop) {
+    const cx = 260, my = 140, h = 60;
+    ctx.fillStyle = '#f5c542'; ctx.strokeStyle = '#d4a017'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    if (openTop) {
+        ctx.moveTo(210, my-5); ctx.quadraticCurveTo(210, my+h+10, 235, my+h+5);
+        ctx.lineTo(235, my+h/2+5); ctx.lineTo(285, my+h/2+5);
+        ctx.lineTo(285, my+h+5); ctx.quadraticCurveTo(310, my+h+10, 310, my-5);
+        ctx.quadraticCurveTo(285, my-10, 285, my+h/2-5);
+        ctx.lineTo(235, my+h/2-5);
+        ctx.quadraticCurveTo(235, my-10, 210, my-5);
+    } else {
+        ctx.moveTo(210, my+h+5); ctx.quadraticCurveTo(210, my-10, 235, my-5);
+        ctx.lineTo(235, my+h/2-5); ctx.lineTo(285, my+h/2-5);
+        ctx.lineTo(285, my-5); ctx.quadraticCurveTo(310, my-10, 310, my+h+5);
+        ctx.quadraticCurveTo(285, my+h+10, 285, my+h/2+5);
+        ctx.lineTo(235, my+h/2+5);
+        ctx.quadraticCurveTo(235, my+h+10, 210, my+h+5);
+    }
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#d4a017'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Carrier', cx, my+h/2-10);
+    ctx.fillText('Protein', cx, my+h/2+2);
+}
+
+function drawMolecule(x, y) {
+    ctx.beginPath(); ctx.arc(x, y, 8, 0, Math.PI*2);
+    ctx.fillStyle = '#e74c3c'; ctx.fill(); ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 7px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('Na\u207a', x, y); ctx.textBaseline = 'alphabetic';
+}
+
+function drawATP(x, y, hydrolysed) {
+    if (!hydrolysed) {
+        ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI*2);
+        ctx.fillStyle = '#2ecc71'; ctx.fill(); ctx.strokeStyle = '#27ae60'; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 7px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('ATP', x, y); ctx.textBaseline = 'alphabetic';
+    } else {
+        ctx.beginPath(); ctx.arc(x-8, y, 8, 0, Math.PI*2);
+        ctx.fillStyle = '#95a5a6'; ctx.fill(); ctx.strokeStyle = '#7f8c8d'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 6px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('ADP', x-8, y);
+        ctx.beginPath(); ctx.arc(x+12, y, 6, 0, Math.PI*2);
+        ctx.fillStyle = '#bdc3c7'; ctx.fill(); ctx.strokeStyle = '#7f8c8d'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.fillText('Pi', x+12, y); ctx.textBaseline = 'alphabetic';
+    }
+}
+
+function drawScene() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Background zones
+    ctx.fillStyle = 'rgba(46,204,113,0.05)'; ctx.fillRect(0, 0, canvas.width, 140);
+    ctx.fillStyle = 'rgba(231,76,60,0.05)'; ctx.fillRect(0, 200, canvas.width, 140);
+    drawMembrane();
+
+    // Scattered molecules
+    const lowDots = [[30,60],[60,80],[90,50],[130,90],[160,65],[50,105],[140,55]];
+    const highDots = [[30,260],[60,280],[90,255],[130,290],[50,300],[80,310],[110,270],[150,295],[170,260],[40,285]];
+    lowDots.forEach(d => { ctx.beginPath(); ctx.arc(d[0],d[1],4,0,Math.PI*2); ctx.fillStyle='rgba(231,76,60,0.3)'; ctx.fill(); });
+    highDots.forEach(d => { ctx.beginPath(); ctx.arc(d[0],d[1],4,0,Math.PI*2); ctx.fillStyle='rgba(231,76,60,0.5)'; ctx.fill(); });
+
+    const my = 140;
+    if (step === 0) {
+        drawProtein(true);
+        const mx = 200 + progress * 40, mmY = 100 + progress * 40;
+        drawMolecule(mx, mmY);
+    } else if (step === 1) {
+        drawProtein(true);
+        drawMolecule(240, my + 15);
+        const ax = 260 + (1-progress)*40, ay = 220 - progress * 20;
+        drawATP(ax, ay, false);
+    } else if (step === 2) {
+        drawProtein(true);
+        drawMolecule(240, my + 15);
+        drawATP(260, 200, true);
+        // energy burst
+        ctx.strokeStyle = '#f39c12'; ctx.lineWidth = 2;
+        for (let a = 0; a < Math.PI*2; a += Math.PI/4) {
+            const r1 = 15 + progress*5, r2 = r1+8;
+            ctx.beginPath(); ctx.moveTo(260+Math.cos(a)*r1, 200+Math.sin(a)*r1);
+            ctx.lineTo(260+Math.cos(a)*r2, 200+Math.sin(a)*r2); ctx.stroke();
+        }
+    } else if (step === 3) {
+        drawProtein(false); // flipped
+        const my2 = my + 30 * progress;
+        drawMolecule(260, my + 15 + 20*progress);
+    } else if (step === 4) {
+        drawProtein(false);
+        const mx = 260 + progress*60, mmY = my+35 + progress*50;
+        if (progress < 0.8) drawMolecule(mx, mmY);
+        if (progress > 0.7) {
+            drawProtein(true); // reset
+        }
+    }
+
+    // ATP label
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Requires ATP (energy from respiration)', canvas.width/2, canvas.height - 10);
+}
+
+function updateInfo() {
+    document.getElementById('info').innerHTML = steps[step].msg;
+}
+
+let animFrame;
+function animate() {
+    progress += 0.02;
+    if (progress >= 1) {
+        progress = 1;
+        drawScene();
+        if (playing && step < 4) {
+            setTimeout(() => { step++; progress = 0; updateInfo(); animate(); }, 600);
+        } else { playing = false; }
+        return;
+    }
+    drawScene();
+    animFrame = requestAnimationFrame(animate);
+}
+
+function playAnim() {
+    if (playing) return;
+    playing = true; step = 0; progress = 0; updateInfo();
+    animate();
+}
+
+function stepForward() {
+    playing = false; cancelAnimationFrame(animFrame);
+    if (step < 4) { if (progress >= 1) { step++; progress = 0; } else { progress = 1; } }
+    else { step = 0; progress = 0; }
+    updateInfo(); drawScene();
+}
+
+function resetAnim() {
+    playing = false; cancelAnimationFrame(animFrame);
+    step = 0; progress = 0; updateInfo(); drawScene();
+}
+
+drawScene();
+</script>
+</body>
+</html>

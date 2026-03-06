@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNA Structure</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: pointer; }
+        .controls { display: flex; gap: 8px; margin-bottom: 8px; justify-content: center; }
+        .btn { background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 14px; font-size: 0.72rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { background: #122a8a; }
+        .btn.active { background: #0d1f6e; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3); }
+        .facts { background: #e8ecf8; border-radius: 5px; padding: 8px 10px; margin-bottom: 8px; }
+        .facts h3 { font-size: 0.72rem; color: #1835b4; margin-bottom: 4px; }
+        .facts ul { list-style: none; font-size: 0.68rem; color: #4a5568; }
+        .facts li { padding: 2px 0; }
+        .facts li::before { content: '\2022'; color: #1835b4; font-weight: 700; margin-right: 5px; }
+        .detail-box { border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px 10px; margin-bottom: 8px; font-size: 0.68rem; min-height: 36px; display: none; }
+        .detail-box.show { display: block; }
+        .detail-box strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>DNA Structure</h1>
+    <div class="desc">Click any nucleotide to see its components. Toggle between views.</div>
+    <canvas id="dnaCanvas" width="530" height="420"></canvas>
+    <div class="controls">
+        <button class="btn active" id="btnLadder" onclick="setView('ladder')">Ladder View</button>
+        <button class="btn" id="btnTwist" onclick="setView('twist')">Twisted View</button>
+    </div>
+    <div class="detail-box" id="detailBox"></div>
+    <div class="facts">
+        <h3>Key Facts</h3>
+        <ul>
+            <li>Complementary base pairing: A-T (2 hydrogen bonds), C-G (3 hydrogen bonds)</li>
+            <li>Hydrogen bonds hold the two strands together</li>
+            <li>Strands are antiparallel: one runs 5' to 3', the other 3' to 5'</li>
+            <li>Sugar-phosphate backbone provides structural support</li>
+            <li>The double helix has a major and minor groove</li>
+        </ul>
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('dnaCanvas');
+const ctx = canvas.getContext('2d');
+const detailBox = document.getElementById('detailBox');
+const W = canvas.width, H = canvas.height;
+
+let view = 'ladder'; // 'ladder' or 'twist'
+let selectedNuc = -1;
+let hoverNuc = -1;
+
+const sequence = ['A','T','G','C','T','A','C','G','A','T'];
+const complement = { A: 'T', T: 'A', C: 'G', G: 'C' };
+const baseColors = { A: '#e53e3e', T: '#e53e3e', C: '#3182ce', G: '#3182ce' };
+const basePairColor = { A: '#fc8181', T: '#fc8181', C: '#90cdf4', G: '#90cdf4' };
+
+const numBP = sequence.length;
+const startY = 50, gapY = 35;
+const leftX = 160, rightX = 370;
+const midX = (leftX + rightX) / 2;
+
+function getNucPositions(i) {
+    const y = startY + i * gapY;
+    if (view === 'ladder') {
+        return {
+            leftSugar: { x: leftX, y },
+            leftPhos: { x: leftX - 25, y: y - gapY / 2 },
+            rightSugar: { x: rightX, y },
+            rightPhos: { x: rightX + 25, y: y - gapY / 2 },
+            baseLeft: { x: leftX + 35, y },
+            baseRight: { x: rightX - 35, y },
+            y
+        };
+    } else {
+        // Twisted view - sinusoidal offset
+        const twist = Math.sin(i * 0.7) * 40;
+        const depth = Math.cos(i * 0.7);
+        const lx = midX - 80 + twist;
+        const rx = midX + 80 + twist;
+        return {
+            leftSugar: { x: lx, y },
+            leftPhos: { x: lx - 15 * depth, y: y - gapY / 2 },
+            rightSugar: { x: rx, y },
+            rightPhos: { x: rx + 15 * depth, y: y - gapY / 2 },
+            baseLeft: { x: lx + 25, y },
+            baseRight: { x: rx - 25, y },
+            y, depth
+        };
+    }
+}
+
+function drawPentagon(cx, cy, r, color, highlight) {
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+        const a = (i / 5) * Math.PI * 2 - Math.PI / 2;
+        const px = cx + Math.cos(a) * r;
+        const py = cy + Math.sin(a) * r;
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fillStyle = highlight ? '#fef08a' : color;
+    ctx.fill();
+    ctx.strokeStyle = '#1a2747';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+}
+
+function drawCircle(cx, cy, r, color, highlight) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fillStyle = highlight ? '#fef08a' : color;
+    ctx.fill();
+    ctx.strokeStyle = '#1a2747';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // 5' and 3' labels
+    ctx.font = '700 0.7rem system-ui';
+    ctx.textAlign = 'center';
+    if (view === 'ladder') {
+        ctx.fillStyle = '#1835b4';
+        ctx.fillText("5'", leftX - 25, startY - 20);
+        ctx.fillText("3'", leftX - 25, startY + numBP * gapY + 5);
+        ctx.fillText("3'", rightX + 25, startY - 20);
+        ctx.fillText("5'", rightX + 25, startY + numBP * gapY + 5);
+
+        // Direction arrows
+        ctx.strokeStyle = '#1835b4';
+        ctx.lineWidth = 1.5;
+        // Left strand: 5'->3' downward
+        ctx.beginPath(); ctx.moveTo(leftX - 40, startY - 10); ctx.lineTo(leftX - 40, startY + numBP * gapY - 10); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(leftX - 40, startY + numBP * gapY - 10);
+        ctx.lineTo(leftX - 43, startY + numBP * gapY - 18); ctx.moveTo(leftX - 40, startY + numBP * gapY - 10);
+        ctx.lineTo(leftX - 37, startY + numBP * gapY - 18); ctx.stroke();
+        // Right strand: 3'->5' upward (antiparallel)
+        ctx.beginPath(); ctx.moveTo(rightX + 40, startY + numBP * gapY - 10); ctx.lineTo(rightX + 40, startY - 10); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(rightX + 40, startY - 10);
+        ctx.lineTo(rightX + 37, startY - 2); ctx.moveTo(rightX + 40, startY - 10);
+        ctx.lineTo(rightX + 43, startY - 2); ctx.stroke();
+
+        ctx.font = '0.5rem system-ui';
+        ctx.fillStyle = '#718096';
+        ctx.fillText('antiparallel', rightX + 55, startY + numBP * gapY / 2);
+    }
+
+    // Draw each base pair
+    for (let i = 0; i < numBP; i++) {
+        const pos = getNucPositions(i);
+        const base = sequence[i];
+        const comp = complement[base];
+        const isSelected = selectedNuc === i;
+        const isHovered = hoverNuc === i;
+        const highlight = isSelected || isHovered;
+
+        // In twist view, handle depth ordering
+        const alpha = view === 'twist' ? 0.5 + 0.5 * Math.max(0, pos.depth || 1) : 1;
+        ctx.globalAlpha = alpha;
+
+        // Backbone connections (sugar-phosphate)
+        if (i > 0) {
+            const prev = getNucPositions(i - 1);
+            ctx.strokeStyle = '#718096';
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(prev.leftSugar.x, prev.leftSugar.y); ctx.lineTo(pos.leftPhos.x, pos.leftPhos.y); ctx.lineTo(pos.leftSugar.x, pos.leftSugar.y); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(prev.rightSugar.x, prev.rightSugar.y); ctx.lineTo(pos.rightPhos.x, pos.rightPhos.y); ctx.lineTo(pos.rightSugar.x, pos.rightSugar.y); ctx.stroke();
+        }
+
+        // Base pair connection (horizontal rungs)
+        ctx.strokeStyle = basePairColor[base];
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(pos.leftSugar.x + 8, pos.y);
+        ctx.lineTo(pos.rightSugar.x - 8, pos.y);
+        ctx.stroke();
+
+        // Hydrogen bonds (dashes in middle)
+        const numH = (base === 'C' || base === 'G') ? 3 : 2;
+        ctx.strokeStyle = baseColors[base];
+        ctx.lineWidth = 1;
+        ctx.setLineDash([2, 2]);
+        const bondSpacing = 8;
+        const bondStart = midX - ((numH - 1) * bondSpacing) / 2;
+        if (view === 'ladder') {
+            for (let b = 0; b < numH; b++) {
+                const bx = bondStart + b * bondSpacing;
+                ctx.beginPath(); ctx.moveTo(bx, pos.y - 4); ctx.lineTo(bx, pos.y + 4); ctx.stroke();
+            }
+        } else {
+            const tmid = (pos.leftSugar.x + pos.rightSugar.x) / 2;
+            for (let b = 0; b < numH; b++) {
+                const bx = tmid - ((numH - 1) * bondSpacing) / 2 + b * bondSpacing;
+                ctx.beginPath(); ctx.moveTo(bx, pos.y - 4); ctx.lineTo(bx, pos.y + 4); ctx.stroke();
+            }
+        }
+        ctx.setLineDash([]);
+
+        // Phosphate groups (circles)
+        if (i > 0) {
+            drawCircle(pos.leftPhos.x, pos.leftPhos.y, 6, '#f6ad55', highlight);
+            ctx.font = '0.4rem system-ui'; ctx.fillStyle = '#744210'; ctx.textAlign = 'center';
+            ctx.fillText('P', pos.leftPhos.x, pos.leftPhos.y + 2);
+            drawCircle(pos.rightPhos.x, pos.rightPhos.y, 6, '#f6ad55', highlight);
+            ctx.fillText('P', pos.rightPhos.x, pos.rightPhos.y + 2);
+        }
+
+        // Sugar (pentagon)
+        drawPentagon(pos.leftSugar.x, pos.y, 8, '#68d391', highlight);
+        ctx.font = '0.35rem system-ui'; ctx.fillStyle = '#276749'; ctx.textAlign = 'center';
+        ctx.fillText('S', pos.leftSugar.x, pos.y + 2);
+        drawPentagon(pos.rightSugar.x, pos.y, 8, '#68d391', highlight);
+        ctx.fillText('S', pos.rightSugar.x, pos.y + 2);
+
+        // Base labels
+        ctx.font = '700 0.65rem system-ui';
+        ctx.textAlign = 'center';
+        // Left base
+        const lbx = view === 'ladder' ? leftX + 40 : pos.leftSugar.x + 30;
+        ctx.fillStyle = baseColors[base];
+        ctx.fillText(base, lbx, pos.y + 4);
+        // Right base
+        const rbx = view === 'ladder' ? rightX - 40 : pos.rightSugar.x - 30;
+        ctx.fillStyle = baseColors[comp];
+        ctx.fillText(comp, rbx, pos.y + 4);
+
+        // H-bond count label
+        ctx.font = '0.4rem system-ui';
+        ctx.fillStyle = '#718096';
+        const hmid = view === 'ladder' ? midX : (pos.leftSugar.x + pos.rightSugar.x) / 2;
+        ctx.fillText(numH + 'H', hmid, pos.y - 7);
+
+        ctx.globalAlpha = 1;
+    }
+
+    // Legend at bottom
+    ctx.font = '0.55rem system-ui';
+    ctx.textAlign = 'left';
+    const ly = H - 30;
+    drawCircle(20, ly, 5, '#f6ad55', false); ctx.fillStyle = '#4a5568'; ctx.fillText('Phosphate', 30, ly + 3);
+    drawPentagon(100, ly, 5, '#68d391', false); ctx.fillStyle = '#4a5568'; ctx.fillText('Deoxyribose sugar', 110, ly + 3);
+    ctx.fillStyle = '#e53e3e'; ctx.fillRect(218, ly - 5, 10, 10); ctx.fillStyle = '#4a5568'; ctx.fillText('A-T (2 H-bonds)', 232, ly + 3);
+    ctx.fillStyle = '#3182ce'; ctx.fillRect(340, ly - 5, 10, 10); ctx.fillStyle = '#4a5568'; ctx.fillText('C-G (3 H-bonds)', 354, ly + 3);
+
+    ctx.font = '0.5rem system-ui';
+    ctx.fillStyle = '#a0aec0';
+    ctx.textAlign = 'center';
+    ctx.fillText('Click a base pair for details', W / 2, H - 8);
+}
+
+function setView(v) {
+    view = v;
+    document.getElementById('btnLadder').classList.toggle('active', v === 'ladder');
+    document.getElementById('btnTwist').classList.toggle('active', v === 'twist');
+    draw();
+}
+
+function getClickedNuc(mx, my) {
+    for (let i = 0; i < numBP; i++) {
+        const pos = getNucPositions(i);
+        if (Math.abs(my - pos.y) < gapY / 2) {
+            if (mx > pos.leftSugar.x - 50 && mx < pos.rightSugar.x + 50) return i;
+        }
+    }
+    return -1;
+}
+
+canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (W / rect.width);
+    const my = (e.clientY - rect.top) * (H / rect.height);
+    const idx = getClickedNuc(mx, my);
+
+    if (idx >= 0 && idx !== selectedNuc) {
+        selectedNuc = idx;
+        const base = sequence[idx];
+        const comp = complement[base];
+        const numH = (base === 'C' || base === 'G') ? 3 : 2;
+        const fullNames = { A: 'Adenine', T: 'Thymine', C: 'Cytosine', G: 'Guanine' };
+        detailBox.classList.add('show');
+        detailBox.innerHTML = `<strong>Base pair ${idx + 1}: ${fullNames[base]} - ${fullNames[comp]}</strong><br>` +
+            `Each nucleotide has 3 components: <strong>phosphate group</strong> (orange circle), ` +
+            `<strong>deoxyribose sugar</strong> (green pentagon), and <strong>nitrogenous base</strong> (${fullNames[base]}).<br>` +
+            `Held together by <strong>${numH} hydrogen bonds</strong>. ${numH === 3 ? 'C-G is a stronger pairing.' : 'A-T has fewer bonds than C-G.'}`;
+    } else {
+        selectedNuc = -1;
+        detailBox.classList.remove('show');
+    }
+    draw();
+});
+
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (W / rect.width);
+    const my = (e.clientY - rect.top) * (H / rect.height);
+    hoverNuc = getClickedNuc(mx, my);
+    canvas.style.cursor = hoverNuc >= 0 ? 'pointer' : 'default';
+    draw();
+});
+
+canvas.addEventListener('mouseleave', () => { hoverNuc = -1; draw(); });
+
+draw();
+</script>
+</body>
+</html>

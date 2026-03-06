@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Components</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        .main { display: flex; gap: 10px; align-items: flex-start; }
+        canvas { display: block; border: 1px solid #d4d8e5; border-radius: 5px; flex-shrink: 0; cursor: pointer; }
+        .info-panel { flex: 1; min-width: 0; }
+        .info-card { background: #e8ecf8; border-radius: 5px; padding: 10px; font-size: 0.72rem; margin-bottom: 6px; }
+        .info-card h3 { color: #1835b4; font-size: 0.85rem; margin-bottom: 6px; }
+        .info-card .row { margin-bottom: 4px; }
+        .info-card .row strong { color: #1835b4; }
+        .zoom-box { border: 2px solid #1835b4; border-radius: 8px; padding: 8px; background: #fff; }
+        .zoom-box h4 { color: #1835b4; font-size: 0.78rem; margin-bottom: 4px; }
+        .zoom-box canvas { border: none; margin: 0 auto 4px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Blood Components</h1>
+    <div class="desc">Click each layer of the centrifuged blood tube to see a magnified view</div>
+    <div class="main">
+        <canvas id="tube" width="160" height="400"></canvas>
+        <div class="info-panel">
+            <div class="info-card" id="info">
+                <h3>Centrifuged Blood</h3>
+                <p>When blood is spun in a centrifuge, it separates into layers by density. Click on any layer to zoom in and learn about its components.</p>
+            </div>
+            <div class="zoom-box" id="zoom" style="display:none;">
+                <h4 id="zoomTitle">Zoom</h4>
+                <canvas id="zoomCanvas" width="240" height="130"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+const tube = document.getElementById('tube');
+const tCtx = tube.getContext('2d');
+const zoomCanvas = document.getElementById('zoomCanvas');
+const zCtx = zoomCanvas.getContext('2d');
+
+const layers = [
+    { id:'plasma', label:'Plasma ~55%', y1:60, y2:220, color:'#f5e6a3', borderColor:'#d4c06a',
+      info:'<h3>Plasma (~55%)</h3><div class="row"><strong>Composition:</strong> ~90% water, straw-coloured liquid</div><div class="row"><strong>Dissolved substances:</strong> Glucose, amino acids, hormones, antibodies, urea, CO\u2082, mineral ions, proteins (fibrinogen, albumin)</div><div class="row"><strong>Function:</strong> Transports dissolved substances around the body. Distributes heat. Contains clotting factors.</div>' },
+    { id:'buffy', label:'Buffy coat <1%', y1:220, y2:230, color:'#f0f0e0', borderColor:'#ccc',
+      info:'<h3>Buffy Coat (<1%)</h3><div class="row"><strong>Contains:</strong> White blood cells (leucocytes) and platelets</div><div class="row"><strong>WBC types:</strong> <strong>Phagocytes</strong> (engulf and digest pathogens by phagocytosis) and <strong>Lymphocytes</strong> (produce antibodies and antitoxins, memory cells for immunity)</div><div class="row"><strong>Platelets:</strong> Cell fragments from megakaryocytes. Essential for blood clotting at wound sites (form platelet plug, release clotting factors &rarr; fibrinogen &rarr; fibrin mesh)</div>' },
+    { id:'rbc', label:'Red blood cells ~44%', y1:230, y2:360, color:'#c0392b', borderColor:'#922b21',
+      info:'<h3>Red Blood Cells (~44%)</h3><div class="row"><strong>Structure:</strong> Biconcave disc shape, no nucleus (more room for haemoglobin), no mitochondria</div><div class="row"><strong>Contains:</strong> Haemoglobin (Hb) &mdash; iron-containing protein that binds O\u2082</div><div class="row"><strong>Function:</strong> Transport oxygen from lungs to tissues. Hb + O\u2082 &harr; Oxyhaemoglobin (HbO\u2082). Biconcave shape increases surface area:volume ratio for faster gas exchange.</div><div class="row"><strong>Lifespan:</strong> ~120 days, produced in bone marrow, recycled in spleen/liver</div>' }
+];
+
+let selected = null;
+
+function drawTube() {
+    tCtx.clearRect(0, 0, tube.width, tube.height);
+    const tx = 30, tw = 100;
+
+    // Tube outline
+    tCtx.strokeStyle = '#b0bec5'; tCtx.lineWidth = 2;
+    tCtx.beginPath();
+    tCtx.moveTo(tx, 40); tCtx.lineTo(tx, 360);
+    tCtx.arc(tx+tw/2, 360, tw/2, Math.PI, 0, true);
+    tCtx.lineTo(tx+tw, 40);
+    tCtx.stroke();
+
+    // Layers
+    layers.forEach(l => {
+        const isSel = selected === l.id;
+        tCtx.fillStyle = l.color;
+        tCtx.beginPath();
+        if (l.y2 >= 350) {
+            tCtx.moveTo(tx+1, l.y1); tCtx.lineTo(tx+1, 355);
+            tCtx.arc(tx+tw/2, 355, tw/2-2, Math.PI, 0, true);
+            tCtx.lineTo(tx+tw-1, l.y1); tCtx.closePath();
+        } else {
+            tCtx.rect(tx+1, l.y1, tw-2, l.y2-l.y1);
+        }
+        tCtx.fill();
+        if (isSel) {
+            tCtx.strokeStyle = '#1835b4'; tCtx.lineWidth = 3; tCtx.stroke();
+        }
+
+        // Label
+        tCtx.fillStyle = '#1a2747'; tCtx.font = (isSel?'bold ':'') + '8px system-ui'; tCtx.textAlign = 'center';
+        const midY = (l.y1+Math.min(l.y2,355))/2;
+        tCtx.fillText(l.label, tx+tw/2, midY + (l.id==='buffy'?3:4));
+    });
+
+    // Percentage labels on right
+    tCtx.fillStyle = '#4a5568'; tCtx.font = '9px system-ui'; tCtx.textAlign = 'left';
+    tCtx.fillText('55%', tx+tw+8, 140);
+    tCtx.fillText('<1%', tx+tw+8, 227);
+    tCtx.fillText('44%', tx+tw+8, 300);
+
+    // Title on top
+    tCtx.fillStyle = '#1835b4'; tCtx.font = 'bold 9px system-ui'; tCtx.textAlign = 'center';
+    tCtx.fillText('Centrifuged', tx+tw/2, 20);
+    tCtx.fillText('Blood Sample', tx+tw/2, 32);
+}
+
+function drawZoom(layerId) {
+    zCtx.clearRect(0, 0, zoomCanvas.width, zoomCanvas.height);
+    if (layerId === 'plasma') {
+        document.getElementById('zoomTitle').textContent = 'Plasma (magnified)';
+        zCtx.fillStyle = '#fdf6d8'; zCtx.fillRect(0, 0, 240, 130);
+        // Scattered molecules
+        const items = [
+            {x:30,y:25,label:'Glucose',color:'#3498db'},{x:90,y:20,label:'Urea',color:'#e67e22'},
+            {x:160,y:30,label:'Antibody',color:'#9b59b6'},{x:40,y:65,label:'Hormone',color:'#e74c3c'},
+            {x:120,y:70,label:'CO\u2082',color:'#95a5a6'},{x:200,y:60,label:'Amino acid',color:'#2ecc71'},
+            {x:80,y:105,label:'Fibrinogen',color:'#f39c12'},{x:180,y:105,label:'Mineral ion',color:'#1835b4'}
+        ];
+        items.forEach(i => {
+            zCtx.beginPath(); zCtx.arc(i.x, i.y, 6, 0, Math.PI*2);
+            zCtx.fillStyle = i.color+'44'; zCtx.fill();
+            zCtx.strokeStyle = i.color; zCtx.lineWidth = 1.5; zCtx.stroke();
+            zCtx.fillStyle = '#1a2747'; zCtx.font = '7px system-ui'; zCtx.textAlign = 'center';
+            zCtx.fillText(i.label, i.x, i.y+16);
+        });
+    } else if (layerId === 'buffy') {
+        document.getElementById('zoomTitle').textContent = 'White Blood Cells & Platelets';
+        zCtx.fillStyle = '#f8f8f0'; zCtx.fillRect(0, 0, 240, 130);
+        // Phagocyte
+        zCtx.beginPath(); zCtx.arc(50, 50, 20, 0, Math.PI*2);
+        zCtx.fillStyle = 'rgba(142,68,173,0.2)'; zCtx.fill();
+        zCtx.strokeStyle = '#8e44ad'; zCtx.lineWidth = 2; zCtx.stroke();
+        // lobed nucleus
+        zCtx.beginPath(); zCtx.arc(43, 48, 8, 0, Math.PI*2); zCtx.moveTo(65, 52); zCtx.arc(57, 52, 8, 0, Math.PI*2);
+        zCtx.fillStyle = '#8e44ad44'; zCtx.fill();
+        zCtx.fillStyle = '#1a2747'; zCtx.font = '7px system-ui'; zCtx.textAlign = 'center';
+        zCtx.fillText('Phagocyte', 50, 80);
+        // Lymphocyte
+        zCtx.beginPath(); zCtx.arc(140, 50, 16, 0, Math.PI*2);
+        zCtx.fillStyle = 'rgba(52,152,219,0.2)'; zCtx.fill();
+        zCtx.strokeStyle = '#3498db'; zCtx.lineWidth = 2; zCtx.stroke();
+        zCtx.beginPath(); zCtx.arc(140, 50, 12, 0, Math.PI*2);
+        zCtx.fillStyle = '#3498db44'; zCtx.fill();
+        zCtx.fillText('Lymphocyte', 140, 80);
+        // Platelets
+        for (let i = 0; i < 5; i++) {
+            zCtx.beginPath(); zCtx.ellipse(195+i*8, 45+Math.sin(i)*8, 4, 6, i*0.3, 0, Math.PI*2);
+            zCtx.fillStyle = '#f39c12'; zCtx.fill();
+        }
+        zCtx.fillText('Platelets', 210, 80);
+        zCtx.fillStyle = '#4a5568'; zCtx.font = '7px system-ui';
+        zCtx.fillText('(engulfs pathogens)', 50, 92);
+        zCtx.fillText('(makes antibodies)', 140, 92);
+        zCtx.fillText('(cell fragments', 210, 92);
+        zCtx.fillText('for clotting)', 210, 102);
+    } else if (layerId === 'rbc') {
+        document.getElementById('zoomTitle').textContent = 'Red Blood Cells (magnified)';
+        zCtx.fillStyle = '#fde8e8'; zCtx.fillRect(0, 0, 240, 130);
+        // Side view (biconcave)
+        zCtx.strokeStyle = '#c0392b'; zCtx.lineWidth = 2;
+        zCtx.beginPath();
+        zCtx.moveTo(30, 50); zCtx.bezierCurveTo(35, 30, 55, 30, 60, 50);
+        zCtx.bezierCurveTo(55, 70, 35, 70, 30, 50);
+        zCtx.fillStyle = 'rgba(192,57,43,0.3)'; zCtx.fill(); zCtx.stroke();
+        // Indent
+        zCtx.beginPath(); zCtx.moveTo(38, 45); zCtx.quadraticCurveTo(45, 52, 52, 45); zCtx.strokeStyle = '#c0392b88'; zCtx.stroke();
+        zCtx.beginPath(); zCtx.moveTo(38, 55); zCtx.quadraticCurveTo(45, 48, 52, 55); zCtx.stroke();
+        zCtx.fillStyle = '#1a2747'; zCtx.font = '7px system-ui'; zCtx.textAlign = 'center';
+        zCtx.fillText('Side view', 45, 82);
+        zCtx.fillText('(biconcave disc)', 45, 92);
+        // Top view
+        zCtx.beginPath(); zCtx.arc(130, 50, 22, 0, Math.PI*2);
+        zCtx.fillStyle = 'rgba(192,57,43,0.3)'; zCtx.fill();
+        zCtx.strokeStyle = '#c0392b'; zCtx.lineWidth = 2; zCtx.stroke();
+        zCtx.beginPath(); zCtx.arc(130, 50, 8, 0, Math.PI*2);
+        zCtx.strokeStyle = '#c0392b88'; zCtx.lineWidth = 1; zCtx.stroke();
+        zCtx.fillText('Top view', 130, 82);
+        zCtx.fillText('(no nucleus)', 130, 92);
+        // Hb label
+        zCtx.fillStyle = '#c0392b'; zCtx.font = 'bold 8px system-ui';
+        zCtx.fillText('Hb', 130, 53);
+        // Key facts
+        zCtx.fillStyle = '#4a5568'; zCtx.font = '7px system-ui'; zCtx.textAlign = 'left';
+        zCtx.fillText('Contains haemoglobin (Hb)', 180, 35);
+        zCtx.fillText('Hb + O\u2082 \u2192 HbO\u2082', 180, 50);
+        zCtx.fillText('No nucleus', 180, 65);
+        zCtx.fillText('No mitochondria', 180, 80);
+        zCtx.fillText('Made in bone marrow', 180, 95);
+    }
+}
+
+tube.addEventListener('click', function(e) {
+    const rect = tube.getBoundingClientRect();
+    const my = (e.clientY-rect.top)*(tube.height/rect.height);
+    selected = null;
+    layers.forEach(l => { if (my >= l.y1 && my <= l.y2) selected = l.id; });
+    if (selected) {
+        const l = layers.find(la=>la.id===selected);
+        document.getElementById('info').innerHTML = l.info;
+        document.getElementById('zoom').style.display = 'block';
+        drawZoom(selected);
+    } else {
+        document.getElementById('info').innerHTML = '<h3>Centrifuged Blood</h3><p>Click on any layer to zoom in and learn about its components.</p>';
+        document.getElementById('zoom').style.display = 'none';
+    }
+    drawTube();
+});
+
+drawTube();
+</script>
+</body>
+</html>

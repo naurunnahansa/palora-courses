@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pressure Flow in Translocation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fcfcfe;
+    color: #1a2747;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 6px; text-align: center; }
+  .subtitle { font-size: 0.9rem; color: #6b7a99; margin-bottom: 20px; text-align: center; max-width: 520px; }
+  .diagram { width: 100%; max-width: 620px; }
+  svg { width: 100%; height: auto; }
+  .lbl {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 10.5px;
+    fill: #1a2747;
+  }
+  .lbl-bold {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    fill: #1835b4;
+  }
+  .lbl-sm {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 9.5px;
+    fill: #6b7a99;
+  }
+  .note-box {
+    margin-top: 16px;
+    background: #e8ecf8;
+    border: 1.5px solid #d4d8e5;
+    border-radius: 10px;
+    padding: 14px 18px;
+    max-width: 580px;
+    width: 100%;
+  }
+  .note-box p { font-size: 0.82rem; line-height: 1.55; margin: 3px 0; }
+  .note-box strong { color: #1835b4; }
+</style>
+</head>
+<body>
+<h1>Pressure Flow in Translocation</h1>
+<p class="subtitle">The mass flow hypothesis: sucrose is transported from source to sink through phloem sieve tubes</p>
+<div class="diagram">
+  <svg viewBox="0 0 600 520" id="svg">
+    <defs>
+      <marker id="arrOrange" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+        <polygon points="0,0 7,2.5 0,5" fill="#d48020"/>
+      </marker>
+      <marker id="arrBlue" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+        <polygon points="0,0 7,2.5 0,5" fill="#3080d0"/>
+      </marker>
+      <marker id="arrGreen" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+        <polygon points="0,0 7,2.5 0,5" fill="#308030"/>
+      </marker>
+    </defs>
+
+    <!-- SOURCE (leaf) -->
+    <ellipse cx="150" cy="60" rx="110" ry="40" fill="#6ab04c" opacity="0.2" stroke="#4a8a2c" stroke-width="1.5"/>
+    <text x="150" y="50" text-anchor="middle" class="lbl-bold" fill="#308030">SOURCE (Leaf)</text>
+    <text x="150" y="68" text-anchor="middle" class="lbl-sm">Photosynthesis produces sucrose</text>
+
+    <!-- Active transport arrow from source to sieve tube -->
+    <line x1="150" y1="100" x2="150" y2="145" stroke="#d48020" stroke-width="2" marker-end="url(#arrOrange)"/>
+    <text x="165" y="125" class="lbl" fill="#d48020" font-size="9.5">Sucrose loaded</text>
+    <text x="165" y="137" class="lbl-sm" fill="#d48020">(active transport)</text>
+
+    <!-- Sieve tube (main vertical tube) -->
+    <rect x="120" y="150" width="60" height="280" rx="6" fill="#fef3e0" stroke="#d48020" stroke-width="1.5"/>
+
+    <!-- Sieve plates -->
+    <line x1="120" y1="210" x2="180" y2="210" stroke="#d4a030" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="190" y="214" class="lbl-sm" fill="#b08020">Sieve plate</text>
+    <line x1="120" y1="280" x2="180" y2="280" stroke="#d4a030" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="190" y="284" class="lbl-sm" fill="#b08020">Sieve plate</text>
+    <line x1="120" y1="350" x2="180" y2="350" stroke="#d4a030" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+    <text x="150" y="175" text-anchor="middle" class="lbl-bold" fill="#d48020" font-size="11">Sieve Tube</text>
+
+    <!-- Companion cells -->
+    <rect x="68" y="160" width="42" height="60" rx="5" fill="#e8ecf8" stroke="#1835b4" stroke-width="1"/>
+    <text x="89" y="185" text-anchor="middle" class="lbl-sm" fill="#1835b4">Companion</text>
+    <text x="89" y="196" text-anchor="middle" class="lbl-sm" fill="#1835b4">cell</text>
+    <!-- Plasmodesmata connection -->
+    <line x1="110" y1="180" x2="120" y2="180" stroke="#1835b4" stroke-width="1" stroke-dasharray="2,2"/>
+    <line x1="110" y1="195" x2="120" y2="195" stroke="#1835b4" stroke-width="1" stroke-dasharray="2,2"/>
+    <text x="60" y="240" class="lbl-sm" fill="#1835b4">Plasmodesmata</text>
+
+    <!-- Companion cell lower -->
+    <rect x="68" y="300" width="42" height="60" rx="5" fill="#e8ecf8" stroke="#1835b4" stroke-width="1"/>
+    <text x="89" y="325" text-anchor="middle" class="lbl-sm" fill="#1835b4">Companion</text>
+    <text x="89" y="336" text-anchor="middle" class="lbl-sm" fill="#1835b4">cell</text>
+    <line x1="110" y1="320" x2="120" y2="320" stroke="#1835b4" stroke-width="1" stroke-dasharray="2,2"/>
+
+    <!-- Water entering at source (osmosis) -->
+    <path d="M 260,130 Q 220,140 185,165" fill="none" stroke="#3080d0" stroke-width="1.8" marker-end="url(#arrBlue)" stroke-dasharray="4,3"/>
+    <text x="265" y="125" class="lbl" fill="#3080d0">Water enters by osmosis</text>
+    <text x="265" y="139" class="lbl-sm" fill="#3080d0">(high solute conc. attracts water)</text>
+
+    <!-- Pressure arrow downward -->
+    <line x1="150" y1="250" x2="150" y2="330" stroke="#c06020" stroke-width="2.5" marker-end="url(#arrOrange)" opacity="0.4"/>
+    <text x="155" y="300" class="lbl" fill="#c06020" font-weight="600">Pressure</text>
+    <text x="155" y="314" class="lbl" fill="#c06020" font-weight="600">flow</text>
+
+    <!-- Water leaving at sink -->
+    <path d="M 185,400 Q 230,420 265,420" fill="none" stroke="#3080d0" stroke-width="1.8" marker-end="url(#arrBlue)" stroke-dasharray="4,3"/>
+    <text x="270" y="418" class="lbl" fill="#3080d0">Water leaves by osmosis</text>
+    <text x="270" y="432" class="lbl-sm" fill="#3080d0">(lower solute conc.)</text>
+
+    <!-- Sucrose unloaded at sink -->
+    <line x1="150" y1="430" x2="150" y2="460" stroke="#d48020" stroke-width="2" marker-end="url(#arrOrange)"/>
+    <text x="165" y="452" class="lbl" fill="#d48020" font-size="9.5">Sucrose unloaded</text>
+
+    <!-- SINK (root/fruit) -->
+    <ellipse cx="150" cy="490" rx="100" ry="30" fill="#d4b88c" opacity="0.3" stroke="#906020" stroke-width="1.5"/>
+    <text x="150" y="485" text-anchor="middle" class="lbl-bold" fill="#906020">SINK (Root / Fruit)</text>
+    <text x="150" y="502" text-anchor="middle" class="lbl-sm">Used for respiration or storage</text>
+
+    <!-- High/Low pressure labels -->
+    <rect x="380" y="155" width="120" height="30" rx="6" fill="#fff0e0" stroke="#d48020" stroke-width="1"/>
+    <text x="440" y="174" text-anchor="middle" class="lbl" fill="#d48020" font-weight="600">HIGH pressure</text>
+    <line x1="380" y1="170" x2="185" y2="170" stroke="#d48020" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+
+    <rect x="380" y="410" width="120" height="30" rx="6" fill="#f0f8ff" stroke="#3080d0" stroke-width="1"/>
+    <text x="440" y="429" text-anchor="middle" class="lbl" fill="#3080d0" font-weight="600">LOW pressure</text>
+    <line x1="380" y1="425" x2="185" y2="410" stroke="#3080d0" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+
+    <!-- Gradient arrow on far right -->
+    <line x1="530" y1="170" x2="530" y2="425" stroke="#888" stroke-width="1.5" marker-end="url(#arrOrange)"/>
+    <text x="540" y="300" class="lbl-sm" transform="rotate(90,540,300)">Pressure gradient</text>
+  </svg>
+</div>
+<div class="note-box">
+  <p><strong>Mass flow hypothesis:</strong> Sucrose is actively loaded into phloem at the source, lowering water potential. Water follows by osmosis, raising hydrostatic pressure. This pressure pushes the sucrose solution toward the sink where sucrose is removed, water potential rises, and water leaves.</p>
+</div>
+
+<script>
+const svg = document.getElementById("svg");
+const tubeTop = 155, tubeBot = 425;
+const numDots = 8;
+const dots = [];
+
+for (let i = 0; i < numDots; i++) {
+  const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  dot.setAttribute("r", "4");
+  dot.setAttribute("fill", "#e8942a");
+  dot.setAttribute("opacity", "0.75");
+  svg.appendChild(dot);
+  dots.push({ el: dot, offset: i / numDots });
+}
+
+function animate(ts) {
+  const cycle = 5000;
+  const t = (ts % cycle) / cycle;
+  dots.forEach(d => {
+    const pos = (t + d.offset) % 1;
+    const y = tubeTop + pos * (tubeBot - tubeTop);
+    const wobble = Math.sin(pos * Math.PI * 4) * 5;
+    d.el.setAttribute("cx", 150 + wobble);
+    d.el.setAttribute("cy", y);
+    d.el.setAttribute("opacity", 0.4 + 0.45 * Math.sin(pos * Math.PI));
+  });
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>

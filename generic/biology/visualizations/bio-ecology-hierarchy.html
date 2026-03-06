@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecology Hierarchy</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fcfcfe;
+    color: #1a2747;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  h1 {
+    font-size: 1.5rem;
+    color: #1835b4;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .subtitle {
+    font-size: 0.9rem;
+    color: #6b7a99;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .hierarchy-container {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .level-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 18px 20px 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: transform 0.25s, box-shadow 0.25s;
+    position: relative;
+  }
+  .level-box:hover {
+    transform: scale(1.015);
+    box-shadow: 0 4px 20px rgba(24,53,180,0.15);
+  }
+  .level-label {
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+  }
+  .level-def {
+    font-size: 0.82rem;
+    margin-top: 4px;
+    opacity: 0.85;
+  }
+  .level-example {
+    font-size: 0.78rem;
+    margin-top: 4px;
+    font-style: italic;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s, max-height 0.3s;
+  }
+  .level-box:hover .level-example,
+  .level-box.active .level-example {
+    opacity: 0.9;
+    max-height: 40px;
+  }
+  .info-panel {
+    margin-top: 20px;
+    background: #e8ecf8;
+    border: 1px solid #d4d8e5;
+    border-radius: 10px;
+    padding: 16px 20px;
+    width: 100%;
+    max-width: 700px;
+    min-height: 60px;
+    text-align: center;
+    font-size: 0.9rem;
+    transition: opacity 0.3s;
+  }
+  .info-panel .info-title {
+    font-weight: 700;
+    color: #1835b4;
+    margin-bottom: 4px;
+  }
+  .note {
+    margin-top: 16px;
+    font-size: 0.8rem;
+    color: #6b7a99;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>Ecology Hierarchy</h1>
+<p class="subtitle">From the single organism to the entire biosphere. Hover over each level to learn more.</p>
+
+<div class="hierarchy-container" id="hierarchy"></div>
+
+<div class="info-panel" id="infoPanel">
+  <div class="info-title" id="infoTitle">Hover over a level</div>
+  <div id="infoBody">Click or hover on any box to see its definition and example.</div>
+</div>
+
+<p class="note">Each level contains all the levels nested inside it.</p>
+
+<script>
+const levels = [
+  { name: 'Biosphere', def: 'All ecosystems on Earth', example: 'Every living thing and environment on the planet', color: '#c8d0f0', text: '#1a2747' },
+  { name: 'Ecosystem', def: 'Community + its physical environment', example: 'e.g. The field with its soil, water, and weather', color: '#a3b0e4', text: '#1a2747' },
+  { name: 'Community', def: 'All organisms of ALL species in an area', example: 'e.g. Rabbits, foxes, grass, beetles in one field', color: '#7b8dd8', text: '#fff' },
+  { name: 'Population', def: 'All organisms of ONE species in an area', example: 'e.g. All the rabbits living in a single field', color: '#4a62c8', text: '#fff' },
+  { name: 'Individual', def: 'A single organism', example: 'e.g. One rabbit', color: '#1835b4', text: '#fff' }
+];
+
+const container = document.getElementById('hierarchy');
+const infoPanel = document.getElementById('infoPanel');
+const infoTitle = document.getElementById('infoTitle');
+const infoBody = document.getElementById('infoBody');
+
+let currentEl = null;
+
+function buildHierarchy() {
+  let html = '';
+  const totalLevels = levels.length;
+  levels.forEach((level, i) => {
+    const widthPct = 100 - i * 14;
+    const pad = 16 + (totalLevels - 1 - i) * 4;
+    html += `<div class="level-box" data-index="${i}"
+      style="width:${widthPct}%; background:${level.color}; color:${level.text}; margin-bottom:${i < totalLevels - 1 ? 0 : 0}px; padding-top:${pad}px; padding-bottom:${i === totalLevels - 1 ? pad : 8}px; border: 2px solid rgba(24,53,180,${0.1 + i * 0.08});">
+      <span class="level-label">${level.name}</span>
+      <span class="level-def">${level.def}</span>
+      <span class="level-example">${level.example}</span>
+    </div>`;
+  });
+  container.innerHTML = html;
+
+  container.querySelectorAll('.level-box').forEach(box => {
+    box.addEventListener('mouseenter', () => showInfo(box));
+    box.addEventListener('click', () => showInfo(box));
+  });
+}
+
+function showInfo(box) {
+  const idx = parseInt(box.dataset.index);
+  const level = levels[idx];
+  infoTitle.textContent = level.name;
+  infoBody.textContent = level.def + ' — ' + level.example;
+  if (currentEl) currentEl.classList.remove('active');
+  box.classList.add('active');
+  currentEl = box;
+}
+
+buildHierarchy();
+</script>
+
+</body>
+</html>

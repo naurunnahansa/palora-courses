@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protein Synthesis</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .central-dogma { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.82rem; font-weight: 700; color: #1835b4; }
+        .central-dogma .arrow { color: #d42525; margin: 0 6px; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .controls { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .btn { background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 6px 16px; font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+        .btn:hover { background: #122a8a; }
+        .btn:disabled { background: #a0a8c0; cursor: default; }
+        .step-label { font-size: 0.78rem; font-weight: 600; color: #1835b4; min-width: 100px; text-align: center; }
+        .dots { display: flex; gap: 5px; }
+        .dot { width: 9px; height: 9px; border-radius: 50%; background: #d4d8e5; cursor: pointer; transition: background 0.2s; }
+        .dot.active { background: #1835b4; }
+        .dot.transcr { border: 2px solid #22a355; }
+        .dot.transl { border: 2px solid #d45050; }
+        .info-panel { background: #fff; border: 1px solid #d4d8e5; border-radius: 5px; padding: 10px 12px; font-size: 0.78rem; min-height: 50px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        .info-panel h3 { color: #1835b4; margin-bottom: 4px; font-size: 0.85rem; }
+        .phase-tag { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 0.7rem; font-weight: 700; color: #fff; margin-right: 6px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Protein Synthesis</h1>
+    <div class="central-dogma">DNA <span class="arrow">\u2192</span> mRNA <span class="arrow">\u2192</span> Protein &nbsp; (The Central Dogma)</div>
+    <canvas id="cv" width="540" height="360"></canvas>
+    <div class="controls">
+        <button class="btn" id="prevBtn" onclick="go(-1)">Back</button>
+        <div class="dots" id="dots"></div>
+        <button class="btn" id="nextBtn" onclick="go(1)">Next</button>
+    </div>
+    <div class="info-panel" id="info"></div>
+</div>
+<script>
+const canvas = document.getElementById('cv');
+const ctx = canvas.getContext('2d');
+const infoEl = document.getElementById('info');
+const dotsEl = document.getElementById('dots');
+const W = canvas.width, H = canvas.height;
+
+const BASE_COLORS = { A: '#d42525', T: '#2272b5', U: '#e68a00', C: '#22a355', G: '#7b2d8e' };
+
+/* DNA template strand and corresponding sequences */
+const templateDNA = ['T','A','C','G','A','T','C','C','A','T','T','G','A','C','T'];
+const codingDNA   = ['A','T','G','C','T','A','G','G','T','A','A','C','T','G','A'];
+const mRNA_seq    = ['A','U','G','C','U','A','G','G','U','A','A','C','U','G','A'];
+const codons = [['A','U','G'],['C','U','A'],['G','G','U'],['A','A','C'],['U','G','A']];
+const aminoAcids = ['Met','Leu','Gly','Asn','STOP'];
+const anticodons = [['U','A','C'],['G','A','U'],['C','C','A'],['U','U','G']];
+
+const steps = [
+    { phase: 'Transcription', step: 1, title: 'Step 1: Gene on DNA', desc: 'Inside the nucleus, the DNA double helix contains the gene to be expressed. The gene is a specific sequence of bases on one strand (the template strand) that codes for a polypeptide.' },
+    { phase: 'Transcription', step: 2, title: 'Step 2: DNA Unzips', desc: 'The hydrogen bonds between complementary base pairs break and the two strands of DNA separate (unzip). RNA polymerase binds to the template strand at the start of the gene.' },
+    { phase: 'Transcription', step: 3, title: 'Step 3: mRNA Strand Forms', desc: 'RNA polymerase moves along the template strand, reading it 3\u2019 to 5\u2019. Free RNA nucleotides pair with the exposed bases: A pairs with U (not T), T pairs with A, C pairs with G, G pairs with C. A complementary mRNA strand is assembled.' },
+    { phase: 'Transcription', step: 4, title: 'Step 4: mRNA Leaves Nucleus', desc: 'The completed mRNA strand detaches from the DNA. The DNA re-zips. The mRNA molecule passes out of the nucleus through a nuclear pore into the cytoplasm.' },
+    { phase: 'Translation', step: 5, title: 'Step 5: mRNA Meets Ribosome', desc: 'In the cytoplasm, the mRNA strand attaches to a ribosome. The ribosome reads the mRNA sequence in groups of three bases called codons. The start codon is AUG.' },
+    { phase: 'Translation', step: 6, title: 'Step 6: First tRNA Arrives', desc: 'A transfer RNA (tRNA) molecule with the complementary anticodon (UAC) carries the amino acid methionine (Met) to the ribosome. The anticodon pairs with the first codon (AUG) on the mRNA.' },
+    { phase: 'Translation', step: 7, title: 'Step 7: Polypeptide Chain Grows', desc: 'The ribosome moves along the mRNA one codon at a time. Each new codon is matched by a tRNA carrying the correct amino acid. Peptide bonds form between adjacent amino acids, building a polypeptide chain. The previous tRNA detaches and is recycled.' },
+    { phase: 'Translation', step: 8, title: 'Step 8: Protein Complete', desc: 'When the ribosome reaches a stop codon (UGA, UAA, or UAG), translation ends. The completed polypeptide chain is released and folds into its functional 3D protein shape. No tRNA matches a stop codon.' }
+];
+
+/* Build dots */
+steps.forEach((s, i) => {
+    let d = document.createElement('span');
+    d.className = 'dot' + (i === 0 ? ' active' : '') + (s.phase === 'Transcription' ? ' transcr' : ' transl');
+    d.onclick = () => { step = i; render(); };
+    dotsEl.appendChild(d);
+});
+
+let step = 0;
+
+function go(d) { step = Math.max(0, Math.min(steps.length - 1, step + d)); render(); }
+
+function render() {
+    document.getElementById('prevBtn').disabled = step === 0;
+    document.getElementById('nextBtn').disabled = step === steps.length - 1;
+    dotsEl.querySelectorAll('.dot').forEach((d, i) => {
+        d.className = 'dot' + (i === step ? ' active' : '') + (steps[i].phase === 'Transcription' ? ' transcr' : ' transl');
+    });
+    let s = steps[step];
+    let phaseCol = s.phase === 'Transcription' ? '#22a355' : '#d45050';
+    infoEl.innerHTML = `<span class="phase-tag" style="background:${phaseCol}">${s.phase}</span><h3>${s.title}</h3>${s.desc}`;
+    drawStep();
+}
+
+function drawBase(ch, x, y, size) {
+    ctx.fillStyle = BASE_COLORS[ch] || '#888';
+    ctx.beginPath();
+    roundRectPath(x - size/2, y - size/2, size, size, 3);
+    ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = `bold ${size * 0.6}px system-ui`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(ch, x, y + 1);
+}
+
+function roundRectPath(x, y, w, h, r) {
+    ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
+    ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+    ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+    ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r);
+}
+
+function drawDNADouble(x, y, highlight) {
+    const bSize = 22, gap = 6;
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText("3' Template strand", x + templateDNA.length * (bSize+gap)/2, y - 18);
+    ctx.fillText("5' Coding strand", x + codingDNA.length * (bSize+gap)/2, y + bSize + gap + bSize + 14);
+    for (let i = 0; i < templateDNA.length; i++) {
+        let bx = x + i * (bSize + gap) + bSize/2;
+        let op = highlight && i >= highlight[0] && i < highlight[1] ? 1 : 0.4;
+        ctx.globalAlpha = op;
+        drawBase(templateDNA[i], bx, y, bSize);
+        /* H bonds */
+        ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1; ctx.setLineDash([2,2]);
+        ctx.beginPath(); ctx.moveTo(bx, y + bSize/2); ctx.lineTo(bx, y + bSize/2 + gap); ctx.stroke();
+        ctx.setLineDash([]);
+        drawBase(codingDNA[i], bx, y + bSize + gap, bSize);
+        ctx.globalAlpha = 1;
+    }
+}
+
+function drawmRNA(x, y, count) {
+    const bSize = 22, gap = 6;
+    for (let i = 0; i < count && i < mRNA_seq.length; i++) {
+        let bx = x + i * (bSize + gap) + bSize/2;
+        drawBase(mRNA_seq[i], bx, y, bSize);
+    }
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'left';
+    ctx.fillText('mRNA', x - 40, y + 5);
+}
+
+function drawNucleus(x, y, w, h, showPore) {
+    ctx.setLineDash([6,4]); ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.ellipse(x + w/2, y + h/2, w/2, h/2, 0, 0, Math.PI*2); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(24,53,180,0.05)';
+    ctx.beginPath(); ctx.ellipse(x + w/2, y + h/2, w/2, h/2, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#4a5568'; ctx.font = '10px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('NUCLEUS', x + w/2, y + h - 8);
+    if (showPore) {
+        ctx.fillStyle = '#1835b4'; ctx.font = '9px system-ui';
+        ctx.fillText('Nuclear pore \u2192', x + w - 10, y + h/2 + 4);
+        ctx.beginPath(); ctx.arc(x + w, y + h/2, 6, 0, Math.PI*2);
+        ctx.fillStyle = '#e8ecf8'; ctx.fill(); ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2; ctx.stroke();
+    }
+}
+
+function drawRibosome(x, y) {
+    /* two subunits */
+    ctx.beginPath(); ctx.ellipse(x, y - 8, 50, 20, 0, 0, Math.PI*2);
+    ctx.fillStyle = '#d4d8e5'; ctx.fill(); ctx.strokeStyle = '#999'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(x, y + 14, 60, 24, 0, 0, Math.PI*2);
+    ctx.fillStyle = '#c8cce0'; ctx.fill(); ctx.strokeStyle = '#999'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Ribosome', x, y + 50);
+}
+
+function drawTRNA(x, y, anticodon, aa, color) {
+    /* upside-down clover shape simplified as a Y */
+    ctx.strokeStyle = color || '#e68a00'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 12, y - 30); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 12, y - 30); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y + 20); ctx.stroke();
+    /* amino acid */
+    ctx.beginPath(); ctx.arc(x, y - 35, 12, 0, Math.PI*2);
+    ctx.fillStyle = '#f5c542'; ctx.fill(); ctx.strokeStyle = '#c89f20'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 8px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText(aa, x, y - 32);
+    /* anticodon bases */
+    if (anticodon) {
+        const bs = 14;
+        for (let i = 0; i < 3; i++) {
+            drawBase(anticodon[i], x - (bs+2) + i*(bs+2), y + 28, bs);
+        }
+        ctx.fillStyle = '#4a5568'; ctx.font = '8px system-ui';
+        ctx.fillText('anticodon', x, y + 46);
+    }
+}
+
+function drawPolypeptide(x, y, count) {
+    for (let i = 0; i < count; i++) {
+        let bx = x + i * 28;
+        ctx.beginPath(); ctx.arc(bx, y, 12, 0, Math.PI*2);
+        ctx.fillStyle = i === count - 1 ? '#f5c542' : '#e8c84a'; ctx.fill();
+        ctx.strokeStyle = '#c89f20'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 7px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText(aminoAcids[i] || '?', bx, y + 3);
+        if (i > 0) {
+            ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(bx - 28 + 12, y); ctx.lineTo(bx - 12, y); ctx.stroke();
+        }
+    }
+    ctx.fillStyle = '#4a5568'; ctx.font = '9px system-ui'; ctx.textAlign = 'left';
+    ctx.fillText('Polypeptide chain', x, y + 22);
+}
+
+function drawStep() {
+    ctx.clearRect(0, 0, W, H);
+
+    /* Phase label */
+    let s = steps[step];
+    let phaseCol = s.phase === 'Transcription' ? '#22a355' : '#d45050';
+    ctx.fillStyle = phaseCol; ctx.font = 'bold 12px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText(s.phase.toUpperCase() + ' \u2014 ' + s.title, W/2, 20);
+
+    if (step === 0) {
+        /* DNA double helix in nucleus */
+        drawNucleus(60, 50, 420, 260, false);
+        drawDNADouble(100, 140, [0, templateDNA.length]);
+        ctx.fillStyle = '#1835b4'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('Gene (highlighted region of DNA)', W/2, 100);
+    }
+    else if (step === 1) {
+        /* DNA unzips */
+        drawNucleus(60, 50, 420, 260, false);
+        const bSize = 22, gap = 6, baseX = 100;
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText("3' Template strand", baseX + 7*(bSize+gap)/2, 88);
+        /* separated strands */
+        for (let i = 0; i < templateDNA.length; i++) {
+            let bx = baseX + i*(bSize+gap) + bSize/2;
+            let separated = i >= 3 && i <= 10;
+            let yOff = separated ? -18 : 0;
+            let yOff2 = separated ? 18 : 0;
+            drawBase(templateDNA[i], bx, 120 + yOff, bSize);
+            if (!separated) {
+                ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1; ctx.setLineDash([2,2]);
+                ctx.beginPath(); ctx.moveTo(bx, 120+bSize/2); ctx.lineTo(bx, 120+bSize/2+gap); ctx.stroke();
+                ctx.setLineDash([]);
+            }
+            drawBase(codingDNA[i], bx, 120 + bSize + gap + yOff2, bSize);
+        }
+        /* RNA polymerase */
+        ctx.fillStyle = '#d45050'; ctx.beginPath();
+        ctx.ellipse(baseX + 3*(bSize+gap)+bSize/2, 120 + bSize/2 + gap/2, 25, 18, 0, 0, Math.PI*2);
+        ctx.globalAlpha = 0.6; ctx.fill(); ctx.globalAlpha = 1;
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 8px system-ui';
+        ctx.fillText('RNA', baseX + 3*(bSize+gap)+bSize/2, 120 + bSize/2 + gap/2 - 3);
+        ctx.fillText('polymerase', baseX + 3*(bSize+gap)+bSize/2, 120 + bSize/2 + gap/2 + 8);
+    }
+    else if (step === 2) {
+        /* mRNA forming */
+        drawNucleus(60, 40, 420, 280, false);
+        const bSize = 20, gap = 5, baseX = 90;
+        /* template strand */
+        for (let i = 0; i < templateDNA.length; i++) {
+            let bx = baseX + i*(bSize+gap) + bSize/2;
+            drawBase(templateDNA[i], bx, 80, bSize);
+        }
+        ctx.fillStyle = '#4a5568'; ctx.font = '9px system-ui'; ctx.textAlign = 'left';
+        ctx.fillText("3' Template", baseX - 5, 75);
+        /* H bonds to mRNA */
+        for (let i = 0; i < mRNA_seq.length; i++) {
+            let bx = baseX + i*(bSize+gap) + bSize/2;
+            ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1; ctx.setLineDash([2,2]);
+            ctx.beginPath(); ctx.moveTo(bx, 80+bSize/2); ctx.lineTo(bx, 120); ctx.stroke();
+            ctx.setLineDash([]);
+            drawBase(mRNA_seq[i], bx, 130, bSize);
+        }
+        ctx.fillStyle = '#4a5568'; ctx.font = '9px system-ui'; ctx.textAlign = 'left';
+        ctx.fillText("5' mRNA", baseX - 5, 148);
+        /* base pairing key */
+        ctx.fillStyle = '#1a2747'; ctx.font = '10px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('Base pairing: A\u2194U, T\u2194A, C\u2194G, G\u2194C', W/2, 200);
+        /* RNA polymerase arrow */
+        ctx.fillStyle = '#d45050'; ctx.font = 'bold 10px system-ui';
+        ctx.fillText('RNA polymerase moves \u2192', W/2, 230);
+    }
+    else if (step === 3) {
+        /* mRNA leaves nucleus */
+        drawNucleus(20, 40, 250, 200, true);
+        /* DNA re-zipped inside */
+        const bSize = 12, gap = 2, baseX = 40;
+        for (let i = 0; i < 10; i++) {
+            let bx = baseX + i*(bSize+gap) + bSize/2;
+            drawBase(templateDNA[i], bx, 120, bSize);
+            ctx.strokeStyle = '#aaa'; ctx.lineWidth = 0.5; ctx.setLineDash([1,1]);
+            ctx.beginPath(); ctx.moveTo(bx, 120+bSize/2); ctx.lineTo(bx, 120+bSize/2+3); ctx.stroke();
+            ctx.setLineDash([]);
+            drawBase(codingDNA[i], bx, 120+bSize+3, bSize);
+        }
+        ctx.fillStyle = '#4a5568'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('DNA re-zips', 120, 168);
+        /* mRNA traveling out */
+        ctx.strokeStyle = '#e68a00'; ctx.lineWidth = 2; ctx.setLineDash([4,3]);
+        ctx.beginPath(); ctx.moveTo(270, 140); ctx.quadraticCurveTo(310, 140, 330, 180); ctx.stroke();
+        ctx.setLineDash([]);
+        /* mRNA in cytoplasm */
+        const bSize2 = 18, gap2 = 4, baseX2 = 300;
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'left';
+        ctx.fillText('CYTOPLASM', 310, 60);
+        ctx.fillText('mRNA', baseX2, 200);
+        for (let i = 0; i < mRNA_seq.length; i++) {
+            drawBase(mRNA_seq[i], baseX2 + i*(bSize2+gap2) + bSize2/2, 220, bSize2);
+        }
+    }
+    else if (step === 4) {
+        /* mRNA attaches to ribosome */
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('CYTOPLASM', W/2, 45);
+        drawRibosome(W/2, 140);
+        /* mRNA through ribosome */
+        const bSize = 20, gap = 5, baseX = 100;
+        for (let i = 0; i < mRNA_seq.length; i++) {
+            drawBase(mRNA_seq[i], baseX + i*(bSize+gap) + bSize/2, 210, bSize);
+        }
+        /* highlight first codon */
+        ctx.strokeStyle = '#d42525'; ctx.lineWidth = 2; ctx.setLineDash([3,2]);
+        ctx.strokeRect(baseX - 2, 210 - bSize/2 - 2, 3*(bSize+gap), bSize + 4);
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#d42525'; ctx.font = '10px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('Start codon: AUG', baseX + 1.5*(bSize+gap), 245);
+        /* codon grouping brackets */
+        for (let c = 0; c < codons.length; c++) {
+            let cx2 = baseX + c*3*(bSize+gap) + 1.5*(bSize+gap);
+            ctx.fillStyle = '#4a5568'; ctx.font = '8px system-ui'; ctx.textAlign = 'center';
+            ctx.fillText('Codon ' + (c+1), cx2, 260);
+        }
+    }
+    else if (step === 5) {
+        /* First tRNA arrives */
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('CYTOPLASM', W/2, 45);
+        const bSize = 20, gap = 5, baseX = 100;
+        for (let i = 0; i < mRNA_seq.length; i++) {
+            drawBase(mRNA_seq[i], baseX + i*(bSize+gap) + bSize/2, 250, bSize);
+        }
+        drawRibosome(baseX + 1.5*(bSize+gap), 170);
+        /* tRNA with anticodon */
+        drawTRNA(baseX + 1.5*(bSize+gap), 120, anticodons[0], 'Met', '#e68a00');
+        ctx.fillStyle = '#4a5568'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('tRNA brings methionine (Met)', baseX + 1.5*(bSize+gap), 60);
+        ctx.fillText('Anticodon UAC pairs with codon AUG', baseX + 1.5*(bSize+gap), 300);
+    }
+    else if (step === 6) {
+        /* Chain growing */
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('CYTOPLASM', W/2, 40);
+        const bSize = 20, gap = 5, baseX = 80;
+        for (let i = 0; i < mRNA_seq.length; i++) {
+            drawBase(mRNA_seq[i], baseX + i*(bSize+gap) + bSize/2, 260, bSize);
+        }
+        /* ribosome moved to codon 3 */
+        drawRibosome(baseX + 7*(bSize+gap)/2, 180);
+        /* tRNA at codon 2 and 3 */
+        drawTRNA(baseX + 4.5*(bSize+gap), 120, anticodons[1], 'Leu', '#e68a00');
+        drawTRNA(baseX + 7.5*(bSize+gap), 120, anticodons[2], 'Gly', '#22a355');
+        /* growing polypeptide */
+        drawPolypeptide(baseX + 20, 65, 3);
+        /* peptide bond label */
+        ctx.fillStyle = '#d42525'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('Peptide bonds forming between amino acids', W/2, 300);
+        ctx.fillText('Ribosome moves along mRNA \u2192', W/2, 315);
+    }
+    else if (step === 7) {
+        /* Complete */
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('CYTOPLASM', W/2, 40);
+        const bSize = 20, gap = 5, baseX = 80;
+        for (let i = 0; i < mRNA_seq.length; i++) {
+            drawBase(mRNA_seq[i], baseX + i*(bSize+gap) + bSize/2, 260, bSize);
+        }
+        /* ribosome at stop codon */
+        drawRibosome(baseX + 13*(bSize+gap)/2, 180);
+        /* stop codon highlighted */
+        ctx.strokeStyle = '#d42525'; ctx.lineWidth = 2;
+        ctx.strokeRect(baseX + 12*(bSize+gap)/2 - 2, 248, 3*(bSize+gap)+4, bSize+4);
+        ctx.fillStyle = '#d42525'; ctx.font = 'bold 9px system-ui';
+        ctx.fillText('STOP codon (UGA)', baseX + 13.5*(bSize+gap)/2, 295);
+        /* polypeptide chain released */
+        drawPolypeptide(80, 70, 4);
+        /* folding arrow */
+        ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(220, 70); ctx.quadraticCurveTo(270, 50, 310, 70); ctx.stroke();
+        ctx.fillText('\u2192 folds into protein', 380, 74);
+        /* folded protein blob */
+        ctx.beginPath();
+        ctx.ellipse(350, 70, 25, 18, 0, 0, Math.PI*2);
+        ctx.fillStyle = '#e8c84a'; ctx.globalAlpha = 0.6; ctx.fill(); ctx.globalAlpha = 1;
+        ctx.strokeStyle = '#c89f20'; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.fillStyle = '#1a2747'; ctx.font = 'bold 9px system-ui';
+        ctx.fillText('Protein', 350, 74);
+    }
+}
+
+render();
+</script>
+</body>
+</html>

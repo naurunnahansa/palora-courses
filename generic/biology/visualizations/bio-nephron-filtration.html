@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultrafiltration in the Nephron</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; background: #fff; cursor: pointer; }
+        .tooltip-box { display: none; position: fixed; background: rgba(255,255,255,0.97); border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px 12px; font-size: 0.75rem; color: #1a2747; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 200px; z-index: 10; pointer-events: none; }
+        .tooltip-box strong { color: #1835b4; }
+        .legend { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 8px; }
+        .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.72rem; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Ultrafiltration in the Nephron</h1>
+    <div class="desc">Glomerulus and Bowman's Capsule -- hover over substances to learn more</div>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#4a90d9"></div>Filtered (small molecules)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>Retained (too large)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div>Afferent/Efferent arteriole</div>
+    </div>
+    <canvas id="c" width="530" height="420"></canvas>
+    <div class="tooltip-box" id="tip"></div>
+    <div class="note">
+        <strong>Key:</strong> High blood pressure in the glomerulus forces small molecules through the three-layer filter (endothelium, basement membrane, podocytes) into Bowman's capsule. Large molecules like proteins and blood cells are retained.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const tip = document.getElementById('tip');
+let animT = 0, animId;
+
+const substances = [
+    { name: 'Water', filtered: true, reason: 'Small molecule, passes freely through filter', x: 0, y: 0 },
+    { name: 'Glucose', filtered: true, reason: 'Small enough to pass through basement membrane', x: 0, y: 0 },
+    { name: 'Amino acids', filtered: true, reason: 'Small organic molecules, pass through filter', x: 0, y: 0 },
+    { name: 'Urea', filtered: true, reason: 'Small waste molecule, freely filtered', x: 0, y: 0 },
+    { name: 'Ions (Na+, K+)', filtered: true, reason: 'Small charged particles, pass through pores', x: 0, y: 0 },
+    { name: 'Red blood cells', filtered: false, reason: 'Too large to pass through capillary endothelium', x: 0, y: 0 },
+    { name: 'Platelets', filtered: false, reason: 'Too large to pass through the filter layers', x: 0, y: 0 },
+    { name: 'Plasma proteins', filtered: false, reason: 'Too large to pass through basement membrane', x: 0, y: 0 },
+];
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    animT += 0.02;
+
+    const cx = 220, cy = 180, gr = 55; // Glomerulus center and radius
+    const bcr = 90; // Bowman's capsule radius
+
+    // Bowman's capsule (outer)
+    ctx.beginPath();
+    ctx.ellipse(cx + 10, cy, bcr + 20, bcr + 10, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(200,220,255,0.3)';
+    ctx.fill();
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5;
+    ctx.stroke();
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText("Bowman's capsule", cx + 10, cy - bcr - 16);
+
+    // Capsular space label
+    ctx.fillStyle = '#4a90d9'; ctx.font = '9px system-ui';
+    ctx.fillText('Capsular space', cx + bcr - 5, cy - 50);
+    ctx.fillText('(filtrate)', cx + bcr - 5, cy - 38);
+
+    // Glomerular capillaries (tangled ball)
+    ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 3;
+    for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2;
+        const r1 = gr * 0.5, r2 = gr * 0.8;
+        ctx.beginPath();
+        const x1 = cx + Math.cos(angle) * r1, y1 = cy + Math.sin(angle) * r1;
+        const x2 = cx + Math.cos(angle + 1) * r2, y2 = cy + Math.sin(angle + 1) * r2;
+        const x3 = cx + Math.cos(angle + 2) * r1, y3 = cy + Math.sin(angle + 2) * r1;
+        ctx.moveTo(x1, y1);
+        ctx.bezierCurveTo(x1 + 15, y1 - 15, x2 - 10, y2 + 10, x2, y2);
+        ctx.bezierCurveTo(x2 + 10, y2 - 10, x3 - 15, y3 + 15, x3, y3);
+        ctx.strokeStyle = `rgba(192,57,43,${0.5 + 0.3 * Math.sin(animT + i)})`;
+        ctx.stroke();
+    }
+    // Glomerulus center fill
+    ctx.beginPath();
+    ctx.arc(cx, cy, gr * 0.65, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(231,76,60,0.15)';
+    ctx.fill();
+    ctx.fillStyle = '#c0392b'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Glomerulus', cx, cy + 4);
+
+    // Afferent arteriole (wider)
+    ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 8;
+    ctx.beginPath();
+    ctx.moveTo(cx - bcr - 50, cy - 40);
+    ctx.bezierCurveTo(cx - bcr - 20, cy - 40, cx - bcr, cy - 20, cx - gr * 0.6, cy - 10);
+    ctx.stroke();
+    // Arrow on afferent
+    ctx.fillStyle = '#c0392b';
+    ctx.beginPath();
+    ctx.moveTo(cx - gr * 0.6 - 5, cy - 16);
+    ctx.lineTo(cx - gr * 0.6 + 5, cy - 10);
+    ctx.lineTo(cx - gr * 0.6 - 5, cy - 4);
+    ctx.fill();
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'right';
+    ctx.fillText('Afferent arteriole', cx - bcr - 52, cy - 44);
+    ctx.font = '8px system-ui'; ctx.fillText('(wider)', cx - bcr - 52, cy - 33);
+
+    // Efferent arteriole (narrower)
+    ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(cx - gr * 0.6, cy + 15);
+    ctx.bezierCurveTo(cx - bcr, cy + 25, cx - bcr - 20, cy + 50, cx - bcr - 50, cy + 50);
+    ctx.stroke();
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'right';
+    ctx.fillText('Efferent arteriole', cx - bcr - 52, cy + 47);
+    ctx.font = '8px system-ui'; ctx.fillText('(narrower)', cx - bcr - 52, cy + 58);
+
+    // High pressure arrow
+    ctx.fillStyle = '#e74c3c'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('HIGH PRESSURE', cx, cy - gr - 25);
+    ctx.fillText('(forces filtration)', cx, cy - gr - 14);
+
+    // Three-layer filter (between glomerulus and Bowman's capsule)
+    const filterX = cx + gr + 5;
+    const filterY = cy - 50;
+    const filterH = 100;
+    const layerW = 8;
+
+    // Layer 1: Endothelium
+    ctx.fillStyle = 'rgba(231,76,60,0.3)';
+    ctx.fillRect(filterX, filterY, layerW, filterH);
+    // Layer 2: Basement membrane
+    ctx.fillStyle = 'rgba(155,89,182,0.3)';
+    ctx.fillRect(filterX + layerW, filterY, layerW, filterH);
+    // Layer 3: Podocytes
+    ctx.fillStyle = 'rgba(46,134,193,0.3)';
+    ctx.fillRect(filterX + layerW * 2, filterY, layerW, filterH);
+
+    // Filter labels
+    ctx.save();
+    ctx.font = '7px system-ui'; ctx.fillStyle = '#1a2747'; ctx.textAlign = 'center';
+    ctx.translate(filterX + layerW * 1.5, filterY - 5);
+    ctx.fillText('Filter layers', 0, 0);
+    ctx.restore();
+    // Bracket and labels for filter layers
+    const flx = filterX + layerW * 3 + 8;
+    ctx.font = '7px system-ui'; ctx.fillStyle = '#4a5568'; ctx.textAlign = 'left';
+    ctx.fillText('1. Endothelium', flx, filterY + 20);
+    ctx.fillText('2. Basement membrane', flx, filterY + 35);
+    ctx.fillText('3. Podocytes', flx, filterY + 50);
+
+    // Animated particles: filtered substances
+    const filteredColors = ['#4a90d9', '#3498db', '#2ecc71', '#1abc9c', '#5dade2'];
+    for (let i = 0; i < 5; i++) {
+        const t = (animT * 0.5 + i * 0.7) % 3;
+        const startX = cx + gr * 0.3;
+        const startY = cy + (i - 2) * 12;
+        const endX = cx + bcr + 30;
+        const endY = cy + (i - 2) * 15;
+        if (t < 1) {
+            const p = t;
+            const px = startX + (filterX - startX) * p;
+            const py = startY + (startY - startY) * p;
+            ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI * 2);
+            ctx.fillStyle = filteredColors[i]; ctx.fill();
+        } else if (t < 2) {
+            const p = t - 1;
+            const px = filterX + layerW * 3 * p;
+            ctx.beginPath(); ctx.arc(px, startY, 3, 0, Math.PI * 2);
+            ctx.fillStyle = filteredColors[i]; ctx.fill();
+        } else {
+            const p = t - 2;
+            const px = filterX + layerW * 3 + (endX - filterX - layerW * 3) * p;
+            const py = startY + (endY - startY) * p;
+            ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI * 2);
+            ctx.fillStyle = filteredColors[i]; ctx.globalAlpha = 1 - p * 0.5;
+            ctx.fill(); ctx.globalAlpha = 1;
+        }
+    }
+
+    // Retained particles (bounce back)
+    for (let i = 0; i < 3; i++) {
+        const t = (animT * 0.4 + i * 1.2) % 2;
+        const startX = cx + gr * 0.3;
+        const startY = cy + (i - 1) * 20 + 5;
+        if (t < 1) {
+            const px = startX + (filterX - startX) * t;
+            ctx.beginPath(); ctx.arc(px, startY, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#e74c3c'; ctx.fill();
+        } else {
+            const px = filterX - (filterX - startX) * (t - 1);
+            ctx.beginPath(); ctx.arc(px, startY, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#e74c3c'; ctx.fill();
+            // X mark
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(px - 3, startY - 3); ctx.lineTo(px + 3, startY + 3); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(px + 3, startY - 3); ctx.lineTo(px - 3, startY + 3); ctx.stroke();
+        }
+    }
+
+    // PCT arrow
+    ctx.strokeStyle = '#4a90d9'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(cx + bcr + 30, cy);
+    ctx.lineTo(cx + bcr + 70, cy);
+    ctx.lineTo(cx + bcr + 70, cy + 60);
+    ctx.stroke();
+    ctx.fillStyle = '#4a90d9';
+    ctx.beginPath();
+    ctx.moveTo(cx + bcr + 64, cy + 60);
+    ctx.lineTo(cx + bcr + 70, cy + 72);
+    ctx.lineTo(cx + bcr + 76, cy + 60);
+    ctx.fill();
+    ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('To PCT', cx + bcr + 70, cy + 84);
+    ctx.font = '8px system-ui'; ctx.fillStyle = '#4a5568';
+    ctx.fillText('(Filtrate)', cx + bcr + 70, cy + 95);
+
+    // Substance table
+    const tableY = 285;
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Substance Filtration Summary', canvas.width / 2, tableY);
+
+    // Update substance positions for hover
+    substances.forEach((s, i) => {
+        const col = i < 5 ? 0 : 1;
+        const row = col === 0 ? i : i - 5;
+        const sx = col === 0 ? 50 : 300;
+        const sy = tableY + 18 + row * 22;
+        s.x = sx; s.y = sy;
+
+        ctx.fillStyle = s.filtered ? '#4a90d9' : '#e74c3c';
+        ctx.beginPath(); ctx.arc(sx, sy, 5, 0, Math.PI * 2); ctx.fill();
+        if (!s.filtered) {
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(sx - 3, sy - 3); ctx.lineTo(sx + 3, sy + 3); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(sx + 3, sy - 3); ctx.lineTo(sx - 3, sy + 3); ctx.stroke();
+        }
+        ctx.fillStyle = '#1a2747'; ctx.font = '10px system-ui'; ctx.textAlign = 'left';
+        ctx.fillText(s.name + (s.filtered ? ' -- filtered' : ' -- retained'), sx + 12, sy + 4);
+    });
+
+    animId = requestAnimationFrame(draw);
+}
+
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+    const my = (e.clientY - rect.top) * (canvas.height / rect.height);
+    let found = false;
+    for (const s of substances) {
+        if (Math.abs(mx - s.x) < 120 && Math.abs(my - s.y) < 12 && mx > s.x - 10) {
+            tip.style.display = 'block';
+            tip.style.left = (e.clientX + 12) + 'px';
+            tip.style.top = (e.clientY - 30) + 'px';
+            tip.innerHTML = `<strong>${s.name}</strong><br>${s.filtered ? 'Filtered into Bowman\'s capsule' : 'Retained in blood'}<br><em>${s.reason}</em>`;
+            found = true;
+            break;
+        }
+    }
+    if (!found) tip.style.display = 'none';
+});
+canvas.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+
+function resize() { const w = Math.min(530, window.innerWidth - 24); canvas.style.width = w + 'px'; canvas.style.height = (w * 420 / 530) + 'px'; }
+window.addEventListener('resize', resize); resize(); draw();
+</script>
+</body>
+</html>

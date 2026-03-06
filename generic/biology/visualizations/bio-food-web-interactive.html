@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Web</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: pointer; }
+        .controls { display: flex; gap: 6px; justify-content: center; margin-bottom: 8px; flex-wrap: wrap; }
+        .btn { padding: 5px 12px; border: none; border-radius: 5px; background: #1835b4; color: #fff; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { background: #122a8a; }
+        .btn.outline { background: #fff; color: #1835b4; border: 1.5px solid #1835b4; }
+        .btn.danger { background: #e74c3c; }
+        .info-box { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; }
+        .info-box strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Food Web</h1>
+    <div class="desc">Click an organism to highlight its food chains. Remove organisms to see ecological effects.</div>
+    <canvas id="canvas" width="520" height="340"></canvas>
+    <div class="controls">
+        <button class="btn danger" id="removeBtn" onclick="removeSelected()" disabled>Remove Selected</button>
+        <button class="btn outline" onclick="resetWeb()">Reset</button>
+    </div>
+    <div class="info-box" id="info">Click on any organism to see its feeding relationships and food chains.</div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+const baseOrganisms = [
+    { id:'grass', name:'Grass', x:130, y:290, level:0, color:'#27ae60', emoji:'🌿' },
+    { id:'oak', name:'Oak Tree', x:390, y:290, level:0, color:'#2d8a4e', emoji:'🌳' },
+    { id:'rabbit', name:'Rabbit', x:80, y:190, level:1, color:'#d4a574', emoji:'🐰' },
+    { id:'caterpillar', name:'Caterpillar', x:260, y:200, level:1, color:'#82c91e', emoji:'🐛' },
+    { id:'mouse', name:'Mouse', x:440, y:190, level:1, color:'#b8860b', emoji:'🐭' },
+    { id:'fox', name:'Fox', x:130, y:100, level:2, color:'#e67e22', emoji:'🦊' },
+    { id:'robin', name:'Robin', x:350, y:100, level:2, color:'#c0392b', emoji:'🐦' },
+    { id:'hawk', name:'Hawk', x:260, y:20, level:3, color:'#8b4513', emoji:'🦅' }
+];
+
+const baseLinks = [
+    { from:'grass', to:'rabbit' },
+    { from:'grass', to:'caterpillar' },
+    { from:'grass', to:'mouse' },
+    { from:'oak', to:'caterpillar' },
+    { from:'oak', to:'mouse' },
+    { from:'rabbit', to:'fox' },
+    { from:'mouse', to:'fox' },
+    { from:'caterpillar', to:'robin' },
+    { from:'mouse', to:'robin' },
+    { from:'fox', to:'hawk' },
+    { from:'robin', to:'hawk' },
+    { from:'rabbit', to:'hawk' }
+];
+
+let organisms = [], links = [], selected = null, removed = [];
+const levelLabels = ['Producers','Primary\nConsumers','Secondary\nConsumers','Tertiary\nConsumer'];
+const levelColors = ['#27ae60','#3498db','#e67e22','#e74c3c'];
+
+function resetWeb() {
+    organisms = baseOrganisms.map(o => ({...o}));
+    links = baseLinks.map(l => ({...l}));
+    selected = null; removed = [];
+    document.getElementById('removeBtn').disabled = true;
+    document.getElementById('info').innerHTML = 'Click on any organism to see its feeding relationships and food chains.';
+    draw();
+}
+
+function getChains(orgId, visited=new Set()) {
+    // Find all food chains involving this organism
+    const highlighted = new Set([orgId]);
+    // Go down (what it eats)
+    function findPrey(id) {
+        links.forEach(l => { if (l.to === id) { highlighted.add(l.from); findPrey(l.from); } });
+    }
+    // Go up (what eats it)
+    function findPredators(id) {
+        links.forEach(l => { if (l.from === id) { highlighted.add(l.to); findPredators(l.to); } });
+    }
+    findPrey(orgId);
+    findPredators(orgId);
+    return highlighted;
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Trophic level bands
+    const bandH = 75;
+    for (let i = 0; i < 4; i++) {
+        const y = 290 - i*90;
+        ctx.fillStyle = i%2===0 ? 'rgba(232,236,248,0.3)' : 'rgba(232,236,248,0.6)';
+        ctx.fillRect(0, y-40, canvas.width, bandH);
+        ctx.fillStyle = levelColors[i]; ctx.font = '8px system-ui'; ctx.textAlign = 'left';
+        levelLabels[i].split('\n').forEach((line, li) => ctx.fillText(line, 4, y-20+li*10));
+    }
+
+    const highlighted = selected ? getChains(selected) : null;
+
+    // Draw links
+    links.forEach(l => {
+        const from = organisms.find(o => o.id === l.from);
+        const to = organisms.find(o => o.id === l.to);
+        if (!from || !to) return;
+        const isHigh = highlighted && highlighted.has(l.from) && highlighted.has(l.to);
+        ctx.strokeStyle = isHigh ? '#1835b4' : '#d4d8e5';
+        ctx.lineWidth = isHigh ? 2.5 : 1;
+        ctx.beginPath(); ctx.moveTo(from.x, from.y-15); ctx.lineTo(to.x, to.y+15); ctx.stroke();
+        // Arrow
+        const ang = Math.atan2(to.y+15-from.y+15, to.x-from.x);
+        const mx = (from.x+to.x)/2, my = (from.y-15+to.y+15)/2;
+        ctx.beginPath();
+        ctx.moveTo(mx+6*Math.cos(ang), my+6*Math.sin(ang));
+        ctx.lineTo(mx-6*Math.cos(ang-0.5), my-6*Math.sin(ang-0.5));
+        ctx.lineTo(mx-6*Math.cos(ang+0.5), my-6*Math.sin(ang+0.5));
+        ctx.fillStyle = isHigh ? '#1835b4' : '#d4d8e5'; ctx.fill();
+    });
+
+    // Draw organisms
+    organisms.forEach(o => {
+        const isSel = selected === o.id;
+        const isHigh = highlighted && highlighted.has(o.id);
+        // Circle
+        ctx.beginPath(); ctx.arc(o.x, o.y, 22, 0, Math.PI*2);
+        ctx.fillStyle = isSel ? o.color : (isHigh ? o.color+'cc' : '#f5f7fa');
+        ctx.fill();
+        ctx.strokeStyle = isSel ? '#1835b4' : (isHigh ? o.color : '#d4d8e5');
+        ctx.lineWidth = isSel ? 3 : 1.5; ctx.stroke();
+        // Emoji
+        ctx.font = '16px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(o.emoji, o.x, o.y-2);
+        ctx.textBaseline = 'alphabetic';
+        // Name
+        ctx.fillStyle = isSel ? '#1835b4' : '#1a2747'; ctx.font = (isSel?'bold ':'')+'8px system-ui';
+        ctx.fillText(o.name, o.x, o.y+32);
+    });
+}
+
+canvas.addEventListener('click', function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX-rect.left)*(canvas.width/rect.width);
+    const my = (e.clientY-rect.top)*(canvas.height/rect.height);
+    selected = null;
+    organisms.forEach(o => {
+        if (Math.hypot(mx-o.x, my-o.y) < 25) selected = o.id;
+    });
+    document.getElementById('removeBtn').disabled = !selected;
+    if (selected) {
+        const o = organisms.find(o2=>o2.id===selected);
+        const eats = links.filter(l=>l.to===selected).map(l=>organisms.find(o2=>o2.id===l.from)?.name).filter(Boolean);
+        const eatenBy = links.filter(l=>l.from===selected).map(l=>organisms.find(o2=>o2.id===l.to)?.name).filter(Boolean);
+        let info = `<strong>${o.name}</strong> (Trophic level: ${levelLabels[o.level].replace('\n',' ')})`;
+        if (eats.length) info += `<br>Eats: ${eats.join(', ')}`;
+        if (eatenBy.length) info += `<br>Eaten by: ${eatenBy.join(', ')}`;
+        document.getElementById('info').innerHTML = info;
+    } else {
+        document.getElementById('info').innerHTML = 'Click on any organism to see its feeding relationships.';
+    }
+    draw();
+});
+
+function removeSelected() {
+    if (!selected) return;
+    const removedOrg = organisms.find(o=>o.id===selected);
+    removed.push(removedOrg);
+    // Predict effects
+    const preyOf = links.filter(l=>l.to===selected).map(l=>l.from);
+    const predOf = links.filter(l=>l.from===selected).map(l=>l.to);
+    organisms = organisms.filter(o=>o.id!==selected);
+    links = links.filter(l=>l.from!==selected && l.to!==selected);
+
+    let predictions = `<strong>${removedOrg.name} removed!</strong><br>`;
+    if (preyOf.length) {
+        const preyNames = preyOf.map(id=>organisms.find(o=>o.id===id)?.name).filter(Boolean);
+        predictions += `Populations likely to <strong style="color:#27ae60">increase</strong>: ${preyNames.join(', ')} (less predation)<br>`;
+    }
+    if (predOf.length) {
+        const predNames = predOf.map(id=>organisms.find(o=>o.id===id)?.name).filter(Boolean);
+        const withAlt = predOf.filter(id => links.some(l=>l.to===id));
+        const withoutAlt = predOf.filter(id => !links.some(l=>l.to===id));
+        if (withoutAlt.length) {
+            const names = withoutAlt.map(id=>organisms.find(o=>o.id===id)?.name).filter(Boolean);
+            predictions += `Populations likely to <strong style="color:#e74c3c">decrease</strong>: ${names.join(', ')} (lost food source, no alternatives)<br>`;
+        }
+        if (withAlt.length) {
+            const names = withAlt.map(id=>organisms.find(o=>o.id===id)?.name).filter(Boolean);
+            predictions += `May adapt: ${names.join(', ')} (have alternative food sources)`;
+        }
+    }
+    document.getElementById('info').innerHTML = predictions;
+    selected = null; document.getElementById('removeBtn').disabled = true;
+    draw();
+}
+
+resetWeb();
+</script>
+</body>
+</html>

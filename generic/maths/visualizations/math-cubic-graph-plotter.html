@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cubic Graph Plotter</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}
+.container{max-width:100%;margin:0 auto}
+h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.slider-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.slider-row label{font-size:.78rem;font-weight:600;min-width:24px;color:#1835b4}
+.slider-row input[type=range]{flex:1;accent-color:#1835b4}
+.slider-row .val{font-size:.85rem;min-width:36px;text-align:right;color:#1835b4}
+.equation-display{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;font-size:1.0rem;color:#1835b4;margin-bottom:8px;font-weight:600}
+canvas{display:block;margin:0 auto;border-radius:4px;background:#fafbfc;width:100%;cursor:crosshair}
+.readouts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.readout{background:#e8ecf8;border-radius:5px;padding:6px 8px;text-align:center}
+.readout .label{font-size:.65rem;color:#4a5568}
+.readout .value{font-size:.78rem;color:#1835b4;font-weight:600}
+.hover-info{background:#fafbfc;border-radius:5px;padding:6px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:6px}
+.hover-info strong{color:#1835b4}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#1835b4}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Cubic Graph Plotter</h1>
+    <div class="card">
+        <div class="card-title">y = ax\u00b3 + bx\u00b2 + cx + d</div>
+        <div class="equation-display" id="eqDisplay">y = x\u00b3</div>
+        <div class="slider-row"><label>a</label><input type="range" id="slA" min="-3" max="3" step="0.25" value="1"><span class="val" id="valA">1</span></div>
+        <div class="slider-row"><label>b</label><input type="range" id="slB" min="-5" max="5" step="0.5" value="0"><span class="val" id="valB">0</span></div>
+        <div class="slider-row"><label>c</label><input type="range" id="slC" min="-10" max="10" step="0.5" value="0"><span class="val" id="valC">0</span></div>
+        <div class="slider-row"><label>d</label><input type="range" id="slD" min="-10" max="10" step="0.5" value="0"><span class="val" id="valD">0</span></div>
+    </div>
+    <div class="card" style="padding:8px">
+        <canvas id="canvas" width="1060" height="1060"></canvas>
+        <div class="hover-info" id="hoverInfo">Hover over the graph to see coordinates</div>
+    </div>
+    <div class="card">
+        <div class="card-title">Key Features</div>
+        <div class="readouts">
+            <div class="readout"><div class="label">Turning Points</div><div class="value" id="turning"></div></div>
+            <div class="readout"><div class="label">Point of Inflection</div><div class="value" id="inflection"></div></div>
+            <div class="readout"><div class="label">y-intercept</div><div class="value" id="yint"></div></div>
+            <div class="readout"><div class="label">Shape</div><div class="value" id="shape"></div></div>
+        </div>
+    </div>
+    <div class="info">Adjust sliders to explore cubic graphs. <strong>Hover</strong> over the curve to see (x, y) values.</div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const sliders=['slA','slB','slC','slD'].map(id=>document.getElementById(id));
+const W=canvas.width,H=canvas.height,scale=50;
+const cxC=W/2,cyC=H/2;
+sliders.forEach(s=>s.addEventListener('input',draw));
+
+function toCanvas(x,y){return[cxC+x*scale,cyC-y*scale];}
+function fmt(v){return parseFloat(v.toFixed(2));}
+function f(a,b,c,d,x){return a*x*x*x+b*x*x+c*x+d;}
+function fp(a,b,c,x){return 3*a*x*x+2*b*x+c;} // derivative
+function fpp(a,b,x){return 6*a*x+2*b;} // second derivative
+
+function draw(){
+    const a=parseFloat(sliders[0].value),b=parseFloat(sliders[1].value),
+          c=parseFloat(sliders[2].value),d=parseFloat(sliders[3].value);
+    ['valA','valB','valC','valD'].forEach((id,i)=>document.getElementById(id).textContent=[a,b,c,d][i]);
+
+    // Equation display
+    let eq='y = ';const parts=[];
+    if(a!==0)parts.push((a===1?'':a===-1?'-':a)+'x\u00b3');
+    if(b!==0)parts.push((b>0&&parts.length?'+ ':'')+(b===-1?'- ':b===1?'':b<0?'- '+Math.abs(b):b)+'x\u00b2');
+    if(c!==0)parts.push((c>0&&parts.length?'+ ':'')+(c===-1?'- ':c===1?'':c<0?'- '+Math.abs(c):c)+'x');
+    if(d!==0||parts.length===0)parts.push((d>0&&parts.length?'+ ':'')+d);
+    document.getElementById('eqDisplay').textContent='y = '+parts.join(' ');
+
+    // Key features
+    document.getElementById('yint').textContent='(0, '+d+')';
+    document.getElementById('shape').textContent=a>0?'Positive cubic (\u2197)':a<0?'Negative cubic (\u2198)':'Not cubic';
+
+    // Turning points: solve 3ax^2 + 2bx + c = 0
+    let turningPts=[];
+    if(a!==0){
+        const disc=4*b*b-12*a*c;
+        if(disc>0){
+            const t1=(-2*b+Math.sqrt(disc))/(6*a);
+            const t2=(-2*b-Math.sqrt(disc))/(6*a);
+            turningPts=[[t1,f(a,b,c,d,t1)],[t2,f(a,b,c,d,t2)]];
+            document.getElementById('turning').textContent='('+fmt(t1)+', '+fmt(turningPts[0][1])+') & ('+fmt(t2)+', '+fmt(turningPts[1][1])+')';
+        } else if(disc===0){
+            const t=-b/(3*a);
+            document.getElementById('turning').textContent='('+fmt(t)+', '+fmt(f(a,b,c,d,t))+') repeated';
+        } else {
+            document.getElementById('turning').textContent='None (monotonic)';
+        }
+        // Inflection: 6ax + 2b = 0 => x = -b/(3a)
+        const ix=-b/(3*a);
+        const iy=f(a,b,c,d,ix);
+        document.getElementById('inflection').textContent='('+fmt(ix)+', '+fmt(iy)+')';
+    } else {
+        document.getElementById('turning').textContent='N/A';
+        document.getElementById('inflection').textContent='N/A';
+    }
+
+    // Draw
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#fafbfc';ctx.fillRect(0,0,W,H);
+    const range=Math.ceil(W/(2*scale));
+    ctx.strokeStyle='#f0eeef';ctx.lineWidth=1;
+    for(let i=-range;i<=range;i++){
+        ctx.beginPath();ctx.moveTo(cxC+i*scale,0);ctx.lineTo(cxC+i*scale,H);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(0,cyC+i*scale);ctx.lineTo(W,cyC+i*scale);ctx.stroke();
+    }
+    ctx.strokeStyle='#ccc';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(0,cyC);ctx.lineTo(W,cyC);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cxC,0);ctx.lineTo(cxC,H);ctx.stroke();
+    ctx.fillStyle='#999';ctx.font='13px system-ui';ctx.textAlign='center';
+    for(let i=-range;i<=range;i++){
+        if(i===0)continue;
+        ctx.fillText(i,cxC+i*scale,cyC+18);
+        ctx.textAlign='right';ctx.fillText(i,cxC-8,cyC-i*scale+5);ctx.textAlign='center';
+    }
+
+    // Curve
+    ctx.strokeStyle='#1835b4';ctx.lineWidth=3;ctx.beginPath();let first=true;
+    for(let px=0;px<=W;px+=2){
+        const x=(px-cxC)/scale;const y=f(a,b,c,d,x);const py=cyC-y*scale;
+        if(py<-500||py>H+500){first=true;continue;}
+        if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+
+    // Turning points
+    turningPts.forEach(([tx,ty])=>{
+        const[px,py]=toCanvas(tx,ty);
+        if(px>0&&px<W&&py>0&&py<H){
+            ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);ctx.fillStyle='#c27878';ctx.fill();
+            ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+        }
+    });
+
+    // Inflection point
+    if(a!==0){
+        const ix=-b/(3*a),iy=f(a,b,c,d,ix);
+        const[px,py]=toCanvas(ix,iy);
+        if(px>0&&px<W&&py>0&&py<H){
+            ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);ctx.fillStyle='#d4a843';ctx.fill();
+            ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+        }
+    }
+
+    // y-intercept
+    const[yix,yiy]=toCanvas(0,d);
+    ctx.beginPath();ctx.arc(yix,yiy,5,0,Math.PI*2);ctx.fillStyle='#7aab7a';ctx.fill();
+}
+
+canvas.addEventListener('mousemove',function(e){
+    const rect=canvas.getBoundingClientRect();
+    const scaleX=W/rect.width;
+    const mx=(e.clientX-rect.left)*scaleX;
+    const x=(mx-cxC)/scale;
+    const a=parseFloat(sliders[0].value),b=parseFloat(sliders[1].value),
+          c=parseFloat(sliders[2].value),d=parseFloat(sliders[3].value);
+    const y=f(a,b,c,d,x);
+    document.getElementById('hoverInfo').innerHTML='<strong>x = '+fmt(x)+', y = '+fmt(y)+'</strong>';
+});
+
+draw();
+function resize(){const w=Math.min(530,canvas.parentElement.clientWidth-16);canvas.style.width=w+'px';canvas.style.height=w+'px';}
+window.addEventListener('resize',resize);resize();
+</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnification vs Resolution</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 10px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        .panels { display: flex; gap: 10px; margin-bottom: 10px; }
+        .panel { flex: 1; border: 1px solid #d4d8e5; border-radius: 5px; overflow: hidden; background: #fff; }
+        .panel-title { background: #e8ecf8; padding: 6px 8px; font-size: 0.78rem; font-weight: 700; color: #1835b4; text-align: center; }
+        .panel canvas { display: block; width: 100%; }
+        .panel-label { padding: 5px 8px; font-size: 0.7rem; color: #4a5568; text-align: center; background: #f7f8fc; border-top: 1px solid #d4d8e5; }
+        .controls { display: flex; gap: 16px; align-items: center; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; background: #e8ecf8; border-radius: 5px; padding: 10px 14px; }
+        .control-group { display: flex; align-items: center; gap: 6px; }
+        .control-group label { font-size: 0.78rem; font-weight: 600; color: #1835b4; }
+        .control-group input[type="range"] { width: 160px; accent-color: #1835b4; }
+        .control-group .value { font-size: 0.78rem; font-weight: 700; color: #1a2747; min-width: 36px; }
+        .toggle-btn { padding: 5px 14px; border: 2px solid #1835b4; background: #fff; color: #1835b4; font-size: 0.75rem; font-weight: 700; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+        .toggle-btn.active { background: #1835b4; color: #fff; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+        @media (max-width: 500px) { .panels { flex-direction: column; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Magnification vs Resolution</h1>
+    <div class="desc">Understanding the difference between making things bigger and seeing fine detail</div>
+    <div class="controls">
+        <div class="control-group">
+            <label>Magnification:</label>
+            <input type="range" id="magSlider" min="1" max="100" value="1">
+            <span class="value" id="magValue">1x</span>
+        </div>
+        <div class="control-group">
+            <label>Resolution:</label>
+            <button class="toggle-btn" id="lowRes" onclick="setResolution(false)">Low</button>
+            <button class="toggle-btn active" id="highRes" onclick="setResolution(true)">High</button>
+        </div>
+    </div>
+    <div class="panels">
+        <div class="panel">
+            <div class="panel-title">Low Resolution View</div>
+            <canvas id="canvasLow" width="280" height="240"></canvas>
+            <div class="panel-label">Objects appear large but cannot be distinguished</div>
+        </div>
+        <div class="panel">
+            <div class="panel-title">High Resolution View</div>
+            <canvas id="canvasHigh" width="280" height="240"></canvas>
+            <div class="panel-label">Objects appear large AND can be distinguished</div>
+        </div>
+    </div>
+    <div class="note">
+        <strong>Magnification</strong> = how much larger an image appears compared to real life. &nbsp;
+        <strong>Resolution</strong> = the ability to distinguish two points that are close together as separate objects.
+    </div>
+</div>
+<script>
+const canvasLow = document.getElementById('canvasLow');
+const canvasHigh = document.getElementById('canvasHigh');
+const ctxLow = canvasLow.getContext('2d');
+const ctxHigh = canvasHigh.getContext('2d');
+const magSlider = document.getElementById('magSlider');
+const magValue = document.getElementById('magValue');
+let highRes = true;
+
+// Dot cluster pattern — several pairs of close dots
+const dotPairs = [
+    { x1: -3, y1: -3, x2: 3, y2: -3 },
+    { x1: -6, y1: 4, x2: 0, y2: 4 },
+    { x1: 5, y1: 6, x2: 11, y2: 6 },
+    { x1: -8, y1: -8, x2: -2, y2: -8 },
+    { x1: 2, y1: 10, x2: 8, y2: 10 },
+    { x1: -10, y1: 8, x2: -4, y2: 8 },
+    { x1: 7, y1: -7, x2: 13, y2: -7 },
+    { x1: -5, y1: 12, x2: 1, y2: 12 },
+];
+
+function setResolution(isHigh) {
+    highRes = isHigh;
+    document.getElementById('highRes').classList.toggle('active', isHigh);
+    document.getElementById('lowRes').classList.toggle('active', !isHigh);
+    draw();
+}
+
+function drawDots(ctx, canvas, blurAmount) {
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#f0f2f8';
+    ctx.fillRect(0, 0, w, h);
+
+    const mag = parseFloat(magSlider.value);
+    const cx = w / 2, cy = h / 2;
+    const scale = mag;
+    const dotRadius = 1.5 * scale;
+
+    ctx.save();
+    if (blurAmount > 0) {
+        ctx.filter = `blur(${blurAmount}px)`;
+    }
+
+    // Draw each dot
+    const dotColor = '#1835b4';
+    for (const pair of dotPairs) {
+        for (const pt of [{x: pair.x1, y: pair.y1}, {x: pair.x2, y: pair.y2}]) {
+            const dx = cx + pt.x * scale;
+            const dy = cy + pt.y * scale;
+            ctx.beginPath();
+            ctx.arc(dx, dy, dotRadius, 0, Math.PI * 2);
+            ctx.fillStyle = dotColor;
+            ctx.fill();
+        }
+    }
+    ctx.restore();
+
+    // Magnification label
+    ctx.fillStyle = '#1835b4';
+    ctx.font = 'bold 11px system-ui';
+    ctx.textAlign = 'right';
+    ctx.fillText(mag + 'x', w - 8, 16);
+}
+
+function draw() {
+    const mag = parseFloat(magSlider.value);
+    // Low-res blur scales with magnification
+    const blurLow = Math.max(0.5, mag * 0.35);
+    drawDots(ctxLow, canvasLow, blurLow);
+    drawDots(ctxHigh, canvasHigh, 0);
+}
+
+magSlider.addEventListener('input', () => {
+    magValue.textContent = magSlider.value + 'x';
+    draw();
+});
+
+draw();
+</script>
+</body>
+</html>

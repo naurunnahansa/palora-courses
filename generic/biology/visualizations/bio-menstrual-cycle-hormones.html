@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Menstrual Cycle</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 4px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; }
+        .legend { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 6px; font-size: 0.65rem; font-weight: 600; }
+        .legend-item { display: flex; align-items: center; gap: 3px; }
+        .legend-dot { width: 10px; height: 3px; border-radius: 2px; }
+        .info-box { border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px 10px; margin-bottom: 8px; font-size: 0.7rem; min-height: 42px; }
+        .info-box .day-label { font-weight: 700; color: #1835b4; margin-bottom: 2px; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>The Menstrual Cycle</h1>
+    <div class="desc">Drag across the graph to explore hormone levels and events over 28 days</div>
+    <canvas id="cycleCanvas" width="530" height="340"></canvas>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#3182ce;"></div>FSH</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#d53f8c;"></div>Oestrogen</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#805ad5;"></div>LH</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dd6b20;"></div>Progesterone</div>
+    </div>
+    <div class="info-box" id="infoBox">
+        <div class="day-label">Hover or drag on the graph to see details</div>
+    </div>
+    <div class="note">
+        <strong>Key concept:</strong> FSH stimulates follicle development. Oestrogen causes lining build-up and triggers LH surge. LH triggers ovulation on day 14. Progesterone maintains the lining during the luteal phase.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('cycleCanvas');
+const ctx = canvas.getContext('2d');
+const infoBox = document.getElementById('infoBox');
+const W = canvas.width, H = canvas.height;
+
+const pad = { top: 25, right: 15, bottom: 65, left: 40 };
+const hormoneH = 170;
+const uterusTop = pad.top + hormoneH + 30;
+const uterusH = 60;
+
+// Hormone functions (normalized 0-1)
+function fsh(d) {
+    // Peaks days 1-5
+    if (d <= 5) return 0.3 + 0.7 * Math.exp(-0.3 * Math.pow(d - 3, 2));
+    if (d <= 12) return 0.15 + 0.15 * Math.exp(-0.1 * Math.pow(d - 3, 2));
+    if (d <= 16) return 0.05 + 0.2 * Math.exp(-0.5 * Math.pow(d - 14, 2));
+    return 0.05 + 0.05 * Math.exp(-0.05 * Math.pow(d - 14, 2));
+}
+function oestrogen(d) {
+    // Rises days 5-14, peaks just before ovulation
+    if (d <= 3) return 0.05;
+    if (d <= 13) return 0.05 + 0.9 * Math.pow((d - 3) / 10, 1.5);
+    if (d <= 15) return 0.95 * Math.exp(-1.5 * Math.pow(d - 13, 2));
+    if (d <= 21) return 0.15 + 0.35 * Math.exp(-0.08 * Math.pow(d - 21, 2));
+    return 0.15 * Math.exp(-0.1 * Math.pow(d - 21, 2));
+}
+function lh(d) {
+    // Sharp spike at day 14
+    return 0.05 + 0.95 * Math.exp(-1.2 * Math.pow(d - 14, 2));
+}
+function progesterone(d) {
+    // Rises days 14-21, drops 21-28
+    if (d <= 14) return 0.03;
+    if (d <= 22) return 0.03 + 0.97 * Math.pow((d - 14) / 8, 1.2);
+    return 1.0 * Math.exp(-0.15 * Math.pow(d - 22, 2));
+}
+function liningThickness(d) {
+    if (d <= 5) return 0.15 + 0.15 * (d / 5); // Menstruation, thin
+    if (d <= 14) return 0.3 + 0.5 * ((d - 5) / 9);
+    if (d <= 25) return 0.8 + 0.2 * Math.min(1, (d - 14) / 7);
+    return 1.0 - 0.5 * ((d - 25) / 3);
+}
+
+function dayToX(d) { return pad.left + ((d - 1) / 27) * (W - pad.left - pad.right); }
+function hormoneToY(v) { return pad.top + hormoneH * (1 - v); }
+function uterusToY(v) { return uterusTop + uterusH * (1 - v); }
+
+let hoverDay = -1;
+
+function drawCurve(fn, color, lw) {
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lw;
+    for (let d = 1; d <= 28; d += 0.2) {
+        const x = dayToX(d), y = hormoneToY(fn(d));
+        if (d === 1) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Phase background bands
+    const phases = [
+        { start: 1, end: 5, color: 'rgba(229,62,62,0.08)', label: 'Menstruation' },
+        { start: 5, end: 14, color: 'rgba(49,130,206,0.05)', label: 'Follicular phase' },
+        { start: 14, end: 14.5, color: 'rgba(128,90,213,0.1)', label: '' },
+        { start: 14, end: 28, color: 'rgba(221,107,32,0.05)', label: 'Luteal phase' },
+    ];
+    for (const p of phases) {
+        ctx.fillStyle = p.color;
+        ctx.fillRect(dayToX(p.start), pad.top, dayToX(p.end) - dayToX(p.start), hormoneH);
+    }
+
+    // Phase labels at top
+    ctx.font = '0.5rem system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#c53030';
+    ctx.fillText('Menstruation', dayToX(3), pad.top + 12);
+    ctx.fillStyle = '#3182ce';
+    ctx.fillText('Follicular phase', dayToX(9.5), pad.top + 12);
+    ctx.fillStyle = '#805ad5';
+    ctx.fillText('Ovulation', dayToX(14), pad.top + 24);
+    ctx.fillStyle = '#dd6b20';
+    ctx.fillText('Luteal phase', dayToX(21), pad.top + 12);
+
+    // Hormone axes
+    ctx.strokeStyle = '#d4d8e5';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, pad.top + hormoneH);
+    ctx.lineTo(W - pad.right, pad.top + hormoneH);
+    ctx.stroke();
+
+    // Y label
+    ctx.save();
+    ctx.translate(12, pad.top + hormoneH / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.font = '0.55rem system-ui';
+    ctx.fillStyle = '#4a5568';
+    ctx.textAlign = 'center';
+    ctx.fillText('Hormone level', 0, 0);
+    ctx.restore();
+
+    // Draw hormone curves
+    drawCurve(fsh, '#3182ce', 2);
+    drawCurve(oestrogen, '#d53f8c', 2);
+    drawCurve(lh, '#805ad5', 2);
+    drawCurve(progesterone, '#dd6b20', 2);
+
+    // Ovulation marker
+    ctx.setLineDash([4, 3]);
+    ctx.strokeStyle = '#805ad5';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(dayToX(14), pad.top);
+    ctx.lineTo(dayToX(14), H - pad.bottom + 10);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Uterus lining section
+    ctx.font = '600 0.55rem system-ui';
+    ctx.fillStyle = '#1835b4';
+    ctx.textAlign = 'left';
+    ctx.fillText('Uterus lining', pad.left, uterusTop - 6);
+
+    // Lining fill
+    ctx.beginPath();
+    ctx.moveTo(dayToX(1), uterusTop + uterusH);
+    for (let d = 1; d <= 28; d += 0.3) {
+        ctx.lineTo(dayToX(d), uterusToY(liningThickness(d)));
+    }
+    ctx.lineTo(dayToX(28), uterusTop + uterusH);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(229,62,62,0.2)';
+    ctx.fill();
+    ctx.strokeStyle = '#c53030';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for (let d = 1; d <= 28; d += 0.3) {
+        const x = dayToX(d), y = uterusToY(liningThickness(d));
+        if (d === 1) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Uterus axis
+    ctx.strokeStyle = '#d4d8e5';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, uterusTop);
+    ctx.lineTo(pad.left, uterusTop + uterusH);
+    ctx.lineTo(W - pad.right, uterusTop + uterusH);
+    ctx.stroke();
+
+    // Day labels (x-axis)
+    ctx.font = '0.55rem system-ui';
+    ctx.fillStyle = '#4a5568';
+    ctx.textAlign = 'center';
+    for (let d = 1; d <= 28; d += (d <= 2 ? 1 : 2)) {
+        const x = dayToX(d);
+        ctx.fillText(d, x, uterusTop + uterusH + 14);
+    }
+    ctx.fillText('Day', W / 2, uterusTop + uterusH + 28);
+
+    // Menstruation indicator
+    ctx.fillStyle = 'rgba(229,62,62,0.15)';
+    ctx.fillRect(dayToX(1), uterusTop, dayToX(5) - dayToX(1), uterusH);
+
+    // Hover scrubber
+    if (hoverDay >= 1 && hoverDay <= 28) {
+        const hx = dayToX(hoverDay);
+        ctx.strokeStyle = 'rgba(26,39,71,0.4)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([2, 2]);
+        ctx.beginPath(); ctx.moveTo(hx, pad.top); ctx.lineTo(hx, uterusTop + uterusH); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Dots on curves
+        const hormones = [
+            { fn: fsh, color: '#3182ce', name: 'FSH' },
+            { fn: oestrogen, color: '#d53f8c', name: 'Oestrogen' },
+            { fn: lh, color: '#805ad5', name: 'LH' },
+            { fn: progesterone, color: '#dd6b20', name: 'Progesterone' },
+        ];
+        for (const h of hormones) {
+            const y = hormoneToY(h.fn(hoverDay));
+            ctx.beginPath(); ctx.arc(hx, y, 4, 0, Math.PI * 2);
+            ctx.fillStyle = h.color; ctx.fill();
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+        }
+
+        // Dot on lining
+        const ly = uterusToY(liningThickness(hoverDay));
+        ctx.beginPath(); ctx.arc(hx, ly, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#c53030'; ctx.fill();
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+
+        // Update info box
+        const d = Math.round(hoverDay);
+        let phase = 'Follicular phase';
+        let event = '';
+        if (d <= 5) { phase = 'Menstruation'; event = 'Uterus lining breaks down and is shed'; }
+        else if (d <= 13) { phase = 'Follicular phase'; event = 'Follicle develops; oestrogen rises, lining rebuilds'; }
+        else if (d === 14) { phase = 'Ovulation'; event = 'LH surge triggers release of egg from ovary'; }
+        else if (d <= 28) { phase = 'Luteal phase'; event = 'Corpus luteum produces progesterone; lining maintained'; }
+        if (d >= 25) event += '. Progesterone drops if no pregnancy \u2192 menstruation';
+
+        infoBox.innerHTML = `<div class="day-label">Day ${d} \u2014 ${phase}</div>` +
+            `<div style="font-size:0.65rem;color:#4a5568;">${event}</div>` +
+            `<div style="font-size:0.6rem;margin-top:3px;">` +
+            `<span style="color:#3182ce">FSH: ${(fsh(d) * 100).toFixed(0)}%</span> | ` +
+            `<span style="color:#d53f8c">Oestrogen: ${(oestrogen(d) * 100).toFixed(0)}%</span> | ` +
+            `<span style="color:#805ad5">LH: ${(lh(d) * 100).toFixed(0)}%</span> | ` +
+            `<span style="color:#dd6b20">Progesterone: ${(progesterone(d) * 100).toFixed(0)}%</span></div>`;
+    }
+}
+
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (W / rect.width);
+    const day = 1 + ((mx - pad.left) / (W - pad.left - pad.right)) * 27;
+    hoverDay = Math.max(1, Math.min(28, day));
+    draw();
+});
+
+canvas.addEventListener('mouseleave', () => {
+    hoverDay = -1;
+    draw();
+});
+
+draw();
+</script>
+</body>
+</html>

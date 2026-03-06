@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Transpiration Rate</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; }
+        .legend { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+        .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 600; }
+        .legend-swatch { width: 20px; height: 3px; border-radius: 2px; }
+        .legend-swatch.dashed { border-top: 2px dashed; background: none; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Daily Transpiration Rate</h1>
+    <div class="desc">How transpiration and light intensity change throughout a 24-hour period</div>
+    <canvas id="graphCanvas" width="530" height="320"></canvas>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#1835b4;"></div>Transpiration rate</div>
+        <div class="legend-item"><div class="legend-swatch dashed" style="border-color:#e67e22;"></div>Light intensity</div>
+    </div>
+    <div class="note">
+        <strong>Transpiration</strong> is the loss of water vapour from leaves through stomata. It peaks around midday when stomata are open, temperature is high, and there is air movement. Light intensity drives stomatal opening.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('graphCanvas');
+const ctx = canvas.getContext('2d');
+let hoverX = null;
+
+const pad = { top: 30, right: 20, bottom: 50, left: 55 };
+const xMin = 0, xMax = 24, yMax = 10;
+
+function transpRate(h) {
+    // Low at night, rises after 6, peaks ~13, falls by 20
+    if (h < 5) return 0.5 + 0.3 * Math.sin(h * Math.PI / 12);
+    if (h > 21) return 0.5 + 0.3 * Math.sin(h * Math.PI / 12);
+    // Bell curve centered at 13
+    const peak = 9;
+    const base = 0.5;
+    return base + peak * Math.exp(-0.08 * Math.pow(h - 13, 2));
+}
+
+function lightIntensity(h) {
+    // Peaks at 12, zero before 6 and after 20
+    if (h < 5.5 || h > 20.5) return 0;
+    const peak = 8.5;
+    return peak * Math.exp(-0.045 * Math.pow(h - 12, 2));
+}
+
+function xToCanvas(x) { return pad.left + ((x - xMin) / (xMax - xMin)) * (canvas.width - pad.left - pad.right); }
+function yToCanvas(y) { return pad.top + ((yMax - y) / yMax) * (canvas.height - pad.top - pad.bottom); }
+function canvasToX(cx) { return xMin + ((cx - pad.left) / (canvas.width - pad.left - pad.right)) * (xMax - xMin); }
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Daytime shading (06:00-20:00)
+    const dx1 = xToCanvas(6), dx2 = xToCanvas(20);
+    ctx.fillStyle = 'rgba(255,235,150,0.15)';
+    ctx.fillRect(dx1, pad.top, dx2 - dx1, canvas.height - pad.top - pad.bottom);
+
+    // Axes
+    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, canvas.height - pad.bottom);
+    ctx.lineTo(canvas.width - pad.right, canvas.height - pad.bottom);
+    ctx.stroke();
+
+    // Grid and labels
+    ctx.fillStyle = '#4a5568'; ctx.font = '10px system-ui'; ctx.textAlign = 'center';
+    for (let h = 0; h <= 24; h += 3) {
+        const cx = xToCanvas(h);
+        ctx.strokeStyle = '#e0e0e0'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+        const label = String(h).padStart(2, '0') + ':00';
+        ctx.fillText(label, cx, canvas.height - pad.bottom + 14);
+    }
+    ctx.textAlign = 'right';
+    for (let y = 0; y <= yMax; y += 2) {
+        const cy = yToCanvas(y);
+        ctx.strokeStyle = '#e0e0e0'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(canvas.width - pad.right, cy); ctx.stroke();
+        ctx.fillText(y, pad.left - 6, cy + 3);
+    }
+
+    // Axis labels
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Time of Day', canvas.width / 2, canvas.height - 5);
+    ctx.save(); ctx.translate(14, canvas.height / 2); ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Rate (arbitrary units)', 0, 0); ctx.restore();
+
+    // Annotations
+    ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#1e8449';
+    ctx.fillText('Stomata open', xToCanvas(13), pad.top + 14);
+    ctx.fillStyle = '#7f8c8d';
+    ctx.fillText('Stomata closed', xToCanvas(2.5), pad.top + 14);
+    ctx.fillText('Stomata closed', xToCanvas(22), pad.top + 14);
+
+    // Light intensity curve (dashed)
+    ctx.strokeStyle = '#e67e22'; ctx.lineWidth = 2;
+    ctx.setLineDash([6, 4]);
+    ctx.beginPath();
+    for (let h = 0; h <= xMax; h += 0.2) {
+        const cx = xToCanvas(h), cy = yToCanvas(lightIntensity(h));
+        h === 0 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Transpiration curve (solid)
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for (let h = 0; h <= xMax; h += 0.2) {
+        const cx = xToCanvas(h), cy = yToCanvas(transpRate(h));
+        h === 0 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+    }
+    ctx.stroke();
+
+    // Hover
+    if (hoverX !== null && hoverX >= xMin && hoverX <= xMax) {
+        const h = hoverX;
+        const tr = transpRate(h);
+        const li = lightIntensity(h);
+        const cx = xToCanvas(h);
+
+        ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Dots
+        ctx.beginPath(); ctx.arc(cx, yToCanvas(tr), 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#1835b4'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.beginPath(); ctx.arc(cx, yToCanvas(li), 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#e67e22'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+
+        const hh = Math.floor(h); const mm = Math.round((h - hh) * 60);
+        const timeStr = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+        const lines = [`Time: ${timeStr}`, `Transpiration: ${tr.toFixed(2)}`, `Light: ${li.toFixed(2)}`];
+        ctx.font = '10px system-ui';
+        const tw = Math.max(...lines.map(l => ctx.measureText(l).width)) + 16;
+        const th = lines.length * 15 + 10;
+        let bx = cx + 12;
+        if (bx + tw > canvas.width - pad.right) bx = cx - tw - 12;
+        ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.roundRect(bx, pad.top + 30, tw, th, 4); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#1a2747'; ctx.textAlign = 'left';
+        lines.forEach((l, i) => ctx.fillText(l, bx + 8, pad.top + 44 + i * 15));
+    }
+}
+
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+    hoverX = canvasToX(mx);
+    if (hoverX < xMin || hoverX > xMax) hoverX = null;
+    draw();
+});
+canvas.addEventListener('mouseleave', () => { hoverX = null; draw(); });
+
+function resize() {
+    const w = Math.min(530, window.innerWidth - 24);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 320 / 530) + 'px';
+}
+window.addEventListener('resize', resize);
+resize();
+draw();
+</script>
+</body>
+</html>

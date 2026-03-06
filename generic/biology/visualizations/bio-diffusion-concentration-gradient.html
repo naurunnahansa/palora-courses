@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diffusion &amp; Concentration Gradient</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .controls { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; align-items: center; }
+        .slider-group { flex: 1; min-width: 150px; border: 1px solid #d4d8e5; border-radius: 5px; padding: 6px 10px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.72rem; font-weight: 600; margin-bottom: 3px; }
+        .slider-label .val { color: #1835b4; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #d4d8e5; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .btn { background: #1835b4; color: #fff; border: none; border-radius: 5px; padding: 8px 16px; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { background: #122a8a; }
+        .stats { display: flex; gap: 8px; margin-bottom: 8px; }
+        .stat-box { flex: 1; background: #e8ecf8; border-radius: 5px; padding: 6px 8px; text-align: center; }
+        .stat-box .label { font-size: 0.6rem; color: #4a5568; margin-bottom: 2px; }
+        .stat-box .value { font-size: 1rem; font-weight: 700; color: #1835b4; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Diffusion &amp; Concentration Gradient</h1>
+    <div class="desc">Particles move randomly; small ones pass through the membrane pores</div>
+    <canvas id="simCanvas" width="530" height="300"></canvas>
+    <div class="stats">
+        <div class="stat-box"><div class="label">Left side (small)</div><div class="value" id="leftCount">0</div></div>
+        <div class="stat-box"><div class="label">Right side (small)</div><div class="value" id="rightCount">0</div></div>
+        <div class="stat-box"><div class="label">Net diffusion rate</div><div class="value" id="netRate">0</div></div>
+    </div>
+    <div class="controls">
+        <div class="slider-group">
+            <div class="slider-label"><span>Speed</span><span class="val" id="speedVal">1.0x</span></div>
+            <input type="range" id="speedSlider" min="1" max="5" step="0.5" value="1" oninput="document.getElementById('speedVal').textContent=this.value+'x'; speed=parseFloat(this.value);">
+        </div>
+        <button class="btn" onclick="resetSim()">Reset</button>
+    </div>
+    <div class="note">
+        <strong>Key concept:</strong> Net movement is from HIGH to LOW concentration. As concentrations equalise, net diffusion rate decreases to zero (dynamic equilibrium). Large particles cannot pass through the membrane pores.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('simCanvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+const memX = W / 2;
+const poreGap = 20, poreW = 6;
+let speed = 1;
+
+class Particle {
+    constructor(x, y, isSmall) {
+        this.x = x; this.y = y;
+        this.isSmall = isSmall;
+        this.r = isSmall ? 4 : 8;
+        this.color = isSmall ? '#e53e3e' : '#2b6cb0';
+        this.vx = (Math.random() - 0.5) * 2;
+        this.vy = (Math.random() - 0.5) * 2;
+    }
+    update() {
+        this.vx += (Math.random() - 0.5) * 0.8 * speed;
+        this.vy += (Math.random() - 0.5) * 0.8 * speed;
+        const maxV = 2 * speed;
+        const v = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+        if (v > maxV) { this.vx *= maxV / v; this.vy *= maxV / v; }
+        this.x += this.vx;
+        this.y += this.vy;
+        // Walls
+        if (this.x - this.r < 0) { this.x = this.r; this.vx *= -1; }
+        if (this.x + this.r > W) { this.x = W - this.r; this.vx *= -1; }
+        if (this.y - this.r < 0) { this.y = this.r; this.vy *= -1; }
+        if (this.y + this.r > H) { this.y = H - this.r; this.vy *= -1; }
+        // Membrane collision
+        this.handleMembrane();
+    }
+    handleMembrane() {
+        const nearMem = Math.abs(this.x - memX) < this.r + 2;
+        if (!nearMem) return;
+        if (this.isSmall) {
+            // Check if near a pore
+            const inPore = this.isInPore();
+            if (!inPore) {
+                if (this.x < memX) { this.x = memX - this.r - 2; this.vx *= -1; }
+                else { this.x = memX + this.r + 2; this.vx *= -1; }
+            }
+        } else {
+            if (this.x < memX) { this.x = memX - this.r - 2; this.vx *= -1; }
+            else { this.x = memX + this.r + 2; this.vx *= -1; }
+        }
+    }
+    isInPore() {
+        for (let py = poreGap; py < H; py += poreGap * 2) {
+            if (Math.abs(this.y - py) < poreW + this.r) return true;
+        }
+        return false;
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = 0.8;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+    }
+}
+
+let particles = [];
+let crossingsPerSec = 0;
+let lastLeftCount = 0;
+let frameCount = 0;
+
+function resetSim() {
+    particles = [];
+    // Small particles: 40 on left, 5 on right
+    for (let i = 0; i < 40; i++) {
+        particles.push(new Particle(20 + Math.random() * (memX - 40), 20 + Math.random() * (H - 40), true));
+    }
+    for (let i = 0; i < 5; i++) {
+        particles.push(new Particle(memX + 20 + Math.random() * (memX - 40), 20 + Math.random() * (H - 40), true));
+    }
+    // Large particles: 8 on left, 8 on right
+    for (let i = 0; i < 8; i++) {
+        particles.push(new Particle(20 + Math.random() * (memX - 50), 20 + Math.random() * (H - 40), false));
+    }
+    for (let i = 0; i < 8; i++) {
+        particles.push(new Particle(memX + 20 + Math.random() * (memX - 50), 20 + Math.random() * (H - 40), false));
+    }
+    lastLeftCount = 40;
+    crossingsPerSec = 0;
+}
+
+function drawMembrane() {
+    ctx.strokeStyle = '#1835b4';
+    ctx.lineWidth = 3;
+    for (let y = 0; y < H; y += poreGap * 2) {
+        ctx.beginPath();
+        ctx.moveTo(memX, y + poreW);
+        ctx.lineTo(memX, y + poreGap * 2 - poreW);
+        ctx.stroke();
+    }
+    // Draw pore indicators
+    ctx.fillStyle = 'rgba(24,53,180,0.1)';
+    for (let y = poreGap; y < H; y += poreGap * 2) {
+        ctx.fillRect(memX - 4, y - poreW, 8, poreW * 2);
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Background gradient to show concentration
+    const smallLeft = particles.filter(p => p.isSmall && p.x < memX).length;
+    const smallRight = particles.filter(p => p.isSmall && p.x >= memX).length;
+    const leftAlpha = Math.min(0.15, smallLeft * 0.003);
+    const rightAlpha = Math.min(0.15, smallRight * 0.003);
+    ctx.fillStyle = `rgba(229,62,62,${leftAlpha})`;
+    ctx.fillRect(0, 0, memX, H);
+    ctx.fillStyle = `rgba(229,62,62,${rightAlpha})`;
+    ctx.fillRect(memX, 0, memX, H);
+
+    drawMembrane();
+
+    for (const p of particles) { p.update(); p.draw(); }
+
+    // Update stats
+    document.getElementById('leftCount').textContent = smallLeft;
+    document.getElementById('rightCount').textContent = smallRight;
+
+    frameCount++;
+    if (frameCount % 30 === 0) {
+        crossingsPerSec = Math.abs(smallLeft - lastLeftCount);
+        lastLeftCount = smallLeft;
+    }
+    document.getElementById('netRate').textContent = crossingsPerSec + '/s';
+
+    // Labels
+    ctx.font = '600 0.6rem system-ui';
+    ctx.fillStyle = '#1835b4';
+    ctx.textAlign = 'center';
+    ctx.fillText('HIGH conc.', memX / 2, 16);
+    ctx.fillText('LOW conc.', memX + memX / 2, 16);
+
+    // Arrow showing net movement direction
+    if (Math.abs(smallLeft - smallRight) > 2) {
+        const arrowY = H - 20;
+        ctx.fillStyle = '#1835b4';
+        ctx.font = '600 0.55rem system-ui';
+        if (smallLeft > smallRight) {
+            ctx.fillText('Net movement \u2192', memX, arrowY);
+        } else {
+            ctx.fillText('\u2190 Net movement', memX, arrowY);
+        }
+    } else {
+        ctx.fillStyle = '#38a169';
+        ctx.font = '600 0.55rem system-ui';
+        ctx.fillText('Dynamic Equilibrium', memX, H - 20);
+    }
+
+    // Legend
+    ctx.textAlign = 'left';
+    ctx.font = '0.55rem system-ui';
+    ctx.fillStyle = '#e53e3e';
+    ctx.beginPath(); ctx.arc(10, H - 10, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#4a5568';
+    ctx.fillText('Small (passes)', 18, H - 7);
+    ctx.fillStyle = '#2b6cb0';
+    ctx.beginPath(); ctx.arc(110, H - 10, 6, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#4a5568';
+    ctx.fillText('Large (blocked)', 120, H - 7);
+
+    requestAnimationFrame(animate);
+}
+
+resetSim();
+animate();
+</script>
+</body>
+</html>

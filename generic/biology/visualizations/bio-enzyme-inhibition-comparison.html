@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enzyme Inhibition</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; background: #fff; }
+        .controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 8px; flex-wrap: wrap; }
+        .btn { padding: 6px 14px; border: 2px solid #1835b4; border-radius: 5px; background: #fff; color: #1835b4; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn.active, .btn:hover { background: #1835b4; color: #fff; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 8px; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Enzyme Inhibition</h1>
+    <div class="desc">Competitive vs Non-competitive Inhibition</div>
+    <div class="controls">
+        <button class="btn active" id="btnPlay" onclick="togglePlay()">&#9654; Play Animation</button>
+        <button class="btn" onclick="resetAnim()">Reset</button>
+    </div>
+    <canvas id="c" width="540" height="440"></canvas>
+    <div class="note">
+        <strong>Competitive:</strong> Inhibitor has similar shape to substrate and blocks the active site. Overcome by increasing [S].<br>
+        <strong>Non-competitive:</strong> Inhibitor binds to allosteric site, distorting the active site. NOT overcome by increasing [S].
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let playing = false, progress = 0, animId = null;
+
+function togglePlay() {
+    if (playing) { playing = false; cancelAnimationFrame(animId); document.getElementById('btnPlay').innerHTML = '&#9654; Play Animation'; return; }
+    if (progress >= 1) progress = 0;
+    playing = true;
+    document.getElementById('btnPlay').innerHTML = '&#9646;&#9646; Pause';
+    animate();
+}
+function resetAnim() { playing = false; progress = 0; cancelAnimationFrame(animId); document.getElementById('btnPlay').innerHTML = '&#9654; Play Animation'; draw(); }
+function animate() { if (!playing) return; progress += 0.0025; if (progress >= 1) { progress = 1; playing = false; document.getElementById('btnPlay').innerHTML = '&#9654; Play Animation'; } draw(); if (playing) animId = requestAnimationFrame(animate); }
+
+function drawEnzyme(cx, cy, r, distort) {
+    ctx.beginPath();
+    const notchD = r * 0.45;
+    const notchW = r * 0.35;
+    ctx.moveTo(cx, cy - r);
+    ctx.bezierCurveTo(cx + r * 0.8, cy - r, cx + r, cy - r * 0.5, cx + r, cy);
+    ctx.bezierCurveTo(cx + r, cy + r * 0.5, cx + r * 0.8, cy + r, cx, cy + r);
+    ctx.bezierCurveTo(cx - r * 0.8, cy + r, cx - r, cy + r * 0.5, cx - r, cy);
+    ctx.bezierCurveTo(cx - r, cy - r * 0.3, cx - r * 0.8, cy - r * 0.6, cx - notchW, cy - r * 0.6);
+    // Active site notch
+    const nd = notchD + distort * 10;
+    ctx.lineTo(cx - notchW, cy - r * 0.6);
+    ctx.lineTo(cx - notchW * 0.5 + distort * 5, cy - r * 0.6 + nd);
+    ctx.lineTo(cx + notchW * 0.5 + distort * 5, cy - r * 0.6 + nd);
+    ctx.lineTo(cx + notchW, cy - r * 0.6);
+    ctx.lineTo(cx, cy - r);
+    ctx.closePath();
+    ctx.fillStyle = '#5b8def';
+    ctx.fill();
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2; ctx.stroke();
+}
+
+function drawSubstrate(cx, cy, r) {
+    ctx.beginPath();
+    const w = r * 0.6, h = r * 0.35;
+    ctx.moveTo(cx - w, cy - h); ctx.lineTo(cx + w, cy - h);
+    ctx.lineTo(cx + w * 0.7, cy); ctx.lineTo(cx + w, cy + h);
+    ctx.lineTo(cx - w, cy + h); ctx.lineTo(cx - w * 0.7, cy);
+    ctx.closePath();
+    ctx.fillStyle = '#f9c846'; ctx.fill();
+    ctx.strokeStyle = '#c8940a'; ctx.lineWidth = 2; ctx.stroke();
+}
+
+function drawInhibitor(cx, cy, r, type) {
+    ctx.beginPath();
+    if (type === 'comp') {
+        // Similar shape to substrate
+        const w = r * 0.55, h = r * 0.33;
+        ctx.moveTo(cx - w, cy - h); ctx.lineTo(cx + w, cy - h);
+        ctx.lineTo(cx + w * 0.7, cy); ctx.lineTo(cx + w, cy + h);
+        ctx.lineTo(cx - w, cy + h); ctx.lineTo(cx - w * 0.7, cy);
+    } else {
+        ctx.arc(cx, cy, r * 0.25, 0, Math.PI * 2);
+    }
+    ctx.closePath();
+    ctx.fillStyle = '#e74c3c'; ctx.fill();
+    ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 2; ctx.stroke();
+}
+
+function drawGraph() {
+    const gx = 40, gy = 310, gw = canvas.width - 80, gh = 110;
+    // Axes
+    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(gx, gy); ctx.lineTo(gx, gy + gh); ctx.lineTo(gx + gw, gy + gh); ctx.stroke();
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('[Substrate]', gx + gw / 2, gy + gh + 18);
+    ctx.save(); ctx.translate(gx - 18, gy + gh / 2); ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Reaction Rate', 0, 0); ctx.restore();
+    // Vmax line
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(gx, gy + 8); ctx.lineTo(gx + gw, gy + 8); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#888'; ctx.font = '9px system-ui'; ctx.textAlign = 'left';
+    ctx.fillText('Vmax', gx + gw + 4, gy + 12);
+    // Normal curve
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let i = 0; i <= 100; i++) {
+        const x = gx + (i / 100) * gw;
+        const s = i / 100 * 10;
+        const v = (100 * s) / (1 + s);
+        const y = gy + gh - (v / 100) * gh;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    // Competitive
+    ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2; ctx.setLineDash([6, 3]);
+    ctx.beginPath();
+    for (let i = 0; i <= 100; i++) {
+        const x = gx + (i / 100) * gw;
+        const s = i / 100 * 10;
+        const v = (100 * s) / (3 + s); // Higher Km
+        const y = gy + gh - (v / 100) * gh;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke(); ctx.setLineDash([]);
+    // Non-competitive
+    ctx.strokeStyle = '#e67e22'; ctx.lineWidth = 2; ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    for (let i = 0; i <= 100; i++) {
+        const x = gx + (i / 100) * gw;
+        const s = i / 100 * 10;
+        const v = (60 * s) / (1 + s); // Lower Vmax
+        const y = gy + gh - (v / 100) * gh;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke(); ctx.setLineDash([]);
+    // Legend
+    const lx = gx + gw - 140, ly = gy + 20;
+    ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.fillRect(lx - 4, ly - 4, 145, 50);
+    ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1; ctx.strokeRect(lx - 4, ly - 4, 145, 50);
+    ctx.font = '9px system-ui'; ctx.textAlign = 'left';
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2; ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(lx, ly + 6); ctx.lineTo(lx + 20, ly + 6); ctx.stroke();
+    ctx.fillStyle = '#1a2747'; ctx.fillText('No inhibitor', lx + 25, ly + 10);
+    ctx.strokeStyle = '#e74c3c'; ctx.setLineDash([6, 3]);
+    ctx.beginPath(); ctx.moveTo(lx, ly + 20); ctx.lineTo(lx + 20, ly + 20); ctx.stroke();
+    ctx.fillText('Competitive', lx + 25, ly + 24); ctx.setLineDash([]);
+    ctx.strokeStyle = '#e67e22'; ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.moveTo(lx, ly + 34); ctx.lineTo(lx + 20, ly + 34); ctx.stroke();
+    ctx.fillText('Non-competitive', lx + 25, ly + 38); ctx.setLineDash([]);
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const r = 42;
+    const leftX = canvas.width * 0.25, rightX = canvas.width * 0.75, enzymeY = 140;
+    // Headers
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 12px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Competitive Inhibition', leftX, 18);
+    ctx.fillText('Non-competitive Inhibition', rightX, 18);
+    // Divider
+    ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(canvas.width / 2, 25); ctx.lineTo(canvas.width / 2, 290); ctx.stroke();
+
+    const notchTopY = enzymeY - r * 0.6 + r * 0.45;
+    // --- Competitive side ---
+    if (progress < 0.5) {
+        const p = progress / 0.5;
+        // Inhibitor approaches active site
+        const inhStartX = leftX + 80, inhStartY = 40;
+        const inhX = inhStartX + (leftX - inhStartX) * p;
+        const inhY = inhStartY + (notchTopY - 30 - inhStartY) * p;
+        drawEnzyme(leftX, enzymeY, r, 0);
+        drawInhibitor(inhX, inhY, r, 'comp');
+        // Substrate waiting
+        drawSubstrate(leftX + 70, 55, r);
+        ctx.fillStyle = '#4a5568'; ctx.font = '9px system-ui';
+        ctx.fillText('Inhibitor', inhX + 25, inhY);
+        ctx.fillText('Substrate', leftX + 70, 40);
+    } else {
+        // Inhibitor in active site, substrate bounced
+        drawEnzyme(leftX, enzymeY, r, 0);
+        drawInhibitor(leftX, notchTopY - 18, r, 'comp');
+        const bounce = Math.sin((progress - 0.5) / 0.5 * Math.PI * 3) * 8;
+        drawSubstrate(leftX + 55 + bounce, notchTopY - 40 + bounce, r);
+        ctx.fillStyle = '#c0392b'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('BLOCKED', leftX, enzymeY + r + 20);
+        ctx.fillStyle = '#4a5568'; ctx.font = '9px system-ui';
+        ctx.fillText('Active site occupied', leftX, enzymeY + r + 34);
+        // X mark on substrate
+        ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 2;
+        const sx = leftX + 55 + bounce, sy = notchTopY - 40 + bounce;
+        ctx.beginPath(); ctx.moveTo(sx - 8, sy - 8); ctx.lineTo(sx + 8, sy + 8); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(sx + 8, sy - 8); ctx.lineTo(sx - 8, sy + 8); ctx.stroke();
+    }
+
+    // --- Non-competitive side ---
+    const alloX = rightX + r * 0.85, alloY = enzymeY + r * 0.3;
+    if (progress < 0.4) {
+        const p = progress / 0.4;
+        const inhStartX = rightX + 100, inhStartY = enzymeY + 60;
+        const inhX = inhStartX + (alloX - inhStartX) * p;
+        const inhY = inhStartY + (alloY - inhStartY) * p;
+        drawEnzyme(rightX, enzymeY, r, 0);
+        drawInhibitor(inhX, inhY, r, 'noncomp');
+        drawSubstrate(rightX - 60, 50, r);
+        ctx.fillStyle = '#4a5568'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('Inhibitor', inhX + 18, inhY - 12);
+        ctx.fillText('Allosteric site', rightX + r + 10, enzymeY + r * 0.3 - 15);
+    } else {
+        const distort = Math.min(1, (progress - 0.4) / 0.2);
+        drawEnzyme(rightX, enzymeY, r, distort * 12);
+        drawInhibitor(alloX, alloY, r, 'noncomp');
+        if (progress > 0.6) {
+            // Substrate tries to bind but reaction is slow
+            const p2 = (progress - 0.6) / 0.4;
+            const subStartY = 50;
+            const subTargetY = notchTopY - 25;
+            const subY = subStartY + (subTargetY - subStartY) * Math.min(1, p2 * 1.5);
+            drawSubstrate(rightX, subY, r);
+            ctx.fillStyle = '#e67e22'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+            ctx.fillText('Shape distorted', rightX, enzymeY + r + 20);
+            ctx.fillStyle = '#4a5568'; ctx.font = '9px system-ui';
+            ctx.fillText('Substrate binds but rate reduced', rightX, enzymeY + r + 34);
+        } else {
+            drawSubstrate(rightX - 60, 50, r);
+            ctx.fillStyle = '#e67e22'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+            ctx.fillText('Active site distorted', rightX, enzymeY + r + 20);
+        }
+    }
+
+    // Rate graph
+    drawGraph();
+    // Progress bar
+    ctx.fillStyle = '#e8ecf8'; ctx.fillRect(20, canvas.height - 10, canvas.width - 40, 5);
+    ctx.fillStyle = '#1835b4'; ctx.fillRect(20, canvas.height - 10, (canvas.width - 40) * progress, 5);
+}
+
+function resize() { const w = Math.min(540, window.innerWidth - 24); canvas.style.width = w + 'px'; canvas.style.height = (w * 440 / 540) + 'px'; }
+window.addEventListener('resize', resize); resize(); draw();
+</script>
+</body>
+</html>

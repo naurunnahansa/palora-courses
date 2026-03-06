@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laws of Indices</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#fcfcfe;padding:10px 12px;color:#1a2747}
+.container{max-width:100%;margin:0 auto}
+h1{font-size:1.0rem;color:#1835b4;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.card{border-radius:5px;border:1px solid #d4d8e5;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px;margin-bottom:10px;background:#fff}
+.card-title{font-size:.85rem;color:#1835b4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.input-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.input-row label{font-size:.78rem;font-weight:600;color:#1835b4}
+.input-row input[type=number]{width:55px;padding:4px 6px;border:1px solid #d4d8e5;border-radius:4px;font-size:.85rem;text-align:center;font-family:system-ui}
+.law-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.law-tab{padding:5px 8px;border:1px solid #d4d8e5;border-radius:4px;background:#e8ecf8;color:#1835b4;font-size:.7rem;cursor:pointer;font-family:system-ui}
+.law-tab.active{background:#1835b4;color:#fff;border-color:#1835b4}
+.law-display{background:#e8ecf8;border-radius:5px;padding:12px;margin-bottom:8px}
+.law-display .law-name{font-size:.82rem;font-weight:700;color:#1835b4;margin-bottom:4px}
+.law-display .law-rule{font-size:.9rem;color:#1a2747;margin-bottom:6px}
+.step-box{background:#fafbfc;border-radius:5px;padding:10px 12px;margin-top:8px}
+.step{font-size:.82rem;color:#1a2747;padding:4px 0;border-bottom:1px solid #f0f0f0;line-height:1.5}
+.step:last-child{border-bottom:none}
+.step .highlight{color:#1835b4;font-weight:600}
+.result-box{background:#e8ecf8;border-radius:5px;padding:8px 12px;text-align:center;font-size:.95rem;color:#1835b4;font-weight:600;margin-top:8px}
+.info{background:#fafbfc;border-radius:5px;padding:8px;font-size:.75rem;color:#4a5568;text-align:center;margin-top:8px}
+.info strong{color:#1835b4}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Laws of Indices</h1>
+    <div class="card">
+        <div class="card-title">Choose a Law</div>
+        <div class="law-tabs">
+            <div class="law-tab active" onclick="selectLaw(0)">Multiplication</div>
+            <div class="law-tab" onclick="selectLaw(1)">Division</div>
+            <div class="law-tab" onclick="selectLaw(2)">Power of Power</div>
+            <div class="law-tab" onclick="selectLaw(3)">Zero Index</div>
+            <div class="law-tab" onclick="selectLaw(4)">Negative Index</div>
+            <div class="law-tab" onclick="selectLaw(5)">Fractional Index</div>
+            <div class="law-tab" onclick="selectLaw(6)">Reciprocal</div>
+        </div>
+        <div class="input-row">
+            <label>Base (a):</label>
+            <input type="number" id="base" value="3" min="1" max="20">
+            <label>Exponent m:</label>
+            <input type="number" id="expM" value="4" min="-10" max="10">
+            <label>Exponent n:</label>
+            <input type="number" id="expN" value="2" min="-10" max="10">
+        </div>
+    </div>
+    <div class="card">
+        <div class="law-display" id="lawDisplay">
+            <div class="law-name" id="lawName"></div>
+            <div class="law-rule" id="lawRule"></div>
+        </div>
+        <div class="step-box" id="steps"></div>
+        <div class="result-box" id="result"></div>
+    </div>
+    <div class="info">Select a law and adjust values to see <strong>step-by-step simplification</strong> using index laws.</div>
+</div>
+<script>
+let currentLaw=0;
+const laws=[
+    {name:'Multiplication Law',rule:'a\u1D50 \u00d7 a\u207F = a\u1D50\u207A\u207F',desc:'When multiplying same bases, add the exponents'},
+    {name:'Division Law',rule:'a\u1D50 \u00f7 a\u207F = a\u1D50\u207B\u207F',desc:'When dividing same bases, subtract the exponents'},
+    {name:'Power of a Power',rule:'(a\u1D50)\u207F = a\u1D50\u02E3\u207F',desc:'When raising a power to a power, multiply the exponents'},
+    {name:'Zero Index',rule:'a\u2070 = 1',desc:'Any non-zero number raised to the power 0 equals 1'},
+    {name:'Negative Index',rule:'a\u207B\u207F = 1/a\u207F',desc:'A negative exponent means the reciprocal'},
+    {name:'Fractional Index',rule:'a^(1/n) = \u207F\u221aa',desc:'A fractional exponent means a root'},
+    {name:'Reciprocal',rule:'(a/b)\u207B\u207F = (b/a)\u207F',desc:'Reciprocal with negative exponent flips the fraction'}
+];
+
+function sup(n){return '<sup>'+n+'</sup>';}
+
+function selectLaw(i){
+    currentLaw=i;
+    document.querySelectorAll('.law-tab').forEach((t,j)=>t.className='law-tab'+(j===i?' active':''));
+    update();
+}
+
+['base','expM','expN'].forEach(id=>document.getElementById(id).addEventListener('input',update));
+
+function update(){
+    const a=parseFloat(document.getElementById('base').value)||2;
+    const m=parseFloat(document.getElementById('expM').value)||0;
+    const n=parseFloat(document.getElementById('expN').value)||0;
+    const law=laws[currentLaw];
+    document.getElementById('lawName').textContent=law.name;
+    document.getElementById('lawRule').textContent=law.rule+' \u2014 '+law.desc;
+    const stepsEl=document.getElementById('steps');
+    const resultEl=document.getElementById('result');
+    let html='';
+    switch(currentLaw){
+        case 0:{
+            const sum=m+n;const val=Math.pow(a,sum);
+            html=step(a+sup(m)+' \u00d7 '+a+sup(n));
+            html+=step('= '+a+sup(m+' + '+n),'Add exponents: m + n = '+m+' + '+n+' = '+sum);
+            html+=step('= '+a+sup(sum));
+            html+=step('= '+fmt(val));
+            resultEl.textContent=a+'^'+m+' \u00d7 '+a+'^'+n+' = '+a+'^'+sum+' = '+fmt(val);
+            break;}
+        case 1:{
+            const diff=m-n;const val=Math.pow(a,diff);
+            html=step(a+sup(m)+' \u00f7 '+a+sup(n));
+            html+=step('= '+a+sup(m+' - '+n),'Subtract exponents: m - n = '+m+' - '+n+' = '+diff);
+            html+=step('= '+a+sup(diff));
+            html+=step('= '+fmt(val));
+            resultEl.textContent=a+'^'+m+' \u00f7 '+a+'^'+n+' = '+a+'^'+diff+' = '+fmt(val);
+            break;}
+        case 2:{
+            const prod=m*n;const val=Math.pow(a,prod);
+            html=step('('+a+sup(m)+')'+sup(n));
+            html+=step('= '+a+sup(m+' \u00d7 '+n),'Multiply exponents: m \u00d7 n = '+m+' \u00d7 '+n+' = '+prod);
+            html+=step('= '+a+sup(prod));
+            html+=step('= '+fmt(val));
+            resultEl.textContent='('+a+'^'+m+')^'+n+' = '+a+'^'+prod+' = '+fmt(val);
+            break;}
+        case 3:{
+            html=step(a+sup(0));
+            html+=step('Any non-zero base raised to 0 = 1');
+            html+=step('= 1');
+            resultEl.textContent=a+'^0 = 1';
+            break;}
+        case 4:{
+            const val=Math.pow(a,n);const inv=1/val;
+            html=step(a+sup('-'+n));
+            html+=step('= 1 / '+a+sup(n),'Negative exponent becomes reciprocal');
+            html+=step('= 1 / '+fmt(val));
+            html+=step('= '+fmt(inv));
+            resultEl.textContent=a+'^(-'+n+') = 1/'+a+'^'+n+' = '+fmt(inv);
+            break;}
+        case 5:{
+            const val=Math.pow(a,1/n);
+            html=step(a+sup('1/'+n));
+            html+=step('= '+n+'\u221a'+a,'Fractional index 1/n means the nth root');
+            html+=step('= '+fmt(val));
+            resultEl.textContent=a+'^(1/'+n+') = '+fmt(val);
+            break;}
+        case 6:{
+            const val=Math.pow(1/a,n);
+            html=step('(1/'+a+')'+sup(n)+'  or equivalently  '+a+sup('-'+n));
+            html+=step('= 1'+sup(n)+' / '+a+sup(n),'Apply exponent to numerator and denominator');
+            html+=step('= 1 / '+fmt(Math.pow(a,n)));
+            html+=step('= '+fmt(val));
+            resultEl.textContent='(1/'+a+')^'+n+' = '+fmt(val);
+            break;}
+    }
+    stepsEl.innerHTML=html;
+}
+function step(main,note){
+    let s='<div class="step"><span class="highlight">'+main+'</span>';
+    if(note)s+='<br><span style="font-size:.72rem;color:#4a5568">'+note+'</span>';
+    return s+'</div>';
+}
+function fmt(v){const r=parseFloat(v.toFixed(6));return isFinite(r)?r:'undefined';}
+update();
+</script>
+</body>
+</html>

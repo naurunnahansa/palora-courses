@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Digestive System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        .main { display: flex; gap: 8px; }
+        canvas { display: block; border: 1px solid #d4d8e5; border-radius: 5px; flex-shrink: 0; cursor: pointer; }
+        .side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+        .info-card { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.7rem; flex: 1; }
+        .info-card h3 { color: #1835b4; font-size: 0.82rem; margin-bottom: 4px; }
+        .info-card .row { margin-bottom: 3px; }
+        .info-card .row strong { color: #1835b4; }
+        .legend { display: flex; gap: 10px; font-size: 0.65rem; flex-wrap: wrap; }
+        .legend span { display: flex; align-items: center; gap: 3px; }
+        .legend .dot { width: 8px; height: 8px; border-radius: 2px; }
+        .controls { display: flex; gap: 6px; }
+        .btn { padding: 5px 12px; border: none; border-radius: 5px; background: #1835b4; color: #fff; font-size: 0.75rem; font-weight: 600; cursor: pointer; flex: 1; }
+        .btn:hover { background: #122a8a; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>The Digestive System</h1>
+    <div class="desc">Click each organ or press Play to follow a food particle through the alimentary canal</div>
+    <div class="legend" style="justify-content:center;margin-bottom:6px;">
+        <span><span class="dot" style="background:#e67e22"></span> Mechanical</span>
+        <span><span class="dot" style="background:#3498db"></span> Chemical</span>
+        <span><span class="dot" style="background:#2ecc71"></span> Absorption</span>
+    </div>
+    <div class="main">
+        <canvas id="canvas" width="200" height="480"></canvas>
+        <div class="side">
+            <div class="info-card" id="info">
+                <h3>Select an organ</h3>
+                <p>Click any organ on the diagram, or press Play to animate a food particle through the digestive system.</p>
+            </div>
+            <div class="controls">
+                <button class="btn" onclick="playAnim()">&#9654; Play</button>
+                <button class="btn" style="background:#fff;color:#1835b4;border:1.5px solid #1835b4;" onclick="resetAnim()">Reset</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+const organs = [
+    { id:'mouth', label:'Mouth', x:100, y:30, w:50, h:22, color:'#e67e22',
+      path:[{x:100,y:42}],
+      info:'<h3>Mouth</h3><div class="row"><strong>Function:</strong> Ingestion, mechanical and chemical digestion begins</div><div class="row"><strong>Mechanical:</strong> Teeth break food into smaller pieces (increases surface area)</div><div class="row"><strong>Chemical:</strong> Salivary amylase (from salivary glands) breaks starch &rarr; maltose</div><div class="row"><strong>pH:</strong> ~7 (neutral/slightly alkaline)</div>' },
+    { id:'oesophagus', label:'Oesophagus', x:100, y:70, w:20, h:60, color:'#e67e22',
+      path:[{x:100,y:75},{x:100,y:125}],
+      info:'<h3>Oesophagus</h3><div class="row"><strong>Function:</strong> Transports food from mouth to stomach by peristalsis</div><div class="row"><strong>Mechanical:</strong> Peristalsis (wave-like muscle contractions push food bolus down)</div><div class="row"><strong>Chemical:</strong> None</div><div class="row"><strong>Note:</strong> No digestion or absorption occurs here</div>' },
+    { id:'stomach', label:'Stomach', x:105, y:145, w:55, h:55, color:'#3498db',
+      path:[{x:100,y:130},{x:105,y:170}],
+      info:'<h3>Stomach</h3><div class="row"><strong>Function:</strong> Mechanical and chemical digestion of protein</div><div class="row"><strong>Mechanical:</strong> Churning by muscular walls</div><div class="row"><strong>Chemical:</strong> Protease (pepsin) breaks proteins &rarr; polypeptides. HCl provides acidic pH and kills bacteria</div><div class="row"><strong>pH:</strong> ~2 (very acidic)</div>' },
+    { id:'duodenum', label:'Duodenum', x:100, y:215, w:45, h:25, color:'#3498db',
+      path:[{x:105,y:200},{x:100,y:225}],
+      info:'<h3>Duodenum</h3><div class="row"><strong>Function:</strong> Chemical digestion continues with bile and pancreatic enzymes</div><div class="row"><strong>Chemical:</strong> Pancreatic amylase (starch&rarr;maltose), pancreatic lipase (fats&rarr;fatty acids+glycerol), trypsin (proteins&rarr;amino acids)</div><div class="row"><strong>Bile:</strong> Emulsifies fats (increases surface area for lipase). Made in liver, stored in gallbladder</div><div class="row"><strong>pH:</strong> ~7-8 (alkaline, neutralised by bile)</div>' },
+    { id:'ileum', label:'Ileum', x:100, y:255, w:60, h:50, color:'#2ecc71',
+      path:[{x:100,y:240},{x:95,y:260},{x:105,y:275},{x:95,y:290}],
+      info:'<h3>Ileum (Small Intestine)</h3><div class="row"><strong>Function:</strong> Main site of absorption of digested food</div><div class="row"><strong>Absorption:</strong> Villi and microvilli provide huge surface area. Glucose and amino acids absorbed by active transport into blood capillaries. Fatty acids and glycerol absorbed into lacteals (lymph)</div><div class="row"><strong>Adaptations:</strong> Very long (~6m), villi, microvilli, rich blood supply, thin walls (one cell thick)</div>' },
+    { id:'colon', label:'Colon', x:100, y:320, w:70, h:40, color:'#2ecc71',
+      path:[{x:95,y:305},{x:70,y:325},{x:130,y:335},{x:100,y:345}],
+      info:'<h3>Colon (Large Intestine)</h3><div class="row"><strong>Function:</strong> Absorbs water and mineral ions from undigested food</div><div class="row"><strong>Absorption:</strong> Water reabsorbed back into the blood, forming semi-solid faeces</div><div class="row"><strong>Bacteria:</strong> Gut flora produce vitamin K and some B vitamins</div>' },
+    { id:'rectum', label:'Rectum', x:100, y:370, w:30, h:25, color:'#4a5568',
+      path:[{x:100,y:360},{x:100,y:380}],
+      info:'<h3>Rectum &amp; Anus</h3><div class="row"><strong>Function:</strong> Stores faeces temporarily before egestion</div><div class="row"><strong>Egestion:</strong> Faeces (undigested food, dead bacteria, fibre) expelled through anus by muscular contractions</div><div class="row"><strong>Note:</strong> Egestion is NOT excretion (excretion removes metabolic waste products)</div>' }
+];
+
+const accessories = [
+    { label:'Salivary\nglands', x:40, y:30, target:'mouth', color:'#f39c12' },
+    { label:'Liver', x:40, y:155, target:'duodenum', color:'#8b4513' },
+    { label:'Gall-\nbladder', x:40, y:190, target:'duodenum', color:'#6b8e23' },
+    { label:'Pancreas', x:40, y:225, target:'duodenum', color:'#9b59b6' }
+];
+
+let selected = null, foodY = -1, foodStep = -1, animating = false;
+const foodPath = [];
+
+// Build food path from all organ paths
+organs.forEach(o => o.path.forEach(p => foodPath.push({...p, organ: o.id})));
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw connections from accessories
+    accessories.forEach(a => {
+        const tgt = organs.find(o => o.id === a.target);
+        ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1; ctx.setLineDash([3,3]);
+        ctx.beginPath(); ctx.moveTo(a.x+25, a.y+10); ctx.lineTo(tgt.x-tgt.w/2, tgt.y); ctx.stroke();
+        ctx.setLineDash([]);
+        // Label
+        ctx.fillStyle = a.color; ctx.font = 'bold 8px system-ui'; ctx.textAlign = 'center';
+        a.label.split('\n').forEach((line, i) => ctx.fillText(line, a.x, a.y + i*10));
+    });
+
+    // Draw alimentary canal
+    ctx.strokeStyle = '#b0bec5'; ctx.lineWidth = 1;
+    organs.forEach((o, i) => {
+        const isSel = selected === o.id;
+        ctx.fillStyle = isSel ? o.color : o.color + '44';
+        ctx.strokeStyle = isSel ? o.color : '#b0bec5';
+        ctx.lineWidth = isSel ? 2.5 : 1.5;
+
+        if (o.id === 'stomach') {
+            ctx.beginPath(); ctx.ellipse(o.x, o.y, o.w/2, o.h/2, 0.2, 0, Math.PI*2);
+            ctx.fill(); ctx.stroke();
+        } else if (o.id === 'ileum') {
+            // wavy tube
+            ctx.beginPath(); ctx.moveTo(o.x-o.w/2, o.y-o.h/2);
+            for (let yy = o.y-o.h/2; yy <= o.y+o.h/2; yy += 3) {
+                ctx.lineTo(o.x + Math.sin(yy*0.3)*o.w/2, yy);
+            }
+            for (let yy = o.y+o.h/2; yy >= o.y-o.h/2; yy -= 3) {
+                ctx.lineTo(o.x + Math.sin(yy*0.3)*o.w/2 - 15, yy);
+            }
+            ctx.closePath(); ctx.fill(); ctx.stroke();
+        } else if (o.id === 'colon') {
+            ctx.beginPath();
+            ctx.moveTo(o.x-o.w/2, o.y+o.h/2);
+            ctx.lineTo(o.x-o.w/2, o.y-o.h/2);
+            ctx.lineTo(o.x+o.w/2, o.y-o.h/2);
+            ctx.lineTo(o.x+o.w/2, o.y+o.h/2);
+            ctx.quadraticCurveTo(o.x, o.y+o.h/2+10, o.x-o.w/2, o.y+o.h/2);
+            ctx.fill(); ctx.stroke();
+        } else {
+            ctx.beginPath();
+            ctx.roundRect(o.x-o.w/2, o.y-o.h/2, o.w, o.h, 6);
+            ctx.fill(); ctx.stroke();
+        }
+
+        // Label
+        ctx.fillStyle = isSel ? '#fff' : '#1a2747';
+        ctx.font = (isSel?'bold ':'') + '8px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(o.label, o.x, o.y);
+        ctx.textBaseline = 'alphabetic';
+
+        // Connecting tube
+        if (i < organs.length-1) {
+            const next = organs[i+1];
+            ctx.strokeStyle = '#b0bec5'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(o.x, o.y+o.h/2); ctx.lineTo(next.x, next.y-next.h/2); ctx.stroke();
+        }
+    });
+
+    // Food particle
+    if (foodStep >= 0 && foodStep < foodPath.length) {
+        const fp = foodPath[foodStep];
+        ctx.beginPath(); ctx.arc(fp.x+10, fp.y, 5, 0, Math.PI*2);
+        ctx.fillStyle = '#e74c3c'; ctx.fill();
+        ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 1.5; ctx.stroke();
+    }
+}
+
+canvas.addEventListener('click', function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX-rect.left)*(canvas.width/rect.width);
+    const my = (e.clientY-rect.top)*(canvas.height/rect.height);
+    selected = null;
+    organs.forEach(o => {
+        if (Math.abs(mx-o.x) < o.w/2+10 && Math.abs(my-o.y) < o.h/2+10) selected = o.id;
+    });
+    if (selected) {
+        document.getElementById('info').innerHTML = organs.find(o=>o.id===selected).info;
+    } else {
+        document.getElementById('info').innerHTML = '<h3>Select an organ</h3><p>Click any organ on the diagram.</p>';
+    }
+    draw();
+});
+
+function playAnim() {
+    if (animating) return;
+    animating = true; foodStep = 0;
+    function tick() {
+        if (foodStep >= foodPath.length) { animating = false; foodStep = -1; draw(); return; }
+        selected = foodPath[foodStep].organ;
+        document.getElementById('info').innerHTML = organs.find(o=>o.id===selected).info;
+        draw();
+        foodStep++;
+        setTimeout(tick, 500);
+    }
+    tick();
+}
+
+function resetAnim() {
+    animating = false; foodStep = -1; selected = null;
+    document.getElementById('info').innerHTML = '<h3>Select an organ</h3><p>Click any organ on the diagram.</p>';
+    draw();
+}
+
+draw();
+</script>
+</body>
+</html>

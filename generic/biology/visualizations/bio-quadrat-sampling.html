@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadrat Sampling</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; }
+        .controls { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+        .btn { padding: 5px 12px; border: none; border-radius: 5px; background: #1835b4; color: #fff; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+        .btn:hover { background: #122a8a; }
+        .btn.outline { background: #fff; color: #1835b4; border: 1.5px solid #1835b4; }
+        .btn.active { background: #122a8a; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 6px; margin-bottom: 8px; }
+        .stat { background: #e8ecf8; border-radius: 5px; padding: 6px 8px; text-align: center; }
+        .stat .label { font-size: 0.65rem; color: #4a5568; }
+        .stat .value { font-size: 1rem; font-weight: 700; color: #1835b4; }
+        .legend { display: flex; gap: 12px; justify-content: center; margin-bottom: 6px; font-size: 0.7rem; }
+        .legend span { display: flex; align-items: center; gap: 4px; }
+        .legend .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .toggle-group { display: flex; gap: 4px; justify-content: center; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Quadrat Sampling</h1>
+    <div class="desc">Estimate population size using random quadrat placement</div>
+    <div class="toggle-group">
+        <button class="btn active" id="btnQuadrat" onclick="setMode('quadrat')">Quadrat</button>
+        <button class="btn outline" id="btnBelt" onclick="setMode('belt')">Belt Transect</button>
+        <button class="btn outline" id="btnLine" onclick="setMode('line')">Line Transect</button>
+    </div>
+    <div class="legend">
+        <span><span class="dot" style="background:#2ecc71"></span> Daisy</span>
+        <span><span class="dot" style="background:#e74c3c"></span> Dandelion</span>
+        <span><span class="dot" style="background:#9b59b6"></span> Clover</span>
+    </div>
+    <canvas id="canvas" width="520" height="360"></canvas>
+    <div class="controls">
+        <button class="btn" onclick="genCoords()">Generate Random Coords</button>
+        <button class="btn outline" onclick="resetAll()">Reset</button>
+    </div>
+    <div class="stats">
+        <div class="stat"><div class="label">Quadrats Placed</div><div class="value" id="qCount">0</div></div>
+        <div class="stat"><div class="label">Total Count</div><div class="value" id="tCount">0</div></div>
+        <div class="stat"><div class="label">Mean per Quadrat</div><div class="value" id="meanQ">-</div></div>
+        <div class="stat"><div class="label">Est. Population</div><div class="value" id="estPop">-</div></div>
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const fieldW = 500, fieldH = 340, ox = 10, oy = 10;
+const gridSize = 50, quadSize = 50;
+const totalArea = fieldW * fieldH;
+const quadArea = quadSize * quadSize;
+let organisms = [], quadrats = [], mode = 'quadrat';
+let highlightCoord = null, beltY = null, lineY = null;
+
+const species = [
+    { name: 'Daisy', color: '#2ecc71', symbol: 'o' },
+    { name: 'Dandelion', color: '#e74c3c', symbol: 'o' },
+    { name: 'Clover', color: '#9b59b6', symbol: 'o' }
+];
+
+function generateOrganisms() {
+    organisms = [];
+    const counts = [35 + Math.floor(Math.random()*20), 25 + Math.floor(Math.random()*15), 20 + Math.floor(Math.random()*15)];
+    counts.forEach((n, si) => {
+        for (let i = 0; i < n; i++) {
+            organisms.push({ x: Math.random()*fieldW, y: Math.random()*fieldH, species: si });
+        }
+    });
+}
+
+function setMode(m) {
+    mode = m;
+    document.getElementById('btnQuadrat').className = m==='quadrat'?'btn active':'btn outline';
+    document.getElementById('btnBelt').className = m==='belt'?'btn active':'btn outline';
+    document.getElementById('btnLine').className = m==='line'?'btn active':'btn outline';
+    quadrats = []; highlightCoord = null; beltY = null; lineY = null;
+    updateStats(); draw();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Field background
+    ctx.fillStyle = '#d4edda'; ctx.fillRect(ox, oy, fieldW, fieldH);
+    // Grid lines
+    ctx.strokeStyle = 'rgba(0,0,0,0.08)'; ctx.lineWidth = 0.5;
+    for (let x = 0; x <= fieldW; x += gridSize) { ctx.beginPath(); ctx.moveTo(ox+x, oy); ctx.lineTo(ox+x, oy+fieldH); ctx.stroke(); }
+    for (let y = 0; y <= fieldH; y += gridSize) { ctx.beginPath(); ctx.moveTo(ox, oy+y); ctx.lineTo(ox+fieldW, oy+y); ctx.stroke(); }
+
+    // Organisms
+    organisms.forEach(o => {
+        const sp = species[o.species];
+        ctx.beginPath(); ctx.arc(ox+o.x, oy+o.y, 4, 0, Math.PI*2);
+        ctx.fillStyle = sp.color; ctx.fill();
+        ctx.strokeStyle = 'rgba(0,0,0,0.2)'; ctx.lineWidth = 0.5; ctx.stroke();
+    });
+
+    if (mode === 'quadrat') {
+        // Placed quadrats
+        quadrats.forEach(q => {
+            ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2;
+            ctx.strokeRect(ox+q.x, oy+q.y, quadSize, quadSize);
+            ctx.fillStyle = 'rgba(24,53,180,0.1)'; ctx.fillRect(ox+q.x, oy+q.y, quadSize, quadSize);
+            ctx.fillStyle = '#1835b4'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center';
+            ctx.fillText(q.count, ox+q.x+quadSize/2, oy+q.y+quadSize/2+4);
+        });
+        // Highlight coord
+        if (highlightCoord) {
+            ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2; ctx.setLineDash([5,5]);
+            ctx.strokeRect(ox+highlightCoord.x, oy+highlightCoord.y, quadSize, quadSize);
+            ctx.setLineDash([]);
+            ctx.fillStyle = '#e74c3c'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+            ctx.fillText('Click to place', ox+highlightCoord.x+quadSize/2, oy+highlightCoord.y-5);
+        }
+    } else if (mode === 'belt') {
+        if (beltY !== null) {
+            ctx.fillStyle = 'rgba(24,53,180,0.12)';
+            ctx.fillRect(ox, oy+beltY, fieldW, quadSize);
+            ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2;
+            ctx.strokeRect(ox, oy+beltY, fieldW, quadSize);
+            // count in belt segments
+            for (let bx = 0; bx < fieldW; bx += quadSize) {
+                const cnt = organisms.filter(o => o.x>=bx && o.x<bx+quadSize && o.y>=beltY && o.y<beltY+quadSize).length;
+                ctx.fillStyle = '#1835b4'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+                ctx.fillText(cnt, ox+bx+quadSize/2, oy+beltY+quadSize/2+4);
+                ctx.strokeStyle = 'rgba(24,53,180,0.3)'; ctx.lineWidth = 1;
+                ctx.strokeRect(ox+bx, oy+beltY, quadSize, quadSize);
+            }
+            ctx.fillStyle = '#1835b4'; ctx.font = '9px system-ui'; ctx.textAlign = 'left';
+            ctx.fillText('Belt Transect', ox+5, oy+beltY-5);
+        }
+    } else if (mode === 'line') {
+        if (lineY !== null) {
+            ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(ox, oy+lineY); ctx.lineTo(ox+fieldW, oy+lineY); ctx.stroke();
+            // Mark organisms touching the line
+            const touching = organisms.filter(o => Math.abs(o.y - lineY) < 6);
+            touching.forEach(o => {
+                ctx.beginPath(); ctx.arc(ox+o.x, oy+o.y, 7, 0, Math.PI*2);
+                ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2; ctx.stroke();
+            });
+            ctx.fillStyle = '#e74c3c'; ctx.font = '9px system-ui'; ctx.textAlign = 'left';
+            ctx.fillText('Line Transect (' + touching.length + ' organisms on line)', ox+5, oy+lineY-8);
+        }
+    }
+
+    // Axes labels
+    ctx.fillStyle = '#4a5568'; ctx.font = '8px system-ui'; ctx.textAlign = 'center';
+    for (let x = 0; x <= fieldW; x += gridSize*2) { ctx.fillText(x, ox+x, oy+fieldH+12); }
+    ctx.save(); ctx.translate(6, oy+fieldH/2); ctx.rotate(-Math.PI/2);
+    ctx.fillText('Distance (arbitrary units)', 0, 0); ctx.restore();
+}
+
+function genCoords() {
+    if (mode === 'quadrat') {
+        const rx = Math.floor(Math.random()*(fieldW-quadSize));
+        const ry = Math.floor(Math.random()*(fieldH-quadSize));
+        highlightCoord = { x: rx, y: ry };
+    } else if (mode === 'belt') {
+        beltY = Math.floor(Math.random()*(fieldH-quadSize));
+        // auto-count
+        const segs = Math.floor(fieldW/quadSize);
+        quadrats = [];
+        for (let bx = 0; bx < fieldW; bx += quadSize) {
+            const cnt = organisms.filter(o => o.x>=bx && o.x<bx+quadSize && o.y>=beltY && o.y<beltY+quadSize).length;
+            quadrats.push({ x: bx, y: beltY, count: cnt });
+        }
+        updateStats();
+    } else if (mode === 'line') {
+        lineY = Math.floor(Math.random()*fieldH);
+    }
+    draw();
+}
+
+canvas.addEventListener('click', function(e) {
+    if (mode !== 'quadrat' || !highlightCoord) return;
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width/rect.width) - ox;
+    const my = (e.clientY - rect.top) * (canvas.height/rect.height) - oy;
+    // Place at highlighted coord
+    const q = highlightCoord;
+    q.count = organisms.filter(o => o.x >= q.x && o.x < q.x+quadSize && o.y >= q.y && o.y < q.y+quadSize).length;
+    quadrats.push(q);
+    highlightCoord = null;
+    updateStats(); draw();
+});
+
+function updateStats() {
+    const n = quadrats.length;
+    const total = quadrats.reduce((s,q) => s+q.count, 0);
+    document.getElementById('qCount').textContent = n;
+    document.getElementById('tCount').textContent = total;
+    if (n > 0) {
+        const mean = (total / n).toFixed(1);
+        const est = Math.round((total / n) * (totalArea / quadArea));
+        document.getElementById('meanQ').textContent = mean;
+        document.getElementById('estPop').textContent = est;
+    } else {
+        document.getElementById('meanQ').textContent = '-';
+        document.getElementById('estPop').textContent = '-';
+    }
+}
+
+function resetAll() {
+    quadrats = []; highlightCoord = null; beltY = null; lineY = null;
+    generateOrganisms(); updateStats(); draw();
+}
+
+generateOrganisms(); draw();
+</script>
+</body>
+</html>

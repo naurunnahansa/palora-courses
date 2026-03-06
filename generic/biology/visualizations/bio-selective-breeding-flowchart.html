@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selective Breeding Process</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .controls { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px; }
+        .btn { padding: 6px 18px; border: none; border-radius: 4px; font-size: 0.78rem; font-weight: 700; cursor: pointer; background: #1835b4; color: #fff; transition: background 0.2s; }
+        .btn:hover { background: #122a8a; }
+        .btn:disabled { background: #b0b8d0; cursor: default; }
+        .btn-reset { background: #e8ecf8; color: #1835b4; border: 1.5px solid #1835b4; }
+        .btn-reset:hover { background: #d4d8e5; }
+        .warning { background: #fff3cd; border: 1px solid #f0d86e; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #856404; text-align: center; margin-top: 4px; }
+        .warning strong { color: #6b4f00; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Selective Breeding Process</h1>
+    <div class="desc">Choosing organisms with desirable traits to breed, improving the trait over many generations</div>
+    <canvas id="c" width="560" height="440"></canvas>
+    <div class="controls">
+        <button class="btn" id="btnNext" onclick="nextGen()">Next Generation &rarr;</button>
+        <button class="btn btn-reset" onclick="reset()">Reset</button>
+    </div>
+    <div class="warning">
+        <strong>Warning:</strong> Selective breeding reduces genetic variation within a population. This can lead to inbreeding, accumulation of genetic disorders, and reduced ability to adapt to environmental changes.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const btnNext = document.getElementById('btnNext');
+
+const generations = [
+    { yields: [15, 20, 25, 18, 30, 12], selected: [2, 4] },
+    { yields: [22, 28, 26, 24, 32, 20], selected: [1, 4] },
+    { yields: [28, 32, 30, 29, 35, 27], selected: [] },
+];
+
+let currentGen = 0;
+let showSelected = false;
+let phase = 0; // 0=show pop, 1=show selected, 2=show breed arrow
+
+function avg(arr) { return arr.reduce((a, b) => a + b, 0) / arr.length; }
+
+function drawCow(x, y, w, h, val, highlighted, selected) {
+    // Simple cow icon
+    ctx.fillStyle = highlighted ? '#d4edda' : '#f8f9fc';
+    ctx.strokeStyle = highlighted ? '#28a745' : '#d4d8e5';
+    ctx.lineWidth = highlighted ? 2 : 1;
+    ctx.beginPath();
+    const r = 5;
+    ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.fill(); ctx.stroke();
+
+    // Cow body
+    const cx = x + w / 2, cy = y + h * 0.4;
+    ctx.fillStyle = '#f5f5f5';
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, 16, 10, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#999';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    // Spots
+    ctx.fillStyle = '#333';
+    ctx.beginPath(); ctx.arc(cx - 6, cy - 2, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx + 8, cy + 2, 3, 0, Math.PI * 2); ctx.fill();
+    // Head
+    ctx.fillStyle = '#f5f5f5';
+    ctx.beginPath(); ctx.arc(cx + 18, cy - 4, 6, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#999'; ctx.stroke();
+    // Legs
+    ctx.strokeStyle = '#999'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(cx - 10, cy + 10); ctx.lineTo(cx - 10, cy + 18); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx - 3, cy + 10); ctx.lineTo(cx - 3, cy + 18); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx + 5, cy + 10); ctx.lineTo(cx + 5, cy + 18); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx + 12, cy + 10); ctx.lineTo(cx + 12, cy + 18); ctx.stroke();
+
+    // Yield value
+    ctx.font = 'bold 12px system-ui';
+    ctx.fillStyle = highlighted ? '#28a745' : '#1a2747';
+    ctx.textAlign = 'center';
+    ctx.fillText(val + 'L', cx, y + h - 6);
+
+    if (selected) {
+        ctx.fillStyle = '#28a745';
+        ctx.font = 'bold 9px system-ui';
+        ctx.fillText('SELECTED', cx, y - 4);
+    }
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const gensToShow = currentGen + 1;
+    const startY = 15;
+    const rowH = 115;
+
+    for (let g = 0; g < gensToShow && g < generations.length; g++) {
+        const gen = generations[g];
+        const y = startY + g * rowH;
+        const isCurrentGen = g === currentGen;
+
+        // Generation label
+        ctx.font = 'bold 12px system-ui';
+        ctx.fillStyle = '#1835b4';
+        ctx.textAlign = 'left';
+        ctx.fillText(`Generation ${g + 1}`, 10, y + 12);
+
+        // Average
+        const a = avg(gen.yields);
+        ctx.font = '10px system-ui';
+        ctx.fillStyle = '#4a5568';
+        ctx.fillText(`Avg: ${a.toFixed(1)}L`, 10, y + 26);
+
+        // Cows
+        const cowW = 72, cowH = 68;
+        const gap = 8;
+        const totalW = gen.yields.length * (cowW + gap) - gap;
+        const startX = (canvas.width - totalW) / 2;
+
+        for (let i = 0; i < gen.yields.length; i++) {
+            const cx = startX + i * (cowW + gap);
+            const isSelected = isCurrentGen && phase >= 1 && gen.selected.includes(i);
+            const isHighlighted = isSelected;
+            drawCow(cx, y + 18, cowW, cowH, gen.yields[i], isHighlighted, isSelected);
+        }
+
+        // Arrow to next gen
+        if (g < currentGen) {
+            ctx.strokeStyle = '#1835b4';
+            ctx.fillStyle = '#1835b4';
+            ctx.lineWidth = 2;
+            const arrowX = canvas.width / 2;
+            const arrowTop = y + 18 + cowH + 4;
+            const arrowBot = y + rowH + 14;
+            ctx.beginPath(); ctx.moveTo(arrowX, arrowTop); ctx.lineTo(arrowX, arrowBot); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(arrowX, arrowBot + 4); ctx.lineTo(arrowX - 5, arrowBot); ctx.lineTo(arrowX + 5, arrowBot); ctx.fill();
+            ctx.font = '9px system-ui';
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#1835b4';
+            ctx.fillText('Breed selected', arrowX + 8, (arrowTop + arrowBot) / 2 + 3);
+        }
+    }
+
+    // Bar chart at bottom
+    const chartY = 355, chartH = 60, chartW = 300;
+    const chartX = (canvas.width - chartW) / 2;
+    ctx.font = 'bold 10px system-ui';
+    ctx.fillStyle = '#1a2747';
+    ctx.textAlign = 'center';
+    ctx.fillText('Average Milk Yield per Generation', canvas.width / 2, chartY);
+
+    const maxVal = 40;
+    const barW = 60;
+    const barGap = 30;
+    const barsStartX = chartX + (chartW - (3 * barW + 2 * barGap)) / 2;
+
+    for (let g = 0; g < 3; g++) {
+        const bx = barsStartX + g * (barW + barGap);
+        const a = avg(generations[g].yields);
+        const bh = (a / maxVal) * chartH;
+        const by = chartY + 8 + (chartH - bh);
+
+        if (g <= currentGen) {
+            ctx.fillStyle = g === currentGen ? '#1835b4' : '#7b8dc4';
+            ctx.fillRect(bx, by, barW, bh);
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 10px system-ui';
+            ctx.fillText(a.toFixed(1) + 'L', bx + barW / 2, by + bh / 2 + 4);
+        } else {
+            ctx.strokeStyle = '#d4d8e5';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.strokeRect(bx, chartY + 8, barW, chartH);
+            ctx.setLineDash([]);
+            ctx.fillStyle = '#ccc';
+            ctx.font = '10px system-ui';
+            ctx.fillText('?', bx + barW / 2, chartY + 8 + chartH / 2 + 4);
+        }
+
+        ctx.fillStyle = '#1a2747';
+        ctx.font = '9px system-ui';
+        ctx.fillText('Gen ' + (g + 1), bx + barW / 2, chartY + chartH + 20);
+    }
+
+    // Note
+    if (currentGen >= 2) {
+        ctx.font = 'italic 10px system-ui';
+        ctx.fillStyle = '#4a5568';
+        ctx.textAlign = 'center';
+        ctx.fillText('Repeated over MANY generations for continued improvement', canvas.width / 2, chartY + chartH + 35);
+    }
+}
+
+function nextGen() {
+    if (currentGen < 2 && phase === 0) {
+        phase = 1; // show selected
+        draw();
+        return;
+    }
+    if (phase === 1 && currentGen < 2) {
+        currentGen++;
+        phase = 0;
+        draw();
+        if (currentGen >= 2) {
+            btnNext.disabled = true;
+        }
+        return;
+    }
+}
+
+function reset() {
+    currentGen = 0;
+    phase = 0;
+    btnNext.disabled = false;
+    draw();
+}
+
+draw();
+</script>
+</body>
+</html>

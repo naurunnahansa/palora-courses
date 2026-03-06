@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Humid Layer Around a Leaf</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fcfcfe;
+    color: #1a2747;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  h1 { font-size: 1.5rem; color: #1835b4; margin-bottom: 8px; text-align: center; }
+  .subtitle { font-size: 0.9rem; color: #6b7a99; margin-bottom: 20px; text-align: center; max-width: 600px; line-height: 1.5; }
+  .toggle-container {
+    display: flex; gap: 8px; margin-bottom: 20px; align-items: center;
+  }
+  .toggle-label { font-size: 0.9rem; font-weight: 600; }
+  .toggle-label.active { color: #1835b4; }
+  .toggle-label.inactive { color: #aab; }
+  .toggle-track {
+    width: 56px; height: 28px; background: #d4d8e5; border-radius: 14px;
+    cursor: pointer; position: relative; transition: background 0.3s;
+  }
+  .toggle-track.on { background: #1835b4; }
+  .toggle-thumb {
+    width: 24px; height: 24px; background: #fff; border-radius: 50%;
+    position: absolute; top: 2px; left: 2px; transition: left 0.3s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+  .toggle-track.on .toggle-thumb { left: 30px; }
+  .diagrams-row {
+    display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;
+    width: 100%; max-width: 800px;
+  }
+  .diagram-panel {
+    flex: 1; min-width: 300px; max-width: 380px;
+    background: #e8ecf8; border: 1.5px solid #d4d8e5; border-radius: 14px;
+    padding: 16px; display: flex; flex-direction: column; align-items: center;
+    transition: box-shadow 0.3s;
+  }
+  .diagram-panel.highlighted { box-shadow: 0 0 0 2.5px #1835b4; }
+  .panel-title { font-weight: 700; font-size: 1rem; color: #1835b4; margin-bottom: 4px; }
+  .panel-label { font-size: 0.82rem; color: #6b7a99; margin-bottom: 10px; text-align: center; }
+  svg { max-width: 100%; height: auto; }
+  .note { margin-top: 18px; font-size: 0.8rem; color: #6b7a99; text-align: center; max-width: 600px; line-height: 1.5; }
+  canvas { border-radius: 8px; max-width: 100%; }
+</style>
+</head>
+<body>
+
+<h1>Humid Layer Around a Leaf</h1>
+<p class="subtitle">Wind affects the layer of water vapour (humid layer) around a leaf, which in turn affects the rate of transpiration.</p>
+
+<div class="toggle-container">
+  <span class="toggle-label" id="labelStill">Still air</span>
+  <div class="toggle-track" id="toggleTrack" onclick="toggleWind()">
+    <div class="toggle-thumb"></div>
+  </div>
+  <span class="toggle-label inactive" id="labelWindy">Windy</span>
+</div>
+
+<div class="diagrams-row">
+  <!-- Still air panel -->
+  <div class="diagram-panel highlighted" id="panelStill">
+    <div class="panel-title">Still Air</div>
+    <div class="panel-label">Thick humid layer = slow transpiration</div>
+    <canvas id="canvasStill" width="340" height="300"></canvas>
+  </div>
+
+  <!-- Windy panel -->
+  <div class="diagram-panel" id="panelWindy">
+    <div class="panel-title">Windy Conditions</div>
+    <div class="panel-label">Wind removes humid layer = fast transpiration</div>
+    <canvas id="canvasWindy" width="340" height="300"></canvas>
+  </div>
+</div>
+
+<p class="note">In still air, water vapour accumulates around the leaf, forming a thick humid layer. This reduces the diffusion gradient, slowing transpiration. Wind blows this layer away, maintaining a steep diffusion gradient and increasing the rate of water loss through stomata.</p>
+
+<script>
+const canvasStill = document.getElementById('canvasStill');
+const ctxStill = canvasStill.getContext('2d');
+const canvasWindy = document.getElementById('canvasWindy');
+const ctxWindy = canvasWindy.getContext('2d');
+
+let isWindy = false;
+const toggleTrack = document.getElementById('toggleTrack');
+const labelStill = document.getElementById('labelStill');
+const labelWindy = document.getElementById('labelWindy');
+const panelStill = document.getElementById('panelStill');
+const panelWindy = document.getElementById('panelWindy');
+
+function toggleWind() {
+  isWindy = !isWindy;
+  toggleTrack.classList.toggle('on', isWindy);
+  labelStill.classList.toggle('active', !isWindy);
+  labelStill.classList.toggle('inactive', isWindy);
+  labelWindy.classList.toggle('active', isWindy);
+  labelWindy.classList.toggle('inactive', !isWindy);
+  panelStill.classList.toggle('highlighted', !isWindy);
+  panelWindy.classList.toggle('highlighted', isWindy);
+}
+
+// Particle systems
+class Particle {
+  constructor(x, y, type) {
+    this.x = x; this.y = y; this.type = type;
+    this.vx = 0; this.vy = 0;
+    this.life = 1; this.maxLife = 120 + Math.random() * 120;
+    this.age = 0; this.size = 2 + Math.random() * 2;
+  }
+}
+
+let stillParticles = [];
+let windyParticles = [];
+let frame = 0;
+
+function drawLeaf(ctx, w, h) {
+  const lx = w / 2, ly = h * 0.42;
+  const lw = w * 0.7, lh = 18;
+
+  // Leaf body
+  ctx.fillStyle = '#4a9e4a';
+  ctx.beginPath();
+  ctx.ellipse(lx, ly, lw / 2, lh, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#3a7d3a';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Midrib
+  ctx.strokeStyle = '#3a7d3a';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(lx - lw / 2 + 10, ly);
+  ctx.lineTo(lx + lw / 2 - 10, ly);
+  ctx.stroke();
+
+  // Stomata (bottom)
+  ctx.fillStyle = '#2a6a2a';
+  for (let i = -3; i <= 3; i++) {
+    const sx = lx + i * 22;
+    const sy = ly + lh - 4;
+    ctx.beginPath();
+    ctx.ellipse(sx, sy, 4, 2, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Cross-section label
+  ctx.fillStyle = '#1a2747';
+  ctx.font = '600 10px system-ui';
+  ctx.textAlign = 'center';
+  ctx.fillText('Leaf cross-section', lx, ly - lh - 8);
+
+  // Stomata label
+  ctx.fillStyle = '#6b7a99';
+  ctx.font = '9px system-ui';
+  ctx.fillText('Stomata', lx, ly + lh + 14);
+}
+
+function spawnStillParticle() {
+  const lx = 170, ly = 126;
+  const x = lx + (Math.random() - 0.5) * 200;
+  const y = ly + 16;
+  const p = new Particle(x, y, 'still');
+  p.vx = (Math.random() - 0.5) * 0.3;
+  p.vy = -0.15 - Math.random() * 0.3;
+  stillParticles.push(p);
+}
+
+function spawnWindyParticle() {
+  const lx = 170, ly = 126;
+  const x = lx + (Math.random() - 0.5) * 200;
+  const y = ly + 16;
+  const p = new Particle(x, y, 'windy');
+  p.vx = 1.5 + Math.random() * 1.5;
+  p.vy = -0.5 - Math.random() * 1.0;
+  windyParticles.push(p);
+}
+
+function drawHumidLayer(ctx, w, thick) {
+  const lx = w / 2, ly = 126;
+  const grad = ctx.createRadialGradient(lx, ly, 10, lx, ly, thick ? 100 : 30);
+  grad.addColorStop(0, 'rgba(140,196,240,0.35)');
+  grad.addColorStop(0.5, 'rgba(140,196,240,0.15)');
+  grad.addColorStop(1, 'rgba(140,196,240,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, ly - (thick ? 80 : 25), w, thick ? 160 : 50);
+}
+
+function drawWindArrows(ctx, w, h) {
+  ctx.strokeStyle = '#6b7a99';
+  ctx.fillStyle = '#6b7a99';
+  ctx.lineWidth = 2;
+  const arrows = [[30, 80], [20, 126], [30, 170], [25, 50], [35, 200]];
+  arrows.forEach(([x, y]) => {
+    const ox = (frame * 1.5 + x) % (w + 40) - 20;
+    ctx.beginPath();
+    ctx.moveTo(ox, y);
+    ctx.lineTo(ox + 35, y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(ox + 35, y);
+    ctx.lineTo(ox + 28, y - 4);
+    ctx.lineTo(ox + 28, y + 4);
+    ctx.closePath();
+    ctx.fill();
+  });
+  ctx.font = '600 11px system-ui';
+  ctx.fillStyle = '#1835b4';
+  ctx.textAlign = 'left';
+  ctx.fillText('Wind', 8, 40);
+}
+
+function drawTranspirationArrows(ctx, w, big) {
+  const lx = w / 2, ly = 126;
+  ctx.strokeStyle = '#5a9ec8';
+  ctx.lineWidth = big ? 2 : 1;
+  const count = big ? 7 : 4;
+  const spread = big ? 28 : 22;
+  for (let i = 0; i < count; i++) {
+    const x = lx + (i - (count - 1) / 2) * spread;
+    const len = big ? 30 : 15;
+    ctx.beginPath();
+    ctx.moveTo(x, ly + 20);
+    ctx.lineTo(x, ly + 20 + len);
+    ctx.stroke();
+    // arrowhead
+    ctx.beginPath();
+    ctx.moveTo(x, ly + 20 + len);
+    ctx.lineTo(x - 3, ly + 16 + len);
+    ctx.lineTo(x + 3, ly + 16 + len);
+    ctx.closePath();
+    ctx.fillStyle = '#5a9ec8';
+    ctx.fill();
+  }
+  ctx.font = '600 10px system-ui';
+  ctx.fillStyle = '#5a9ec8';
+  ctx.textAlign = 'center';
+  ctx.fillText(big ? 'Fast water loss' : 'Slow water loss', lx, ly + (big ? 70 : 50));
+}
+
+function updateParticles(particles, max) {
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.age++;
+    p.life = 1 - p.age / p.maxLife;
+    if (p.life <= 0 || p.x > 360 || p.x < -10 || p.y < -10 || p.y > 310) {
+      particles.splice(i, 1);
+    }
+  }
+  while (particles.length < max) {
+    if (max > 20) spawnWindyParticle(); else spawnStillParticle();
+  }
+}
+
+function drawParticles(ctx, particles) {
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(140,196,240,${p.life * 0.5})`;
+    ctx.fill();
+  });
+}
+
+function animate() {
+  frame++;
+
+  // Still air canvas
+  ctxStill.clearRect(0, 0, 340, 300);
+  drawHumidLayer(ctxStill, 340, true);
+  drawLeaf(ctxStill, 340, 300);
+
+  if (frame % 6 === 0) spawnStillParticle();
+  updateParticles(stillParticles, 15);
+  drawParticles(ctxStill, stillParticles);
+  drawTranspirationArrows(ctxStill, 340, false);
+
+  // Label
+  ctxStill.fillStyle = 'rgba(140,196,240,0.6)';
+  ctxStill.font = '600 10px system-ui';
+  ctxStill.textAlign = 'center';
+  ctxStill.fillText('Thick humid layer', 170, 78);
+
+  // Windy canvas
+  ctxWindy.clearRect(0, 0, 340, 300);
+  drawHumidLayer(ctxWindy, 340, false);
+  drawLeaf(ctxWindy, 340, 300);
+  drawWindArrows(ctxWindy, 340, 300);
+
+  if (frame % 3 === 0) spawnWindyParticle();
+  updateParticles(windyParticles, 30);
+  drawParticles(ctxWindy, windyParticles);
+  drawTranspirationArrows(ctxWindy, 340, true);
+
+  // Label
+  ctxWindy.fillStyle = 'rgba(140,196,240,0.6)';
+  ctxWindy.font = '600 10px system-ui';
+  ctxWindy.textAlign = 'center';
+  ctxWindy.fillText('Thin humid layer', 170, 110);
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enzyme-Substrate Interaction</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; background: #fff; }
+        .controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 8px; flex-wrap: wrap; }
+        .btn { padding: 6px 16px; border: 2px solid #1835b4; border-radius: 5px; background: #fff; color: #1835b4; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn.active, .btn:hover { background: #1835b4; color: #fff; }
+        .btn-play { background: #1835b4; color: #fff; border-color: #1835b4; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; margin-top: 8px; }
+        .note strong { color: #1835b4; }
+        .step-label { text-align: center; font-size: 0.8rem; font-weight: 600; color: #1835b4; margin-bottom: 4px; min-height: 1.2em; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Enzyme-Substrate Interaction</h1>
+    <div class="desc">E + S &rarr; ES complex &rarr; E + P</div>
+    <div class="controls">
+        <button class="btn active" id="btnLock" onclick="setModel('lock')">Lock and Key</button>
+        <button class="btn" id="btnInduced" onclick="setModel('induced')">Induced Fit</button>
+        <button class="btn btn-play" id="btnPlay" onclick="togglePlay()">&#9654; Play</button>
+        <button class="btn" onclick="resetAnim()">Reset</button>
+    </div>
+    <div class="step-label" id="stepLabel"></div>
+    <canvas id="c" width="520" height="300"></canvas>
+    <div class="note">
+        <strong>Lock and Key:</strong> Active site has a fixed, complementary shape to the substrate.<br>
+        <strong>Induced Fit:</strong> Active site moulds around the substrate upon binding, providing a tighter fit.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let model = 'lock';
+let playing = false;
+let progress = 0; // 0 to 1
+let animId = null;
+const steps = ['Substrate approaches enzyme', 'Substrate binds to active site', 'Reaction occurs in ES complex', 'Products released, enzyme unchanged'];
+
+function setModel(m) {
+    model = m;
+    document.getElementById('btnLock').classList.toggle('active', m === 'lock');
+    document.getElementById('btnInduced').classList.toggle('active', m === 'induced');
+    resetAnim();
+}
+
+function togglePlay() {
+    if (playing) { playing = false; cancelAnimationFrame(animId); document.getElementById('btnPlay').innerHTML = '&#9654; Play'; return; }
+    if (progress >= 1) progress = 0;
+    playing = true;
+    document.getElementById('btnPlay').innerHTML = '&#9646;&#9646; Pause';
+    animate();
+}
+
+function resetAnim() {
+    playing = false; progress = 0;
+    cancelAnimationFrame(animId);
+    document.getElementById('btnPlay').innerHTML = '&#9654; Play';
+    draw();
+}
+
+function animate() {
+    if (!playing) return;
+    progress += 0.003;
+    if (progress >= 1) { progress = 1; playing = false; document.getElementById('btnPlay').innerHTML = '&#9654; Play'; }
+    draw();
+    if (playing) animId = requestAnimationFrame(animate);
+}
+
+function drawEnzyme(cx, cy, size, deform) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.beginPath();
+    // Pac-man-like shape with notch (active site)
+    const r = size;
+    const notchW = r * 0.4;
+    const notchD = r * 0.5 + deform * r * 0.15;
+    ctx.moveTo(0, -r);
+    ctx.bezierCurveTo(r * 0.8, -r, r, -r * 0.5, r, 0);
+    ctx.bezierCurveTo(r, r * 0.5, r * 0.8, r, 0, r);
+    ctx.bezierCurveTo(-r * 0.8, r, -r, r * 0.5, -r, 0);
+    ctx.bezierCurveTo(-r, -r * 0.3, -r * 0.8, -r * 0.6, -r * 0.3, -r * 0.6);
+    // Notch (active site) on top-left
+    ctx.lineTo(-notchW, -r * 0.6);
+    ctx.lineTo(-notchW * 0.6, -r * 0.6 + notchD);
+    if (model === 'lock') {
+        ctx.lineTo(notchW * 0.6, -r * 0.6 + notchD);
+    } else {
+        // Induced fit: wider notch when deformed
+        ctx.bezierCurveTo(-notchW * 0.2, -r * 0.6 + notchD + deform * 8, notchW * 0.2, -r * 0.6 + notchD + deform * 8, notchW * 0.6, -r * 0.6 + notchD);
+    }
+    ctx.lineTo(notchW, -r * 0.6);
+    ctx.lineTo(0, -r);
+    ctx.closePath();
+    ctx.fillStyle = '#5b8def';
+    ctx.fill();
+    ctx.strokeStyle = '#1835b4';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+}
+
+function drawSubstrate(cx, cy, size, squeeze) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    const w = size * 0.7;
+    const h = size * 0.45 - squeeze * 2;
+    ctx.beginPath();
+    ctx.moveTo(-w, -h);
+    ctx.lineTo(w, -h);
+    ctx.lineTo(w * 0.7, 0);
+    ctx.lineTo(w, h);
+    ctx.lineTo(-w, h);
+    ctx.lineTo(-w * 0.7, 0);
+    ctx.closePath();
+    ctx.fillStyle = '#f9c846';
+    ctx.fill();
+    ctx.strokeStyle = '#c8940a';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+}
+
+function drawProduct(cx, cy, size, idx) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.beginPath();
+    if (idx === 0) {
+        ctx.moveTo(-size * 0.3, -size * 0.2);
+        ctx.lineTo(size * 0.3, -size * 0.2);
+        ctx.lineTo(size * 0.2, size * 0.2);
+        ctx.lineTo(-size * 0.2, size * 0.2);
+    } else {
+        ctx.arc(0, 0, size * 0.2, 0, Math.PI * 2);
+    }
+    ctx.closePath();
+    ctx.fillStyle = idx === 0 ? '#6ddb8f' : '#db6d8f';
+    ctx.fill();
+    ctx.strokeStyle = idx === 0 ? '#2d8a4e' : '#8a2d4e';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2 + 10;
+    const enzymeSize = 55;
+    const enzymeX = cx - 20;
+    const enzymeY = cy;
+
+    // Determine phase
+    let phase, phaseP;
+    if (progress < 0.25) { phase = 0; phaseP = progress / 0.25; }
+    else if (progress < 0.5) { phase = 1; phaseP = (progress - 0.25) / 0.25; }
+    else if (progress < 0.75) { phase = 2; phaseP = (progress - 0.5) / 0.25; }
+    else { phase = 3; phaseP = (progress - 0.75) / 0.25; }
+
+    document.getElementById('stepLabel').textContent = steps[phase];
+
+    // Title label
+    ctx.fillStyle = '#1835b4';
+    ctx.font = 'bold 12px system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText(model === 'lock' ? 'Lock and Key Model' : 'Induced Fit Model', cx, 20);
+
+    const notchX = enzymeX;
+    const notchY = enzymeY - enzymeSize * 0.6 + enzymeSize * 0.5 * 0.5;
+
+    if (phase === 0) {
+        // Substrate approaching
+        const startX = enzymeX + 160;
+        const startY = enzymeY - 120;
+        const sx = startX + (notchX - startX) * phaseP;
+        const sy = startY + (notchY - startY - 30) * phaseP;
+        drawEnzyme(enzymeX, enzymeY, enzymeSize, 0);
+        drawSubstrate(sx, sy, enzymeSize, 0);
+        ctx.fillStyle = '#4a5568'; ctx.font = '10px system-ui'; ctx.textAlign = 'left';
+        ctx.fillText('Enzyme', enzymeX + enzymeSize + 8, enzymeY);
+        ctx.fillText('Substrate', sx + 25, sy);
+        ctx.fillText('Active site', enzymeX - enzymeSize * 0.3 - 55, enzymeY - enzymeSize * 0.3);
+        ctx.strokeStyle = '#4a5568'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(enzymeX - enzymeSize * 0.3 - 2, enzymeY - enzymeSize * 0.35);
+        ctx.lineTo(notchX - 5, notchY - 10); ctx.stroke();
+    } else if (phase === 1) {
+        // Binding
+        const deform = model === 'induced' ? phaseP : 0;
+        drawEnzyme(enzymeX, enzymeY, enzymeSize, deform);
+        const subY = notchY - 30 + 20 * phaseP;
+        drawSubstrate(notchX, subY, enzymeSize, model === 'induced' ? phaseP * 3 : 0);
+        ctx.fillStyle = '#4a5568'; ctx.font = '10px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('ES Complex forming', cx, canvas.height - 30);
+        if (model === 'induced' && phaseP > 0.3) {
+            ctx.fillStyle = '#c8940a'; ctx.font = '9px system-ui';
+            ctx.fillText('Active site changes shape', enzymeX + enzymeSize + 10, enzymeY - enzymeSize * 0.5);
+        }
+    } else if (phase === 2) {
+        // Reaction
+        const deform = model === 'induced' ? 1 : 0;
+        drawEnzyme(enzymeX, enzymeY, enzymeSize, deform);
+        drawSubstrate(notchX, notchY - 10, enzymeSize, model === 'induced' ? 3 : 0);
+        // Glow effect
+        ctx.save();
+        ctx.globalAlpha = 0.3 + 0.3 * Math.sin(phaseP * Math.PI * 4);
+        ctx.beginPath(); ctx.arc(notchX, notchY - 5, 20, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffd700'; ctx.fill();
+        ctx.restore();
+        ctx.fillStyle = '#1835b4'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+        ctx.fillText('Catalysis occurring', cx, canvas.height - 30);
+    } else {
+        // Products leaving
+        const deform = model === 'induced' ? Math.max(0, 1 - phaseP * 2) : 0;
+        drawEnzyme(enzymeX, enzymeY, enzymeSize, deform);
+        const p1x = notchX - 30 - phaseP * 80;
+        const p1y = notchY - 30 - phaseP * 50;
+        const p2x = notchX + 30 + phaseP * 80;
+        const p2y = notchY - 10 - phaseP * 60;
+        drawProduct(p1x, p1y, enzymeSize, 0);
+        drawProduct(p2x, p2y, enzymeSize, 1);
+        ctx.fillStyle = '#4a5568'; ctx.font = '10px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('Product 1', p1x, p1y + 25);
+        ctx.fillText('Product 2', p2x, p2y + 25);
+        ctx.fillStyle = '#1835b4'; ctx.font = 'bold 10px system-ui';
+        ctx.fillText('Enzyme unchanged and reusable', cx, canvas.height - 20);
+    }
+
+    // Progress bar
+    ctx.fillStyle = '#e8ecf8';
+    ctx.fillRect(20, canvas.height - 12, canvas.width - 40, 6);
+    ctx.fillStyle = '#1835b4';
+    ctx.fillRect(20, canvas.height - 12, (canvas.width - 40) * progress, 6);
+}
+
+function resize() {
+    const w = Math.min(520, window.innerWidth - 24);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 300 / 520) + 'px';
+}
+window.addEventListener('resize', resize);
+resize();
+draw();
+</script>
+</body>
+</html>

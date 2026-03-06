@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Levels of Organisation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fcfcfe;
+    color: #1a2747;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  h1 {
+    font-size: 1.5rem;
+    color: #1835b4;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .subtitle {
+    font-size: 0.9rem;
+    color: #6b7a99;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .pyramid-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+  }
+  svg { width: 100%; height: auto; }
+  .level-group { cursor: pointer; }
+  .level-shape {
+    transition: filter 0.2s, transform 0.2s;
+  }
+  .level-group:hover .level-shape {
+    filter: brightness(1.15);
+  }
+  .level-text {
+    font-family: system-ui, -apple-system, sans-serif;
+    fill: #fff;
+    font-weight: 600;
+    pointer-events: none;
+  }
+  .tooltip-box {
+    position: absolute;
+    background: #e8ecf8;
+    border: 1.5px solid #d4d8e5;
+    border-radius: 10px;
+    padding: 14px 18px;
+    max-width: 280px;
+    box-shadow: 0 4px 16px rgba(24,53,180,0.12);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s;
+    z-index: 10;
+  }
+  .tooltip-box.visible { opacity: 1; }
+  .tooltip-box h3 {
+    font-size: 0.95rem;
+    color: #1835b4;
+    margin-bottom: 4px;
+  }
+  .tooltip-box p {
+    font-size: 0.82rem;
+    color: #1a2747;
+    line-height: 1.45;
+    margin: 2px 0;
+  }
+  .tooltip-box .example {
+    font-style: italic;
+    color: #5060a0;
+  }
+  .arrow-label {
+    font-family: system-ui, -apple-system, sans-serif;
+    fill: #8090b8;
+    font-size: 11px;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+<h1>Levels of Organisation</h1>
+<p class="subtitle">Hover over each level to learn more. From simplest to most complex.</p>
+<div class="pyramid-container" id="container">
+  <svg viewBox="0 0 600 420" id="pyramidSvg"></svg>
+  <div class="tooltip-box" id="tooltip">
+    <h3 id="ttTitle"></h3>
+    <p id="ttDef"></p>
+    <p class="example" id="ttEx"></p>
+  </div>
+</div>
+<script>
+const levels = [
+  { name: "Organism", def: "A complete living thing", example: "e.g. Human", color: "#0e1f6e" },
+  { name: "Organ System", def: "Group of organs working together", example: "e.g. Circulatory system", color: "#152a8c" },
+  { name: "Organ", def: "Group of tissues working together", example: "e.g. Heart", color: "#1835b4" },
+  { name: "Tissue", def: "Group of similar cells working together", example: "e.g. Blood tissue", color: "#3050cc" },
+  { name: "Cell", def: "The basic unit of life", example: "e.g. Red blood cell", color: "#4a6ee0" }
+];
+
+const svg = document.getElementById("pyramidSvg");
+const tooltip = document.getElementById("tooltip");
+const ttTitle = document.getElementById("ttTitle");
+const ttDef = document.getElementById("ttDef");
+const ttEx = document.getElementById("ttEx");
+const container = document.getElementById("container");
+
+const W = 600, rowH = 68, gap = 8, startY = 20;
+const minW = 160, maxW = 520;
+const cx = W / 2;
+
+levels.forEach((lv, i) => {
+  const y = startY + i * (rowH + gap);
+  const frac = i / (levels.length - 1);
+  const topW = minW + frac * (maxW - minW);
+  const botW = (i < levels.length - 1) ? minW + ((i + 1) / (levels.length - 1)) * (maxW - minW) : topW + 40;
+
+  const x1 = cx - botW / 2, x2 = cx + botW / 2;
+  const x3 = cx + topW / 2, x4 = cx - topW / 2;
+  const points = `${x1},${y + rowH} ${x2},${y + rowH} ${x3},${y} ${x4},${y}`;
+
+  const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  g.classList.add("level-group");
+  g.setAttribute("data-index", i);
+
+  const poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+  poly.setAttribute("points", points);
+  poly.setAttribute("fill", lv.color);
+  poly.setAttribute("rx", "4");
+  poly.classList.add("level-shape");
+  poly.style.opacity = "0";
+  poly.style.transform = `translateY(30px)`;
+  poly.style.transition = `opacity 0.5s ${i * 0.15 + 0.1}s, transform 0.5s ${i * 0.15 + 0.1}s`;
+
+  const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  text.setAttribute("x", cx);
+  text.setAttribute("y", y + rowH / 2 + 5);
+  text.setAttribute("text-anchor", "middle");
+  text.setAttribute("font-size", i === 0 ? "15" : "16");
+  text.classList.add("level-text");
+  text.textContent = lv.name;
+  text.style.opacity = "0";
+  text.style.transition = `opacity 0.4s ${i * 0.15 + 0.3}s`;
+
+  g.appendChild(poly);
+  g.appendChild(text);
+  svg.appendChild(g);
+
+  // Arrows between levels
+  if (i < levels.length - 1) {
+    const arrow = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    arrow.setAttribute("x", cx + topW / 2 + 18);
+    arrow.setAttribute("y", y + rowH + gap / 2 + 4);
+    arrow.setAttribute("text-anchor", "start");
+    arrow.classList.add("arrow-label");
+    arrow.textContent = "\u2191";
+    arrow.style.fontSize = "16px";
+    arrow.style.fill = "#a0b0d0";
+    svg.appendChild(arrow);
+  }
+
+  g.addEventListener("mouseenter", (e) => {
+    ttTitle.textContent = lv.name;
+    ttDef.textContent = lv.def;
+    ttEx.textContent = lv.example;
+    const rect = container.getBoundingClientRect();
+    const gRect = g.getBoundingClientRect();
+    tooltip.style.left = (gRect.left - rect.left + gRect.width / 2 - 130) + "px";
+    tooltip.style.top = (gRect.top - rect.top - 80) + "px";
+    tooltip.classList.add("visible");
+  });
+  g.addEventListener("mouseleave", () => {
+    tooltip.classList.remove("visible");
+  });
+});
+
+// Animate in on load (bottom-up)
+requestAnimationFrame(() => {
+  svg.querySelectorAll(".level-shape").forEach(p => {
+    p.style.opacity = "1";
+    p.style.transform = "translateY(0)";
+  });
+  svg.querySelectorAll(".level-text").forEach(t => {
+    t.style.opacity = "1";
+  });
+});
+
+// Direction label
+const dirLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+dirLabel.setAttribute("x", 48);
+dirLabel.setAttribute("y", 230);
+dirLabel.setAttribute("text-anchor", "middle");
+dirLabel.setAttribute("transform", "rotate(-90, 48, 230)");
+dirLabel.classList.add("arrow-label");
+dirLabel.style.fontSize = "12px";
+dirLabel.textContent = "Increasing complexity \u2192";
+svg.appendChild(dirLabel);
+</script>
+</body>
+</html>

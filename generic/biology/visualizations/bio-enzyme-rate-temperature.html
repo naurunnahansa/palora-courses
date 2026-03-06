@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Effect of Temperature on Enzyme Activity</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; cursor: crosshair; }
+        .slider-group { border: 1px solid #d4d8e5; border-radius: 5px; padding: 8px 10px; margin-bottom: 8px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; }
+        .slider-label .val { color: #1835b4; }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #d4d8e5; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #1835b4; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Effect of Temperature on Enzyme Activity</h1>
+    <div class="desc">Bell-shaped curve showing optimum temperature and denaturation</div>
+    <canvas id="graphCanvas" width="530" height="320"></canvas>
+    <div class="slider-group">
+        <div class="slider-label"><span>Optimum Temperature</span><span class="val" id="optVal">37&#176;C</span></div>
+        <input type="range" id="optSlider" min="20" max="50" value="37" oninput="update()">
+        <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:#4a5568;margin-top:2px;">
+            <span>20&#176;C (cold-adapted)</span><span>50&#176;C (thermophilic)</span>
+        </div>
+    </div>
+    <div class="note">
+        <strong>Key concept:</strong> Below the optimum, increasing temperature provides more kinetic energy for enzyme-substrate collisions. Above the optimum, the enzyme's active site denatures and the rate drops sharply.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('graphCanvas');
+const ctx = canvas.getContext('2d');
+let hoverX = null;
+let optimum = 37;
+
+const pad = { top: 30, right: 20, bottom: 50, left: 55 };
+const xMin = 0, xMax = 80, yMax = 10;
+
+function enzymeRate(t) {
+    if (t <= optimum) {
+        return 10 * Math.exp(-0.003 * Math.pow(t - optimum, 2));
+    }
+    return 10 * Math.exp(-0.012 * Math.pow(t - optimum, 2));
+}
+
+function xToCanvas(x) { return pad.left + ((x - xMin) / (xMax - xMin)) * (canvas.width - pad.left - pad.right); }
+function yToCanvas(y) { return pad.top + ((yMax - y) / yMax) * (canvas.height - pad.top - pad.bottom); }
+function canvasToX(cx) { return xMin + ((cx - pad.left) / (canvas.width - pad.left - pad.right)) * (xMax - xMin); }
+
+function update() {
+    optimum = parseInt(document.getElementById('optSlider').value);
+    document.getElementById('optVal').innerHTML = optimum + '\u00b0C';
+    draw();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const gw = canvas.width - pad.left - pad.right;
+    const gh = canvas.height - pad.top - pad.bottom;
+
+    // Shaded regions
+    // Before peak: light green (increasing kinetic energy)
+    ctx.beginPath();
+    ctx.moveTo(xToCanvas(xMin), yToCanvas(0));
+    for (let t = xMin; t <= optimum; t += 0.5) {
+        ctx.lineTo(xToCanvas(t), yToCanvas(enzymeRate(t)));
+    }
+    ctx.lineTo(xToCanvas(optimum), yToCanvas(0));
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(39,174,96,0.1)';
+    ctx.fill();
+
+    // After peak: light red (denaturation)
+    ctx.beginPath();
+    ctx.moveTo(xToCanvas(optimum), yToCanvas(0));
+    ctx.lineTo(xToCanvas(optimum), yToCanvas(enzymeRate(optimum)));
+    for (let t = optimum; t <= xMax; t += 0.5) {
+        ctx.lineTo(xToCanvas(t), yToCanvas(enzymeRate(t)));
+    }
+    ctx.lineTo(xToCanvas(xMax), yToCanvas(0));
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(231,76,60,0.1)';
+    ctx.fill();
+
+    // Axes
+    ctx.strokeStyle = '#1a2747'; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, canvas.height - pad.bottom);
+    ctx.lineTo(canvas.width - pad.right, canvas.height - pad.bottom);
+    ctx.stroke();
+
+    // Grid
+    ctx.fillStyle = '#4a5568'; ctx.font = '10px system-ui'; ctx.textAlign = 'center';
+    for (let x = 0; x <= xMax; x += 10) {
+        const cx = xToCanvas(x);
+        ctx.strokeStyle = '#e0e0e0'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+        ctx.fillText(x, cx, canvas.height - pad.bottom + 14);
+    }
+    ctx.textAlign = 'right';
+    for (let y = 0; y <= yMax; y += 2) {
+        const cy = yToCanvas(y);
+        ctx.strokeStyle = '#e0e0e0'; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(pad.left, cy); ctx.lineTo(canvas.width - pad.right, cy); ctx.stroke();
+        ctx.fillText(y, pad.left - 6, cy + 3);
+    }
+
+    // Axis labels
+    ctx.fillStyle = '#1a2747'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Temperature (\u00b0C)', canvas.width / 2, canvas.height - 5);
+    ctx.save(); ctx.translate(14, canvas.height / 2); ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Rate of Reaction (arbitrary units)', 0, 0); ctx.restore();
+
+    // Optimum line
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.moveTo(xToCanvas(optimum), pad.top);
+    ctx.lineTo(xToCanvas(optimum), canvas.height - pad.bottom);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#1835b4'; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Optimum ~' + optimum + '\u00b0C', xToCanvas(optimum), pad.top - 8);
+
+    // Zone labels
+    ctx.font = '9px system-ui';
+    ctx.fillStyle = '#1e8449';
+    ctx.fillText('Increasing kinetic energy', xToCanvas(optimum / 2), yToCanvas(1.5));
+    ctx.fillStyle = '#c0392b';
+    const denX = Math.min(optimum + (xMax - optimum) * 0.45, xMax - 8);
+    ctx.fillText('Denaturation', xToCanvas(denX), yToCanvas(1.5));
+
+    // Curve
+    ctx.strokeStyle = '#1835b4'; ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for (let t = xMin; t <= xMax; t += 0.5) {
+        const cx = xToCanvas(t), cy = yToCanvas(enzymeRate(t));
+        t === xMin ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+    }
+    ctx.stroke();
+
+    // Hover
+    if (hoverX !== null && hoverX >= xMin && hoverX <= xMax) {
+        const t = hoverX;
+        const val = enzymeRate(t);
+        const cx = xToCanvas(t);
+
+        ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(cx, pad.top); ctx.lineTo(cx, canvas.height - pad.bottom); ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.beginPath(); ctx.arc(cx, yToCanvas(val), 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#1835b4'; ctx.fill();
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+
+        const lines = [`Temp: ${t.toFixed(1)}\u00b0C`, `Rate: ${val.toFixed(2)}`];
+        ctx.font = '10px system-ui';
+        const tw = Math.max(...lines.map(l => ctx.measureText(l).width)) + 16;
+        const th = lines.length * 15 + 10;
+        let bx = cx + 12;
+        if (bx + tw > canvas.width - pad.right) bx = cx - tw - 12;
+        ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.strokeStyle = '#d4d8e5'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.roundRect(bx, pad.top + 10, tw, th, 4); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#1a2747'; ctx.textAlign = 'left';
+        lines.forEach((l, i) => ctx.fillText(l, bx + 8, pad.top + 24 + i * 15));
+    }
+}
+
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+    hoverX = canvasToX(mx);
+    if (hoverX < xMin || hoverX > xMax) hoverX = null;
+    draw();
+});
+canvas.addEventListener('mouseleave', () => { hoverX = null; draw(); });
+
+function resize() {
+    const w = Math.min(530, window.innerWidth - 24);
+    canvas.style.width = w + 'px';
+    canvas.style.height = (w * 320 / 530) + 'px';
+}
+window.addEventListener('resize', resize);
+resize();
+draw();
+</script>
+</body>
+</html>

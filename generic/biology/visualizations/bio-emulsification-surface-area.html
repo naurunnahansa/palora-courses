@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emulsification & Surface Area</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #fcfcfe; padding: 10px 12px; color: #1a2747; }
+        .container { max-width: 100%; margin: 0 auto; }
+        h1 { font-size: 1.0rem; color: #1835b4; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .desc { text-align: center; background: #e8ecf8; border-radius: 5px; padding: 6px; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: #1835b4; }
+        canvas { display: block; margin: 0 auto 8px; border: 1px solid #d4d8e5; border-radius: 5px; }
+        .controls { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+        .controls label { font-size: 0.78rem; font-weight: 600; color: #1a2747; }
+        .controls input[type=range] { width: 180px; accent-color: #1835b4; }
+        .controls .val { font-size: 0.78rem; font-weight: 700; color: #1835b4; min-width: 30px; }
+        .note { background: #e8ecf8; border-radius: 5px; padding: 8px; font-size: 0.72rem; color: #4a5568; text-align: center; }
+        .note strong { color: #1835b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Emulsification &amp; Surface Area</h1>
+    <div class="desc">Bile salts break large fat globules into smaller droplets, vastly increasing surface area for lipase</div>
+    <canvas id="c" width="560" height="340"></canvas>
+    <div class="controls">
+        <label for="slider">Number of droplets:</label>
+        <input type="range" id="slider" min="5" max="50" value="20">
+        <span class="val" id="numVal">20</span>
+    </div>
+    <div class="note">
+        <strong>Key idea:</strong> Total fat volume stays the same, but many small droplets have a much greater combined surface area than one large droplet. This allows lipase enzymes to digest fats faster.
+    </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const slider = document.getElementById('slider');
+const numVal = document.getElementById('numVal');
+
+let numDroplets = 20;
+let animProgress = 1;
+let animTarget = 1;
+let dropletPositions = [];
+let animFrame = null;
+
+function generatePositions(n) {
+    const cx = 400, cy = 130, spread = 90;
+    const pts = [];
+    for (let i = 0; i < n; i++) {
+        const angle = (i / n) * Math.PI * 2 + Math.random() * 0.5;
+        const r = 20 + Math.random() * spread;
+        pts.push({ x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r });
+    }
+    return pts;
+}
+
+dropletPositions = generatePositions(numDroplets);
+
+function calcSurfaceArea(radius) { return 4 * Math.PI * radius * radius; }
+function calcVolume(radius) { return (4 / 3) * Math.PI * radius * radius * radius; }
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const bigR = 55;
+    const bigVol = calcVolume(bigR);
+    const smallR = Math.pow(bigVol / numDroplets * 3 / (4 * Math.PI), 1/3);
+    const bigSA = calcSurfaceArea(bigR);
+    const totalSmallSA = numDroplets * calcSurfaceArea(smallR);
+    const ratio = totalSmallSA / bigSA;
+
+    // Before label
+    ctx.font = 'bold 13px system-ui';
+    ctx.fillStyle = '#1835b4';
+    ctx.textAlign = 'center';
+    ctx.fillText('BEFORE', 120, 22);
+
+    // Arrow
+    const arrowY = 130;
+    ctx.strokeStyle = '#1835b4';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(195, arrowY); ctx.lineTo(255, arrowY); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(250, arrowY - 6); ctx.lineTo(258, arrowY); ctx.lineTo(250, arrowY + 6); ctx.fill();
+    ctx.font = 'bold 10px system-ui';
+    ctx.fillStyle = '#1835b4';
+    ctx.fillText('Bile salts', 225, arrowY - 10);
+
+    // After label
+    ctx.font = 'bold 13px system-ui';
+    ctx.fillText('AFTER', 400, 22);
+
+    // Big fat globule
+    const t = animProgress;
+    const bigScale = 1 - t * 0.95;
+    ctx.beginPath();
+    ctx.arc(120, 130, bigR * Math.max(bigScale, 0.05), 0, Math.PI * 2);
+    const grad1 = ctx.createRadialGradient(110, 118, 5, 120, 130, bigR * Math.max(bigScale, 0.05));
+    grad1.addColorStop(0, '#fff4c2');
+    grad1.addColorStop(1, '#e6c84a');
+    ctx.fillStyle = grad1;
+    ctx.fill();
+    ctx.strokeStyle = '#c9a820';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Small droplets
+    if (t > 0) {
+        const alpha = Math.min(t * 2, 1);
+        ctx.globalAlpha = alpha;
+        for (let i = 0; i < numDroplets; i++) {
+            const p = dropletPositions[i];
+            if (!p) continue;
+            const dx = p.x - 400, dy = p.y - 130;
+            const px = 400 + dx * t, py = 130 + dy * t;
+            const sr = smallR * t;
+            ctx.beginPath();
+            ctx.arc(px, py, Math.max(sr, 1), 0, Math.PI * 2);
+            const grad2 = ctx.createRadialGradient(px - sr * 0.2, py - sr * 0.2, 0.5, px, py, sr);
+            grad2.addColorStop(0, '#fff4c2');
+            grad2.addColorStop(1, '#e6c84a');
+            ctx.fillStyle = grad2;
+            ctx.fill();
+            ctx.strokeStyle = '#c9a820';
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+    }
+
+    // Surface area labels
+    ctx.font = '11px system-ui';
+    ctx.fillStyle = '#4a5568';
+    ctx.textAlign = 'center';
+    ctx.fillText(`SA = ${bigSA.toFixed(0)} units\u00B2`, 120, 210);
+    ctx.fillText(`Total SA = ${totalSmallSA.toFixed(0)} units\u00B2`, 400, 210);
+
+    // Bar chart comparison
+    const barY = 240, barH = 60, barMaxW = 200;
+    const maxSA = totalSmallSA;
+    const bar1W = (bigSA / maxSA) * barMaxW;
+    const bar2W = barMaxW;
+
+    ctx.font = 'bold 11px system-ui';
+    ctx.fillStyle = '#1a2747';
+    ctx.textAlign = 'left';
+    ctx.fillText('Surface Area Comparison', 80, barY - 5);
+
+    // Bar 1
+    ctx.fillStyle = '#e6c84a';
+    ctx.fillRect(165, barY + 5, bar1W, 20);
+    ctx.strokeStyle = '#c9a820';
+    ctx.strokeRect(165, barY + 5, bar1W, 20);
+    ctx.fillStyle = '#1a2747';
+    ctx.font = '10px system-ui';
+    ctx.textAlign = 'right';
+    ctx.fillText('1 large droplet', 160, barY + 19);
+
+    // Bar 2
+    ctx.fillStyle = '#f0d86e';
+    ctx.fillRect(165, barY + 35, bar2W * t, 20);
+    ctx.strokeStyle = '#c9a820';
+    ctx.strokeRect(165, barY + 35, bar2W * t, 20);
+    ctx.fillStyle = '#1a2747';
+    ctx.textAlign = 'right';
+    ctx.fillText(`${numDroplets} small droplets`, 160, barY + 49);
+
+    // Ratio
+    ctx.font = 'bold 12px system-ui';
+    ctx.fillStyle = '#1835b4';
+    ctx.textAlign = 'left';
+    ctx.fillText(`${ratio.toFixed(1)}\u00D7 more surface area`, 375, barY + 49);
+}
+
+function animate() {
+    if (Math.abs(animProgress - animTarget) > 0.01) {
+        animProgress += (animTarget - animProgress) * 0.08;
+        draw();
+        animFrame = requestAnimationFrame(animate);
+    } else {
+        animProgress = animTarget;
+        draw();
+    }
+}
+
+slider.addEventListener('input', () => {
+    numDroplets = parseInt(slider.value);
+    numVal.textContent = numDroplets;
+    dropletPositions = generatePositions(numDroplets);
+    animProgress = 0;
+    animTarget = 1;
+    if (animFrame) cancelAnimationFrame(animFrame);
+    animate();
+});
+
+draw();
+</script>
+</body>
+</html>
