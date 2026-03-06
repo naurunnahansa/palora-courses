@@ -1,5 +1,2197 @@
 {
   "title": "The Sine Rule",
-  "content": "# The Sine Rule\n\n## Learning Objectives\nBy the end of this lesson, you should be able to:\n- State the Sine Rule for finding sides and angles\n- Recognise when to use the Sine Rule instead of SOHCAHTOA\n- Use the Sine Rule to find an unknown side\n- Use the Sine Rule to find an unknown angle\n- Understand the ambiguous case of the Sine Rule\n\n## Introduction\n\nSOHCAHTOA only works in right-angled triangles. But what about triangles that do **not** have a right angle? The **Sine Rule** is a powerful formula that works in **any** triangle — it connects sides with their opposite angles. Surveyors use it to measure inaccessible distances, and navigators use it to plot courses. It is one of the two essential tools for non-right-angled trigonometry.\n\n> **Tier:** This is a **Higher tier** topic.\n\n---\n\n## Key Concepts\n\n### The Sine Rule\n\nIn any triangle with sides $a$, $b$, $c$ opposite angles $A$, $B$, $C$:\n\n**For finding sides:**\n$$\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}$$\n\n**For finding angles:**\n$$\\frac{\\sin A}{a} = \\frac{\\sin B}{b} = \\frac{\\sin C}{c}$$\n\n> **Tip:** Use the first form when finding a side, and the second form when finding an angle.\n\n### When to Use the Sine Rule\n\nUse the Sine Rule when you know:\n- **Two angles and one side** (AAS or ASA), or\n- **Two sides and a non-included angle** (SSA)\n\nYou need a **matching pair**: an angle and the side opposite it.\n\n### The Ambiguous Case\n\nWhen given two sides and a non-included angle (SSA), there can sometimes be **two** possible triangles. This is called the **ambiguous case** of the Sine Rule. It occurs when:\n- You are finding an angle\n- The side opposite the known angle is **shorter** than the other known side\n- The result gives $\\sin B < 1$ with two possible angles: $B$ and $180° - B$\n\n---\n\n## Worked Examples\n\n### Example 1: Finding a Side\n**Question:** In triangle $ABC$, $A = 40°$, $B = 75°$, and $a = 8$ cm. Find side $b$.\n\n**Solution:**\n$$\\begin{aligned} \\frac{a}{\\sin A} &= \\frac{b}{\\sin B} \\\\ \\frac{8}{\\sin 40°} &= \\frac{b}{\\sin 75°} \\\\ \\frac{8}{0.6428} &= \\frac{b}{0.9659} \\\\ b &= \\frac{8 \\times 0.9659}{0.6428} \\\\ b &= 12.0 \\text{ cm (1 d.p.)} \\end{aligned}$$\n\n**Answer:** Side $b = \\mathbf{12.0}$ **cm**.\n\n---\n\n### Example 2: Finding Another Side\n**Question:** In triangle $PQR$, $P = 55°$, $R = 48°$, and $p = 10$ cm. Find side $r$.\n\n**Solution:**\n$$\\begin{aligned} \\frac{p}{\\sin P} &= \\frac{r}{\\sin R} \\\\ \\frac{10}{\\sin 55°} &= \\frac{r}{\\sin 48°} \\\\ r &= \\frac{10 \\times \\sin 48°}{\\sin 55°} \\\\ r &= \\frac{10 \\times 0.7431}{0.8192} \\\\ r &= 9.1 \\text{ cm (1 d.p.)} \\end{aligned}$$\n\n**Answer:** Side $r = \\mathbf{9.1}$ **cm**.\n\n---\n\n### Example 3: Finding an Angle\n**Question:** In triangle $ABC$, $a = 12$ cm, $b = 9$ cm, and $A = 65°$. Find angle $B$.\n\n**Solution:**\n$$\\begin{aligned} \\frac{\\sin A}{a} &= \\frac{\\sin B}{b} \\\\ \\frac{\\sin 65°}{12} &= \\frac{\\sin B}{9} \\\\ \\sin B &= \\frac{9 \\times \\sin 65°}{12} \\\\ \\sin B &= \\frac{9 \\times 0.9063}{12} \\\\ \\sin B &= 0.6797 \\\\ B &= \\sin^{-1}(0.6797) \\\\ B &= 42.8° \\text{ (1 d.p.)} \\end{aligned}$$\n\n**Answer:** Angle $B = \\mathbf{42.8°}$.\n\n---\n\n### Example 4: The Ambiguous Case\n**Question:** In triangle $ABC$, $a = 8$ cm, $b = 11$ cm, and $A = 35°$. Find the two possible values of angle $B$.\n\n**Solution:**\n$$\\begin{aligned} \\frac{\\sin B}{b} &= \\frac{\\sin A}{a} \\\\ \\sin B &= \\frac{11 \\times \\sin 35°}{8} \\\\ \\sin B &= \\frac{11 \\times 0.5736}{8} \\\\ \\sin B &= 0.7887 \\end{aligned}$$\n\nSince $\\sin B = 0.7887$:\n- $B_1 = \\sin^{-1}(0.7887) = 52.1°$\n- $B_2 = 180° - 52.1° = 127.9°$\n\nCheck both are valid: $A + B_1 = 35° + 52.1° = 87.1° < 180°$ ✓ and $A + B_2 = 35° + 127.9° = 162.9° < 180°$ ✓\n\n**Answer:** $B = \\mathbf{52.1°}$ or $B = \\mathbf{127.9°}$.\n\n---\n\n## Common Mistakes\n\n| Mistake | Why It's Wrong | Correct Approach |\n|---------|---------------|------------------|\n| Using the Sine Rule without a matching pair | You need an angle and its opposite side | Identify the pair first: angle A with side a |\n| Forgetting the ambiguous case | When finding an angle from SSA, there may be two solutions | Check if $180° - \\theta$ also gives a valid triangle |\n| Using the wrong form of the rule | Using $\\frac{a}{\\sin A}$ when finding an angle makes it harder | Use $\\frac{\\sin A}{a}$ when finding angles |\n| Not finding the third angle first when needed | Sometimes you need $C = 180° - A - B$ to use the rule | Calculate all known angles before applying the rule |\n| Calculator in radians | Getting incorrect sine values | Ensure degree mode |\n\n---\n\n## Practice Questions\n\n### Higher Tier\n\n1. In triangle $ABC$, $A = 50°$, $B = 70°$, and $a = 10$ cm. Find $b$. (1 d.p.)\n\n2. In triangle $ABC$, $A = 35°$, $C = 80°$, and $c = 15$ cm. Find $a$. (1 d.p.)\n\n3. In triangle $PQR$, $p = 14$ cm, $q = 10$ cm, and $P = 72°$. Find angle $Q$. (1 d.p.)\n\n4. In triangle $ABC$, $A = 40°$, $B = 60°$, and $c = 20$ cm. Find all three sides. (1 d.p.)\n\n5. In triangle $XYZ$, $x = 7$ cm, $y = 9$ cm, and $X = 30°$. Find the two possible values of angle $Y$.\n\n6. A triangular field has angles of 55° and 70° at two corners. The side between these corners is 120 m. Find the lengths of the other two sides. (1 d.p.)\n\n7. In triangle $ABC$, $a = 5\\sqrt{2}$ cm, $A = 45°$, and $B = 30°$. Find $b$ in exact form.\n\n8. Two ships leave port at the same time. Ship A sails on a bearing of 050° at 12 km/h. Ship B sails on a bearing of 120° at 15 km/h. After 2 hours, find the angle at the port in the triangle formed.\n\n9. In triangle $ABC$, $b = 8$ cm, $c = 6$ cm, and $B = 100°$. Find angle $C$. (1 d.p.)\n\n10. A surveyor measures the following: from point A, the angle to a tree at C is 40°. From point B (50 m from A), the angle to C is 65°. Points A and B are in a straight line with the angle $ABC = 65°$. Find the distance $AC$. (1 d.p.)\n\n11. Show that in any triangle, $\\frac{a}{b} = \\frac{\\sin A}{\\sin B}$.\n\n12. In triangle $ABC$, prove that the area can be written as $\\frac{a^2 \\sin B \\sin C}{2 \\sin A}$.\n\n---\n\n## Answers\n\n1. $b = \\frac{10 \\sin 70°}{\\sin 50°} = \\frac{10 \\times 0.9397}{0.7660} = 12.3$ cm\n\n2. $B = 180° - 35° - 80° = 65°$. $a = \\frac{15 \\sin 35°}{\\sin 80°} = \\frac{15 \\times 0.5736}{0.9848} = 8.7$ cm\n\n3. $\\sin Q = \\frac{10 \\sin 72°}{14} = \\frac{9.511}{14} = 0.6793$. $Q = 42.8°$\n\n4. $C = 180° - 40° - 60° = 80°$. $a = \\frac{20 \\sin 40°}{\\sin 80°} = 13.1$ cm. $b = \\frac{20 \\sin 60°}{\\sin 80°} = 17.6$ cm.\n\n5. $\\sin Y = \\frac{9 \\sin 30°}{7} = \\frac{4.5}{7} = 0.6429$. $Y = 40.0°$ or $Y = 140.0°$.\n\n6. Third angle $= 180° - 55° - 70° = 55°$. $a = \\frac{120 \\sin 55°}{\\sin 55°} = 120.0$ m. $b = \\frac{120 \\sin 70°}{\\sin 55°} = 137.7$ m.\n\n7. $b = \\frac{5\\sqrt{2} \\sin 30°}{\\sin 45°} = \\frac{5\\sqrt{2} \\times \\frac{1}{2}}{\\frac{\\sqrt{2}}{2}} = \\frac{\\frac{5\\sqrt{2}}{2}}{\\frac{\\sqrt{2}}{2}} = 5$ cm\n\n8. The angle at the port is $120° - 50° = 70°$.\n\n9. $\\sin C = \\frac{6 \\sin 100°}{8} = \\frac{5.909}{8} = 0.7386$. $C = 47.6°$. (Only one solution since $B > 90°$.)\n\n10. Angle at C $= 180° - 40° - 65° = 75°$. Wait — need to reconsider: angle $CAB = 40°$ and angle $ABC = 65°$, so angle $ACB = 180° - 40° - 65° = 75°$. $AC = \\frac{50 \\sin 65°}{\\sin 75°} = \\frac{45.32}{0.9659} = 46.9$ m.\n\n11. From $\\frac{a}{\\sin A} = \\frac{b}{\\sin B}$, cross-multiply: $a \\sin B = b \\sin A$, so $\\frac{a}{b} = \\frac{\\sin A}{\\sin B}$. ✓\n\n12. Area $= \\frac{1}{2}ab\\sin C$. By the sine rule, $b = \\frac{a\\sin B}{\\sin A}$. Substituting: Area $= \\frac{1}{2}a \\cdot \\frac{a\\sin B}{\\sin A} \\cdot \\sin C = \\frac{a^2 \\sin B \\sin C}{2\\sin A}$. ✓\n\n---\n\n## Exam Tips\n\n- **Write the Sine Rule** before substituting — the formula may be on the formula sheet, but writing it earns method marks.\n- **Choose the right form**: sides on top for finding sides, sines on top for finding angles.\n- **Check for the ambiguous case** whenever you are finding an angle from SSA.\n- **Find the third angle** using $A + B + C = 180°$ when you know two angles.\n- **Cross-multiply** to avoid complex fractions: from $\\frac{a}{\\sin A} = \\frac{b}{\\sin B}$, get $a \\sin B = b \\sin A$.\n\n---\n\n## Summary\n\n- The **Sine Rule**: $\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}$\n- Use it when you have a **matching pair** (angle + opposite side) and one other piece of information\n- Use for **AAS, ASA,** or **SSA** triangles\n- For finding angles, use the form $\\frac{\\sin A}{a} = \\frac{\\sin B}{b}$\n- Watch out for the **ambiguous case** when finding an angle from SSA\n- Always check angles sum to 180° in the triangle",
-  "order": 8
+  "order": 8,
+  "pageType": "lesson",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The Sine Rule"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Learning Objectives"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "By the end of this lesson, you should be able to:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "State the Sine Rule for finding sides and angles"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Recognise when to use the Sine Rule instead of SOHCAHTOA"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Use the Sine Rule to find an unknown side"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Use the Sine Rule to find an unknown angle"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Understand the ambiguous case of the Sine Rule"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "SOHCAHTOA only works in right-angled triangles. But what about triangles that do "
+          },
+          {
+            "type": "text",
+            "text": "not",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " have a right angle? The "
+          },
+          {
+            "type": "text",
+            "text": "Sine Rule",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is a powerful formula that works in "
+          },
+          {
+            "type": "text",
+            "text": "any",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " triangle — it connects sides with their opposite angles. Surveyors use it to measure inaccessible distances, and navigators use it to plot courses. It is one of the two essential tools for non-right-angled trigonometry."
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Tier:",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " This is a "
+              },
+              {
+                "type": "text",
+                "text": "Higher tier",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " topic."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "visualizationEmbed",
+        "attrs": {
+          "visualizationId": "math-sine-cosine-rules",
+          "displayMode": "expanded",
+          "customHeight": 500
+        }
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-sine-rule"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The Sine Rule"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In any triangle with sides $a$, $b$, $c$ opposite angles $A$, $B$, $C$:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "For finding sides:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "For finding angles:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$\\frac{\\sin A}{a} = \\frac{\\sin B}{b} = \\frac{\\sin C}{c}$$"
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Tip:",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " Use the first form when finding a side, and the second form when finding an angle."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "When to Use the Sine Rule"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Use the Sine Rule when you know:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Two angles and one side",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (AAS or ASA), or"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Two sides and a non-included angle",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (SSA)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "You need a "
+          },
+          {
+            "type": "text",
+            "text": "matching pair",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ": an angle and the side opposite it."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The Ambiguous Case"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "When given two sides and a non-included angle (SSA), there can sometimes be "
+          },
+          {
+            "type": "text",
+            "text": "two",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " possible triangles. This is called the "
+          },
+          {
+            "type": "text",
+            "text": "ambiguous case",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " of the Sine Rule. It occurs when:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "You are finding an angle"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The side opposite the known angle is "
+                  },
+                  {
+                    "type": "text",
+                    "text": "shorter",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " than the other known side"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The result gives $\\sin B < 1$ with two possible angles: $B$ and $180° - B$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-sine-rule-2"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1: Finding a Side"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " In triangle $ABC$, $A = 40°$, $B = 75°$, and $a = 8$ cm. Find side $b$."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$\\begin{aligned} \\frac{a}{\\sin A} &= \\frac{b}{\\sin B} \\\\ \\frac{8}{\\sin 40°} &= \\frac{b}{\\sin 75°} \\\\ \\frac{8}{0.6428} &= \\frac{b}{0.9659} \\\\ b &= \\frac{8 \\times 0.9659}{0.6428} \\\\ b &= 12.0 \\text{ cm (1 d.p.)} \\end{aligned}$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Side $b = \\mathbf{12.0}$ "
+          },
+          {
+            "type": "text",
+            "text": "cm",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2: Finding Another Side"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " In triangle $PQR$, $P = 55°$, $R = 48°$, and $p = 10$ cm. Find side $r$."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$\\begin{aligned} \\frac{p}{\\sin P} &= \\frac{r}{\\sin R} \\\\ \\frac{10}{\\sin 55°} &= \\frac{r}{\\sin 48°} \\\\ r &= \\frac{10 \\times \\sin 48°}{\\sin 55°} \\\\ r &= \\frac{10 \\times 0.7431}{0.8192} \\\\ r &= 9.1 \\text{ cm (1 d.p.)} \\end{aligned}$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Side $r = \\mathbf{9.1}$ "
+          },
+          {
+            "type": "text",
+            "text": "cm",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 3: Finding an Angle"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " In triangle $ABC$, $a = 12$ cm, $b = 9$ cm, and $A = 65°$. Find angle $B$."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$\\begin{aligned} \\frac{\\sin A}{a} &= \\frac{\\sin B}{b} \\\\ \\frac{\\sin 65°}{12} &= \\frac{\\sin B}{9} \\\\ \\sin B &= \\frac{9 \\times \\sin 65°}{12} \\\\ \\sin B &= \\frac{9 \\times 0.9063}{12} \\\\ \\sin B &= 0.6797 \\\\ B &= \\sin^{-1}(0.6797) \\\\ B &= 42.8° \\text{ (1 d.p.)} \\end{aligned}$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Angle $B = \\mathbf{42.8°}$."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 4: The Ambiguous Case"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " In triangle $ABC$, $a = 8$ cm, $b = 11$ cm, and $A = 35°$. Find the two possible values of angle $B$."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$\\begin{aligned} \\frac{\\sin B}{b} &= \\frac{\\sin A}{a} \\\\ \\sin B &= \\frac{11 \\times \\sin 35°}{8} \\\\ \\sin B &= \\frac{11 \\times 0.5736}{8} \\\\ \\sin B &= 0.7887 \\end{aligned}$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Since $\\sin B = 0.7887$:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$B_1 = \\sin^{-1}(0.7887) = 52.1°$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$B_2 = 180° - 52.1° = 127.9°$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Check both are valid: $A + B_1 = 35° + 52.1° = 87.1° < 180°$ ✓ and $A + B_2 = 35° + 127.9° = 162.9° < 180°$ ✓"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " $B = \\mathbf{52.1°}$ or $B = \\mathbf{127.9°}$."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Mistakes"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "content": [
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Mistake"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Why It's Wrong"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Correct Approach"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using the Sine Rule without a matching pair"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "You need an angle and its opposite side"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Identify the pair first: angle A with side a"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Forgetting the ambiguous case"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "When finding an angle from SSA, there may be two solutions"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Check if $180° - \\theta$ also gives a valid triangle"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using the wrong form of the rule"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using $\\frac{a}{\\sin A}$ when finding an angle makes it harder"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Use $\\frac{\\sin A}{a}$ when finding angles"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Not finding the third angle first when needed"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Sometimes you need $C = 180° - A - B$ to use the rule"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Calculate all known angles before applying the rule"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Calculator in radians"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Getting incorrect sine values"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Ensure degree mode"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Questions"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Higher Tier"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In triangle $ABC$, $A = 50°$, $B = 70°$, and $a = 10$ cm. Find $b$. (1 d.p.)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 2
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In triangle $ABC$, $A = 35°$, $C = 80°$, and $c = 15$ cm. Find $a$. (1 d.p.)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 3
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In triangle $PQR$, $p = 14$ cm, $q = 10$ cm, and $P = 72°$. Find angle $Q$. (1 d.p.)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 4
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In triangle $ABC$, $A = 40°$, $B = 60°$, and $c = 20$ cm. Find all three sides. (1 d.p.)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 5
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In triangle $XYZ$, $x = 7$ cm, $y = 9$ cm, and $X = 30°$. Find the two possible values of angle $Y$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 6
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A triangular field has angles of 55° and 70° at two corners. The side between these corners is 120 m. Find the lengths of the other two sides. (1 d.p.)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 7
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In triangle $ABC$, $a = 5\\sqrt{2}$ cm, $A = 45°$, and $B = 30°$. Find $b$ in exact form."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 8
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Two ships leave port at the same time. Ship A sails on a bearing of 050° at 12 km/h. Ship B sails on a bearing of 120° at 15 km/h. After 2 hours, find the angle at the port in the triangle formed."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 9
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In triangle $ABC$, $b = 8$ cm, $c = 6$ cm, and $B = 100°$. Find angle $C$. (1 d.p.)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 10
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A surveyor measures the following: from point A, the angle to a tree at C is 40°. From point B (50 m from A), the angle to C is 65°. Points A and B are in a straight line with the angle $ABC = 65°$. Find the distance $AC$. (1 d.p.)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 11
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Show that in any triangle, $\\frac{a}{b} = \\frac{\\sin A}{\\sin B}$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 12
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In triangle $ABC$, prove that the area can be written as $\\frac{a^2 \\sin B \\sin C}{2 \\sin A}$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answers"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$b = \\frac{10 \\sin 70°}{\\sin 50°} = \\frac{10 \\times 0.9397}{0.7660} = 12.3$ cm"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 2
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$B = 180° - 35° - 80° = 65°$. $a = \\frac{15 \\sin 35°}{\\sin 80°} = \\frac{15 \\times 0.5736}{0.9848} = 8.7$ cm"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 3
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$\\sin Q = \\frac{10 \\sin 72°}{14} = \\frac{9.511}{14} = 0.6793$. $Q = 42.8°$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 4
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$C = 180° - 40° - 60° = 80°$. $a = \\frac{20 \\sin 40°}{\\sin 80°} = 13.1$ cm. $b = \\frac{20 \\sin 60°}{\\sin 80°} = 17.6$ cm."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 5
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$\\sin Y = \\frac{9 \\sin 30°}{7} = \\frac{4.5}{7} = 0.6429$. $Y = 40.0°$ or $Y = 140.0°$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 6
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Third angle $= 180° - 55° - 70° = 55°$. $a = \\frac{120 \\sin 55°}{\\sin 55°} = 120.0$ m. $b = \\frac{120 \\sin 70°}{\\sin 55°} = 137.7$ m."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 7
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$b = \\frac{5\\sqrt{2} \\sin 30°}{\\sin 45°} = \\frac{5\\sqrt{2} \\times \\frac{1}{2}}{\\frac{\\sqrt{2}}{2}} = \\frac{\\frac{5\\sqrt{2}}{2}}{\\frac{\\sqrt{2}}{2}} = 5$ cm"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 8
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The angle at the port is $120° - 50° = 70°$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 9
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$\\sin C = \\frac{6 \\sin 100°}{8} = \\frac{5.909}{8} = 0.7386$. $C = 47.6°$. (Only one solution since $B > 90°$.)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 10
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Angle at C $= 180° - 40° - 65° = 75°$. Wait — need to reconsider: angle $CAB = 40°$ and angle $ABC = 65°$, so angle $ACB = 180° - 40° - 65° = 75°$. $AC = \\frac{50 \\sin 65°}{\\sin 75°} = \\frac{45.32}{0.9659} = 46.9$ m."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 11
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "From $\\frac{a}{\\sin A} = \\frac{b}{\\sin B}$, cross-multiply: $a \\sin B = b \\sin A$, so $\\frac{a}{b} = \\frac{\\sin A}{\\sin B}$. ✓"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 12
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Area $= \\frac{1}{2}ab\\sin C$. By the sine rule, $b = \\frac{a\\sin B}{\\sin A}$. Substituting: Area $= \\frac{1}{2}a \\cdot \\frac{a\\sin B}{\\sin A} \\cdot \\sin C = \\frac{a^2 \\sin B \\sin C}{2\\sin A}$. ✓"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Exam Tips"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Write the Sine Rule",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " before substituting — the formula may be on the formula sheet, but writing it earns method marks."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Choose the right form",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ": sides on top for finding sides, sines on top for finding angles."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Check for the ambiguous case",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " whenever you are finding an angle from SSA."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Find the third angle",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " using $A + B + C = 180°$ when you know two angles."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Cross-multiply",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " to avoid complex fractions: from $\\frac{a}{\\sin A} = \\frac{b}{\\sin B}$, get $a \\sin B = b \\sin A$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "quiz-sine-rule"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The "
+                  },
+                  {
+                    "type": "text",
+                    "text": "Sine Rule",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ": $\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Use it when you have a "
+                  },
+                  {
+                    "type": "text",
+                    "text": "matching pair",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (angle + opposite side) and one other piece of information"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Use for "
+                  },
+                  {
+                    "type": "text",
+                    "text": "AAS, ASA,",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " or "
+                  },
+                  {
+                    "type": "text",
+                    "text": "SSA",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " triangles"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "For finding angles, use the form $\\frac{\\sin A}{a} = \\frac{\\sin B}{b}$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Watch out for the "
+                  },
+                  {
+                    "type": "text",
+                    "text": "ambiguous case",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " when finding an angle from SSA"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Always check angles sum to 180° in the triangle"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

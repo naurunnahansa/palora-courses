@@ -1,0 +1,104 @@
+{
+  "id": "quiz-expanding-double-brackets",
+  "title": "Quiz: Expanding Double Brackets",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Expand $(x + 3)(x + 5)$.",
+      "options": [
+        {"id": "a", "text": "$x^2 + 8x + 15$"},
+        {"id": "b", "text": "$x^2 + 15x + 8$"},
+        {"id": "c", "text": "$x^2 + 8x + 8$"},
+        {"id": "d", "text": "$2x + 8$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Using FOIL: $x \\cdot x + x \\cdot 5 + 3 \\cdot x + 3 \\cdot 5 = x^2 + 5x + 3x + 15 = x^2 + 8x + 15$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Expand $(x - 4)(x + 2)$.",
+      "options": [
+        {"id": "a", "text": "$x^2 - 2x - 8$"},
+        {"id": "b", "text": "$x^2 + 2x - 8$"},
+        {"id": "c", "text": "$x^2 - 6x - 8$"},
+        {"id": "d", "text": "$x^2 - 2x + 8$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "$(x - 4)(x + 2) = x^2 + 2x - 4x - 8 = x^2 - 2x - 8$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Expand $(x - 3)^2$.",
+      "options": [
+        {"id": "a", "text": "$x^2 - 9$"},
+        {"id": "b", "text": "$x^2 + 9$"},
+        {"id": "c", "text": "$x^2 - 6x + 9$"},
+        {"id": "d", "text": "$x^2 - 3x + 9$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "$(x - 3)^2 = (x - 3)(x - 3) = x^2 - 3x - 3x + 9 = x^2 - 6x + 9$. A common error is writing $x^2 - 9$ (forgetting the middle term)."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Expand $(2x + 1)(3x - 4)$.",
+      "options": [
+        {"id": "a", "text": "$6x^2 - 5x - 4$"},
+        {"id": "b", "text": "$6x^2 + 5x - 4$"},
+        {"id": "c", "text": "$5x^2 - 5x - 4$"},
+        {"id": "d", "text": "$6x^2 - 8x - 4$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "$(2x + 1)(3x - 4) = 6x^2 - 8x + 3x - 4 = 6x^2 - 5x - 4$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Expand $(x + 7)(x - 7)$.",
+      "options": [
+        {"id": "a", "text": "$x^2 + 49$"},
+        {"id": "b", "text": "$x^2 - 14x - 49$"},
+        {"id": "c", "text": "$x^2 - 49$"},
+        {"id": "d", "text": "$x^2 + 14x - 49$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "This is the difference of two squares: $(x + a)(x - a) = x^2 - a^2$. So $(x + 7)(x - 7) = x^2 - 49$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Expand $(3x - 2)(x + 5)$.",
+      "options": [
+        {"id": "a", "text": "$3x^2 + 13x - 10$"},
+        {"id": "b", "text": "$3x^2 + 17x - 10$"},
+        {"id": "c", "text": "$3x^2 - 13x - 10$"},
+        {"id": "d", "text": "$3x^2 + 13x + 10$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "$(3x - 2)(x + 5) = 3x^2 + 15x - 2x - 10 = 3x^2 + 13x - 10$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the expanded form of $(x + a)(x + b)$?",
+      "options": [
+        {"id": "a", "text": "$x^2 + abx + ab$"},
+        {"id": "b", "text": "$x^2 + (a + b)x + ab$"},
+        {"id": "c", "text": "$x^2 + (a - b)x + ab$"},
+        {"id": "d", "text": "$x^2 + 2abx + a + b$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "$(x + a)(x + b) = x^2 + bx + ax + ab = x^2 + (a + b)x + ab$. The coefficient of $x$ is the sum of $a$ and $b$, and the constant is their product."
+    }
+  ]
+}

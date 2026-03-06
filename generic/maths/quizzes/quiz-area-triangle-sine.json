@@ -1,0 +1,104 @@
+{
+  "id": "quiz-area-triangle-sine",
+  "title": "Quiz: Area of Triangle using Sine",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The formula for the area of a triangle using sine is:",
+      "options": [
+        {"id": "a", "text": "$\\frac{1}{2}ab\\sin C$"},
+        {"id": "b", "text": "$ab\\sin C$"},
+        {"id": "c", "text": "$\\frac{1}{2}ab\\cos C$"},
+        {"id": "d", "text": "$a^2 + b^2 - 2ab\\cos C$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "The area of a triangle is $\\frac{1}{2}ab\\sin C$, where $a$ and $b$ are two sides and $C$ is the included angle."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A triangle has sides $8$ cm and $11$ cm with an included angle of $40°$. What is its area to $1$ decimal place?",
+      "options": [
+        {"id": "a", "text": "$44.0$ cm$^2$"},
+        {"id": "b", "text": "$28.3$ cm$^2$"},
+        {"id": "c", "text": "$56.5$ cm$^2$"},
+        {"id": "d", "text": "$33.7$ cm$^2$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Area $= \\frac{1}{2} \\times 8 \\times 11 \\times \\sin 40° = 44 \\times 0.6428 = 28.3$ cm$^2$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The angle used in the sine area formula must be:",
+      "options": [
+        {"id": "a", "text": "The largest angle"},
+        {"id": "b", "text": "Any angle in the triangle"},
+        {"id": "c", "text": "The included angle between the two known sides"},
+        {"id": "d", "text": "A right angle"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "The angle must be the included angle between the two sides being used in the formula."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "An equilateral triangle has side $6$ cm. What is its exact area?",
+      "options": [
+        {"id": "a", "text": "$9\\sqrt{3}$ cm$^2$"},
+        {"id": "b", "text": "$18$ cm$^2$"},
+        {"id": "c", "text": "$36\\sqrt{3}$ cm$^2$"},
+        {"id": "d", "text": "$18\\sqrt{3}$ cm$^2$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Area $= \\frac{1}{2}(6)(6)\\sin 60° = 18 \\times \\frac{\\sqrt{3}}{2} = 9\\sqrt{3}$ cm$^2$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A triangle has an area of $24$ cm$^2$. Two sides are $8$ cm and $10$ cm. What is the included angle to $1$ decimal place?",
+      "options": [
+        {"id": "a", "text": "$30.0°$"},
+        {"id": "b", "text": "$36.9°$"},
+        {"id": "c", "text": "$53.1°$"},
+        {"id": "d", "text": "$48.6°$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "$24 = \\frac{1}{2}(8)(10)\\sin C = 40\\sin C$. $\\sin C = 0.6$. $C = \\sin^{-1}(0.6) = 36.9°$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A parallelogram has sides $6$ cm and $10$ cm with an angle of $70°$ between them. What is its area to $1$ decimal place?",
+      "options": [
+        {"id": "a", "text": "$28.2$ cm$^2$"},
+        {"id": "b", "text": "$56.4$ cm$^2$"},
+        {"id": "c", "text": "$60.0$ cm$^2$"},
+        {"id": "d", "text": "$30.0$ cm$^2$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "A parallelogram can be split into two triangles, so area $= 6 \\times 10 \\times \\sin 70° = 60 \\times 0.9397 = 56.4$ cm$^2$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The maximum area of a triangle with two sides of $5$ cm and $8$ cm occurs when the included angle is:",
+      "options": [
+        {"id": "a", "text": "$45°$"},
+        {"id": "b", "text": "$60°$"},
+        {"id": "c", "text": "$90°$"},
+        {"id": "d", "text": "$180°$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "Area $= \\frac{1}{2}(5)(8)\\sin C$. Since $\\sin C$ is maximised when $C = 90°$ (where $\\sin 90° = 1$), the maximum area is $20$ cm$^2$."
+    }
+  ]
+}

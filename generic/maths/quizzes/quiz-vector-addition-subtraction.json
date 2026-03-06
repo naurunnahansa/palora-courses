@@ -1,0 +1,188 @@
+{
+  "id": "quiz-vector-addition-subtraction",
+  "title": "Quiz: Vector Addition and Subtraction",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $\\mathbf{a} = \\binom{3}{2}$ and $\\mathbf{b} = \\binom{-1}{4}$, what is $\\mathbf{a} + \\mathbf{b}$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\binom{2}{6}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\binom{4}{-2}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\binom{-3}{8}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\binom{2}{-2}$"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Add corresponding components: $3 + (-1) = 2$ and $2 + 4 = 6$, giving $\\binom{2}{6}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $\\mathbf{p} = \\binom{5}{-3}$ and $\\mathbf{q} = \\binom{2}{1}$, what is $\\mathbf{p} - \\mathbf{q}$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\binom{7}{-2}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\binom{3}{-4}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\binom{-3}{4}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\binom{3}{4}$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Subtract corresponding components: $5 - 2 = 3$ and $-3 - 1 = -4$, giving $\\binom{3}{-4}$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Geometrically, adding two vectors is modelled by:",
+      "options": [
+        {
+          "id": "a",
+          "text": "Placing them at right angles"
+        },
+        {
+          "id": "b",
+          "text": "Reflecting one in the other"
+        },
+        {
+          "id": "c",
+          "text": "Placing them end to end (nose to tail)"
+        },
+        {
+          "id": "d",
+          "text": "Doubling the first vector"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Vector addition is modelled by placing the second vector so its start (tail) meets the end (nose) of the first. The resultant goes from the start of the first to the end of the second."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $\\mathbf{a} + \\mathbf{b} = \\binom{0}{0}$, what is the relationship between $\\mathbf{a}$ and $\\mathbf{b}$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "They are equal"
+        },
+        {
+          "id": "b",
+          "text": "They are perpendicular"
+        },
+        {
+          "id": "c",
+          "text": "They are parallel but different lengths"
+        },
+        {
+          "id": "d",
+          "text": "$\\mathbf{b}$ is the negative of $\\mathbf{a}$"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "If $\\mathbf{a} + \\mathbf{b} = \\mathbf{0}$, then $\\mathbf{b} = -\\mathbf{a}$. The vectors have equal magnitude but opposite direction."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is $\\binom{4}{-1} + \\binom{-4}{1}$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\binom{8}{-2}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\binom{0}{0}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\binom{0}{-2}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\binom{-8}{2}$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Adding a vector to its negative gives the zero vector: $4 + (-4) = 0$ and $-1 + 1 = 0$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In the triangle $OAB$, $\\vec{OA} = \\mathbf{a}$ and $\\vec{OB} = \\mathbf{b}$. What is $\\vec{AB}$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\mathbf{a} + \\mathbf{b}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\mathbf{a} - \\mathbf{b}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\mathbf{b} - \\mathbf{a}$"
+        },
+        {
+          "id": "d",
+          "text": "$-\\mathbf{a} - \\mathbf{b}$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "To go from $A$ to $B$, travel back from $A$ to $O$ (which is $-\\mathbf{a}$) then from $O$ to $B$ (which is $\\mathbf{b}$): $\\vec{AB} = -\\mathbf{a} + \\mathbf{b} = \\mathbf{b} - \\mathbf{a}$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Is vector addition commutative? That is, does $\\mathbf{a} + \\mathbf{b} = \\mathbf{b} + \\mathbf{a}$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes, always"
+        },
+        {
+          "id": "b",
+          "text": "No, never"
+        },
+        {
+          "id": "c",
+          "text": "Only when the vectors are parallel"
+        },
+        {
+          "id": "d",
+          "text": "Only when the vectors have equal magnitude"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Vector addition is always commutative. The order does not matter: $\\mathbf{a} + \\mathbf{b} = \\mathbf{b} + \\mathbf{a}$ for all vectors."
+    }
+  ]
+}

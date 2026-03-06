@@ -1,0 +1,188 @@
+{
+  "id": "quiz-median-mode",
+  "title": "Quiz: Median and Mode",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the median of: $3, 8, 1, 6, 4, 9, 2$",
+      "options": [
+        {
+          "id": "a",
+          "text": "4"
+        },
+        {
+          "id": "b",
+          "text": "5"
+        },
+        {
+          "id": "c",
+          "text": "6"
+        },
+        {
+          "id": "d",
+          "text": "8"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Arrange in order: $1, 2, 3, 4, 6, 8, 9$. With 7 values, the median is the $\\frac{7+1}{2} = 4\\text{th}$ value, which is 4."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the median of: $5, 2, 9, 4, 7, 1$",
+      "options": [
+        {
+          "id": "a",
+          "text": "4"
+        },
+        {
+          "id": "b",
+          "text": "5.5"
+        },
+        {
+          "id": "c",
+          "text": "5"
+        },
+        {
+          "id": "d",
+          "text": "4.5"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Ordered: $1, 2, 4, 5, 7, 9$. With 6 values (even), median $= \\frac{4 + 5}{2} = 4.5$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The dataset $4, 7, 2, 9, 1, 6$ has:",
+      "options": [
+        {
+          "id": "a",
+          "text": "A mode of 4"
+        },
+        {
+          "id": "b",
+          "text": "A mode of 7"
+        },
+        {
+          "id": "c",
+          "text": "No mode"
+        },
+        {
+          "id": "d",
+          "text": "A mode of 1"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Every value appears exactly once, so there is no mode."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which average is best to use for skewed data with outliers?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Mean"
+        },
+        {
+          "id": "b",
+          "text": "Median"
+        },
+        {
+          "id": "c",
+          "text": "Mode"
+        },
+        {
+          "id": "d",
+          "text": "Range"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The median is not affected by extreme values, making it the best average for skewed data or data with outliers."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The mode is the only average that can be used for:",
+      "options": [
+        {
+          "id": "a",
+          "text": "Qualitative (non-numerical) data"
+        },
+        {
+          "id": "b",
+          "text": "Large datasets"
+        },
+        {
+          "id": "c",
+          "text": "Continuous data"
+        },
+        {
+          "id": "d",
+          "text": "Grouped data"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The mode identifies the most frequent value and works with any type of data, including non-numerical categories like 'red' or 'bus'."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "House prices on a street are: $\\pounds 180k, \\pounds 190k, \\pounds 195k, \\pounds 200k, \\pounds 950k$. The mean is $\\pounds 343k$ and the median is $\\pounds 195k$. Which better represents the typical house price?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The mean, because it uses all values"
+        },
+        {
+          "id": "b",
+          "text": "Neither -- you need the mode"
+        },
+        {
+          "id": "c",
+          "text": "The median, because the outlier inflates the mean"
+        },
+        {
+          "id": "d",
+          "text": "Both are equally good"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The $\\pounds 950k$ outlier pulls the mean up to $\\pounds 343k$, which is higher than 4 of the 5 prices. The median ($\\pounds 195k$) better represents the typical price."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A common mistake is finding the median without first:",
+      "options": [
+        {
+          "id": "a",
+          "text": "Calculating the mean"
+        },
+        {
+          "id": "b",
+          "text": "Sorting the data into order"
+        },
+        {
+          "id": "c",
+          "text": "Finding the mode"
+        },
+        {
+          "id": "d",
+          "text": "Drawing a bar chart"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The median is the middle value of the ordered data. You must arrange the values in ascending order before identifying the middle value."
+    }
+  ]
+}

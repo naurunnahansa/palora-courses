@@ -1,0 +1,188 @@
+{
+  "id": "quiz-expected-outcomes",
+  "title": "Quiz: Expected Outcomes",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A fair dice is rolled 300 times. How many times would you expect to roll a 6?",
+      "options": [
+        {
+          "id": "a",
+          "text": "6"
+        },
+        {
+          "id": "b",
+          "text": "30"
+        },
+        {
+          "id": "c",
+          "text": "50"
+        },
+        {
+          "id": "d",
+          "text": "60"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "$P(6) = \\frac{1}{6}$. Expected number $= \\frac{1}{6} \\times 300 = 50$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A bag contains 4 red and 6 blue counters. A counter is drawn, its colour noted, and then replaced. This is done 200 times. How many red counters would you expect to draw?",
+      "options": [
+        {
+          "id": "a",
+          "text": "80"
+        },
+        {
+          "id": "b",
+          "text": "60"
+        },
+        {
+          "id": "c",
+          "text": "40"
+        },
+        {
+          "id": "d",
+          "text": "120"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "$P(\\text{red}) = \\frac{4}{10} = 0.4$. Expected number $= 0.4 \\times 200 = 80$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The expected number of times an event occurs is calculated as:",
+      "options": [
+        {
+          "id": "a",
+          "text": "Probability $\\div$ number of trials"
+        },
+        {
+          "id": "b",
+          "text": "Number of trials $\\div$ probability"
+        },
+        {
+          "id": "c",
+          "text": "Probability $+$ number of trials"
+        },
+        {
+          "id": "d",
+          "text": "Probability $\\times$ number of trials"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Expected number $=$ probability $\\times$ number of trials."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A spinner has $P(\\text{red}) = 0.35$. If it is spun 400 times, the expected number of reds is 140. The actual result was 152. Which statement is correct?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The spinner must be biased because 152 is not 140"
+        },
+        {
+          "id": "b",
+          "text": "Expected values are theoretical averages -- actual results can vary"
+        },
+        {
+          "id": "c",
+          "text": "The experiment was done incorrectly"
+        },
+        {
+          "id": "d",
+          "text": "You should always get exactly the expected number"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Expected values are long-run averages. In any real experiment, the actual number can differ from the expected value due to natural random variation."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A coin is flipped 1000 times. How many heads would you expect?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Exactly 500"
+        },
+        {
+          "id": "b",
+          "text": "About 500"
+        },
+        {
+          "id": "c",
+          "text": "250"
+        },
+        {
+          "id": "d",
+          "text": "1000"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The expected number is $0.5 \\times 1000 = 500$, but the actual result will likely be close to, not exactly, 500."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A biased dice has $P(3) = 0.2$. If rolled 150 times, how many threes are expected?",
+      "options": [
+        {
+          "id": "a",
+          "text": "30"
+        },
+        {
+          "id": "b",
+          "text": "25"
+        },
+        {
+          "id": "c",
+          "text": "20"
+        },
+        {
+          "id": "d",
+          "text": "50"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Expected threes $= 0.2 \\times 150 = 30$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In 600 rolls of a fair dice, you expect each number to appear 100 times. If you rolled 600 times and got 110 sixes, this most likely suggests:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The dice is definitely biased"
+        },
+        {
+          "id": "b",
+          "text": "The dice has more than 6 faces"
+        },
+        {
+          "id": "c",
+          "text": "Normal random variation -- 110 is close to the expected 100"
+        },
+        {
+          "id": "d",
+          "text": "You should roll the dice more slowly"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Getting 110 sixes out of 600 rolls is close to the expected 100 and is well within normal random variation for a fair dice."
+    }
+  ]
+}

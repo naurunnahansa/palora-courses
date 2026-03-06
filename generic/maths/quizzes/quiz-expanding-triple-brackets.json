@@ -1,0 +1,104 @@
+{
+  "id": "quiz-expanding-triple-brackets",
+  "title": "Quiz: Expanding Triple Brackets",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the first step when expanding $(x + 1)(x + 2)(x + 3)$?",
+      "options": [
+        {"id": "a", "text": "Multiply all three constant terms together"},
+        {"id": "b", "text": "Expand any two brackets first, then multiply the result by the third bracket"},
+        {"id": "c", "text": "Add all the terms inside the brackets"},
+        {"id": "d", "text": "Cube the $x$ term"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "To expand three brackets, first expand any two of them to get a quadratic, then multiply that result by the remaining bracket."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Expand $(x + 1)(x + 2)(x + 3)$.",
+      "options": [
+        {"id": "a", "text": "$x^3 + 6x^2 + 11x + 6$"},
+        {"id": "b", "text": "$x^3 + 6x + 6$"},
+        {"id": "c", "text": "$x^3 + 5x^2 + 11x + 6$"},
+        {"id": "d", "text": "$x^3 + 6x^2 + 6x + 11$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "First: $(x+1)(x+2) = x^2 + 3x + 2$. Then: $(x^2 + 3x + 2)(x+3) = x^3 + 3x^2 + 3x^2 + 9x + 2x + 6 = x^3 + 6x^2 + 11x + 6$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the coefficient of $x^2$ in the expansion of $(x - 1)(x + 3)(x + 2)$?",
+      "options": [
+        {"id": "a", "text": "$2$"},
+        {"id": "b", "text": "$4$"},
+        {"id": "c", "text": "$-4$"},
+        {"id": "d", "text": "$6$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "$(x-1)(x+3) = x^2 + 2x - 3$. Then $(x^2 + 2x - 3)(x+2) = x^3 + 2x^2 + 2x^2 + 4x - 3x - 6 = x^3 + 4x^2 + x - 6$. The coefficient of $x^2$ is 4."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the constant term in the expansion of $(x + 2)(x - 3)(x + 5)$?",
+      "options": [
+        {"id": "a", "text": "$30$"},
+        {"id": "b", "text": "$-30$"},
+        {"id": "c", "text": "$10$"},
+        {"id": "d", "text": "$-10$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The constant term is the product of all the constant terms in each bracket: $2 \\times (-3) \\times 5 = -30$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Expand $(x + 1)^3$.",
+      "options": [
+        {"id": "a", "text": "$x^3 + 1$"},
+        {"id": "b", "text": "$x^3 + 3x + 1$"},
+        {"id": "c", "text": "$x^3 + 3x^2 + 3x + 1$"},
+        {"id": "d", "text": "$x^3 + x^2 + x + 1$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "$(x+1)^2 = x^2 + 2x + 1$. Then $(x^2 + 2x + 1)(x + 1) = x^3 + x^2 + 2x^2 + 2x + x + 1 = x^3 + 3x^2 + 3x + 1$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What degree is the polynomial obtained by expanding three linear brackets?",
+      "options": [
+        {"id": "a", "text": "Degree 1 (linear)"},
+        {"id": "b", "text": "Degree 2 (quadratic)"},
+        {"id": "c", "text": "Degree 3 (cubic)"},
+        {"id": "d", "text": "Degree 6"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "Each linear bracket contributes a degree of 1. Multiplying three linear brackets gives a polynomial of degree $1 + 1 + 1 = 3$ (a cubic)."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In the expansion of $(x + a)(x + b)(x + c)$, what is the coefficient of $x^2$?",
+      "options": [
+        {"id": "a", "text": "$abc$"},
+        {"id": "b", "text": "$a + b + c$"},
+        {"id": "c", "text": "$ab + ac + bc$"},
+        {"id": "d", "text": "$a^2 + b^2 + c^2$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The coefficient of $x^2$ in the expansion of $(x+a)(x+b)(x+c)$ is the sum $a + b + c$. The coefficient of $x$ is $ab + ac + bc$, and the constant is $abc$."
+    }
+  ]
+}

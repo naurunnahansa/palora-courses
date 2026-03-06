@@ -1,0 +1,188 @@
+{
+  "id": "quiz-translations",
+  "title": "Quiz: Translations",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A shape is translated by the vector $\\binom{3}{-2}$. What does this mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Move 3 units left and 2 units up"
+        },
+        {
+          "id": "b",
+          "text": "Move 3 units right and 2 units down"
+        },
+        {
+          "id": "c",
+          "text": "Move 3 units right and 2 units up"
+        },
+        {
+          "id": "d",
+          "text": "Move 2 units right and 3 units down"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "In a column vector, a positive top number means move right and a negative bottom number means move down. So the vector means 3 right and 2 down."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which property is always true after a translation?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The shape changes size"
+        },
+        {
+          "id": "b",
+          "text": "The shape is rotated"
+        },
+        {
+          "id": "c",
+          "text": "The shape and its image are congruent"
+        },
+        {
+          "id": "d",
+          "text": "The shape is reflected"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A translation slides a shape without changing its size, shape, or orientation. The original and its image are always congruent."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Point $A(2, 5)$ is translated by the vector $\\binom{-4}{1}$. What are the coordinates of $A'$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$(-2, 6)$"
+        },
+        {
+          "id": "b",
+          "text": "$(6, 4)$"
+        },
+        {
+          "id": "c",
+          "text": "$(6, 6)$"
+        },
+        {
+          "id": "d",
+          "text": "$(-2, 4)$"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Add the vector components to the coordinates: $2 + (-4) = -2$ and $5 + 1 = 6$, giving $A'(-2, 6)$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A triangle is translated so that vertex $P(1, 3)$ moves to $P'(4, 0)$. What is the translation vector?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\binom{-3}{3}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\binom{3}{3}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\binom{3}{-3}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\binom{5}{3}$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The translation vector is found by subtracting the original from the image: $4 - 1 = 3$ and $0 - 3 = -3$, giving the vector."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which of the following changes when a shape is translated?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The lengths of the sides"
+        },
+        {
+          "id": "b",
+          "text": "The angles inside the shape"
+        },
+        {
+          "id": "c",
+          "text": "The orientation of the shape"
+        },
+        {
+          "id": "d",
+          "text": "The position of the shape"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "A translation only changes the position of a shape. The side lengths, angles, and orientation all remain the same."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The vector $\\binom{0}{-5}$ describes a translation. In which direction does the shape move?",
+      "options": [
+        {
+          "id": "a",
+          "text": "5 units down"
+        },
+        {
+          "id": "b",
+          "text": "5 units to the right"
+        },
+        {
+          "id": "c",
+          "text": "5 units up"
+        },
+        {
+          "id": "d",
+          "text": "5 units to the left"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The top component is 0 (no horizontal movement) and the bottom component is -5 (5 units down)."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "To fully describe a translation, you must give:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The centre of rotation and the angle"
+        },
+        {
+          "id": "b",
+          "text": "The column vector"
+        },
+        {
+          "id": "c",
+          "text": "The line of reflection"
+        },
+        {
+          "id": "d",
+          "text": "The scale factor and centre"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A translation is fully described by giving the column vector, which specifies the horizontal and vertical displacement."
+    }
+  ]
+}

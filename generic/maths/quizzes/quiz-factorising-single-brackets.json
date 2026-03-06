@@ -1,0 +1,104 @@
+{
+  "id": "quiz-factorising-single-brackets",
+  "title": "Quiz: Factorising into Single Brackets",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Factorise $6x + 12$.",
+      "options": [
+        {"id": "a", "text": "$2(3x + 6)$"},
+        {"id": "b", "text": "$3(2x + 4)$"},
+        {"id": "c", "text": "$6(x + 2)$"},
+        {"id": "d", "text": "$6(x + 12)$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "The HCF of 6 and 12 is 6. Dividing each term by 6: $6x \\div 6 = x$ and $12 \\div 6 = 2$. So $6x + 12 = 6(x + 2)$. Always take out the highest common factor."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Factorise $4x^2 - 10x$.",
+      "options": [
+        {"id": "a", "text": "$2(2x^2 - 5x)$"},
+        {"id": "b", "text": "$2x(2x - 5)$"},
+        {"id": "c", "text": "$x(4x - 10)$"},
+        {"id": "d", "text": "$4x(x - 10)$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The HCF of $4x^2$ and $10x$ is $2x$. So $4x^2 - 10x = 2x(2x - 5)$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Factorise fully $12ab + 8a$.",
+      "options": [
+        {"id": "a", "text": "$4(3ab + 2a)$"},
+        {"id": "b", "text": "$2a(6b + 4)$"},
+        {"id": "c", "text": "$4a(3b + 2)$"},
+        {"id": "d", "text": "$a(12b + 8)$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "The HCF of $12ab$ and $8a$ is $4a$. So $12ab + 8a = 4a(3b + 2)$. 'Factorise fully' means take out the highest possible common factor."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Factorise $x^2 + 5x$.",
+      "options": [
+        {"id": "a", "text": "$x(x + 5)$"},
+        {"id": "b", "text": "$x^2(1 + 5)$"},
+        {"id": "c", "text": "$5(x^2 + x)$"},
+        {"id": "d", "text": "$5x(x + 1)$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "The HCF of $x^2$ and $5x$ is $x$. So $x^2 + 5x = x(x + 5)$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Factorise $9x^3 - 6x^2 + 3x$.",
+      "options": [
+        {"id": "a", "text": "$3(3x^3 - 2x^2 + x)$"},
+        {"id": "b", "text": "$3x(3x^2 - 2x + 1)$"},
+        {"id": "c", "text": "$x(9x^2 - 6x + 3)$"},
+        {"id": "d", "text": "$9x(x^2 - 6x + 3)$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The HCF of $9x^3$, $6x^2$, and $3x$ is $3x$. Dividing each term by $3x$: $3x^2 - 2x + 1$. So $9x^3 - 6x^2 + 3x = 3x(3x^2 - 2x + 1)$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the HCF of $15x^2y$ and $20xy^2$?",
+      "options": [
+        {"id": "a", "text": "$5xy$"},
+        {"id": "b", "text": "$5x^2y^2$"},
+        {"id": "c", "text": "$xy$"},
+        {"id": "d", "text": "$60x^2y^2$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "HCF of 15 and 20 is 5. The lowest power of $x$ is $x^1$ and the lowest power of $y$ is $y^1$. So HCF $= 5xy$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Factorise $x^2 - 25$.",
+      "options": [
+        {"id": "a", "text": "$x(x - 25)$"},
+        {"id": "b", "text": "$(x - 5)(x - 5)$"},
+        {"id": "c", "text": "$(x + 5)(x - 5)$"},
+        {"id": "d", "text": "$(x + 25)(x - 1)$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "This is the difference of two squares: $x^2 - 25 = x^2 - 5^2 = (x + 5)(x - 5)$."
+    }
+  ]
+}

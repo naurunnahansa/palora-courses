@@ -1,5 +1,2607 @@
 {
   "title": "Gradient",
-  "content": "# Gradient\n\n## Learning Objectives\nBy the end of this lesson, you should be able to:\n- Understand what the gradient of a line measures\n- Calculate the gradient of a line from a graph\n- Use the gradient formula $m = \\frac{y_2 - y_1}{x_2 - x_1}$\n- Recognise positive, negative, zero, and undefined gradients\n- Interpret the gradient in real-world contexts\n\n## Introduction\n\nThe **gradient** (or **slope**) of a line tells us how steep it is and in which direction it slopes. In everyday life, gradients describe the steepness of hills (a road sign showing a 10% gradient), the rate at which temperature changes, or how quickly costs increase. In mathematics, the gradient is a precise numerical measure of how much $y$ changes for every unit increase in $x$.\n\n---\n\n## Key Concepts\n\n### Definition of Gradient\n\nThe **gradient** of a straight line is the rate at which $y$ increases as $x$ increases. It is the ratio of the vertical change to the horizontal change between any two points on the line.\n\n$$m = \\frac{\\text{change in } y}{\\text{change in } x} = \\frac{\\text{rise}}{\\text{run}} = \\frac{y_2 - y_1}{x_2 - x_1}$$\n\nwhere $(x_1, y_1)$ and $(x_2, y_2)$ are any two points on the line.\n\n### Types of Gradient\n\n| Type | Description | Example |\n|------|-------------|--------|\n| **Positive gradient** | Line slopes upward from left to right | $m = 3$ — line goes up |\n| **Negative gradient** | Line slopes downward from left to right | $m = -2$ — line goes down |\n| **Zero gradient** | Horizontal line — no vertical change | $m = 0$ — line is flat |\n| **Undefined gradient** | Vertical line — no horizontal change | $x = 5$ — division by zero |\n\n> **Key Insight:** A larger positive gradient means a steeper upward slope. A more negative gradient means a steeper downward slope.\n\n### Gradient from a Graph\n\nTo find the gradient from a graph:\n1. Pick two points on the line that are **easy to read** (where the line crosses grid intersections)\n2. Draw a right-angled triangle between the two points\n3. Count the **rise** (vertical change) and the **run** (horizontal change)\n4. Calculate $m = \\frac{\\text{rise}}{\\text{run}}$\n\n> **Important:** If the line goes **down** from left to right, the rise is **negative**.\n\n---\n\n## Worked Examples\n\n### Example 1: Gradient from Two Points\n**Question:** Find the gradient of the line passing through $(2, 3)$ and $(6, 11)$.\n\n**Solution:**\n$$\\begin{aligned}\nm &= \\frac{y_2 - y_1}{x_2 - x_1} \\\\\n&= \\frac{11 - 3}{6 - 2} \\\\\n&= \\frac{8}{4} \\\\\n&= 2\n\\end{aligned}$$\n\n**Answer:** The gradient is $2$. This means for every 1 unit increase in $x$, $y$ increases by 2.\n\n---\n\n### Example 2: Negative Gradient\n**Question:** Find the gradient of the line passing through $(1, 8)$ and $(5, 2)$.\n\n**Solution:**\n$$\\begin{aligned}\nm &= \\frac{y_2 - y_1}{x_2 - x_1} \\\\\n&= \\frac{2 - 8}{5 - 1} \\\\\n&= \\frac{-6}{4} \\\\\n&= -\\frac{3}{2}\n\\end{aligned}$$\n\n**Answer:** The gradient is $-\\frac{3}{2}$. The negative sign tells us the line slopes downward.\n\n---\n\n### Example 3: Gradient with Negative Coordinates\n**Question:** Find the gradient of the line passing through $(-3, -4)$ and $(1, 8)$.\n\n**Solution:**\n$$\\begin{aligned}\nm &= \\frac{y_2 - y_1}{x_2 - x_1} \\\\\n&= \\frac{8 - (-4)}{1 - (-3)} \\\\\n&= \\frac{8 + 4}{1 + 3} \\\\\n&= \\frac{12}{4} \\\\\n&= 3\n\\end{aligned}$$\n\n**Answer:** The gradient is $3$.\n\n> **Note:** Be very careful with subtracting negative numbers: $8 - (-4) = 8 + 4 = 12$.\n\n---\n\n### Example 4: Real-World Gradient Interpretation\n**Question:** A car journey is represented on a distance-time graph. At time $t = 2$ hours, the distance is $30$ km. At $t = 5$ hours, the distance is $150$ km. Find the gradient and interpret it.\n\n**Solution:**\n$$\\begin{aligned}\nm &= \\frac{150 - 30}{5 - 2} \\\\\n&= \\frac{120}{3} \\\\\n&= 40\n\\end{aligned}$$\n\n**Answer:** The gradient is $40$. In context, this means the car is travelling at **40 km/h** (the gradient of a distance-time graph represents speed).\n\n---\n\n## Common Mistakes\n\n| Mistake | Why It's Wrong | Correct Approach |\n|---------|---------------|------------------|\n| Calculating $\\frac{x_2 - x_1}{y_2 - y_1}$ (fraction upside down) | The gradient is rise over run, not run over rise | Always put the $y$-change on top: $\\frac{y_2 - y_1}{x_2 - x_1}$ |\n| Subtracting coordinates in different orders, e.g., $\\frac{y_2 - y_1}{x_1 - x_2}$ | Mixing up the order gives the wrong sign | Subtract in the **same order** on top and bottom |\n| Errors with double negatives, e.g., $3 - (-2) = 1$ | Subtracting a negative means adding | $3 - (-2) = 3 + 2 = 5$ |\n| Saying a horizontal line has undefined gradient | Horizontal lines have zero change in $y$, so $m = \\frac{0}{\\text{something}} = 0$ | Zero gradient (not undefined). Vertical lines have undefined gradient |\n| Ignoring the sign of the gradient | The sign tells you the direction of the slope | A negative gradient means the line slopes downward from left to right |\n\n---\n\n## Practice Questions\n\n### Foundation Level\n\n1. Find the gradient of the line passing through:\n   - (a) $(1, 2)$ and $(4, 8)$\n   - (b) $(0, 5)$ and $(5, 15)$\n   - (c) $(2, 7)$ and $(6, 7)$\n\n2. Find the gradient of the line passing through:\n   - (a) $(0, 10)$ and $(5, 0)$\n   - (b) $(1, 9)$ and $(4, 3)$\n\n3. State whether each gradient is positive, negative, or zero:\n   - (a) $m = 4$\n   - (b) $m = -7$\n   - (c) $m = 0$\n   - (d) $m = \\frac{1}{2}$\n\n4. A line rises 6 units vertically for every 3 units it moves horizontally. What is its gradient?\n\n5. A line falls 10 units vertically over a horizontal distance of 4 units. What is its gradient?\n\n### Higher Level\n\n6. Find the gradient of the line passing through:\n   - (a) $(-2, -3)$ and $(4, 9)$\n   - (b) $(-5, 6)$ and $(3, -2)$\n   - (c) $(-1, -7)$ and $(-4, 5)$\n\n7. The gradient of the line joining $(2, k)$ and $(6, 10)$ is $3$. Find the value of $k$.\n\n8. The gradient of the line joining $(1, 5)$ and $(p, 11)$ is $2$. Find the value of $p$.\n\n9. Show that the points $A(1, 1)$, $B(3, 5)$, and $C(5, 9)$ are collinear (lie on the same straight line).\n\n10. A water tank is being filled. After 2 minutes it contains 50 litres and after 7 minutes it contains 175 litres. Find the gradient of the graph of volume against time and interpret your answer.\n\n11. Line $L_1$ passes through $(0, 3)$ and $(4, 11)$. Line $L_2$ passes through $(1, -1)$ and $(3, 3)$. Are the lines parallel? Explain your answer.\n\n---\n\n## Answers\n\n1. (a) $m = \\frac{8-2}{4-1} = \\frac{6}{3} = 2$ (b) $m = \\frac{15-5}{5-0} = \\frac{10}{5} = 2$ (c) $m = \\frac{7-7}{6-2} = \\frac{0}{4} = 0$\n\n2. (a) $m = \\frac{0-10}{5-0} = \\frac{-10}{5} = -2$ (b) $m = \\frac{3-9}{4-1} = \\frac{-6}{3} = -2$\n\n3. (a) Positive (b) Negative (c) Zero (d) Positive\n\n4. $m = \\frac{6}{3} = 2$\n\n5. $m = \\frac{-10}{4} = -\\frac{5}{2}$ (or $-2.5$)\n\n6. (a) $m = \\frac{9-(-3)}{4-(-2)} = \\frac{12}{6} = 2$ (b) $m = \\frac{-2-6}{3-(-5)} = \\frac{-8}{8} = -1$ (c) $m = \\frac{5-(-7)}{-4-(-1)} = \\frac{12}{-3} = -4$\n\n7. $\\frac{10-k}{6-2} = 3 \\Rightarrow 10-k = 12 \\Rightarrow k = -2$\n\n8. $\\frac{11-5}{p-1} = 2 \\Rightarrow \\frac{6}{p-1} = 2 \\Rightarrow p - 1 = 3 \\Rightarrow p = 4$\n\n9. Gradient of $AB = \\frac{5-1}{3-1} = \\frac{4}{2} = 2$. Gradient of $BC = \\frac{9-5}{5-3} = \\frac{4}{2} = 2$. Since the gradients are equal and they share point $B$, the points are collinear.\n\n10. $m = \\frac{175-50}{7-2} = \\frac{125}{5} = 25$. The gradient is 25, meaning the tank fills at a rate of **25 litres per minute**.\n\n11. Gradient of $L_1 = \\frac{11-3}{4-0} = \\frac{8}{4} = 2$. Gradient of $L_2 = \\frac{3-(-1)}{3-1} = \\frac{4}{2} = 2$. Yes, the lines are parallel because they have the **same gradient** ($m = 2$).\n\n---\n\n## Exam Tips\n\n- Always show the gradient formula and your substitution — this earns method marks.\n- When reading a gradient from a graph, choose two points that are **far apart** for greater accuracy.\n- Be very careful with signs when subtracting negative numbers.\n- If you get $m = 0$, the line is horizontal. If the denominator is $0$, the line is vertical (undefined gradient).\n- In context questions, always **interpret** the gradient with units (e.g., \"the cost increases by £5 per item\").\n\n---\n\n## Summary\n\n- The **gradient** measures the steepness and direction of a straight line.\n- **Formula:** $m = \\frac{y_2 - y_1}{x_2 - x_1} = \\frac{\\text{rise}}{\\text{run}}$\n- **Positive gradient** — line goes up from left to right.\n- **Negative gradient** — line goes down from left to right.\n- **Zero gradient** — horizontal line.\n- **Undefined gradient** — vertical line.\n- The gradient tells you **how much $y$ changes for every 1 unit change in $x$**.",
-  "order": 3
+  "order": 3,
+  "pageType": "lesson",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Gradient"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Learning Objectives"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "By the end of this lesson, you should be able to:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Understand what the gradient of a line measures"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate the gradient of a line from a graph"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Use the gradient formula $m = \\frac{y_2 - y_1}{x_2 - x_1}$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Recognise positive, negative, zero, and undefined gradients"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Interpret the gradient in real-world contexts"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The "
+          },
+          {
+            "type": "text",
+            "text": "gradient",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " (or "
+          },
+          {
+            "type": "text",
+            "text": "slope",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ") of a line tells us how steep it is and in which direction it slopes. In everyday life, gradients describe the steepness of hills (a road sign showing a 10% gradient), the rate at which temperature changes, or how quickly costs increase. In mathematics, the gradient is a precise numerical measure of how much $y$ changes for every unit increase in $x$."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "visualizationEmbed",
+        "attrs": {
+          "visualizationId": "math-gradient-finder",
+          "displayMode": "expanded",
+          "customHeight": 500
+        }
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-gradient"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Definition of Gradient"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The "
+          },
+          {
+            "type": "text",
+            "text": "gradient",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " of a straight line is the rate at which $y$ increases as $x$ increases. It is the ratio of the vertical change to the horizontal change between any two points on the line."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$m = \\frac{\\text{change in } y}{\\text{change in } x} = \\frac{\\text{rise}}{\\text{run}} = \\frac{y_2 - y_1}{x_2 - x_1}$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "where $(x_1, y_1)$ and $(x_2, y_2)$ are any two points on the line."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Types of Gradient"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "content": [
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Type"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Description"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Example"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Positive gradient",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Line slopes upward from left to right"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$m = 3$ — line goes up"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Negative gradient",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Line slopes downward from left to right"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$m = -2$ — line goes down"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Zero gradient",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Horizontal line — no vertical change"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$m = 0$ — line is flat"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Undefined gradient",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Vertical line — no horizontal change"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$x = 5$ — division by zero"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Insight:",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " A larger positive gradient means a steeper upward slope. A more negative gradient means a steeper downward slope."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Gradient from a Graph"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "To find the gradient from a graph:"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Pick two points on the line that are "
+                  },
+                  {
+                    "type": "text",
+                    "text": "easy to read",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (where the line crosses grid intersections)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Draw a right-angled triangle between the two points"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Count the "
+                  },
+                  {
+                    "type": "text",
+                    "text": "rise",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (vertical change) and the "
+                  },
+                  {
+                    "type": "text",
+                    "text": "run",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " (horizontal change)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate $m = \\frac{\\text{rise}}{\\text{run}}$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Important:",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " If the line goes "
+              },
+              {
+                "type": "text",
+                "text": "down",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " from left to right, the rise is "
+              },
+              {
+                "type": "text",
+                "text": "negative",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-gradient-2"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1: Gradient from Two Points"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Find the gradient of the line passing through $(2, 3)$ and $(6, 11)$."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$\\begin{aligned}\nm &= \\frac{y_2 - y_1}{x_2 - x_1} \\\\\n&= \\frac{11 - 3}{6 - 2} \\\\\n&= \\frac{8}{4} \\\\\n&= 2\n\\end{aligned}$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " The gradient is $2$. This means for every 1 unit increase in $x$, $y$ increases by 2."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2: Negative Gradient"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Find the gradient of the line passing through $(1, 8)$ and $(5, 2)$."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$\\begin{aligned}\nm &= \\frac{y_2 - y_1}{x_2 - x_1} \\\\\n&= \\frac{2 - 8}{5 - 1} \\\\\n&= \\frac{-6}{4} \\\\\n&= -\\frac{3}{2}\n\\end{aligned}$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " The gradient is $-\\frac{3}{2}$. The negative sign tells us the line slopes downward."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 3: Gradient with Negative Coordinates"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Find the gradient of the line passing through $(-3, -4)$ and $(1, 8)$."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$\\begin{aligned}\nm &= \\frac{y_2 - y_1}{x_2 - x_1} \\\\\n&= \\frac{8 - (-4)}{1 - (-3)} \\\\\n&= \\frac{8 + 4}{1 + 3} \\\\\n&= \\frac{12}{4} \\\\\n&= 3\n\\end{aligned}$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " The gradient is $3$."
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Note:",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " Be very careful with subtracting negative numbers: $8 - (-4) = 8 + 4 = 12$."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 4: Real-World Gradient Interpretation"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A car journey is represented on a distance-time graph. At time $t = 2$ hours, the distance is $30$ km. At $t = 5$ hours, the distance is $150$ km. Find the gradient and interpret it."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$\\begin{aligned}\nm &= \\frac{150 - 30}{5 - 2} \\\\\n&= \\frac{120}{3} \\\\\n&= 40\n\\end{aligned}$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " The gradient is $40$. In context, this means the car is travelling at "
+          },
+          {
+            "type": "text",
+            "text": "40 km/h",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " (the gradient of a distance-time graph represents speed)."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Mistakes"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "content": [
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Mistake"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Why It's Wrong"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Correct Approach"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Calculating $\\frac{x_2 - x_1}{y_2 - y_1}$ (fraction upside down)"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The gradient is rise over run, not run over rise"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Always put the $y$-change on top: $\\frac{y_2 - y_1}{x_2 - x_1}$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Subtracting coordinates in different orders, e.g., $\\frac{y_2 - y_1}{x_1 - x_2}$"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Mixing up the order gives the wrong sign"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Subtract in the "
+                      },
+                      {
+                        "type": "text",
+                        "text": "same order",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "text",
+                        "text": " on top and bottom"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Errors with double negatives, e.g., $3 - (-2) = 1$"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Subtracting a negative means adding"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$3 - (-2) = 3 + 2 = 5$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Saying a horizontal line has undefined gradient"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Horizontal lines have zero change in $y$, so $m = \\frac{0}{\\text{something}} = 0$"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Zero gradient (not undefined). Vertical lines have undefined gradient"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Ignoring the sign of the gradient"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The sign tells you the direction of the slope"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "A negative gradient means the line slopes downward from left to right"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Questions"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Foundation Level"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Find the gradient of the line passing through:"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $(1, 2)$ and $(4, 8)$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) $(0, 5)$ and $(5, 15)$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) $(2, 7)$ and $(6, 7)$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 2
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Find the gradient of the line passing through:"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $(0, 10)$ and $(5, 0)$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) $(1, 9)$ and $(4, 3)$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 3
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "State whether each gradient is positive, negative, or zero:"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $m = 4$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) $m = -7$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) $m = 0$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(d) $m = \\frac{1}{2}$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 4
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A line rises 6 units vertically for every 3 units it moves horizontally. What is its gradient?"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 5
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A line falls 10 units vertically over a horizontal distance of 4 units. What is its gradient?"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Higher Level"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 6
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Find the gradient of the line passing through:"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $(-2, -3)$ and $(4, 9)$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) $(-5, 6)$ and $(3, -2)$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) $(-1, -7)$ and $(-4, 5)$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 7
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The gradient of the line joining $(2, k)$ and $(6, 10)$ is $3$. Find the value of $k$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 8
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The gradient of the line joining $(1, 5)$ and $(p, 11)$ is $2$. Find the value of $p$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 9
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Show that the points $A(1, 1)$, $B(3, 5)$, and $C(5, 9)$ are collinear (lie on the same straight line)."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 10
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A water tank is being filled. After 2 minutes it contains 50 litres and after 7 minutes it contains 175 litres. Find the gradient of the graph of volume against time and interpret your answer."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 11
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Line $L_1$ passes through $(0, 3)$ and $(4, 11)$. Line $L_2$ passes through $(1, -1)$ and $(3, 3)$. Are the lines parallel? Explain your answer."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answers"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $m = \\frac{8-2}{4-1} = \\frac{6}{3} = 2$ (b) $m = \\frac{15-5}{5-0} = \\frac{10}{5} = 2$ (c) $m = \\frac{7-7}{6-2} = \\frac{0}{4} = 0$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 2
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $m = \\frac{0-10}{5-0} = \\frac{-10}{5} = -2$ (b) $m = \\frac{3-9}{4-1} = \\frac{-6}{3} = -2$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 3
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) Positive (b) Negative (c) Zero (d) Positive"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 4
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$m = \\frac{6}{3} = 2$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 5
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$m = \\frac{-10}{4} = -\\frac{5}{2}$ (or $-2.5$)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 6
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $m = \\frac{9-(-3)}{4-(-2)} = \\frac{12}{6} = 2$ (b) $m = \\frac{-2-6}{3-(-5)} = \\frac{-8}{8} = -1$ (c) $m = \\frac{5-(-7)}{-4-(-1)} = \\frac{12}{-3} = -4$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 7
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$\\frac{10-k}{6-2} = 3 \\Rightarrow 10-k = 12 \\Rightarrow k = -2$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 8
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$\\frac{11-5}{p-1} = 2 \\Rightarrow \\frac{6}{p-1} = 2 \\Rightarrow p - 1 = 3 \\Rightarrow p = 4$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 9
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Gradient of $AB = \\frac{5-1}{3-1} = \\frac{4}{2} = 2$. Gradient of $BC = \\frac{9-5}{5-3} = \\frac{4}{2} = 2$. Since the gradients are equal and they share point $B$, the points are collinear."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 10
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$m = \\frac{175-50}{7-2} = \\frac{125}{5} = 25$. The gradient is 25, meaning the tank fills at a rate of "
+                  },
+                  {
+                    "type": "text",
+                    "text": "25 litres per minute",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 11
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Gradient of $L_1 = \\frac{11-3}{4-0} = \\frac{8}{4} = 2$. Gradient of $L_2 = \\frac{3-(-1)}{3-1} = \\frac{4}{2} = 2$. Yes, the lines are parallel because they have the "
+                  },
+                  {
+                    "type": "text",
+                    "text": "same gradient",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " ($m = 2$)."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Exam Tips"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Always show the gradient formula and your substitution — this earns method marks."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "When reading a gradient from a graph, choose two points that are "
+                  },
+                  {
+                    "type": "text",
+                    "text": "far apart",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " for greater accuracy."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Be very careful with signs when subtracting negative numbers."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If you get $m = 0$, the line is horizontal. If the denominator is $0$, the line is vertical (undefined gradient)."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In context questions, always "
+                  },
+                  {
+                    "type": "text",
+                    "text": "interpret",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " the gradient with units (e.g., \"the cost increases by £5 per item\")."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "quiz-gradient"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The "
+                  },
+                  {
+                    "type": "text",
+                    "text": "gradient",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " measures the steepness and direction of a straight line."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Formula:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " $m = \\frac{y_2 - y_1}{x_2 - x_1} = \\frac{\\text{rise}}{\\text{run}}$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Positive gradient",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — line goes up from left to right."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Negative gradient",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — line goes down from left to right."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Zero gradient",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — horizontal line."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Undefined gradient",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " — vertical line."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The gradient tells you "
+                  },
+                  {
+                    "type": "text",
+                    "text": "how much $y$ changes for every 1 unit change in $x$",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

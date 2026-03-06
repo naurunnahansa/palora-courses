@@ -1,0 +1,188 @@
+{
+  "id": "quiz-set-notation",
+  "title": "Quiz: Set Notation",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What does the symbol $\\cup$ mean in set notation?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Union (OR)"
+        },
+        {
+          "id": "b",
+          "text": "Intersection (AND)"
+        },
+        {
+          "id": "c",
+          "text": "Complement (NOT)"
+        },
+        {
+          "id": "d",
+          "text": "Subset"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The symbol $\\cup$ means union, which represents elements in set $A$ OR set $B$ (or both)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $\\xi = \\{1,2,3,4,5,6,7,8,9,10\\}$ and $A = \\{2,4,6,8,10\\}$, what is $A'$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\{2,4,6,8,10\\}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\{1,2,3,4,5\\}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\{1,3,5,7,9\\}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\emptyset$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "$A'$ is the complement of $A$, containing all elements in the universal set $\\xi$ that are NOT in $A$: $\\{1,3,5,7,9\\}$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $A = \\{1,2,3,4\\}$ and $B = \\{3,4,5,6\\}$, what is $A \\cap B$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\{1,2,3,4,5,6\\}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\{3,4\\}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\{1,2\\}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\{5,6\\}$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "$A \\cap B$ is the intersection -- elements in both $A$ and $B$. The common elements are $\\{3,4\\}$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The notation $n(A)$ means:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The complement of $A$"
+        },
+        {
+          "id": "b",
+          "text": "$A$ multiplied by $n$"
+        },
+        {
+          "id": "c",
+          "text": "The $n$th element of $A$"
+        },
+        {
+          "id": "d",
+          "text": "The number of elements in set $A$"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "$n(A)$ denotes the number of elements (cardinality) of set $A$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What does the symbol $\\emptyset$ represent?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The empty set (a set with no elements)"
+        },
+        {
+          "id": "b",
+          "text": "A set with one element"
+        },
+        {
+          "id": "c",
+          "text": "The universal set"
+        },
+        {
+          "id": "d",
+          "text": "The set of all integers"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "$\\emptyset$ represents the empty set, which contains no elements. For example, the intersection of two disjoint sets is $\\emptyset$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $A$ and $B$ are mutually exclusive events, then $A \\cap B =$",
+      "options": [
+        {
+          "id": "a",
+          "text": "$A \\cup B$"
+        },
+        {
+          "id": "b",
+          "text": "$\\xi$"
+        },
+        {
+          "id": "c",
+          "text": "$\\emptyset$"
+        },
+        {
+          "id": "d",
+          "text": "$A'$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Mutually exclusive events cannot occur simultaneously, so their intersection is the empty set: $A \\cap B = \\emptyset$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which expression represents 'elements that are in $A$ but not in $B$'?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$A \\cup B'$"
+        },
+        {
+          "id": "b",
+          "text": "$A \\cap B'$"
+        },
+        {
+          "id": "c",
+          "text": "$A' \\cap B$"
+        },
+        {
+          "id": "d",
+          "text": "$(A \\cap B)'$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "'In $A$ but not in $B$' means in $A$ AND in the complement of $B$, which is $A \\cap B'$."
+    }
+  ]
+}

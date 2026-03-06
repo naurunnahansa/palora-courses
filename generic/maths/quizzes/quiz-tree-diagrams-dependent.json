@@ -1,0 +1,188 @@
+{
+  "id": "quiz-tree-diagrams-dependent",
+  "title": "Quiz: Tree Diagrams (Dependent Events)",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A bag has 4 red and 3 blue balls. One is drawn and NOT replaced. What is the probability that the second ball is red, given the first was red?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{4}{7}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{4}{6}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{3}{7}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{3}{6}$"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "After removing a red ball, there are 3 red and 3 blue left (6 total). $P(\\text{red second} | \\text{red first}) = \\frac{3}{6} = \\frac{1}{2}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Events are dependent when:",
+      "options": [
+        {
+          "id": "a",
+          "text": "Both events are certain to happen"
+        },
+        {
+          "id": "b",
+          "text": "Both events have the same probability"
+        },
+        {
+          "id": "c",
+          "text": "The outcome of one event affects the probability of the other"
+        },
+        {
+          "id": "d",
+          "text": "The events cannot happen at the same time"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Events are dependent when the outcome of one event changes the probability of the other, such as drawing without replacement."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A box has 5 red and 3 green sweets. Two are taken without replacement. What is $P(\\text{both red})$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{5}{8} \\times \\frac{5}{8}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{5}{8} \\times \\frac{4}{7}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{5}{8} \\times \\frac{4}{8}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{5}{8} \\times \\frac{3}{7}$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Without replacement: $P(\\text{1st red}) = \\frac{5}{8}$, then $P(\\text{2nd red}) = \\frac{4}{7}$ (one fewer red, one fewer total). So $P = \\frac{5}{8} \\times \\frac{4}{7} = \\frac{20}{56}$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In a 'without replacement' problem, the key difference from 'with replacement' is:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The total number of items decreases after each draw"
+        },
+        {
+          "id": "b",
+          "text": "The probabilities stay the same on the second draw"
+        },
+        {
+          "id": "c",
+          "text": "You cannot use a tree diagram"
+        },
+        {
+          "id": "d",
+          "text": "The events become mutually exclusive"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Without replacement, the total number of items decreases by one after each draw, which changes the probabilities for subsequent draws."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A bag has 6 red and 4 blue balls. Two are drawn without replacement. What is $P(\\text{one of each colour})$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{24}{90}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{48}{90}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{24}{45}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{12}{45}$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "$P(\\text{RB}) = \\frac{6}{10} \\times \\frac{4}{9} = \\frac{24}{90}$. $P(\\text{BR}) = \\frac{4}{10} \\times \\frac{6}{9} = \\frac{24}{90}$. Total $= \\frac{48}{90} = \\frac{8}{15}$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Why should the sum of all endpoint probabilities on a complete tree diagram equal 1?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Because the endpoints represent all possible outcomes, and one must occur"
+        },
+        {
+          "id": "b",
+          "text": "Because the branches are always equal"
+        },
+        {
+          "id": "c",
+          "text": "This is only true for independent events"
+        },
+        {
+          "id": "d",
+          "text": "It does not always equal 1"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The endpoints of a complete tree diagram represent every possible outcome. Since exactly one outcome must occur, their probabilities sum to 1."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A jar has 3 red, 2 blue, and 1 green marble. One marble is drawn and not replaced. How many marbles are left and what is the new total for the second draw?",
+      "options": [
+        {
+          "id": "a",
+          "text": "6 marbles left, choose from 6"
+        },
+        {
+          "id": "b",
+          "text": "5 marbles left, choose from 6"
+        },
+        {
+          "id": "c",
+          "text": "5 marbles left, choose from 5"
+        },
+        {
+          "id": "d",
+          "text": "4 marbles left, choose from 5"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Originally there are $3 + 2 + 1 = 6$ marbles. After one is drawn and not replaced, there are 5 marbles left to choose from."
+    }
+  ]
+}

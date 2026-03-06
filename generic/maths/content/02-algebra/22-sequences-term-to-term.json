@@ -1,5 +1,2576 @@
 {
   "title": "Sequences: Term-to-Term Rules",
-  "content": "# Sequences: Term-to-Term Rules\n\n## Learning Objectives\nBy the end of this lesson, you should be able to:\n- Recognise and continue sequences\n- Describe term-to-term rules\n- Generate sequences from term-to-term rules\n- Identify common types of sequences\n\n## Introduction\n\nA **sequence** is an ordered list of numbers that follow a pattern. Each number in a sequence is called a **term**. The **term-to-term rule** tells you how to get from one term to the next.\n\n---\n\n## Term-to-Term Rules\n\nA **term-to-term rule** describes the operation to get from one term to the next.\n\n### Example: 3, 7, 11, 15, 19, ...\n\n**Rule:** Add 4 to each term\n\nNext terms: 23, 27, 31, ...\n\n### Example: 2, 6, 18, 54, ...\n\n**Rule:** Multiply each term by 3\n\nNext terms: 162, 486, ...\n\n### Example: 1000, 500, 250, 125, ...\n\n**Rule:** Divide each term by 2 (or multiply by $\\frac{1}{2}$)\n\nNext term: 62.5\n\n> **Quick Check:** What is the term-to-term rule for 5, 8, 11, 14, ...?\n> *Answer: Add 3*\n\n> **Quick Check:** Continue the sequence 3, 6, 12, 24, ...\n> *Answer: 48, 96, 192, ... (multiply by 2)*\n\n---\n\n## Arithmetic Sequences\n\nAn **arithmetic sequence** has a **constant difference** between consecutive terms.\n\n### Examples:\n\n- 2, 5, 8, 11, 14, ... (common difference = 3)\n- 20, 17, 14, 11, 8, ... (common difference = -3)\n- 1, 1.5, 2, 2.5, 3, ... (common difference = 0.5)\n\n### Finding the Common Difference\n\nSubtract any term from the next term.\n\n**Example:** For 7, 12, 17, 22, ...\n$12 - 7 = 5$, $17 - 12 = 5$, $22 - 17 = 5$\n\nCommon difference = 5\n\n> **Quick Check:** Find the common difference of 15, 11, 7, 3, ...\n> *Answer: $11 - 15 = -4$*\n\n---\n\n## Geometric Sequences\n\nA **geometric sequence** has a **constant ratio** between consecutive terms.\n\n### Examples:\n\n- 2, 6, 18, 54, ... (common ratio = 3)\n- 100, 50, 25, 12.5, ... (common ratio = 0.5)\n- 3, -6, 12, -24, ... (common ratio = -2)\n\n### Finding the Common Ratio\n\nDivide any term by the previous term.\n\n**Example:** For 4, 12, 36, 108, ...\n$12 ÷ 4 = 3$, $36 ÷ 12 = 3$, $108 ÷ 36 = 3$\n\nCommon ratio = 3\n\n> **Quick Check:** Find the common ratio of 5, 10, 20, 40, ...\n> *Answer: $10 ÷ 5 = 2$*\n\n---\n\n## Fibonacci-Type Sequences\n\nIn a **Fibonacci-type sequence**, each term is the sum of the two preceding terms.\n\n### The Fibonacci Sequence:\n$$1, 1, 2, 3, 5, 8, 13, 21, 34, 55, ...$$\n\n**Rule:** Add the previous two terms\n$1 + 1 = 2$, $1 + 2 = 3$, $2 + 3 = 5$, etc.\n\n### Example: 2, 5, 7, 12, 19, 31, ...\n\nCheck: $2 + 5 = 7$ ✓, $5 + 7 = 12$ ✓, $7 + 12 = 19$ ✓\n\nNext term: $19 + 31 = 50$\n\n> **Quick Check:** Continue the sequence 1, 3, 4, 7, 11, ...\n> *Answer: 18, 29, 47, ... (add previous two terms)*\n\n---\n\n## Triangular Numbers\n\nThe **triangular numbers** are: 1, 3, 6, 10, 15, 21, 28, ...\n\n[DIAGRAM: Dots arranged in triangular patterns]\n\n**Pattern:** Add 2, then 3, then 4, then 5, ...\n$1 + 2 = 3$, $3 + 3 = 6$, $6 + 4 = 10$, $10 + 5 = 15$, ...\n\n---\n\n## Square Numbers\n\nThe **square numbers** are: 1, 4, 9, 16, 25, 36, 49, ...\n\nThese are $1^2, 2^2, 3^2, 4^2, 5^2, ...$\n\n**Differences:** 3, 5, 7, 9, 11, ... (consecutive odd numbers)\n\n---\n\n## Cube Numbers\n\nThe **cube numbers** are: 1, 8, 27, 64, 125, 216, ...\n\nThese are $1^3, 2^3, 3^3, 4^3, 5^3, ...$\n\n---\n\n## Generating Sequences\n\n### Example: First term is 5, term-to-term rule is \"multiply by 2 then subtract 3\"\n\n- 1st term: 5\n- 2nd term: $5 × 2 - 3 = 7$\n- 3rd term: $7 × 2 - 3 = 11$\n- 4th term: $11 × 2 - 3 = 19$\n- 5th term: $19 × 2 - 3 = 35$\n\nSequence: 5, 7, 11, 19, 35, ...\n\n### Example: First term is 100, rule is \"subtract 7\"\n\nSequence: 100, 93, 86, 79, 72, 65, ...\n\n> **Quick Check:** Generate the first 5 terms starting from 2, with rule \"multiply by 3\".\n> *Answer: 2, 6, 18, 54, 162*\n\n---\n\n## Worked Examples\n\n### Example 1\n**Question:** Find the next three terms of 4, 9, 14, 19, ...\n\n**Solution:**\nCommon difference: $9 - 4 = 5$\n\nNext terms: $19 + 5 = 24$, $24 + 5 = 29$, $29 + 5 = 34$\n\n---\n\n### Example 2\n**Question:** A sequence starts 2, 6, ... The term-to-term rule is \"multiply by 2 and add 2\". Find the next three terms.\n\n**Solution:**\n- 3rd term: $6 × 2 + 2 = 14$\n- 4th term: $14 × 2 + 2 = 30$\n- 5th term: $30 × 2 + 2 = 62$\n\n---\n\n### Example 3\n**Question:** Identify the sequence type: 81, 27, 9, 3, 1, ...\n\n**Solution:**\nCheck ratio: $27 ÷ 81 = \\frac{1}{3}$, $9 ÷ 27 = \\frac{1}{3}$, etc.\n\nThis is a **geometric sequence** with common ratio $\\frac{1}{3}$.\n\nNext term: $1 × \\frac{1}{3} = \\frac{1}{3}$\n\n---\n\n## Knowledge Check\n\n1. What is the term-to-term rule for 6, 10, 14, 18, ...?\n   > *Answer: Add 4*\n\n2. Find the next term of 5, 15, 45, 135, ...\n   > *Answer: 405 (multiply by 3)*\n\n3. Is 3, 7, 12, 18, 25, ... an arithmetic sequence?\n   > *Answer: No (differences are 4, 5, 6, 7, ... not constant)*\n\n4. What type of sequence is 1, 4, 9, 16, 25, ...?\n   > *Answer: Square numbers*\n\n---\n\n## Practice Questions\n\n### Foundation Level\n\n1. Find the next three terms:\n   - (a) 5, 9, 13, 17, ...\n   - (b) 50, 43, 36, 29, ...\n   - (c) 2, 4, 8, 16, ...\n   - (d) 1, 4, 9, 16, ...\n\n2. Find the term-to-term rule:\n   - (a) 3, 8, 13, 18, ...\n   - (b) 64, 32, 16, 8, ...\n   - (c) 1, 1, 2, 3, 5, 8, ...\n   - (d) 10, 7, 4, 1, ...\n\n3. Generate the first 5 terms:\n   - (a) First term 3, add 5\n   - (b) First term 2, multiply by 4\n   - (c) First term 100, subtract 12\n   - (d) First term 1, add the term number\n\n4. Identify the sequence type (arithmetic, geometric, or neither):\n   - (a) 7, 14, 21, 28, ...\n   - (b) 3, 9, 27, 81, ...\n   - (c) 1, 3, 6, 10, 15, ...\n   - (d) 20, 15, 10, 5, ...\n\n5. The 5th term of a sequence is 17 and the term-to-term rule is \"add 4\". Find the first term.\n\n### Higher Level\n\n6. A sequence has first term $a$ and common ratio $r$. Write the first 5 terms.\n\n7. The first three terms of a Fibonacci-type sequence are $x$, $y$, $x + y$. Find the 6th term in terms of $x$ and $y$.\n\n8. A sequence begins 5, 8, 11, 14, ... Which term is 50?\n\n9. Show that the sequence $2, 5, 11, 23, 47, ...$ follows the rule \"multiply by 2 and add 1\".\n\n10. Create a sequence where the 1st term is 3 and the 5th term is 48.\n\n---\n\n## Answers\n\n1. (a) 21, 25, 29 (b) 22, 15, 8 (c) 32, 64, 128 (d) 25, 36, 49\n\n2. (a) Add 5 (b) Divide by 2 (or multiply by $\\frac{1}{2}$) (c) Add previous two terms (d) Subtract 3\n\n3. (a) 3, 8, 13, 18, 23 (b) 2, 8, 32, 128, 512 (c) 100, 88, 76, 64, 52 (d) 1, 2, 4, 7, 11 (add 1, 2, 3, 4)\n\n4. (a) Arithmetic (common difference 7) (b) Geometric (common ratio 3) (c) Neither (triangular numbers) (d) Arithmetic (common difference -5)\n\n5. Work backwards: 17, 13, 9, 5, 1. First term = 1\n\n6. $a$, $ar$, $ar^2$, $ar^3$, $ar^4$\n\n7. Terms: $x$, $y$, $x+y$, $x+2y$, $2x+3y$, $3x+5y$\n\n8. 50 = 5 + 3(n-1), so 45 = 3(n-1), n-1 = 15, n = 16. The 16th term.\n\n9. $5 × 2 + 1 = 11$ ✓, $11 × 2 + 1 = 23$ ✓, $23 × 2 + 1 = 47$ ✓\n\n10. Various answers possible. E.g., 3, 6, 12, 24, 48 (multiply by 2)\n\n---\n\n## Summary\n\n- **Term-to-term rule:** Describes how to get from one term to the next\n- **Arithmetic sequence:** Constant difference between terms\n- **Geometric sequence:** Constant ratio between terms\n- **Fibonacci-type:** Each term is sum of previous two\n- **Special sequences:** Square numbers, cube numbers, triangular numbers\n- To find the rule, look at differences or ratios between consecutive terms",
-  "order": 22
+  "order": 22,
+  "pageType": "lesson",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Sequences: Term-to-Term Rules"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Learning Objectives"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "By the end of this lesson, you should be able to:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Recognise and continue sequences"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Describe term-to-term rules"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Generate sequences from term-to-term rules"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Identify common types of sequences"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A "
+          },
+          {
+            "type": "text",
+            "text": "sequence",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is an ordered list of numbers that follow a pattern. Each number in a sequence is called a "
+          },
+          {
+            "type": "text",
+            "text": "term",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ". The "
+          },
+          {
+            "type": "text",
+            "text": "term-to-term rule",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " tells you how to get from one term to the next."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "visualizationEmbed",
+        "attrs": {
+          "visualizationId": "math-sequence-generator",
+          "displayMode": "expanded",
+          "customHeight": 500
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Term-to-Term Rules"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A "
+          },
+          {
+            "type": "text",
+            "text": "term-to-term rule",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " describes the operation to get from one term to the next."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example: 3, 7, 11, 15, 19, ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Rule:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Add 4 to each term"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Next terms: 23, 27, 31, ..."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example: 2, 6, 18, 54, ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Rule:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Multiply each term by 3"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Next terms: 162, 486, ..."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example: 1000, 500, 250, 125, ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Rule:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Divide each term by 2 (or multiply by $\\frac{1}{2}$)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Next term: 62.5"
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Quick Check:",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " What is the term-to-term rule for 5, 8, 11, 14, ...? "
+              },
+              {
+                "type": "text",
+                "text": "Answer: Add 3",
+                "marks": [
+                  {
+                    "type": "italic"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Quick Check:",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " Continue the sequence 3, 6, 12, 24, ... "
+              },
+              {
+                "type": "text",
+                "text": "Answer: 48, 96, 192, ... (multiply by 2)",
+                "marks": [
+                  {
+                    "type": "italic"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Arithmetic Sequences"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "An "
+          },
+          {
+            "type": "text",
+            "text": "arithmetic sequence",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " has a "
+          },
+          {
+            "type": "text",
+            "text": "constant difference",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " between consecutive terms."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Examples:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "2, 5, 8, 11, 14, ... (common difference = 3)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "20, 17, 14, 11, 8, ... (common difference = -3)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "1, 1.5, 2, 2.5, 3, ... (common difference = 0.5)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Finding the Common Difference"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Subtract any term from the next term."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " For 7, 12, 17, 22, ... $12 - 7 = 5$, $17 - 12 = 5$, $22 - 17 = 5$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Common difference = 5"
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Quick Check:",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " Find the common difference of 15, 11, 7, 3, ... "
+              },
+              {
+                "type": "text",
+                "text": "Answer: $11 - 15 = -4$",
+                "marks": [
+                  {
+                    "type": "italic"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-sequences-term-to-term"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Geometric Sequences"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A "
+          },
+          {
+            "type": "text",
+            "text": "geometric sequence",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " has a "
+          },
+          {
+            "type": "text",
+            "text": "constant ratio",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " between consecutive terms."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Examples:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "2, 6, 18, 54, ... (common ratio = 3)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "100, 50, 25, 12.5, ... (common ratio = 0.5)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "3, -6, 12, -24, ... (common ratio = -2)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Finding the Common Ratio"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Divide any term by the previous term."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Example:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " For 4, 12, 36, 108, ... $12 ÷ 4 = 3$, $36 ÷ 12 = 3$, $108 ÷ 36 = 3$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Common ratio = 3"
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Quick Check:",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " Find the common ratio of 5, 10, 20, 40, ... "
+              },
+              {
+                "type": "text",
+                "text": "Answer: $10 ÷ 5 = 2$",
+                "marks": [
+                  {
+                    "type": "italic"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Fibonacci-Type Sequences"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In a "
+          },
+          {
+            "type": "text",
+            "text": "Fibonacci-type sequence",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ", each term is the sum of the two preceding terms."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The Fibonacci Sequence:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$1, 1, 2, 3, 5, 8, 13, 21, 34, 55, ...$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Rule:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Add the previous two terms $1 + 1 = 2$, $1 + 2 = 3$, $2 + 3 = 5$, etc."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example: 2, 5, 7, 12, 19, 31, ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Check: $2 + 5 = 7$ ✓, $5 + 7 = 12$ ✓, $7 + 12 = 19$ ✓"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Next term: $19 + 31 = 50$"
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Quick Check:",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " Continue the sequence 1, 3, 4, 7, 11, ... "
+              },
+              {
+                "type": "text",
+                "text": "Answer: 18, 29, 47, ... (add previous two terms)",
+                "marks": [
+                  {
+                    "type": "italic"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Triangular Numbers"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The "
+          },
+          {
+            "type": "text",
+            "text": "triangular numbers",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " are: 1, 3, 6, 10, 15, 21, 28, ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "[DIAGRAM: Dots arranged in triangular patterns]"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Pattern:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Add 2, then 3, then 4, then 5, ... $1 + 2 = 3$, $3 + 3 = 6$, $6 + 4 = 10$, $10 + 5 = 15$, ..."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-sequences-term-to-term-2"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Square Numbers"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The "
+          },
+          {
+            "type": "text",
+            "text": "square numbers",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " are: 1, 4, 9, 16, 25, 36, 49, ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "These are $1^2, 2^2, 3^2, 4^2, 5^2, ...$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Differences:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " 3, 5, 7, 9, 11, ... (consecutive odd numbers)"
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Cube Numbers"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The "
+          },
+          {
+            "type": "text",
+            "text": "cube numbers",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " are: 1, 8, 27, 64, 125, 216, ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "These are $1^3, 2^3, 3^3, 4^3, 5^3, ...$"
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Generating Sequences"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example: First term is 5, term-to-term rule is \"multiply by 2 then subtract 3\""
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "1st term: 5"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "2nd term: $5 × 2 - 3 = 7$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "3rd term: $7 × 2 - 3 = 11$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "4th term: $11 × 2 - 3 = 19$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "5th term: $19 × 2 - 3 = 35$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Sequence: 5, 7, 11, 19, 35, ..."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example: First term is 100, rule is \"subtract 7\""
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Sequence: 100, 93, 86, 79, 72, 65, ..."
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Quick Check:",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " Generate the first 5 terms starting from 2, with rule \"multiply by 3\". "
+              },
+              {
+                "type": "text",
+                "text": "Answer: 2, 6, 18, 54, 162",
+                "marks": [
+                  {
+                    "type": "italic"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Find the next three terms of 4, 9, 14, 19, ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Common difference: $9 - 4 = 5$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Next terms: $19 + 5 = 24$, $24 + 5 = 29$, $29 + 5 = 34$"
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A sequence starts 2, 6, ... The term-to-term rule is \"multiply by 2 and add 2\". Find the next three terms."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "3rd term: $6 × 2 + 2 = 14$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "4th term: $14 × 2 + 2 = 30$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "5th term: $30 × 2 + 2 = 62$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 3"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Identify the sequence type: 81, 27, 9, 3, 1, ..."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " Check ratio: $27 ÷ 81 = \\frac{1}{3}$, $9 ÷ 27 = \\frac{1}{3}$, etc."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "This is a "
+          },
+          {
+            "type": "text",
+            "text": "geometric sequence",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " with common ratio $\\frac{1}{3}$."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Next term: $1 × \\frac{1}{3} = \\frac{1}{3}$"
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Knowledge Check"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "What is the term-to-term rule for 6, 10, 14, 18, ...?"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Answer: Add 4",
+                "marks": [
+                  {
+                    "type": "italic"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 2
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Find the next term of 5, 15, 45, 135, ..."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Answer: 405 (multiply by 3)",
+                "marks": [
+                  {
+                    "type": "italic"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 3
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Is 3, 7, 12, 18, 25, ... an arithmetic sequence?"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Answer: No (differences are 4, 5, 6, 7, ... not constant)",
+                "marks": [
+                  {
+                    "type": "italic"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 4
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "What type of sequence is 1, 4, 9, 16, 25, ...?"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Answer: Square numbers",
+                "marks": [
+                  {
+                    "type": "italic"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Questions"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Foundation Level"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Find the next three terms:"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) 5, 9, 13, 17, ..."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) 50, 43, 36, 29, ..."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) 2, 4, 8, 16, ..."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(d) 1, 4, 9, 16, ..."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 2
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Find the term-to-term rule:"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) 3, 8, 13, 18, ..."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) 64, 32, 16, 8, ..."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) 1, 1, 2, 3, 5, 8, ..."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(d) 10, 7, 4, 1, ..."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 3
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Generate the first 5 terms:"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) First term 3, add 5"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) First term 2, multiply by 4"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) First term 100, subtract 12"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(d) First term 1, add the term number"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 4
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Identify the sequence type (arithmetic, geometric, or neither):"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) 7, 14, 21, 28, ..."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) 3, 9, 27, 81, ..."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) 1, 3, 6, 10, 15, ..."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(d) 20, 15, 10, 5, ..."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 5
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The 5th term of a sequence is 17 and the term-to-term rule is \"add 4\". Find the first term."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Higher Level"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 6
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A sequence has first term $a$ and common ratio $r$. Write the first 5 terms."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 7
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The first three terms of a Fibonacci-type sequence are $x$, $y$, $x + y$. Find the 6th term in terms of $x$ and $y$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 8
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A sequence begins 5, 8, 11, 14, ... Which term is 50?"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 9
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Show that the sequence $2, 5, 11, 23, 47, ...$ follows the rule \"multiply by 2 and add 1\"."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 10
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Create a sequence where the 1st term is 3 and the 5th term is 48."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answers"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) 21, 25, 29 (b) 22, 15, 8 (c) 32, 64, 128 (d) 25, 36, 49"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 2
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) Add 5 (b) Divide by 2 (or multiply by $\\frac{1}{2}$) (c) Add previous two terms (d) Subtract 3"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 3
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) 3, 8, 13, 18, 23 (b) 2, 8, 32, 128, 512 (c) 100, 88, 76, 64, 52 (d) 1, 2, 4, 7, 11 (add 1, 2, 3, 4)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 4
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) Arithmetic (common difference 7) (b) Geometric (common ratio 3) (c) Neither (triangular numbers) (d) Arithmetic (common difference -5)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 5
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Work backwards: 17, 13, 9, 5, 1. First term = 1"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 6
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$a$, $ar$, $ar^2$, $ar^3$, $ar^4$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 7
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Terms: $x$, $y$, $x+y$, $x+2y$, $2x+3y$, $3x+5y$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 8
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "50 = 5 + 3(n-1), so 45 = 3(n-1), n-1 = 15, n = 16. The 16th term."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 9
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$5 × 2 + 1 = 11$ ✓, $11 × 2 + 1 = 23$ ✓, $23 × 2 + 1 = 47$ ✓"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 10
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Various answers possible. E.g., 3, 6, 12, 24, 48 (multiply by 2)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "quiz-sequences-term-to-term"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Term-to-term rule:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Describes how to get from one term to the next"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Arithmetic sequence:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Constant difference between terms"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Geometric sequence:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Constant ratio between terms"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Fibonacci-type:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Each term is sum of previous two"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Special sequences:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " Square numbers, cube numbers, triangular numbers"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "To find the rule, look at differences or ratios between consecutive terms"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

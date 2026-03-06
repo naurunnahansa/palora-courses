@@ -1,0 +1,188 @@
+{
+  "id": "quiz-position-vectors",
+  "title": "Quiz: Position Vectors",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the position vector of the point $A(3, -7)$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\binom{-7}{3}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\binom{3}{-7}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\binom{3}{7}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\binom{-3}{7}$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The position vector of a point is the vector from the origin to that point. For $A(3, -7)$, the position vector is $\\binom{3}{-7}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Points $A$ and $B$ have position vectors $\\mathbf{a} = \\binom{2}{5}$ and $\\mathbf{b} = \\binom{6}{1}$. What is $\\vec{AB}$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\binom{8}{6}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\binom{-4}{4}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\binom{4}{-4}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\binom{4}{4}$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "$\\vec{AB} = \\mathbf{b} - \\mathbf{a} = \\binom{6}{1} - \\binom{2}{5} = \\binom{4}{-4}$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The position vector of point $P$ is $\\binom{1}{4}$ and $\\vec{PQ} = \\binom{3}{-2}$. What is the position vector of $Q$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\binom{4}{2}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\binom{-2}{6}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\binom{4}{6}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\binom{-2}{2}$"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The position vector of $Q$ is $\\mathbf{p} + \\vec{PQ} = \\binom{1}{4} + \\binom{3}{-2} = \\binom{4}{2}$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the midpoint of two points with position vectors $\\binom{2}{8}$ and $\\binom{6}{4}$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\binom{4}{6}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\binom{8}{12}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\binom{3}{5}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\binom{2}{2}$"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The midpoint has position vector $\\frac{1}{2}(\\mathbf{a} + \\mathbf{b}) = \\frac{1}{2}\\binom{8}{12} = \\binom{4}{6}$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A position vector always starts at:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The point itself"
+        },
+        {
+          "id": "b",
+          "text": "The nearest axis"
+        },
+        {
+          "id": "c",
+          "text": "Any convenient point"
+        },
+        {
+          "id": "d",
+          "text": "The origin"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "A position vector is defined as the vector from the origin $O$ to the given point. It always starts at the origin."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $\\vec{OA} = \\binom{-3}{2}$, what are the coordinates of point $A$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$(2, -3)$"
+        },
+        {
+          "id": "b",
+          "text": "$(3, -2)$"
+        },
+        {
+          "id": "c",
+          "text": "$(-3, 2)$"
+        },
+        {
+          "id": "d",
+          "text": "$(-2, 3)$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The position vector components give the coordinates directly: $\\vec{OA} = \\binom{-3}{2}$ means $A$ is at $(-3, 2)$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The distance between points with position vectors $\\binom{1}{2}$ and $\\binom{4}{6}$ is:",
+      "options": [
+        {
+          "id": "a",
+          "text": "$7$"
+        },
+        {
+          "id": "b",
+          "text": "$5$"
+        },
+        {
+          "id": "c",
+          "text": "$\\sqrt{7}$"
+        },
+        {
+          "id": "d",
+          "text": "$25$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The distance is the magnitude of $\\vec{AB} = \\binom{3}{4}$: $\\sqrt{3^2 + 4^2} = \\sqrt{9 + 16} = \\sqrt{25} = 5$."
+    }
+  ]
+}

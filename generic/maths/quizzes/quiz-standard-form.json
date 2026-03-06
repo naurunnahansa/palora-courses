@@ -1,0 +1,104 @@
+{
+  "id": "quiz-standard-form",
+  "title": "Quiz: Standard Form",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which of the following is $45,000$ written in standard form?",
+      "options": [
+        {"id": "a", "text": "$45 \\times 10^3$"},
+        {"id": "b", "text": "$4.5 \\times 10^4$"},
+        {"id": "c", "text": "$0.45 \\times 10^5$"},
+        {"id": "d", "text": "$4.5 \\times 10^3$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "In standard form, the number must be written as $a \\times 10^n$ where $1 \\leq a < 10$. So $45,000 = 4.5 \\times 10^4$. Options (a) and (c) do not have $a$ in the correct range."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is $0.00037$ written in standard form?",
+      "options": [
+        {"id": "a", "text": "$3.7 \\times 10^{-4}$"},
+        {"id": "b", "text": "$37 \\times 10^{-5}$"},
+        {"id": "c", "text": "$3.7 \\times 10^{4}$"},
+        {"id": "d", "text": "$3.7 \\times 10^{-3}$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Move the decimal point 4 places to the right to get 3.7. Since the original number is small (less than 1), the power of 10 is negative: $3.7 \\times 10^{-4}$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Calculate $(3 \\times 10^4) \\times (2 \\times 10^5)$. Give your answer in standard form.",
+      "options": [
+        {"id": "a", "text": "$6 \\times 10^9$"},
+        {"id": "b", "text": "$6 \\times 10^{20}$"},
+        {"id": "c", "text": "$5 \\times 10^9$"},
+        {"id": "d", "text": "$6 \\times 10^{10}$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Multiply the numbers: $3 \\times 2 = 6$. Add the powers: $10^4 \\times 10^5 = 10^{4+5} = 10^9$. Answer: $6 \\times 10^9$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is $6.2 \\times 10^{-3}$ written as an ordinary number?",
+      "options": [
+        {"id": "a", "text": "6200"},
+        {"id": "b", "text": "0.0062"},
+        {"id": "c", "text": "0.062"},
+        {"id": "d", "text": "0.62"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "A power of $10^{-3}$ means move the decimal point 3 places to the left: $6.2 \\rightarrow 0.62 \\rightarrow 0.062 \\rightarrow 0.0062$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which of these numbers is NOT written in correct standard form?",
+      "options": [
+        {"id": "a", "text": "$5.6 \\times 10^7$"},
+        {"id": "b", "text": "$1.0 \\times 10^{-2}$"},
+        {"id": "c", "text": "$12.4 \\times 10^3$"},
+        {"id": "d", "text": "$9.99 \\times 10^{11}$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "In standard form, the first number $a$ must satisfy $1 \\leq a < 10$. Since $12.4 \\geq 10$, option (c) is not in correct standard form. It should be $1.24 \\times 10^4$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Calculate $(8 \\times 10^7) \\div (4 \\times 10^3)$ in standard form.",
+      "options": [
+        {"id": "a", "text": "$2 \\times 10^4$"},
+        {"id": "b", "text": "$2 \\times 10^{10}$"},
+        {"id": "c", "text": "$4 \\times 10^4$"},
+        {"id": "d", "text": "$2 \\times 10^{21}$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Divide the numbers: $8 \\div 4 = 2$. Subtract the powers: $10^7 \\div 10^3 = 10^{7-3} = 10^4$. Answer: $2 \\times 10^4$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The distance from the Earth to the Sun is approximately $1.5 \\times 10^8$ km. What is this in ordinary form?",
+      "options": [
+        {"id": "a", "text": "15,000,000 km"},
+        {"id": "b", "text": "150,000,000 km"},
+        {"id": "c", "text": "1,500,000,000 km"},
+        {"id": "d", "text": "1,500,000 km"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "$1.5 \\times 10^8 = 150,000,000$ (move the decimal 8 places to the right). This equals 150 million kilometres."
+    }
+  ]
+}

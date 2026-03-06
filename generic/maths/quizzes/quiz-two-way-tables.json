@@ -1,0 +1,188 @@
+{
+  "id": "quiz-two-way-tables",
+  "title": "Quiz: Two-Way Tables",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A two-way table shows the favourite sport of 100 students by gender. There are 30 boys who like football and 45 boys in total. How many boys do NOT like football?",
+      "options": [
+        {
+          "id": "a",
+          "text": "15"
+        },
+        {
+          "id": "b",
+          "text": "30"
+        },
+        {
+          "id": "c",
+          "text": "45"
+        },
+        {
+          "id": "d",
+          "text": "55"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Boys who do not like football $= 45 - 30 = 15$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A two-way table is useful because it:",
+      "options": [
+        {
+          "id": "a",
+          "text": "Shows continuous data distributions"
+        },
+        {
+          "id": "b",
+          "text": "Only works with numerical data"
+        },
+        {
+          "id": "c",
+          "text": "Replaces the need for any probability calculation"
+        },
+        {
+          "id": "d",
+          "text": "Shows the relationship between exactly two categorical variables"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "A two-way table displays data classified by two categorical variables, making it easy to compare groups and find probabilities."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In a two-way table, 18 out of 80 people are left-handed men. A person is selected at random. What is $P(\\text{left-handed man})$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{80}{18}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{18}{40}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{18}{80}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{18}{100}$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "$P(\\text{left-handed man}) = \\frac{18}{80}$ since there are 18 left-handed men out of 80 total people."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In a two-way table, the row totals and column totals should all add up to:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The same number (the grand total)"
+        },
+        {
+          "id": "b",
+          "text": "Different numbers depending on the row"
+        },
+        {
+          "id": "c",
+          "text": "100"
+        },
+        {
+          "id": "d",
+          "text": "The number of categories"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The row totals and column totals should each sum to the same grand total, which is the total number of items in the dataset."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A two-way table shows that 25 out of 60 girls prefer maths. Given that a randomly chosen student is a girl, what is the probability she prefers maths?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{25}{100}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{25}{60}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{60}{100}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{25}{40}$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Given the student is a girl, we only consider girls (60 total). So the probability is $\\frac{25}{60}$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A two-way table has categories: {Cat, Dog} and {Male, Female}. If all four cells are filled in, how many values in total appear in the table (including totals)?",
+      "options": [
+        {
+          "id": "a",
+          "text": "4"
+        },
+        {
+          "id": "b",
+          "text": "6"
+        },
+        {
+          "id": "c",
+          "text": "9"
+        },
+        {
+          "id": "d",
+          "text": "8"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A 2-by-2 table has 4 cells, plus 2 row totals, 2 column totals, and 1 grand total: $4 + 2 + 2 + 1 = 9$ values."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In a two-way table, you know the grand total and all but one cell value. Can you find the missing value?",
+      "options": [
+        {
+          "id": "a",
+          "text": "No, you always need more information"
+        },
+        {
+          "id": "b",
+          "text": "Yes, by subtracting the known values from the appropriate total"
+        },
+        {
+          "id": "c",
+          "text": "Only if the table is 2 by 2"
+        },
+        {
+          "id": "d",
+          "text": "Only if the data is about probability"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "If you know the totals, you can find any missing cell value by subtracting the known cells in that row or column from the row or column total."
+    }
+  ]
+}

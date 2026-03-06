@@ -1,0 +1,188 @@
+{
+  "id": "quiz-mean-from-grouped-data",
+  "title": "Quiz: Mean from Grouped Data",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the midpoint of the class interval $20 \\leq x < 30$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "25"
+        },
+        {
+          "id": "b",
+          "text": "20"
+        },
+        {
+          "id": "c",
+          "text": "30"
+        },
+        {
+          "id": "d",
+          "text": "10"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Midpoint $= \\frac{20 + 30}{2} = 25$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Why is the mean from grouped data called an 'estimate'?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Because the calculation involves rounding"
+        },
+        {
+          "id": "b",
+          "text": "Because we use midpoints instead of the actual data values, which are unknown"
+        },
+        {
+          "id": "c",
+          "text": "Because grouped data is always unreliable"
+        },
+        {
+          "id": "d",
+          "text": "Because the formula is approximate"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "When data is grouped, the individual values are lost. We use the midpoint of each class as a representative value, which only gives an estimate."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A grouped frequency table has classes $0 \\leq h < 10$ (freq 5), $10 \\leq h < 20$ (freq 12), $20 \\leq h < 30$ (freq 8). What is $\\sum fx$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$25 + 180 + 160 = 365$"
+        },
+        {
+          "id": "b",
+          "text": "$0 + 120 + 200 = 320$"
+        },
+        {
+          "id": "c",
+          "text": "$50 + 120 + 160 = 330$"
+        },
+        {
+          "id": "d",
+          "text": "$25 + 180 + 200 = 405$"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Midpoints: 5, 15, 25. $\\sum fx = (5 \\times 5) + (12 \\times 15) + (8 \\times 25) = 25 + 180 + 200 = 405$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The estimated mean from grouped data must lie:",
+      "options": [
+        {
+          "id": "a",
+          "text": "At the midpoint of the modal class"
+        },
+        {
+          "id": "b",
+          "text": "Below the median"
+        },
+        {
+          "id": "c",
+          "text": "Within the range of the data"
+        },
+        {
+          "id": "d",
+          "text": "Above the largest midpoint"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The estimated mean must lie within the range of the data (between the lowest and highest class boundaries). If it does not, there is an error."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "When calculating the estimated mean, you should divide $\\sum fx$ by:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The number of class intervals"
+        },
+        {
+          "id": "b",
+          "text": "The total frequency $\\sum f$"
+        },
+        {
+          "id": "c",
+          "text": "The sum of the midpoints"
+        },
+        {
+          "id": "d",
+          "text": "The class width"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Estimated mean $= \\frac{\\sum fx}{\\sum f}$, where $\\sum f$ is the total frequency (the total number of data items)."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A table has unequal class widths: $0 \\leq x < 5$, $5 \\leq x < 15$, $15 \\leq x < 30$. Can you still estimate the mean?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Yes, the midpoint method works regardless of class width"
+        },
+        {
+          "id": "b",
+          "text": "No, the method only works with equal class widths"
+        },
+        {
+          "id": "c",
+          "text": "Only if you make the class widths equal first"
+        },
+        {
+          "id": "d",
+          "text": "Only if you use frequency density instead"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The estimated mean formula works for both equal and unequal class widths. You simply find the midpoint of each class and use $\\frac{\\sum fx}{\\sum f}$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A common error is using the lower boundary instead of the midpoint. If the class is $10 \\leq x < 20$ with frequency 15, the correct $fx$ value is:",
+      "options": [
+        {
+          "id": "a",
+          "text": "$10 \\times 15 = 150$"
+        },
+        {
+          "id": "b",
+          "text": "$20 \\times 15 = 300$"
+        },
+        {
+          "id": "c",
+          "text": "$15 \\times 15 = 225$"
+        },
+        {
+          "id": "d",
+          "text": "$30 \\times 15 = 450$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The midpoint of $10 \\leq x < 20$ is $\\frac{10+20}{2} = 15$. So $fx = 15 \\times 15 = 225$."
+    }
+  ]
+}

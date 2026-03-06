@@ -1,0 +1,104 @@
+{
+  "id": "quiz-exponential-graphs",
+  "title": "Quiz: Exponential Graphs",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the $y$-intercept of $y = 3^x$?",
+      "options": [
+        {"id": "a", "text": "0"},
+        {"id": "b", "text": "1"},
+        {"id": "c", "text": "3"},
+        {"id": "d", "text": "There is no $y$-intercept"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "When $x = 0$: $y = 3^0 = 1$. Every exponential function $y = a^x$ passes through $(0, 1)$ because $a^0 = 1$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which graph represents exponential decay?",
+      "options": [
+        {"id": "a", "text": "$y = 2^x$"},
+        {"id": "b", "text": "$y = 5^x$"},
+        {"id": "c", "text": "$y = \\left(\\frac{1}{3}\\right)^x$"},
+        {"id": "d", "text": "$y = x^2$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "Exponential decay occurs when the base is between 0 and 1. $y = \\left(\\frac{1}{3}\\right)^x$ decreases as $x$ increases because the base $\\frac{1}{3}$ is less than 1."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the horizontal asymptote of $y = 2^x$?",
+      "options": [
+        {"id": "a", "text": "$y = 2$"},
+        {"id": "b", "text": "$y = 1$"},
+        {"id": "c", "text": "$y = 0$"},
+        {"id": "d", "text": "There is no asymptote"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "As $x$ becomes very negative, $2^x$ approaches 0 but never reaches it. The $x$-axis ($y = 0$) is the horizontal asymptote."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the value of $y$ when $x = 3$ on the graph $y = 2^x$?",
+      "options": [
+        {"id": "a", "text": "6"},
+        {"id": "b", "text": "8"},
+        {"id": "c", "text": "9"},
+        {"id": "d", "text": "16"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "$y = 2^3 = 8$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Why can the graph of $y = a^x$ (where $a > 0$) never touch or cross the $x$-axis?",
+      "options": [
+        {"id": "a", "text": "Because exponential graphs only exist for positive $x$"},
+        {"id": "b", "text": "Because $a^x$ is always positive for any real $x$, so $y$ can never equal zero"},
+        {"id": "c", "text": "Because the graph is always increasing"},
+        {"id": "d", "text": "Because $a$ must be greater than 1"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "For any positive base $a$ and any real exponent $x$, $a^x > 0$. The output is always positive, so the graph stays above the $x$-axis."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A population doubles every year. If it starts at 100, which function models it after $t$ years?",
+      "options": [
+        {"id": "a", "text": "$P = 100 + 2t$"},
+        {"id": "b", "text": "$P = 200t$"},
+        {"id": "c", "text": "$P = 100 \\times 2^t$"},
+        {"id": "d", "text": "$P = 100t^2$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "Doubling is exponential growth with multiplier 2. Starting at 100 and multiplying by 2 each year gives $P = 100 \\times 2^t$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "How does the graph of $y = 5^x$ compare to $y = 2^x$?",
+      "options": [
+        {"id": "a", "text": "Both have the same shape and pass through the same points"},
+        {"id": "b", "text": "$y = 5^x$ grows faster and is steeper for positive $x$, but both pass through $(0, 1)$"},
+        {"id": "c", "text": "$y = 5^x$ has a different $y$-intercept"},
+        {"id": "d", "text": "$y = 5^x$ has a different asymptote"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Both pass through $(0, 1)$ since $a^0 = 1$ for any base. Both have asymptote $y = 0$. However, $5^x$ grows much faster than $2^x$ because its base is larger."
+    }
+  ]
+}

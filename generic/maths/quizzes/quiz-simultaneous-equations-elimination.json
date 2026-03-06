@@ -1,0 +1,104 @@
+{
+  "id": "quiz-simultaneous-equations-elimination",
+  "title": "Quiz: Simultaneous Equations: Elimination Method",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Solve simultaneously: $2x + y = 7$ and $x + y = 4$.",
+      "options": [
+        {"id": "a", "text": "$x = 3, y = 1$"},
+        {"id": "b", "text": "$x = 1, y = 3$"},
+        {"id": "c", "text": "$x = 2, y = 3$"},
+        {"id": "d", "text": "$x = 3, y = 4$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Subtract equation 2 from equation 1: $(2x + y) - (x + y) = 7 - 4$, giving $x = 3$. Substitute back: $3 + y = 4$, so $y = 1$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "To solve $3x + 2y = 12$ and $5x + 2y = 20$ by elimination, what should you do first?",
+      "options": [
+        {"id": "a", "text": "Multiply the first equation by 5"},
+        {"id": "b", "text": "Subtract one equation from the other to eliminate $y$"},
+        {"id": "c", "text": "Add the equations together"},
+        {"id": "d", "text": "Multiply both equations by 2"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Since both equations have $2y$, subtracting one from the other eliminates $y$ immediately: $(5x + 2y) - (3x + 2y) = 20 - 12$, giving $2x = 8$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Solve simultaneously: $3x + 4y = 18$ and $x + 2y = 8$.",
+      "options": [
+        {"id": "a", "text": "$x = 2, y = 3$"},
+        {"id": "b", "text": "$x = 4, y = 3$"},
+        {"id": "c", "text": "$x = 2, y = 2$"},
+        {"id": "d", "text": "$x = 6, y = 0$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Multiply eq 2 by 2: $2x + 4y = 16$. Subtract from eq 1: $(3x + 4y) - (2x + 4y) = 18 - 16$, giving $x = 2$. Substitute: $2 + 2y = 8$, so $y = 3$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Solve simultaneously: $2x + 3y = 13$ and $4x - y = 5$.",
+      "options": [
+        {"id": "a", "text": "$x = 1, y = 3$"},
+        {"id": "b", "text": "$x = 2, y = 3$"},
+        {"id": "c", "text": "$x = 3, y = 2$"},
+        {"id": "d", "text": "$x = 4, y = 1$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Multiply eq 2 by 3: $12x - 3y = 15$. Add to eq 1: $14x = 28$, so $x = 2$. Substitute: $4 + 3y = 13$, so $y = 3$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "When should you add equations rather than subtract them?",
+      "options": [
+        {"id": "a", "text": "When the coefficients of the variable to eliminate have the same sign"},
+        {"id": "b", "text": "When the coefficients of the variable to eliminate have opposite signs"},
+        {"id": "c", "text": "Always add, never subtract"},
+        {"id": "d", "text": "When both equations are positive"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Add the equations when the coefficients have opposite signs (e.g., $+3y$ and $-3y$), as adding will eliminate that variable. Subtract when they have the same sign."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Solve simultaneously: $5x + 3y = 21$ and $2x + 3y = 12$.",
+      "options": [
+        {"id": "a", "text": "$x = 3, y = 2$"},
+        {"id": "b", "text": "$x = 2, y = 3$"},
+        {"id": "c", "text": "$x = 1, y = 5$"},
+        {"id": "d", "text": "$x = 3, y = 3$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Subtract eq 2 from eq 1: $3x = 9$, so $x = 3$. Substitute into eq 1: $15 + 3y = 21$, so $3y = 6$, $y = 2$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "After solving a pair of simultaneous equations, how should you check your answer?",
+      "options": [
+        {"id": "a", "text": "Substitute the values into the first equation only"},
+        {"id": "b", "text": "Check that $x + y$ is positive"},
+        {"id": "c", "text": "Substitute the values into both original equations to verify they are satisfied"},
+        {"id": "d", "text": "Check that neither value is negative"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "Always substitute your values back into both original equations. If both are satisfied, your solution is correct."
+    }
+  ]
+}

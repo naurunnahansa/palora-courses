@@ -1,0 +1,188 @@
+{
+  "id": "quiz-mutually-exclusive-events",
+  "title": "Quiz: Mutually Exclusive Events",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Two events are mutually exclusive if:",
+      "options": [
+        {
+          "id": "a",
+          "text": "They always happen together"
+        },
+        {
+          "id": "b",
+          "text": "They are independent"
+        },
+        {
+          "id": "c",
+          "text": "They have the same probability"
+        },
+        {
+          "id": "d",
+          "text": "They cannot happen at the same time"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Mutually exclusive events cannot occur at the same time. If one happens, the other cannot."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "For mutually exclusive events $A$ and $B$, $P(A \\text{ or } B) =$",
+      "options": [
+        {
+          "id": "a",
+          "text": "$P(A) \\times P(B)$"
+        },
+        {
+          "id": "b",
+          "text": "$P(A) + P(B)$"
+        },
+        {
+          "id": "c",
+          "text": "$P(A) - P(B)$"
+        },
+        {
+          "id": "d",
+          "text": "$P(A) + P(B) - P(A \\text{ and } B)$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "For mutually exclusive events, the addition rule simplifies to $P(A \\text{ or } B) = P(A) + P(B)$ because $P(A \\text{ and } B) = 0$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A fair dice is rolled. What is $P(\\text{rolling a 2 or a 5})$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{1}{36}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{1}{6}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{2}{6}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{1}{3}$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Rolling a 2 and rolling a 5 are mutually exclusive. $P(2 \\text{ or } 5) = \\frac{1}{6} + \\frac{1}{6} = \\frac{2}{6} = \\frac{1}{3}$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which pair of events is NOT mutually exclusive?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Drawing a red card and drawing a king from a deck"
+        },
+        {
+          "id": "b",
+          "text": "Drawing a heart and drawing a spade from a deck"
+        },
+        {
+          "id": "c",
+          "text": "Rolling an even number and rolling an odd number on a dice"
+        },
+        {
+          "id": "d",
+          "text": "Getting heads and getting tails on a single coin flip"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A card can be both red and a king (e.g. king of hearts or king of diamonds), so these events are not mutually exclusive."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $P(A) = 0.4$, $P(B) = 0.3$, and $A$ and $B$ are mutually exclusive, what is $P(A \\text{ or } B)$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$0.12$"
+        },
+        {
+          "id": "b",
+          "text": "$0.1$"
+        },
+        {
+          "id": "c",
+          "text": "$0.7$"
+        },
+        {
+          "id": "d",
+          "text": "$0.58$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "For mutually exclusive events: $P(A \\text{ or } B) = P(A) + P(B) = 0.4 + 0.3 = 0.7$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If all possible outcomes are mutually exclusive and cover every possibility, their probabilities must:",
+      "options": [
+        {
+          "id": "a",
+          "text": "All be equal"
+        },
+        {
+          "id": "b",
+          "text": "Sum to 1"
+        },
+        {
+          "id": "c",
+          "text": "Sum to 0"
+        },
+        {
+          "id": "d",
+          "text": "Each equal $\\frac{1}{n}$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "If the outcomes are exhaustive (cover every possibility) and mutually exclusive, their probabilities must sum to 1."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A bag has 5 red, 3 blue, and 2 yellow balls. What is the probability of picking a red or yellow ball?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{7}{10}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{5}{10}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{2}{10}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{10}{10}$"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Red and yellow are mutually exclusive: $P(\\text{red or yellow}) = \\frac{5}{10} + \\frac{2}{10} = \\frac{7}{10}$."
+    }
+  ]
+}

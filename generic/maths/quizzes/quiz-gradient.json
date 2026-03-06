@@ -1,0 +1,104 @@
+{
+  "id": "quiz-gradient",
+  "title": "Quiz: Gradient",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the gradient of the line passing through $(1, 3)$ and $(4, 9)$.",
+      "options": [
+        {"id": "a", "text": "$3$"},
+        {"id": "b", "text": "$2$"},
+        {"id": "c", "text": "$6$"},
+        {"id": "d", "text": "$\\frac{1}{2}$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "$m = \\frac{9 - 3}{4 - 1} = \\frac{6}{3} = 2$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A line has a gradient of $-3$. What does this tell you about the line?",
+      "options": [
+        {"id": "a", "text": "It slopes upward from left to right"},
+        {"id": "b", "text": "It slopes downward from left to right"},
+        {"id": "c", "text": "It is horizontal"},
+        {"id": "d", "text": "It is vertical"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "A negative gradient means $y$ decreases as $x$ increases. The line slopes downward from left to right."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the gradient of the line passing through $(-2, 5)$ and $(4, -1)$.",
+      "options": [
+        {"id": "a", "text": "$1$"},
+        {"id": "b", "text": "$-1$"},
+        {"id": "c", "text": "$\\frac{2}{3}$"},
+        {"id": "d", "text": "$-\\frac{2}{3}$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "$m = \\frac{-1 - 5}{4 - (-2)} = \\frac{-6}{6} = -1$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the gradient of a horizontal line?",
+      "options": [
+        {"id": "a", "text": "1"},
+        {"id": "b", "text": "0"},
+        {"id": "c", "text": "Undefined"},
+        {"id": "d", "text": "$-1$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "A horizontal line has no vertical change ($y_2 - y_1 = 0$), so the gradient is $\\frac{0}{\\text{any number}} = 0$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the gradient of the line passing through $(0, 4)$ and $(6, 7)$.",
+      "options": [
+        {"id": "a", "text": "$2$"},
+        {"id": "b", "text": "$\\frac{3}{2}$"},
+        {"id": "c", "text": "$\\frac{1}{2}$"},
+        {"id": "d", "text": "$\\frac{2}{3}$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "$m = \\frac{7 - 4}{6 - 0} = \\frac{3}{6} = \\frac{1}{2}$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which formula is used to calculate the gradient between two points $(x_1, y_1)$ and $(x_2, y_2)$?",
+      "options": [
+        {"id": "a", "text": "$m = \\frac{x_2 - x_1}{y_2 - y_1}$"},
+        {"id": "b", "text": "$m = \\frac{y_2 - y_1}{x_2 - x_1}$"},
+        {"id": "c", "text": "$m = \\frac{y_2 + y_1}{x_2 + x_1}$"},
+        {"id": "d", "text": "$m = (y_2 - y_1)(x_2 - x_1)$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The gradient is the change in $y$ divided by the change in $x$: $m = \\frac{y_2 - y_1}{x_2 - x_1}$. This is often described as 'rise over run'."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Two lines have gradients of 4 and $\\frac{1}{4}$. Which line is steeper?",
+      "options": [
+        {"id": "a", "text": "The line with gradient 4"},
+        {"id": "b", "text": "The line with gradient $\\frac{1}{4}$"},
+        {"id": "c", "text": "They are equally steep"},
+        {"id": "d", "text": "Cannot be determined"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "The larger the absolute value of the gradient, the steeper the line. Since $|4| > |\\frac{1}{4}|$, the line with gradient 4 is steeper."
+    }
+  ]
+}

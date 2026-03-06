@@ -1,0 +1,188 @@
+{
+  "id": "quiz-venn-diagrams",
+  "title": "Quiz: Venn Diagrams",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In a Venn diagram, the overlapping region of sets $A$ and $B$ represents:",
+      "options": [
+        {
+          "id": "a",
+          "text": "$A \\cup B$ (A or B)"
+        },
+        {
+          "id": "b",
+          "text": "$A \\cap B$ (A and B)"
+        },
+        {
+          "id": "c",
+          "text": "$A'$ (not A)"
+        },
+        {
+          "id": "d",
+          "text": "$A - B$ (A but not B)"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The overlapping region contains elements that are in both $A$ and $B$, which is the intersection $A \\cap B$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In a group of 40 students, 25 study French, 18 study Spanish, and 10 study both. How many study at least one of the two languages?",
+      "options": [
+        {
+          "id": "a",
+          "text": "33"
+        },
+        {
+          "id": "b",
+          "text": "43"
+        },
+        {
+          "id": "c",
+          "text": "35"
+        },
+        {
+          "id": "d",
+          "text": "40"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Using the addition rule: $|A \\cup B| = |A| + |B| - |A \\cap B| = 25 + 18 - 10 = 33$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Using the data from the previous question, how many students study neither language?",
+      "options": [
+        {
+          "id": "a",
+          "text": "0"
+        },
+        {
+          "id": "b",
+          "text": "5"
+        },
+        {
+          "id": "c",
+          "text": "10"
+        },
+        {
+          "id": "d",
+          "text": "7"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Students studying at least one language $= 33$. Neither language $= 40 - 33 = 7$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "On a Venn diagram, the region outside both circles but inside the rectangle represents:",
+      "options": [
+        {
+          "id": "a",
+          "text": "Elements in both sets"
+        },
+        {
+          "id": "b",
+          "text": "The total number of elements"
+        },
+        {
+          "id": "c",
+          "text": "Elements in the universal set but not in either set"
+        },
+        {
+          "id": "d",
+          "text": "Elements in only one set"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The rectangle represents the universal set. The region outside both circles contains elements that are not in either set."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A Venn diagram shows: only $A = 12$, only $B = 8$, both $= 5$, neither $= 3$. What is the total number of elements in the universal set?",
+      "options": [
+        {
+          "id": "a",
+          "text": "28"
+        },
+        {
+          "id": "b",
+          "text": "25"
+        },
+        {
+          "id": "c",
+          "text": "20"
+        },
+        {
+          "id": "d",
+          "text": "23"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Total $= 12 + 8 + 5 + 3 = 28$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A person is chosen at random from the Venn diagram in the previous question. What is $P(A)$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{12}{28}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{17}{28}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{5}{28}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{13}{28}$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Set $A$ includes those in only $A$ plus those in both: $12 + 5 = 17$. So $P(A) = \\frac{17}{28}$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "When filling in a Venn diagram from given information, you should always start by filling in:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The region outside both circles"
+        },
+        {
+          "id": "b",
+          "text": "The larger circle first"
+        },
+        {
+          "id": "c",
+          "text": "The intersection (overlap) region"
+        },
+        {
+          "id": "d",
+          "text": "Any region you like"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "You should fill in the intersection first, because the 'only A' and 'only B' values depend on knowing how many are in both."
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "id": "quiz-surds",
+  "title": "Quiz: Surds",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Simplify $\\sqrt{72}$.",
+      "options": [
+        {"id": "a", "text": "$8\\sqrt{2}$"},
+        {"id": "b", "text": "$6\\sqrt{2}$"},
+        {"id": "c", "text": "$3\\sqrt{8}$"},
+        {"id": "d", "text": "$2\\sqrt{18}$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Find the largest perfect square factor: $72 = 36 \\times 2$. So $\\sqrt{72} = \\sqrt{36} \\times \\sqrt{2} = 6\\sqrt{2}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Simplify $\\sqrt{12} + \\sqrt{27}$.",
+      "options": [
+        {"id": "a", "text": "$\\sqrt{39}$"},
+        {"id": "b", "text": "$5\\sqrt{3}$"},
+        {"id": "c", "text": "$5\\sqrt{6}$"},
+        {"id": "d", "text": "$6\\sqrt{3}$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Simplify each surd first: $\\sqrt{12} = 2\\sqrt{3}$ and $\\sqrt{27} = 3\\sqrt{3}$. Then add like surds: $2\\sqrt{3} + 3\\sqrt{3} = 5\\sqrt{3}$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Rationalise $\\frac{6}{\\sqrt{3}}$.",
+      "options": [
+        {"id": "a", "text": "$\\frac{6\\sqrt{3}}{3}$"},
+        {"id": "b", "text": "$2\\sqrt{3}$"},
+        {"id": "c", "text": "$6\\sqrt{3}$"},
+        {"id": "d", "text": "$\\frac{\\sqrt{3}}{6}$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Multiply top and bottom by $\\sqrt{3}$: $\\frac{6}{\\sqrt{3}} \\times \\frac{\\sqrt{3}}{\\sqrt{3}} = \\frac{6\\sqrt{3}}{3} = 2\\sqrt{3}$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Expand and simplify $(2 + \\sqrt{3})(4 + \\sqrt{3})$.",
+      "options": [
+        {"id": "a", "text": "$8 + \\sqrt{3}$"},
+        {"id": "b", "text": "$11 + 6\\sqrt{3}$"},
+        {"id": "c", "text": "$8 + 6\\sqrt{3} + 3$"},
+        {"id": "d", "text": "$8 + 2\\sqrt{3}$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using FOIL: $2 \\times 4 + 2\\sqrt{3} + 4\\sqrt{3} + \\sqrt{3} \\times \\sqrt{3} = 8 + 6\\sqrt{3} + 3 = 11 + 6\\sqrt{3}$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is $(5 + \\sqrt{3})(5 - \\sqrt{3})$?",
+      "options": [
+        {"id": "a", "text": "$22$"},
+        {"id": "b", "text": "$25 - \\sqrt{9}$"},
+        {"id": "c", "text": "$28$"},
+        {"id": "d", "text": "$25 + 2\\sqrt{3}$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "This is the difference of two squares pattern: $(a + b)(a - b) = a^2 - b^2$. So $(5 + \\sqrt{3})(5 - \\sqrt{3}) = 25 - 3 = 22$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which of these is true about surds?",
+      "options": [
+        {"id": "a", "text": "$\\sqrt{a + b} = \\sqrt{a} + \\sqrt{b}$"},
+        {"id": "b", "text": "$\\sqrt{a \\times b} = \\sqrt{a} \\times \\sqrt{b}$"},
+        {"id": "c", "text": "$\\sqrt{a - b} = \\sqrt{a} - \\sqrt{b}$"},
+        {"id": "d", "text": "$(\\sqrt{a})^2 = 2a$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The multiplication rule $\\sqrt{a \\times b} = \\sqrt{a} \\times \\sqrt{b}$ is correct. However, $\\sqrt{a + b} \\neq \\sqrt{a} + \\sqrt{b}$. For example, $\\sqrt{9 + 16} = \\sqrt{25} = 5$, but $\\sqrt{9} + \\sqrt{16} = 3 + 4 = 7$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Rationalise $\\frac{1}{2 + \\sqrt{3}}$.",
+      "options": [
+        {"id": "a", "text": "$2 - \\sqrt{3}$"},
+        {"id": "b", "text": "$\\frac{2 - \\sqrt{3}}{7}$"},
+        {"id": "c", "text": "$\\frac{1}{2} - \\sqrt{3}$"},
+        {"id": "d", "text": "$\\frac{2 + \\sqrt{3}}{7}$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Multiply by the conjugate: $\\frac{1}{2 + \\sqrt{3}} \\times \\frac{2 - \\sqrt{3}}{2 - \\sqrt{3}} = \\frac{2 - \\sqrt{3}}{4 - 3} = \\frac{2 - \\sqrt{3}}{1} = 2 - \\sqrt{3}$."
+    }
+  ]
+}

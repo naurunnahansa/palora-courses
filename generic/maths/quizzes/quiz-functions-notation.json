@@ -1,0 +1,104 @@
+{
+  "id": "quiz-functions-notation",
+  "title": "Quiz: Function Notation",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $f(x) = 3x - 5$, what is $f(4)$?",
+      "options": [
+        {"id": "a", "text": "$7$"},
+        {"id": "b", "text": "$12$"},
+        {"id": "c", "text": "$17$"},
+        {"id": "d", "text": "$-2$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Substitute $x = 4$: $f(4) = 3(4) - 5 = 12 - 5 = 7$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $g(x) = x^2 - 3x + 2$, find $g(-1)$.",
+      "options": [
+        {"id": "a", "text": "$0$"},
+        {"id": "b", "text": "$2$"},
+        {"id": "c", "text": "$6$"},
+        {"id": "d", "text": "$-2$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "$g(-1) = (-1)^2 - 3(-1) + 2 = 1 + 3 + 2 = 6$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $f(x) = 2x + 1$ and $g(x) = x^2$, what is $fg(3)$?",
+      "options": [
+        {"id": "a", "text": "$49$"},
+        {"id": "b", "text": "$19$"},
+        {"id": "c", "text": "$36$"},
+        {"id": "d", "text": "$7$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "$fg(3)$ means apply $g$ first, then $f$. $g(3) = 9$, then $f(9) = 2(9) + 1 = 19$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $f(x) = 2x + 1$ and $g(x) = x^2$, what is $gf(3)$?",
+      "options": [
+        {"id": "a", "text": "$19$"},
+        {"id": "b", "text": "$49$"},
+        {"id": "c", "text": "$36$"},
+        {"id": "d", "text": "$7$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "$gf(3)$ means apply $f$ first, then $g$. $f(3) = 7$, then $g(7) = 49$. Note that $fg(3) \\neq gf(3)$ in general."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the inverse of $f(x) = 3x + 2$.",
+      "options": [
+        {"id": "a", "text": "$f^{-1}(x) = \\frac{x + 2}{3}$"},
+        {"id": "b", "text": "$f^{-1}(x) = \\frac{x - 2}{3}$"},
+        {"id": "c", "text": "$f^{-1}(x) = 3x - 2$"},
+        {"id": "d", "text": "$f^{-1}(x) = \\frac{1}{3x + 2}$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Write $y = 3x + 2$. Swap: $x = 3y + 2$. Rearrange: $y = \\frac{x - 2}{3}$. So $f^{-1}(x) = \\frac{x - 2}{3}$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $f(x) = 5x - 3$, solve $f(x) = 17$.",
+      "options": [
+        {"id": "a", "text": "$x = 4$"},
+        {"id": "b", "text": "$x = 82$"},
+        {"id": "c", "text": "$x = 2.8$"},
+        {"id": "d", "text": "$x = 14$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Set $5x - 3 = 17$: $5x = 20$, so $x = 4$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $f(x) = 2x + 1$ and $g(x) = x + 3$, what is $fg(x)$?",
+      "options": [
+        {"id": "a", "text": "$2x + 4$"},
+        {"id": "b", "text": "$2x + 7$"},
+        {"id": "c", "text": "$2x^2 + 7x + 3$"},
+        {"id": "d", "text": "$2x + 3$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "$fg(x) = f(g(x)) = f(x + 3) = 2(x + 3) + 1 = 2x + 6 + 1 = 2x + 7$."
+    }
+  ]
+}

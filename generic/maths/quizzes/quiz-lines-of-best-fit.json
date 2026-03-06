@@ -1,0 +1,188 @@
+{
+  "id": "quiz-lines-of-best-fit",
+  "title": "Quiz: Lines of Best Fit",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A line of best fit should pass through or close to:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The origin $(0, 0)$"
+        },
+        {
+          "id": "b",
+          "text": "The highest and lowest points"
+        },
+        {
+          "id": "c",
+          "text": "Every data point"
+        },
+        {
+          "id": "d",
+          "text": "The mean point $(\\bar{x}, \\bar{y})$"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "A line of best fit should pass through the mean point $(\\bar{x}, \\bar{y})$, with roughly equal numbers of data points above and below the line."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Using a line of best fit to estimate a value within the range of the data is called:",
+      "options": [
+        {
+          "id": "a",
+          "text": "Extrapolation"
+        },
+        {
+          "id": "b",
+          "text": "Correlation"
+        },
+        {
+          "id": "c",
+          "text": "Interpolation"
+        },
+        {
+          "id": "d",
+          "text": "Estimation"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Interpolation is estimating within the data range. It is generally reliable because the trend is supported by data in that region."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Extrapolation is unreliable because:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The trend may not continue beyond the data range"
+        },
+        {
+          "id": "b",
+          "text": "The line of best fit is always wrong"
+        },
+        {
+          "id": "c",
+          "text": "You cannot draw lines beyond the graph"
+        },
+        {
+          "id": "d",
+          "text": "The mean point moves"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Extrapolation extends the line beyond the observed data. The relationship may change outside the data range, making predictions unreliable."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A line of best fit passes through $(2, 30)$ and $(8, 72)$. What is the gradient?",
+      "options": [
+        {
+          "id": "a",
+          "text": "5"
+        },
+        {
+          "id": "b",
+          "text": "7"
+        },
+        {
+          "id": "c",
+          "text": "6"
+        },
+        {
+          "id": "d",
+          "text": "42"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Gradient $= \\frac{72 - 30}{8 - 2} = \\frac{42}{6} = 7$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "When drawing a line of best fit, you should:",
+      "options": [
+        {
+          "id": "a",
+          "text": "Connect every point with straight lines"
+        },
+        {
+          "id": "b",
+          "text": "Draw a curve through the points"
+        },
+        {
+          "id": "c",
+          "text": "Draw a straight line with roughly equal points above and below, ignoring outliers"
+        },
+        {
+          "id": "d",
+          "text": "Always start the line at the origin"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A line of best fit is a single straight line that follows the general trend, with roughly equal data points above and below it. Outliers should be ignored."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Data covers ages 10 to 16. A student uses the line of best fit to predict a value at age 25. This prediction is:",
+      "options": [
+        {
+          "id": "a",
+          "text": "An example of extrapolation and is unreliable"
+        },
+        {
+          "id": "b",
+          "text": "An example of interpolation"
+        },
+        {
+          "id": "c",
+          "text": "Reliable because the line is accurate"
+        },
+        {
+          "id": "d",
+          "text": "Impossible to make"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Age 25 is well outside the data range (10--16), making this extrapolation. The trend may not continue, so the prediction is unreliable."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The equation of a line of best fit for height ($x$ cm) vs weight ($y$ kg) is $y = 0.8x - 62$. The gradient $0.8$ means:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The average weight is 0.8 kg"
+        },
+        {
+          "id": "b",
+          "text": "For every 1 cm increase in height, weight increases by about 0.8 kg"
+        },
+        {
+          "id": "c",
+          "text": "80% of people follow this pattern"
+        },
+        {
+          "id": "d",
+          "text": "The correlation coefficient is 0.8"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The gradient represents the rate of change: for each additional 1 cm of height, the model predicts weight increases by approximately 0.8 kg."
+    }
+  ]
+}

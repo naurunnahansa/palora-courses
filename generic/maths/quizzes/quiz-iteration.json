@@ -1,0 +1,104 @@
+{
+  "id": "quiz-iteration",
+  "title": "Quiz: Iteration",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Using the iteration formula $x_{n+1} = \\frac{5}{x_n + 2}$ with $x_0 = 1$, what is $x_1$?",
+      "options": [
+        {"id": "a", "text": "$\\frac{5}{3}$"},
+        {"id": "b", "text": "$\\frac{5}{2}$"},
+        {"id": "c", "text": "$\\frac{3}{5}$"},
+        {"id": "d", "text": "$1$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Substitute $x_0 = 1$: $x_1 = \\frac{5}{1 + 2} = \\frac{5}{3}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The iteration $x_{n+1} = \\sqrt{x_n + 6}$ converges to a value $\\alpha$. What equation does $\\alpha$ satisfy?",
+      "options": [
+        {"id": "a", "text": "$\\alpha^2 + \\alpha - 6 = 0$"},
+        {"id": "b", "text": "$\\alpha^2 - \\alpha - 6 = 0$"},
+        {"id": "c", "text": "$\\alpha^2 = 6$"},
+        {"id": "d", "text": "$\\alpha - \\sqrt{6} = 0$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "At convergence $\\alpha = \\sqrt{\\alpha + 6}$. Square both sides: $\\alpha^2 = \\alpha + 6$. Rearrange: $\\alpha^2 - \\alpha - 6 = 0$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which rearrangement of $x^3 - 5x - 1 = 0$ gives the iteration formula $x_{n+1} = \\sqrt[3]{5x_n + 1}$?",
+      "options": [
+        {"id": "a", "text": "$x = 5x + 1$"},
+        {"id": "b", "text": "$x^3 = 5x + 1$"},
+        {"id": "c", "text": "$x = \\frac{x^3 - 1}{5}$"},
+        {"id": "d", "text": "$x^3 + 1 = 5x$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "From $x^3 - 5x - 1 = 0$, rearrange to $x^3 = 5x + 1$. Taking the cube root gives $x = \\sqrt[3]{5x + 1}$, which produces the iteration formula."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "An iterative sequence produces values 2.5, 2.48, 2.479, 2.4791, ... What is happening?",
+      "options": [
+        {"id": "a", "text": "The sequence is diverging"},
+        {"id": "b", "text": "The sequence is oscillating"},
+        {"id": "c", "text": "The sequence is converging"},
+        {"id": "d", "text": "The sequence has no pattern"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "The values are getting closer together and approaching a fixed value (approximately 2.479). This is convergence."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "To show that $x^2 - 3x - 1 = 0$ can be written as $x = 3 + \\frac{1}{x}$, what operation is applied?",
+      "options": [
+        {"id": "a", "text": "Square both sides"},
+        {"id": "b", "text": "Divide every term by $x$"},
+        {"id": "c", "text": "Subtract 3 from both sides"},
+        {"id": "d", "text": "Take the square root"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Starting from $x^2 - 3x - 1 = 0$, rearrange to $x^2 = 3x + 1$, then divide by $x$: $x = 3 + \\frac{1}{x}$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Why might an iterative formula fail to find a solution to an equation?",
+      "options": [
+        {"id": "a", "text": "Because the equation has no solutions at all"},
+        {"id": "b", "text": "Because the particular rearrangement may diverge rather than converge"},
+        {"id": "c", "text": "Because iteration only works for linear equations"},
+        {"id": "d", "text": "Because the starting value $x_0$ must always be 0"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Different rearrangements of the same equation may converge or diverge. If one formula diverges, a different rearrangement may still converge to the solution."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The formula $x_{n+1} = \\frac{5}{x_n^2}$ is used to solve an equation. What equation is being solved?",
+      "options": [
+        {"id": "a", "text": "$x^2 - 5 = 0$"},
+        {"id": "b", "text": "$x^3 - 5 = 0$"},
+        {"id": "c", "text": "$5x^2 - 1 = 0$"},
+        {"id": "d", "text": "$x^3 + 5 = 0$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "At convergence: $x = \\frac{5}{x^2}$. Multiply both sides by $x^2$: $x^3 = 5$. So the equation is $x^3 - 5 = 0$."
+    }
+  ]
+}

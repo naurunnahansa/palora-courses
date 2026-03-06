@@ -1,0 +1,188 @@
+{
+  "id": "quiz-vectors-introduction",
+  "title": "Quiz: Vectors Introduction",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What distinguishes a vector from a scalar?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A vector is always positive"
+        },
+        {
+          "id": "b",
+          "text": "A vector can only be written as a column"
+        },
+        {
+          "id": "c",
+          "text": "A vector is always larger than a scalar"
+        },
+        {
+          "id": "d",
+          "text": "A vector has both magnitude and direction"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "A vector has both magnitude (size) and direction, while a scalar has only magnitude. For example, velocity is a vector but speed is a scalar."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The vector $\\vec{AB}$ goes from $A(1, 3)$ to $B(4, 7)$. What is the column vector?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\binom{5}{10}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\binom{-3}{-4}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\binom{3}{4}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\binom{4}{7}$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Subtract the start from the end: $4 - 1 = 3$ and $7 - 3 = 4$, giving $\\binom{3}{4}$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $\\vec{AB} = \\binom{2}{-5}$, what is $\\vec{BA}$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\binom{2}{-5}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\binom{-2}{5}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\binom{5}{-2}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\binom{-5}{2}$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The reverse vector $\\vec{BA}$ is the negative of $\\vec{AB}$: $-\\binom{2}{-5} = \\binom{-2}{5}$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the magnitude of the vector $\\binom{3}{4}$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$5$"
+        },
+        {
+          "id": "b",
+          "text": "$7$"
+        },
+        {
+          "id": "c",
+          "text": "$12$"
+        },
+        {
+          "id": "d",
+          "text": "$25$"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The magnitude is $\\sqrt{3^2 + 4^2} = \\sqrt{9 + 16} = \\sqrt{25} = 5$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Two vectors are equal if they have:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The same starting point"
+        },
+        {
+          "id": "b",
+          "text": "The same magnitude only"
+        },
+        {
+          "id": "c",
+          "text": "The same magnitude and direction"
+        },
+        {
+          "id": "d",
+          "text": "The same direction only"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Two vectors are equal if they have both the same magnitude and the same direction. Their starting points do not need to be the same."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which of these is a scalar quantity?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Temperature"
+        },
+        {
+          "id": "b",
+          "text": "Displacement"
+        },
+        {
+          "id": "c",
+          "text": "Force"
+        },
+        {
+          "id": "d",
+          "text": "Velocity"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Temperature has magnitude but no direction, making it a scalar. Velocity, displacement, and force all have both magnitude and direction."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The vector $\\binom{0}{-6}$ represents a movement that is:",
+      "options": [
+        {
+          "id": "a",
+          "text": "6 units to the left"
+        },
+        {
+          "id": "b",
+          "text": "6 units downward"
+        },
+        {
+          "id": "c",
+          "text": "6 units upward"
+        },
+        {
+          "id": "d",
+          "text": "6 units to the right"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The top component (0) means no horizontal movement. The bottom component ($-6$) means 6 units downward."
+    }
+  ]
+}

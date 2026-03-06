@@ -1,0 +1,104 @@
+{
+  "id": "quiz-area-under-curve",
+  "title": "Quiz: Area Under a Curve",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "On a velocity-time graph, what does the area under the curve represent?",
+      "options": [
+        {"id": "a", "text": "Acceleration"},
+        {"id": "b", "text": "Speed"},
+        {"id": "c", "text": "Distance travelled"},
+        {"id": "d", "text": "Time taken"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "The area under a velocity-time graph equals distance, since distance = velocity $\\times$ time, and area = height $\\times$ width."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The trapezium rule uses trapeziums to estimate the area under a curve. What happens to the estimate as you use more trapeziums?",
+      "options": [
+        {"id": "a", "text": "The estimate becomes less accurate"},
+        {"id": "b", "text": "The estimate stays the same"},
+        {"id": "c", "text": "The estimate becomes more accurate"},
+        {"id": "d", "text": "The estimate becomes zero"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "More trapeziums (narrower strips) follow the curve more closely, reducing the error in the estimate."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A velocity-time graph shows a constant velocity of 15 m/s for 8 seconds. What is the distance travelled?",
+      "options": [
+        {"id": "a", "text": "23 m"},
+        {"id": "b", "text": "60 m"},
+        {"id": "c", "text": "120 m"},
+        {"id": "d", "text": "1.875 m"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "The area under the graph is a rectangle: $15 \\times 8 = 120$ m."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The area of a trapezium with parallel sides $a$ and $b$ and width $h$ is given by which formula?",
+      "options": [
+        {"id": "a", "text": "$\\frac{a + b}{2}$"},
+        {"id": "b", "text": "$\\frac{1}{2}(a + b) \\times h$"},
+        {"id": "c", "text": "$a \\times b \\times h$"},
+        {"id": "d", "text": "$\\frac{a \\times b}{h}$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The area of a trapezium is $\\frac{1}{2}(a + b) \\times h$, where $a$ and $b$ are the parallel sides and $h$ is the perpendicular distance between them."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A velocity-time graph shows velocity increasing linearly from 0 to 20 m/s over 10 seconds. What is the distance?",
+      "options": [
+        {"id": "a", "text": "200 m"},
+        {"id": "b", "text": "100 m"},
+        {"id": "c", "text": "20 m"},
+        {"id": "d", "text": "10 m"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The area under the graph is a triangle: $\\frac{1}{2} \\times 10 \\times 20 = 100$ m."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "When using the trapezium rule with 4 strips between $x = 0$ and $x = 4$, what is the width of each strip?",
+      "options": [
+        {"id": "a", "text": "0.5"},
+        {"id": "b", "text": "1"},
+        {"id": "c", "text": "2"},
+        {"id": "d", "text": "4"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Width $= \\frac{\\text{total range}}{\\text{number of strips}} = \\frac{4 - 0}{4} = 1$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Why does counting grid squares give only an estimate of the area under a curve?",
+      "options": [
+        {"id": "a", "text": "Because the grid squares are too large"},
+        {"id": "b", "text": "Because the curve does not follow the edges of the squares exactly, so partial squares must be estimated"},
+        {"id": "c", "text": "Because the area is always zero"},
+        {"id": "d", "text": "Because you can only count whole squares"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The curve cuts through some grid squares partially. Deciding whether to count a partial square introduces estimation error. This is why more precise methods like the trapezium rule are preferred."
+    }
+  ]
+}

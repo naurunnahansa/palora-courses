@@ -1,0 +1,104 @@
+{
+  "id": "quiz-gradient-of-curve",
+  "title": "Quiz: Gradient of a Curve",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "How do you estimate the gradient of a curve at a particular point?",
+      "options": [
+        {"id": "a", "text": "Calculate the gradient between the first and last points on the curve"},
+        {"id": "b", "text": "Draw a tangent to the curve at that point and find its gradient"},
+        {"id": "c", "text": "Find the $y$-intercept of the curve"},
+        {"id": "d", "text": "Measure the area under the curve"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "A tangent is a straight line that just touches the curve at a single point. Finding the gradient of this tangent gives an estimate of the gradient of the curve at that point."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "At a turning point (maximum or minimum) of a curve, what is the gradient?",
+      "options": [
+        {"id": "a", "text": "1"},
+        {"id": "b", "text": "$-1$"},
+        {"id": "c", "text": "0"},
+        {"id": "d", "text": "Undefined"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "At a turning point, the curve changes direction. The tangent at this point is horizontal, so its gradient is 0."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A tangent is drawn to a curve at a point. The tangent passes through $(1, 3)$ and $(5, 11)$. What is the gradient of the curve at that point?",
+      "options": [
+        {"id": "a", "text": "4"},
+        {"id": "b", "text": "2"},
+        {"id": "c", "text": "8"},
+        {"id": "d", "text": "$\\frac{1}{2}$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The gradient of the tangent is $\\frac{11 - 3}{5 - 1} = \\frac{8}{4} = 2$. The gradient of the curve at the point of tangency equals the gradient of the tangent."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "On a distance-time graph that is curved, what does the gradient of the tangent at a point represent?",
+      "options": [
+        {"id": "a", "text": "The total distance travelled"},
+        {"id": "b", "text": "The average speed"},
+        {"id": "c", "text": "The instantaneous speed at that moment"},
+        {"id": "d", "text": "The acceleration"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "On a distance-time graph, the gradient gives the speed. When the graph is curved, the tangent at a point gives the instantaneous speed at that particular moment."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If a curve is decreasing (going downward from left to right) at a point, what can you say about the gradient there?",
+      "options": [
+        {"id": "a", "text": "The gradient is positive"},
+        {"id": "b", "text": "The gradient is zero"},
+        {"id": "c", "text": "The gradient is negative"},
+        {"id": "d", "text": "The gradient is undefined"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "When a curve is decreasing, the $y$-values are getting smaller as $x$ increases. The tangent slopes downward, giving a negative gradient."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Why does the gradient of a curve change from point to point, unlike a straight line?",
+      "options": [
+        {"id": "a", "text": "Because curves have more than one $y$-intercept"},
+        {"id": "b", "text": "Because the steepness and direction of the curve vary at different positions"},
+        {"id": "c", "text": "Because curves do not have a gradient"},
+        {"id": "d", "text": "Because the $x$-values change"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "A straight line has constant steepness, but a curve bends. At each point, the tangent has a different slope, so the gradient changes continuously along the curve."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A tangent to the curve $y = x^2$ at $x = 3$ passes through $(3, 9)$ and $(4, 15)$. What is the estimated gradient at $x = 3$?",
+      "options": [
+        {"id": "a", "text": "3"},
+        {"id": "b", "text": "6"},
+        {"id": "c", "text": "9"},
+        {"id": "d", "text": "15"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Gradient of tangent $= \\frac{15 - 9}{4 - 3} = \\frac{6}{1} = 6$. This matches the actual derivative of $x^2$ at $x = 3$, which is $2x = 6$."
+    }
+  ]
+}

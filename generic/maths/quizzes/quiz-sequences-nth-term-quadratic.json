@@ -1,0 +1,104 @@
+{
+  "id": "quiz-sequences-nth-term-quadratic",
+  "title": "Quiz: Sequences: The nth Term (Quadratic)",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A sequence has first differences 3, 5, 7, 9, ... and second differences 2, 2, 2, ... What type of sequence is it?",
+      "options": [
+        {"id": "a", "text": "Linear (arithmetic)"},
+        {"id": "b", "text": "Geometric"},
+        {"id": "c", "text": "Quadratic"},
+        {"id": "d", "text": "Cubic"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "A constant second difference is the defining property of a quadratic sequence. If first differences were constant, it would be linear."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If the second difference of a quadratic sequence is 6, what is the coefficient of $n^2$ in the nth term?",
+      "options": [
+        {"id": "a", "text": "6"},
+        {"id": "b", "text": "3"},
+        {"id": "c", "text": "12"},
+        {"id": "d", "text": "2"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The second difference equals $2a$ where $a$ is the coefficient of $n^2$. So $2a = 6$, giving $a = 3$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the nth term of the sequence 4, 7, 12, 19, 28, ...",
+      "options": [
+        {"id": "a", "text": "$n^2 + 3$"},
+        {"id": "b", "text": "$n^2 + 3n$"},
+        {"id": "c", "text": "$n^2 + n + 2$"},
+        {"id": "d", "text": "$n^2 - n + 4$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Second difference is 2, so $a = 1$. Subtract $n^2$ from each term: $4 - 1 = 3$, $7 - 4 = 3$, $12 - 9 = 3$, $19 - 16 = 3$. The remainder is constant at 3, so the nth term is $n^2 + 3$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What are the first 4 terms of the sequence with nth term $n^2 + 2n - 1$?",
+      "options": [
+        {"id": "a", "text": "2, 7, 14, 23"},
+        {"id": "b", "text": "1, 5, 11, 19"},
+        {"id": "c", "text": "2, 5, 10, 17"},
+        {"id": "d", "text": "0, 3, 8, 15"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "$n = 1$: $1 + 2 - 1 = 2$. $n = 2$: $4 + 4 - 1 = 7$. $n = 3$: $9 + 6 - 1 = 14$. $n = 4$: $16 + 8 - 1 = 23$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the nth term of the sequence 2, 8, 18, 32, 50, ...",
+      "options": [
+        {"id": "a", "text": "$n^2 + 1$"},
+        {"id": "b", "text": "$2n^2$"},
+        {"id": "c", "text": "$2n^2 + n$"},
+        {"id": "d", "text": "$n^2 + n$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Second difference is 4, so $a = 2$. Subtract $2n^2$: $2 - 2 = 0$, $8 - 8 = 0$, $18 - 18 = 0$, $32 - 32 = 0$. The remainder is 0, so the nth term is $2n^2$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the nth term of the sequence 3, 8, 15, 24, 35, ...",
+      "options": [
+        {"id": "a", "text": "$n^2 + n + 1$"},
+        {"id": "b", "text": "$n^2 + 2n$"},
+        {"id": "c", "text": "$n^2 + 2n + 1$"},
+        {"id": "d", "text": "$n^2 + 3n - 1$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Second difference is 2, so $a = 1$. Subtract $n^2$: $3 - 1 = 2$, $8 - 4 = 4$, $15 - 9 = 6$, $24 - 16 = 8$. The linear sequence 2, 4, 6, 8 has nth term $2n$. So the nth term is $n^2 + 2n$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Is 100 in the sequence with nth term $n^2 + n$?",
+      "options": [
+        {"id": "a", "text": "Yes, it is the 9th term"},
+        {"id": "b", "text": "Yes, it is the 10th term"},
+        {"id": "c", "text": "No, because $n$ is not a positive integer"},
+        {"id": "d", "text": "Yes, it is the 100th term"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "Solve $n^2 + n = 100$, so $n^2 + n - 100 = 0$. Using the quadratic formula: $n = \\frac{-1 + \\sqrt{401}}{2} \\approx 9.5$. Since this is not a positive integer, 100 is not in the sequence."
+    }
+  ]
+}

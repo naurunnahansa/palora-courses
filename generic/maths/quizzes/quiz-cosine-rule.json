@@ -1,0 +1,104 @@
+{
+  "id": "quiz-cosine-rule",
+  "title": "Quiz: The Cosine Rule",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The Cosine Rule for finding a side is:",
+      "options": [
+        {"id": "a", "text": "$a^2 = b^2 + c^2 - 2bc\\cos A$"},
+        {"id": "b", "text": "$\\frac{a}{\\sin A} = \\frac{b}{\\sin B}$"},
+        {"id": "c", "text": "$a^2 = b^2 + c^2$"},
+        {"id": "d", "text": "$a = b + c - 2bc\\cos A$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "The Cosine Rule is $a^2 = b^2 + c^2 - 2bc\\cos A$, where $a$ is the side opposite angle $A$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "When would you use the Cosine Rule instead of the Sine Rule?",
+      "options": [
+        {"id": "a", "text": "When you know two angles and a side (AAS)"},
+        {"id": "b", "text": "When you know two sides and the included angle (SAS) or all three sides (SSS)"},
+        {"id": "c", "text": "Only for right-angled triangles"},
+        {"id": "d", "text": "When you know one side and one angle"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The Cosine Rule is used when you have SAS (two sides and the included angle) to find a side, or SSS (all three sides) to find an angle."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In triangle $ABC$, $b = 7$ cm, $c = 9$ cm, and $A = 60°$. Find $a$ to $1$ decimal place.",
+      "options": [
+        {"id": "a", "text": "$8.2$ cm"},
+        {"id": "b", "text": "$7.0$ cm"},
+        {"id": "c", "text": "$11.3$ cm"},
+        {"id": "d", "text": "$6.1$ cm"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "$a^2 = 49 + 81 - 2(7)(9)\\cos 60° = 130 - 126(0.5) = 130 - 63 = 67$. $a = \\sqrt{67} = 8.2$ cm."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A triangle has sides $5$ cm, $7$ cm, and $8$ cm. Find the largest angle to $1$ decimal place.",
+      "options": [
+        {"id": "a", "text": "$82.8°$"},
+        {"id": "b", "text": "$96.4°$"},
+        {"id": "c", "text": "$75.5°$"},
+        {"id": "d", "text": "$120.0°$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "The largest angle is opposite the longest side ($8$ cm). $\\cos C = \\frac{25 + 49 - 64}{70} = \\frac{10}{70} = 0.1429$. $C = \\cos^{-1}(0.1429) = 82.8°$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "When $A = 90°$, the Cosine Rule simplifies to:",
+      "options": [
+        {"id": "a", "text": "$a^2 = b^2 - c^2$"},
+        {"id": "b", "text": "$a^2 = b^2 + c^2$"},
+        {"id": "c", "text": "$a = b + c$"},
+        {"id": "d", "text": "$a^2 = 2bc$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "When $A = 90°$, $\\cos 90° = 0$, so $a^2 = b^2 + c^2 - 0 = b^2 + c^2$, which is Pythagoras' Theorem."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In triangle $ABC$, $b = 5$ cm, $c = 8$ cm, and $A = 120°$. Find $a$ to $1$ decimal place.",
+      "options": [
+        {"id": "a", "text": "$11.4$ cm"},
+        {"id": "b", "text": "$9.0$ cm"},
+        {"id": "c", "text": "$7.8$ cm"},
+        {"id": "d", "text": "$13.0$ cm"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "$a^2 = 25 + 64 - 2(5)(8)\\cos 120° = 89 - 80(-0.5) = 89 + 40 = 129$. $a = \\sqrt{129} = 11.4$ cm."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If the Cosine Rule gives a negative value of $\\cos A$, this tells you that angle $A$ is:",
+      "options": [
+        {"id": "a", "text": "Acute"},
+        {"id": "b", "text": "A right angle"},
+        {"id": "c", "text": "Obtuse"},
+        {"id": "d", "text": "Impossible"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "A negative cosine value means the angle is between $90°$ and $180°$, i.e. it is obtuse."
+    }
+  ]
+}

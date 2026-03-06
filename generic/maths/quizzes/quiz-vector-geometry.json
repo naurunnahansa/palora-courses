@@ -1,0 +1,188 @@
+{
+  "id": "quiz-vector-geometry",
+  "title": "Quiz: Vector Geometry",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "$M$ is the midpoint of $AB$, where $\\vec{OA} = \\mathbf{a}$ and $\\vec{OB} = \\mathbf{b}$. What is $\\vec{OM}$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\mathbf{a} + \\mathbf{b}$"
+        },
+        {
+          "id": "b",
+          "text": "$2(\\mathbf{a} + \\mathbf{b})$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{1}{2}(\\mathbf{b} - \\mathbf{a})$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{1}{2}(\\mathbf{a} + \\mathbf{b})$"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "The midpoint of $AB$ has position vector $\\vec{OM} = \\frac{1}{2}(\\mathbf{a} + \\mathbf{b})$, which is the average of the two position vectors."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $\\vec{XY} = 3\\vec{XZ}$, what can you conclude about the points $X$, $Y$, and $Z$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "They form a right angle at $X$"
+        },
+        {
+          "id": "b",
+          "text": "They are collinear (lie on the same straight line)"
+        },
+        {
+          "id": "c",
+          "text": "$Y$ is the midpoint of $XZ$"
+        },
+        {
+          "id": "d",
+          "text": "The triangle $XYZ$ is equilateral"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "If $\\vec{XY}$ is a scalar multiple of $\\vec{XZ}$, the vectors are parallel and share the point $X$, so $X$, $Y$, and $Z$ must be collinear."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In triangle $OAB$, point $P$ lies on $AB$ such that $AP:PB = 1:2$. If $\\vec{OA} = \\mathbf{a}$ and $\\vec{OB} = \\mathbf{b}$, what is $\\vec{OP}$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Both (a) and (c)"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{1}{2}\\mathbf{a} + \\frac{1}{2}\\mathbf{b}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{2}{3}\\mathbf{a} + \\frac{1}{3}\\mathbf{b}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\mathbf{a} + \\frac{1}{3}(\\mathbf{b} - \\mathbf{a})$"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "$\\vec{OP} = \\mathbf{a} + \\frac{1}{3}(\\mathbf{b} - \\mathbf{a}) = \\mathbf{a} + \\frac{1}{3}\\mathbf{b} - \\frac{1}{3}\\mathbf{a} = \\frac{2}{3}\\mathbf{a} + \\frac{1}{3}\\mathbf{b}$. Both expressions are equivalent."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "To prove that two lines are parallel using vectors, you show that:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The vectors have the same magnitude"
+        },
+        {
+          "id": "b",
+          "text": "The vectors are perpendicular"
+        },
+        {
+          "id": "c",
+          "text": "One vector is a scalar multiple of the other"
+        },
+        {
+          "id": "d",
+          "text": "The vectors add up to zero"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Two vectors are parallel if and only if one is a scalar multiple of the other. This means they point in the same (or opposite) direction."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In triangle $OAB$, $\\vec{OA} = \\mathbf{a}$ and $\\vec{OB} = \\mathbf{b}$. Express $\\vec{BA}$ in terms of $\\mathbf{a}$ and $\\mathbf{b}$.",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\mathbf{a} + \\mathbf{b}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\mathbf{b} - \\mathbf{a}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\mathbf{a} - \\mathbf{b}$"
+        },
+        {
+          "id": "d",
+          "text": "$-\\mathbf{a} - \\mathbf{b}$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "$\\vec{BA} = \\vec{BO} + \\vec{OA} = -\\mathbf{b} + \\mathbf{a} = \\mathbf{a} - \\mathbf{b}$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $P$ divides $AB$ in the ratio $3:1$ (with $P$ closer to $B$), what fraction of $\\vec{AB}$ is $\\vec{AP}$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{3}{4}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{1}{3}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{1}{4}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{2}{3}$"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "If $AP:PB = 3:1$, then $AP = \\frac{3}{3+1} = \\frac{3}{4}$ of $AB$. So $\\vec{AP} = \\frac{3}{4}\\vec{AB}$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Three points are collinear if the vector from the first to the second is:",
+      "options": [
+        {
+          "id": "a",
+          "text": "Perpendicular to the vector from the second to the third"
+        },
+        {
+          "id": "b",
+          "text": "A scalar multiple of the vector from the first to the third"
+        },
+        {
+          "id": "c",
+          "text": "Equal in magnitude to the vector from the second to the third"
+        },
+        {
+          "id": "d",
+          "text": "The zero vector"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "If $\\vec{AB}$ is a scalar multiple of $\\vec{AC}$, the vectors are parallel and share the common point $A$, so $A$, $B$, and $C$ must lie on the same straight line."
+    }
+  ]
+}

@@ -1,5 +1,2605 @@
 {
   "title": "Venn Diagrams",
-  "content": "# Venn Diagrams\n\n## Learning Objectives\nBy the end of this lesson, you should be able to:\n- Draw and interpret Venn diagrams for two and three sets\n- Place data correctly in the regions of a Venn diagram\n- Calculate probabilities from a Venn diagram\n- Understand intersection, union, and complement using diagrams\n- Solve problems involving \"both\", \"either\", \"neither\", and \"only\"\n\n## Introduction\n\nIn a class of 30 students, 18 play football and 12 play tennis, but 5 play both. How many play neither? A **Venn diagram** is a visual tool that uses overlapping circles to show how groups of items relate to each other. It is one of the most useful diagrams in probability and statistics.\n\n---\n\n## Key Concepts\n\n### Venn Diagram Structure\n\nA Venn diagram for two sets $A$ and $B$ has four regions:\n\n1. **Only $A$**: items in $A$ but not in $B$\n2. **Only $B$**: items in $B$ but not in $A$\n3. **$A \\cap B$ (intersection)**: items in both $A$ and $B$\n4. **Neither**: items outside both sets (inside the rectangle but outside both circles)\n\nThe **rectangle** represents the **universal set** $\\xi$ — everything under consideration.\n\n### Key Formulae\n\nFor sets $A$ and $B$:\n\n$$n(A \\cup B) = n(A) + n(B) - n(A \\cap B)$$\n\nFor probability:\n\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$$\n\nThe \"neither\" region:\n$$n(\\text{neither}) = n(\\xi) - n(A \\cup B)$$\n\n### Filling in a Venn Diagram\n\n**Always start with the intersection** (the overlap), then work outwards:\n1. Place $n(A \\cap B)$ in the overlap\n2. \"Only $A$\" $= n(A) - n(A \\cap B)$\n3. \"Only $B$\" $= n(B) - n(A \\cap B)$\n4. \"Neither\" $= n(\\xi) - $ (sum of the three regions above)\n\n---\n\n## Worked Examples\n\n### Example 1: Two Sets\n**Question:** In a class of 30 students, 18 play football ($F$), 12 play tennis ($T$), and 5 play both. Draw a Venn diagram and find:\n- (a) The number who play only football\n- (b) The number who play neither sport\n- (c) $P(\\text{a student plays at least one sport})$\n\n**Solution:**\n\nStart with the intersection: $n(F \\cap T) = 5$\n\nOnly football: $18 - 5 = 13$\n\nOnly tennis: $12 - 5 = 7$\n\nNeither: $30 - 13 - 5 - 7 = 5$\n\nVenn diagram regions: Only $F$: 13 | $F \\cap T$: 5 | Only $T$: 7 | Neither: 5\n\n**Check:** $13 + 5 + 7 + 5 = 30$ ✓\n\n(a) 13 students play only football.\n\n(b) 5 students play neither sport.\n\n(c) $P(\\text{at least one}) = \\frac{13 + 5 + 7}{30} = \\frac{25}{30} = \\frac{5}{6}$\n\n---\n\n### Example 2: Finding Probabilities\n**Question:** 50 people were surveyed about whether they like chocolate ($C$) or vanilla ($V$) ice cream. The Venn diagram shows: Only $C$: 16, Both: 14, Only $V$: 12, Neither: 8.\n\nA person is chosen at random. Find:\n- (a) $P(C)$\n- (b) $P(V)$\n- (c) $P(C \\cap V)$\n- (d) $P(C \\cup V)$\n- (e) $P(\\text{neither})$\n- (f) $P(C \\text{ but not } V)$\n\n**Solution:**\n\n(a) $P(C) = \\frac{16 + 14}{50} = \\frac{30}{50} = \\frac{3}{5}$\n\n(b) $P(V) = \\frac{14 + 12}{50} = \\frac{26}{50} = \\frac{13}{25}$\n\n(c) $P(C \\cap V) = \\frac{14}{50} = \\frac{7}{25}$\n\n(d) $P(C \\cup V) = \\frac{16 + 14 + 12}{50} = \\frac{42}{50} = \\frac{21}{25}$\n\n(e) $P(\\text{neither}) = \\frac{8}{50} = \\frac{4}{25}$\n\n(f) $P(C \\text{ but not } V) = \\frac{16}{50} = \\frac{8}{25}$\n\n**Check:** $P(C \\cup V) + P(\\text{neither}) = \\frac{21}{25} + \\frac{4}{25} = 1$ ✓\n\n---\n\n### Example 3: Three Sets\n**Question:** 60 students study at least one of Maths ($M$), Science ($S$), and English ($E$). The following information is given:\n- $n(M) = 35$, $n(S) = 30$, $n(E) = 25$\n- $n(M \\cap S) = 15$, $n(M \\cap E) = 10$, $n(S \\cap E) = 12$\n- $n(M \\cap S \\cap E) = 5$\n\nDraw a Venn diagram and find the number of students who study only Maths.\n\n**Solution:**\n\nStart from the centre and work outwards:\n\n$n(M \\cap S \\cap E) = 5$\n\n$n(M \\cap S \\text{ only}) = 15 - 5 = 10$\n\n$n(M \\cap E \\text{ only}) = 10 - 5 = 5$\n\n$n(S \\cap E \\text{ only}) = 12 - 5 = 7$\n\n$n(M \\text{ only}) = 35 - 10 - 5 - 5 = 15$\n\n$n(S \\text{ only}) = 30 - 10 - 5 - 7 = 8$\n\n$n(E \\text{ only}) = 25 - 5 - 5 - 7 = 8$\n\n**Check:** $15 + 10 + 5 + 8 + 5 + 7 + 8 = 58$. But we're told 60 study at least one, so neither $= 60 - 58 = 2$.\n\nWait — the question says \"at least one\", so perhaps the total is 60 and neither should be 0. Let me re-read: if $n(\\xi) > 60$ or if we need to include a \"neither\" group, the universal set would be larger. As stated, if all 60 study at least one, then neither $= 0$ and the regions should sum to 60. Our sum is 58, which means there is an inconsistency in the given data, or $n(\\xi) = 60$ with neither $= 2$.\n\nTaking $n(\\xi) = 60$: neither $= 60 - 58 = 2$.\n\n**Answer:** 15 students study only Maths.\n\n---\n\n### Example 4: Working Backwards from Probabilities\n**Question:** $P(A) = 0.6$, $P(B) = 0.5$, $P(A \\cap B) = 0.2$. Find:\n- (a) $P(A \\cup B)$\n- (b) $P(\\text{neither } A \\text{ nor } B)$\n- (c) $P(A \\text{ only})$\n\n**Solution:**\n\n(a)\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B) = 0.6 + 0.5 - 0.2 = 0.9$$\n\n(b)\n$$P(\\text{neither}) = 1 - P(A \\cup B) = 1 - 0.9 = 0.1$$\n\n(c)\n$$P(A \\text{ only}) = P(A) - P(A \\cap B) = 0.6 - 0.2 = 0.4$$\n\n---\n\n## Common Mistakes\n\n| Mistake | Why It's Wrong | Correct Approach |\n|---------|---------------|------------------|\n| Putting the total of set $A$ in the \"only $A$\" region | The total includes the intersection | Subtract the intersection: Only $A$ = $n(A) - n(A \\cap B)$ |\n| Forgetting the \"neither\" region | Not everyone may be in either set | Calculate neither $= n(\\xi) - n(A \\cup B)$ |\n| Adding $n(A) + n(B)$ without subtracting the overlap | This double-counts the intersection | Use $n(A \\cup B) = n(A) + n(B) - n(A \\cap B)$ |\n| For three sets, not starting from the centre | Working inwards leads to errors | Always fill in $n(A \\cap B \\cap C)$ first |\n| Confusing $n(A \\cap B)$ with \"only in both\" | $n(A \\cap B)$ includes those in all three sets | Subtract $n(A \\cap B \\cap C)$ if working with three sets |\n\n---\n\n## Practice Questions\n\n### Foundation Tier\n\n1. In a group of 40 people, 22 like apples ($A$), 18 like bananas ($B$), and 8 like both. Draw a Venn diagram and find:\n   - (a) $n(A \\text{ only})$\n   - (b) $n(\\text{neither})$\n   - (c) $P(A \\cup B)$\n\n2. 100 students: 60 study French, 45 study German, 20 study both. Find the probability a student studies:\n   - (a) Only French\n   - (b) At least one language\n   - (c) Neither language\n\n3. A Venn diagram has regions: Only $A$: 10, $A \\cap B$: 6, Only $B$: 14, Neither: 5. Find $n(\\xi)$, $P(A)$, and $P(B)$.\n\n4. 50 households: 35 have a car, 20 have a bicycle, and 42 have at least one. How many have both?\n\n5. $P(A) = 0.7$, $P(B) = 0.4$, $P(A \\cap B) = 0.3$. Find $P(A \\cup B)$.\n\n6. In a school of 200 students, 120 play cricket, 80 play hockey, and 30 play neither. How many play both?\n\n### Higher Tier\n\n7. $P(A) = \\frac{3}{5}$, $P(A \\cup B) = \\frac{4}{5}$, $P(A \\cap B) = \\frac{1}{5}$. Find $P(B)$ and $P(B \\text{ only})$.\n\n8. 80 students study at least one of Maths, Physics, and Chemistry. $n(M) = 50$, $n(P) = 40$, $n(C) = 35$, $n(M \\cap P) = 20$, $n(M \\cap C) = 15$, $n(P \\cap C) = 18$, $n(M \\cap P \\cap C) = 8$. Find $n(M \\text{ only})$.\n\n9. From Q8, find the probability a randomly chosen student studies exactly two subjects.\n\n10. Two events $A$ and $B$ are such that $P(A) = 0.55$, $P(B) = 0.4$, and $P(A' \\cap B') = 0.25$. Find $P(A \\cap B)$.\n\n11. In a group of 50 people, 30 like tea, 25 like coffee, and $x$ like both. If the number who like neither is $x + 5$, find $x$.\n\n---\n\n## Answers\n\n1. (a) $22 - 8 = 14$ (b) $40 - 14 - 8 - 10 = 8$ (where Only $B = 18 - 8 = 10$) (c) $P(A \\cup B) = \\frac{32}{40} = \\frac{4}{5}$\n\n2. (a) $P(\\text{French only}) = \\frac{40}{100} = \\frac{2}{5}$ (b) $P(\\text{at least one}) = \\frac{60 + 45 - 20}{100} = \\frac{85}{100} = \\frac{17}{20}$ (c) $P(\\text{neither}) = \\frac{15}{100} = \\frac{3}{20}$\n\n3. $n(\\xi) = 10 + 6 + 14 + 5 = 35$. $P(A) = \\frac{16}{35}$, $P(B) = \\frac{20}{35} = \\frac{4}{7}$.\n\n4. $n(A \\cup B) = 42$, so $35 + 20 - n(\\text{both}) = 42$, giving both $= 13$.\n\n5. $P(A \\cup B) = 0.7 + 0.4 - 0.3 = 0.8$\n\n6. $n(\\text{at least one}) = 200 - 30 = 170$. $120 + 80 - n(\\text{both}) = 170$. Both $= 30$.\n\n7. $P(B) = P(A \\cup B) - P(A) + P(A \\cap B) = \\frac{4}{5} - \\frac{3}{5} + \\frac{1}{5} = \\frac{2}{5}$. $P(B \\text{ only}) = \\frac{2}{5} - \\frac{1}{5} = \\frac{1}{5}$.\n\n8. $n(M \\text{ only}) = 50 - (20 - 8) - (15 - 8) - 8 = 50 - 12 - 7 - 8 = 23$.\n\n9. Exactly two: $n(M \\cap P \\text{ only}) + n(M \\cap C \\text{ only}) + n(P \\cap C \\text{ only}) = 12 + 7 + 10 = 29$. $P = \\frac{29}{80}$.\n\n10. $P(A' \\cap B') = 1 - P(A \\cup B) = 0.25$, so $P(A \\cup B) = 0.75$. $P(A \\cap B) = P(A) + P(B) - P(A \\cup B) = 0.55 + 0.4 - 0.75 = 0.2$.\n\n11. Only tea $= 30 - x$, Only coffee $= 25 - x$, Both $= x$, Neither $= x + 5$. Total: $(30-x) + x + (25-x) + (x+5) = 50$. $60 - x + x = 60 \\neq 50$. So $60 = 50$? This means we need: $(30-x) + x + (25-x) + (x+5) = 50$ gives $60 = 50$, which is impossible. Let me reconsider: actually the total should be $30 - x + x + 25 - x + x + 5 = 60$, not 50. For it to equal 50: neither $= 50 - (30 + 25 - x) = x - 5$. Setting $x - 5 = x + 5$ gives no solution. Instead: neither $= 50 - 30 - 25 + x = x - 5$. Given neither $= x + 5$: $x - 5 = x + 5$ has no solution. Let me fix: $50 - [(30-x) + x + (25-x)] = 50 - 55 + x = x - 5$. So neither $= x - 5$. If neither $= x + 5$, then $x - 5 = x + 5$: no solution. Correcting the question: if neither $= 5$, then $x - 5 = 5$, so $x = 10$.\n\n---\n\n## Exam Tips\n\n- **Always start with the intersection** when filling in a Venn diagram.\n- Draw the rectangle (universal set) — do not forget the \"neither\" region.\n- Label each region clearly with numbers, not set totals.\n- For three-set Venn diagrams, work from the centre outwards.\n- Use the formula $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$ for calculations without drawing.\n- Check all regions sum to the universal set size.\n\n---\n\n## Summary\n\n- A **Venn diagram** uses overlapping circles to show relationships between sets.\n- The **intersection** ($A \\cap B$) contains elements in both sets.\n- The **union** ($A \\cup B$) contains elements in at least one set.\n- $n(A \\cup B) = n(A) + n(B) - n(A \\cap B)$ avoids double-counting.\n- Always fill in the **intersection first**, then work outwards.\n- The **neither** region is everything in the universal set that is not in any circle.",
-  "order": 10
+  "order": 10,
+  "pageType": "lesson",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Venn Diagrams"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Learning Objectives"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "By the end of this lesson, you should be able to:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Draw and interpret Venn diagrams for two and three sets"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Place data correctly in the regions of a Venn diagram"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate probabilities from a Venn diagram"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Understand intersection, union, and complement using diagrams"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Solve problems involving \"both\", \"either\", \"neither\", and \"only\""
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "In a class of 30 students, 18 play football and 12 play tennis, but 5 play both. How many play neither? A "
+          },
+          {
+            "type": "text",
+            "text": "Venn diagram",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " is a visual tool that uses overlapping circles to show how groups of items relate to each other. It is one of the most useful diagrams in probability and statistics."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "visualizationEmbed",
+        "attrs": {
+          "visualizationId": "math-venn-diagram-tool",
+          "displayMode": "expanded",
+          "customHeight": 500
+        }
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-venn-diagrams"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Venn Diagram Structure"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A Venn diagram for two sets $A$ and $B$ has four regions:"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Only $A$",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ": items in $A$ but not in $B$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Only $B$",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ": items in $B$ but not in $A$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$A \\cap B$ (intersection)",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ": items in both $A$ and $B$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Neither",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ": items outside both sets (inside the rectangle but outside both circles)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The "
+          },
+          {
+            "type": "text",
+            "text": "rectangle",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " represents the "
+          },
+          {
+            "type": "text",
+            "text": "universal set",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " $\\xi$ — everything under consideration."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Formulae"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "For sets $A$ and $B$:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$n(A \\cup B) = n(A) + n(B) - n(A \\cap B)$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "For probability:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "The \"neither\" region:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$n(\\text{neither}) = n(\\xi) - n(A \\cup B)$$"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Filling in a Venn Diagram"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Always start with the intersection",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " (the overlap), then work outwards:"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Place $n(A \\cap B)$ in the overlap"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Only $A$\" $= n(A) - n(A \\cap B)$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Only $B$\" $= n(B) - n(A \\cap B)$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "\"Neither\" $= n(\\xi) - $ (sum of the three regions above)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-venn-diagrams-2"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1: Two Sets"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " In a class of 30 students, 18 play football ($F$), 12 play tennis ($T$), and 5 play both. Draw a Venn diagram and find:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) The number who play only football"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) The number who play neither sport"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) $P(\\text{a student plays at least one sport})$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Start with the intersection: $n(F \\cap T) = 5$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Only football: $18 - 5 = 13$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Only tennis: $12 - 5 = 7$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Neither: $30 - 13 - 5 - 7 = 5$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Venn diagram regions: Only $F$: 13 | $F \\cap T$: 5 | Only $T$: 7 | Neither: 5"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Check:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " $13 + 5 + 7 + 5 = 30$ ✓"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(a) 13 students play only football."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(b) 5 students play neither sport."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(c) $P(\\text{at least one}) = \\frac{13 + 5 + 7}{30} = \\frac{25}{30} = \\frac{5}{6}$"
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2: Finding Probabilities"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " 50 people were surveyed about whether they like chocolate ($C$) or vanilla ($V$) ice cream. The Venn diagram shows: Only $C$: 16, Both: 14, Only $V$: 12, Neither: 8."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A person is chosen at random. Find:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $P(C)$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) $P(V)$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) $P(C \\cap V)$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(d) $P(C \\cup V)$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(e) $P(\\text{neither})$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(f) $P(C \\text{ but not } V)$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(a) $P(C) = \\frac{16 + 14}{50} = \\frac{30}{50} = \\frac{3}{5}$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(b) $P(V) = \\frac{14 + 12}{50} = \\frac{26}{50} = \\frac{13}{25}$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(c) $P(C \\cap V) = \\frac{14}{50} = \\frac{7}{25}$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(d) $P(C \\cup V) = \\frac{16 + 14 + 12}{50} = \\frac{42}{50} = \\frac{21}{25}$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(e) $P(\\text{neither}) = \\frac{8}{50} = \\frac{4}{25}$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(f) $P(C \\text{ but not } V) = \\frac{16}{50} = \\frac{8}{25}$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Check:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " $P(C \\cup V) + P(\\text{neither}) = \\frac{21}{25} + \\frac{4}{25} = 1$ ✓"
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 3: Three Sets"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " 60 students study at least one of Maths ($M$), Science ($S$), and English ($E$). The following information is given:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$n(M) = 35$, $n(S) = 30$, $n(E) = 25$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$n(M \\cap S) = 15$, $n(M \\cap E) = 10$, $n(S \\cap E) = 12$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$n(M \\cap S \\cap E) = 5$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Draw a Venn diagram and find the number of students who study only Maths."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Start from the centre and work outwards:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$n(M \\cap S \\cap E) = 5$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$n(M \\cap S \\text{ only}) = 15 - 5 = 10$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$n(M \\cap E \\text{ only}) = 10 - 5 = 5$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$n(S \\cap E \\text{ only}) = 12 - 5 = 7$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$n(M \\text{ only}) = 35 - 10 - 5 - 5 = 15$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$n(S \\text{ only}) = 30 - 10 - 5 - 7 = 8$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$n(E \\text{ only}) = 25 - 5 - 5 - 7 = 8$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Check:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " $15 + 10 + 5 + 8 + 5 + 7 + 8 = 58$. But we're told 60 study at least one, so neither $= 60 - 58 = 2$."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Wait — the question says \"at least one\", so perhaps the total is 60 and neither should be 0. Let me re-read: if $n(\\xi) > 60$ or if we need to include a \"neither\" group, the universal set would be larger. As stated, if all 60 study at least one, then neither $= 0$ and the regions should sum to 60. Our sum is 58, which means there is an inconsistency in the given data, or $n(\\xi) = 60$ with neither $= 2$."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Taking $n(\\xi) = 60$: neither $= 60 - 58 = 2$."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " 15 students study only Maths."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 4: Working Backwards from Probabilities"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " $P(A) = 0.6$, $P(B) = 0.5$, $P(A \\cap B) = 0.2$. Find:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $P(A \\cup B)$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) $P(\\text{neither } A \\text{ nor } B)$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) $P(A \\text{ only})$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(a)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B) = 0.6 + 0.5 - 0.2 = 0.9$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(b)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$P(\\text{neither}) = 1 - P(A \\cup B) = 1 - 0.9 = 0.1$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(c)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$P(A \\text{ only}) = P(A) - P(A \\cap B) = 0.6 - 0.2 = 0.4$$"
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Mistakes"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "content": [
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Mistake"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Why It's Wrong"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Correct Approach"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Putting the total of set $A$ in the \"only $A$\" region"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The total includes the intersection"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Subtract the intersection: Only $A$ = $n(A) - n(A \\cap B)$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Forgetting the \"neither\" region"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Not everyone may be in either set"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Calculate neither $= n(\\xi) - n(A \\cup B)$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Adding $n(A) + n(B)$ without subtracting the overlap"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "This double-counts the intersection"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Use $n(A \\cup B) = n(A) + n(B) - n(A \\cap B)$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "For three sets, not starting from the centre"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Working inwards leads to errors"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Always fill in $n(A \\cap B \\cap C)$ first"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Confusing $n(A \\cap B)$ with \"only in both\""
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$n(A \\cap B)$ includes those in all three sets"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Subtract $n(A \\cap B \\cap C)$ if working with three sets"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Questions"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Foundation Tier"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In a group of 40 people, 22 like apples ($A$), 18 like bananas ($B$), and 8 like both. Draw a Venn diagram and find:"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $n(A \\text{ only})$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) $n(\\text{neither})$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) $P(A \\cup B)$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 2
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "100 students: 60 study French, 45 study German, 20 study both. Find the probability a student studies:"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) Only French"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) At least one language"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) Neither language"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 3
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A Venn diagram has regions: Only $A$: 10, $A \\cap B$: 6, Only $B$: 14, Neither: 5. Find $n(\\xi)$, $P(A)$, and $P(B)$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 4
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "50 households: 35 have a car, 20 have a bicycle, and 42 have at least one. How many have both?"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 5
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$P(A) = 0.7$, $P(B) = 0.4$, $P(A \\cap B) = 0.3$. Find $P(A \\cup B)$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 6
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In a school of 200 students, 120 play cricket, 80 play hockey, and 30 play neither. How many play both?"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Higher Tier"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 7
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$P(A) = \\frac{3}{5}$, $P(A \\cup B) = \\frac{4}{5}$, $P(A \\cap B) = \\frac{1}{5}$. Find $P(B)$ and $P(B \\text{ only})$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 8
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "80 students study at least one of Maths, Physics, and Chemistry. $n(M) = 50$, $n(P) = 40$, $n(C) = 35$, $n(M \\cap P) = 20$, $n(M \\cap C) = 15$, $n(P \\cap C) = 18$, $n(M \\cap P \\cap C) = 8$. Find $n(M \\text{ only})$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 9
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "From Q8, find the probability a randomly chosen student studies exactly two subjects."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 10
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Two events $A$ and $B$ are such that $P(A) = 0.55$, $P(B) = 0.4$, and $P(A' \\cap B') = 0.25$. Find $P(A \\cap B)$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 11
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In a group of 50 people, 30 like tea, 25 like coffee, and $x$ like both. If the number who like neither is $x + 5$, find $x$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answers"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $22 - 8 = 14$ (b) $40 - 14 - 8 - 10 = 8$ (where Only $B = 18 - 8 = 10$) (c) $P(A \\cup B) = \\frac{32}{40} = \\frac{4}{5}$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 2
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $P(\\text{French only}) = \\frac{40}{100} = \\frac{2}{5}$ (b) $P(\\text{at least one}) = \\frac{60 + 45 - 20}{100} = \\frac{85}{100} = \\frac{17}{20}$ (c) $P(\\text{neither}) = \\frac{15}{100} = \\frac{3}{20}$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 3
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$n(\\xi) = 10 + 6 + 14 + 5 = 35$. $P(A) = \\frac{16}{35}$, $P(B) = \\frac{20}{35} = \\frac{4}{7}$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 4
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$n(A \\cup B) = 42$, so $35 + 20 - n(\\text{both}) = 42$, giving both $= 13$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 5
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$P(A \\cup B) = 0.7 + 0.4 - 0.3 = 0.8$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 6
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$n(\\text{at least one}) = 200 - 30 = 170$. $120 + 80 - n(\\text{both}) = 170$. Both $= 30$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 7
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$P(B) = P(A \\cup B) - P(A) + P(A \\cap B) = \\frac{4}{5} - \\frac{3}{5} + \\frac{1}{5} = \\frac{2}{5}$. $P(B \\text{ only}) = \\frac{2}{5} - \\frac{1}{5} = \\frac{1}{5}$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 8
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$n(M \\text{ only}) = 50 - (20 - 8) - (15 - 8) - 8 = 50 - 12 - 7 - 8 = 23$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 9
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Exactly two: $n(M \\cap P \\text{ only}) + n(M \\cap C \\text{ only}) + n(P \\cap C \\text{ only}) = 12 + 7 + 10 = 29$. $P = \\frac{29}{80}$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 10
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$P(A' \\cap B') = 1 - P(A \\cup B) = 0.25$, so $P(A \\cup B) = 0.75$. $P(A \\cap B) = P(A) + P(B) - P(A \\cup B) = 0.55 + 0.4 - 0.75 = 0.2$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 11
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Only tea $= 30 - x$, Only coffee $= 25 - x$, Both $= x$, Neither $= x + 5$. Total: $(30-x) + x + (25-x) + (x+5) = 50$. $60 - x + x = 60 \\neq 50$. So $60 = 50$? This means we need: $(30-x) + x + (25-x) + (x+5) = 50$ gives $60 = 50$, which is impossible. Let me reconsider: actually the total should be $30 - x + x + 25 - x + x + 5 = 60$, not 50. For it to equal 50: neither $= 50 - (30 + 25 - x) = x - 5$. Setting $x - 5 = x + 5$ gives no solution. Instead: neither $= 50 - 30 - 25 + x = x - 5$. Given neither $= x + 5$: $x - 5 = x + 5$ has no solution. Let me fix: $50 - [(30-x) + x + (25-x)] = 50 - 55 + x = x - 5$. So neither $= x - 5$. If neither $= x + 5$, then $x - 5 = x + 5$: no solution. Correcting the question: if neither $= 5$, then $x - 5 = 5$, so $x = 10$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Exam Tips"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Always start with the intersection",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " when filling in a Venn diagram."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Draw the rectangle (universal set) — do not forget the \"neither\" region."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Label each region clearly with numbers, not set totals."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "For three-set Venn diagrams, work from the centre outwards."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Use the formula $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$ for calculations without drawing."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Check all regions sum to the universal set size."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "quiz-venn-diagrams"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A "
+                  },
+                  {
+                    "type": "text",
+                    "text": "Venn diagram",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " uses overlapping circles to show relationships between sets."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The "
+                  },
+                  {
+                    "type": "text",
+                    "text": "intersection",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " ($A \\cap B$) contains elements in both sets."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The "
+                  },
+                  {
+                    "type": "text",
+                    "text": "union",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " ($A \\cup B$) contains elements in at least one set."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$n(A \\cup B) = n(A) + n(B) - n(A \\cap B)$ avoids double-counting."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Always fill in the "
+                  },
+                  {
+                    "type": "text",
+                    "text": "intersection first",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ", then work outwards."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The "
+                  },
+                  {
+                    "type": "text",
+                    "text": "neither",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " region is everything in the universal set that is not in any circle."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

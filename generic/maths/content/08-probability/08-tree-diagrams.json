@@ -1,5 +1,3055 @@
 {
   "title": "Tree Diagrams",
-  "content": "# Tree Diagrams\n\n## Learning Objectives\nBy the end of this lesson, you should be able to:\n- Draw and label tree diagrams for two or more successive events\n- Apply the AND rule (multiply along branches) for combined events\n- Apply the OR rule (add between outcomes) for alternative events\n- Calculate probabilities for independent events using tree diagrams\n- Solve problems involving coins, dice, spinners, and other contexts\n\n## Introduction\n\nA coin is flipped twice. What is the probability of getting at least one head? Problems involving **sequences of events** can become confusing without a clear method. A **tree diagram** provides a visual way to map out all possible outcomes and calculate their probabilities systematically.\n\n---\n\n## Key Concepts\n\n### What is a Tree Diagram?\n\nA **tree diagram** shows all possible outcomes of a sequence of events as branches. Each branch is labelled with the probability of that outcome.\n\n### The AND Rule (Multiplication Rule)\n\nTo find the probability that event $A$ **and** event $B$ both happen, **multiply** along the branches:\n\n$$P(A \\text{ and } B) = P(A) \\times P(B)$$\n\n### The OR Rule (Addition Rule)\n\nTo find the probability of one outcome **or** another, **add** the probabilities of the separate paths:\n\n$$P(\\text{outcome 1 or outcome 2}) = P(\\text{outcome 1}) + P(\\text{outcome 2})$$\n\n### Independent Events\n\nTwo events are **independent** if one event does not affect the probability of the other. For independent events:\n\n$$P(A \\text{ and } B) = P(A) \\times P(B)$$\n\nExamples of independent events:\n- Flipping a coin twice\n- Rolling two separate dice\n- Drawing a ball, replacing it, then drawing again\n\n> **Memory aid:** Multiply along branches (AND), add between branches (OR).\n\n---\n\n## Worked Examples\n\n### Example 1: Two Coin Flips\n**Question:** A fair coin is flipped twice. Draw a tree diagram and find:\n- (a) $P(\\text{two heads})$\n- (b) $P(\\text{exactly one head})$\n- (c) $P(\\text{at least one head})$\n\n**Solution:**\n\nTree diagram:\n\n```\n             Flip 1       Flip 2      Outcome    Probability\n              /   \\         /  \\\n           H(1/2)  T(1/2)\n           /    \\    /    \\\n        H(1/2) T(1/2) H(1/2) T(1/2)\n        HH      HT     TH      TT\n```\n\n| Outcome | Calculation | Probability |\n|---------|------------|-------------|\n| HH | $\\frac{1}{2} \\times \\frac{1}{2}$ | $\\frac{1}{4}$ |\n| HT | $\\frac{1}{2} \\times \\frac{1}{2}$ | $\\frac{1}{4}$ |\n| TH | $\\frac{1}{2} \\times \\frac{1}{2}$ | $\\frac{1}{4}$ |\n| TT | $\\frac{1}{2} \\times \\frac{1}{2}$ | $\\frac{1}{4}$ |\n\n**Check:** $\\frac{1}{4} + \\frac{1}{4} + \\frac{1}{4} + \\frac{1}{4} = 1$ ✓\n\n(a) $P(HH) = \\frac{1}{4}$\n\n(b) $P(\\text{exactly one head}) = P(HT) + P(TH) = \\frac{1}{4} + \\frac{1}{4} = \\frac{1}{2}$\n\n(c) $P(\\text{at least one head}) = 1 - P(TT) = 1 - \\frac{1}{4} = \\frac{3}{4}$\n\n---\n\n### Example 2: Biased Spinner\n**Question:** A spinner has $P(\\text{red}) = 0.7$ and $P(\\text{blue}) = 0.3$. It is spun twice. Find:\n- (a) $P(\\text{both red})$\n- (b) $P(\\text{one of each colour})$\n\n**Solution:**\n\n| Outcome | Calculation | Probability |\n|---------|------------|-------------|\n| Red, Red | $0.7 \\times 0.7$ | $0.49$ |\n| Red, Blue | $0.7 \\times 0.3$ | $0.21$ |\n| Blue, Red | $0.3 \\times 0.7$ | $0.21$ |\n| Blue, Blue | $0.3 \\times 0.3$ | $0.09$ |\n\n**Check:** $0.49 + 0.21 + 0.21 + 0.09 = 1.00$ ✓\n\n(a) $P(\\text{both red}) = 0.49$\n\n(b) One of each means Red-Blue OR Blue-Red:\n$$P = 0.21 + 0.21 = 0.42$$\n\n---\n\n### Example 3: Die and Coin\n**Question:** A fair die is rolled. If it shows 6, a biased coin with $P(H) = 0.8$ is flipped. If it shows anything else, a fair coin is flipped. Find $P(\\text{heads})$.\n\n**Solution:**\n\n$P(6) = \\frac{1}{6}$ and $P(\\text{not } 6) = \\frac{5}{6}$\n\nTree diagram branches:\n- **6 then H:** $\\frac{1}{6} \\times 0.8 = \\frac{0.8}{6} = \\frac{2}{15}$\n- **Not 6 then H:** $\\frac{5}{6} \\times 0.5 = \\frac{2.5}{6} = \\frac{5}{12}$\n\n$$\\begin{aligned}\nP(\\text{heads}) &= P(6 \\text{ and } H) + P(\\text{not 6 and } H) \\\\\n&= \\frac{2}{15} + \\frac{5}{12} \\\\\n&= \\frac{8}{60} + \\frac{25}{60} \\\\\n&= \\frac{33}{60} = \\frac{11}{20}\n\\end{aligned}$$\n\n**Answer:** $P(\\text{heads}) = \\frac{11}{20} = 0.55$\n\n---\n\n### Example 4: Three Events\n**Question:** The probability that a student passes a test is $0.6$. Three students take the test independently. Find:\n- (a) $P(\\text{all three pass})$\n- (b) $P(\\text{none pass})$\n- (c) $P(\\text{exactly one passes})$\n\n**Solution:**\n\nLet P = pass ($0.6$) and F = fail ($0.4$).\n\n(a)\n$$P(PPP) = 0.6 \\times 0.6 \\times 0.6 = 0.216$$\n\n(b)\n$$P(FFF) = 0.4 \\times 0.4 \\times 0.4 = 0.064$$\n\n(c) Exactly one passes: PFF, FPF, or FFP.\n$$\\begin{aligned}\nP(\\text{exactly one}) &= P(PFF) + P(FPF) + P(FFP) \\\\\n&= (0.6 \\times 0.4 \\times 0.4) + (0.4 \\times 0.6 \\times 0.4) + (0.4 \\times 0.4 \\times 0.6) \\\\\n&= 0.096 + 0.096 + 0.096 \\\\\n&= 0.288\n\\end{aligned}$$\n\n---\n\n## Common Mistakes\n\n| Mistake | Why It's Wrong | Correct Approach |\n|---------|---------------|------------------|\n| Adding probabilities along a branch instead of multiplying | The AND rule requires multiplication | Multiply along branches, add between separate paths |\n| Forgetting to include all relevant paths for \"or\" | e.g., \"one head\" means HT or TH, not just HT | Identify ALL paths that satisfy the condition |\n| Not checking that all final probabilities sum to 1 | If they don't, there is an error | Always verify the sum |\n| Confusing independent and dependent events | Independent means probabilities stay the same | If items are replaced, events are independent |\n| Drawing branches with wrong probabilities | Each set of branches from a node must sum to 1 | Check that branches from every node sum to 1 |\n\n---\n\n## Practice Questions\n\n### Foundation Tier\n\n1. A fair coin is flipped 3 times. Draw a tree diagram and find $P(\\text{exactly 2 tails})$.\n\n2. A spinner has $P(\\text{red}) = \\frac{1}{3}$ and $P(\\text{blue}) = \\frac{2}{3}$. It is spun twice. Find $P(\\text{both blue})$.\n\n3. A bag contains 4 red and 6 blue marbles. A marble is drawn, replaced, then another is drawn. Find:\n   - (a) $P(\\text{both red})$\n   - (b) $P(\\text{one red and one blue})$\n\n4. The probability that it rains on any day is 0.3 (independent of other days). Find the probability it rains on both Monday and Tuesday.\n\n5. A die is rolled and a coin is flipped. Find $P(\\text{6 and tails})$.\n\n6. Two fair dice are rolled. Using tree diagram reasoning, find $P(\\text{both show even numbers})$.\n\n### Higher Tier\n\n7. A biased coin has $P(H) = 0.6$. It is flipped 3 times. Find:\n   - (a) $P(\\text{all heads})$\n   - (b) $P(\\text{at least one tail})$\n   - (c) $P(\\text{exactly 2 heads})$\n\n8. The probability Ali is late for school is 0.2, and the probability Ben is late is 0.35 (independent). Find:\n   - (a) $P(\\text{both late})$\n   - (b) $P(\\text{neither late})$\n   - (c) $P(\\text{exactly one late})$\n\n9. A machine produces items that are defective with probability 0.05. Three items are chosen at random. Find $P(\\text{at least one defective})$.\n\n10. A footballer has a $\\frac{3}{4}$ chance of scoring from a penalty. He takes 3 penalties. Find $P(\\text{he scores at least 2})$.\n\n11. In a quiz, the probability of getting question 1 right is $0.8$, question 2 right is $0.6$, and question 3 right is $0.5$. The questions are independent. Find the probability of getting all three right, and the probability of getting exactly two right.\n\n---\n\n## Answers\n\n1. $P(\\text{exactly 2 tails}) = \\frac{3}{8}$ (paths: HTT, THT, TTH each with probability $\\frac{1}{8}$).\n\n2. $P(BB) = \\frac{2}{3} \\times \\frac{2}{3} = \\frac{4}{9}$\n\n3. (a) $P(RR) = \\frac{4}{10} \\times \\frac{4}{10} = \\frac{16}{100} = \\frac{4}{25}$ (b) $P(RB) + P(BR) = \\frac{4}{10} \\times \\frac{6}{10} + \\frac{6}{10} \\times \\frac{4}{10} = \\frac{48}{100} = \\frac{12}{25}$\n\n4. $P = 0.3 \\times 0.3 = 0.09$\n\n5. $P = \\frac{1}{6} \\times \\frac{1}{2} = \\frac{1}{12}$\n\n6. $P = \\frac{1}{2} \\times \\frac{1}{2} = \\frac{1}{4}$\n\n7. (a) $0.6^3 = 0.216$ (b) $1 - 0.216 = 0.784$ (c) $3 \\times 0.6^2 \\times 0.4 = 3 \\times 0.144 = 0.432$\n\n8. (a) $0.2 \\times 0.35 = 0.07$ (b) $0.8 \\times 0.65 = 0.52$ (c) $(0.2 \\times 0.65) + (0.8 \\times 0.35) = 0.13 + 0.28 = 0.41$\n\n9. $P(\\text{at least one defective}) = 1 - 0.95^3 = 1 - 0.857375 = 0.142625 \\approx 0.143$\n\n10. $P(\\text{at least 2}) = P(2) + P(3)$. $P(3) = \\left(\\frac{3}{4}\\right)^3 = \\frac{27}{64}$. $P(2) = 3 \\times \\left(\\frac{3}{4}\\right)^2 \\times \\frac{1}{4} = \\frac{27}{64}$. Total $= \\frac{54}{64} = \\frac{27}{32}$.\n\n11. $P(\\text{all right}) = 0.8 \\times 0.6 \\times 0.5 = 0.24$. $P(\\text{exactly 2}) = (0.8 \\times 0.6 \\times 0.5) + (0.8 \\times 0.4 \\times 0.5) + (0.2 \\times 0.6 \\times 0.5)$. Wait — exactly 2 right means one wrong. Paths: right-right-wrong $(0.8 \\times 0.6 \\times 0.5 = 0.24)$, right-wrong-right $(0.8 \\times 0.4 \\times 0.5 = 0.16)$, wrong-right-right $(0.2 \\times 0.6 \\times 0.5 = 0.06)$. Total $= 0.24 + 0.16 + 0.06 = 0.46$.\n\n---\n\n## Exam Tips\n\n- Always label every branch with its probability.\n- Check that branches from each node sum to 1.\n- **AND** = multiply along the path. **OR** = add the results of different paths.\n- For \"at least one\" problems, use the complement: $P(\\text{at least one}) = 1 - P(\\text{none})$.\n- Draw the tree diagram neatly — it earns method marks even if your final answer is wrong.\n- For three events, consider whether all paths are needed or if the complement method is quicker.\n\n---\n\n## Summary\n\n- A **tree diagram** shows all possible outcomes for sequential events.\n- **Multiply** along branches for combined probabilities (AND rule).\n- **Add** across paths for alternative outcomes (OR rule).\n- For **independent events**, probabilities on the second set of branches are the same regardless of the first outcome.\n- All final probabilities must sum to $1$.\n- Use the **complement** for \"at least one\" problems: $1 - P(\\text{none})$.",
-  "order": 8
+  "order": 8,
+  "pageType": "lesson",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 1
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Tree Diagrams"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Learning Objectives"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "By the end of this lesson, you should be able to:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Draw and label tree diagrams for two or more successive events"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Apply the AND rule (multiply along branches) for combined events"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Apply the OR rule (add between outcomes) for alternative events"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Calculate probabilities for independent events using tree diagrams"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Solve problems involving coins, dice, spinners, and other contexts"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Introduction"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A coin is flipped twice. What is the probability of getting at least one head? Problems involving "
+          },
+          {
+            "type": "text",
+            "text": "sequences of events",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " can become confusing without a clear method. A "
+          },
+          {
+            "type": "text",
+            "text": "tree diagram",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " provides a visual way to map out all possible outcomes and calculate their probabilities systematically."
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "visualizationEmbed",
+        "attrs": {
+          "visualizationId": "math-tree-diagram-builder",
+          "displayMode": "expanded",
+          "customHeight": 500
+        }
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-tree-diagrams"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Key Concepts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "What is a Tree Diagram?"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "A "
+          },
+          {
+            "type": "text",
+            "text": "tree diagram",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " shows all possible outcomes of a sequence of events as branches. Each branch is labelled with the probability of that outcome."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The AND Rule (Multiplication Rule)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "To find the probability that event $A$ "
+          },
+          {
+            "type": "text",
+            "text": "and",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " event $B$ both happen, "
+          },
+          {
+            "type": "text",
+            "text": "multiply",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " along the branches:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$P(A \\text{ and } B) = P(A) \\times P(B)$$"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "The OR Rule (Addition Rule)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "To find the probability of one outcome "
+          },
+          {
+            "type": "text",
+            "text": "or",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " another, "
+          },
+          {
+            "type": "text",
+            "text": "add",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " the probabilities of the separate paths:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$P(\\text{outcome 1 or outcome 2}) = P(\\text{outcome 1}) + P(\\text{outcome 2})$$"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Independent Events"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Two events are "
+          },
+          {
+            "type": "text",
+            "text": "independent",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " if one event does not affect the probability of the other. For independent events:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$P(A \\text{ and } B) = P(A) \\times P(B)$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Examples of independent events:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Flipping a coin twice"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Rolling two separate dice"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Drawing a ball, replacing it, then drawing again"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Memory aid:",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " Multiply along branches (AND), add between branches (OR)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "check-tree-diagrams-2"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Worked Examples"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 1: Two Coin Flips"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A fair coin is flipped twice. Draw a tree diagram and find:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $P(\\text{two heads})$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) $P(\\text{exactly one head})$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) $P(\\text{at least one head})$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Tree diagram:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "``"
+          },
+          {
+            "type": "text",
+            "text": " Flip 1       Flip 2      Outcome    Probability /   \\         /  \\ H(1/2)  T(1/2) /    \\    /    \\ H(1/2) T(1/2) H(1/2) T(1/2) HH      HT     TH      TT ",
+            "marks": [
+              {
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "``"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "content": [
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Outcome"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Calculation"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Probability"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "HH"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$\\frac{1}{2} \\times \\frac{1}{2}$"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$\\frac{1}{4}$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "HT"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$\\frac{1}{2} \\times \\frac{1}{2}$"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$\\frac{1}{4}$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "TH"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$\\frac{1}{2} \\times \\frac{1}{2}$"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$\\frac{1}{4}$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "TT"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$\\frac{1}{2} \\times \\frac{1}{2}$"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$\\frac{1}{4}$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Check:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " $\\frac{1}{4} + \\frac{1}{4} + \\frac{1}{4} + \\frac{1}{4} = 1$ ✓"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(a) $P(HH) = \\frac{1}{4}$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(b) $P(\\text{exactly one head}) = P(HT) + P(TH) = \\frac{1}{4} + \\frac{1}{4} = \\frac{1}{2}$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(c) $P(\\text{at least one head}) = 1 - P(TT) = 1 - \\frac{1}{4} = \\frac{3}{4}$"
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 2: Biased Spinner"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A spinner has $P(\\text{red}) = 0.7$ and $P(\\text{blue}) = 0.3$. It is spun twice. Find:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $P(\\text{both red})$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) $P(\\text{one of each colour})$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "content": [
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Outcome"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Calculation"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Probability"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Red, Red"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$0.7 \\times 0.7$"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$0.49$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Red, Blue"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$0.7 \\times 0.3$"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$0.21$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Blue, Red"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$0.3 \\times 0.7$"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$0.21$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Blue, Blue"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$0.3 \\times 0.3$"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "$0.09$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Check:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " $0.49 + 0.21 + 0.21 + 0.09 = 1.00$ ✓"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(a) $P(\\text{both red}) = 0.49$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(b) One of each means Red-Blue OR Blue-Red:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$P = 0.21 + 0.21 = 0.42$$"
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 3: Die and Coin"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " A fair die is rolled. If it shows 6, a biased coin with $P(H) = 0.8$ is flipped. If it shows anything else, a fair coin is flipped. Find $P(\\text{heads})$."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$P(6) = \\frac{1}{6}$ and $P(\\text{not } 6) = \\frac{5}{6}$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Tree diagram branches:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "6 then H:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " $\\frac{1}{6} \\times 0.8 = \\frac{0.8}{6} = \\frac{2}{15}$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Not 6 then H:",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " $\\frac{5}{6} \\times 0.5 = \\frac{2.5}{6} = \\frac{5}{12}$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$\\begin{aligned}\nP(\\text{heads}) &= P(6 \\text{ and } H) + P(\\text{not 6 and } H) \\\\\n&= \\frac{2}{15} + \\frac{5}{12} \\\\\n&= \\frac{8}{60} + \\frac{25}{60} \\\\\n&= \\frac{33}{60} = \\frac{11}{20}\n\\end{aligned}$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Answer:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " $P(\\text{heads}) = \\frac{11}{20} = 0.55$"
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Example 4: Three Events"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Question:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " The probability that a student passes a test is $0.6$. Three students take the test independently. Find:"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $P(\\text{all three pass})$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) $P(\\text{none pass})$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) $P(\\text{exactly one passes})$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Solution:",
+            "marks": [
+              {
+                "type": "bold"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "Let P = pass ($0.6$) and F = fail ($0.4$)."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(a)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$P(PPP) = 0.6 \\times 0.6 \\times 0.6 = 0.216$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(b)"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$P(FFF) = 0.4 \\times 0.4 \\times 0.4 = 0.064$$"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "(c) Exactly one passes: PFF, FPF, or FFP."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "type": "text",
+            "text": "$$\\begin{aligned}\nP(\\text{exactly one}) &= P(PFF) + P(FPF) + P(FFP) \\\\\n&= (0.6 \\times 0.4 \\times 0.4) + (0.4 \\times 0.6 \\times 0.4) + (0.4 \\times 0.4 \\times 0.6) \\\\\n&= 0.096 + 0.096 + 0.096 \\\\\n&= 0.288\n\\end{aligned}$$"
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Common Mistakes"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "content": [
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Mistake"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Why It's Wrong"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableHeader",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Correct Approach"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Adding probabilities along a branch instead of multiplying"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The AND rule requires multiplication"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Multiply along branches, add between separate paths"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Forgetting to include all relevant paths for \"or\""
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "e.g., \"one head\" means HT or TH, not just HT"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Identify ALL paths that satisfy the condition"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Not checking that all final probabilities sum to 1"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "If they don't, there is an error"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Always verify the sum"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Confusing independent and dependent events"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Independent means probabilities stay the same"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "If items are replaced, events are independent"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "content": [
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Drawing branches with wrong probabilities"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Each set of branches from a node must sum to 1"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1,
+                  "colwidth": null
+                },
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Check that branches from every node sum to 1"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Practice Questions"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Foundation Tier"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A fair coin is flipped 3 times. Draw a tree diagram and find $P(\\text{exactly 2 tails})$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 2
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A spinner has $P(\\text{red}) = \\frac{1}{3}$ and $P(\\text{blue}) = \\frac{2}{3}$. It is spun twice. Find $P(\\text{both blue})$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 3
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A bag contains 4 red and 6 blue marbles. A marble is drawn, replaced, then another is drawn. Find:"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $P(\\text{both red})$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) $P(\\text{one red and one blue})$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 4
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The probability that it rains on any day is 0.3 (independent of other days). Find the probability it rains on both Monday and Tuesday."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 5
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A die is rolled and a coin is flipped. Find $P(\\text{6 and tails})$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 6
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Two fair dice are rolled. Using tree diagram reasoning, find $P(\\text{both show even numbers})$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 3
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Higher Tier"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 7
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A biased coin has $P(H) = 0.6$. It is flipped 3 times. Find:"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $P(\\text{all heads})$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) $P(\\text{at least one tail})$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) $P(\\text{exactly 2 heads})$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 8
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The probability Ali is late for school is 0.2, and the probability Ben is late is 0.35 (independent). Find:"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $P(\\text{both late})$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(b) $P(\\text{neither late})$"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(c) $P(\\text{exactly one late})$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 9
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A machine produces items that are defective with probability 0.05. Three items are chosen at random. Find $P(\\text{at least one defective})$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 10
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A footballer has a $\\frac{3}{4}$ chance of scoring from a penalty. He takes 3 penalties. Find $P(\\text{he scores at least 2})$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 11
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "In a quiz, the probability of getting question 1 right is $0.8$, question 2 right is $0.6$, and question 3 right is $0.5$. The questions are independent. Find the probability of getting all three right, and the probability of getting exactly two right."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Answers"
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$P(\\text{exactly 2 tails}) = \\frac{3}{8}$ (paths: HTT, THT, TTH each with probability $\\frac{1}{8}$)."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 2
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$P(BB) = \\frac{2}{3} \\times \\frac{2}{3} = \\frac{4}{9}$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 3
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $P(RR) = \\frac{4}{10} \\times \\frac{4}{10} = \\frac{16}{100} = \\frac{4}{25}$ (b) $P(RB) + P(BR) = \\frac{4}{10} \\times \\frac{6}{10} + \\frac{6}{10} \\times \\frac{4}{10} = \\frac{48}{100} = \\frac{12}{25}$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 4
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$P = 0.3 \\times 0.3 = 0.09$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 5
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$P = \\frac{1}{6} \\times \\frac{1}{2} = \\frac{1}{12}$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 6
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$P = \\frac{1}{2} \\times \\frac{1}{2} = \\frac{1}{4}$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 7
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $0.6^3 = 0.216$ (b) $1 - 0.216 = 0.784$ (c) $3 \\times 0.6^2 \\times 0.4 = 3 \\times 0.144 = 0.432$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 8
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "(a) $0.2 \\times 0.35 = 0.07$ (b) $0.8 \\times 0.65 = 0.52$ (c) $(0.2 \\times 0.65) + (0.8 \\times 0.35) = 0.13 + 0.28 = 0.41$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 9
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$P(\\text{at least one defective}) = 1 - 0.95^3 = 1 - 0.857375 = 0.142625 \\approx 0.143$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 10
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$P(\\text{at least 2}) = P(2) + P(3)$. $P(3) = \\left(\\frac{3}{4}\\right)^3 = \\frac{27}{64}$. $P(2) = 3 \\times \\left(\\frac{3}{4}\\right)^2 \\times \\frac{1}{4} = \\frac{27}{64}$. Total $= \\frac{54}{64} = \\frac{27}{32}$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "orderedList",
+        "attrs": {
+          "start": 11
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "$P(\\text{all right}) = 0.8 \\times 0.6 \\times 0.5 = 0.24$. $P(\\text{exactly 2}) = (0.8 \\times 0.6 \\times 0.5) + (0.8 \\times 0.4 \\times 0.5) + (0.2 \\times 0.6 \\times 0.5)$. Wait — exactly 2 right means one wrong. Paths: right-right-wrong $(0.8 \\times 0.6 \\times 0.5 = 0.24)$, right-wrong-right $(0.8 \\times 0.4 \\times 0.5 = 0.16)$, wrong-right-right $(0.2 \\times 0.6 \\times 0.5 = 0.06)$. Total $= 0.24 + 0.16 + 0.06 = 0.46$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Exam Tips"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Always label every branch with its probability."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Check that branches from each node sum to 1."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "AND",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = multiply along the path. "
+                  },
+                  {
+                    "type": "text",
+                    "text": "OR",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " = add the results of different paths."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "For \"at least one\" problems, use the complement: $P(\\text{at least one}) = 1 - P(\\text{none})$."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Draw the tree diagram neatly — it earns method marks even if your final answer is wrong."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "For three events, consider whether all paths are needed or if the complement method is quicker."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule"
+      },
+      {
+        "type": "quizEmbed",
+        "attrs": {
+          "quizId": "quiz-tree-diagrams"
+        }
+      },
+      {
+        "type": "heading",
+        "attrs": {
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Summary"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "A "
+                  },
+                  {
+                    "type": "text",
+                    "text": "tree diagram",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " shows all possible outcomes for sequential events."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Multiply",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " along branches for combined probabilities (AND rule)."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Add",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " across paths for alternative outcomes (OR rule)."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "For "
+                  },
+                  {
+                    "type": "text",
+                    "text": "independent events",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": ", probabilities on the second set of branches are the same regardless of the first outcome."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "All final probabilities must sum to $1$."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Use the "
+                  },
+                  {
+                    "type": "text",
+                    "text": "complement",
+                    "marks": [
+                      {
+                        "type": "bold"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": " for \"at least one\" problems: $1 - P(\\text{none})$."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

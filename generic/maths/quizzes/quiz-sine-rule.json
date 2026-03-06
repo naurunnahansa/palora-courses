@@ -1,0 +1,104 @@
+{
+  "id": "quiz-sine-rule",
+  "title": "Quiz: The Sine Rule",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The Sine Rule states:",
+      "options": [
+        {"id": "a", "text": "$a^2 = b^2 + c^2 - 2bc\\cos A$"},
+        {"id": "b", "text": "$\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}$"},
+        {"id": "c", "text": "$\\text{Area} = \\frac{1}{2}ab\\sin C$"},
+        {"id": "d", "text": "$a^2 + b^2 = c^2$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The Sine Rule relates each side to the sine of its opposite angle: $\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "When should you use the Sine Rule rather than the Cosine Rule?",
+      "options": [
+        {"id": "a", "text": "When you know all three sides"},
+        {"id": "b", "text": "When you know two sides and the included angle"},
+        {"id": "c", "text": "When you know two angles and a side, or two sides and a non-included angle"},
+        {"id": "d", "text": "Only for right-angled triangles"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "The Sine Rule is used when you have a matching pair (angle and its opposite side) plus one other piece of information — typically AAS, ASA, or SSA."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In triangle $ABC$, $A = 40°$, $B = 60°$, and $a = 10$ cm. Find $b$ to $1$ decimal place.",
+      "options": [
+        {"id": "a", "text": "$13.5$ cm"},
+        {"id": "b", "text": "$7.4$ cm"},
+        {"id": "c", "text": "$11.5$ cm"},
+        {"id": "d", "text": "$15.6$ cm"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "$\\frac{b}{\\sin 60°} = \\frac{10}{\\sin 40°}$. So $b = \\frac{10 \\times \\sin 60°}{\\sin 40°} = \\frac{10 \\times 0.8660}{0.6428} = 13.5$ cm."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In triangle $PQR$, $p = 12$ cm, $q = 8$ cm, and $P = 50°$. Find angle $Q$ to $1$ decimal place.",
+      "options": [
+        {"id": "a", "text": "$30.7°$"},
+        {"id": "b", "text": "$40.0°$"},
+        {"id": "c", "text": "$149.3°$"},
+        {"id": "d", "text": "$25.3°$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "$\\frac{\\sin Q}{8} = \\frac{\\sin 50°}{12}$. So $\\sin Q = \\frac{8 \\times 0.7660}{12} = 0.5107$. $Q = \\sin^{-1}(0.5107) = 30.7°$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Why can the Sine Rule sometimes give two possible answers for an angle (the ambiguous case)?",
+      "options": [
+        {"id": "a", "text": "Because $\\sin$ is always positive"},
+        {"id": "b", "text": "Because $\\sin \\theta = \\sin(180° - \\theta)$, so there may be two valid angles"},
+        {"id": "c", "text": "Because the triangle might not exist"},
+        {"id": "d", "text": "Because the calculator gives a rounding error"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Since $\\sin \\theta = \\sin(180° - \\theta)$, both $\\theta$ and $180° - \\theta$ are possible solutions. You must check which one gives a valid triangle."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In triangle $ABC$, $A = 35°$, $C = 80°$, and $c = 15$ cm. Find $a$ to $1$ decimal place.",
+      "options": [
+        {"id": "a", "text": "$8.7$ cm"},
+        {"id": "b", "text": "$11.2$ cm"},
+        {"id": "c", "text": "$25.8$ cm"},
+        {"id": "d", "text": "$7.5$ cm"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "$\\frac{a}{\\sin 35°} = \\frac{15}{\\sin 80°}$. So $a = \\frac{15 \\times \\sin 35°}{\\sin 80°} = \\frac{15 \\times 0.5736}{0.9848} = 8.7$ cm."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In triangle $ABC$, $B = 65°$ and $C = 48°$. What is angle $A$?",
+      "options": [
+        {"id": "a", "text": "$113°$"},
+        {"id": "b", "text": "$57°$"},
+        {"id": "c", "text": "$67°$"},
+        {"id": "d", "text": "$77°$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "$A = 180° - 65° - 48° = 67°$."
+    }
+  ]
+}

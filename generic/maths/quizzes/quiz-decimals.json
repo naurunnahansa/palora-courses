@@ -1,0 +1,104 @@
+{
+  "id": "quiz-decimals",
+  "title": "Quiz: Decimals",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Convert $\\frac{3}{8}$ to a decimal.",
+      "options": [
+        {"id": "a", "text": "$0.3$"},
+        {"id": "b", "text": "$0.35$"},
+        {"id": "c", "text": "$0.375$"},
+        {"id": "d", "text": "$0.38$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "$\\frac{3}{8} = 3 \\div 8 = 0.375$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Calculate $3.6 \\div 0.4$.",
+      "options": [
+        {"id": "a", "text": "$0.9$"},
+        {"id": "b", "text": "$9$"},
+        {"id": "c", "text": "$90$"},
+        {"id": "d", "text": "$0.09$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Multiply both numbers by 10 to make the divisor a whole number: $3.6 \\div 0.4 = 36 \\div 4 = 9$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Round 4.5673 to 2 decimal places.",
+      "options": [
+        {"id": "a", "text": "$4.56$"},
+        {"id": "b", "text": "$4.57$"},
+        {"id": "c", "text": "$4.6$"},
+        {"id": "d", "text": "$4.567$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Look at the third decimal place digit: 7. Since $7 \\geq 5$, round up the second decimal place from 6 to 7. Answer: 4.57."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Convert 0.45 to a fraction in simplest form.",
+      "options": [
+        {"id": "a", "text": "$\\frac{45}{10}$"},
+        {"id": "b", "text": "$\\frac{9}{20}$"},
+        {"id": "c", "text": "$\\frac{45}{100}$"},
+        {"id": "d", "text": "$\\frac{4}{5}$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "$0.45 = \\frac{45}{100}$. Simplify by dividing both by 5: $\\frac{45 \\div 5}{100 \\div 5} = \\frac{9}{20}$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is $0.3 \\times 0.4$?",
+      "options": [
+        {"id": "a", "text": "$1.2$"},
+        {"id": "b", "text": "$0.12$"},
+        {"id": "c", "text": "$0.012$"},
+        {"id": "d", "text": "$0.7$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "When multiplying decimals, count the total decimal places in both numbers (1 + 1 = 2). $3 \\times 4 = 12$, then place 2 decimal places: $0.12$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "How many significant figures does the number $0.00340$ have?",
+      "options": [
+        {"id": "a", "text": "2"},
+        {"id": "b", "text": "3"},
+        {"id": "c", "text": "5"},
+        {"id": "d", "text": "6"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Leading zeros are not significant. Count from the first non-zero digit: 3, 4, 0. The trailing zero after the 4 is significant because it comes after the decimal point, giving 3 significant figures."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Convert the recurring decimal $0.\\dot{2}\\dot{7}$ to a fraction.",
+      "options": [
+        {"id": "a", "text": "$\\frac{27}{100}$"},
+        {"id": "b", "text": "$\\frac{3}{11}$"},
+        {"id": "c", "text": "$\\frac{27}{99}$"},
+        {"id": "d", "text": "$\\frac{9}{33}$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Let $x = 0.272727\\ldots$ Then $100x = 27.2727\\ldots$ Subtracting: $99x = 27$, so $x = \\frac{27}{99} = \\frac{3}{11}$."
+    }
+  ]
+}

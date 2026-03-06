@@ -1,0 +1,104 @@
+{
+  "id": "quiz-bounds",
+  "title": "Quiz: Bounds",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A length is measured as 5.3 cm, correct to 1 decimal place. What is the lower bound?",
+      "options": [
+        {"id": "a", "text": "5.2 cm"},
+        {"id": "b", "text": "5.25 cm"},
+        {"id": "c", "text": "5.29 cm"},
+        {"id": "d", "text": "5.0 cm"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Rounded to 1 decimal place, the error interval is $\\pm 0.05$. Lower bound $= 5.3 - 0.05 = 5.25$ cm. Any value from 5.25 up to (but not including) 5.35 rounds to 5.3."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A mass is given as 60 kg, rounded to the nearest 10 kg. What is the upper bound?",
+      "options": [
+        {"id": "a", "text": "60 kg"},
+        {"id": "b", "text": "64.9 kg"},
+        {"id": "c", "text": "65 kg"},
+        {"id": "d", "text": "70 kg"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "Rounded to the nearest 10, the error interval is $\\pm 5$. Upper bound $= 60 + 5 = 65$ kg. The actual mass satisfies $55 \\leq m < 65$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A rectangle has length $l = 8.4$ cm and width $w = 3.2$ cm, both measured to 1 decimal place. To find the maximum possible area, which bounds should you use?",
+      "options": [
+        {"id": "a", "text": "Upper bound of $l$ $\\times$ upper bound of $w$"},
+        {"id": "b", "text": "Lower bound of $l$ $\\times$ lower bound of $w$"},
+        {"id": "c", "text": "Upper bound of $l$ $\\times$ lower bound of $w$"},
+        {"id": "d", "text": "Lower bound of $l$ $\\times$ upper bound of $w$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "For the maximum area, use the largest possible values for both length and width. This means upper bound of length $\\times$ upper bound of width."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A value is 4.7, correct to 1 decimal place. Which inequality represents the error interval?",
+      "options": [
+        {"id": "a", "text": "$4.6 \\leq x < 4.8$"},
+        {"id": "b", "text": "$4.65 \\leq x < 4.75$"},
+        {"id": "c", "text": "$4.65 < x < 4.75$"},
+        {"id": "d", "text": "$4.65 \\leq x \\leq 4.75$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The lower bound is 4.65 (included, since 4.65 rounds up to 4.7). The upper bound is 4.75 (excluded, since 4.75 would round to 4.8). So $4.65 \\leq x < 4.75$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "To calculate the minimum value of $\\frac{a}{b}$, you should use:",
+      "options": [
+        {"id": "a", "text": "Lower bound of $a$ divided by lower bound of $b$"},
+        {"id": "b", "text": "Upper bound of $a$ divided by upper bound of $b$"},
+        {"id": "c", "text": "Lower bound of $a$ divided by upper bound of $b$"},
+        {"id": "d", "text": "Upper bound of $a$ divided by lower bound of $b$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "To minimise a fraction, make the numerator as small as possible (lower bound of $a$) and the denominator as large as possible (upper bound of $b$)."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A distance is 200 m, correct to the nearest 10 m. What is the lower bound?",
+      "options": [
+        {"id": "a", "text": "190 m"},
+        {"id": "b", "text": "195 m"},
+        {"id": "c", "text": "199 m"},
+        {"id": "d", "text": "200 m"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Rounded to the nearest 10, the error is $\\pm 5$. Lower bound $= 200 - 5 = 195$ m."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A speed is calculated using $\\text{speed} = \\frac{\\text{distance}}{\\text{time}}$. Distance is 100 m (to nearest metre) and time is 12.5 s (to 1 d.p.). What are the bounds needed for the maximum speed?",
+      "options": [
+        {"id": "a", "text": "Upper bound of distance and upper bound of time"},
+        {"id": "b", "text": "Lower bound of distance and lower bound of time"},
+        {"id": "c", "text": "Upper bound of distance and lower bound of time"},
+        {"id": "d", "text": "Lower bound of distance and upper bound of time"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "To maximise speed (a division), use the upper bound of the numerator (distance = 100.5 m) and the lower bound of the denominator (time = 12.45 s)."
+    }
+  ]
+}

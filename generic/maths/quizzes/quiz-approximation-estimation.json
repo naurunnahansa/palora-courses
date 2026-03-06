@@ -1,0 +1,104 @@
+{
+  "id": "quiz-approximation-estimation",
+  "title": "Quiz: Approximation and Estimation",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Round 0.006847 to 2 significant figures.",
+      "options": [
+        {"id": "a", "text": "$0.0068$"},
+        {"id": "b", "text": "$0.007$"},
+        {"id": "c", "text": "$0.00685$"},
+        {"id": "d", "text": "$0.0069$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Leading zeros are not significant. The first two significant figures are 6 and 8. The next digit is 4 (< 5), so round down: 0.0068."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Estimate $48.7 \\times 21.3$ by rounding to 1 significant figure.",
+      "options": [
+        {"id": "a", "text": "Approximately $70$"},
+        {"id": "b", "text": "Approximately $100$"},
+        {"id": "c", "text": "Approximately $1000$"},
+        {"id": "d", "text": "Approximately $10000$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "Round each to 1 s.f.: $48.7 \\approx 50$ and $21.3 \\approx 20$. Estimate: $50 \\times 20 = 1000$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is 3.4567 truncated to 2 decimal places?",
+      "options": [
+        {"id": "a", "text": "$3.46$"},
+        {"id": "b", "text": "$3.45$"},
+        {"id": "c", "text": "$3.50$"},
+        {"id": "d", "text": "$3.47$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Truncation means cutting off digits without rounding. Simply remove everything after the second decimal place: 3.45. Rounding would give 3.46, but truncation does not round up."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A student calculates $47.3 \\times 8.9 = 41.0$. Is this reasonable?",
+      "options": [
+        {"id": "a", "text": "Yes, the answer looks correct"},
+        {"id": "b", "text": "No, the answer should be approximately $50 \\times 9 = 450$"},
+        {"id": "c", "text": "No, the answer should be approximately $50 \\times 10 = 5000$"},
+        {"id": "d", "text": "Yes, because $47 \\times 9$ is close to $41$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Estimating: $50 \\times 9 = 450$. The student's answer of 41.0 is far too small (about 10 times too small). The student likely made an error with the decimal point."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Round 4.9951 to 2 decimal places.",
+      "options": [
+        {"id": "a", "text": "$4.99$"},
+        {"id": "b", "text": "$5.00$"},
+        {"id": "c", "text": "$4.995$"},
+        {"id": "d", "text": "$4.90$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Look at the third decimal place: 5. Since $5 \\geq 5$, round up: the 99 becomes 100, carrying over to give 5.00."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Estimate $\\sqrt{83}$.",
+      "options": [
+        {"id": "a", "text": "Approximately $8.1$"},
+        {"id": "b", "text": "Approximately $9.1$"},
+        {"id": "c", "text": "Approximately $41.5$"},
+        {"id": "d", "text": "Approximately $10.2$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "$9^2 = 81$ and $10^2 = 100$. Since 83 is between 81 and 100 (and close to 81), $\\sqrt{83} \\approx 9.1$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Estimate $\\frac{312 \\times 48}{19.7}$.",
+      "options": [
+        {"id": "a", "text": "Approximately $75$"},
+        {"id": "b", "text": "Approximately $750$"},
+        {"id": "c", "text": "Approximately $7500$"},
+        {"id": "d", "text": "Approximately $150$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Round: $312 \\approx 300$, $48 \\approx 50$, $19.7 \\approx 20$. Estimate: $\\frac{300 \\times 50}{20} = \\frac{15000}{20} = 750$."
+    }
+  ]
+}

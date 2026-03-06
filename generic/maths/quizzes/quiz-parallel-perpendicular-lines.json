@@ -1,0 +1,104 @@
+{
+  "id": "quiz-parallel-perpendicular-lines",
+  "title": "Quiz: Parallel and Perpendicular Lines",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which line is parallel to $y = 3x + 1$?",
+      "options": [
+        {"id": "a", "text": "$y = -3x + 5$"},
+        {"id": "b", "text": "$y = 3x - 7$"},
+        {"id": "c", "text": "$y = \\frac{1}{3}x + 1$"},
+        {"id": "d", "text": "$y = -\\frac{1}{3}x + 1$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "Parallel lines have the same gradient. $y = 3x + 1$ has gradient 3, and $y = 3x - 7$ also has gradient 3."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If a line has gradient $4$, what is the gradient of a line perpendicular to it?",
+      "options": [
+        {"id": "a", "text": "$-4$"},
+        {"id": "b", "text": "$\\frac{1}{4}$"},
+        {"id": "c", "text": "$-\\frac{1}{4}$"},
+        {"id": "d", "text": "$4$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "For perpendicular lines, $m_1 \\times m_2 = -1$. So $4 \\times m_2 = -1$, giving $m_2 = -\\frac{1}{4}$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which pair of lines is perpendicular?",
+      "options": [
+        {"id": "a", "text": "$y = 2x + 1$ and $y = 2x - 3$"},
+        {"id": "b", "text": "$y = 3x + 1$ and $y = -3x + 2$"},
+        {"id": "c", "text": "$y = 2x + 1$ and $y = -\\frac{1}{2}x + 4$"},
+        {"id": "d", "text": "$y = x + 3$ and $y = x - 3$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "Check $m_1 \\times m_2 = -1$: $2 \\times (-\\frac{1}{2}) = -1$. So $y = 2x + 1$ and $y = -\\frac{1}{2}x + 4$ are perpendicular."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the equation of the line parallel to $y = 5x - 2$ that passes through $(0, 4)$.",
+      "options": [
+        {"id": "a", "text": "$y = 5x + 4$"},
+        {"id": "b", "text": "$y = 4x + 5$"},
+        {"id": "c", "text": "$y = -\\frac{1}{5}x + 4$"},
+        {"id": "d", "text": "$y = 5x - 4$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Parallel means same gradient: $m = 5$. The point $(0, 4)$ gives $c = 4$. So the equation is $y = 5x + 4$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the equation of the line perpendicular to $y = 2x + 3$ that passes through $(4, 1)$.",
+      "options": [
+        {"id": "a", "text": "$y = -\\frac{1}{2}x + 3$"},
+        {"id": "b", "text": "$y = 2x - 7$"},
+        {"id": "c", "text": "$y = -2x + 9$"},
+        {"id": "d", "text": "$y = -\\frac{1}{2}x - 1$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Perpendicular gradient: $m = -\\frac{1}{2}$. Substitute $(4, 1)$: $1 = -\\frac{1}{2}(4) + c$, so $1 = -2 + c$, $c = 3$. The equation is $y = -\\frac{1}{2}x + 3$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A line has gradient $-\\frac{2}{3}$. What is the gradient of a perpendicular line?",
+      "options": [
+        {"id": "a", "text": "$\\frac{2}{3}$"},
+        {"id": "b", "text": "$-\\frac{3}{2}$"},
+        {"id": "c", "text": "$\\frac{3}{2}$"},
+        {"id": "d", "text": "$\\frac{2}{3}$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "For perpendicular lines: $m_1 \\times m_2 = -1$. So $-\\frac{2}{3} \\times m_2 = -1$, giving $m_2 = \\frac{3}{2}$. The negative reciprocal of $-\\frac{2}{3}$ is $\\frac{3}{2}$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What relationship must the gradients of two perpendicular lines satisfy?",
+      "options": [
+        {"id": "a", "text": "$m_1 + m_2 = 0$"},
+        {"id": "b", "text": "$m_1 = m_2$"},
+        {"id": "c", "text": "$m_1 \\times m_2 = 1$"},
+        {"id": "d", "text": "$m_1 \\times m_2 = -1$"}
+      ],
+      "correctAnswer": "d",
+      "explanation": "Two lines are perpendicular if and only if the product of their gradients is $-1$. One gradient is the negative reciprocal of the other."
+    }
+  ]
+}

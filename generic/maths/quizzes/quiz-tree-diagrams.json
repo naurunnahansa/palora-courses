@@ -1,0 +1,188 @@
+{
+  "id": "quiz-tree-diagrams",
+  "title": "Quiz: Tree Diagrams",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "On a tree diagram, the probabilities on branches from the same point must:",
+      "options": [
+        {
+          "id": "a",
+          "text": "All be equal"
+        },
+        {
+          "id": "b",
+          "text": "Sum to 1"
+        },
+        {
+          "id": "c",
+          "text": "Sum to 0.5"
+        },
+        {
+          "id": "d",
+          "text": "Multiply to 1"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The probabilities on branches from any single point must sum to 1, as they represent all possible outcomes at that stage."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "To find the probability of a specific outcome path on a tree diagram, you:",
+      "options": [
+        {
+          "id": "a",
+          "text": "Multiply the probabilities along the path"
+        },
+        {
+          "id": "b",
+          "text": "Add the probabilities along the path"
+        },
+        {
+          "id": "c",
+          "text": "Subtract the probabilities"
+        },
+        {
+          "id": "d",
+          "text": "Take the average of the probabilities"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "You multiply the probabilities along a path to find the probability of that specific sequence of outcomes (the AND rule)."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A coin is flipped twice. Using a tree diagram, what is $P(\\text{two heads})$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{1}{2}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{1}{3}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{1}{4}$"
+        },
+        {
+          "id": "d",
+          "text": "$1$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "$P(\\text{HH}) = \\frac{1}{2} \\times \\frac{1}{2} = \\frac{1}{4}$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A bag contains 3 red and 2 blue balls. A ball is drawn, replaced, then another is drawn. What is $P(\\text{red then blue})$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{1}{5}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{6}{20}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{5}{25}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{6}{25}$"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "With replacement: $P(\\text{red}) = \\frac{3}{5}$ and $P(\\text{blue}) = \\frac{2}{5}$. $P(\\text{red then blue}) = \\frac{3}{5} \\times \\frac{2}{5} = \\frac{6}{25}$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "To find $P(\\text{at least one head in two coin flips})$, which approach is most efficient?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Add the probabilities of HH, HT, and TH"
+        },
+        {
+          "id": "b",
+          "text": "$1 - P(\\text{no heads}) = 1 - P(\\text{TT})$"
+        },
+        {
+          "id": "c",
+          "text": "Both approaches give the correct answer"
+        },
+        {
+          "id": "d",
+          "text": "Multiply $P(H)$ by 2"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Both work: adding HH, HT, TH gives $\\frac{1}{4} + \\frac{1}{4} + \\frac{1}{4} = \\frac{3}{4}$, and $1 - P(\\text{TT}) = 1 - \\frac{1}{4} = \\frac{3}{4}$. The complement method is more efficient."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "When two outcomes give the same event (e.g. 'exactly one head'), you find the overall probability by:",
+      "options": [
+        {
+          "id": "a",
+          "text": "Multiplying the path probabilities together"
+        },
+        {
+          "id": "b",
+          "text": "Adding the path probabilities together"
+        },
+        {
+          "id": "c",
+          "text": "Taking the larger path probability"
+        },
+        {
+          "id": "d",
+          "text": "Averaging the path probabilities"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "When different paths give the same event, you add their probabilities (the OR rule for mutually exclusive paths)."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A tree diagram for two independent events has 2 branches at each stage (e.g. Pass/Fail). How many final outcomes are there?",
+      "options": [
+        {
+          "id": "a",
+          "text": "4"
+        },
+        {
+          "id": "b",
+          "text": "3"
+        },
+        {
+          "id": "c",
+          "text": "2"
+        },
+        {
+          "id": "d",
+          "text": "6"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "With 2 branches at each of 2 stages, there are $2 \\times 2 = 4$ final outcomes."
+    }
+  ]
+}

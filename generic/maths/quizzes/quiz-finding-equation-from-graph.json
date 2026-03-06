@@ -1,0 +1,104 @@
+{
+  "id": "quiz-finding-equation-from-graph",
+  "title": "Quiz: Finding Equation from Graph",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A line crosses the $y$-axis at $(0, 3)$ and passes through $(2, 9)$. What is its equation?",
+      "options": [
+        {"id": "a", "text": "$y = 3x + 3$"},
+        {"id": "b", "text": "$y = 6x + 3$"},
+        {"id": "c", "text": "$y = 3x + 9$"},
+        {"id": "d", "text": "$y = 9x + 3$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "The $y$-intercept is $c = 3$. Gradient: $m = \\frac{9 - 3}{2 - 0} = \\frac{6}{2} = 3$. So $y = 3x + 3$."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the equation of the line passing through $(1, 4)$ and $(3, 10)$.",
+      "options": [
+        {"id": "a", "text": "$y = 3x + 1$"},
+        {"id": "b", "text": "$y = 2x + 2$"},
+        {"id": "c", "text": "$y = 6x - 2$"},
+        {"id": "d", "text": "$y = 3x - 1$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Gradient: $m = \\frac{10 - 4}{3 - 1} = \\frac{6}{2} = 3$. Substitute $(1, 4)$: $4 = 3(1) + c$, so $c = 1$. The equation is $y = 3x + 1$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A line passes through $(2, 5)$ and $(6, 5)$. What is its equation?",
+      "options": [
+        {"id": "a", "text": "$x = 5$"},
+        {"id": "b", "text": "$y = x + 3$"},
+        {"id": "c", "text": "$y = 5$"},
+        {"id": "d", "text": "$y = 5x$"}
+      ],
+      "correctAnswer": "c",
+      "explanation": "Both points have $y = 5$. The gradient is $\\frac{5 - 5}{6 - 2} = 0$, so this is a horizontal line with equation $y = 5$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the equation of the line through $(-1, 5)$ and $(3, -3)$.",
+      "options": [
+        {"id": "a", "text": "$y = -2x + 3$"},
+        {"id": "b", "text": "$y = 2x + 7$"},
+        {"id": "c", "text": "$y = -2x - 3$"},
+        {"id": "d", "text": "$y = -\\frac{1}{2}x + 3$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Gradient: $m = \\frac{-3 - 5}{3 - (-1)} = \\frac{-8}{4} = -2$. Substitute $(3, -3)$: $-3 = -2(3) + c$, so $c = 3$. The equation is $y = -2x + 3$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "When finding the equation of a line from two points, what is the correct order of steps?",
+      "options": [
+        {"id": "a", "text": "Find $c$, then find $m$, then write the equation"},
+        {"id": "b", "text": "Find $m$, then substitute a point to find $c$, then write the equation"},
+        {"id": "c", "text": "Add the two points together, then divide by 2"},
+        {"id": "d", "text": "Find the midpoint, then use it as the $y$-intercept"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "First calculate the gradient $m = \\frac{y_2 - y_1}{x_2 - x_1}$, then substitute $m$ and one known point into $y = mx + c$ to find $c$, then write the full equation."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Find the equation of the line through $(0, -2)$ and $(5, 8)$.",
+      "options": [
+        {"id": "a", "text": "$y = \\frac{1}{2}x - 2$"},
+        {"id": "b", "text": "$y = 2x - 2$"},
+        {"id": "c", "text": "$y = 2x + 8$"},
+        {"id": "d", "text": "$y = 10x - 2$"}
+      ],
+      "correctAnswer": "b",
+      "explanation": "The $y$-intercept is $c = -2$ (from the point $(0, -2)$). Gradient: $m = \\frac{8 - (-2)}{5 - 0} = \\frac{10}{5} = 2$. So $y = 2x - 2$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A spring's length $L$ cm depends on the mass $m$ grams. With no mass, the spring is 15 cm. With 40 g, it is 23 cm. What is the equation?",
+      "options": [
+        {"id": "a", "text": "$L = 0.2m + 15$"},
+        {"id": "b", "text": "$L = 0.5m + 15$"},
+        {"id": "c", "text": "$L = 15m + 0.2$"},
+        {"id": "d", "text": "$L = 0.2m + 23$"}
+      ],
+      "correctAnswer": "a",
+      "explanation": "Points: $(0, 15)$ and $(40, 23)$. The $y$-intercept is 15. Gradient: $\\frac{23 - 15}{40 - 0} = \\frac{8}{40} = 0.2$. So $L = 0.2m + 15$."
+    }
+  ]
+}

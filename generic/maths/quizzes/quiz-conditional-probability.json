@@ -1,0 +1,188 @@
+{
+  "id": "quiz-conditional-probability",
+  "title": "Quiz: Conditional Probability",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The notation $P(A|B)$ means:",
+      "options": [
+        {
+          "id": "a",
+          "text": "The probability of $A$ or $B$"
+        },
+        {
+          "id": "b",
+          "text": "The probability of $A$ and $B$"
+        },
+        {
+          "id": "c",
+          "text": "The probability of $A$ given that $B$ has occurred"
+        },
+        {
+          "id": "d",
+          "text": "The probability of $B$ given that $A$ has occurred"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "$P(A|B)$ reads as 'the probability of $A$ given $B$' -- the probability that event $A$ occurs, given that event $B$ has already occurred."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "The formula for conditional probability is:",
+      "options": [
+        {
+          "id": "a",
+          "text": "$P(A|B) = \\frac{P(A \\cup B)}{P(B)}$"
+        },
+        {
+          "id": "b",
+          "text": "$P(A|B) = P(A) + P(B)$"
+        },
+        {
+          "id": "c",
+          "text": "$P(A|B) = P(A) \\times P(B)$"
+        },
+        {
+          "id": "d",
+          "text": "$P(A|B) = \\frac{P(A \\cap B)}{P(B)}$"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "The conditional probability formula is $P(A|B) = \\frac{P(A \\cap B)}{P(B)}$, where $P(B) \\neq 0$."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In a class, 60% study maths, 40% study physics, and 25% study both. What is $P(\\text{physics} | \\text{maths})$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{0.25}{0.60}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{0.25}{0.40}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{0.40}{0.60}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{0.60}{0.25}$"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "$P(\\text{physics}|\\text{maths}) = \\frac{P(\\text{physics} \\cap \\text{maths})}{P(\\text{maths})} = \\frac{0.25}{0.60}$."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "If $A$ and $B$ are independent events, then $P(A|B) =$",
+      "options": [
+        {
+          "id": "a",
+          "text": "$P(B)$"
+        },
+        {
+          "id": "b",
+          "text": "$P(A)$"
+        },
+        {
+          "id": "c",
+          "text": "$0$"
+        },
+        {
+          "id": "d",
+          "text": "$P(A) \\times P(B)$"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "If events are independent, knowing $B$ has occurred does not change the probability of $A$. So $P(A|B) = P(A)$."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A bag has 3 red and 7 blue balls. Two are drawn without replacement. What is $P(\\text{2nd is red} | \\text{1st was blue})$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{3}{10}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{7}{9}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{3}{9}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{2}{9}$"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "If the first ball was blue, there are still 3 red balls but only 9 balls remaining. So $P = \\frac{3}{9} = \\frac{1}{3}$."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "From a Venn diagram: $n(A \\text{ only}) = 10$, $n(A \\cap B) = 5$, $n(B \\text{ only}) = 15$, $n(\\text{neither}) = 20$. What is $P(A|B)$?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$\\frac{5}{20}$"
+        },
+        {
+          "id": "b",
+          "text": "$\\frac{5}{15}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\frac{5}{50}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\frac{15}{20}$"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "$n(B) = 5 + 15 = 20$. $P(A|B) = \\frac{n(A \\cap B)}{n(B)} = \\frac{5}{20} = \\frac{1}{4}$."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Which scenario is best modelled by conditional probability?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Rolling two dice independently"
+        },
+        {
+          "id": "b",
+          "text": "Drawing two cards from a pack without replacement"
+        },
+        {
+          "id": "c",
+          "text": "Flipping a coin three times"
+        },
+        {
+          "id": "d",
+          "text": "Spinning a fair spinner"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Drawing without replacement creates dependent events, where the outcome of the first draw affects the probabilities of the second. This is naturally modelled by conditional probability."
+    }
+  ]
+}
