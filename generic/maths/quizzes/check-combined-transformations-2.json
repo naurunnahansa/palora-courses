@@ -10,22 +10,22 @@
       "options": [
         {
           "id": "a",
-          "text": "$(0, 1)$"
+          "text": "$(-1, 0)$"
         },
         {
           "id": "b",
-          "text": "$(0, -1)$"
-        },
-        {
-          "id": "c",
           "text": "$(1, 0)$"
         },
         {
+          "id": "c",
+          "text": "$(0, 1)$"
+        },
+        {
           "id": "d",
-          "text": "$(-1, 0)$"
+          "text": "$(0, -1)$"
         }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "c",
       "explanation": "Rotate $(1, 0)$ by $90°$ anticlockwise: $(x,y) \\to (-y, x)$, giving $(0, 1)$. Reflect in the $y$-axis: $(0, 1) \\to (0, 1)$. The final image is $(0, 1)$."
     }
   ]

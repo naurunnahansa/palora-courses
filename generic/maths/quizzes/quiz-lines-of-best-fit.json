@@ -10,22 +10,22 @@
       "options": [
         {
           "id": "a",
-          "text": "The origin $(0, 0)$"
-        },
-        {
-          "id": "b",
           "text": "The highest and lowest points"
         },
         {
-          "id": "c",
+          "id": "b",
           "text": "Every data point"
         },
         {
-          "id": "d",
+          "id": "c",
           "text": "The mean point $(\\bar{x}, \\bar{y})$"
+        },
+        {
+          "id": "d",
+          "text": "The origin $(0, 0)$"
         }
       ],
-      "correctAnswer": "d",
+      "correctAnswer": "c",
       "explanation": "A line of best fit should pass through the mean point $(\\bar{x}, \\bar{y})$, with roughly equal numbers of data points above and below the line."
     },
     {
@@ -36,7 +36,7 @@
       "options": [
         {
           "id": "a",
-          "text": "Extrapolation"
+          "text": "Interpolation"
         },
         {
           "id": "b",
@@ -44,14 +44,14 @@
         },
         {
           "id": "c",
-          "text": "Interpolation"
+          "text": "Extrapolation"
         },
         {
           "id": "d",
           "text": "Estimation"
         }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "a",
       "explanation": "Interpolation is estimating within the data range. It is generally reliable because the trend is supported by data in that region."
     },
     {
@@ -62,22 +62,22 @@
       "options": [
         {
           "id": "a",
-          "text": "The trend may not continue beyond the data range"
-        },
-        {
-          "id": "b",
-          "text": "The line of best fit is always wrong"
-        },
-        {
-          "id": "c",
           "text": "You cannot draw lines beyond the graph"
         },
         {
-          "id": "d",
+          "id": "b",
           "text": "The mean point moves"
+        },
+        {
+          "id": "c",
+          "text": "The trend may not continue beyond the data range"
+        },
+        {
+          "id": "d",
+          "text": "The line of best fit is always wrong"
         }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "c",
       "explanation": "Extrapolation extends the line beyond the observed data. The relationship may change outside the data range, making predictions unreliable."
     },
     {
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "a",
-          "text": "5"
-        },
-        {
-          "id": "b",
-          "text": "7"
-        },
-        {
-          "id": "c",
           "text": "6"
         },
         {
-          "id": "d",
+          "id": "b",
+          "text": "5"
+        },
+        {
+          "id": "c",
           "text": "42"
+        },
+        {
+          "id": "d",
+          "text": "7"
         }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "d",
       "explanation": "Gradient $= \\frac{72 - 30}{8 - 2} = \\frac{42}{6} = 7$."
     },
     {
@@ -118,18 +118,18 @@
         },
         {
           "id": "b",
-          "text": "Draw a curve through the points"
+          "text": "Always start the line at the origin"
         },
         {
           "id": "c",
-          "text": "Draw a straight line with roughly equal points above and below, ignoring outliers"
+          "text": "Draw a curve through the points"
         },
         {
           "id": "d",
-          "text": "Always start the line at the origin"
+          "text": "Draw a straight line with roughly equal points above and below, ignoring outliers"
         }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "d",
       "explanation": "A line of best fit is a single straight line that follows the general trend, with roughly equal data points above and below it. Outliers should be ignored."
     },
     {
@@ -140,11 +140,11 @@
       "options": [
         {
           "id": "a",
-          "text": "An example of extrapolation and is unreliable"
+          "text": "An example of interpolation"
         },
         {
           "id": "b",
-          "text": "An example of interpolation"
+          "text": "An example of extrapolation and is unreliable"
         },
         {
           "id": "c",
@@ -155,7 +155,7 @@
           "text": "Impossible to make"
         }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "b",
       "explanation": "Age 25 is well outside the data range (10--16), making this extrapolation. The trend may not continue, so the prediction is unreliable."
     },
     {

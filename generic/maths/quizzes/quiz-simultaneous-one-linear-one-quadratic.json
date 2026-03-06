@@ -8,12 +8,24 @@
       "difficulty": "knowledge-check",
       "stem": "Solve $y = x + 2$ and $y = x^2$. What are the solutions?",
       "options": [
-        {"id": "a", "text": "$(2, 4)$ only"},
-        {"id": "b", "text": "$(2, 4)$ and $(-1, 1)$"},
-        {"id": "c", "text": "$(1, 3)$ and $(-2, 0)$"},
-        {"id": "d", "text": "$(2, 4)$ and $(1, 1)$"}
+        {
+          "id": "a",
+          "text": "$(2, 4)$ only"
+        },
+        {
+          "id": "b",
+          "text": "$(2, 4)$ and $(1, 1)$"
+        },
+        {
+          "id": "c",
+          "text": "$(2, 4)$ and $(-1, 1)$"
+        },
+        {
+          "id": "d",
+          "text": "$(1, 3)$ and $(-2, 0)$"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "c",
       "explanation": "Set equal: $x + 2 = x^2$, so $x^2 - x - 2 = 0$, $(x - 2)(x + 1) = 0$. When $x = 2$, $y = 4$; when $x = -1$, $y = 1$."
     },
     {
@@ -22,12 +34,24 @@
       "difficulty": "knowledge-check",
       "stem": "When solving $y = 3x - 1$ and $y = x^2 + x - 5$, what quadratic equation do you need to solve?",
       "options": [
-        {"id": "a", "text": "$x^2 + 4x - 4 = 0$"},
-        {"id": "b", "text": "$x^2 - 2x + 4 = 0$"},
-        {"id": "c", "text": "$x^2 - 2x - 4 = 0$"},
-        {"id": "d", "text": "$x^2 + 2x - 4 = 0$"}
+        {
+          "id": "a",
+          "text": "$x^2 + 2x - 4 = 0$"
+        },
+        {
+          "id": "b",
+          "text": "$x^2 - 2x - 4 = 0$"
+        },
+        {
+          "id": "c",
+          "text": "$x^2 + 4x - 4 = 0$"
+        },
+        {
+          "id": "d",
+          "text": "$x^2 - 2x + 4 = 0$"
+        }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "b",
       "explanation": "Set equal: $3x - 1 = x^2 + x - 5$. Rearrange: $x^2 + x - 5 - 3x + 1 = 0$, giving $x^2 - 2x - 4 = 0$."
     },
     {
@@ -36,10 +60,22 @@
       "difficulty": "knowledge-check",
       "stem": "Solve $y = 2x$ and $x^2 + y^2 = 5$.",
       "options": [
-        {"id": "a", "text": "$(1, 2)$ and $(-1, -2)$"},
-        {"id": "b", "text": "$(1, 2)$ only"},
-        {"id": "c", "text": "$(5, 10)$ and $(-5, -10)$"},
-        {"id": "d", "text": "No solutions"}
+        {
+          "id": "a",
+          "text": "$(1, 2)$ and $(-1, -2)$"
+        },
+        {
+          "id": "b",
+          "text": "$(1, 2)$ only"
+        },
+        {
+          "id": "c",
+          "text": "$(5, 10)$ and $(-5, -10)$"
+        },
+        {
+          "id": "d",
+          "text": "No solutions"
+        }
       ],
       "correctAnswer": "a",
       "explanation": "Substitute $y = 2x$: $x^2 + 4x^2 = 5$, so $5x^2 = 5$, $x^2 = 1$, $x = \\pm 1$. Solutions: $(1, 2)$ and $(-1, -2)$."
@@ -50,12 +86,24 @@
       "difficulty": "knowledge-check",
       "stem": "If the line $y = x + k$ is tangent to the curve $y = x^2$, what does the discriminant of the resulting quadratic equal?",
       "options": [
-        {"id": "a", "text": "A positive number"},
-        {"id": "b", "text": "A negative number"},
-        {"id": "c", "text": "Zero"},
-        {"id": "d", "text": "It depends on $k$"}
+        {
+          "id": "a",
+          "text": "Zero"
+        },
+        {
+          "id": "b",
+          "text": "A negative number"
+        },
+        {
+          "id": "c",
+          "text": "It depends on $k$"
+        },
+        {
+          "id": "d",
+          "text": "A positive number"
+        }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "a",
       "explanation": "A tangent line touches the curve at exactly one point, meaning the resulting quadratic has a repeated root. This happens when the discriminant equals zero."
     },
     {
@@ -64,12 +112,24 @@
       "difficulty": "knowledge-check",
       "stem": "Solve $x + y = 5$ and $xy = 6$.",
       "options": [
-        {"id": "a", "text": "$(1, 4)$ and $(4, 1)$"},
-        {"id": "b", "text": "$(6, -1)$ and $(-1, 6)$"},
-        {"id": "c", "text": "$(2, 3)$ and $(3, 2)$"},
-        {"id": "d", "text": "$(5, 1)$ and $(1, 5)$"}
+        {
+          "id": "a",
+          "text": "$(5, 1)$ and $(1, 5)$"
+        },
+        {
+          "id": "b",
+          "text": "$(6, -1)$ and $(-1, 6)$"
+        },
+        {
+          "id": "c",
+          "text": "$(1, 4)$ and $(4, 1)$"
+        },
+        {
+          "id": "d",
+          "text": "$(2, 3)$ and $(3, 2)$"
+        }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "d",
       "explanation": "From $y = 5 - x$: $x(5 - x) = 6$, so $x^2 - 5x + 6 = 0$, $(x - 2)(x - 3) = 0$. Solutions: $(2, 3)$ and $(3, 2)$."
     },
     {
@@ -78,12 +138,24 @@
       "difficulty": "knowledge-check",
       "stem": "Solve $y = x + 1$ and $x^2 + y^2 = 13$.",
       "options": [
-        {"id": "a", "text": "$(2, 3)$ and $(3, 4)$"},
-        {"id": "b", "text": "$(2, 3)$ and $(-3, -2)$"},
-        {"id": "c", "text": "$(-3, -2)$ and $(3, 4)$"},
-        {"id": "d", "text": "$(2, 3)$ only"}
+        {
+          "id": "a",
+          "text": "$(2, 3)$ and $(3, 4)$"
+        },
+        {
+          "id": "b",
+          "text": "$(2, 3)$ only"
+        },
+        {
+          "id": "c",
+          "text": "$(-3, -2)$ and $(3, 4)$"
+        },
+        {
+          "id": "d",
+          "text": "$(2, 3)$ and $(-3, -2)$"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "d",
       "explanation": "Substitute: $x^2 + (x + 1)^2 = 13$, so $2x^2 + 2x + 1 = 13$, $2x^2 + 2x - 12 = 0$, $x^2 + x - 6 = 0$, $(x + 3)(x - 2) = 0$. Solutions: $(2, 3)$ and $(-3, -2)$."
     },
     {
@@ -92,12 +164,24 @@
       "difficulty": "knowledge-check",
       "stem": "Why must substitution (not elimination) be used when one equation is linear and one is quadratic?",
       "options": [
-        {"id": "a", "text": "Because elimination only works with fractions"},
-        {"id": "b", "text": "Because the equations have different powers of the variables, so adding or subtracting them cannot eliminate a variable cleanly"},
-        {"id": "c", "text": "Because quadratic equations always have two solutions"},
-        {"id": "d", "text": "Because the linear equation must be solved first"}
+        {
+          "id": "a",
+          "text": "Because the linear equation must be solved first"
+        },
+        {
+          "id": "b",
+          "text": "Because quadratic equations always have two solutions"
+        },
+        {
+          "id": "c",
+          "text": "Because the equations have different powers of the variables, so adding or subtracting them cannot eliminate a variable cleanly"
+        },
+        {
+          "id": "d",
+          "text": "Because elimination only works with fractions"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "c",
       "explanation": "Elimination works by adding or subtracting equations with matching terms. Since a linear and quadratic equation have different powers, elimination cannot remove a variable. Substitution replaces a variable to create a single quadratic equation."
     }
   ]

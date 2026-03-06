@@ -10,11 +10,11 @@
       "options": [
         {
           "id": "a",
-          "text": "The centre of rotation"
+          "text": "The angle of rotation"
         },
         {
           "id": "b",
-          "text": "The angle of rotation"
+          "text": "The centre of rotation"
         },
         {
           "id": "c",
@@ -36,22 +36,22 @@
       "options": [
         {
           "id": "a",
-          "text": "$(1, -3)$"
+          "text": "$(1, 3)$"
         },
         {
           "id": "b",
-          "text": "$(-1, 3)$"
-        },
-        {
-          "id": "c",
           "text": "$(-3, -1)$"
         },
         {
+          "id": "c",
+          "text": "$(1, -3)$"
+        },
+        {
           "id": "d",
-          "text": "$(1, 3)$"
+          "text": "$(-1, 3)$"
         }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "c",
       "explanation": "For a $90°$ clockwise rotation about the origin, the rule is $(x, y) \\to (y, -x)$. So $(3, 1) \\to (1, -3)$."
     },
     {
@@ -66,7 +66,7 @@
         },
         {
           "id": "b",
-          "text": "The shape is congruent to the original"
+          "text": "The orientation is reversed"
         },
         {
           "id": "c",
@@ -74,10 +74,10 @@
         },
         {
           "id": "d",
-          "text": "The orientation is reversed"
+          "text": "The shape is congruent to the original"
         }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "d",
       "explanation": "Rotations preserve size and shape, so the image is always congruent to the original. Orientation is preserved (not reversed)."
     },
     {
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "a",
-          "text": "$(-5, 2)$"
-        },
-        {
-          "id": "b",
-          "text": "$(5, -2)$"
-        },
-        {
-          "id": "c",
           "text": "$(-2, 5)$"
         },
         {
-          "id": "d",
+          "id": "b",
           "text": "$(2, 5)$"
+        },
+        {
+          "id": "c",
+          "text": "$(-5, 2)$"
+        },
+        {
+          "id": "d",
+          "text": "$(5, -2)$"
         }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "a",
       "explanation": "A $180°$ rotation about the origin maps $(x, y)$ to $(-x, -y)$. So $(2, -5)$ becomes $(-2, 5)$."
     },
     {
@@ -114,22 +114,22 @@
       "options": [
         {
           "id": "a",
-          "text": "The point furthest from the centre"
-        },
-        {
-          "id": "b",
-          "text": "Every point moves during a rotation"
-        },
-        {
-          "id": "c",
           "text": "The midpoint of the shape"
         },
         {
-          "id": "d",
+          "id": "b",
           "text": "The centre of rotation"
+        },
+        {
+          "id": "c",
+          "text": "Every point moves during a rotation"
+        },
+        {
+          "id": "d",
+          "text": "The point furthest from the centre"
         }
       ],
-      "correctAnswer": "d",
+      "correctAnswer": "b",
       "explanation": "The centre of rotation is the fixed point that does not move. All other points rotate around it."
     },
     {
@@ -144,15 +144,15 @@
         },
         {
           "id": "b",
-          "text": "$180°$ clockwise"
+          "text": "$360°$ clockwise"
         },
         {
           "id": "c",
-          "text": "$90°$ clockwise"
+          "text": "$180°$ clockwise"
         },
         {
           "id": "d",
-          "text": "$360°$ clockwise"
+          "text": "$90°$ clockwise"
         }
       ],
       "correctAnswer": "a",
@@ -166,7 +166,7 @@
       "options": [
         {
           "id": "a",
-          "text": "The shape has been enlarged by scale factor 1"
+          "text": "The shape has been reflected twice"
         },
         {
           "id": "b",
@@ -174,11 +174,11 @@
         },
         {
           "id": "c",
-          "text": "The shape has been reflected twice"
+          "text": "The translation vector has length zero"
         },
         {
           "id": "d",
-          "text": "The translation vector has length zero"
+          "text": "The shape has been enlarged by scale factor 1"
         }
       ],
       "correctAnswer": "b",

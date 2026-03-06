@@ -10,11 +10,11 @@
       "options": [
         {
           "id": "a",
-          "text": "They always happen together"
+          "text": "They are independent"
         },
         {
           "id": "b",
-          "text": "They are independent"
+          "text": "They always happen together"
         },
         {
           "id": "c",
@@ -36,22 +36,22 @@
       "options": [
         {
           "id": "a",
-          "text": "$P(A) \\times P(B)$"
-        },
-        {
-          "id": "b",
-          "text": "$P(A) + P(B)$"
-        },
-        {
-          "id": "c",
           "text": "$P(A) - P(B)$"
         },
         {
-          "id": "d",
+          "id": "b",
           "text": "$P(A) + P(B) - P(A \\text{ and } B)$"
+        },
+        {
+          "id": "c",
+          "text": "$P(A) \\times P(B)$"
+        },
+        {
+          "id": "d",
+          "text": "$P(A) + P(B)$"
         }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "d",
       "explanation": "For mutually exclusive events, the addition rule simplifies to $P(A \\text{ or } B) = P(A) + P(B)$ because $P(A \\text{ and } B) = 0$."
     },
     {
@@ -66,7 +66,7 @@
         },
         {
           "id": "b",
-          "text": "$\\frac{1}{6}$"
+          "text": "$\\frac{1}{3}$"
         },
         {
           "id": "c",
@@ -74,7 +74,7 @@
         },
         {
           "id": "d",
-          "text": "$\\frac{1}{3}$"
+          "text": "$\\frac{1}{6}$"
         }
       ],
       "correctAnswer": "c",
@@ -92,7 +92,7 @@
         },
         {
           "id": "b",
-          "text": "Drawing a heart and drawing a spade from a deck"
+          "text": "Getting heads and getting tails on a single coin flip"
         },
         {
           "id": "c",
@@ -100,7 +100,7 @@
         },
         {
           "id": "d",
-          "text": "Getting heads and getting tails on a single coin flip"
+          "text": "Drawing a heart and drawing a spade from a deck"
         }
       ],
       "correctAnswer": "a",
@@ -114,22 +114,22 @@
       "options": [
         {
           "id": "a",
-          "text": "$0.12$"
-        },
-        {
-          "id": "b",
-          "text": "$0.1$"
-        },
-        {
-          "id": "c",
           "text": "$0.7$"
         },
         {
-          "id": "d",
+          "id": "b",
           "text": "$0.58$"
+        },
+        {
+          "id": "c",
+          "text": "$0.12$"
+        },
+        {
+          "id": "d",
+          "text": "$0.1$"
         }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "a",
       "explanation": "For mutually exclusive events: $P(A \\text{ or } B) = P(A) + P(B) = 0.4 + 0.3 = 0.7$."
     },
     {
@@ -144,18 +144,18 @@
         },
         {
           "id": "b",
-          "text": "Sum to 1"
+          "text": "Each equal $\\frac{1}{n}$"
         },
         {
           "id": "c",
-          "text": "Sum to 0"
+          "text": "Sum to 1"
         },
         {
           "id": "d",
-          "text": "Each equal $\\frac{1}{n}$"
+          "text": "Sum to 0"
         }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "c",
       "explanation": "If the outcomes are exhaustive (cover every possibility) and mutually exclusive, their probabilities must sum to 1."
     },
     {
@@ -166,7 +166,7 @@
       "options": [
         {
           "id": "a",
-          "text": "$\\frac{7}{10}$"
+          "text": "$\\frac{2}{10}$"
         },
         {
           "id": "b",
@@ -174,14 +174,14 @@
         },
         {
           "id": "c",
-          "text": "$\\frac{2}{10}$"
+          "text": "$\\frac{10}{10}$"
         },
         {
           "id": "d",
-          "text": "$\\frac{10}{10}$"
+          "text": "$\\frac{7}{10}$"
         }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "d",
       "explanation": "Red and yellow are mutually exclusive: $P(\\text{red or yellow}) = \\frac{5}{10} + \\frac{2}{10} = \\frac{7}{10}$."
     }
   ]

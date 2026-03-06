@@ -8,10 +8,22 @@
       "difficulty": "knowledge-check",
       "stem": "Write $x^2 + 6x$ in the form $(x + a)^2 - b$.",
       "options": [
-        {"id": "a", "text": "$(x + 3)^2 - 9$"},
-        {"id": "b", "text": "$(x + 6)^2 - 36$"},
-        {"id": "c", "text": "$(x + 3)^2 + 9$"},
-        {"id": "d", "text": "$(x + 3)^2 - 3$"}
+        {
+          "id": "a",
+          "text": "$(x + 3)^2 - 9$"
+        },
+        {
+          "id": "b",
+          "text": "$(x + 3)^2 + 9$"
+        },
+        {
+          "id": "c",
+          "text": "$(x + 6)^2 - 36$"
+        },
+        {
+          "id": "d",
+          "text": "$(x + 3)^2 - 3$"
+        }
       ],
       "correctAnswer": "a",
       "explanation": "Halve the coefficient of $x$: $\\frac{6}{2} = 3$. So $x^2 + 6x = (x + 3)^2 - 9$, since $(x + 3)^2 = x^2 + 6x + 9$."
@@ -22,12 +34,24 @@
       "difficulty": "knowledge-check",
       "stem": "Write $x^2 + 8x + 5$ in completed square form.",
       "options": [
-        {"id": "a", "text": "$(x + 4)^2 - 11$"},
-        {"id": "b", "text": "$(x + 4)^2 + 11$"},
-        {"id": "c", "text": "$(x + 8)^2 - 59$"},
-        {"id": "d", "text": "$(x + 4)^2 - 16$"}
+        {
+          "id": "a",
+          "text": "$(x + 4)^2 + 11$"
+        },
+        {
+          "id": "b",
+          "text": "$(x + 8)^2 - 59$"
+        },
+        {
+          "id": "c",
+          "text": "$(x + 4)^2 - 16$"
+        },
+        {
+          "id": "d",
+          "text": "$(x + 4)^2 - 11$"
+        }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "d",
       "explanation": "$x^2 + 8x + 5 = (x + 4)^2 - 16 + 5 = (x + 4)^2 - 11$."
     },
     {
@@ -36,12 +60,24 @@
       "difficulty": "knowledge-check",
       "stem": "If $x^2 - 10x + 7$ is written as $(x - p)^2 + q$, what are $p$ and $q$?",
       "options": [
-        {"id": "a", "text": "$p = 5, q = -18$"},
-        {"id": "b", "text": "$p = 10, q = -93$"},
-        {"id": "c", "text": "$p = 5, q = 32$"},
-        {"id": "d", "text": "$p = -5, q = -18$"}
+        {
+          "id": "a",
+          "text": "$p = -5, q = -18$"
+        },
+        {
+          "id": "b",
+          "text": "$p = 5, q = 32$"
+        },
+        {
+          "id": "c",
+          "text": "$p = 10, q = -93$"
+        },
+        {
+          "id": "d",
+          "text": "$p = 5, q = -18$"
+        }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "d",
       "explanation": "$x^2 - 10x + 7 = (x - 5)^2 - 25 + 7 = (x - 5)^2 - 18$. So $p = 5$ and $q = -18$."
     },
     {
@@ -50,12 +86,24 @@
       "difficulty": "knowledge-check",
       "stem": "What is the minimum value of $x^2 - 4x + 7$?",
       "options": [
-        {"id": "a", "text": "$7$"},
-        {"id": "b", "text": "$3$"},
-        {"id": "c", "text": "$-4$"},
-        {"id": "d", "text": "$0$"}
+        {
+          "id": "a",
+          "text": "$-4$"
+        },
+        {
+          "id": "b",
+          "text": "$0$"
+        },
+        {
+          "id": "c",
+          "text": "$3$"
+        },
+        {
+          "id": "d",
+          "text": "$7$"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "c",
       "explanation": "Complete the square: $x^2 - 4x + 7 = (x - 2)^2 - 4 + 7 = (x - 2)^2 + 3$. Since $(x - 2)^2 \\geq 0$, the minimum value is $0 + 3 = 3$."
     },
     {
@@ -64,12 +112,24 @@
       "difficulty": "knowledge-check",
       "stem": "At what value of $x$ does $x^2 + 6x + 2$ reach its minimum?",
       "options": [
-        {"id": "a", "text": "$x = 6$"},
-        {"id": "b", "text": "$x = 3$"},
-        {"id": "c", "text": "$x = -3$"},
-        {"id": "d", "text": "$x = -6$"}
+        {
+          "id": "a",
+          "text": "$x = -6$"
+        },
+        {
+          "id": "b",
+          "text": "$x = 3$"
+        },
+        {
+          "id": "c",
+          "text": "$x = 6$"
+        },
+        {
+          "id": "d",
+          "text": "$x = -3$"
+        }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "d",
       "explanation": "$(x + 3)^2 - 7$ is minimised when $(x + 3)^2 = 0$, i.e., when $x = -3$. The minimum value is at the vertex of the parabola."
     },
     {
@@ -78,12 +138,24 @@
       "difficulty": "knowledge-check",
       "stem": "Solve $x^2 + 4x - 1 = 0$ by completing the square.",
       "options": [
-        {"id": "a", "text": "$x = -2 \\pm \\sqrt{5}$"},
-        {"id": "b", "text": "$x = 2 \\pm \\sqrt{5}$"},
-        {"id": "c", "text": "$x = -2 \\pm \\sqrt{3}$"},
-        {"id": "d", "text": "$x = -4 \\pm \\sqrt{5}$"}
+        {
+          "id": "a",
+          "text": "$x = -4 \\pm \\sqrt{5}$"
+        },
+        {
+          "id": "b",
+          "text": "$x = -2 \\pm \\sqrt{3}$"
+        },
+        {
+          "id": "c",
+          "text": "$x = -2 \\pm \\sqrt{5}$"
+        },
+        {
+          "id": "d",
+          "text": "$x = 2 \\pm \\sqrt{5}$"
+        }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "c",
       "explanation": "$(x + 2)^2 - 4 - 1 = 0$, so $(x + 2)^2 = 5$, giving $x + 2 = \\pm\\sqrt{5}$, so $x = -2 \\pm \\sqrt{5}$."
     },
     {
@@ -92,12 +164,24 @@
       "difficulty": "knowledge-check",
       "stem": "Write $2x^2 + 12x + 5$ in the form $a(x + p)^2 + q$.",
       "options": [
-        {"id": "a", "text": "$2(x + 3)^2 - 13$"},
-        {"id": "b", "text": "$2(x + 6)^2 - 67$"},
-        {"id": "c", "text": "$2(x + 3)^2 + 5$"},
-        {"id": "d", "text": "$(2x + 3)^2 - 4$"}
+        {
+          "id": "a",
+          "text": "$2(x + 6)^2 - 67$"
+        },
+        {
+          "id": "b",
+          "text": "$2(x + 3)^2 - 13$"
+        },
+        {
+          "id": "c",
+          "text": "$2(x + 3)^2 + 5$"
+        },
+        {
+          "id": "d",
+          "text": "$(2x + 3)^2 - 4$"
+        }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "b",
       "explanation": "Factor out 2 from the $x$ terms: $2(x^2 + 6x) + 5 = 2[(x + 3)^2 - 9] + 5 = 2(x + 3)^2 - 18 + 5 = 2(x + 3)^2 - 13$."
     }
   ]

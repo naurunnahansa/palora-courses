@@ -10,7 +10,7 @@
       "options": [
         {
           "id": "a",
-          "text": "$\\frac{4}{7}$"
+          "text": "$\\frac{3}{7}$"
         },
         {
           "id": "b",
@@ -18,7 +18,7 @@
         },
         {
           "id": "c",
-          "text": "$\\frac{3}{7}$"
+          "text": "$\\frac{4}{7}$"
         },
         {
           "id": "d",
@@ -36,7 +36,7 @@
       "options": [
         {
           "id": "a",
-          "text": "Both events are certain to happen"
+          "text": "The events cannot happen at the same time"
         },
         {
           "id": "b",
@@ -44,14 +44,14 @@
         },
         {
           "id": "c",
-          "text": "The outcome of one event affects the probability of the other"
+          "text": "Both events are certain to happen"
         },
         {
           "id": "d",
-          "text": "The events cannot happen at the same time"
+          "text": "The outcome of one event affects the probability of the other"
         }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "d",
       "explanation": "Events are dependent when the outcome of one event changes the probability of the other, such as drawing without replacement."
     },
     {
@@ -62,22 +62,22 @@
       "options": [
         {
           "id": "a",
-          "text": "$\\frac{5}{8} \\times \\frac{5}{8}$"
-        },
-        {
-          "id": "b",
           "text": "$\\frac{5}{8} \\times \\frac{4}{7}$"
         },
         {
+          "id": "b",
+          "text": "$\\frac{5}{8} \\times \\frac{3}{7}$"
+        },
+        {
           "id": "c",
-          "text": "$\\frac{5}{8} \\times \\frac{4}{8}$"
+          "text": "$\\frac{5}{8} \\times \\frac{5}{8}$"
         },
         {
           "id": "d",
-          "text": "$\\frac{5}{8} \\times \\frac{3}{7}$"
+          "text": "$\\frac{5}{8} \\times \\frac{4}{8}$"
         }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "explanation": "Without replacement: $P(\\text{1st red}) = \\frac{5}{8}$, then $P(\\text{2nd red}) = \\frac{4}{7}$ (one fewer red, one fewer total). So $P = \\frac{5}{8} \\times \\frac{4}{7} = \\frac{20}{56}$."
     },
     {
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "a",
-          "text": "The total number of items decreases after each draw"
-        },
-        {
-          "id": "b",
-          "text": "The probabilities stay the same on the second draw"
-        },
-        {
-          "id": "c",
           "text": "You cannot use a tree diagram"
         },
         {
-          "id": "d",
+          "id": "b",
+          "text": "The total number of items decreases after each draw"
+        },
+        {
+          "id": "c",
           "text": "The events become mutually exclusive"
+        },
+        {
+          "id": "d",
+          "text": "The probabilities stay the same on the second draw"
         }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "b",
       "explanation": "Without replacement, the total number of items decreases by one after each draw, which changes the probabilities for subsequent draws."
     },
     {
@@ -114,22 +114,22 @@
       "options": [
         {
           "id": "a",
-          "text": "$\\frac{24}{90}$"
-        },
-        {
-          "id": "b",
           "text": "$\\frac{48}{90}$"
         },
         {
+          "id": "b",
+          "text": "$\\frac{24}{90}$"
+        },
+        {
           "id": "c",
-          "text": "$\\frac{24}{45}$"
+          "text": "$\\frac{12}{45}$"
         },
         {
           "id": "d",
-          "text": "$\\frac{12}{45}$"
+          "text": "$\\frac{24}{45}$"
         }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "explanation": "$P(\\text{RB}) = \\frac{6}{10} \\times \\frac{4}{9} = \\frac{24}{90}$. $P(\\text{BR}) = \\frac{4}{10} \\times \\frac{6}{9} = \\frac{24}{90}$. Total $= \\frac{48}{90} = \\frac{8}{15}$."
     },
     {
@@ -166,22 +166,22 @@
       "options": [
         {
           "id": "a",
-          "text": "6 marbles left, choose from 6"
-        },
-        {
-          "id": "b",
           "text": "5 marbles left, choose from 6"
         },
         {
-          "id": "c",
+          "id": "b",
           "text": "5 marbles left, choose from 5"
         },
         {
-          "id": "d",
+          "id": "c",
           "text": "4 marbles left, choose from 5"
+        },
+        {
+          "id": "d",
+          "text": "6 marbles left, choose from 6"
         }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "b",
       "explanation": "Originally there are $3 + 2 + 1 = 6$ marbles. After one is drawn and not replaced, there are 5 marbles left to choose from."
     }
   ]

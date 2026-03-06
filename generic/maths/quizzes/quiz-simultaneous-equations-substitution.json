@@ -8,12 +8,24 @@
       "difficulty": "knowledge-check",
       "stem": "Solve using substitution: $y = 2x + 1$ and $3x + y = 11$.",
       "options": [
-        {"id": "a", "text": "$x = 2, y = 5$"},
-        {"id": "b", "text": "$x = 3, y = 7$"},
-        {"id": "c", "text": "$x = 1, y = 3$"},
-        {"id": "d", "text": "$x = 4, y = 9$"}
+        {
+          "id": "a",
+          "text": "$x = 4, y = 9$"
+        },
+        {
+          "id": "b",
+          "text": "$x = 3, y = 7$"
+        },
+        {
+          "id": "c",
+          "text": "$x = 2, y = 5$"
+        },
+        {
+          "id": "d",
+          "text": "$x = 1, y = 3$"
+        }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "c",
       "explanation": "Substitute $y = 2x + 1$ into the second equation: $3x + (2x + 1) = 11$. Simplify: $5x + 1 = 11$, so $5x = 10$, $x = 2$. Then $y = 2(2) + 1 = 5$."
     },
     {
@@ -22,12 +34,24 @@
       "difficulty": "knowledge-check",
       "stem": "When is the substitution method most useful?",
       "options": [
-        {"id": "a", "text": "When both equations have the same coefficients"},
-        {"id": "b", "text": "When one variable is already isolated (e.g., $y = \\ldots$)"},
-        {"id": "c", "text": "When both equations are very long"},
-        {"id": "d", "text": "When the coefficients are all negative"}
+        {
+          "id": "a",
+          "text": "When both equations are very long"
+        },
+        {
+          "id": "b",
+          "text": "When the coefficients are all negative"
+        },
+        {
+          "id": "c",
+          "text": "When one variable is already isolated (e.g., $y = \\ldots$)"
+        },
+        {
+          "id": "d",
+          "text": "When both equations have the same coefficients"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "c",
       "explanation": "The substitution method is most efficient when one equation already has a variable isolated (like $y = 3x - 1$), making it easy to substitute into the other equation."
     },
     {
@@ -36,12 +60,24 @@
       "difficulty": "knowledge-check",
       "stem": "Solve: $x = 3y - 2$ and $2x + y = 10$.",
       "options": [
-        {"id": "a", "text": "$x = 1, y = 1$"},
-        {"id": "b", "text": "$x = 2, y = 2$"},
-        {"id": "c", "text": "$x = 4, y = 2$"},
-        {"id": "d", "text": "$x = 7, y = 3$"}
+        {
+          "id": "a",
+          "text": "$x = 1, y = 1$"
+        },
+        {
+          "id": "b",
+          "text": "$x = 4, y = 2$"
+        },
+        {
+          "id": "c",
+          "text": "$x = 7, y = 3$"
+        },
+        {
+          "id": "d",
+          "text": "$x = 2, y = 2$"
+        }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "b",
       "explanation": "Substitute $x = 3y - 2$ into eq 2: $2(3y - 2) + y = 10$. Expand: $6y - 4 + y = 10$, so $7y = 14$, $y = 2$. Then $x = 3(2) - 2 = 4$."
     },
     {
@@ -50,12 +86,24 @@
       "difficulty": "knowledge-check",
       "stem": "Solve: $y = x^2$ and $y = x + 2$. How many solutions are there?",
       "options": [
-        {"id": "a", "text": "No solutions"},
-        {"id": "b", "text": "One solution"},
-        {"id": "c", "text": "Two solutions"},
-        {"id": "d", "text": "Three solutions"}
+        {
+          "id": "a",
+          "text": "Two solutions"
+        },
+        {
+          "id": "b",
+          "text": "Three solutions"
+        },
+        {
+          "id": "c",
+          "text": "No solutions"
+        },
+        {
+          "id": "d",
+          "text": "One solution"
+        }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "a",
       "explanation": "Substitute: $x^2 = x + 2$, so $x^2 - x - 2 = 0$, giving $(x-2)(x+1) = 0$. There are two solutions: $x = 2, y = 4$ and $x = -1, y = 1$."
     },
     {
@@ -64,10 +112,22 @@
       "difficulty": "knowledge-check",
       "stem": "Solve using substitution: $2x + 3y = 11$ and $x = y + 3$.",
       "options": [
-        {"id": "a", "text": "$x = 1, y = -1$"},
-        {"id": "b", "text": "$x = -1, y = 1$"},
-        {"id": "c", "text": "$x = 4, y = 1$"},
-        {"id": "d", "text": "$x = 1, y = 1$"}
+        {
+          "id": "a",
+          "text": "$x = 1, y = -1$"
+        },
+        {
+          "id": "b",
+          "text": "$x = -1, y = 1$"
+        },
+        {
+          "id": "c",
+          "text": "$x = 4, y = 1$"
+        },
+        {
+          "id": "d",
+          "text": "$x = 1, y = 1$"
+        }
       ],
       "correctAnswer": "c",
       "explanation": "Substitute $x = y + 3$: $2(y + 3) + 3y = 11$. Expand: $2y + 6 + 3y = 11$, so $5y = 5$, $y = 1$. Then $x = 1 + 3 = 4$."
@@ -78,12 +138,24 @@
       "difficulty": "knowledge-check",
       "stem": "Solve: $y = 3x - 5$ and $2x + y = 5$.",
       "options": [
-        {"id": "a", "text": "$x = 1, y = -2$"},
-        {"id": "b", "text": "$x = 2, y = 1$"},
-        {"id": "c", "text": "$x = 3, y = 4$"},
-        {"id": "d", "text": "$x = 0, y = -5$"}
+        {
+          "id": "a",
+          "text": "$x = 2, y = 1$"
+        },
+        {
+          "id": "b",
+          "text": "$x = 0, y = -5$"
+        },
+        {
+          "id": "c",
+          "text": "$x = 1, y = -2$"
+        },
+        {
+          "id": "d",
+          "text": "$x = 3, y = 4$"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "explanation": "Substitute $y = 3x - 5$: $2x + (3x - 5) = 5$. Simplify: $5x - 5 = 5$, so $5x = 10$, $x = 2$. Then $y = 3(2) - 5 = 1$."
     },
     {
@@ -92,12 +164,24 @@
       "difficulty": "knowledge-check",
       "stem": "What is the graphical interpretation of solving two simultaneous equations?",
       "options": [
-        {"id": "a", "text": "Finding where the two lines are parallel"},
-        {"id": "b", "text": "Finding the gradient of each line"},
-        {"id": "c", "text": "Finding the point(s) where the two graphs intersect"},
-        {"id": "d", "text": "Finding the y-intercepts of both lines"}
+        {
+          "id": "a",
+          "text": "Finding the point(s) where the two graphs intersect"
+        },
+        {
+          "id": "b",
+          "text": "Finding where the two lines are parallel"
+        },
+        {
+          "id": "c",
+          "text": "Finding the gradient of each line"
+        },
+        {
+          "id": "d",
+          "text": "Finding the y-intercepts of both lines"
+        }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "a",
       "explanation": "The solution to simultaneous equations represents the point(s) where the two graphs intersect. This is where both equations are satisfied at the same time."
     }
   ]

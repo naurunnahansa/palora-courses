@@ -1,0 +1,188 @@
+{
+  "id": "quiz-domestic-electricity",
+  "title": "Quiz: Domestic Electricity",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the voltage and frequency of the UK mains electricity supply?",
+      "options": [
+        {
+          "id": "a",
+          "text": "120 V, 50 Hz"
+        },
+        {
+          "id": "b",
+          "text": "230 V, 60 Hz"
+        },
+        {
+          "id": "c",
+          "text": "120 V, 60 Hz"
+        },
+        {
+          "id": "d",
+          "text": "230 V, 50 Hz"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "The UK mains supply provides alternating current (AC) at approximately 230 V with a frequency of 50 Hz, meaning the current changes direction 50 times per second."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In a three-pin plug, what colour is the live wire?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Brown"
+        },
+        {
+          "id": "b",
+          "text": "Green and yellow"
+        },
+        {
+          "id": "c",
+          "text": "Black"
+        },
+        {
+          "id": "d",
+          "text": "Blue"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "In UK wiring, the live wire is brown, the neutral wire is blue, and the earth wire is green and yellow striped. The live wire carries the alternating potential from the supply."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the purpose of the earth wire in a three-pin plug?",
+      "options": [
+        {
+          "id": "a",
+          "text": "To carry the current to the appliance"
+        },
+        {
+          "id": "b",
+          "text": "To complete the circuit for the appliance to work"
+        },
+        {
+          "id": "c",
+          "text": "To provide a low-resistance path to earth if a fault occurs, preventing electric shock"
+        },
+        {
+          "id": "d",
+          "text": "To regulate the voltage supplied to the appliance"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The earth wire is a safety feature. If a fault causes the metal casing of an appliance to become live, the earth wire provides a low-resistance path to ground, causing a large current that blows the fuse and breaks the circuit."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What advantage does a circuit breaker have over a fuse?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It does not require an earth wire"
+        },
+        {
+          "id": "b",
+          "text": "It is cheaper to install"
+        },
+        {
+          "id": "c",
+          "text": "It allows higher currents to flow"
+        },
+        {
+          "id": "d",
+          "text": "It can be reset after it trips, whereas a fuse must be replaced"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "A circuit breaker can be easily reset by flipping a switch after it trips, whereas a blown fuse must be physically replaced. Circuit breakers also respond faster than fuses."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What does an RCD (residual current device) detect?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A decrease in resistance of the appliance"
+        },
+        {
+          "id": "b",
+          "text": "A difference in current between the live and neutral wires"
+        },
+        {
+          "id": "c",
+          "text": "A rise in temperature of the wires"
+        },
+        {
+          "id": "d",
+          "text": "An increase in voltage above 230 V"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "An RCD compares the current in the live and neutral wires. If there is a difference, it means current is leaking to earth (possibly through a person), and the RCD trips very quickly to prevent electrocution."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is a Class II (double insulated) appliance?",
+      "options": [
+        {
+          "id": "a",
+          "text": "An appliance that uses two different voltages"
+        },
+        {
+          "id": "b",
+          "text": "An appliance with extra insulation so no metal parts can become live, and no earth wire is needed"
+        },
+        {
+          "id": "c",
+          "text": "An appliance with two earth wires"
+        },
+        {
+          "id": "d",
+          "text": "An appliance with two fuses for extra safety"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A Class II appliance has double insulation, meaning all live parts are covered by two layers of insulation. No exposed metal can become live, so an earth wire is not needed. These appliances use a two-pin plug."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Why is the live wire the most dangerous wire in a mains circuit?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Because it is the thickest wire"
+        },
+        {
+          "id": "b",
+          "text": "Because it carries the largest resistance"
+        },
+        {
+          "id": "c",
+          "text": "Because it is always connected to the earth"
+        },
+        {
+          "id": "d",
+          "text": "Because it alternates between +325 V and -325 V relative to earth, and can cause a fatal shock even when the switch is off"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "The live wire carries a high alternating voltage (peak of about 325 V). Even when an appliance is switched off, the live wire is still at high voltage, making it dangerous to touch."
+    }
+  ]
+}

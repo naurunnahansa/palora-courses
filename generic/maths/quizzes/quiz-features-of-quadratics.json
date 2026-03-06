@@ -8,12 +8,24 @@
       "difficulty": "knowledge-check",
       "stem": "What are the roots of $y = x^2 - 5x + 6$?",
       "options": [
-        {"id": "a", "text": "$x = 1$ and $x = 6$"},
-        {"id": "b", "text": "$x = 2$ and $x = 3$"},
-        {"id": "c", "text": "$x = -2$ and $x = -3$"},
-        {"id": "d", "text": "$x = 5$ and $x = 6$"}
+        {
+          "id": "a",
+          "text": "$x = 2$ and $x = 3$"
+        },
+        {
+          "id": "b",
+          "text": "$x = 1$ and $x = 6$"
+        },
+        {
+          "id": "c",
+          "text": "$x = 5$ and $x = 6$"
+        },
+        {
+          "id": "d",
+          "text": "$x = -2$ and $x = -3$"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "explanation": "The roots are where $y = 0$: $x^2 - 5x + 6 = 0$, $(x - 2)(x - 3) = 0$, so $x = 2$ and $x = 3$."
     },
     {
@@ -22,12 +34,24 @@
       "difficulty": "knowledge-check",
       "stem": "What is the line of symmetry of $y = x^2 - 6x + 5$?",
       "options": [
-        {"id": "a", "text": "$x = 6$"},
-        {"id": "b", "text": "$x = 3$"},
-        {"id": "c", "text": "$x = -3$"},
-        {"id": "d", "text": "$x = 5$"}
+        {
+          "id": "a",
+          "text": "$x = 6$"
+        },
+        {
+          "id": "b",
+          "text": "$x = -3$"
+        },
+        {
+          "id": "c",
+          "text": "$x = 3$"
+        },
+        {
+          "id": "d",
+          "text": "$x = 5$"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "c",
       "explanation": "The line of symmetry passes through the midpoint of the roots. Roots: $x = 1$ and $x = 5$. Midpoint: $x = \\frac{1 + 5}{2} = 3$. Alternatively, for $y = x^2 + bx + c$, the line of symmetry is $x = -\\frac{b}{2} = -\\frac{-6}{2} = 3$."
     },
     {
@@ -36,12 +60,24 @@
       "difficulty": "knowledge-check",
       "stem": "The vertex of $y = (x - 3)^2 + 2$ is at which point?",
       "options": [
-        {"id": "a", "text": "$(3, 2)$"},
-        {"id": "b", "text": "$(-3, 2)$"},
-        {"id": "c", "text": "$(3, -2)$"},
-        {"id": "d", "text": "$(-3, -2)$"}
+        {
+          "id": "a",
+          "text": "$(-3, -2)$"
+        },
+        {
+          "id": "b",
+          "text": "$(3, 2)$"
+        },
+        {
+          "id": "c",
+          "text": "$(-3, 2)$"
+        },
+        {
+          "id": "d",
+          "text": "$(3, -2)$"
+        }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "b",
       "explanation": "In completed square form $y = (x - p)^2 + q$, the vertex is at $(p, q)$. Here $p = 3$ and $q = 2$, so the vertex is $(3, 2)$."
     },
     {
@@ -50,10 +86,22 @@
       "difficulty": "knowledge-check",
       "stem": "A quadratic $y = ax^2 + bx + c$ has a maximum point. What must be true about $a$?",
       "options": [
-        {"id": "a", "text": "$a > 0$"},
-        {"id": "b", "text": "$a < 0$"},
-        {"id": "c", "text": "$a = 0$"},
-        {"id": "d", "text": "$a = 1$"}
+        {
+          "id": "a",
+          "text": "$a = 0$"
+        },
+        {
+          "id": "b",
+          "text": "$a < 0$"
+        },
+        {
+          "id": "c",
+          "text": "$a = 1$"
+        },
+        {
+          "id": "d",
+          "text": "$a > 0$"
+        }
       ],
       "correctAnswer": "b",
       "explanation": "A maximum point occurs when the parabola opens downward, which happens when the coefficient of $x^2$ is negative ($a < 0$)."
@@ -64,10 +112,22 @@
       "difficulty": "knowledge-check",
       "stem": "How many roots does a quadratic have if its discriminant $b^2 - 4ac < 0$?",
       "options": [
-        {"id": "a", "text": "Two distinct roots"},
-        {"id": "b", "text": "One repeated root"},
-        {"id": "c", "text": "No real roots"},
-        {"id": "d", "text": "Three roots"}
+        {
+          "id": "a",
+          "text": "Three roots"
+        },
+        {
+          "id": "b",
+          "text": "Two distinct roots"
+        },
+        {
+          "id": "c",
+          "text": "No real roots"
+        },
+        {
+          "id": "d",
+          "text": "One repeated root"
+        }
       ],
       "correctAnswer": "c",
       "explanation": "When $b^2 - 4ac < 0$, the quadratic formula gives no real solutions. The parabola does not cross the $x$-axis."
@@ -78,10 +138,22 @@
       "difficulty": "knowledge-check",
       "stem": "What is the $y$-intercept of $y = 2x^2 - 3x + 7$?",
       "options": [
-        {"id": "a", "text": "2"},
-        {"id": "b", "text": "$-3$"},
-        {"id": "c", "text": "7"},
-        {"id": "d", "text": "0"}
+        {
+          "id": "a",
+          "text": "$-3$"
+        },
+        {
+          "id": "b",
+          "text": "0"
+        },
+        {
+          "id": "c",
+          "text": "7"
+        },
+        {
+          "id": "d",
+          "text": "2"
+        }
       ],
       "correctAnswer": "c",
       "explanation": "The $y$-intercept occurs when $x = 0$: $y = 2(0)^2 - 3(0) + 7 = 7$. In general, the $y$-intercept of $y = ax^2 + bx + c$ is $c$."
@@ -92,10 +164,22 @@
       "difficulty": "knowledge-check",
       "stem": "The graph of $y = x^2 - 4x + 4$ just touches the $x$-axis. What does this mean?",
       "options": [
-        {"id": "a", "text": "The quadratic has two distinct roots"},
-        {"id": "b", "text": "The quadratic has no real roots"},
-        {"id": "c", "text": "The quadratic has one repeated root"},
-        {"id": "d", "text": "The quadratic has a negative discriminant"}
+        {
+          "id": "a",
+          "text": "The quadratic has a negative discriminant"
+        },
+        {
+          "id": "b",
+          "text": "The quadratic has no real roots"
+        },
+        {
+          "id": "c",
+          "text": "The quadratic has one repeated root"
+        },
+        {
+          "id": "d",
+          "text": "The quadratic has two distinct roots"
+        }
       ],
       "correctAnswer": "c",
       "explanation": "$x^2 - 4x + 4 = (x - 2)^2 = 0$ gives $x = 2$ as a repeated root. The vertex of the parabola sits exactly on the $x$-axis, so the graph touches but does not cross it."

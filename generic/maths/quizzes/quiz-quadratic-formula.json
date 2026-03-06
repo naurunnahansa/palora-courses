@@ -8,10 +8,22 @@
       "difficulty": "knowledge-check",
       "stem": "The quadratic formula for $ax^2 + bx + c = 0$ is:",
       "options": [
-        {"id": "a", "text": "$x = \\frac{b \\pm \\sqrt{b^2 - 4ac}}{2a}$"},
-        {"id": "b", "text": "$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$"},
-        {"id": "c", "text": "$x = \\frac{-b \\pm \\sqrt{b^2 + 4ac}}{2a}$"},
-        {"id": "d", "text": "$x = \\frac{-b \\pm \\sqrt{b - 4ac}}{2a}$"}
+        {
+          "id": "a",
+          "text": "$x = \\frac{-b \\pm \\sqrt{b - 4ac}}{2a}$"
+        },
+        {
+          "id": "b",
+          "text": "$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$"
+        },
+        {
+          "id": "c",
+          "text": "$x = \\frac{b \\pm \\sqrt{b^2 - 4ac}}{2a}$"
+        },
+        {
+          "id": "d",
+          "text": "$x = \\frac{-b \\pm \\sqrt{b^2 + 4ac}}{2a}$"
+        }
       ],
       "correctAnswer": "b",
       "explanation": "The quadratic formula is $x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$. Note the negative sign before $b$ and the minus sign inside the square root."
@@ -22,12 +34,24 @@
       "difficulty": "knowledge-check",
       "stem": "For $x^2 + 5x + 3 = 0$, what are the values of $a$, $b$, and $c$?",
       "options": [
-        {"id": "a", "text": "$a = 1, b = 5, c = 3$"},
-        {"id": "b", "text": "$a = 5, b = 1, c = 3$"},
-        {"id": "c", "text": "$a = 1, b = 3, c = 5$"},
-        {"id": "d", "text": "$a = 0, b = 5, c = 3$"}
+        {
+          "id": "a",
+          "text": "$a = 1, b = 3, c = 5$"
+        },
+        {
+          "id": "b",
+          "text": "$a = 1, b = 5, c = 3$"
+        },
+        {
+          "id": "c",
+          "text": "$a = 0, b = 5, c = 3$"
+        },
+        {
+          "id": "d",
+          "text": "$a = 5, b = 1, c = 3$"
+        }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "b",
       "explanation": "In $ax^2 + bx + c = 0$: $a$ is the coefficient of $x^2$ (which is 1), $b$ is the coefficient of $x$ (which is 5), and $c$ is the constant (which is 3)."
     },
     {
@@ -36,12 +60,24 @@
       "difficulty": "knowledge-check",
       "stem": "What does the discriminant $b^2 - 4ac$ tell us?",
       "options": [
-        {"id": "a", "text": "The value of $x$"},
-        {"id": "b", "text": "The number and type of solutions"},
-        {"id": "c", "text": "The y-intercept of the graph"},
-        {"id": "d", "text": "The gradient of the curve"}
+        {
+          "id": "a",
+          "text": "The y-intercept of the graph"
+        },
+        {
+          "id": "b",
+          "text": "The gradient of the curve"
+        },
+        {
+          "id": "c",
+          "text": "The value of $x$"
+        },
+        {
+          "id": "d",
+          "text": "The number and type of solutions"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "d",
       "explanation": "If $b^2 - 4ac > 0$: two distinct real solutions. If $b^2 - 4ac = 0$: one repeated solution. If $b^2 - 4ac < 0$: no real solutions."
     },
     {
@@ -50,10 +86,22 @@
       "difficulty": "knowledge-check",
       "stem": "How many real solutions does $x^2 + 2x + 5 = 0$ have?",
       "options": [
-        {"id": "a", "text": "Two"},
-        {"id": "b", "text": "One"},
-        {"id": "c", "text": "None"},
-        {"id": "d", "text": "Infinitely many"}
+        {
+          "id": "a",
+          "text": "One"
+        },
+        {
+          "id": "b",
+          "text": "Infinitely many"
+        },
+        {
+          "id": "c",
+          "text": "None"
+        },
+        {
+          "id": "d",
+          "text": "Two"
+        }
       ],
       "correctAnswer": "c",
       "explanation": "Calculate the discriminant: $b^2 - 4ac = 4 - 20 = -16$. Since the discriminant is negative, there are no real solutions."
@@ -64,10 +112,22 @@
       "difficulty": "knowledge-check",
       "stem": "Use the quadratic formula to solve $x^2 - 6x + 5 = 0$.",
       "options": [
-        {"id": "a", "text": "$x = 1$ or $x = 5$"},
-        {"id": "b", "text": "$x = -1$ or $x = -5$"},
-        {"id": "c", "text": "$x = 2$ or $x = 3$"},
-        {"id": "d", "text": "$x = 3 \\pm \\sqrt{14}$"}
+        {
+          "id": "a",
+          "text": "$x = 1$ or $x = 5$"
+        },
+        {
+          "id": "b",
+          "text": "$x = 2$ or $x = 3$"
+        },
+        {
+          "id": "c",
+          "text": "$x = -1$ or $x = -5$"
+        },
+        {
+          "id": "d",
+          "text": "$x = 3 \\pm \\sqrt{14}$"
+        }
       ],
       "correctAnswer": "a",
       "explanation": "$x = \\frac{6 \\pm \\sqrt{36 - 20}}{2} = \\frac{6 \\pm \\sqrt{16}}{2} = \\frac{6 \\pm 4}{2}$. So $x = \\frac{10}{2} = 5$ or $x = \\frac{2}{2} = 1$."
@@ -78,12 +138,24 @@
       "difficulty": "knowledge-check",
       "stem": "Solve $2x^2 + 3x - 1 = 0$, giving answers to 2 decimal places.",
       "options": [
-        {"id": "a", "text": "$x = 0.28$ or $x = -1.78$"},
-        {"id": "b", "text": "$x = 1.28$ or $x = -0.78$"},
-        {"id": "c", "text": "$x = 0.50$ or $x = -1.00$"},
-        {"id": "d", "text": "$x = 0.78$ or $x = -1.28$"}
+        {
+          "id": "a",
+          "text": "$x = 1.28$ or $x = -0.78$"
+        },
+        {
+          "id": "b",
+          "text": "$x = 0.28$ or $x = -1.78$"
+        },
+        {
+          "id": "c",
+          "text": "$x = 0.78$ or $x = -1.28$"
+        },
+        {
+          "id": "d",
+          "text": "$x = 0.50$ or $x = -1.00$"
+        }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "b",
       "explanation": "$x = \\frac{-3 \\pm \\sqrt{9 + 8}}{4} = \\frac{-3 \\pm \\sqrt{17}}{4}$. $\\sqrt{17} \\approx 4.123$. So $x = \\frac{-3 + 4.123}{4} \\approx 0.28$ or $x = \\frac{-3 - 4.123}{4} \\approx -1.78$."
     },
     {
@@ -92,10 +164,22 @@
       "difficulty": "knowledge-check",
       "stem": "When should you use the quadratic formula instead of factorising?",
       "options": [
-        {"id": "a", "text": "Always, because it is faster"},
-        {"id": "b", "text": "Only when the coefficient of $x^2$ is not 1"},
-        {"id": "c", "text": "When the quadratic does not factorise easily into integer factors"},
-        {"id": "d", "text": "Never, factorising always works"}
+        {
+          "id": "a",
+          "text": "Always, because it is faster"
+        },
+        {
+          "id": "b",
+          "text": "Only when the coefficient of $x^2$ is not 1"
+        },
+        {
+          "id": "c",
+          "text": "When the quadratic does not factorise easily into integer factors"
+        },
+        {
+          "id": "d",
+          "text": "Never, factorising always works"
+        }
       ],
       "correctAnswer": "c",
       "explanation": "The quadratic formula works for all quadratic equations, but is especially useful when the equation does not factorise neatly. If factorising is possible, it is usually quicker."

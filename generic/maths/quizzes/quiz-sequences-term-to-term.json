@@ -8,12 +8,24 @@
       "difficulty": "knowledge-check",
       "stem": "A sequence starts 3, 7, 11, 15, ... What is the term-to-term rule?",
       "options": [
-        {"id": "a", "text": "Multiply by 2 then add 1"},
-        {"id": "b", "text": "Add 4"},
-        {"id": "c", "text": "Add 3"},
-        {"id": "d", "text": "Multiply by 3 then subtract 2"}
+        {
+          "id": "a",
+          "text": "Add 3"
+        },
+        {
+          "id": "b",
+          "text": "Multiply by 3 then subtract 2"
+        },
+        {
+          "id": "c",
+          "text": "Add 4"
+        },
+        {
+          "id": "d",
+          "text": "Multiply by 2 then add 1"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "c",
       "explanation": "Each term increases by $7 - 3 = 4$, $11 - 7 = 4$, $15 - 11 = 4$. The term-to-term rule is add 4."
     },
     {
@@ -22,12 +34,24 @@
       "difficulty": "knowledge-check",
       "stem": "A sequence has the term-to-term rule 'multiply by 2' and starts at 5. What is the 4th term?",
       "options": [
-        {"id": "a", "text": "20"},
-        {"id": "b", "text": "40"},
-        {"id": "c", "text": "80"},
-        {"id": "d", "text": "160"}
+        {
+          "id": "a",
+          "text": "80"
+        },
+        {
+          "id": "b",
+          "text": "160"
+        },
+        {
+          "id": "c",
+          "text": "20"
+        },
+        {
+          "id": "d",
+          "text": "40"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "d",
       "explanation": "The terms are: 5, 10, 20, 40. The 4th term is 40."
     },
     {
@@ -36,12 +60,24 @@
       "difficulty": "knowledge-check",
       "stem": "The Fibonacci sequence starts 1, 1, 2, 3, 5, ... What is the term-to-term rule?",
       "options": [
-        {"id": "a", "text": "Add the previous two terms to get the next term"},
-        {"id": "b", "text": "Multiply the previous term by 2"},
-        {"id": "c", "text": "Add 1, then add 2, then add 3, and so on"},
-        {"id": "d", "text": "Multiply by 1.5 and round"}
+        {
+          "id": "a",
+          "text": "Multiply the previous term by 2"
+        },
+        {
+          "id": "b",
+          "text": "Multiply by 1.5 and round"
+        },
+        {
+          "id": "c",
+          "text": "Add 1, then add 2, then add 3, and so on"
+        },
+        {
+          "id": "d",
+          "text": "Add the previous two terms to get the next term"
+        }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "d",
       "explanation": "In the Fibonacci sequence, each term is the sum of the two preceding terms: $1 + 1 = 2$, $1 + 2 = 3$, $2 + 3 = 5$, and so on."
     },
     {
@@ -50,12 +86,24 @@
       "difficulty": "knowledge-check",
       "stem": "A sequence starts 2, 6, 18, 54, ... What type of sequence is this?",
       "options": [
-        {"id": "a", "text": "Arithmetic (linear)"},
-        {"id": "b", "text": "Geometric"},
-        {"id": "c", "text": "Quadratic"},
-        {"id": "d", "text": "Fibonacci-type"}
+        {
+          "id": "a",
+          "text": "Geometric"
+        },
+        {
+          "id": "b",
+          "text": "Arithmetic (linear)"
+        },
+        {
+          "id": "c",
+          "text": "Fibonacci-type"
+        },
+        {
+          "id": "d",
+          "text": "Quadratic"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "explanation": "Each term is multiplied by 3 to get the next: $2 \\times 3 = 6$, $6 \\times 3 = 18$, $18 \\times 3 = 54$. A constant multiplier means it is a geometric sequence."
     },
     {
@@ -64,12 +112,24 @@
       "difficulty": "knowledge-check",
       "stem": "A sequence starts 1, 4, 13, 40, ... The term-to-term rule is 'multiply by 3 then add 1'. What is the next term?",
       "options": [
-        {"id": "a", "text": "80"},
-        {"id": "b", "text": "120"},
-        {"id": "c", "text": "121"},
-        {"id": "d", "text": "41"}
+        {
+          "id": "a",
+          "text": "121"
+        },
+        {
+          "id": "b",
+          "text": "41"
+        },
+        {
+          "id": "c",
+          "text": "80"
+        },
+        {
+          "id": "d",
+          "text": "120"
+        }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "a",
       "explanation": "Apply the rule to the 4th term: $40 \\times 3 + 1 = 121$."
     },
     {
@@ -78,10 +138,22 @@
       "difficulty": "knowledge-check",
       "stem": "What is a limitation of a term-to-term rule compared to a position-to-term rule (nth term)?",
       "options": [
-        {"id": "a", "text": "Term-to-term rules only work for even numbers"},
-        {"id": "b", "text": "You must know all previous terms to find a specific term, rather than calculating it directly"},
-        {"id": "c", "text": "Term-to-term rules cannot describe decreasing sequences"},
-        {"id": "d", "text": "Term-to-term rules only apply to arithmetic sequences"}
+        {
+          "id": "a",
+          "text": "Term-to-term rules only apply to arithmetic sequences"
+        },
+        {
+          "id": "b",
+          "text": "You must know all previous terms to find a specific term, rather than calculating it directly"
+        },
+        {
+          "id": "c",
+          "text": "Term-to-term rules only work for even numbers"
+        },
+        {
+          "id": "d",
+          "text": "Term-to-term rules cannot describe decreasing sequences"
+        }
       ],
       "correctAnswer": "b",
       "explanation": "A term-to-term rule requires calculating every term in order. To find the 100th term, you must work through all 99 previous terms. A position-to-term (nth term) formula lets you jump directly to any term."
@@ -92,12 +164,24 @@
       "difficulty": "knowledge-check",
       "stem": "A sequence starts 64, 32, 16, 8, ... What is the term-to-term rule?",
       "options": [
-        {"id": "a", "text": "Subtract 32"},
-        {"id": "b", "text": "Subtract half"},
-        {"id": "c", "text": "Divide by 2"},
-        {"id": "d", "text": "Subtract 16"}
+        {
+          "id": "a",
+          "text": "Subtract 16"
+        },
+        {
+          "id": "b",
+          "text": "Divide by 2"
+        },
+        {
+          "id": "c",
+          "text": "Subtract half"
+        },
+        {
+          "id": "d",
+          "text": "Subtract 32"
+        }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "b",
       "explanation": "Each term is halved: $64 \\div 2 = 32$, $32 \\div 2 = 16$, $16 \\div 2 = 8$. The rule is divide by 2 (or equivalently, multiply by $\\frac{1}{2}$)."
     }
   ]

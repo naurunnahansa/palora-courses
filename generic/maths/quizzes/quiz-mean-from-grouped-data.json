@@ -14,11 +14,11 @@
         },
         {
           "id": "b",
-          "text": "20"
+          "text": "30"
         },
         {
           "id": "c",
-          "text": "30"
+          "text": "20"
         },
         {
           "id": "d",
@@ -36,22 +36,22 @@
       "options": [
         {
           "id": "a",
-          "text": "Because the calculation involves rounding"
-        },
-        {
-          "id": "b",
-          "text": "Because we use midpoints instead of the actual data values, which are unknown"
-        },
-        {
-          "id": "c",
           "text": "Because grouped data is always unreliable"
         },
         {
-          "id": "d",
+          "id": "b",
+          "text": "Because the calculation involves rounding"
+        },
+        {
+          "id": "c",
           "text": "Because the formula is approximate"
+        },
+        {
+          "id": "d",
+          "text": "Because we use midpoints instead of the actual data values, which are unknown"
         }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "d",
       "explanation": "When data is grouped, the individual values are lost. We use the midpoint of each class as a representative value, which only gives an estimate."
     },
     {
@@ -62,11 +62,11 @@
       "options": [
         {
           "id": "a",
-          "text": "$25 + 180 + 160 = 365$"
+          "text": "$25 + 180 + 200 = 405$"
         },
         {
           "id": "b",
-          "text": "$0 + 120 + 200 = 320$"
+          "text": "$25 + 180 + 160 = 365$"
         },
         {
           "id": "c",
@@ -74,10 +74,10 @@
         },
         {
           "id": "d",
-          "text": "$25 + 180 + 200 = 405$"
+          "text": "$0 + 120 + 200 = 320$"
         }
       ],
-      "correctAnswer": "d",
+      "correctAnswer": "a",
       "explanation": "Midpoints: 5, 15, 25. $\\sum fx = (5 \\times 5) + (12 \\times 15) + (8 \\times 25) = 25 + 180 + 200 = 405$."
     },
     {
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "a",
-          "text": "At the midpoint of the modal class"
-        },
-        {
-          "id": "b",
           "text": "Below the median"
         },
         {
+          "id": "b",
+          "text": "Above the largest midpoint"
+        },
+        {
           "id": "c",
-          "text": "Within the range of the data"
+          "text": "At the midpoint of the modal class"
         },
         {
           "id": "d",
-          "text": "Above the largest midpoint"
+          "text": "Within the range of the data"
         }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "d",
       "explanation": "The estimated mean must lie within the range of the data (between the lowest and highest class boundaries). If it does not, there is an error."
     },
     {
@@ -118,18 +118,18 @@
         },
         {
           "id": "b",
-          "text": "The total frequency $\\sum f$"
-        },
-        {
-          "id": "c",
           "text": "The sum of the midpoints"
         },
         {
-          "id": "d",
+          "id": "c",
           "text": "The class width"
+        },
+        {
+          "id": "d",
+          "text": "The total frequency $\\sum f$"
         }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "d",
       "explanation": "Estimated mean $= \\frac{\\sum fx}{\\sum f}$, where $\\sum f$ is the total frequency (the total number of data items)."
     },
     {
@@ -144,7 +144,7 @@
         },
         {
           "id": "b",
-          "text": "No, the method only works with equal class widths"
+          "text": "Only if you use frequency density instead"
         },
         {
           "id": "c",
@@ -152,7 +152,7 @@
         },
         {
           "id": "d",
-          "text": "Only if you use frequency density instead"
+          "text": "No, the method only works with equal class widths"
         }
       ],
       "correctAnswer": "a",
@@ -166,7 +166,7 @@
       "options": [
         {
           "id": "a",
-          "text": "$10 \\times 15 = 150$"
+          "text": "$15 \\times 15 = 225$"
         },
         {
           "id": "b",
@@ -174,14 +174,14 @@
         },
         {
           "id": "c",
-          "text": "$15 \\times 15 = 225$"
+          "text": "$10 \\times 15 = 150$"
         },
         {
           "id": "d",
           "text": "$30 \\times 15 = 450$"
         }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "a",
       "explanation": "The midpoint of $10 \\leq x < 20$ is $\\frac{10+20}{2} = 15$. So $fx = 15 \\times 15 = 225$."
     }
   ]

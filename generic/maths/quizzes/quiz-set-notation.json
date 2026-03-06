@@ -10,11 +10,11 @@
       "options": [
         {
           "id": "a",
-          "text": "Union (OR)"
+          "text": "Subset"
         },
         {
           "id": "b",
-          "text": "Intersection (AND)"
+          "text": "Union (OR)"
         },
         {
           "id": "c",
@@ -22,10 +22,10 @@
         },
         {
           "id": "d",
-          "text": "Subset"
+          "text": "Intersection (AND)"
         }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "b",
       "explanation": "The symbol $\\cup$ means union, which represents elements in set $A$ OR set $B$ (or both)."
     },
     {
@@ -36,22 +36,22 @@
       "options": [
         {
           "id": "a",
-          "text": "$\\{2,4,6,8,10\\}$"
-        },
-        {
-          "id": "b",
           "text": "$\\{1,2,3,4,5\\}$"
         },
         {
+          "id": "b",
+          "text": "$\\{2,4,6,8,10\\}$"
+        },
+        {
           "id": "c",
-          "text": "$\\{1,3,5,7,9\\}$"
+          "text": "$\\emptyset$"
         },
         {
           "id": "d",
-          "text": "$\\emptyset$"
+          "text": "$\\{1,3,5,7,9\\}$"
         }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "d",
       "explanation": "$A'$ is the complement of $A$, containing all elements in the universal set $\\xi$ that are NOT in $A$: $\\{1,3,5,7,9\\}$."
     },
     {
@@ -62,22 +62,22 @@
       "options": [
         {
           "id": "a",
-          "text": "$\\{1,2,3,4,5,6\\}$"
-        },
-        {
-          "id": "b",
-          "text": "$\\{3,4\\}$"
-        },
-        {
-          "id": "c",
           "text": "$\\{1,2\\}$"
         },
         {
-          "id": "d",
+          "id": "b",
           "text": "$\\{5,6\\}$"
+        },
+        {
+          "id": "c",
+          "text": "$\\{3,4\\}$"
+        },
+        {
+          "id": "d",
+          "text": "$\\{1,2,3,4,5,6\\}$"
         }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "c",
       "explanation": "$A \\cap B$ is the intersection -- elements in both $A$ and $B$. The common elements are $\\{3,4\\}$."
     },
     {
@@ -88,15 +88,15 @@
       "options": [
         {
           "id": "a",
-          "text": "The complement of $A$"
-        },
-        {
-          "id": "b",
           "text": "$A$ multiplied by $n$"
         },
         {
-          "id": "c",
+          "id": "b",
           "text": "The $n$th element of $A$"
+        },
+        {
+          "id": "c",
+          "text": "The complement of $A$"
         },
         {
           "id": "d",
@@ -114,7 +114,7 @@
       "options": [
         {
           "id": "a",
-          "text": "The empty set (a set with no elements)"
+          "text": "The universal set"
         },
         {
           "id": "b",
@@ -122,14 +122,14 @@
         },
         {
           "id": "c",
-          "text": "The universal set"
+          "text": "The set of all integers"
         },
         {
           "id": "d",
-          "text": "The set of all integers"
+          "text": "The empty set (a set with no elements)"
         }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "d",
       "explanation": "$\\emptyset$ represents the empty set, which contains no elements. For example, the intersection of two disjoint sets is $\\emptyset$."
     },
     {
@@ -140,22 +140,22 @@
       "options": [
         {
           "id": "a",
-          "text": "$A \\cup B$"
-        },
-        {
-          "id": "b",
           "text": "$\\xi$"
         },
         {
-          "id": "c",
+          "id": "b",
           "text": "$\\emptyset$"
+        },
+        {
+          "id": "c",
+          "text": "$A \\cup B$"
         },
         {
           "id": "d",
           "text": "$A'$"
         }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "b",
       "explanation": "Mutually exclusive events cannot occur simultaneously, so their intersection is the empty set: $A \\cap B = \\emptyset$."
     },
     {
@@ -174,11 +174,11 @@
         },
         {
           "id": "c",
-          "text": "$A' \\cap B$"
+          "text": "$(A \\cap B)'$"
         },
         {
           "id": "d",
-          "text": "$(A \\cap B)'$"
+          "text": "$A' \\cap B$"
         }
       ],
       "correctAnswer": "b",

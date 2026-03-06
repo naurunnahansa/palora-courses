@@ -1,0 +1,188 @@
+{
+  "id": "quiz-series-circuits",
+  "title": "Quiz: Series Circuits",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What happens to the current at different points in a series circuit?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It increases after each component"
+        },
+        {
+          "id": "b",
+          "text": "It is the same at all points in the circuit"
+        },
+        {
+          "id": "c",
+          "text": "It is different at every point"
+        },
+        {
+          "id": "d",
+          "text": "It decreases after each component"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "In a series circuit, the current is the same at every point because there is only one path for the charge to flow through, and charge is conserved."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Three resistors with values 4 ohms, 6 ohms, and 10 ohms are connected in series. What is the total resistance?",
+      "options": [
+        {
+          "id": "a",
+          "text": "6.7 ohms"
+        },
+        {
+          "id": "b",
+          "text": "240 ohms"
+        },
+        {
+          "id": "c",
+          "text": "20 ohms"
+        },
+        {
+          "id": "d",
+          "text": "1.9 ohms"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "In a series circuit, total resistance is the sum of all individual resistances: R_total = 4 + 6 + 10 = 20 ohms."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In a series circuit with a 12 V battery and two resistors, the voltage across the first resistor is 8 V. What is the voltage across the second resistor?",
+      "options": [
+        {
+          "id": "a",
+          "text": "12 V"
+        },
+        {
+          "id": "b",
+          "text": "20 V"
+        },
+        {
+          "id": "c",
+          "text": "8 V"
+        },
+        {
+          "id": "d",
+          "text": "4 V"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "In a series circuit, the voltages across all components add up to the supply voltage: 12 V = 8 V + V, so V = 4 V."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "In a voltage divider with R1 = 3 ohms and R2 = 6 ohms connected to a 9 V supply, what is the voltage across R2?",
+      "options": [
+        {
+          "id": "a",
+          "text": "3 V"
+        },
+        {
+          "id": "b",
+          "text": "4.5 V"
+        },
+        {
+          "id": "c",
+          "text": "9 V"
+        },
+        {
+          "id": "d",
+          "text": "6 V"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Using the voltage divider formula: V_out = V_in x R2/(R1 + R2) = 9 x 6/(3 + 6) = 9 x 6/9 = 6 V. The larger resistor gets a larger share of the voltage."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What happens if one lamp in a series circuit blows?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Nothing happens to the other lamps"
+        },
+        {
+          "id": "b",
+          "text": "All the other lamps go out because the circuit is broken"
+        },
+        {
+          "id": "c",
+          "text": "The other lamps get dimmer"
+        },
+        {
+          "id": "d",
+          "text": "The other lamps get brighter"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "In a series circuit, there is only one path for current to flow. If one component breaks, the circuit is broken and current stops flowing through all components."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Why is a resistor connected in series with an LED?",
+      "options": [
+        {
+          "id": "a",
+          "text": "To increase the voltage across the LED"
+        },
+        {
+          "id": "b",
+          "text": "To limit the current flowing through the LED and prevent it from burning out"
+        },
+        {
+          "id": "c",
+          "text": "To allow the LED to emit different colours"
+        },
+        {
+          "id": "d",
+          "text": "To make the LED brighter"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "An LED can be damaged by too much current. A series resistor limits the current to a safe level by taking some of the voltage from the supply, protecting the LED."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What happens to the total voltage when identical cells are connected in series?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The total voltage is the product of the individual cell voltages"
+        },
+        {
+          "id": "b",
+          "text": "The total voltage stays the same as one cell"
+        },
+        {
+          "id": "c",
+          "text": "The total voltage is the sum of the individual cell voltages"
+        },
+        {
+          "id": "d",
+          "text": "The total voltage is halved"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "When cells are connected in series, their voltages add up. For example, three 1.5 V cells in series give a total EMF of 4.5 V."
+    }
+  ]
+}

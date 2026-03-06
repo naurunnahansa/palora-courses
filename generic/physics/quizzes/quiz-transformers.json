@@ -1,0 +1,188 @@
+{
+  "id": "quiz-transformers",
+  "title": "Quiz: Transformers",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "Why do transformers only work with AC and not DC?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Because DC is too dangerous for transformers"
+        },
+        {
+          "id": "b",
+          "text": "Because DC would melt the iron core"
+        },
+        {
+          "id": "c",
+          "text": "Because DC cannot flow through a coil of wire"
+        },
+        {
+          "id": "d",
+          "text": "Because DC produces a constant magnetic field, so no voltage is induced in the secondary coil"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Transformers rely on a changing magnetic field to induce a voltage in the secondary coil. DC produces a constant current and therefore a constant magnetic field, which means there is no change in flux and no induced voltage."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A transformer has 200 turns on the primary coil and 50 turns on the secondary coil. What type of transformer is this?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A step-up transformer"
+        },
+        {
+          "id": "b",
+          "text": "A step-down transformer"
+        },
+        {
+          "id": "c",
+          "text": "It cannot be determined without knowing the voltage"
+        },
+        {
+          "id": "d",
+          "text": "An isolation transformer"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "This is a step-down transformer because the secondary coil has fewer turns than the primary (50 < 200). The output voltage will be lower than the input voltage by the ratio 50/200 = 1/4."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A transformer has 100 turns on the primary and 500 turns on the secondary. If the input voltage is 230 V, what is the output voltage?",
+      "options": [
+        {
+          "id": "a",
+          "text": "46 V"
+        },
+        {
+          "id": "b",
+          "text": "500 V"
+        },
+        {
+          "id": "c",
+          "text": "1150 V"
+        },
+        {
+          "id": "d",
+          "text": "230 V"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Using the transformer equation Vp/Vs = np/ns: 230/Vs = 100/500, so Vs = 230 x 500/100 = 1150 V. The secondary has 5 times more turns, so the voltage is stepped up by a factor of 5."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "For an ideal transformer, what happens to the current when the voltage is stepped up?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The current also increases"
+        },
+        {
+          "id": "b",
+          "text": "The current stays the same"
+        },
+        {
+          "id": "c",
+          "text": "The current drops to zero"
+        },
+        {
+          "id": "d",
+          "text": "The current decreases by the same factor"
+        }
+      ],
+      "correctAnswer": "d",
+      "explanation": "In an ideal transformer, power is conserved (VpIp = VsIs). If the voltage is stepped up, the current must decrease by the same factor to keep the power constant. For example, doubling the voltage halves the current."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "What is the purpose of the iron core in a transformer?",
+      "options": [
+        {
+          "id": "a",
+          "text": "To concentrate and carry the magnetic flux between the two coils"
+        },
+        {
+          "id": "b",
+          "text": "To provide electrical connection between the two coils"
+        },
+        {
+          "id": "c",
+          "text": "To convert AC to DC"
+        },
+        {
+          "id": "d",
+          "text": "To increase the resistance of the coils"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The iron core links the two coils magnetically by concentrating and carrying the magnetic flux from the primary coil to the secondary coil. The coils are electrically isolated from each other."
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "How are eddy current losses reduced in a transformer?",
+      "options": [
+        {
+          "id": "a",
+          "text": "By removing the iron core"
+        },
+        {
+          "id": "b",
+          "text": "By laminating the core with thin insulated sheets of iron"
+        },
+        {
+          "id": "c",
+          "text": "By using a solid iron core"
+        },
+        {
+          "id": "d",
+          "text": "By using thinner wire"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Laminating the iron core (using thin insulated sheets rather than a solid block) interrupts the paths of eddy currents in the core, greatly reducing the energy lost as heat from these unwanted induced currents."
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "difficulty": "knowledge-check",
+      "stem": "A step-down transformer is used in a phone charger. Which statement is correct?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It has more turns on the secondary coil than the primary"
+        },
+        {
+          "id": "b",
+          "text": "It increases the voltage from 5 V to 230 V"
+        },
+        {
+          "id": "c",
+          "text": "It has fewer turns on the secondary coil, reducing 230 V mains to about 5 V"
+        },
+        {
+          "id": "d",
+          "text": "It creates extra energy to charge the phone"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A phone charger uses a step-down transformer with fewer turns on the secondary coil to reduce the 230 V mains voltage to approximately 5 V. No extra energy is created; power is conserved."
+    }
+  ]
+}

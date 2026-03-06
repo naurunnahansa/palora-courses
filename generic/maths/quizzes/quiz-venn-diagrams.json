@@ -10,7 +10,7 @@
       "options": [
         {
           "id": "a",
-          "text": "$A \\cup B$ (A or B)"
+          "text": "$A - B$ (A but not B)"
         },
         {
           "id": "b",
@@ -22,7 +22,7 @@
         },
         {
           "id": "d",
-          "text": "$A - B$ (A but not B)"
+          "text": "$A \\cup B$ (A or B)"
         }
       ],
       "correctAnswer": "b",
@@ -36,11 +36,11 @@
       "options": [
         {
           "id": "a",
-          "text": "33"
+          "text": "43"
         },
         {
           "id": "b",
-          "text": "43"
+          "text": "33"
         },
         {
           "id": "c",
@@ -51,7 +51,7 @@
           "text": "40"
         }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "b",
       "explanation": "Using the addition rule: $|A \\cup B| = |A| + |B| - |A \\cap B| = 25 + 18 - 10 = 33$."
     },
     {
@@ -66,18 +66,18 @@
         },
         {
           "id": "b",
-          "text": "5"
+          "text": "7"
         },
         {
           "id": "c",
-          "text": "10"
+          "text": "5"
         },
         {
           "id": "d",
-          "text": "7"
+          "text": "10"
         }
       ],
-      "correctAnswer": "d",
+      "correctAnswer": "b",
       "explanation": "Students studying at least one language $= 33$. Neither language $= 40 - 33 = 7$."
     },
     {
@@ -114,7 +114,7 @@
       "options": [
         {
           "id": "a",
-          "text": "28"
+          "text": "20"
         },
         {
           "id": "b",
@@ -122,14 +122,14 @@
         },
         {
           "id": "c",
-          "text": "20"
+          "text": "23"
         },
         {
           "id": "d",
-          "text": "23"
+          "text": "28"
         }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "d",
       "explanation": "Total $= 12 + 8 + 5 + 3 = 28$."
     },
     {
@@ -140,22 +140,22 @@
       "options": [
         {
           "id": "a",
-          "text": "$\\frac{12}{28}$"
-        },
-        {
-          "id": "b",
           "text": "$\\frac{17}{28}$"
         },
         {
+          "id": "b",
+          "text": "$\\frac{13}{28}$"
+        },
+        {
           "id": "c",
-          "text": "$\\frac{5}{28}$"
+          "text": "$\\frac{12}{28}$"
         },
         {
           "id": "d",
-          "text": "$\\frac{13}{28}$"
+          "text": "$\\frac{5}{28}$"
         }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "explanation": "Set $A$ includes those in only $A$ plus those in both: $12 + 5 = 17$. So $P(A) = \\frac{17}{28}$."
     },
     {
@@ -166,22 +166,22 @@
       "options": [
         {
           "id": "a",
-          "text": "The region outside both circles"
-        },
-        {
-          "id": "b",
           "text": "The larger circle first"
         },
         {
+          "id": "b",
+          "text": "The region outside both circles"
+        },
+        {
           "id": "c",
-          "text": "The intersection (overlap) region"
+          "text": "Any region you like"
         },
         {
           "id": "d",
-          "text": "Any region you like"
+          "text": "The intersection (overlap) region"
         }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "d",
       "explanation": "You should fill in the intersection first, because the 'only A' and 'only B' values depend on knowing how many are in both."
     }
   ]

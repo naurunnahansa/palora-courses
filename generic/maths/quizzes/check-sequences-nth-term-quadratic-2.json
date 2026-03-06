@@ -10,22 +10,22 @@
       "options": [
         {
           "id": "a",
-          "text": "$n^2 + n$"
+          "text": "$n^2 + 2n$"
         },
         {
           "id": "b",
-          "text": "$n^2 + 2$"
-        },
-        {
-          "id": "c",
           "text": "$2n^2$"
         },
         {
+          "id": "c",
+          "text": "$n^2 + n$"
+        },
+        {
           "id": "d",
-          "text": "$n^2 + 2n$"
+          "text": "$n^2 + 2$"
         }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "c",
       "explanation": "First differences: $4, 6, 8, 10$. Second differences: $2, 2, 2$. So $a = 1$ (since $2a = 2$). Subtract $n^2$: $2-1, 6-4, 12-9, 20-16, 30-25 = 1, 2, 3, 4, 5$. This is $n$. So the $n$th term is $n^2 + n$."
     }
   ]

@@ -8,12 +8,24 @@
       "difficulty": "knowledge-check",
       "stem": "Make $x$ the subject of $y = \\frac{ax + b}{c}$.",
       "options": [
-        {"id": "a", "text": "$x = \\frac{cy - b}{a}$"},
-        {"id": "b", "text": "$x = \\frac{cy + b}{a}$"},
-        {"id": "c", "text": "$x = cy - \\frac{b}{a}$"},
-        {"id": "d", "text": "$x = \\frac{c(y - b)}{a}$"}
+        {
+          "id": "a",
+          "text": "$x = \\frac{cy + b}{a}$"
+        },
+        {
+          "id": "b",
+          "text": "$x = \\frac{c(y - b)}{a}$"
+        },
+        {
+          "id": "c",
+          "text": "$x = \\frac{cy - b}{a}$"
+        },
+        {
+          "id": "d",
+          "text": "$x = cy - \\frac{b}{a}$"
+        }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "c",
       "explanation": "Multiply by $c$: $cy = ax + b$. Subtract $b$: $cy - b = ax$. Divide by $a$: $x = \\frac{cy - b}{a}$."
     },
     {
@@ -22,10 +34,22 @@
       "difficulty": "knowledge-check",
       "stem": "Make $x$ the subject of $y = \\sqrt{x + 3}$.",
       "options": [
-        {"id": "a", "text": "$x = y^2 + 3$"},
-        {"id": "b", "text": "$x = y^2 - 3$"},
-        {"id": "c", "text": "$x = (y + 3)^2$"},
-        {"id": "d", "text": "$x = (y - 3)^2$"}
+        {
+          "id": "a",
+          "text": "$x = y^2 + 3$"
+        },
+        {
+          "id": "b",
+          "text": "$x = y^2 - 3$"
+        },
+        {
+          "id": "c",
+          "text": "$x = (y + 3)^2$"
+        },
+        {
+          "id": "d",
+          "text": "$x = (y - 3)^2$"
+        }
       ],
       "correctAnswer": "b",
       "explanation": "Square both sides: $y^2 = x + 3$. Subtract 3: $x = y^2 - 3$."
@@ -36,12 +60,24 @@
       "difficulty": "knowledge-check",
       "stem": "Make $a$ the subject of $s = \\frac{1}{2}at^2$.",
       "options": [
-        {"id": "a", "text": "$a = \\frac{s}{2t^2}$"},
-        {"id": "b", "text": "$a = \\frac{2s}{t^2}$"},
-        {"id": "c", "text": "$a = \\frac{st^2}{2}$"},
-        {"id": "d", "text": "$a = 2st^2$"}
+        {
+          "id": "a",
+          "text": "$a = 2st^2$"
+        },
+        {
+          "id": "b",
+          "text": "$a = \\frac{s}{2t^2}$"
+        },
+        {
+          "id": "c",
+          "text": "$a = \\frac{2s}{t^2}$"
+        },
+        {
+          "id": "d",
+          "text": "$a = \\frac{st^2}{2}$"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "c",
       "explanation": "Multiply by 2: $2s = at^2$. Divide by $t^2$: $a = \\frac{2s}{t^2}$."
     },
     {
@@ -50,12 +86,24 @@
       "difficulty": "knowledge-check",
       "stem": "Make $x$ the subject of $y = \\frac{x}{x + 1}$.",
       "options": [
-        {"id": "a", "text": "$x = \\frac{y}{y + 1}$"},
-        {"id": "b", "text": "$x = \\frac{y}{1 - y}$"},
-        {"id": "c", "text": "$x = \\frac{1 - y}{y}$"},
-        {"id": "d", "text": "$x = y(x + 1)$"}
+        {
+          "id": "a",
+          "text": "$x = \\frac{y}{1 - y}$"
+        },
+        {
+          "id": "b",
+          "text": "$x = y(x + 1)$"
+        },
+        {
+          "id": "c",
+          "text": "$x = \\frac{1 - y}{y}$"
+        },
+        {
+          "id": "d",
+          "text": "$x = \\frac{y}{y + 1}$"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "explanation": "Multiply by $(x+1)$: $y(x+1) = x$. Expand: $yx + y = x$. Collect $x$ terms: $yx - x = -y$. Factor: $x(y-1) = -y$. Divide: $x = \\frac{-y}{y-1} = \\frac{y}{1-y}$."
     },
     {
@@ -64,12 +112,24 @@
       "difficulty": "knowledge-check",
       "stem": "Make $r$ the subject of $V = \\frac{4}{3}\\pi r^3$.",
       "options": [
-        {"id": "a", "text": "$r = \\sqrt[3]{\\frac{3V}{4\\pi}}$"},
-        {"id": "b", "text": "$r = \\sqrt{\\frac{3V}{4\\pi}}$"},
-        {"id": "c", "text": "$r = \\frac{3V}{4\\pi}$"},
-        {"id": "d", "text": "$r = \\sqrt[3]{\\frac{4V}{3\\pi}}$"}
+        {
+          "id": "a",
+          "text": "$r = \\sqrt{\\frac{3V}{4\\pi}}$"
+        },
+        {
+          "id": "b",
+          "text": "$r = \\frac{3V}{4\\pi}$"
+        },
+        {
+          "id": "c",
+          "text": "$r = \\sqrt[3]{\\frac{3V}{4\\pi}}$"
+        },
+        {
+          "id": "d",
+          "text": "$r = \\sqrt[3]{\\frac{4V}{3\\pi}}$"
+        }
       ],
-      "correctAnswer": "a",
+      "correctAnswer": "c",
       "explanation": "Multiply by $\\frac{3}{4\\pi}$: $\\frac{3V}{4\\pi} = r^3$. Take the cube root: $r = \\sqrt[3]{\\frac{3V}{4\\pi}}$."
     },
     {
@@ -78,12 +138,24 @@
       "difficulty": "knowledge-check",
       "stem": "Why is rearranging $y = \\frac{x}{x + 1}$ harder than rearranging $y = 3x + 1$?",
       "options": [
-        {"id": "a", "text": "Because the numbers are bigger"},
-        {"id": "b", "text": "Because $x$ appears twice in the formula, so you need to collect and factorise"},
-        {"id": "c", "text": "Because it contains a fraction"},
-        {"id": "d", "text": "Because it has no equals sign"}
+        {
+          "id": "a",
+          "text": "Because the numbers are bigger"
+        },
+        {
+          "id": "b",
+          "text": "Because it has no equals sign"
+        },
+        {
+          "id": "c",
+          "text": "Because $x$ appears twice in the formula, so you need to collect and factorise"
+        },
+        {
+          "id": "d",
+          "text": "Because it contains a fraction"
+        }
       ],
-      "correctAnswer": "b",
+      "correctAnswer": "c",
       "explanation": "When the subject variable appears more than once, you must collect all terms containing it on one side and factor it out before isolating it."
     },
     {
@@ -92,12 +164,24 @@
       "difficulty": "knowledge-check",
       "stem": "Make $t$ the subject of $s = ut + \\frac{1}{2}at^2$.",
       "options": [
-        {"id": "a", "text": "$t = \\frac{s - u}{\\frac{1}{2}a}$"},
-        {"id": "b", "text": "$t = \\frac{s}{u + \\frac{1}{2}a}$"},
-        {"id": "c", "text": "Use the quadratic formula: $t = \\frac{-u \\pm \\sqrt{u^2 + 2as}}{a}$"},
-        {"id": "d", "text": "$t = \\frac{2s}{2u + a}$"}
+        {
+          "id": "a",
+          "text": "$t = \\frac{2s}{2u + a}$"
+        },
+        {
+          "id": "b",
+          "text": "Use the quadratic formula: $t = \\frac{-u \\pm \\sqrt{u^2 + 2as}}{a}$"
+        },
+        {
+          "id": "c",
+          "text": "$t = \\frac{s - u}{\\frac{1}{2}a}$"
+        },
+        {
+          "id": "d",
+          "text": "$t = \\frac{s}{u + \\frac{1}{2}a}$"
+        }
       ],
-      "correctAnswer": "c",
+      "correctAnswer": "b",
       "explanation": "Rearrange to $\\frac{1}{2}at^2 + ut - s = 0$. Since $t$ appears as both $t$ and $t^2$, use the quadratic formula with $A = \\frac{1}{2}a$, $B = u$, $C = -s$: $t = \\frac{-u \\pm \\sqrt{u^2 + 2as}}{a}$."
     }
   ]
