@@ -1,0 +1,76 @@
+{
+  "id": "practice-trig-problem-solving",
+  "title": "Practice: Trigonometry Problem Solving",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In triangle ABC, AB = 9 cm, BC = 12 cm, and angle ABC = 110 degrees. Find the length AC to 1 decimal place.",
+      "options": [
+        { "id": "a", "text": "15.0 cm" },
+        { "id": "b", "text": "17.3 cm" },
+        { "id": "c", "text": "21.0 cm" },
+        { "id": "d", "text": "13.5 cm" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using the Cosine Rule (SAS): AC^2 = 81 + 144 - 2(9)(12)cos(110) = 225 - 216(-0.342) = 225 + 73.9 = 298.9. AC = sqrt(298.9) = 17.3 cm (1 d.p.)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A field is shaped as a triangle with sides 85 m, 110 m, and 130 m. Find the area of the field to the nearest m squared. (Hint: first find an angle using the Cosine Rule.)",
+      "options": [
+        { "id": "a", "text": "4636 m squared" },
+        { "id": "b", "text": "7150 m squared" },
+        { "id": "c", "text": "5687 m squared" },
+        { "id": "d", "text": "3825 m squared" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Find the angle opposite 130 m: cos(C) = (85^2 + 110^2 - 130^2)/(2 x 85 x 110) = (7225 + 12100 - 16900)/18700 = 2425/18700 = 0.1297. C = 82.55 degrees. Area = (1/2)(85)(110)sin(82.55) = 4675 x 0.9917 = 4636 m squared."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Town A is due north of town C. Town B is on a bearing of 065 degrees from A and on a bearing of 320 degrees from C. AB = 15 km. The angle ABC = 75 degrees. Find BC to 1 decimal place using the Sine Rule.",
+      "options": [
+        { "id": "a", "text": "15.0 km" },
+        { "id": "b", "text": "21.2 km" },
+        { "id": "c", "text": "18.6 km" },
+        { "id": "d", "text": "10.5 km" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Angle A = 65 degrees (bearing from north). Angle C = 360 - 320 = 40 degrees. Angle B = 180 - 65 - 40 = 75 degrees. By Sine Rule: BC/sin(A) = AB/sin(C). BC = 15 x sin(65)/sin(40) = 15 x 0.9063/0.6428 = 21.2 km (1 d.p.)."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In triangle ABC, AB = 9 cm, BC = 12 cm, and angle ABC = 110 degrees. Find the area of the triangle to 1 decimal place.",
+      "options": [
+        { "id": "a", "text": "108.0 cm squared" },
+        { "id": "b", "text": "50.7 cm squared" },
+        { "id": "c", "text": "54.0 cm squared" },
+        { "id": "d", "text": "101.5 cm squared" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Area = (1/2)(9)(12)sin(110) = 54 x 0.9397 = 50.7 cm squared (1 d.p.)."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A quadrilateral ABCD has AB = 5 cm, BC = 7 cm, angle ABC = 90 degrees, CD = 8 cm, and angle BCD = 115 degrees. To find AD, which diagonal should you draw first to split the problem into two triangles?",
+      "options": [
+        { "id": "a", "text": "Diagonal BD" },
+        { "id": "b", "text": "Diagonal AC" },
+        { "id": "c", "text": "Either diagonal works equally well" },
+        { "id": "d", "text": "No diagonal is needed" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Drawing AC creates triangle ABC (right-angled at B, so AC = sqrt(25+49) = sqrt(74)) and triangle ACD. In triangle ACD, you can find angle ACD = angle BCD - angle BCA, then use the Cosine Rule with AC, CD, and the included angle to find AD."
+    }
+  ]
+}

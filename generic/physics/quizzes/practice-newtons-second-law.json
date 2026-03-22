@@ -1,0 +1,76 @@
+{
+  "id": "practice-newtons-second-law",
+  "title": "Practice: Newton's Second Law",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A resultant force of 600 N acts on a 200 kg motorcycle. What is the acceleration?",
+      "options": [
+        { "id": "a", "text": "0.33 m/s²" },
+        { "id": "b", "text": "3 m/s²" },
+        { "id": "c", "text": "120 000 m/s²" },
+        { "id": "d", "text": "400 m/s²" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using F = ma, rearranged to a = F/m = 600/200 = 3 m/s². Option (a) calculates m/F instead of F/m. Option (c) multiplies force by mass. Always check your rearrangement: acceleration = force divided by mass."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two identical cars have the same engine. Car A carries 4 passengers and Car B carries 1 passenger. When both accelerate with the same engine force, which car accelerates faster and why?",
+      "options": [
+        { "id": "a", "text": "Car A, because it has more passengers to push" },
+        { "id": "b", "text": "Car B, because it has less mass so the same force produces greater acceleration" },
+        { "id": "c", "text": "Both accelerate equally because they have the same engine" },
+        { "id": "d", "text": "Car A, because the extra weight gives it more traction" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "From F = ma, if F is constant, then a = F/m. Car B has less total mass (fewer passengers), so it has greater acceleration. Acceleration is inversely proportional to mass. Option (c) ignores the effect of mass. This is why racing cars are designed to be as light as possible."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A 1500 kg car accelerates at 2 m/s². What is the resultant force acting on the car?",
+      "options": [
+        { "id": "a", "text": "750 N" },
+        { "id": "b", "text": "1500 N" },
+        { "id": "c", "text": "3000 N" },
+        { "id": "d", "text": "1502 N" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Using F = ma = 1500 × 2 = 3000 N. Option (a) divides mass by acceleration. Option (d) adds mass and acceleration, which is meaningless. Remember that F = ma gives the resultant (net) force — the actual engine force would need to be greater than 3000 N to overcome friction as well."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A shopping trolley is pushed with a force of 40 N. Friction provides a resistive force of 10 N. If the trolley has a mass of 15 kg, what is its acceleration?",
+      "options": [
+        { "id": "a", "text": "0.67 m/s²" },
+        { "id": "b", "text": "2.0 m/s²" },
+        { "id": "c", "text": "2.67 m/s²" },
+        { "id": "d", "text": "3.33 m/s²" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "First find the resultant force: 40 - 10 = 30 N. Then use a = F/m = 30/15 = 2.0 m/s². Option (c) uses the applied force (40 N) without subtracting friction: 40/15 = 2.67. Option (a) uses the friction force alone. You must always use the resultant force in F = ma, not just the applied force."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A rocket of mass 500 kg produces a thrust of 8000 N. Its weight is 4900 N. What is the rocket's upward acceleration at launch?",
+      "options": [
+        { "id": "a", "text": "6.2 m/s²" },
+        { "id": "b", "text": "9.8 m/s²" },
+        { "id": "c", "text": "16 m/s²" },
+        { "id": "d", "text": "25.8 m/s²" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The resultant upward force = thrust - weight = 8000 - 4900 = 3100 N. Then a = F/m = 3100/500 = 6.2 m/s². Option (c) uses only the thrust force (8000/500 = 16), forgetting that the rocket must also overcome its own weight. At launch, the rocket must produce a thrust greater than its weight to accelerate upward."
+    }
+  ]
+}

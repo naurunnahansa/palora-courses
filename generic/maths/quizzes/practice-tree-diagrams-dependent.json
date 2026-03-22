@@ -1,0 +1,76 @@
+{
+  "id": "practice-tree-diagrams-dependent",
+  "title": "Practice: Tree Diagrams (Dependent Events)",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A bag contains 5 red and 3 blue balls. Two balls are drawn WITHOUT replacement. What is the probability that both are red?",
+      "options": [
+        { "id": "a", "text": "25/64" },
+        { "id": "b", "text": "20/56" },
+        { "id": "c", "text": "10/56" },
+        { "id": "d", "text": "5/14" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "P(1st red) = 5/8. P(2nd red | 1st red) = 4/7. P(both red) = 5/8 × 4/7 = 20/56 = 5/14. Options (b) and (d) are the same value. Option (a) incorrectly uses 5/8 × 5/8, treating it as with replacement."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A jar has 6 green and 4 yellow sweets. Two sweets are taken without replacement. What is the probability of getting one of each colour?",
+      "options": [
+        { "id": "a", "text": "24/90" },
+        { "id": "b", "text": "48/90" },
+        { "id": "c", "text": "24/100" },
+        { "id": "d", "text": "12/45" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "P(green then yellow) = 6/10 × 4/9 = 24/90. P(yellow then green) = 4/10 × 6/9 = 24/90. P(one of each) = 24/90 + 24/90 = 48/90 = 8/15. A common error is only considering one order."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A box has 3 defective and 7 working light bulbs. Two bulbs are selected without replacement. What is the probability that at least one is defective?",
+      "options": [
+        { "id": "a", "text": "7/15" },
+        { "id": "b", "text": "8/15" },
+        { "id": "c", "text": "6/90" },
+        { "id": "d", "text": "3/10" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "P(at least 1 defective) = 1 − P(both working) = 1 − (7/10 × 6/9) = 1 − 42/90 = 1 − 7/15 = 8/15. Using the complement method is much easier than adding all favourable cases."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A bag contains 8 balls: 2 red, 3 blue, 3 green. Two balls are picked without replacement. What is the probability of picking two blue balls?",
+      "options": [
+        { "id": "a", "text": "9/64" },
+        { "id": "b", "text": "6/56" },
+        { "id": "c", "text": "3/28" },
+        { "id": "d", "text": "1/8" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "P(1st blue) = 3/8. P(2nd blue | 1st blue) = 2/7. P(both blue) = 3/8 × 2/7 = 6/56 = 3/28. Options (b) and (c) are the same value in different forms."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "There are 12 chocolates in a box: 5 milk and 7 dark. Three are eaten without replacement. What is the probability all three are dark?",
+      "options": [
+        { "id": "a", "text": "343/1728" },
+        { "id": "b", "text": "7/44" },
+        { "id": "c", "text": "210/1320" },
+        { "id": "d", "text": "35/132" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "P = 7/12 × 6/11 × 5/10 = 210/1320 = 7/44. Each draw reduces both the number of dark chocolates and the total. Option (a) uses 7/12 three times (with replacement error)."
+    }
+  ]
+}

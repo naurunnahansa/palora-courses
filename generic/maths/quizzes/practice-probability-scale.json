@@ -1,0 +1,76 @@
+{
+  "id": "practice-probability-scale",
+  "title": "Practice: Probability Scale",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A bag contains 3 red, 5 blue and 2 green counters. A counter is drawn at random. Where on the probability scale from 0 to 1 would 'drawing a blue counter' be placed?",
+      "options": [
+        { "id": "a", "text": "0.3" },
+        { "id": "b", "text": "0.5" },
+        { "id": "c", "text": "0.2" },
+        { "id": "d", "text": "0.05" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Total counters = 3 + 5 + 2 = 10. P(blue) = 5/10 = 0.5. This is exactly halfway along the probability scale, meaning the event is as likely as it is unlikely."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An event has probability 0. What does this mean?",
+      "options": [
+        { "id": "a", "text": "The event is very unlikely but could still happen" },
+        { "id": "b", "text": "The event is impossible" },
+        { "id": "c", "text": "The event will happen about half the time" },
+        { "id": "d", "text": "We don't have enough information" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A probability of 0 means the event is impossible and will never occur. A probability of 1 means the event is certain. Any probability between 0 and 1 indicates the event is possible."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The probability of rain tomorrow is 0.35. What is the probability that it does NOT rain tomorrow?",
+      "options": [
+        { "id": "a", "text": "0.35" },
+        { "id": "b", "text": "0.75" },
+        { "id": "c", "text": "0.65" },
+        { "id": "d", "text": "1.35" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "P(not rain) = 1 − P(rain) = 1 − 0.35 = 0.65. Complementary probabilities always sum to 1. Option (d) is impossible since probabilities cannot exceed 1."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Which of the following CANNOT be a probability?",
+      "options": [
+        { "id": "a", "text": "0.001" },
+        { "id": "b", "text": "3/4" },
+        { "id": "c", "text": "7/5" },
+        { "id": "d", "text": "0" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "7/5 = 1.4, which is greater than 1. Probabilities must be between 0 and 1 inclusive. All other options fall within this valid range."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A spinner has 4 equally likely outcomes: A, B, C and D. The probability of spinning A is 0.25. Jaya says the probability of NOT spinning A is 0.25. Is she correct?",
+      "options": [
+        { "id": "a", "text": "Yes, because each section is equally likely" },
+        { "id": "b", "text": "No, it should be 0.5" },
+        { "id": "c", "text": "No, it should be 0.75" },
+        { "id": "d", "text": "No, it should be 1" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "P(not A) = 1 − P(A) = 1 − 0.25 = 0.75. There are 3 out of 4 outcomes that are not A, so 3/4 = 0.75. Jaya confused P(A) with P(not A)."
+    }
+  ]
+}

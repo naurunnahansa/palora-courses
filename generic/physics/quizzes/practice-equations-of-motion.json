@@ -1,0 +1,76 @@
+{
+  "id": "practice-equations-of-motion",
+  "title": "Practice: Equations of Motion (SUVAT)",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A ball is dropped from rest and falls with an acceleration of 10 m/s² for 3 seconds. What is its final velocity?",
+      "options": [
+        { "id": "a", "text": "3.3 m/s" },
+        { "id": "b", "text": "10 m/s" },
+        { "id": "c", "text": "30 m/s" },
+        { "id": "d", "text": "45 m/s" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Using v = u + at: v = 0 + (10 × 3) = 30 m/s. The ball starts from rest so u = 0. Option (d) of 45 m uses the wrong equation (s = ut + 0.5at²). Option (a) divides acceleration by time instead of multiplying. Always identify your known values (s, u, v, a, t) before choosing which equation to use."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A car travelling at 20 m/s brakes with a uniform deceleration of 4 m/s². What distance does it travel before stopping?",
+      "options": [
+        { "id": "a", "text": "5 m" },
+        { "id": "b", "text": "50 m" },
+        { "id": "c", "text": "100 m" },
+        { "id": "d", "text": "80 m" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using v² = u² + 2as, where v = 0 (stops), u = 20, a = -4: 0 = 400 + 2(-4)s, so 8s = 400, s = 50 m. Option (c) uses v² = u² + 2as but forgets the negative sign on acceleration. Option (a) divides velocity by acceleration. The key is recognising that 'stopping' means v = 0 and 'braking' means negative acceleration."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A stone is dropped from a bridge and takes 2 seconds to hit the water below. How far does it fall? (Use g = 10 m/s².)",
+      "options": [
+        { "id": "a", "text": "10 m" },
+        { "id": "b", "text": "20 m" },
+        { "id": "c", "text": "40 m" },
+        { "id": "d", "text": "5 m" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using s = ut + 0.5at²: s = 0 + 0.5 × 10 × 2² = 0.5 × 10 × 4 = 20 m. Since the stone is dropped, u = 0. Option (c) of 40 m forgets the 0.5 factor. Option (a) uses s = at instead of s = 0.5at². This is the most common SUVAT error — always remember the factor of 0.5 when using this equation."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Which SUVAT equation should you use when you know u, a, and t, but need to find s and do not know v?",
+      "options": [
+        { "id": "a", "text": "v = u + at" },
+        { "id": "b", "text": "s = ut + 0.5at²" },
+        { "id": "c", "text": "v² = u² + 2as" },
+        { "id": "d", "text": "s = (u + v)/2 × t" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Each SUVAT equation links four of the five variables. When v is unknown and you need s, use s = ut + 0.5at², which uses s, u, a, and t (missing v). Option (a) finds v but not s. Option (c) requires knowing v. Option (d) also requires v. The strategy is: identify which variable is missing, then pick the equation that doesn't include it."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A rocket accelerates uniformly from 50 m/s to 150 m/s over a distance of 200 m. What is the rocket's acceleration?",
+      "options": [
+        { "id": "a", "text": "25 m/s²" },
+        { "id": "b", "text": "50 m/s²" },
+        { "id": "c", "text": "100 m/s²" },
+        { "id": "d", "text": "10 m/s²" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using v² = u² + 2as: 150² = 50² + 2a(200). So 22500 = 2500 + 400a. Then 400a = 20000, giving a = 50 m/s². This equation is ideal when time is not known. Option (a) uses the change in velocity divided by distance (100/200) rather than using the correct SUVAT equation. Always square the velocities when using v² = u² + 2as."
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "practice-vector-addition-subtraction",
+  "title": "Practice: Vector Addition and Subtraction",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Given a = (3, −2) and b = (−1, 5), find a + b.",
+      "options": [
+        { "id": "a", "text": "(4, −7)" },
+        { "id": "b", "text": "(2, 3)" },
+        { "id": "c", "text": "(−4, 7)" },
+        { "id": "d", "text": "(2, −3)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Add corresponding components: (3 + (−1), −2 + 5) = (2, 3). Option (a) subtracts instead of adding the y-components."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In triangle OAB, OA = a and OB = b. What is the vector AB in terms of a and b?",
+      "options": [
+        { "id": "a", "text": "a + b" },
+        { "id": "b", "text": "a − b" },
+        { "id": "c", "text": "b − a" },
+        { "id": "d", "text": "−a − b" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "To go from A to B: go from A back to O (which is −a), then from O to B (which is b). So AB = −a + b = b − a. A very common error is writing a − b instead."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Given p = (2, −3), q = (−1, 4) and r = (5, 1), find p + q − r.",
+      "options": [
+        { "id": "a", "text": "(−4, 0)" },
+        { "id": "b", "text": "(6, −8)" },
+        { "id": "c", "text": "(8, 0)" },
+        { "id": "d", "text": "(4, 2)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "p + q − r = (2 + (−1) − 5, −3 + 4 − 1) = (−4, 0). Combine the x-components and y-components separately, being careful with negative signs."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Points A, B, C have position vectors a, b, c respectively. If AB = (4, 3) and BC = (−2, 5), find AC.",
+      "options": [
+        { "id": "a", "text": "(6, −2)" },
+        { "id": "b", "text": "(2, 8)" },
+        { "id": "c", "text": "(−6, 2)" },
+        { "id": "d", "text": "(8, 15)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "By the triangle law: AC = AB + BC = (4 + (−2), 3 + 5) = (2, 8). Follow the path A → B → C to find the resultant vector A → C."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Given that a + 2b = (7, 1) and a = (3, −5), find b.",
+      "options": [
+        { "id": "a", "text": "(2, 3)" },
+        { "id": "b", "text": "(4, 6)" },
+        { "id": "c", "text": "(2, −3)" },
+        { "id": "d", "text": "(5, −2)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Rearrange: 2b = (7, 1) − (3, −5) = (4, 6). Divide by 2: b = (2, 3). A common error is forgetting to subtract −5, getting (4, −4) instead of (4, 6)."
+    }
+  ]
+}

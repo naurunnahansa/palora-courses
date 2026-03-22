@@ -1,0 +1,76 @@
+{
+  "id": "practice-calculating-probability",
+  "title": "Practice: Calculating Probability",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A bag contains 4 red, 7 blue and 3 yellow marbles. One marble is picked at random. What is the probability of picking a red or yellow marble?",
+      "options": [
+        { "id": "a", "text": "7/14" },
+        { "id": "b", "text": "4/14" },
+        { "id": "c", "text": "1/2" },
+        { "id": "d", "text": "3/7" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Total marbles = 4 + 7 + 3 = 14. Red or yellow = 4 + 3 = 7. P(red or yellow) = 7/14 = 1/2. Options (a) and (c) are the same value; the simplified form is 1/2."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A standard deck has 52 cards. What is the probability of drawing a card that is a heart or a king?",
+      "options": [
+        { "id": "a", "text": "17/52" },
+        { "id": "b", "text": "16/52" },
+        { "id": "c", "text": "4/13" },
+        { "id": "d", "text": "13/52" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "There are 13 hearts and 4 kings, but the king of hearts is counted in both groups. P = (13 + 4 − 1)/52 = 16/52 = 4/13. A common error is double-counting the king of hearts to get 17/52."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A letter is chosen at random from the word MATHEMATICS. What is the probability of choosing the letter A?",
+      "options": [
+        { "id": "a", "text": "1/11" },
+        { "id": "b", "text": "2/11" },
+        { "id": "c", "text": "1/6" },
+        { "id": "d", "text": "2/10" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "MATHEMATICS has 11 letters: M-A-T-H-E-M-A-T-I-C-S. The letter A appears 2 times. P(A) = 2/11. A common error is counting only distinct letters (giving 1/8) or miscounting the total."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The probability of a biased coin landing on heads is 0.6. Sam flips the coin 200 times. How many times would you expect it to land on tails?",
+      "options": [
+        { "id": "a", "text": "120" },
+        { "id": "b", "text": "80" },
+        { "id": "c", "text": "100" },
+        { "id": "d", "text": "60" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "P(tails) = 1 − 0.6 = 0.4. Expected tails = 200 × 0.4 = 80. A common error is calculating 200 × 0.6 = 120, which gives expected heads, not tails."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A box contains red and blue pens only. The probability of picking a red pen is 3/8. There are 12 red pens. How many blue pens are in the box?",
+      "options": [
+        { "id": "a", "text": "20" },
+        { "id": "b", "text": "32" },
+        { "id": "c", "text": "8" },
+        { "id": "d", "text": "16" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "If P(red) = 3/8, then red/total = 3/8. With 12 red: 12/total = 3/8, so total = 32. Blue pens = 32 − 12 = 20. A common error is giving the total (32) instead of just the blue pens."
+    }
+  ]
+}

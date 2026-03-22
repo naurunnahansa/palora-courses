@@ -1,0 +1,76 @@
+{
+  "id": "practice-graph-transformations",
+  "title": "Practice: Graph Transformations",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The graph of y = f(x) is translated to give y = f(x) + 3. This is a translation of:",
+      "options": [
+        { "id": "a", "text": "3 units right" },
+        { "id": "b", "text": "3 units left" },
+        { "id": "c", "text": "3 units up" },
+        { "id": "d", "text": "3 units down" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "y = f(x) + 3 adds 3 to every y-value, shifting the graph 3 units up."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The graph of y = x^2 is transformed to y = (x - 4)^2. What happens to the turning point?",
+      "options": [
+        { "id": "a", "text": "It moves from (0, 0) to (4, 0)" },
+        { "id": "b", "text": "It moves from (0, 0) to (-4, 0)" },
+        { "id": "c", "text": "It moves from (0, 0) to (0, 4)" },
+        { "id": "d", "text": "It moves from (0, 0) to (0, -4)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "y = f(x - 4) is a translation 4 units to the right. So (0, 0) moves to (4, 0). Note: the minus sign inside the bracket gives a positive shift."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "If the point (2, 5) is on y = f(x), what point is on y = f(-x)?",
+      "options": [
+        { "id": "a", "text": "(-2, 5)" },
+        { "id": "b", "text": "(2, -5)" },
+        { "id": "c", "text": "(-2, -5)" },
+        { "id": "d", "text": "(5, 2)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "y = f(-x) is a reflection in the y-axis. The x-coordinate changes sign: (2, 5) becomes (-2, 5)."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "y = -f(x) is a transformation of y = f(x). What type of transformation is it?",
+      "options": [
+        { "id": "a", "text": "Reflection in the y-axis" },
+        { "id": "b", "text": "Reflection in the x-axis" },
+        { "id": "c", "text": "Translation 1 unit down" },
+        { "id": "d", "text": "Stretch by scale factor -1 in the x-direction" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "y = -f(x) multiplies all y-values by -1, which reflects the graph in the x-axis."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The graph y = f(x) has a maximum point at (3, 7). What is the maximum point of y = 2f(x)?",
+      "options": [
+        { "id": "a", "text": "(3, 14)" },
+        { "id": "b", "text": "(6, 7)" },
+        { "id": "c", "text": "(3, 9)" },
+        { "id": "d", "text": "(6, 14)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "y = 2f(x) stretches the graph vertically by a factor of 2. The x-coordinates stay the same; the y-coordinates are doubled. So (3, 7) becomes (3, 14)."
+    }
+  ]
+}

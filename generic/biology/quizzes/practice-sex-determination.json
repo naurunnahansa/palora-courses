@@ -1,0 +1,76 @@
+{
+  "id": "practice-sex-determination",
+  "title": "Practice: Sex Determination",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A couple wants to know the probability of their next child being a boy. Using a genetic diagram for sex determination, what is the probability?",
+      "options": [
+        { "id": "a", "text": "25%, because only one combination (XY) produces a boy" },
+        { "id": "b", "text": "50%, because the father's sperm can carry either an X or Y chromosome with equal probability" },
+        { "id": "c", "text": "75%, because three out of four combinations contain a Y chromosome" },
+        { "id": "d", "text": "It depends on whether their previous children were boys or girls" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The mother (XX) can only contribute an X chromosome. The father (XY) produces sperm that carry either X or Y with equal probability. The Punnett square gives: XX, XX, XY, XY - a 1:1 ratio of female to male. So there is a 50% chance of a boy and 50% chance of a girl, regardless of the sex of any previous children."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Which parent determines the sex of the offspring in humans, and why?",
+      "options": [
+        { "id": "a", "text": "The mother, because she carries two X chromosomes" },
+        { "id": "b", "text": "Both parents equally, because they each contribute one sex chromosome" },
+        { "id": "c", "text": "The father, because his sperm determines whether the child receives an X or Y chromosome" },
+        { "id": "d", "text": "Neither parent; sex is determined by environmental factors after conception" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The mother always passes on an X chromosome (since she is XX). The father can pass on either an X or a Y chromosome (since he is XY). If the sperm carries an X, the child is XX (female). If the sperm carries a Y, the child is XY (male). Therefore, it is the father's sperm that determines the sex of the child."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Haemophilia is a sex-linked recessive condition carried on the X chromosome. A carrier mother (X^H X^h) and an unaffected father (X^H Y) have a son. What is the probability that their son has haemophilia?",
+      "options": [
+        { "id": "a", "text": "0%, because the father does not have haemophilia" },
+        { "id": "b", "text": "25% of all children" },
+        { "id": "c", "text": "50%, because sons inherit their X chromosome from the mother, who has a 50% chance of passing on X^h" },
+        { "id": "d", "text": "100%, because haemophilia is always passed to sons" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Sons inherit their single X chromosome from their mother. The carrier mother has X^H and X^h, so there is a 50% chance she passes on X^h (haemophilia allele) to a son. Since sons only have one X chromosome (from mum) and one Y (from dad), a single recessive allele on the X is expressed. 50% of sons will be affected (X^h Y)."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A family has five daughters and no sons. Some people suggest the next child is 'more likely to be a boy.' Why is this reasoning incorrect?",
+      "options": [
+        { "id": "a", "text": "After five girls, the probability of a boy increases to compensate" },
+        { "id": "b", "text": "The father may only produce X-bearing sperm" },
+        { "id": "c", "text": "Each conception is an independent event with a 50% probability of being male, regardless of previous outcomes" },
+        { "id": "d", "text": "Having five daughters means the mother can only produce X-bearing eggs" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "This is the gambler's fallacy. Each conception is an independent event. The sperm that fertilises the egg has a 50% chance of carrying X and 50% chance of carrying Y, regardless of the sex of previous children. Having five daughters does not influence the probability for the sixth child - it remains 50% for each sex."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Red-green colour blindness is a sex-linked recessive condition. A colour-blind man marries a woman who is not colour blind and is not a carrier. What is the probability that their daughters will be colour blind?",
+      "options": [
+        { "id": "a", "text": "100%, because the father passes on the colour blindness allele" },
+        { "id": "b", "text": "50%" },
+        { "id": "c", "text": "0%, because all daughters will inherit a normal X from their mother, making them carriers but not affected" },
+        { "id": "d", "text": "25%" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The father (X^b Y) passes his X^b (colour blind allele) to all daughters. The mother (X^B X^B) passes a normal X^B to all children. All daughters will be X^B X^b - carriers but not affected, because the normal allele is dominant. No daughters will be colour blind. However, all daughters will be carriers who could pass the allele to their sons."
+    }
+  ]
+}

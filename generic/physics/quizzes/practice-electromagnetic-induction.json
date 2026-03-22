@@ -1,0 +1,76 @@
+{
+  "id": "practice-electromagnetic-induction",
+  "title": "Practice: Electromagnetic Induction",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student pushes a bar magnet into a coil of wire connected to a sensitive ammeter. She then holds the magnet stationary inside the coil. What does the ammeter show while the magnet is stationary?",
+      "options": [
+        { "id": "a", "text": "A steady current in one direction" },
+        { "id": "b", "text": "A current that gradually increases" },
+        { "id": "c", "text": "Zero current" },
+        { "id": "d", "text": "An alternating current" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A voltage (and therefore current) is only induced when the magnetic flux through the coil is changing. When the magnet is stationary inside the coil, the flux is constant, so no voltage is induced and the ammeter reads zero. This is a very common misconception -- students often think a magnet inside a coil will produce a steady current (A), but it is the change in flux that matters, not the presence of a magnetic field."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A magnet is dropped through a vertical coil of wire. The induced voltage is 0.5 V. Which change would increase the induced voltage?",
+      "options": [
+        { "id": "a", "text": "Using a weaker magnet dropped from the same height" },
+        { "id": "b", "text": "Dropping the same magnet through a coil with fewer turns" },
+        { "id": "c", "text": "Dropping the same magnet more slowly through the same coil" },
+        { "id": "d", "text": "Dropping the same magnet through a coil with more turns" }
+      ],
+      "correctAnswer": "d",
+      "explanation": "The induced voltage increases with: a stronger magnet (greater flux change), more turns on the coil, and a faster rate of change of flux. More turns (D) increases the voltage. A weaker magnet (A) would decrease it. Fewer turns (B) would decrease it. A slower speed (C) means a slower rate of flux change, which decreases the induced voltage."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "When a magnet is pushed into a coil, the induced current creates a magnetic field that opposes the motion of the magnet. This is an example of which law?",
+      "options": [
+        { "id": "a", "text": "Ohm's law" },
+        { "id": "b", "text": "Newton's third law" },
+        { "id": "c", "text": "Lenz's law" },
+        { "id": "d", "text": "Faraday's law" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Lenz's law states that the direction of an induced current is always such that it opposes the change that produced it. This is a consequence of conservation of energy -- if the induced current aided the change, energy would be created from nothing. Faraday's law (D) describes the magnitude of the induced voltage (related to rate of flux change), not the direction. Ohm's law (A) relates voltage, current, and resistance. Newton's third law (B) is about forces in pairs."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A bicycle dynamo generates electricity by rotating a magnet near a coil as the wheel turns. At a certain speed, it produces 6 V. If the cyclist doubles their speed, the dynamo produces approximately:",
+      "options": [
+        { "id": "a", "text": "3 V" },
+        { "id": "b", "text": "6 V" },
+        { "id": "c", "text": "12 V" },
+        { "id": "d", "text": "24 V" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The induced voltage is proportional to the rate of change of magnetic flux. Doubling the speed of rotation doubles the rate at which flux changes through the coil, approximately doubling the induced voltage to 12 V. The voltage does not stay the same (B) because faster rotation means faster flux change. It does not halve (A) -- faster movement increases, not decreases, the induced voltage."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A coil of wire with 200 turns is placed in a changing magnetic field. The magnetic flux through the coil changes by 0.05 Wb in 0.5 seconds. What is the magnitude of the induced voltage?",
+      "options": [
+        { "id": "a", "text": "0.5 V" },
+        { "id": "b", "text": "5 V" },
+        { "id": "c", "text": "20 V" },
+        { "id": "d", "text": "2000 V" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Using Faraday's law: induced voltage = N x (change in flux / time) = 200 x (0.05 / 0.5) = 200 x 0.1 = 20 V. Option A ignores the number of turns. Option B uses N but calculates the rate of flux change incorrectly. Option D multiplies all three values together without dividing."
+    }
+  ]
+}

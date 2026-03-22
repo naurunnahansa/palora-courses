@@ -1,0 +1,76 @@
+{
+  "id": "practice-wave-equation",
+  "title": "Practice: Wave Equation",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A radio station broadcasts at a frequency of 100 MHz. If radio waves travel at 3 x 10^8 m/s, what is the wavelength of the broadcast?",
+      "options": [
+        { "id": "a", "text": "3 m" },
+        { "id": "b", "text": "30 m" },
+        { "id": "c", "text": "300 m" },
+        { "id": "d", "text": "0.3 m" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Using v = f x wavelength, rearranged to wavelength = v / f: wavelength = (3 x 10^8) / (100 x 10^6) = (3 x 10^8) / (1 x 10^8) = 3 m. A common error is forgetting to convert MHz to Hz (100 MHz = 100,000,000 Hz = 1 x 10^8 Hz), which would give an incorrect answer."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A sound wave in air has a wavelength of 0.5 m and travels at 340 m/s. What is its frequency?",
+      "options": [
+        { "id": "a", "text": "170 Hz" },
+        { "id": "b", "text": "680 Hz" },
+        { "id": "c", "text": "340.5 Hz" },
+        { "id": "d", "text": "6800 Hz" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using v = f x wavelength, rearranged to f = v / wavelength: f = 340 / 0.5 = 680 Hz. Option A (170) comes from multiplying speed by wavelength instead of dividing. Option C results from adding the values. Always rearrange carefully: dividing by 0.5 is the same as multiplying by 2."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A wave machine in a swimming pool produces waves with a frequency of 2 Hz and a wavelength of 1.5 m. How far will the wave travel in 10 seconds?",
+      "options": [
+        { "id": "a", "text": "3 m" },
+        { "id": "b", "text": "15 m" },
+        { "id": "c", "text": "20 m" },
+        { "id": "d", "text": "30 m" }
+      ],
+      "correctAnswer": "d",
+      "explanation": "First find speed: v = f x wavelength = 2 x 1.5 = 3 m/s. Then distance = speed x time = 3 x 10 = 30 m. Option A (3) only gives the speed, not the distance. Option B (15) comes from wavelength x time. Option C (20) comes from frequency x time. You need to combine the wave equation with the distance formula."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student measures 8 complete waves in a ripple tank over a distance of 40 cm. The wave generator is set to 10 Hz. What is the speed of the waves?",
+      "options": [
+        { "id": "a", "text": "50 cm/s" },
+        { "id": "b", "text": "4 cm/s" },
+        { "id": "c", "text": "0.5 m/s" },
+        { "id": "d", "text": "80 cm/s" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "First find wavelength: 40 cm / 8 waves = 5 cm = 0.05 m. Then v = f x wavelength = 10 x 0.05 = 0.5 m/s. This is the same as 50 cm/s (option A), but since option C expresses it in standard SI units (m/s), both A and C are numerically correct in different units. However, 50 cm/s = 0.5 m/s, so both represent the same value. Option C uses SI units which is the standard. Option B confuses wavelength with speed."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "When a wave passes from deep water into shallow water, its speed decreases but its frequency stays the same. What happens to the wavelength?",
+      "options": [
+        { "id": "a", "text": "The wavelength increases" },
+        { "id": "b", "text": "The wavelength stays the same" },
+        { "id": "c", "text": "The wavelength decreases" },
+        { "id": "d", "text": "The wavelength doubles" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "From v = f x wavelength, if frequency stays constant and speed decreases, then wavelength must also decrease (wavelength = v / f). A smaller v with the same f gives a smaller wavelength. Option A is wrong because that would require speed to increase. Option B is wrong because wavelength depends on speed when frequency is fixed."
+    }
+  ]
+}

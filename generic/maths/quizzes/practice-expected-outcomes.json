@@ -1,0 +1,76 @@
+{
+  "id": "practice-expected-outcomes",
+  "title": "Practice: Expected Outcomes",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A fair six-sided dice is rolled 300 times. How many times would you expect to roll a number greater than 4?",
+      "options": [
+        { "id": "a", "text": "50" },
+        { "id": "b", "text": "100" },
+        { "id": "c", "text": "150" },
+        { "id": "d", "text": "200" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Numbers greater than 4 are 5 and 6, so P(>4) = 2/6 = 1/3. Expected outcomes = 300 × 1/3 = 100. A common error is including 4 (giving P = 3/6 = 1/2 and expected = 150)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A biased spinner has P(red) = 0.4, P(blue) = 0.35, P(green) = 0.25. In 400 spins, how many more times would you expect blue than green?",
+      "options": [
+        { "id": "a", "text": "10" },
+        { "id": "b", "text": "40" },
+        { "id": "c", "text": "100" },
+        { "id": "d", "text": "60" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Expected blue = 400 × 0.35 = 140. Expected green = 400 × 0.25 = 100. Difference = 140 − 100 = 40."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A bag contains 5 red and 15 blue balls. A ball is drawn, its colour noted, and returned. This is repeated 60 times. How many times would you expect to draw a red ball?",
+      "options": [
+        { "id": "a", "text": "5" },
+        { "id": "b", "text": "12" },
+        { "id": "c", "text": "15" },
+        { "id": "d", "text": "20" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "P(red) = 5/20 = 1/4. Expected red draws = 60 × 1/4 = 15. Since balls are replaced, the probability stays the same each time."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A company expects 2% of its products to be defective. In a batch of 5000, how many defective items are expected?",
+      "options": [
+        { "id": "a", "text": "10" },
+        { "id": "b", "text": "25" },
+        { "id": "c", "text": "100" },
+        { "id": "d", "text": "1000" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Expected defective = 5000 × 0.02 = 100. Option (a) calculates 5000 × 0.002. Option (d) calculates 5000 × 0.2 (using 20% instead of 2%)."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Tom pays 50p to play a game. He rolls a dice: if he gets a 6 he wins £2, otherwise he wins nothing. He plays 120 times. What is his expected overall profit or loss?",
+      "options": [
+        { "id": "a", "text": "£20 loss" },
+        { "id": "b", "text": "£20 profit" },
+        { "id": "c", "text": "No profit or loss" },
+        { "id": "d", "text": "£40 loss" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Total cost = 120 × £0.50 = £60. Expected wins = 120 × 1/6 = 20 wins at £2 each = £40. Overall = £40 − £60 = −£20 (a loss of £20)."
+    }
+  ]
+}

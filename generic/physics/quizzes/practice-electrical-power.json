@@ -1,0 +1,76 @@
+{
+  "id": "practice-electrical-power",
+  "title": "Practice: Electrical Power",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A kettle operates at 230 V and draws a current of 10 A. What is the power of the kettle?",
+      "options": [
+        { "id": "a", "text": "23 W" },
+        { "id": "b", "text": "240 W" },
+        { "id": "c", "text": "2300 W" },
+        { "id": "d", "text": "5290 W" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Using P = IV = 10 x 230 = 2300 W (or 2.3 kW). This is a typical power rating for a kettle. Option A (23) divides V by I. Option B (240) adds V and I. Option D would come from multiplying incorrectly. A 2.3 kW kettle is realistic for UK mains."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A 60 W filament lamp and a 10 W LED lamp both produce similar amounts of light. Which statement is correct?",
+      "options": [
+        { "id": "a", "text": "The filament lamp is more efficient because it uses more power" },
+        { "id": "b", "text": "The LED lamp is more efficient because it produces similar light using less electrical power" },
+        { "id": "c", "text": "Both lamps are equally efficient" },
+        { "id": "d", "text": "The filament lamp produces more light because it has higher power" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The LED produces similar light output for only 10 W of input power, compared to 60 W for the filament lamp. The LED is therefore much more efficient — it wastes less energy as heat. The filament lamp wastes most of its 60 W as thermal radiation (heat). Using more power (option A) does not make something more efficient; efficiency is about useful output per unit input."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A current of 3 A flows through a 20 ohm resistor. What power is dissipated in the resistor?",
+      "options": [
+        { "id": "a", "text": "60 W" },
+        { "id": "b", "text": "6.67 W" },
+        { "id": "c", "text": "180 W" },
+        { "id": "d", "text": "23 W" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Using P = I squared x R = 3 squared x 20 = 9 x 20 = 180 W. Option A (60) uses P = IR instead of I squared R. This is a common error — forgetting to square the current. Option B divides R by I squared. Always remember to square the current when using P = I squared R."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An appliance has a power rating of 2000 W and operates on 230 V mains supply. What fuse should be used: 3 A, 5 A, or 13 A?",
+      "options": [
+        { "id": "a", "text": "3 A fuse" },
+        { "id": "b", "text": "5 A fuse" },
+        { "id": "c", "text": "13 A fuse" },
+        { "id": "d", "text": "No fuse is needed" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "First calculate the operating current: I = P/V = 2000/230 = 8.7 A. The fuse must be rated just above the normal operating current. A 3 A or 5 A fuse would blow during normal operation. A 13 A fuse is the correct choice — it allows the normal 8.7 A to flow but will blow if a fault causes excessive current. Always choose the next fuse rating above the operating current."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A 12 V car headlight has a resistance of 2.4 ohms. What is the power of the headlight?",
+      "options": [
+        { "id": "a", "text": "28.8 W" },
+        { "id": "b", "text": "60 W" },
+        { "id": "c", "text": "5 W" },
+        { "id": "d", "text": "14.4 W" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using P = V squared / R = 12 squared / 2.4 = 144 / 2.4 = 60 W. Alternatively, find I first: I = V/R = 12/2.4 = 5 A, then P = IV = 5 x 12 = 60 W. Option A (28.8) comes from V x R. Option C (5) is the current, not the power. Option D (14.4) comes from V squared / (R x something). Always choose the most appropriate power formula based on the given quantities."
+    }
+  ]
+}

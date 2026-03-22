@@ -1,0 +1,76 @@
+{
+  "id": "practice-set-notation",
+  "title": "Practice: Set Notation",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The universal set is {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}. A = {2, 4, 6, 8, 10} and B = {3, 6, 9}. Find A' ∩ B.",
+      "options": [
+        { "id": "a", "text": "{6}" },
+        { "id": "b", "text": "{3, 9}" },
+        { "id": "c", "text": "{1, 3, 5, 7, 9}" },
+        { "id": "d", "text": "{3, 6, 9}" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A' = {1, 3, 5, 7, 9} (elements NOT in A). A' ∩ B = elements in both A' and B = {3, 9}. Option (a) gives A ∩ B. Option (d) gives just B without intersecting with A'."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Using the same sets: universal = {1,...,10}, A = {2,4,6,8,10}, B = {3,6,9}. How many elements are in (A ∪ B)'?",
+      "options": [
+        { "id": "a", "text": "2" },
+        { "id": "b", "text": "3" },
+        { "id": "c", "text": "8" },
+        { "id": "d", "text": "7" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A ∪ B = {2, 3, 4, 6, 8, 9, 10} which has 7 elements. (A ∪ B)' = elements NOT in A ∪ B = {1, 5, 7} which has 3 elements."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "n(A) = 15, n(B) = 20, n(A ∩ B) = 8. Find n(A ∪ B).",
+      "options": [
+        { "id": "a", "text": "35" },
+        { "id": "b", "text": "27" },
+        { "id": "c", "text": "43" },
+        { "id": "d", "text": "23" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "n(A ∪ B) = n(A) + n(B) − n(A ∩ B) = 15 + 20 − 8 = 27. Option (a) forgets to subtract the intersection. This formula prevents double-counting elements that are in both sets."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "P(A) = 0.5, P(B) = 0.4, P(A ∩ B) = 0.2. Find P(A' ∩ B).",
+      "options": [
+        { "id": "a", "text": "0.3" },
+        { "id": "b", "text": "0.2" },
+        { "id": "c", "text": "0.1" },
+        { "id": "d", "text": "0.5" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "P(A' ∩ B) = P(B) − P(A ∩ B) = 0.4 − 0.2 = 0.2. This represents the part of B that does NOT overlap with A (the 'B only' region on a Venn diagram)."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The shaded region of a Venn diagram represents elements in B but not in A. Which set notation describes this region?",
+      "options": [
+        { "id": "a", "text": "A ∩ B'" },
+        { "id": "b", "text": "A' ∩ B" },
+        { "id": "c", "text": "(A ∪ B)'" },
+        { "id": "d", "text": "A ∩ B" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "'In B but not in A' means in B AND in A'. This is written A' ∩ B. Option (a) gives 'in A but not in B'. Option (c) gives 'not in A or B' (outside both circles). Option (d) gives the overlap."
+    }
+  ]
+}

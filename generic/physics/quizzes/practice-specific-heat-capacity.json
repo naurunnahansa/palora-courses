@@ -1,0 +1,76 @@
+{
+  "id": "practice-specific-heat-capacity",
+  "title": "Practice: Specific Heat Capacity",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "How much energy is needed to heat 2 kg of water from 20 degrees C to 70 degrees C? (Specific heat capacity of water = 4200 J/kg degrees C)",
+      "options": [
+        { "id": "a", "text": "420 000 J" },
+        { "id": "b", "text": "588 000 J" },
+        { "id": "c", "text": "8 400 J" },
+        { "id": "d", "text": "168 000 J" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "E = m x c x change in T = 2 x 4200 x (70 - 20) = 2 x 4200 x 50 = 420 000 J. Option B uses 70 degrees C as the temperature change instead of 50 degrees C. Option C forgets to multiply by the temperature change. Option D uses 20 degrees C as the change. Always subtract initial from final temperature."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A 0.5 kg block of metal is heated with 5000 J of energy and its temperature rises by 20 degrees C. What is the specific heat capacity of the metal?",
+      "options": [
+        { "id": "a", "text": "200 J/kg degrees C" },
+        { "id": "b", "text": "500 J/kg degrees C" },
+        { "id": "c", "text": "50 000 J/kg degrees C" },
+        { "id": "d", "text": "100 J/kg degrees C" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Rearranging E = mcT gives c = E / (m x T) = 5000 / (0.5 x 20) = 5000 / 10 = 500 J/kg degrees C. Option A divides by mass only. Option C multiplies all values instead of dividing. Option D divides by an incorrect product."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Equal masses of water (c = 4200 J/kg degrees C) and copper (c = 390 J/kg degrees C) receive the same amount of energy. Which heats up more?",
+      "options": [
+        { "id": "a", "text": "Water, because it has a higher specific heat capacity" },
+        { "id": "b", "text": "Copper, because it has a lower specific heat capacity" },
+        { "id": "c", "text": "Both heat up by the same amount" },
+        { "id": "d", "text": "Water, because it is a liquid" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A lower specific heat capacity means less energy is needed per degree of temperature rise. Since copper's SHC (390) is much lower than water's (4200), the same energy causes a much larger temperature increase in copper. This is why metals feel hot quickly in the sun but water heats up slowly. Water's high SHC makes it excellent for storing thermal energy."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A storage heater contains 50 kg of concrete (c = 800 J/kg degrees C) heated to 80 degrees C above room temperature. How much thermal energy does it store?",
+      "options": [
+        { "id": "a", "text": "40 000 J" },
+        { "id": "b", "text": "3 200 000 J" },
+        { "id": "c", "text": "4 000 000 J" },
+        { "id": "d", "text": "320 000 J" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "E = mcT = 50 x 800 x 80 = 3 200 000 J (3.2 MJ). This is a real-world application: storage heaters use materials with moderate SHC and large mass to store thermal energy during cheap off-peak electricity hours and release it during the day. Option A forgets mass. Option C uses an incorrect SHC."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a specific heat capacity experiment, a student's calculated value is higher than the accepted value. Which is the most likely reason?",
+      "options": [
+        { "id": "a", "text": "The heater was too powerful" },
+        { "id": "b", "text": "Energy was lost to the surroundings, so more energy was supplied than actually heated the block" },
+        { "id": "c", "text": "The block was too heavy" },
+        { "id": "d", "text": "The thermometer was reading too high" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "If energy is lost to the surroundings, the measured energy input (from E = Pt) is higher than the energy that actually went into the block. Using this inflated energy value in c = E/(mT) gives a higher-than-expected SHC. Insulating the block reduces this error. The power of the heater and mass of the block do not cause systematic errors if measured correctly."
+    }
+  ]
+}

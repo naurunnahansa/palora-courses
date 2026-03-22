@@ -1,0 +1,76 @@
+{
+  "id": "practice-congruent-triangles",
+  "title": "Practice: Congruent Triangles",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In triangles ABC and DEF: AB = DE = 5 cm, angle B = angle E = 48 degrees, BC = EF = 7 cm. Which congruence condition applies?",
+      "options": [
+        { "id": "a", "text": "SSS" },
+        { "id": "b", "text": "ASA" },
+        { "id": "c", "text": "SAS" },
+        { "id": "d", "text": "RHS" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Two sides and the included angle (the angle between those two sides) are equal: AB = DE, angle B = angle E (included), and BC = EF. This is SAS (Side-Angle-Side)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two triangles have the same three angles (50 degrees, 60 degrees, 70 degrees) but different side lengths. What can you conclude?",
+      "options": [
+        { "id": "a", "text": "The triangles are congruent (AAA)" },
+        { "id": "b", "text": "The triangles are similar but not necessarily congruent" },
+        { "id": "c", "text": "The triangles are neither similar nor congruent" },
+        { "id": "d", "text": "The triangles are congruent (ASA)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "AAA (Angle-Angle-Angle) proves similarity, not congruence. Two triangles with the same angles can be different sizes, so they are similar but not necessarily congruent."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In right-angled triangles PQR and STU: angle Q = angle T = 90 degrees, PR = SU = 13 cm (hypotenuses), PQ = ST = 5 cm. What is the length QR?",
+      "options": [
+        { "id": "a", "text": "8 cm" },
+        { "id": "b", "text": "10 cm" },
+        { "id": "c", "text": "12 cm" },
+        { "id": "d", "text": "11 cm" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The triangles are congruent by RHS. By Pythagoras: QR = sqrt(13^2 - 5^2) = sqrt(169 - 25) = sqrt(144) = 12 cm."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "ABCD is a quadrilateral where AB = CD and BC = DA. The diagonal AC is common to triangles ABC and CDA. Which congruence condition proves these triangles are congruent?",
+      "options": [
+        { "id": "a", "text": "SAS" },
+        { "id": "b", "text": "ASA" },
+        { "id": "c", "text": "SSS" },
+        { "id": "d", "text": "AAA" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "AB = CD (given), BC = DA (given), and AC = CA (common side). All three sides are equal, so the condition is SSS."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Which of the following is NOT a valid condition for proving two triangles are congruent?",
+      "options": [
+        { "id": "a", "text": "SSS (Side-Side-Side)" },
+        { "id": "b", "text": "SSA (Side-Side-Angle, non-included)" },
+        { "id": "c", "text": "ASA (Angle-Side-Angle)" },
+        { "id": "d", "text": "RHS (Right angle-Hypotenuse-Side)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "SSA (two sides and a non-included angle) is NOT a valid congruence condition because of the ambiguous case -- two different triangles can share the same two sides and non-included angle."
+    }
+  ]
+}

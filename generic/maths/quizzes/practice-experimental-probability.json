@@ -1,0 +1,76 @@
+{
+  "id": "practice-experimental-probability",
+  "title": "Practice: Experimental Probability",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A spinner is spun 80 times. It lands on red 22 times. What is the relative frequency of landing on red?",
+      "options": [
+        { "id": "a", "text": "22/80 = 0.275" },
+        { "id": "b", "text": "22/58 = 0.379" },
+        { "id": "c", "text": "80/22 = 3.636" },
+        { "id": "d", "text": "22/100 = 0.22" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Relative frequency = number of successes / total trials = 22/80 = 0.275. Option (b) divides by the number of non-red outcomes. Option (c) divides the wrong way round."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A drawing pin is dropped 200 times and lands point-up 130 times. Using this experimental probability, how many times would you expect point-up in 500 drops?",
+      "options": [
+        { "id": "a", "text": "260" },
+        { "id": "b", "text": "325" },
+        { "id": "c", "text": "250" },
+        { "id": "d", "text": "130" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Experimental probability of point-up = 130/200 = 0.65. Expected in 500 drops = 500 × 0.65 = 325. Option (a) incorrectly doubles the original count."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A dice is suspected of being biased. In 300 rolls, the results are: 1 (48), 2 (52), 3 (50), 4 (49), 5 (51), 6 (50). Which is the best conclusion?",
+      "options": [
+        { "id": "a", "text": "The dice is clearly biased towards 2" },
+        { "id": "b", "text": "The dice is clearly biased towards 1" },
+        { "id": "c", "text": "The results suggest the dice is approximately fair" },
+        { "id": "d", "text": "300 rolls is not enough to make any conclusion" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "For a fair dice, expected frequency for each outcome = 300/6 = 50. All observed frequencies are very close to 50 (range 48-52). This suggests the dice is approximately fair. Small variations are expected due to randomness."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In an experiment, the relative frequency of an event after n trials is shown: 10 trials: 0.4, 50 trials: 0.34, 200 trials: 0.31, 1000 trials: 0.295. What is the best estimate for the theoretical probability?",
+      "options": [
+        { "id": "a", "text": "0.4" },
+        { "id": "b", "text": "0.34" },
+        { "id": "c", "text": "0.3" },
+        { "id": "d", "text": "0.35" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "As the number of trials increases, the relative frequency tends towards the theoretical probability. The value after 1000 trials (0.295) is the most reliable, suggesting the theoretical probability is approximately 0.3."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A biased coin has P(heads) = 0.7. Which of the following is true?",
+      "options": [
+        { "id": "a", "text": "In 10 flips, you will get exactly 7 heads" },
+        { "id": "b", "text": "In 100 flips, the relative frequency of heads will be exactly 0.7" },
+        { "id": "c", "text": "As the number of flips increases, the relative frequency of heads tends to get closer to 0.7" },
+        { "id": "d", "text": "After getting 3 tails in a row, heads is more likely on the next flip" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "This is the law of large numbers: as trials increase, relative frequency approaches theoretical probability. Options (a) and (b) state exact results, which is incorrect since probability doesn't guarantee exact outcomes. Option (d) is the gambler's fallacy."
+    }
+  ]
+}

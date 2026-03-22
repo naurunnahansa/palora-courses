@@ -1,0 +1,76 @@
+{
+  "id": "practice-ohms-law",
+  "title": "Practice: Ohm's Law",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A resistor has a resistance of 15 ohms. What current flows through it when a potential difference of 6 V is applied?",
+      "options": [
+        { "id": "a", "text": "90 A" },
+        { "id": "b", "text": "2.5 A" },
+        { "id": "c", "text": "0.4 A" },
+        { "id": "d", "text": "21 A" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Using V = IR rearranged to I = V/R = 6/15 = 0.4 A. Option A (90) multiplies V x R. Option B (2.5) divides R by V instead of V by R. Option D adds V and R. Always remember: I = V/R to find current."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student plots a graph of current (y-axis) against potential difference (x-axis) for a component. The graph is a straight line through the origin. What does this tell us about the component?",
+      "options": [
+        { "id": "a", "text": "It is a diode" },
+        { "id": "b", "text": "It has a resistance that changes with voltage" },
+        { "id": "c", "text": "It is an ohmic conductor with constant resistance" },
+        { "id": "d", "text": "It is a filament lamp" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A straight line through the origin on an I-V graph means current is directly proportional to voltage, which means resistance is constant. This is the defining characteristic of an ohmic conductor (one that obeys Ohm's law), such as a resistor at constant temperature. A filament lamp (option D) would show a curve because its resistance increases as it heats up. A diode (option A) would show current flowing in only one direction."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A 230 V mains supply is connected to a heater with a resistance of 46 ohms. What current flows through the heater?",
+      "options": [
+        { "id": "a", "text": "10,580 A" },
+        { "id": "b", "text": "5 A" },
+        { "id": "c", "text": "0.2 A" },
+        { "id": "d", "text": "276 A" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using I = V/R = 230/46 = 5 A. Option A multiplies V x R. Option C divides R by V. This is a realistic value — a heater drawing 5 A from a 230 V supply would have a power of P = IV = 5 x 230 = 1150 W, which is reasonable for a heater."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The I-V characteristic of a filament lamp shows a curve rather than a straight line. This is because:",
+      "options": [
+        { "id": "a", "text": "The lamp does not use electricity efficiently" },
+        { "id": "b", "text": "As current increases, the filament heats up and its resistance increases" },
+        { "id": "c", "text": "The lamp only works at certain voltages" },
+        { "id": "d", "text": "The filament gets shorter as it heats up" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "As current flows through the filament, it heats up. In metals, higher temperature causes ions to vibrate more, making it harder for electrons to pass through — resistance increases. This means the I-V graph curves, with less current flowing than expected at higher voltages. The filament lamp is a non-ohmic component because its resistance is not constant. Option D is wrong — the filament does not change length significantly."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student wants to determine the resistance of an unknown resistor experimentally. Which pair of instruments and circuit arrangement should they use?",
+      "options": [
+        { "id": "a", "text": "Ammeter in parallel with the resistor, voltmeter in series" },
+        { "id": "b", "text": "Two ammeters, both in series" },
+        { "id": "c", "text": "Ammeter in series with the resistor, voltmeter in parallel across the resistor" },
+        { "id": "d", "text": "Voltmeter in series, variable resistor in parallel" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "To find resistance using R = V/I, you need to measure both current and voltage. The ammeter must be in series (to measure the current through the resistor) and the voltmeter must be in parallel (to measure the potential difference across the resistor). Option A has both instruments the wrong way round, which would give incorrect readings and could damage the ammeter."
+    }
+  ]
+}

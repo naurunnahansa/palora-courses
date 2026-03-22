@@ -1,0 +1,76 @@
+{
+  "id": "practice-nuclear-fission",
+  "title": "Practice: Nuclear Fission",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a nuclear reactor, uranium-235 absorbs a neutron and splits into two smaller nuclei plus additional neutrons. What is the role of the control rods?",
+      "options": [
+        { "id": "a", "text": "They speed up the neutrons to increase the rate of fission" },
+        { "id": "b", "text": "They absorb excess neutrons to control the rate of the chain reaction" },
+        { "id": "c", "text": "They supply the neutrons needed to start fission" },
+        { "id": "d", "text": "They cool down the reactor core" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Control rods (made of materials like boron or cadmium) absorb neutrons. By raising or lowering the control rods into the reactor core, operators can control how many neutrons are available to cause further fission, keeping the chain reaction at a steady rate. The moderator (not control rods) slows down neutrons (A). The coolant (not control rods) removes heat (D). Neutrons for fission come from previous fission events, not from the control rods (C)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A uranium-235 nucleus absorbs a neutron and undergoes fission, producing two daughter nuclei and 3 neutrons. If each of these 3 neutrons causes another fission event that also releases 3 neutrons, how many neutrons are produced in the second generation?",
+      "options": [
+        { "id": "a", "text": "3" },
+        { "id": "b", "text": "6" },
+        { "id": "c", "text": "9" },
+        { "id": "d", "text": "27" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The first fission produces 3 neutrons. Each of these 3 neutrons causes another fission, each producing 3 more neutrons: 3 x 3 = 9 neutrons in the second generation. This exponential growth is what makes an uncontrolled chain reaction so powerful (and dangerous). In a reactor, control rods absorb enough neutrons so that on average only 1 neutron per fission goes on to cause another fission, maintaining a steady reaction."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a nuclear power station, the energy from fission is used to generate electricity. What is the correct sequence of energy transfers?",
+      "options": [
+        { "id": "a", "text": "Nuclear energy -> kinetic energy of turbine -> electrical energy from generator -> heat to boil water" },
+        { "id": "b", "text": "Nuclear energy -> heat to boil water -> kinetic energy of steam and turbine -> electrical energy from generator" },
+        { "id": "c", "text": "Nuclear energy -> electrical energy -> heat -> kinetic energy" },
+        { "id": "d", "text": "Nuclear energy -> light energy -> electrical energy -> heat" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The correct sequence is: fission releases nuclear energy as heat, which boils water to produce steam; the high-pressure steam drives a turbine (kinetic energy); the turbine spins a generator that produces electricity. Option A has the turbine before the steam. Option C skips the steam/turbine stage. Option D incorrectly includes light energy. This is the same basic process as a fossil fuel power station, except the heat source is nuclear rather than burning fuel."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Why is uranium-235 used as nuclear fuel rather than uranium-238, even though uranium-238 is much more abundant?",
+      "options": [
+        { "id": "a", "text": "Uranium-238 is not radioactive" },
+        { "id": "b", "text": "Uranium-235 undergoes fission more readily when it absorbs a slow neutron, sustaining a chain reaction" },
+        { "id": "c", "text": "Uranium-235 is cheaper to mine than uranium-238" },
+        { "id": "d", "text": "Uranium-238 releases less energy per atom than uranium-235" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Uranium-235 is fissile -- it readily undergoes fission when it absorbs a slow (thermal) neutron, and the neutrons released can go on to cause more fission, sustaining a chain reaction. Uranium-238 tends to absorb neutrons without splitting (it is fertile, not fissile). Uranium-238 is radioactive (A is wrong). U-235 is actually more expensive because it needs to be enriched (C is wrong). The key difference is fissility, not energy per atom."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The moderator in a nuclear reactor is typically graphite or water. What is its purpose?",
+      "options": [
+        { "id": "a", "text": "To absorb neutrons and slow down the chain reaction" },
+        { "id": "b", "text": "To slow down fast neutrons so they are more likely to cause fission of uranium-235" },
+        { "id": "c", "text": "To shield workers from radiation" },
+        { "id": "d", "text": "To carry heat away from the reactor core" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The moderator slows down the fast neutrons produced by fission to thermal (slow) speeds. Slow neutrons are much more likely to be absorbed by U-235 nuclei and cause further fission. Without a moderator, the neutrons would be too fast and would pass through U-235 without being captured. Absorbing neutrons to control the reaction (A) is the role of control rods, not the moderator. Shielding (C) is provided by concrete walls. Carrying heat (D) is the role of the coolant."
+    }
+  ]
+}

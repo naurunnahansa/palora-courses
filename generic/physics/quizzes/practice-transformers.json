@@ -1,0 +1,76 @@
+{
+  "id": "practice-transformers",
+  "title": "Practice: Transformers",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A transformer has 200 turns on its primary coil and 1000 turns on its secondary coil. If the input voltage is 12 V, what is the output voltage?",
+      "options": [
+        { "id": "a", "text": "2.4 V" },
+        { "id": "b", "text": "12 V" },
+        { "id": "c", "text": "60 V" },
+        { "id": "d", "text": "120 V" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Using the transformer equation: Vp/Vs = Np/Ns, so 12/Vs = 200/1000. Therefore Vs = 12 x (1000/200) = 12 x 5 = 60 V. This is a step-up transformer because the secondary has more turns than the primary. Option A incorrectly divides 12 by 5. Option D multiplies by 10 instead of 5."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A transformer is connected to a DC power supply instead of an AC supply. What would happen?",
+      "options": [
+        { "id": "a", "text": "It would work normally, stepping the voltage up or down" },
+        { "id": "b", "text": "It would produce a higher output voltage than with AC" },
+        { "id": "c", "text": "It would not produce any output voltage (after an initial brief pulse) because a constant current does not create a changing magnetic field" },
+        { "id": "d", "text": "It would produce DC output at the correct transformed voltage" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Transformers only work with AC. The changing current in the primary coil creates a changing magnetic field in the iron core, which induces a voltage in the secondary coil. DC produces a constant magnetic field after the initial switch-on, so no voltage is continuously induced in the secondary. There may be a brief pulse when the DC is first connected, but no sustained output. This is why transformers are fundamental to AC power systems."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An ideal step-down transformer reduces the voltage from 230 V to 23 V. If the current in the secondary coil is 5 A, what is the current in the primary coil?",
+      "options": [
+        { "id": "a", "text": "0.5 A" },
+        { "id": "b", "text": "5 A" },
+        { "id": "c", "text": "50 A" },
+        { "id": "d", "text": "0.05 A" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "For an ideal (100% efficient) transformer, power in = power out, so VpIp = VsIs. Therefore Ip = VsIs/Vp = (23 x 5)/230 = 115/230 = 0.5 A. When voltage is stepped down by a factor of 10, current is stepped up by a factor of 10. A common misconception is that both voltage and current decrease in a step-down transformer (B), but conservation of energy requires that if voltage goes down, current must go up."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Why is the core of a transformer made of laminated (layered) iron rather than a solid block of iron?",
+      "options": [
+        { "id": "a", "text": "To make the transformer lighter and easier to transport" },
+        { "id": "b", "text": "To reduce eddy currents in the core, which would waste energy as heat" },
+        { "id": "c", "text": "To increase the magnetic field strength in the core" },
+        { "id": "d", "text": "To allow the transformer to work with both AC and DC" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The changing magnetic field in the core would induce currents (called eddy currents) in a solid iron core, wasting energy as heat. Laminating the core (using thin sheets separated by insulation) breaks up the path for eddy currents, greatly reducing these energy losses. This does not significantly affect weight (A) or magnetic field strength (C), and transformers still only work with AC (D)."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A phone charger contains a step-down transformer that converts 230 V mains to 5 V for charging. If the primary coil has 4600 turns, how many turns does the secondary coil have?",
+      "options": [
+        { "id": "a", "text": "10 turns" },
+        { "id": "b", "text": "100 turns" },
+        { "id": "c", "text": "460 turns" },
+        { "id": "d", "text": "1000 turns" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using Vp/Vs = Np/Ns: 230/5 = 4600/Ns, so Ns = 4600 x (5/230) = 4600/46 = 100 turns. The voltage ratio (230:5 = 46:1) must equal the turns ratio (4600:Ns), giving Ns = 100. Option A (10) divides by 460 instead of 46. Option C (460) divides by 10 instead of 46."
+    }
+  ]
+}

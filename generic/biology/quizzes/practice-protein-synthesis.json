@@ -1,0 +1,76 @@
+{
+  "id": "practice-protein-synthesis",
+  "title": "Practice: Protein Synthesis",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "During transcription, a section of DNA with the template strand sequence TACGCAATT is used to produce mRNA. What is the mRNA sequence?",
+      "options": [
+        { "id": "a", "text": "TACGCAATT" },
+        { "id": "b", "text": "ATGCGTTAA" },
+        { "id": "c", "text": "AUGCGUUAA" },
+        { "id": "d", "text": "UACGCAAUU" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "During transcription, mRNA is built complementary to the DNA template strand, but with uracil (U) replacing thymine (T). T pairs with A, A pairs with U, C pairs with G, G pairs with C. So DNA TACGCAATT gives mRNA AUGCGUUAA. Option B uses thymine instead of uracil, which would be DNA not mRNA."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A mutation changes a single DNA base in a gene. The mRNA codon changes from AUG to AUC. Using a codon table, AUG codes for methionine and AUC codes for isoleucine. What type of mutation is this and what is its likely effect?",
+      "options": [
+        { "id": "a", "text": "A substitution mutation that changes the amino acid, potentially altering the protein's shape and function" },
+        { "id": "b", "text": "A deletion mutation that shifts the reading frame of all subsequent codons" },
+        { "id": "c", "text": "A silent mutation with no effect on the protein" },
+        { "id": "d", "text": "An insertion mutation that adds an extra amino acid to the chain" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "This is a substitution (point) mutation where one base is replaced by another (G changed to C). It causes a different amino acid to be incorporated (isoleucine instead of methionine). This is called a missense mutation and could alter the protein's tertiary structure and function if the amino acid change affects folding or the active site."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Proteins are synthesised at ribosomes in the cytoplasm, but DNA is found in the nucleus. Why does the cell use mRNA as an intermediary rather than sending DNA directly to the ribosome?",
+      "options": [
+        { "id": "a", "text": "DNA is too small to carry the genetic information to the ribosome" },
+        { "id": "b", "text": "DNA molecules are too large to pass through nuclear pores, and keeping DNA in the nucleus protects it from damage in the cytoplasm" },
+        { "id": "c", "text": "mRNA is more stable than DNA and lasts longer in the cell" },
+        { "id": "d", "text": "Ribosomes cannot read the base sequence of DNA" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "DNA is a very large molecule that remains in the nucleus, protected from cytoplasmic enzymes that could damage it. mRNA is a smaller, single-stranded copy of a gene that can pass through nuclear pores to reach ribosomes. This also allows many mRNA copies to be made from one gene, enabling multiple ribosomes to produce the protein simultaneously."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "During translation, tRNA molecules bring amino acids to the ribosome. Each tRNA has an anticodon that pairs with an mRNA codon. If the mRNA codon is GCU, what is the tRNA anticodon?",
+      "options": [
+        { "id": "a", "text": "GCU" },
+        { "id": "b", "text": "CGA" },
+        { "id": "c", "text": "CGU" },
+        { "id": "d", "text": "GCA" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The tRNA anticodon is complementary to the mRNA codon. Using base pairing rules for RNA: G pairs with C, C pairs with G, U pairs with A. So the mRNA codon GCU has the tRNA anticodon CGA. The tRNA carrying the correct anticodon brings the specific amino acid (alanine in this case) to the ribosome."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A cell produces a protein that is 150 amino acids long. How many mRNA bases (minimum) are needed to code for this protein, and why?",
+      "options": [
+        { "id": "a", "text": "150 bases, because each base codes for one amino acid" },
+        { "id": "b", "text": "300 bases, because each amino acid requires a pair of bases" },
+        { "id": "c", "text": "450 bases, because each amino acid is coded for by a triplet of three bases (codon)" },
+        { "id": "d", "text": "600 bases, because four bases are needed per amino acid" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The genetic code is a triplet code: each set of three mRNA bases (codon) codes for one amino acid. Therefore, 150 amino acids require at least 150 x 3 = 450 mRNA bases. In practice, the mRNA would also include a start codon and a stop codon, but the minimum coding sequence for 150 amino acids is 450 bases."
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "practice-median-mode",
+  "title": "Practice: Median and Mode",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Find the median of: 12, 7, 3, 15, 9, 20, 11.",
+      "options": [
+        { "id": "a", "text": "15" },
+        { "id": "b", "text": "9" },
+        { "id": "c", "text": "11" },
+        { "id": "d", "text": "12" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "First order the data: 3, 7, 9, 11, 12, 15, 20. There are 7 values, so the median is the 4th value = 11. A common error is not ordering the data first."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Find the median of: 4, 8, 11, 15, 19, 22.",
+      "options": [
+        { "id": "a", "text": "11" },
+        { "id": "b", "text": "13" },
+        { "id": "c", "text": "15" },
+        { "id": "d", "text": "11.5" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "With 6 values (even number), the median is the average of the 3rd and 4th values: (11 + 15) / 2 = 13. A common error with even-sized data sets is picking just the 3rd or 4th value."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The data set is: 5, 3, 8, 3, 7, 5, 3, 9, 5. Which statement about the mode is correct?",
+      "options": [
+        { "id": "a", "text": "The mode is 3 and 5 (bimodal)" },
+        { "id": "b", "text": "The mode is 3 only" },
+        { "id": "c", "text": "The mode is 5 only" },
+        { "id": "d", "text": "There is no mode" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Count each value: 3 appears 3 times, 5 appears 3 times, 7 once, 8 once, 9 once. Both 3 and 5 appear most frequently (3 times each), so the data is bimodal. A data set can have more than one mode."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A set of 11 values is arranged in order. The median is 25. If the smallest value is changed from 3 to 1, what is the new median?",
+      "options": [
+        { "id": "a", "text": "23" },
+        { "id": "b", "text": "24" },
+        { "id": "c", "text": "25" },
+        { "id": "d", "text": "27" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The median of 11 values is the 6th value. Changing the smallest value (1st position) does not affect the 6th value. The median stays at 25. The median is resistant to changes in extreme values."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A data set has mean 10, median 8 and mode 7. One extra value of 8 is added. Which average(s) definitely stay the same?",
+      "options": [
+        { "id": "a", "text": "Mean only" },
+        { "id": "b", "text": "Mode only" },
+        { "id": "c", "text": "None of them definitely stay the same" },
+        { "id": "d", "text": "All three stay the same" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Adding 8 changes the total and count, so the mean changes (it was 10, and 8 pulls it down). The median could shift depending on the data size. The mode could change if 8 now matches or exceeds the frequency of 7. None are guaranteed to stay the same."
+    }
+  ]
+}

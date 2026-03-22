@@ -1,0 +1,76 @@
+{
+  "id": "practice-potential-difference",
+  "title": "Practice: Potential Difference",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A battery transfers 60 J of energy when 20 C of charge flows through it. What is the potential difference of the battery?",
+      "options": [
+        { "id": "a", "text": "1200 V" },
+        { "id": "b", "text": "3 V" },
+        { "id": "c", "text": "40 V" },
+        { "id": "d", "text": "0.33 V" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using V = E/Q = 60/20 = 3 V. Potential difference is the energy transferred per unit charge. Option A (1200) comes from multiplying E x Q. Option C (40) comes from subtracting. Option D comes from Q/E. Remember: 1 volt means 1 joule of energy transferred per coulomb of charge."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A voltmeter should be connected in a circuit:",
+      "options": [
+        { "id": "a", "text": "In series with the component" },
+        { "id": "b", "text": "In parallel across the component" },
+        { "id": "c", "text": "Between the ammeter and the battery" },
+        { "id": "d", "text": "Anywhere in the circuit" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A voltmeter measures the potential difference across a component, so it must be connected in parallel (across the component). It has very high resistance so that negligible current flows through it, ensuring it does not affect the circuit. An ammeter (option A) is the instrument connected in series. Connecting a voltmeter in series would block most of the current."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A 12 V battery is connected to a lamp. If 5 C of charge flows through the lamp, how much energy is transferred to the lamp?",
+      "options": [
+        { "id": "a", "text": "2.4 J" },
+        { "id": "b", "text": "17 J" },
+        { "id": "c", "text": "60 J" },
+        { "id": "d", "text": "7 J" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Using E = Q x V = 5 x 12 = 60 J. The potential difference tells us how much energy each coulomb of charge transfers, so 5 coulombs at 12 V transfers 5 x 12 = 60 J. Option A (2.4) divides V by Q. Option B (17) adds V and Q. Energy = charge x voltage is a key formula to remember."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two identical lamps are connected in series to a 6 V battery. What is the potential difference across each lamp?",
+      "options": [
+        { "id": "a", "text": "6 V" },
+        { "id": "b", "text": "3 V" },
+        { "id": "c", "text": "12 V" },
+        { "id": "d", "text": "0 V" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "In a series circuit, the total potential difference is shared between the components. Since the lamps are identical, they have equal resistance and share the voltage equally: 6 V / 2 = 3 V each. The potential differences must add up to the supply voltage (3 + 3 = 6 V). Option A (6 V) would be the voltage across each lamp only if they were in parallel."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student connects a voltmeter across a battery and reads 9 V. They then connect the battery to a circuit and measure 8.5 V across the battery terminals. Why is the reading lower?",
+      "options": [
+        { "id": "a", "text": "The battery has lost charge" },
+        { "id": "b", "text": "The voltmeter is faulty" },
+        { "id": "c", "text": "Some voltage is 'lost' across the internal resistance of the battery when current flows" },
+        { "id": "d", "text": "The circuit components absorb voltage from the battery" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Every real battery has internal resistance. When current flows through the circuit, some energy is dissipated inside the battery itself, reducing the terminal voltage. The 9 V is the EMF (electromotive force) of the battery, and the 8.5 V is the terminal p.d. The difference (0.5 V) is the 'lost volts' across the internal resistance. Option A is wrong — the battery has not lost charge; it has internal resistance. Option D confuses energy transfer with 'absorbing voltage'."
+    }
+  ]
+}

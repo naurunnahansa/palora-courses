@@ -1,0 +1,76 @@
+{
+  "id": "practice-radioactivity",
+  "title": "Practice: Radioactivity",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student measures the count rate from a radioactive source as 400 counts per minute. The background radiation in the lab is 20 counts per minute. What is the corrected count rate from the source?",
+      "options": [
+        { "id": "a", "text": "20 counts per minute" },
+        { "id": "b", "text": "380 counts per minute" },
+        { "id": "c", "text": "400 counts per minute" },
+        { "id": "d", "text": "420 counts per minute" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The measured count rate includes both the source and background radiation. To find the corrected count rate from the source alone, subtract the background: 400 - 20 = 380 counts per minute. A common error is to forget to subtract background (C) or to add it (D). Background radiation is always present and must be accounted for in any measurement."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Which type of radiation is most ionising and has the shortest range in air?",
+      "options": [
+        { "id": "a", "text": "Alpha particles" },
+        { "id": "b", "text": "Beta particles" },
+        { "id": "c", "text": "Gamma rays" },
+        { "id": "d", "text": "Neutron radiation" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Alpha particles are the most ionising (they cause the most ionisation per centimetre) and have the shortest range in air (about 5 cm). Their large size (+2 charge, mass of 4) means they interact strongly with air molecules, losing energy quickly. Beta particles (B) are less ionising and travel further. Gamma rays (C) are the least ionising but most penetrating. The high ionising power of alpha is precisely why it has the shortest range -- it loses energy rapidly."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A radioactive source is placed near a Geiger counter. A sheet of paper is placed between them and the count rate drops significantly. A sheet of aluminium is then tried, but the count rate was already very low after the paper. What type of radiation does the source most likely emit?",
+      "options": [
+        { "id": "a", "text": "Gamma only" },
+        { "id": "b", "text": "Beta only" },
+        { "id": "c", "text": "Alpha only" },
+        { "id": "d", "text": "Beta and gamma" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Alpha radiation is stopped by a sheet of paper, which matches the observation that the count rate dropped significantly after paper was placed in the way. Beta particles would pass through paper (only stopped by a few mm of aluminium), and gamma rays would pass through both paper and aluminium (needing thick lead or concrete to significantly reduce them). Since paper alone caused a major drop, the source is most likely an alpha emitter."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Radioactive decay is described as 'random' and 'spontaneous.' What does 'random' mean in this context?",
+      "options": [
+        { "id": "a", "text": "The decay happens at regular, predictable intervals" },
+        { "id": "b", "text": "It is impossible to predict which particular nucleus will decay next or when" },
+        { "id": "c", "text": "The decay can be triggered by heating the sample" },
+        { "id": "d", "text": "Different types of radiation are emitted in a random order" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Random means we cannot predict which specific nucleus will decay next or exactly when any individual nucleus will decay. We can only predict the probability of decay for a large number of nuclei. Regular intervals (A) would be the opposite of random. Decay cannot be triggered by heating (C) -- that would contradict 'spontaneous.' The type of radiation emitted by a given isotope is fixed, not random (D)."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Beta radiation is deflected by both electric and magnetic fields. In a magnetic field, beta particles curve in the opposite direction to alpha particles. This is because beta particles:",
+      "options": [
+        { "id": "a", "text": "Have a much larger mass than alpha particles" },
+        { "id": "b", "text": "Travel much slower than alpha particles" },
+        { "id": "c", "text": "Carry the opposite charge to alpha particles" },
+        { "id": "d", "text": "Are not affected by magnetic fields" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Alpha particles have a positive charge (+2) and beta particles (electrons) have a negative charge (-1). In a magnetic field, the force on a charged particle depends on its charge, so opposite charges curve in opposite directions. Beta particles are actually much less massive than alpha particles (A is wrong) and travel much faster (B is wrong). Both alpha and beta are deflected by magnetic fields (D is wrong) -- only gamma rays are unaffected."
+    }
+  ]
+}

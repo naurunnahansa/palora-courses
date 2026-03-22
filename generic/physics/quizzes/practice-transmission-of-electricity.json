@@ -1,0 +1,76 @@
+{
+  "id": "practice-transmission-of-electricity",
+  "title": "Practice: Transmission of Electricity",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The National Grid transmits electricity at 400,000 V rather than the 25,000 V produced at the power station. Why is the voltage stepped up before transmission?",
+      "options": [
+        { "id": "a", "text": "Higher voltage makes the electricity travel faster through the cables" },
+        { "id": "b", "text": "Higher voltage reduces the current, which reduces energy losses as heat in the cables" },
+        { "id": "c", "text": "Higher voltage is needed because the cables have very high resistance" },
+        { "id": "d", "text": "Higher voltage is safer for the workers who maintain the cables" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Power loss in cables = I²R. By stepping up the voltage, the current is reduced (since P = IV, for the same power, higher V means lower I). A lower current dramatically reduces the I²R heating losses in the long transmission cables. Electricity does not travel faster at higher voltage (A). While cables do have resistance (C), the key point is reducing current to minimise losses, not compensating for resistance. Higher voltage is actually more dangerous (D), not safer."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A power station transmits 1,000,000 W of power. At 10,000 V, the current is 100 A. If the voltage is stepped up to 100,000 V, what is the new current?",
+      "options": [
+        { "id": "a", "text": "10 A" },
+        { "id": "b", "text": "100 A" },
+        { "id": "c", "text": "1,000 A" },
+        { "id": "d", "text": "10,000 A" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Using P = IV: I = P/V = 1,000,000/100,000 = 10 A. When the voltage is increased by a factor of 10, the current decreases by a factor of 10 (for the same power). This is the whole principle behind high-voltage transmission. Option B assumes current stays the same (ignoring the voltage change). Options C and D have the relationship backwards."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Transmission cables have a total resistance of 5 ohms. If the current flowing through them is 200 A, how much power is wasted as heat in the cables?",
+      "options": [
+        { "id": "a", "text": "1,000 W" },
+        { "id": "b", "text": "40,000 W" },
+        { "id": "c", "text": "200,000 W" },
+        { "id": "d", "text": "1,000,000 W" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Power lost as heat = I²R = 200² x 5 = 40,000 x 5 = 200,000 W (200 kW). Option A uses P = IR (wrong formula). Option B uses P = I² x R but calculates I² as 200 x 200 = 40,000 and forgets to multiply by R properly. The I²R relationship shows why reducing current is so important -- doubling the current quadruples the power loss."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In the National Grid, a step-down transformer near homes reduces the voltage from 33,000 V to 230 V. What type of transformer is used at the power station end?",
+      "options": [
+        { "id": "a", "text": "A step-down transformer to reduce the voltage for the cables" },
+        { "id": "b", "text": "A step-up transformer to increase the voltage for efficient transmission" },
+        { "id": "c", "text": "No transformer is needed at the power station" },
+        { "id": "d", "text": "An isolation transformer that keeps the voltage the same" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "At the power station, a step-up transformer increases the voltage (e.g., from 25,000 V to 400,000 V) for efficient long-distance transmission. This reduces the current and therefore reduces energy losses in the cables. At the consumer end, step-down transformers reduce the voltage back to safe, usable levels (230 V for homes). The system requires both step-up and step-down transformers working together."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "If the current in a transmission cable is halved (while transmitting the same power), by what factor does the power wasted in the cable change?",
+      "options": [
+        { "id": "a", "text": "It is halved" },
+        { "id": "b", "text": "It is reduced to one quarter" },
+        { "id": "c", "text": "It stays the same" },
+        { "id": "d", "text": "It doubles" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Power loss = I²R. If current is halved, the new power loss = (I/2)²R = I²R/4. The power loss is reduced to one quarter of its original value. This is because of the I-squared relationship -- the loss depends on the square of the current, not just the current itself. This is why even a modest reduction in current produces a large reduction in energy waste. A common error is thinking halving the current halves the loss (A), but the squared relationship makes the effect much more dramatic."
+    }
+  ]
+}

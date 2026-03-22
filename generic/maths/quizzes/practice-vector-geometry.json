@@ -1,0 +1,76 @@
+{
+  "id": "practice-vector-geometry",
+  "title": "Practice: Vector Geometry",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In triangle OAB, OA = a and OB = b. M is the midpoint of AB. Express OM in terms of a and b.",
+      "options": [
+        { "id": "a", "text": "1/2(b − a)" },
+        { "id": "b", "text": "1/2(a + b)" },
+        { "id": "c", "text": "1/2 a + b" },
+        { "id": "d", "text": "a + b" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "OM = OA + AM = a + 1/2 AB = a + 1/2(b − a) = a + 1/2 b − 1/2 a = 1/2 a + 1/2 b = 1/2(a + b). Option (a) gives AM, not OM."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "OABC is a parallelogram with OA = a and OC = c. Point P lies on OB such that OP = 2/3 OB. Express OP in terms of a and c.",
+      "options": [
+        { "id": "a", "text": "2/3 a + 2/3 c" },
+        { "id": "b", "text": "2/3 a + c" },
+        { "id": "c", "text": "a + 2/3 c" },
+        { "id": "d", "text": "1/3(a + c)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "In a parallelogram, OB = OA + AB = a + c. So OP = 2/3 OB = 2/3(a + c) = 2/3 a + 2/3 c."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "OA = 2a and OB = 2b. Point X lies on AB such that AX:XB = 1:3. Express OX in terms of a and b.",
+      "options": [
+        { "id": "a", "text": "3/2 a + 1/2 b" },
+        { "id": "b", "text": "1/2 a + 3/2 b" },
+        { "id": "c", "text": "a + b" },
+        { "id": "d", "text": "2a + 1/2 b" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "AB = OB − OA = 2b − 2a. Since AX:XB = 1:3, AX = 1/4 AB = 1/4(2b − 2a) = 1/2 b − 1/2 a. OX = OA + AX = 2a + 1/2 b − 1/2 a = 3/2 a + 1/2 b."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In triangle OPQ, OP = p and OQ = q. R is the point on PQ such that PR:RQ = 2:1. Express OR in terms of p and q.",
+      "options": [
+        { "id": "a", "text": "1/3 p + 2/3 q" },
+        { "id": "b", "text": "2/3 p + 1/3 q" },
+        { "id": "c", "text": "2p + q" },
+        { "id": "d", "text": "1/3(2p + q)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "OR = OP + PR = p + 2/3 PQ = p + 2/3(q − p) = p + 2/3 q − 2/3 p = 1/3 p + 2/3 q. Since R is 2/3 of the way along PQ, its position vector is weighted towards Q."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "OA = a and OB = b. OC = 3a − 2b. Find AC in terms of a and b, and determine the relationship between AC and AB.",
+      "options": [
+        { "id": "a", "text": "AC = 2a − 2b, which is 2 times AB" },
+        { "id": "b", "text": "AC = 2a − 2b, which is −2 times AB" },
+        { "id": "c", "text": "AC = 2a + 2b, which is 2 times AB" },
+        { "id": "d", "text": "AC = 4a − 2b, not a multiple of AB" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "AC = OC − OA = (3a − 2b) − a = 2a − 2b. AB = b − a. So AC = −2(b − a) = −2 AB. Since AC is a scalar multiple of AB, points A, B and C are collinear, with C on the opposite side of A from B."
+    }
+  ]
+}

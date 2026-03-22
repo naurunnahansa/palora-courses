@@ -1,0 +1,76 @@
+{
+  "id": "practice-hcf-and-lcm",
+  "title": "Practice: HCF and LCM",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Find the HCF of 84 and 126.",
+      "options": [
+        { "id": "a", "text": "14" },
+        { "id": "b", "text": "21" },
+        { "id": "c", "text": "42" },
+        { "id": "d", "text": "7" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "84 = 2^2 x 3 x 7 and 126 = 2 x 3^2 x 7. The HCF uses the lowest power of each common factor: 2^1 x 3^1 x 7^1 = 42."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Find the LCM of 12 and 20.",
+      "options": [
+        { "id": "a", "text": "60" },
+        { "id": "b", "text": "120" },
+        { "id": "c", "text": "240" },
+        { "id": "d", "text": "40" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "12 = 2^2 x 3 and 20 = 2^2 x 5. The LCM uses the highest power of each prime: 2^2 x 3 x 5 = 60."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two buses leave the station at 9:00 am. Bus A returns every 18 minutes and Bus B returns every 24 minutes. At what time will both buses next be at the station together?",
+      "options": [
+        { "id": "a", "text": "9:36 am" },
+        { "id": "b", "text": "10:12 am" },
+        { "id": "c", "text": "9:42 am" },
+        { "id": "d", "text": "10:00 am" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "We need the LCM of 18 and 24. 18 = 2 x 3^2 and 24 = 2^3 x 3. LCM = 2^3 x 3^2 = 8 x 9 = 72 minutes. 72 minutes after 9:00 am = 10:12 am."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The HCF of two numbers is 6 and their LCM is 90. If one number is 18, what is the other?",
+      "options": [
+        { "id": "a", "text": "15" },
+        { "id": "b", "text": "30" },
+        { "id": "c", "text": "45" },
+        { "id": "d", "text": "36" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using the relationship HCF x LCM = product of the two numbers: 6 x 90 = 18 x other number. So 540 = 18 x other number, giving other number = 540 / 18 = 30."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Pencils come in packs of 15 and erasers come in packs of 12. What is the smallest number of each that must be bought so that there are equal numbers of pencils and erasers?",
+      "options": [
+        { "id": "a", "text": "4 packs of pencils and 5 packs of erasers" },
+        { "id": "b", "text": "12 packs of pencils and 15 packs of erasers" },
+        { "id": "c", "text": "3 packs of pencils and 4 packs of erasers" },
+        { "id": "d", "text": "5 packs of pencils and 4 packs of erasers" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "We need the LCM of 15 and 12. 15 = 3 x 5, 12 = 2^2 x 3. LCM = 2^2 x 3 x 5 = 60. To get 60 pencils: 60/15 = 4 packs. To get 60 erasers: 60/12 = 5 packs."
+    }
+  ]
+}

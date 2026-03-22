@@ -1,0 +1,76 @@
+{
+  "id": "practice-domestic-electricity",
+  "title": "Practice: Domestic Electricity",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The UK mains electricity supply provides alternating current at approximately:",
+      "options": [
+        { "id": "a", "text": "12 V, 50 Hz" },
+        { "id": "b", "text": "230 V, 50 Hz" },
+        { "id": "c", "text": "230 V, 60 Hz" },
+        { "id": "d", "text": "110 V, 50 Hz" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The UK mains supply is approximately 230 V AC at 50 Hz. Option A (12 V) is typical for car batteries (DC). Option C (60 Hz) is the frequency used in the USA. Option D (110 V) is the voltage used in the USA and some other countries. The 50 Hz means the current direction changes 100 times per second (50 complete cycles)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a three-pin plug, the wires are colour-coded. Which is the correct combination?",
+      "options": [
+        { "id": "a", "text": "Live = blue, Neutral = brown, Earth = green/yellow" },
+        { "id": "b", "text": "Live = brown, Neutral = blue, Earth = green/yellow" },
+        { "id": "c", "text": "Live = red, Neutral = black, Earth = green" },
+        { "id": "d", "text": "Live = green/yellow, Neutral = brown, Earth = blue" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The correct colours are: Live = brown, Neutral = blue, Earth = green/yellow striped. Option A swaps the live and neutral. Option C shows the old UK colour code (pre-2006), which is no longer used. The live wire carries the high voltage that alternates, the neutral completes the circuit, and the earth is a safety wire connected to the metal casing."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A metal-cased toaster has an earth wire connected to its casing. If a fault causes the live wire to touch the metal case, what happens?",
+      "options": [
+        { "id": "a", "text": "Nothing — the earth wire prevents any danger" },
+        { "id": "b", "text": "A large current flows through the earth wire to the ground, which blows the fuse and disconnects the supply" },
+        { "id": "c", "text": "The earth wire absorbs all the electricity" },
+        { "id": "d", "text": "The user receives a shock before the fuse blows" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The earth wire provides a low-resistance path to the ground. If the live wire touches the metal case, a large current surges through the earth wire (because it has very low resistance), which causes the fuse to blow (or the circuit breaker to trip), disconnecting the supply before anyone can be harmed. Option A understates what happens — the earth wire works by causing a large fault current. Option C is not how earth wires function."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A residual current device (RCD) detects a difference in current between the live and neutral wires. Why would a difference indicate a fault?",
+      "options": [
+        { "id": "a", "text": "The live wire always carries more current than the neutral" },
+        { "id": "b", "text": "A difference means some current is leaking to earth through an unintended path, possibly through a person" },
+        { "id": "c", "text": "A difference means the appliance is using too much power" },
+        { "id": "d", "text": "The neutral wire should always carry zero current" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Normally, the current in the live wire equals the current in the neutral wire — all charge flowing in must flow out. If there is a difference, it means current is leaking through another path, such as through a person touching a live component or through a fault to earth. The RCD detects this imbalance and cuts the power in milliseconds, much faster than a fuse. Option D is wrong — the neutral carries the same current as the live in normal operation."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A hairdryer is rated at 2000 W and operates on 230 V mains. Which fuse should be fitted in the plug?",
+      "options": [
+        { "id": "a", "text": "3 A" },
+        { "id": "b", "text": "5 A" },
+        { "id": "c", "text": "13 A" },
+        { "id": "d", "text": "1 A" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "First calculate the current: I = P/V = 2000/230 = 8.7 A. The fuse must be rated above the normal operating current but as close as possible to it. From standard UK fuse ratings (3 A, 5 A, 13 A), the 13 A fuse is the correct choice. A 3 A or 5 A fuse would blow during normal use. A 13 A fuse provides protection while allowing the hairdryer to operate normally."
+    }
+  ]
+}

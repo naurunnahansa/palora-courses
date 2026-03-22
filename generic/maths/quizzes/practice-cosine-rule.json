@@ -1,0 +1,76 @@
+{
+  "id": "practice-cosine-rule",
+  "title": "Practice: The Cosine Rule",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In triangle ABC, b = 7 cm, c = 9 cm, and angle A = 52 degrees. Find side a to 1 decimal place.",
+      "options": [
+        { "id": "a", "text": "5.8 cm" },
+        { "id": "b", "text": "7.2 cm" },
+        { "id": "c", "text": "11.4 cm" },
+        { "id": "d", "text": "52.4 cm" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "a^2 = b^2 + c^2 - 2bc cos(A) = 49 + 81 - 2(7)(9)cos(52) = 130 - 126 x 0.6157 = 130 - 77.58 = 52.42. a = sqrt(52.42) = 7.2 cm (1 d.p.)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A triangle has sides a = 8 cm, b = 6 cm, and c = 10 cm. Find angle A to 1 decimal place.",
+      "options": [
+        { "id": "a", "text": "90.0 degrees" },
+        { "id": "b", "text": "53.1 degrees" },
+        { "id": "c", "text": "36.9 degrees" },
+        { "id": "d", "text": "60.0 degrees" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "cos(A) = (b^2 + c^2 - a^2)/(2bc) = (36 + 100 - 64)/(120) = 72/120 = 0.6. A = cos^(-1)(0.6) = 53.1 degrees."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In triangle PQR, q = 5 cm, r = 8 cm, and angle P = 120 degrees. Find side p to 1 decimal place.",
+      "options": [
+        { "id": "a", "text": "9.4 cm" },
+        { "id": "b", "text": "11.4 cm" },
+        { "id": "c", "text": "7.8 cm" },
+        { "id": "d", "text": "13.0 cm" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "p^2 = 25 + 64 - 2(5)(8)cos(120) = 89 - 80(-0.5) = 89 + 40 = 129. p = sqrt(129) = 11.4 cm (1 d.p.). Note: cos(120) is negative, so the subtraction becomes addition."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A triangle has sides 5 cm, 7 cm, and 10 cm. Find the largest angle to 1 decimal place.",
+      "options": [
+        { "id": "a", "text": "90.0 degrees" },
+        { "id": "b", "text": "111.8 degrees" },
+        { "id": "c", "text": "101.5 degrees" },
+        { "id": "d", "text": "120.0 degrees" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The largest angle is opposite the longest side (10 cm). cos(C) = (25 + 49 - 100)/70 = -26/70 = -0.3714. C = cos^(-1)(-0.3714) = 111.8 degrees (1 d.p.). The negative cosine indicates an obtuse angle."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two ships leave a port. Ship A sails 12 km and Ship B sails 18 km. The angle between their paths is 65 degrees. How far apart are the ships? Give your answer to 1 decimal place.",
+      "options": [
+        { "id": "a", "text": "17.0 cm" },
+        { "id": "b", "text": "17.0 km" },
+        { "id": "c", "text": "21.6 km" },
+        { "id": "d", "text": "30.0 km" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using the Cosine Rule: d^2 = 12^2 + 18^2 - 2(12)(18)cos(65) = 144 + 324 - 432 x 0.4226 = 468 - 182.6 = 285.4. d = sqrt(285.4) = 16.89... = 17.0 km (1 d.p.)."
+    }
+  ]
+}

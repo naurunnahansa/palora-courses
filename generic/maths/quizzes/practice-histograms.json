@@ -1,0 +1,76 @@
+{
+  "id": "practice-histograms",
+  "title": "Practice: Histograms",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A histogram class 20 < x ≤ 30 has frequency density 1.5 and class width 10. What is the frequency?",
+      "options": [
+        { "id": "a", "text": "1.5" },
+        { "id": "b", "text": "15" },
+        { "id": "c", "text": "6.67" },
+        { "id": "d", "text": "150" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Frequency = frequency density x class width = 1.5 x 10 = 15. In a histogram, frequency is represented by the AREA of the bar, not its height. A very common error is reading the height as the frequency."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Data is grouped with unequal class widths: 0-10 (freq 20), 10-30 (freq 60), 30-50 (freq 40). What are the frequency densities?",
+      "options": [
+        { "id": "a", "text": "2, 3, 2" },
+        { "id": "b", "text": "20, 60, 40" },
+        { "id": "c", "text": "2, 6, 4" },
+        { "id": "d", "text": "0.5, 0.33, 0.5" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Frequency density = frequency / class width. For 0-10: 20/10 = 2. For 10-30: 60/20 = 3. For 30-50: 40/20 = 2. Option (b) gives the frequencies, not frequency densities."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A histogram bar for the class 5 < t ≤ 15 has height 4 (frequency density). The bar for 15 < t ≤ 20 has height 6. How many more data values are in the second class than the first?",
+      "options": [
+        { "id": "a", "text": "2 more" },
+        { "id": "b", "text": "10 fewer" },
+        { "id": "c", "text": "10 more" },
+        { "id": "d", "text": "The same" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Class 5-15: freq = 4 x 10 = 40. Class 15-20: freq = 6 x 5 = 30. Difference = 30 - 40 = -10, so the second class has 10 fewer values. Despite the taller bar, the narrower width means fewer data values. This is why histograms use frequency density for the y-axis."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A histogram has total area of 120 (representing 120 data values). The bar for 0 < x ≤ 5 has area 30. What proportion of data values fall in this class?",
+      "options": [
+        { "id": "a", "text": "30%" },
+        { "id": "b", "text": "1/4" },
+        { "id": "c", "text": "12.5%" },
+        { "id": "d", "text": "4%" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Proportion = area of bar / total area = 30/120 = 1/4 = 25%. In a histogram, the area of each bar is proportional to the frequency, so the proportion of data in a class equals the proportion of total area."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A histogram shows: 0-5 (freq density 3), 5-10 (freq density 5), 10-20 (freq density 2), 20-40 (freq density 1). What is the total frequency?",
+      "options": [
+        { "id": "a", "text": "11" },
+        { "id": "b", "text": "55" },
+        { "id": "c", "text": "80" },
+        { "id": "d", "text": "75" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Frequency = FD x width for each class. 0-5: 3x5=15. 5-10: 5x5=25. 10-20: 2x10=20. 20-40: 1x20=20. Total = 15+25+20+20 = 80. You must multiply each frequency density by its own class width."
+    }
+  ]
+}

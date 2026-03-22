@@ -1,0 +1,76 @@
+{
+  "id": "practice-completing-the-square",
+  "title": "Practice: Completing the Square",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Write x^2 + 8x + 3 in the form (x + a)^2 + b.",
+      "options": [
+        { "id": "a", "text": "(x + 4)^2 - 13" },
+        { "id": "b", "text": "(x + 4)^2 + 3" },
+        { "id": "c", "text": "(x + 8)^2 - 61" },
+        { "id": "d", "text": "(x + 4)^2 - 19" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "x^2 + 8x + 3. Half of 8 is 4, so (x + 4)^2 = x^2 + 8x + 16. Therefore x^2 + 8x + 3 = (x + 4)^2 - 16 + 3 = (x + 4)^2 - 13."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "What is the minimum value of x^2 - 6x + 11?",
+      "options": [
+        { "id": "a", "text": "11" },
+        { "id": "b", "text": "2" },
+        { "id": "c", "text": "-2" },
+        { "id": "d", "text": "5" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Completing the square: x^2 - 6x + 11 = (x - 3)^2 - 9 + 11 = (x - 3)^2 + 2. Since (x - 3)^2 >= 0, the minimum value is 0 + 2 = 2, occurring when x = 3."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Solve x^2 + 4x - 1 = 0 by completing the square. Give exact answers.",
+      "options": [
+        { "id": "a", "text": "x = -2 +/- sqrt(3)" },
+        { "id": "b", "text": "x = -2 +/- sqrt(5)" },
+        { "id": "c", "text": "x = 2 +/- sqrt(5)" },
+        { "id": "d", "text": "x = -4 +/- sqrt(5)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "x^2 + 4x - 1 = 0. (x + 2)^2 - 4 - 1 = 0. (x + 2)^2 = 5. x + 2 = +/-sqrt(5). x = -2 +/- sqrt(5)."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Write 2x^2 + 12x + 7 in the form a(x + p)^2 + q.",
+      "options": [
+        { "id": "a", "text": "2(x + 3)^2 - 11" },
+        { "id": "b", "text": "2(x + 6)^2 - 65" },
+        { "id": "c", "text": "2(x + 3)^2 + 7" },
+        { "id": "d", "text": "(2x + 6)^2 - 29" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Factor out 2: 2[x^2 + 6x] + 7 = 2[(x + 3)^2 - 9] + 7 = 2(x + 3)^2 - 18 + 7 = 2(x + 3)^2 - 11."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The curve y = x^2 - 10x + 30 has a turning point at:",
+      "options": [
+        { "id": "a", "text": "(5, 5)" },
+        { "id": "b", "text": "(-5, 105)" },
+        { "id": "c", "text": "(10, 30)" },
+        { "id": "d", "text": "(5, 30)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Complete the square: (x - 5)^2 - 25 + 30 = (x - 5)^2 + 5. The turning point (minimum) is at (5, 5)."
+    }
+  ]
+}

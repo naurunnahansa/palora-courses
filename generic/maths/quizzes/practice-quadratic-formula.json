@@ -1,0 +1,76 @@
+{
+  "id": "practice-quadratic-formula",
+  "title": "Practice: The Quadratic Formula",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Use the quadratic formula to solve x^2 + 3x - 5 = 0. Give answers to 1 decimal place.",
+      "options": [
+        { "id": "a", "text": "x = 1.2 or x = -4.2" },
+        { "id": "b", "text": "x = 1.1 or x = -4.1" },
+        { "id": "c", "text": "x = -1.2 or x = 4.2" },
+        { "id": "d", "text": "x = 0.5 or x = -3.5" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "a=1, b=3, c=-5. Discriminant = 9 + 20 = 29. x = (-3 +/- sqrt(29))/2. sqrt(29) = 5.385. x = (-3 + 5.385)/2 = 2.385/2 = 1.2 (1 d.p.) or x = (-3 - 5.385)/2 = -8.385/2 = -4.2 (1 d.p.)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "How many real solutions does x^2 - 4x + 7 = 0 have?",
+      "options": [
+        { "id": "a", "text": "2 solutions" },
+        { "id": "b", "text": "1 solution" },
+        { "id": "c", "text": "No real solutions" },
+        { "id": "d", "text": "Infinitely many" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Discriminant = b^2 - 4ac = 16 - 28 = -12. Since the discriminant is negative, there are no real solutions."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Solve 3x^2 - 6x - 2 = 0 using the quadratic formula. Give answers to 2 d.p.",
+      "options": [
+        { "id": "a", "text": "x = 2.29 or x = -0.29" },
+        { "id": "b", "text": "x = 0.29 or x = -2.29" },
+        { "id": "c", "text": "x = 2.00 or x = -0.33" },
+        { "id": "d", "text": "x = 1.00 or x = -0.67" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "a=3, b=-6, c=-2. Discriminant = 36 + 24 = 60. x = (6 +/- sqrt(60))/6. sqrt(60) = 7.746. x = (6 + 7.746)/6 = 13.746/6 = 2.29. x = (6 - 7.746)/6 = -1.746/6 = -0.29."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "For what values of k does x^2 + kx + 9 = 0 have exactly one solution?",
+      "options": [
+        { "id": "a", "text": "k = 3 or k = -3" },
+        { "id": "b", "text": "k = 6 or k = -6" },
+        { "id": "c", "text": "k = 9" },
+        { "id": "d", "text": "k = 18 or k = -18" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "One solution when discriminant = 0: k^2 - 4(1)(9) = 0. k^2 = 36. k = 6 or k = -6."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A ball is thrown upward with height h = 20t - 5t^2 metres after t seconds. When does it hit the ground?",
+      "options": [
+        { "id": "a", "text": "t = 2 seconds" },
+        { "id": "b", "text": "t = 4 seconds" },
+        { "id": "c", "text": "t = 5 seconds" },
+        { "id": "d", "text": "t = 20 seconds" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Set h = 0: 20t - 5t^2 = 0. 5t(4 - t) = 0. t = 0 or t = 4. t = 0 is the start, so the ball hits the ground at t = 4 seconds."
+    }
+  ]
+}

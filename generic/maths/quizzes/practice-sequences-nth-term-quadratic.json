@@ -1,0 +1,76 @@
+{
+  "id": "practice-sequences-nth-term-quadratic",
+  "title": "Practice: Sequences - nth Term (Quadratic)",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Find the nth term of: 2, 6, 12, 20, 30, ...",
+      "options": [
+        { "id": "a", "text": "n^2 + n" },
+        { "id": "b", "text": "n^2 + 2n" },
+        { "id": "c", "text": "2n^2" },
+        { "id": "d", "text": "n^2 - n + 2" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "1st differences: 4, 6, 8, 10. 2nd differences: 2, 2, 2. So a = 1. Subtract n^2: 2-1=1, 6-4=2, 12-9=3, 20-16=4. Linear part: n. nth term = n^2 + n. Check: n=3 gives 9+3=12."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A quadratic sequence has 2nd difference of 6. What is the coefficient of n^2 in its nth term?",
+      "options": [
+        { "id": "a", "text": "6" },
+        { "id": "b", "text": "3" },
+        { "id": "c", "text": "12" },
+        { "id": "d", "text": "2" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "If the second difference is 2a, then a = second difference / 2 = 6/2 = 3. The coefficient of n^2 is 3."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Find the nth term of: 4, 7, 12, 19, 28, ...",
+      "options": [
+        { "id": "a", "text": "n^2 + 3" },
+        { "id": "b", "text": "n^2 + n + 2" },
+        { "id": "c", "text": "n^2 + 2n + 1" },
+        { "id": "d", "text": "n^2 - n + 4" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "1st differences: 3, 5, 7, 9. 2nd differences: 2, 2, 2. a = 1. Subtract n^2: 4-1=3, 7-4=3, 12-9=3, 19-16=3. Remaining = 3. nth term = n^2 + 3. Check: n=4 gives 16+3=19."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The first 4 terms of 2n^2 - n + 3 are:",
+      "options": [
+        { "id": "a", "text": "4, 9, 18, 31" },
+        { "id": "b", "text": "5, 11, 21, 35" },
+        { "id": "c", "text": "4, 10, 20, 34" },
+        { "id": "d", "text": "4, 9, 16, 25" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "n=1: 2-1+3=4. n=2: 8-2+3=9. n=3: 18-3+3=18. n=4: 32-4+3=31. Sequence: 4, 9, 18, 31."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Find the nth term of: 5, 14, 27, 44, 65, ...",
+      "options": [
+        { "id": "a", "text": "2n^2 + 3n" },
+        { "id": "b", "text": "2n^2 + n + 2" },
+        { "id": "c", "text": "2n^2 + 3n + 1" },
+        { "id": "d", "text": "3n^2 + 2" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "1st differences: 9, 13, 17, 21. 2nd differences: 4, 4, 4. a = 2. Subtract 2n^2: 5-2=3, 14-8=6, 27-18=9, 44-32=12. Linear part = 3n. nth term = 2n^2 + 3n. Check: n=1 gives 2+3=5, n=2 gives 8+6=14."
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "practice-algebraic-proof",
+  "title": "Practice: Algebraic Proof",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "To prove that the sum of any two odd numbers is even, what would you let the two odd numbers be?",
+      "options": [
+        { "id": "a", "text": "n and m" },
+        { "id": "b", "text": "2n + 1 and 2m + 1" },
+        { "id": "c", "text": "2n and 2m" },
+        { "id": "d", "text": "2n + 1 and 2n + 3" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Any odd number can be written as 2k + 1. Since the two odd numbers could be different, use 2n + 1 and 2m + 1 (different variables). Option d only represents consecutive odd numbers."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Prove that (n+1)^2 - (n-1)^2 simplifies to:",
+      "options": [
+        { "id": "a", "text": "4n" },
+        { "id": "b", "text": "2" },
+        { "id": "c", "text": "2n" },
+        { "id": "d", "text": "4n + 2" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "(n+1)^2 = n^2 + 2n + 1. (n-1)^2 = n^2 - 2n + 1. Subtract: (n^2 + 2n + 1) - (n^2 - 2n + 1) = 4n."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Which of the following disproves the statement 'n^2 + n + 11 is always prime'?",
+      "options": [
+        { "id": "a", "text": "n = 1 (gives 13, which is prime)" },
+        { "id": "b", "text": "n = 10 (gives 121 = 11 x 11)" },
+        { "id": "c", "text": "n = 3 (gives 23, which is prime)" },
+        { "id": "d", "text": "n = 5 (gives 41, which is prime)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "n = 10: 100 + 10 + 11 = 121 = 11^2. Since 121 is not prime, this is a counter-example that disproves the statement."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The expression (2n+1)^2 - 1 always equals a multiple of which number?",
+      "options": [
+        { "id": "a", "text": "2" },
+        { "id": "b", "text": "3" },
+        { "id": "c", "text": "4" },
+        { "id": "d", "text": "8" }
+      ],
+      "correctAnswer": "d",
+      "explanation": "(2n+1)^2 - 1 = 4n^2 + 4n + 1 - 1 = 4n^2 + 4n = 4n(n+1). Since n and n+1 are consecutive, one is even, so n(n+1) is even. Therefore 4n(n+1) = 4 x 2k = 8k for some integer k. It's always a multiple of 8."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Prove that the sum of three consecutive integers is always a multiple of 3. If the integers are n, n+1, n+2, the sum equals:",
+      "options": [
+        { "id": "a", "text": "3n + 3 = 3(n + 1)" },
+        { "id": "b", "text": "3n + 2" },
+        { "id": "c", "text": "3n^2 + 3" },
+        { "id": "d", "text": "n^3 + 3" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "n + (n+1) + (n+2) = 3n + 3 = 3(n+1). This is 3 times an integer, so it is always a multiple of 3."
+    }
+  ]
+}

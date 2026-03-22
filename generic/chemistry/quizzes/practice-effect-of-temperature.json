@@ -1,0 +1,76 @@
+{
+  "id": "practice-effect-of-temperature",
+  "title": "Practice: Effect of Temperature on Rate",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A rule of thumb states that increasing temperature by 10°C roughly doubles the rate of reaction. If a reaction takes 80 seconds at 20°C, approximately how long would it take at 40°C?",
+      "options": [
+        { "id": "a", "text": "40 seconds" },
+        { "id": "b", "text": "60 seconds" },
+        { "id": "c", "text": "20 seconds" },
+        { "id": "d", "text": "10 seconds" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "From 20°C to 40°C is a 20°C increase, which is two 10°C increments. Each 10°C increase doubles the rate, so the rate quadruples (x2 x2 = x4). If the rate is 4 times faster, the time is quartered: 80/4 = 20 seconds. This is an approximation - the actual effect depends on the specific reaction."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A Maxwell-Boltzmann distribution curve at a higher temperature compared to a lower temperature shows which change?",
+      "options": [
+        { "id": "a", "text": "The curve shifts left with a higher peak" },
+        { "id": "b", "text": "The curve flattens and shifts right, with more particles above the activation energy" },
+        { "id": "c", "text": "The curve becomes taller and narrower" },
+        { "id": "d", "text": "The area under the curve increases" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "At higher temperature, the Maxwell-Boltzmann distribution flattens (lower peak) and shifts to the right (higher average energy). Crucially, the area to the right of the activation energy line is larger, meaning more particles have sufficient energy to react. The total area under both curves is the same (same number of particles)."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Why is the effect of temperature on reaction rate more significant than simply making particles collide more often?",
+      "options": [
+        { "id": "a", "text": "Higher temperature changes the products formed" },
+        { "id": "b", "text": "The main effect is that a much greater proportion of collisions now have energy exceeding the activation energy" },
+        { "id": "c", "text": "Temperature changes the activation energy of the reaction" },
+        { "id": "d", "text": "Particles change size at higher temperatures" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "While higher temperature does increase collision frequency (particles move faster), the more significant effect is on the energy of collisions. A small temperature increase causes a large increase in the proportion of particles with energy exceeding Ea. This is why a 10°C rise can double the rate - the exponential increase in successful collisions is the dominant factor."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Milk spoils in a few hours at room temperature (20°C) but lasts for days in a fridge (4°C). A student says 'the fridge stops the chemical reactions in milk.' Is this correct?",
+      "options": [
+        { "id": "a", "text": "Yes, the reactions stop completely below 5°C" },
+        { "id": "b", "text": "No, the reactions still occur but at a much slower rate because fewer particles exceed the activation energy" },
+        { "id": "c", "text": "Yes, bacteria cannot survive in cold temperatures" },
+        { "id": "d", "text": "No, the reactions speed up in the fridge because particles are closer together" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The reactions do not stop; they are just slowed down significantly. At lower temperatures, particles have less kinetic energy, so fewer collisions exceed the activation energy. Bacterial enzymes also work more slowly at lower temperatures. This is why milk still eventually spoils in the fridge - just much more slowly."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "On a Maxwell-Boltzmann distribution, adding a catalyst is sometimes shown as moving the activation energy line to the left. Why does this have a similar effect to increasing temperature?",
+      "options": [
+        { "id": "a", "text": "Both increase the total number of particles" },
+        { "id": "b", "text": "Both result in more particles having energy equal to or greater than the activation energy" },
+        { "id": "c", "text": "Both increase the average speed of particles" },
+        { "id": "d", "text": "Both change the shape of the distribution curve" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Both result in more particles exceeding Ea, but by different mechanisms. Increasing temperature shifts the distribution to higher energies (more particles above the Ea line). A catalyst lowers the Ea line itself (moving it left on the diagram). Either way, more particles now have sufficient energy for successful collisions, increasing the rate."
+    }
+  ]
+}

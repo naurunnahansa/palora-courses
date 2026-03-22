@@ -1,0 +1,76 @@
+{
+  "id": "practice-sequences-nth-term-linear",
+  "title": "Practice: Sequences - nth Term (Linear)",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Find the nth term of the sequence: 7, 11, 15, 19, ...",
+      "options": [
+        { "id": "a", "text": "4n + 3" },
+        { "id": "b", "text": "4n + 7" },
+        { "id": "c", "text": "7n + 4" },
+        { "id": "d", "text": "4n - 3" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Common difference = 4. So starts with 4n. When n = 1: 4(1) = 4, but first term is 7. Add 3. nth term = 4n + 3. Check: n = 2 gives 11."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The nth term of a sequence is 5n - 2. Is 88 a term in this sequence?",
+      "options": [
+        { "id": "a", "text": "Yes, it is the 18th term" },
+        { "id": "b", "text": "Yes, it is the 17th term" },
+        { "id": "c", "text": "No, because n is not a whole number" },
+        { "id": "d", "text": "Yes, it is the 90th term" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Set 5n - 2 = 88. 5n = 90. n = 18. Since 18 is a positive whole number, 88 is the 18th term."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Find the nth term of: 25, 21, 17, 13, ...",
+      "options": [
+        { "id": "a", "text": "-4n + 25" },
+        { "id": "b", "text": "29 - 4n" },
+        { "id": "c", "text": "25 - 4n" },
+        { "id": "d", "text": "-4n + 21" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Common difference = -4. Start with -4n. When n = 1: -4, but first term is 25. Need to add 29. nth term = 29 - 4n. Check: n = 1 gives 25, n = 2 gives 21."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An arithmetic sequence has 3rd term = 14 and 7th term = 30. Find the nth term.",
+      "options": [
+        { "id": "a", "text": "4n + 2" },
+        { "id": "b", "text": "4n + 6" },
+        { "id": "c", "text": "4n - 2" },
+        { "id": "d", "text": "8n - 10" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Difference between 3rd and 7th = 30 - 14 = 16 over 4 gaps. Common difference = 4. 3rd term = 14, so 2nd = 10, 1st = 6. nth term = 4n + c where 4(1) + c = 6, so c = 2. nth term = 4n + 2. Check: n = 3 gives 14, n = 7 gives 30."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Which term of the sequence 3n + 7 first exceeds 100?",
+      "options": [
+        { "id": "a", "text": "31st" },
+        { "id": "b", "text": "32nd" },
+        { "id": "c", "text": "33rd" },
+        { "id": "d", "text": "30th" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Set 3n + 7 > 100. 3n > 93. n > 31. The first integer greater than 31 is 32. Check: 3(31) + 7 = 100 (not exceeding), 3(32) + 7 = 103 > 100."
+    }
+  ]
+}

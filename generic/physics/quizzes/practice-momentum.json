@@ -1,0 +1,76 @@
+{
+  "id": "practice-momentum",
+  "title": "Practice: Momentum",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A 1200 kg car travels at 15 m/s. What is its momentum?",
+      "options": [
+        { "id": "a", "text": "80 kg·m/s" },
+        { "id": "b", "text": "1215 kg·m/s" },
+        { "id": "c", "text": "18 000 kg·m/s" },
+        { "id": "d", "text": "90 000 kg·m/s" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Momentum = mass × velocity: p = mv = 1200 × 15 = 18 000 kg·m/s. Option (a) divides mass by velocity. Option (b) adds mass and velocity, which is meaningless. Momentum is the product of mass and velocity, and has units of kg·m/s."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A 0.5 kg ball moving at 8 m/s hits a wall and bounces back at 6 m/s. What is the change in momentum of the ball?",
+      "options": [
+        { "id": "a", "text": "1 kg·m/s" },
+        { "id": "b", "text": "7 kg·m/s" },
+        { "id": "c", "text": "-7 kg·m/s" },
+        { "id": "d", "text": "-1 kg·m/s" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Taking the initial direction as positive: initial momentum = 0.5 × 8 = 4 kg·m/s. After bouncing, the ball moves in the opposite direction: final momentum = 0.5 × (-6) = -3 kg·m/s. Change in momentum = final - initial = -3 - 4 = -7 kg·m/s. Option (a) only subtracts the speeds (8-6=2, then ×0.5=1), forgetting the direction change. When an object bounces, you must account for the sign change."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two ice skaters push apart from rest. Skater A (mass 60 kg) moves left at 2 m/s. If Skater B has a mass of 40 kg, what is Skater B's velocity?",
+      "options": [
+        { "id": "a", "text": "2 m/s to the right" },
+        { "id": "b", "text": "3 m/s to the right" },
+        { "id": "c", "text": "3 m/s to the left" },
+        { "id": "d", "text": "1.5 m/s to the right" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "By conservation of momentum, total momentum before = total momentum after. Before: both at rest, so total = 0. After: 60 × (-2) + 40 × v = 0, so -120 + 40v = 0, giving v = +3 m/s (to the right). Option (a) assumes both have the same speed, ignoring the mass difference. The lighter skater moves faster to conserve momentum."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A 3 kg trolley moving at 4 m/s collides with a stationary 1 kg trolley. They stick together. What is their combined velocity after the collision?",
+      "options": [
+        { "id": "a", "text": "1 m/s" },
+        { "id": "b", "text": "3 m/s" },
+        { "id": "c", "text": "4 m/s" },
+        { "id": "d", "text": "12 m/s" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using conservation of momentum: total momentum before = total momentum after. Before: (3 × 4) + (1 × 0) = 12 kg·m/s. After: (3 + 1) × v = 12, so 4v = 12, v = 3 m/s. Option (c) assumes velocity doesn't change, but the combined mass is now greater. Option (a) divides momentum by the wrong mass. In a perfectly inelastic collision (objects stick together), velocity always decreases."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Car safety features like crumple zones and airbags are designed to increase the time of impact during a collision. Why does this reduce injury?",
+      "options": [
+        { "id": "a", "text": "It reduces the momentum change" },
+        { "id": "b", "text": "It reduces the force experienced, because the same momentum change happens over a longer time" },
+        { "id": "c", "text": "It increases the driver's mass" },
+        { "id": "d", "text": "It stops the car faster" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "From F = change in momentum / time, increasing the time over which the momentum change occurs reduces the force on the passenger. The momentum change is the same (the car still stops), but spreading it over a longer time reduces the peak force. This is the key principle behind crumple zones, airbags, and seatbelts. Option (a) is wrong — the momentum change is determined by the collision, not the safety features."
+    }
+  ]
+}

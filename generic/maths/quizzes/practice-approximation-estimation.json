@@ -1,0 +1,76 @@
+{
+  "id": "practice-approximation-estimation",
+  "title": "Practice: Approximation and Estimation",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Estimate the value of (49.3 x 21.2) / 4.87 by rounding each number to 1 significant figure.",
+      "options": [
+        { "id": "a", "text": "100" },
+        { "id": "b", "text": "200" },
+        { "id": "c", "text": "250" },
+        { "id": "d", "text": "50" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Round to 1 s.f.: 49.3 -> 50, 21.2 -> 20, 4.87 -> 5. Estimate = (50 x 20) / 5 = 1000 / 5 = 200."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Round 3456 to 2 significant figures.",
+      "options": [
+        { "id": "a", "text": "3400" },
+        { "id": "b", "text": "3500" },
+        { "id": "c", "text": "3460" },
+        { "id": "d", "text": "35" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The first two significant figures are 3 and 4. The next digit is 5, so round up: 3500."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student says sqrt(70) is approximately 8.4. Use estimation to check if this is reasonable.",
+      "options": [
+        { "id": "a", "text": "Yes, because 8^2 = 64 and 9^2 = 81, and 70 is between them, closer to 64" },
+        { "id": "b", "text": "No, sqrt(70) should be about 35" },
+        { "id": "c", "text": "No, sqrt(70) should be about 7.0" },
+        { "id": "d", "text": "Yes, because 70 / 2 = 35 and sqrt(35) = 8.4" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "8^2 = 64 and 9^2 = 81. Since 70 is between 64 and 81, sqrt(70) is between 8 and 9. 70 is closer to 64, so about 8.4 is reasonable. (Actual value: 8.367...)"
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Truncate 7.896 to 1 decimal place.",
+      "options": [
+        { "id": "a", "text": "7.9" },
+        { "id": "b", "text": "7.8" },
+        { "id": "c", "text": "8.0" },
+        { "id": "d", "text": "7.89" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Truncation simply cuts off digits without rounding. Cutting after 1 decimal place: 7.8. (Note: rounding would give 7.9, but truncation always rounds down.)"
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Estimate (8.9^2) / sqrt(24) without a calculator.",
+      "options": [
+        { "id": "a", "text": "Approximately 5" },
+        { "id": "b", "text": "Approximately 16" },
+        { "id": "c", "text": "Approximately 36" },
+        { "id": "d", "text": "Approximately 81" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "8.9 is approximately 9, so 8.9^2 is approximately 81. sqrt(24) is approximately sqrt(25) = 5. So the estimate is 81/5 = 16.2, approximately 16."
+    }
+  ]
+}

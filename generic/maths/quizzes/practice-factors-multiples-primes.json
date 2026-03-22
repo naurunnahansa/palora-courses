@@ -1,0 +1,76 @@
+{
+  "id": "practice-factors-multiples-primes",
+  "title": "Practice: Factors, Multiples, and Prime Numbers",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Write 360 as a product of its prime factors in index form.",
+      "options": [
+        { "id": "a", "text": "2^3 x 3^2 x 5" },
+        { "id": "b", "text": "2^2 x 3^2 x 10" },
+        { "id": "c", "text": "2^3 x 3 x 15" },
+        { "id": "d", "text": "2^2 x 3^2 x 5^2" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "360 / 2 = 180, 180 / 2 = 90, 90 / 2 = 45, 45 / 3 = 15, 15 / 3 = 5, 5 / 5 = 1. So 360 = 2 x 2 x 2 x 3 x 3 x 5 = 2^3 x 3^2 x 5."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "How many factors does the number 48 have?",
+      "options": [
+        { "id": "a", "text": "8" },
+        { "id": "b", "text": "10" },
+        { "id": "c", "text": "12" },
+        { "id": "d", "text": "6" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Factor pairs of 48: 1x48, 2x24, 3x16, 4x12, 6x8. This gives factors: 1, 2, 3, 4, 6, 8, 12, 16, 24, 48 - that is 10 factors."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Which of the following numbers is prime?",
+      "options": [
+        { "id": "a", "text": "51" },
+        { "id": "b", "text": "87" },
+        { "id": "c", "text": "83" },
+        { "id": "d", "text": "91" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "51 = 3 x 17, 87 = 3 x 29, 91 = 7 x 13. For 83: test primes up to sqrt(83) ~ 9.1 (so test 2, 3, 5, 7). 83 is odd, not divisible by 3, 5, or 7. Therefore 83 is prime."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A number is a multiple of both 6 and 8. What is the smallest such number greater than 50?",
+      "options": [
+        { "id": "a", "text": "48" },
+        { "id": "b", "text": "56" },
+        { "id": "c", "text": "72" },
+        { "id": "d", "text": "64" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A number that is a multiple of both 6 and 8 must be a multiple of their LCM. LCM(6, 8) = 24. Multiples of 24: 24, 48, 72, 96, ... The smallest greater than 50 is 72."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two numbers have a product of 36 and are both prime. What is their sum?",
+      "options": [
+        { "id": "a", "text": "15" },
+        { "id": "b", "text": "13" },
+        { "id": "c", "text": "There are no such numbers" },
+        { "id": "d", "text": "38" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Factor pairs of 36: 1x36, 2x18, 3x12, 4x9, 6x6. For both to be prime, we'd need a pair where both factors are prime. Checking: 2 and 18 (18 not prime), 3 and 12 (12 not prime). No pair of primes multiply to give 36, so there are no such numbers."
+    }
+  ]
+}

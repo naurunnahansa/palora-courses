@@ -1,0 +1,76 @@
+{
+  "id": "practice-lines-of-best-fit",
+  "title": "Practice: Lines of Best Fit",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A line of best fit passes through (2, 10) and (8, 34). What is the equation of this line?",
+      "options": [
+        { "id": "a", "text": "y = 4x + 2" },
+        { "id": "b", "text": "y = 4x − 2" },
+        { "id": "c", "text": "y = 6x − 2" },
+        { "id": "d", "text": "y = 4x + 10" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Gradient = (34-10)/(8-2) = 24/6 = 4. Using y = mx + c: 10 = 4(2) + c, so c = 2. Equation: y = 4x + 2. Check: at x=8, y = 32+2 = 34. Correct."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A line of best fit for a scatter graph of study hours (x) vs marks (y) has equation y = 6x + 25. What does the gradient represent in context?",
+      "options": [
+        { "id": "a", "text": "Every student scores 6 marks" },
+        { "id": "b", "text": "For each additional hour of study, marks increase by about 6" },
+        { "id": "c", "text": "The minimum mark is 6" },
+        { "id": "d", "text": "Students study for 6 hours on average" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The gradient (6) represents the rate of change: for each extra hour of study, the predicted mark increases by 6. The y-intercept (25) represents the predicted mark with 0 hours of study."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A scatter graph has 10 data points. A student draws a line of best fit that passes through 3 points with 4 points above and 3 below. Is this a good line of best fit?",
+      "options": [
+        { "id": "a", "text": "Yes, because it passes through some points" },
+        { "id": "b", "text": "No, because it must pass through all points" },
+        { "id": "c", "text": "Yes, because it has roughly equal points above and below" },
+        { "id": "d", "text": "No, because it should pass through the origin" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "A good line of best fit should have roughly equal numbers of points above and below, and follow the general trend. It does NOT need to pass through any data points or the origin. 4 above and 3 below (plus 3 on) is well balanced."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Using a line of best fit with equation y = −3x + 50, predict y when x = 12.",
+      "options": [
+        { "id": "a", "text": "86" },
+        { "id": "b", "text": "14" },
+        { "id": "c", "text": "−14" },
+        { "id": "d", "text": "16" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "y = −3(12) + 50 = −36 + 50 = 14. The negative gradient indicates negative correlation: as x increases, y decreases."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A line of best fit passes through the mean point (5, 30). The gradient is 3. Use this to estimate y when x = 9.",
+      "options": [
+        { "id": "a", "text": "57" },
+        { "id": "b", "text": "27" },
+        { "id": "c", "text": "42" },
+        { "id": "d", "text": "39" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Using the point and gradient: y - 30 = 3(x - 5), so y = 3x + 15. At x = 9: y = 3(9) + 15 = 27 + 15 = 42. The mean point always lies on the line of best fit."
+    }
+  ]
+}

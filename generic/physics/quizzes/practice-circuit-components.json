@@ -1,0 +1,76 @@
+{
+  "id": "practice-circuit-components",
+  "title": "Practice: Circuit Components",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A diode is placed in a circuit. Current flows when connected one way but not the other. This means a diode:",
+      "options": [
+        { "id": "a", "text": "Has zero resistance in both directions" },
+        { "id": "b", "text": "Only allows current to flow in one direction (forward bias)" },
+        { "id": "c", "text": "Doubles the voltage in the circuit" },
+        { "id": "d", "text": "Stores electrical energy like a battery" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A diode allows current to flow in only one direction — when forward biased (connected the 'right' way). In reverse bias, the diode has very high resistance and blocks current. This makes diodes useful for converting AC to DC (rectification). Option A is wrong — a diode has very high resistance in reverse bias. A diode does not store energy (option D) — that describes a capacitor or battery."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An LED (light-emitting diode) in a circuit must have a resistor connected in series with it. Why?",
+      "options": [
+        { "id": "a", "text": "To make the LED brighter" },
+        { "id": "b", "text": "To increase the current through the LED" },
+        { "id": "c", "text": "To limit the current flowing through the LED and prevent it from being damaged" },
+        { "id": "d", "text": "To convert AC to DC for the LED" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "LEDs have a very low resistance when forward biased. Without a series resistor to limit the current, too much current would flow, overheating and destroying the LED. The resistor drops some of the voltage, keeping the current at a safe level. Options A and B are wrong — the resistor actually reduces brightness and current, which is the whole point."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A variable resistor is connected in series with a motor. When the resistance of the variable resistor is increased, what happens to the motor?",
+      "options": [
+        { "id": "a", "text": "The motor speeds up because more energy is available" },
+        { "id": "b", "text": "The motor slows down because less current flows through the circuit" },
+        { "id": "c", "text": "The motor reverses direction" },
+        { "id": "d", "text": "Nothing changes — variable resistors only affect voltage" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Increasing the resistance in series increases the total circuit resistance, which reduces the current (from V = IR). Less current through the motor means less power and the motor slows down. This is how speed controllers work — by varying the resistance. Option A is wrong because more resistance means less current and less power delivered to the motor."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A fuse rated at 3 A is connected in a circuit. The current through the circuit increases to 4 A. What happens?",
+      "options": [
+        { "id": "a", "text": "The fuse allows 3 A through and blocks the extra 1 A" },
+        { "id": "b", "text": "The fuse wire melts, breaking the circuit and stopping all current flow" },
+        { "id": "c", "text": "The fuse increases its resistance to reduce the current to 3 A" },
+        { "id": "d", "text": "The fuse stores the excess charge" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "When the current exceeds the fuse rating (3 A), the thin fuse wire heats up due to the excess current (P = I squared x R), melts, and breaks the circuit. This stops ALL current flow, protecting the appliance and wiring from damage or fire. A fuse does not regulate current (options A and C) — it is a safety cut-off device that must be replaced after blowing."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A circuit contains a 12 V battery, a switch, a 6 ohm resistor, and an ammeter all connected in series. When the switch is closed, what reading does the ammeter show?",
+      "options": [
+        { "id": "a", "text": "72 A" },
+        { "id": "b", "text": "0.5 A" },
+        { "id": "c", "text": "18 A" },
+        { "id": "d", "text": "2 A" }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Using I = V/R = 12/6 = 2 A. The ammeter and switch have negligible resistance, so the full 12 V acts across the 6 ohm resistor. Option A (72) multiplies V x R. Option B (0.5) divides R by V. Option C (18) adds V and R. This is a straightforward application of Ohm's law."
+    }
+  ]
+}

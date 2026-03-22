@@ -1,0 +1,76 @@
+{
+  "id": "practice-sample-spaces",
+  "title": "Practice: Sample Spaces",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two fair dice are rolled and the scores are added. How many outcomes are in the sample space?",
+      "options": [
+        { "id": "a", "text": "12" },
+        { "id": "b", "text": "36" },
+        { "id": "c", "text": "11" },
+        { "id": "d", "text": "6" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Each dice has 6 outcomes, so the sample space has 6 × 6 = 36 equally likely outcomes. Option (a) adds instead of multiplying. Option (c) counts the number of possible totals (2 to 12)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two fair dice are rolled and the scores added. Using a sample space diagram, what is the probability of getting a total of 8?",
+      "options": [
+        { "id": "a", "text": "5/36" },
+        { "id": "b", "text": "8/36" },
+        { "id": "c", "text": "6/36" },
+        { "id": "d", "text": "4/36" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The combinations that give 8 are: (2,6), (3,5), (4,4), (5,3), (6,2) = 5 outcomes. P(total = 8) = 5/36. A common error is forgetting that (2,6) and (6,2) are different outcomes."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A coin is flipped and a spinner numbered 1-4 is spun. How many outcomes are in the sample space, and what is P(heads and an even number)?",
+      "options": [
+        { "id": "a", "text": "6 outcomes; P = 1/3" },
+        { "id": "b", "text": "8 outcomes; P = 2/8" },
+        { "id": "c", "text": "8 outcomes; P = 4/8" },
+        { "id": "d", "text": "6 outcomes; P = 2/6" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Sample space: 2 × 4 = 8 outcomes. Favourable: (H,2) and (H,4) = 2 outcomes. P = 2/8 = 1/4. The sample space diagram systematically lists all possible combinations."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two fair dice are rolled. What is the probability of getting a double (both dice show the same number)?",
+      "options": [
+        { "id": "a", "text": "1/36" },
+        { "id": "b", "text": "1/12" },
+        { "id": "c", "text": "1/6" },
+        { "id": "d", "text": "1/3" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Doubles: (1,1), (2,2), (3,3), (4,4), (5,5), (6,6) = 6 outcomes out of 36. P = 6/36 = 1/6. Option (a) counts only one double."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two fair dice are rolled and the scores multiplied. Using a sample space diagram, what is the probability of getting a product greater than 20?",
+      "options": [
+        { "id": "a", "text": "6/36" },
+        { "id": "b", "text": "5/36" },
+        { "id": "c", "text": "8/36" },
+        { "id": "d", "text": "4/36" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Products > 20: (4,6)=24, (6,4)=24, (5,5)=25, (5,6)=30, (6,5)=30, (6,6)=36 = 6 outcomes. P = 6/36 = 1/6. You must list all pairs systematically using the sample space diagram."
+    }
+  ]
+}

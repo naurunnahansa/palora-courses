@@ -1,0 +1,76 @@
+{
+  "id": "practice-population-dynamics",
+  "title": "Practice: Population Dynamics",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A population of deer on an island grows rapidly after being introduced with no predators. After several years, the population crashes dramatically. Using your knowledge of population dynamics, what most likely caused the crash?",
+      "options": [
+        { "id": "a", "text": "The deer evolved to reproduce more slowly" },
+        { "id": "b", "text": "The population exceeded the carrying capacity; food and resources became insufficient, leading to starvation and increased disease" },
+        { "id": "c", "text": "Predators migrated to the island from the mainland" },
+        { "id": "d", "text": "The deer voluntarily stopped reproducing to conserve resources" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Without predators, the deer population grew exponentially until it exceeded the island's carrying capacity - the maximum population the environment can sustainably support. Overgrazing depleted food sources, competition for resources intensified, and individuals weakened by poor nutrition became susceptible to disease. The population then crashed. This boom-and-bust pattern is common when populations lack natural controls."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A graph shows a population of rabbits growing in an S-shaped (sigmoid) curve. The population levels off at 500 individuals. What does the 500 represent, and what factors might determine this number?",
+      "options": [
+        { "id": "a", "text": "It represents the death rate; it is determined by the number of predators only" },
+        { "id": "b", "text": "It represents the carrying capacity; it is determined by limiting factors such as food availability, space, water, and predation" },
+        { "id": "c", "text": "It represents the birth rate; it is determined by how fast rabbits can reproduce" },
+        { "id": "d", "text": "It represents the total number of rabbits that have ever lived in the area" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The carrying capacity (K) is the maximum population size that an environment can sustain indefinitely. At 500 individuals, births equal deaths, so the population stabilises. The carrying capacity is determined by limiting factors: available food, water, shelter, space, and predation pressure. If any of these change, the carrying capacity shifts up or down."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A predator-prey graph shows that the peaks in the predator population always lag behind the peaks in the prey population. Why does this time lag occur?",
+      "options": [
+        { "id": "a", "text": "Predators take time to find the prey" },
+        { "id": "b", "text": "As prey numbers increase, more food is available for predators, so predator numbers increase - but this takes time for breeding and offspring to mature. As predator numbers peak, they reduce the prey population, which then causes predator numbers to decline" },
+        { "id": "c", "text": "Predators hibernate while prey populations grow" },
+        { "id": "d", "text": "The prey deliberately reproduce faster to outpace predators" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The time lag in predator-prey cycles occurs because population responses are not instantaneous. When prey increases, predators have more food and reproduce more, but there is a delay for gestation and maturation. As the enlarged predator population reduces prey numbers, predators then face food shortages, and their population declines - again with a time lag. This creates the characteristic oscillating pattern."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two species of birds compete for the same nesting sites in a woodland. Species A is larger and more aggressive. Over several years, the population of Species B declines significantly. This is an example of:",
+      "options": [
+        { "id": "a", "text": "Predation" },
+        { "id": "b", "text": "Mutualism" },
+        { "id": "c", "text": "Interspecific competition, where two different species compete for the same limited resource" },
+        { "id": "d", "text": "Intraspecific competition, where members of the same species compete" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "This is interspecific competition - competition between two different species for the same limited resource (nesting sites). Species A has a competitive advantage due to its larger size and aggression, so it outcompetes Species B. This can lead to competitive exclusion, where the weaker competitor is eliminated from the habitat. Intraspecific competition would be between members of the same species."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A scientist uses the capture-recapture method to estimate a population of woodlice. She captures 40 woodlice, marks them, and releases them. A week later, she captures 50 woodlice, of which 10 are marked. What is the estimated population size?",
+      "options": [
+        { "id": "a", "text": "90" },
+        { "id": "b", "text": "200" },
+        { "id": "c", "text": "500" },
+        { "id": "d", "text": "2000" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using the Lincoln index formula: Population = (number in first capture x number in second capture) / number recaptured marked. Population = (40 x 50) / 10 = 2000 / 10 = 200. This assumes: no births, deaths, or migration between captures; marked individuals mix randomly with the population; and marks do not affect survival. These assumptions are important limitations of the method."
+    }
+  ]
+}

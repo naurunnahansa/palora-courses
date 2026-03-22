@@ -1,0 +1,76 @@
+{
+  "id": "practice-bearings",
+  "title": "Practice: Bearings",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The bearing of B from A is 065 degrees. What is the bearing of A from B?",
+      "options": [
+        { "id": "a", "text": "295 degrees" },
+        { "id": "b", "text": "245 degrees" },
+        { "id": "c", "text": "115 degrees" },
+        { "id": "d", "text": "185 degrees" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "To find the back bearing, add 180 degrees: 065 + 180 = 245 degrees. Since 245 is less than 360, the bearing of A from B is 245 degrees."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A ship sails on a bearing of 135 degrees. In which general direction is it heading?",
+      "options": [
+        { "id": "a", "text": "North-West" },
+        { "id": "b", "text": "North-East" },
+        { "id": "c", "text": "South-East" },
+        { "id": "d", "text": "South-West" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Bearings are measured clockwise from north. 135 degrees is between 90 degrees (East) and 180 degrees (South), so the direction is South-East."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The bearing of C from B is 210 degrees. What is the bearing of B from C?",
+      "options": [
+        { "id": "a", "text": "030 degrees" },
+        { "id": "b", "text": "390 degrees" },
+        { "id": "c", "text": "150 degrees" },
+        { "id": "d", "text": "330 degrees" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Back bearing = 210 + 180 = 390 degrees. Since this exceeds 360, subtract 360: 390 - 360 = 030 degrees."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Town A is due north of town C. Town B is on a bearing of 065 degrees from A. If angle ACB = 40 degrees, what is angle ABC?",
+      "options": [
+        { "id": "a", "text": "65 degrees" },
+        { "id": "b", "text": "75 degrees" },
+        { "id": "c", "text": "105 degrees" },
+        { "id": "d", "text": "115 degrees" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The bearing from A to B is 065 degrees, so angle BAC = 65 degrees. In triangle ABC: angle ABC = 180 - 65 - 40 = 75 degrees."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A hiker walks 5 km on a bearing of 090 degrees (due east) then 5 km on a bearing of 000 degrees (due north). What is the straight-line distance from the starting point?",
+      "options": [
+        { "id": "a", "text": "10 km" },
+        { "id": "b", "text": "5 km" },
+        { "id": "c", "text": "5 sqrt(2) km, approximately 7.07 km" },
+        { "id": "d", "text": "25 km" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The two legs are perpendicular (east then north). By Pythagoras: distance = sqrt(5^2 + 5^2) = sqrt(50) = 5 sqrt(2) km, which is approximately 7.07 km."
+    }
+  ]
+}

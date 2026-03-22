@@ -1,0 +1,76 @@
+{
+  "id": "practice-cumulative-frequency",
+  "title": "Practice: Cumulative Frequency",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A cumulative frequency table shows: ≤10 (5), ≤20 (18), ≤30 (35), ≤40 (48), ≤50 (52). How many values are in the class 20 < x ≤ 30?",
+      "options": [
+        { "id": "a", "text": "35" },
+        { "id": "b", "text": "17" },
+        { "id": "c", "text": "13" },
+        { "id": "d", "text": "30" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Frequency for 20 < x ≤ 30 = cumulative at 30 minus cumulative at 20 = 35 - 18 = 17. A common error is reading the cumulative frequency (35) as the frequency for the class."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A cumulative frequency graph for 80 students shows: at x = 40, CF = 20; at x = 60, CF = 60. Estimate the median.",
+      "options": [
+        { "id": "a", "text": "40" },
+        { "id": "b", "text": "50" },
+        { "id": "c", "text": "45" },
+        { "id": "d", "text": "60" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Median is at the 40th value (80/2 = 40). CF = 20 at x = 40, and CF = 60 at x = 60. The 40th value is between these. 40th is 20 above CF of 20, and the interval 40-60 covers 40 values. So median ≈ 40 + (20/40) x 20 = 40 + 10 = 50."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "For 60 data values, what cumulative frequency values should you read to find the lower quartile (Q1) and upper quartile (Q3)?",
+      "options": [
+        { "id": "a", "text": "Q1 at 15th value, Q3 at 45th value" },
+        { "id": "b", "text": "Q1 at 20th value, Q3 at 40th value" },
+        { "id": "c", "text": "Q1 at 15th value, Q3 at 30th value" },
+        { "id": "d", "text": "Q1 at 30th value, Q3 at 45th value" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Q1 is at n/4 = 60/4 = 15th value. Q3 is at 3n/4 = 3(60)/4 = 45th value. These positions are read from the cumulative frequency axis to find the corresponding data values on the x-axis."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A cumulative frequency diagram for 100 values gives Q1 = 24 and Q3 = 42. What is the interquartile range?",
+      "options": [
+        { "id": "a", "text": "66" },
+        { "id": "b", "text": "33" },
+        { "id": "c", "text": "18" },
+        { "id": "d", "text": "9" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "IQR = Q3 - Q1 = 42 - 24 = 18. The IQR measures the spread of the middle 50% of the data. Option (a) adds instead of subtracting. Option (b) is the median of the quartile values."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "From a cumulative frequency graph of 80 students' marks, the median is 55 and the IQR is 22. Q1 = 44. What percentage of students scored more than 66?",
+      "options": [
+        { "id": "a", "text": "75%" },
+        { "id": "b", "text": "50%" },
+        { "id": "c", "text": "25%" },
+        { "id": "d", "text": "10%" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Q3 = Q1 + IQR = 44 + 22 = 66. Q3 means 75% of values are at or below 66. Therefore 25% scored more than 66. This is 0.25 x 80 = 20 students."
+    }
+  ]
+}

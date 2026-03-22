@@ -1,0 +1,76 @@
+{
+  "id": "practice-translations",
+  "title": "Practice: Translations",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A triangle has vertices at (1, 2), (4, 2) and (4, 5). The triangle is translated by the column vector (−3, 4). What are the coordinates of the image of the vertex (4, 5)?",
+      "options": [
+        { "id": "a", "text": "(1, 9)" },
+        { "id": "b", "text": "(7, 1)" },
+        { "id": "c", "text": "(1, 1)" },
+        { "id": "d", "text": "(7, 9)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "To translate a point by a column vector, add the components: (4 + (−3), 5 + 4) = (1, 9). Option (b) adds 3 instead of subtracting. Option (c) subtracts both. Option (d) adds both as positives."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Point P(−2, 5) is mapped to P'(3, 1) by a translation. What is the column vector of this translation?",
+      "options": [
+        { "id": "a", "text": "(−5, 4)" },
+        { "id": "b", "text": "(5, 4)" },
+        { "id": "c", "text": "(5, −4)" },
+        { "id": "d", "text": "(−5, −4)" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The column vector is found by subtracting the original from the image: (3 − (−2), 1 − 5) = (5, −4). A common error is subtracting the wrong way round, giving (−5, 4)."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A shape is translated by (2, −3) and then translated again by (−5, 7). What single translation is equivalent to these two combined?",
+      "options": [
+        { "id": "a", "text": "(7, −10)" },
+        { "id": "b", "text": "(−3, 4)" },
+        { "id": "c", "text": "(3, −4)" },
+        { "id": "d", "text": "(−7, 10)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Add the two column vectors: (2 + (−5), −3 + 7) = (−3, 4). Option (c) reverses the signs. Option (a) subtracts instead of adding."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A rectangle ABCD is translated so that vertex A moves from (−1, 3) to (4, −2). If vertex C was originally at (5, 7), what are the coordinates of C' after the translation?",
+      "options": [
+        { "id": "a", "text": "(0, 2)" },
+        { "id": "b", "text": "(10, 12)" },
+        { "id": "c", "text": "(10, 2)" },
+        { "id": "d", "text": "(0, 12)" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "First find the translation vector from A: (4 − (−1), −2 − 3) = (5, −5). Apply this to C: (5 + 5, 7 + (−5)) = (10, 2). Every point moves by the same vector in a translation."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "After a translation by column vector (a, b), the point (6, −1) maps to (2, 4). What is the value of a + b?",
+      "options": [
+        { "id": "a", "text": "1" },
+        { "id": "b", "text": "−1" },
+        { "id": "c", "text": "9" },
+        { "id": "d", "text": "−9" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "a = 2 − 6 = −4 and b = 4 − (−1) = 5. So a + b = −4 + 5 = 1."
+    }
+  ]
+}

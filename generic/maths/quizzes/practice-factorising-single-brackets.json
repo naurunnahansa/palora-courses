@@ -1,0 +1,76 @@
+{
+  "id": "practice-factorising-single-brackets",
+  "title": "Practice: Factorising into Single Brackets",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Factorise fully: 12x^2 - 18x",
+      "options": [
+        { "id": "a", "text": "6(2x^2 - 3x)" },
+        { "id": "b", "text": "6x(2x - 3)" },
+        { "id": "c", "text": "2x(6x - 9)" },
+        { "id": "d", "text": "3x(4x - 6)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "HCF of 12x^2 and 18x is 6x. 12x^2 / 6x = 2x and 18x / 6x = 3. So 12x^2 - 18x = 6x(2x - 3). Options c and d are not fully factorised."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Factorise fully: 15a^2b + 10ab^2",
+      "options": [
+        { "id": "a", "text": "5ab(3a + 2b)" },
+        { "id": "b", "text": "5a(3ab + 2b^2)" },
+        { "id": "c", "text": "ab(15a + 10b)" },
+        { "id": "d", "text": "5(3a^2b + 2ab^2)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "HCF of 15a^2b and 10ab^2 is 5ab. 15a^2b / 5ab = 3a and 10ab^2 / 5ab = 2b. So 5ab(3a + 2b)."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Factorise: x^3 + x^2 - x",
+      "options": [
+        { "id": "a", "text": "x(x^2 + x - 1)" },
+        { "id": "b", "text": "x^2(x + 1) - x" },
+        { "id": "c", "text": "x(x + 1)(x - 1)" },
+        { "id": "d", "text": "x^2(x + 1 - x)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "HCF is x. Factoring: x(x^2 + x - 1). The quadratic x^2 + x - 1 does not factorise neatly, so this is fully factorised."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Factorise fully: 8xy - 12x + 20y",
+      "options": [
+        { "id": "a", "text": "4(2xy - 3x + 5y)" },
+        { "id": "b", "text": "2(4xy - 6x + 10y)" },
+        { "id": "c", "text": "4x(2y - 3) + 20y" },
+        { "id": "d", "text": "8(xy - 12x + 20y)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "HCF of 8, 12, and 20 is 4. There is no common variable across all three terms. So 4(2xy - 3x + 5y)."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A rectangle has area 6x^2 + 9x. If the width is 3x, what is the length?",
+      "options": [
+        { "id": "a", "text": "2x + 3" },
+        { "id": "b", "text": "2x + 9" },
+        { "id": "c", "text": "2x^2 + 3x" },
+        { "id": "d", "text": "2x + 9x" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Area = width x length, so length = area / width = (6x^2 + 9x) / 3x. Factorising: 6x^2 + 9x = 3x(2x + 3). Dividing by 3x gives length = 2x + 3."
+    }
+  ]
+}

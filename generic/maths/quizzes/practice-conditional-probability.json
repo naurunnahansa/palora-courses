@@ -1,0 +1,76 @@
+{
+  "id": "practice-conditional-probability",
+  "title": "Practice: Conditional Probability",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A bag contains 4 red and 6 blue counters. Two counters are drawn without replacement. Given that the first counter is red, what is the probability the second is also red?",
+      "options": [
+        { "id": "a", "text": "4/10" },
+        { "id": "b", "text": "3/9" },
+        { "id": "c", "text": "3/10" },
+        { "id": "d", "text": "4/9" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "After removing one red, there are 3 red left out of 9 total. P(2nd red | 1st red) = 3/9 = 1/3. Option (a) uses the original probabilities, ignoring that a counter was removed."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "P(A) = 0.6, P(B) = 0.5, P(A ∩ B) = 0.3. Find P(B | A).",
+      "options": [
+        { "id": "a", "text": "0.3" },
+        { "id": "b", "text": "0.6" },
+        { "id": "c", "text": "0.5" },
+        { "id": "d", "text": "0.18" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "P(B | A) = P(A ∩ B) / P(A) = 0.3 / 0.6 = 0.5. This means that given A has occurred, the probability of B is 0.5. Option (d) incorrectly multiplies P(A) × P(A ∩ B)."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "100 students were surveyed. 60 passed maths, 50 passed English, 35 passed both. Given a student passed English, what is the probability they also passed maths?",
+      "options": [
+        { "id": "a", "text": "35/100" },
+        { "id": "b", "text": "35/60" },
+        { "id": "c", "text": "35/50" },
+        { "id": "d", "text": "60/100" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "P(maths | English) = P(maths ∩ English) / P(English) = 35/50 = 7/10. We restrict to the 50 English students and find how many also passed maths. Option (b) divides by maths total instead."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A box has 3 red and 5 white balls. Two balls are drawn without replacement. What is the probability that the second ball is red?",
+      "options": [
+        { "id": "a", "text": "3/8" },
+        { "id": "b", "text": "3/7" },
+        { "id": "c", "text": "15/56" },
+        { "id": "d", "text": "5/14" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "P(2nd red) = P(1st red) × P(2nd red | 1st red) + P(1st white) × P(2nd red | 1st white) = 3/8 × 2/7 + 5/8 × 3/7 = 6/56 + 15/56 = 21/56 = 3/8. Interestingly, P(2nd red) = P(1st red) = 3/8."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Events A and B are independent with P(A) = 0.4 and P(B) = 0.5. What is P(A | B)?",
+      "options": [
+        { "id": "a", "text": "0.2" },
+        { "id": "b", "text": "0.8" },
+        { "id": "c", "text": "0.5" },
+        { "id": "d", "text": "0.4" }
+      ],
+      "correctAnswer": "d",
+      "explanation": "For independent events, P(A | B) = P(A) = 0.4. Independence means knowing B has occurred does not change the probability of A. Option (a) computes P(A) × P(B), which gives P(A ∩ B) for independent events."
+    }
+  ]
+}

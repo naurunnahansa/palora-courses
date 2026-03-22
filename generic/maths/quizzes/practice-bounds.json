@@ -1,0 +1,76 @@
+{
+  "id": "practice-bounds",
+  "title": "Practice: Bounds",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A length is measured as 4.5 cm, correct to 1 decimal place. What are the upper and lower bounds?",
+      "options": [
+        { "id": "a", "text": "Lower: 4.45 cm, Upper: 4.55 cm" },
+        { "id": "b", "text": "Lower: 4.0 cm, Upper: 5.0 cm" },
+        { "id": "c", "text": "Lower: 4.4 cm, Upper: 4.6 cm" },
+        { "id": "d", "text": "Lower: 4.49 cm, Upper: 4.51 cm" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Correct to 1 d.p., the error interval is +/- 0.05. Lower bound = 4.5 - 0.05 = 4.45 cm. Upper bound = 4.5 + 0.05 = 4.55 cm."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A rectangle has length 12 cm and width 5 cm, both measured to the nearest cm. What is the upper bound of the area?",
+      "options": [
+        { "id": "a", "text": "60 cm^2" },
+        { "id": "b", "text": "68.75 cm^2" },
+        { "id": "c", "text": "63.25 cm^2" },
+        { "id": "d", "text": "60.25 cm^2" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Upper bound of length = 12.5 cm, upper bound of width = 5.5 cm. Upper bound of area = 12.5 x 5.5 = 68.75 cm^2."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A distance is 240 km to the nearest 10 km and the time is 3 hours to the nearest hour. What is the lower bound of the speed?",
+      "options": [
+        { "id": "a", "text": "67.1 km/h (to 1 d.p.)" },
+        { "id": "b", "text": "80 km/h" },
+        { "id": "c", "text": "96 km/h" },
+        { "id": "d", "text": "70 km/h" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "For the lower bound of speed = distance/time, use the lower bound of distance and the upper bound of time. Lower bound distance = 235 km, upper bound time = 3.5 hours. Lower bound speed = 235 / 3.5 = 67.1 km/h (to 1 d.p.)."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "x = 6.4 correct to 1 decimal place. What is the error interval for x?",
+      "options": [
+        { "id": "a", "text": "6.35 <= x <= 6.45" },
+        { "id": "b", "text": "6.35 <= x < 6.45" },
+        { "id": "c", "text": "6.3 <= x < 6.5" },
+        { "id": "d", "text": "6.39 <= x <= 6.41" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "When a value is rounded, the lower bound is included (<=) but the upper bound is excluded (<), since a value of exactly 6.45 would round up to 6.5. So 6.35 <= x < 6.45."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "p = 8.2 and q = 3.6, both correct to 1 decimal place. Calculate the upper bound of p - q.",
+      "options": [
+        { "id": "a", "text": "4.6" },
+        { "id": "b", "text": "4.7" },
+        { "id": "c", "text": "4.5" },
+        { "id": "d", "text": "4.8" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "For the upper bound of a subtraction, use the upper bound of the first value and the lower bound of the second. Upper bound of p = 8.25, lower bound of q = 3.55. Upper bound of p - q = 8.25 - 3.55 = 4.70."
+    }
+  ]
+}

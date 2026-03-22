@@ -1,0 +1,76 @@
+{
+  "id": "practice-monohybrid-inheritance",
+  "title": "Practice: Monohybrid Inheritance",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two heterozygous brown mice (Bb) are crossed. Using a Punnett square, what is the expected ratio of brown (B_) to white (bb) offspring?",
+      "options": [
+        { "id": "a", "text": "1 brown : 1 white" },
+        { "id": "b", "text": "3 brown : 1 white" },
+        { "id": "c", "text": "1 brown : 3 white" },
+        { "id": "d", "text": "All brown" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Crossing Bb x Bb gives: BB (brown), Bb (brown), Bb (brown), bb (white). The genotypic ratio is 1 BB : 2 Bb : 1 bb. Since BB and Bb both show the dominant brown phenotype, the phenotypic ratio is 3 brown : 1 white. This classic 3:1 ratio is the hallmark of a monohybrid cross between two heterozygous parents."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A couple are both carriers of cystic fibrosis (Cc). They have four children. What is the probability that their NEXT child will have cystic fibrosis?",
+      "options": [
+        { "id": "a", "text": "0%, because three of four children will statistically be unaffected" },
+        { "id": "b", "text": "25%, because each pregnancy is an independent event" },
+        { "id": "c", "text": "50%, because one parent must pass on the recessive allele" },
+        { "id": "d", "text": "It depends on how many of their existing children have cystic fibrosis" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Each pregnancy is an independent genetic event. The Punnett square for Cc x Cc always gives a 1 in 4 (25%) chance of cc (affected) for each child, regardless of the outcomes of previous children. Common misconception: if three children are unaffected, the fourth is not 'due' to have cystic fibrosis - each child independently has a 25% chance."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A homozygous dominant red flower (RR) is crossed with a homozygous recessive white flower (rr). All F1 offspring are red (Rr). If two F1 plants are crossed, what fraction of the F2 offspring are expected to be homozygous?",
+      "options": [
+        { "id": "a", "text": "1/4" },
+        { "id": "b", "text": "1/2" },
+        { "id": "c", "text": "3/4" },
+        { "id": "d", "text": "None" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Crossing Rr x Rr in the F2 generation gives: RR, Rr, Rr, rr. The homozygous offspring are RR (1/4) and rr (1/4), totalling 1/4 + 1/4 = 1/2 (or 2/4) homozygous. The other half (2/4) are heterozygous (Rr). Note the question asks about homozygous (both dominant and recessive), not just one type."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A farmer crosses a tall pea plant with a short pea plant. All offspring are tall. The farmer then crosses two of these tall offspring. In a batch of 80 F2 plants, approximately how many would be expected to be short?",
+      "options": [
+        { "id": "a", "text": "0" },
+        { "id": "b", "text": "20" },
+        { "id": "c", "text": "40" },
+        { "id": "d", "text": "60" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Since all F1 offspring are tall, the tall parent must be homozygous dominant (TT) and short is homozygous recessive (tt). F1 are all Tt. Crossing Tt x Tt gives a 3:1 ratio, so 1/4 of F2 should be short (tt). 1/4 of 80 = 20 short plants. In practice, actual numbers may vary slightly from the expected ratio due to chance."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a cross between a heterozygous black guinea pig (Bb) and a white guinea pig (bb), what proportion of offspring would you expect to be white?",
+      "options": [
+        { "id": "a", "text": "None" },
+        { "id": "b", "text": "1/4" },
+        { "id": "c", "text": "1/2" },
+        { "id": "d", "text": "3/4" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The Punnett square for Bb x bb gives: Bb, Bb, bb, bb. That is 2 black (Bb) and 2 white (bb), giving a 1:1 phenotypic ratio. So 1/2 (50%) of offspring are expected to be white. This is different from the 3:1 ratio seen when crossing two heterozygous parents - the ratio depends on the specific parental genotypes."
+    }
+  ]
+}

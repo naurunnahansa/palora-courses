@@ -1,0 +1,76 @@
+{
+  "id": "practice-gas-pressure",
+  "title": "Practice: Gas Pressure and Temperature",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A sealed container of gas is heated from 27 degrees C (300 K) to 600 K. If the initial pressure is 100 kPa, what is the final pressure? (Assume constant volume)",
+      "options": [
+        { "id": "a", "text": "50 kPa" },
+        { "id": "b", "text": "200 kPa" },
+        { "id": "c", "text": "300 kPa" },
+        { "id": "d", "text": "400 kPa" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "For a gas at constant volume, pressure is directly proportional to absolute temperature (in kelvin): P1/T1 = P2/T2. So P2 = P1 x T2/T1 = 100 x 600/300 = 200 kPa. The temperature doubles (from 300 K to 600 K), so the pressure doubles. You must use kelvin, not degrees Celsius, for this calculation."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Why must temperatures be converted to kelvin when using the gas pressure law (P/T = constant)?",
+      "options": [
+        { "id": "a", "text": "Kelvin values are always larger numbers, making calculations easier" },
+        { "id": "b", "text": "The Celsius scale has an arbitrary zero, but kelvin starts at absolute zero where particle motion is minimal" },
+        { "id": "c", "text": "Gas laws only work in kelvin because scientists agreed to use it" },
+        { "id": "d", "text": "Celsius temperatures cannot be used in any formula" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The kelvin scale starts at absolute zero (0 K = -273 degrees C), the lowest possible temperature where particles have minimal kinetic energy. Pressure is proportional to absolute temperature because both relate to particle kinetic energy. Using Celsius would give incorrect results because 0 degrees C does not mean zero energy. For example, doubling from 10 degrees C to 20 degrees C does not double the pressure."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A bicycle tyre is pumped up on a cold morning at 7 degrees C. During the day, the temperature rises to 37 degrees C. Using the kinetic particle model, why does the tyre pressure increase?",
+      "options": [
+        { "id": "a", "text": "The tyre expands, pushing on the air inside" },
+        { "id": "b", "text": "New air molecules enter the tyre through the rubber" },
+        { "id": "c", "text": "The air particles move faster, hitting the tyre walls more frequently and with greater force" },
+        { "id": "d", "text": "The air particles become larger when heated" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "When temperature increases, gas particles gain kinetic energy and move faster. They collide with the inner walls of the tyre more often and with more force per collision. Since pressure = force per unit area, both effects increase the pressure. Particles do not change size or enter through the rubber. The tyre volume is approximately constant."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A gas in a sealed container is at 150 kPa and 300 K. The gas is cooled to 200 K. What is the new pressure?",
+      "options": [
+        { "id": "a", "text": "100 kPa" },
+        { "id": "b", "text": "225 kPa" },
+        { "id": "c", "text": "75 kPa" },
+        { "id": "d", "text": "50 kPa" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "P1/T1 = P2/T2, so P2 = P1 x T2/T1 = 150 x 200/300 = 150 x 2/3 = 100 kPa. When the temperature decreases, particles slow down, collide less frequently and with less force, so the pressure drops. Option B incorrectly multiplies by 300/200. Option C uses an incorrect ratio."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An aerosol can carries a warning: 'Do not expose to temperatures above 50 degrees C.' Why is this dangerous?",
+      "options": [
+        { "id": "a", "text": "The paint inside changes colour at high temperatures" },
+        { "id": "b", "text": "The gas propellant expands, increasing pressure which could cause the can to explode" },
+        { "id": "c", "text": "The metal can melts at 50 degrees C" },
+        { "id": "d", "text": "The gas escapes through the nozzle automatically" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Heating the sealed can increases the kinetic energy of the gas particles inside. They move faster and exert greater pressure on the can walls. If the pressure exceeds the can's structural limit, it can rupture or explode, which is extremely dangerous. Metal cans do not melt at 50 degrees C (steel melts above 1400 degrees C). This is a direct application of the gas pressure-temperature relationship."
+    }
+  ]
+}

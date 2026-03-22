@@ -1,0 +1,76 @@
+{
+  "id": "practice-simultaneous-one-linear-one-quadratic",
+  "title": "Practice: Simultaneous Equations (One Linear, One Quadratic)",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Solve: y = x + 1 and y = x^2 - 1",
+      "options": [
+        { "id": "a", "text": "(2, 3) and (-1, 0)" },
+        { "id": "b", "text": "(1, 0) and (-2, -1)" },
+        { "id": "c", "text": "(0, 1) and (2, 3)" },
+        { "id": "d", "text": "(-1, 0) and (1, 2)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Set equal: x + 1 = x^2 - 1. x^2 - x - 2 = 0. (x - 2)(x + 1) = 0. x = 2 or x = -1. When x = 2: y = 3. When x = -1: y = 0. Check: 2^2 - 1 = 3 and (-1)^2 - 1 = 0."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Solve: y = 2x and x^2 + y^2 = 20",
+      "options": [
+        { "id": "a", "text": "(2, 4) and (-2, -4)" },
+        { "id": "b", "text": "(4, 8) and (-4, -8)" },
+        { "id": "c", "text": "(1, 2) and (-1, -2)" },
+        { "id": "d", "text": "(2, 4) only" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Substitute y = 2x: x^2 + 4x^2 = 20. 5x^2 = 20. x^2 = 4. x = 2 or x = -2. Solutions: (2, 4) and (-2, -4)."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "How many times does the line y = x + 5 intersect the curve y = x^2 + 1?",
+      "options": [
+        { "id": "a", "text": "0" },
+        { "id": "b", "text": "1" },
+        { "id": "c", "text": "2" },
+        { "id": "d", "text": "3" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Set equal: x + 5 = x^2 + 1. x^2 - x - 4 = 0. Discriminant = 1 + 16 = 17 > 0. Since the discriminant is positive, there are 2 intersection points."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Solve: x + y = 5 and xy = 6",
+      "options": [
+        { "id": "a", "text": "(2, 3) and (3, 2)" },
+        { "id": "b", "text": "(1, 6) and (6, 1)" },
+        { "id": "c", "text": "(2, 3) only" },
+        { "id": "d", "text": "(-1, 6) and (-6, 1)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "From x + y = 5: y = 5 - x. Substitute: x(5 - x) = 6. x^2 - 5x + 6 = 0. (x - 2)(x - 3) = 0. Solutions: (2, 3) and (3, 2)."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Solve: y = x - 1 and y = x^2 - 4x + 3",
+      "options": [
+        { "id": "a", "text": "(1, 0) and (4, 3)" },
+        { "id": "b", "text": "(0, -1) and (3, 2)" },
+        { "id": "c", "text": "(1, 0) and (3, 2)" },
+        { "id": "d", "text": "(2, 1) and (4, 3)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Set equal: x - 1 = x^2 - 4x + 3. x^2 - 5x + 4 = 0. (x - 1)(x - 4) = 0. x = 1: y = 0. x = 4: y = 3. Check: 4^2 - 4(4) + 3 = 3."
+    }
+  ]
+}

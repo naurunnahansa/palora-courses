@@ -1,0 +1,76 @@
+{
+  "id": "practice-resistance",
+  "title": "Practice: Resistance",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A wire has a resistance of 4 ohms. If the wire is replaced with one of the same material and diameter but twice the length, what is the new resistance?",
+      "options": [
+        { "id": "a", "text": "2 ohms" },
+        { "id": "b", "text": "4 ohms" },
+        { "id": "c", "text": "8 ohms" },
+        { "id": "d", "text": "16 ohms" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Resistance is directly proportional to length — doubling the length doubles the resistance. So 4 ohms x 2 = 8 ohms. Option A halves the resistance (which would happen if you halved the length). Option D quadruples it (which would happen if you doubled both length and halved the cross-sectional area). The relationship is R = rho x L / A."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A potential difference of 12 V is applied across a resistor and a current of 0.5 A flows. What is the resistance of the resistor?",
+      "options": [
+        { "id": "a", "text": "6 ohms" },
+        { "id": "b", "text": "24 ohms" },
+        { "id": "c", "text": "12.5 ohms" },
+        { "id": "d", "text": "0.042 ohms" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using R = V/I = 12/0.5 = 24 ohms. Option A (6) comes from V x I, which gives power, not resistance. Option C (12.5) comes from adding V and I. Always use Ohm's law: R = V/I. Dividing by 0.5 is the same as multiplying by 2, so 12/0.5 = 24."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A thermistor is used in a fire alarm circuit. As the temperature increases, the resistance of the thermistor:",
+      "options": [
+        { "id": "a", "text": "Increases" },
+        { "id": "b", "text": "Stays the same" },
+        { "id": "c", "text": "Decreases" },
+        { "id": "d", "text": "First increases then decreases" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "In an NTC (negative temperature coefficient) thermistor — the type used at GCSE level — resistance decreases as temperature increases. At higher temperatures, more charge carriers are released, allowing current to flow more easily. This makes thermistors ideal for temperature-sensing circuits like fire alarms: as temperature rises, resistance drops, more current flows, and the alarm is triggered."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A wire has a resistance of 10 ohms. If it is replaced with a wire of the same material and length but with double the cross-sectional area, the new resistance is:",
+      "options": [
+        { "id": "a", "text": "20 ohms" },
+        { "id": "b", "text": "5 ohms" },
+        { "id": "c", "text": "10 ohms" },
+        { "id": "d", "text": "40 ohms" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Resistance is inversely proportional to cross-sectional area. Doubling the area halves the resistance: 10/2 = 5 ohms. A thicker wire has more room for electrons to flow, reducing opposition to current. Option A would result from resistance being directly proportional to area (a common misconception). Think of it like a wider road allowing more traffic flow."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An LDR (light-dependent resistor) is used in a streetlight circuit. During the day, the LDR has low resistance. What happens at night?",
+      "options": [
+        { "id": "a", "text": "The LDR resistance decreases, turning the light on" },
+        { "id": "b", "text": "The LDR resistance increases, which can be used to trigger the streetlight to turn on" },
+        { "id": "c", "text": "The LDR resistance stays the same" },
+        { "id": "d", "text": "The LDR stops working in the dark" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "An LDR has low resistance in bright light and high resistance in darkness. At night, the light level drops, so the LDR resistance increases. In a potential divider circuit, this change in resistance can be used to switch on the streetlight. Option A is backwards — resistance decreases in light, not darkness. The LDR works by the principle that light energy frees charge carriers in the semiconductor material."
+    }
+  ]
+}

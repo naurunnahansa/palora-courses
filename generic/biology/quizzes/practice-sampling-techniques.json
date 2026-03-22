@@ -1,0 +1,76 @@
+{
+  "id": "practice-sampling-techniques",
+  "title": "Practice: Sampling Techniques",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student uses a 0.5 m x 0.5 m quadrat to sample daisies in a field measuring 100 m x 50 m. She places the quadrat 10 times at random positions and counts an average of 8 daisies per quadrat. Estimate the total number of daisies in the field.",
+      "options": [
+        { "id": "a", "text": "800" },
+        { "id": "b", "text": "8,000" },
+        { "id": "c", "text": "160,000" },
+        { "id": "d", "text": "80,000" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Quadrat area = 0.5 x 0.5 = 0.25 m squared. Field area = 100 x 50 = 5,000 m squared. Number of quadrats that fit in the field = 5,000 / 0.25 = 20,000. Estimated total daisies = average per quadrat x number of quadrats = 8 x 20,000 = 160,000. This is an estimate; random sampling and sufficient replicates improve accuracy."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student investigates how plant species change from the edge of a pond to a dry area 20 metres away. Which sampling method should they use?",
+      "options": [
+        { "id": "a", "text": "Random quadrat sampling across the entire area" },
+        { "id": "b", "text": "A belt transect - placing quadrats at regular intervals along a straight line from the pond to the dry area" },
+        { "id": "c", "text": "Capture-recapture method" },
+        { "id": "d", "text": "Counting all organisms in the entire area" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A belt transect is used to study how species distribution changes along an environmental gradient (in this case, from wet to dry conditions). Quadrats are placed at regular intervals along a straight line (transect) from the pond to the dry area. This systematic approach shows zonation - how different species are found at different distances from the water. Random sampling would not show this gradient effectively."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "When using quadrats, a student is told to place them 'randomly.' She decides to place all her quadrats in the area where she can see the most plants. Why is this method flawed?",
+      "options": [
+        { "id": "a", "text": "It is not flawed; sampling where there are more plants gives better data" },
+        { "id": "b", "text": "It introduces sampling bias, as the results will overestimate the population; truly random placement uses random number generators to select coordinates" },
+        { "id": "c", "text": "Quadrats should always be placed in areas with no plants" },
+        { "id": "d", "text": "It takes too long to walk to areas with more plants" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Placing quadrats where there are visibly more plants introduces bias - the results will overestimate the average density and give an inaccurate picture of the whole field. For truly random sampling, the student should use a random number generator to produce coordinates and place quadrats at those positions, regardless of what is there. This ensures every part of the field has an equal chance of being sampled."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student uses percentage cover to estimate plant abundance in a quadrat rather than counting individual plants. In which situation is percentage cover MORE appropriate than counting individuals?",
+      "options": [
+        { "id": "a", "text": "When studying large, distinct plants like sunflowers" },
+        { "id": "b", "text": "When studying plants like grass or moss that grow in dense mats where individual plants are impossible to distinguish" },
+        { "id": "c", "text": "When there are very few plants in the quadrat" },
+        { "id": "d", "text": "Percentage cover is never more appropriate than counting" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Percentage cover is more appropriate when individual organisms cannot be easily counted - for example, grass, moss, or lichen that grow in continuous mats where it is impossible to distinguish one individual from another. The student estimates what percentage of the quadrat area is covered by each species. For organisms with clearly distinct individuals (like daisies or dandelions), counting is more precise."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student samples a field with 5 quadrats and gets daisy counts of: 3, 12, 4, 5, 6. She calculates the mean as 6 daisies per quadrat. Her teacher says she needs more quadrats. Why would increasing the number of quadrats improve her results?",
+      "options": [
+        { "id": "a", "text": "More quadrats would guarantee finding more daisies" },
+        { "id": "b", "text": "More quadrats gives a larger sample size, making the mean more reliable and representative of the whole field, and reducing the effect of anomalous results" },
+        { "id": "c", "text": "More quadrats would make the calculation simpler" },
+        { "id": "d", "text": "More quadrats are needed because the teacher said so" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "With only 5 quadrats, one anomalous result (like the 12) has a large effect on the mean. Increasing the sample size makes the mean more representative of the true population density because anomalies have less influence on a larger dataset. A larger sample also covers more of the field's variation. Generally, at least 10-20 quadrats are recommended for reliable estimates. The reliability increases with sample size."
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "practice-functions-notation",
+  "title": "Practice: Function Notation",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "If f(x) = x^2 - 3x + 1, find f(-2).",
+      "options": [
+        { "id": "a", "text": "11" },
+        { "id": "b", "text": "-1" },
+        { "id": "c", "text": "3" },
+        { "id": "d", "text": "-9" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "f(-2) = (-2)^2 - 3(-2) + 1 = 4 + 6 + 1 = 11."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "f(x) = 3x + 1 and g(x) = x^2. Find fg(2).",
+      "options": [
+        { "id": "a", "text": "49" },
+        { "id": "b", "text": "13" },
+        { "id": "c", "text": "7" },
+        { "id": "d", "text": "10" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "fg(2) means f(g(2)). First: g(2) = 4. Then: f(4) = 3(4) + 1 = 13. Note: gf(2) would be different: f(2) = 7, g(7) = 49."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "If f(x) = 4x - 5, solve f(x) = 15.",
+      "options": [
+        { "id": "a", "text": "x = 5" },
+        { "id": "b", "text": "x = 2.5" },
+        { "id": "c", "text": "x = 55" },
+        { "id": "d", "text": "x = 4" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "4x - 5 = 15. 4x = 20. x = 5."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Find the inverse function of f(x) = (2x + 3) / 5.",
+      "options": [
+        { "id": "a", "text": "f^(-1)(x) = (5x - 3) / 2" },
+        { "id": "b", "text": "f^(-1)(x) = 5 / (2x + 3)" },
+        { "id": "c", "text": "f^(-1)(x) = (5x + 3) / 2" },
+        { "id": "d", "text": "f^(-1)(x) = 5(x - 3) / 2" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Let y = (2x + 3)/5. Swap: x = (2y + 3)/5. Solve: 5x = 2y + 3, 2y = 5x - 3, y = (5x - 3)/2. So f^(-1)(x) = (5x - 3)/2."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "f(x) = 2x - 1 and g(x) = x + 4. Find fg(x).",
+      "options": [
+        { "id": "a", "text": "2x + 7" },
+        { "id": "b", "text": "2x + 3" },
+        { "id": "c", "text": "2x^2 + 7x - 4" },
+        { "id": "d", "text": "2x + 8" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "fg(x) = f(g(x)) = f(x + 4) = 2(x + 4) - 1 = 2x + 8 - 1 = 2x + 7."
+    }
+  ]
+}

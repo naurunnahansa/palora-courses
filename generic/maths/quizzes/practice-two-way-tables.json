@@ -1,0 +1,76 @@
+{
+  "id": "practice-two-way-tables",
+  "title": "Practice: Two-Way Tables",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A two-way table shows: Boys who walk = 15, Boys who cycle = 10, Girls who walk = 20, Girls who cycle = 5. A student is chosen at random. What is the probability that the student is a girl who cycles?",
+      "options": [
+        { "id": "a", "text": "5/50" },
+        { "id": "b", "text": "5/25" },
+        { "id": "c", "text": "5/15" },
+        { "id": "d", "text": "5/35" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Total students = 15 + 10 + 20 + 5 = 50. P(girl who cycles) = 5/50 = 1/10. A common error is dividing by just the girls (25) or just the cyclists (15)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "From the same table (Boys: walk 15, cycle 10; Girls: walk 20, cycle 5), given that a student walks, what is the probability the student is a boy?",
+      "options": [
+        { "id": "a", "text": "15/50" },
+        { "id": "b", "text": "15/25" },
+        { "id": "c", "text": "15/35" },
+        { "id": "d", "text": "25/50" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Given the student walks, we restrict to walkers only: 15 boys + 20 girls = 35 walkers. P(boy | walks) = 15/35 = 3/7. Option (a) doesn't restrict to walkers. Option (b) restricts to boys instead."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A survey of 120 students asked about pets. Cat owners: 35, Dog owners: 45, Both: 15, Neither: 55. How many students own a cat but NOT a dog?",
+      "options": [
+        { "id": "a", "text": "35" },
+        { "id": "b", "text": "20" },
+        { "id": "c", "text": "30" },
+        { "id": "d", "text": "50" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Cat only = Total cat owners − Both = 35 − 15 = 20. The 35 cat owners includes the 15 who also own dogs, so we must subtract those."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a two-way table: Year 10 chose French = 24, Spanish = 16; Year 11 chose French = 18, Spanish = 22. What percentage of all students chose Spanish?",
+      "options": [
+        { "id": "a", "text": "47.5%" },
+        { "id": "b", "text": "40%" },
+        { "id": "c", "text": "55%" },
+        { "id": "d", "text": "27.5%" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Total students = 24 + 16 + 18 + 22 = 80. Total Spanish = 16 + 22 = 38. Percentage = (38/80) × 100 = 47.5%."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A two-way table has missing values. Men: Tea = 28, Coffee = ?, Total = 50. Women: Tea = ?, Coffee = 35, Total = 60. Total: Tea = ?, Coffee = ?, Grand total = 110. How many women prefer tea?",
+      "options": [
+        { "id": "a", "text": "22" },
+        { "id": "b", "text": "35" },
+        { "id": "c", "text": "25" },
+        { "id": "d", "text": "47" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Men coffee = 50 − 28 = 22. Women tea = 60 − 35 = 25. Verify: Total tea = 28 + 25 = 53, Total coffee = 22 + 35 = 57, Grand total = 53 + 57 = 110. Correct."
+    }
+  ]
+}

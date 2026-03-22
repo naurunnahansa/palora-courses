@@ -1,0 +1,76 @@
+{
+  "id": "practice-scalar-multiplication",
+  "title": "Practice: Scalar Multiplication",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "If a = (4, −6), find 3a.",
+      "options": [
+        { "id": "a", "text": "(7, −3)" },
+        { "id": "b", "text": "(12, −18)" },
+        { "id": "c", "text": "(12, 18)" },
+        { "id": "d", "text": "(4, −18)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Multiply each component by 3: 3(4, −6) = (12, −18). Option (c) forgets to keep the negative sign. Option (a) adds 3 instead of multiplying."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Given a = (2, 5) and b = (−3, 1), find 2a − 3b.",
+      "options": [
+        { "id": "a", "text": "(13, 7)" },
+        { "id": "b", "text": "(−5, 13)" },
+        { "id": "c", "text": "(13, 13)" },
+        { "id": "d", "text": "(−5, 7)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "2a = (4, 10) and 3b = (−9, 3). So 2a − 3b = (4−(−9), 10−3) = (13, 7). A common error is computing 4 + (−9) = −5 instead of 4 − (−9) = 13."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Vectors p and q are parallel. If p = (6, −4) and q = (k, 10), what is the value of k?",
+      "options": [
+        { "id": "a", "text": "15" },
+        { "id": "b", "text": "−15" },
+        { "id": "c", "text": "12" },
+        { "id": "d", "text": "−12" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Parallel vectors are scalar multiples. Comparing y-components: 10 = −4 × s, so s = −2.5. Then k = 6 × (−2.5) = −15. The negative scalar means q points in the opposite direction to p."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "If 1/2 a = (3, −1), what is the magnitude of a?",
+      "options": [
+        { "id": "a", "text": "sqrt(10)" },
+        { "id": "b", "text": "sqrt(40)" },
+        { "id": "c", "text": "2 sqrt(10)" },
+        { "id": "d", "text": "4" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "If 1/2 a = (3, −1), then a = (6, −2). Magnitude of a = sqrt(6² + (−2)²) = sqrt(36 + 4) = sqrt(40) = 2sqrt(10). Note that sqrt(40) and 2sqrt(10) are the same value, but 2sqrt(10) is the simplified surd form."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Point M is the midpoint of AB. If OA = a and OB = b, express OM in terms of a and b.",
+      "options": [
+        { "id": "a", "text": "a + b" },
+        { "id": "b", "text": "1/2(a + b)" },
+        { "id": "c", "text": "1/2(b − a)" },
+        { "id": "d", "text": "a + 1/2 b" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "OM = OA + AM = a + 1/2 AB = a + 1/2(b − a) = a + 1/2 b − 1/2 a = 1/2 a + 1/2 b = 1/2(a + b). This is a standard result: the position vector of the midpoint is the average of the endpoint position vectors."
+    }
+  ]
+}

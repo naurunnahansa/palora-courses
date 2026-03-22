@@ -1,0 +1,76 @@
+{
+  "id": "practice-generators",
+  "title": "Practice: Generators",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A generator and a motor both contain a coil, magnets, and a way to connect to an external circuit. What is the key difference between them?",
+      "options": [
+        { "id": "a", "text": "A motor uses permanent magnets but a generator uses electromagnets" },
+        { "id": "b", "text": "A generator converts kinetic energy to electrical energy, while a motor converts electrical energy to kinetic energy" },
+        { "id": "c", "text": "A generator only works with DC, while a motor only works with AC" },
+        { "id": "d", "text": "A motor uses electromagnetic induction but a generator uses the motor effect" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A generator is essentially a motor in reverse. In a motor, electrical energy is converted to kinetic energy (rotation) via the motor effect. In a generator, kinetic energy (rotation) is converted to electrical energy via electromagnetic induction. Both can use permanent magnets or electromagnets (A is wrong). Generators can produce AC or DC (C is wrong). Option D has the principles backwards -- generators use induction and motors use the motor effect."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An AC generator produces a peak voltage of 10 V when the coil rotates at 50 revolutions per second. If the rotation speed is increased to 100 revolutions per second, what happens to the output?",
+      "options": [
+        { "id": "a", "text": "Peak voltage stays at 10 V but frequency doubles" },
+        { "id": "b", "text": "Peak voltage doubles to 20 V and frequency doubles" },
+        { "id": "c", "text": "Peak voltage doubles to 20 V but frequency stays the same" },
+        { "id": "d", "text": "Both peak voltage and frequency remain unchanged" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Doubling the rotation speed has two effects: (1) the rate of change of flux doubles, so the peak induced voltage doubles to 20 V; (2) the coil completes twice as many rotations per second, so the frequency of the AC output doubles. Both the amplitude and frequency of the output increase with faster rotation."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In an AC generator, the coil passes through a position where it is parallel to the magnetic field lines. At this instant, the induced voltage is:",
+      "options": [
+        { "id": "a", "text": "Zero, because the flux through the coil is at its maximum" },
+        { "id": "b", "text": "At its maximum, because the flux through the coil is changing most rapidly" },
+        { "id": "c", "text": "Zero, because there is no magnetic field at this position" },
+        { "id": "d", "text": "At its maximum, because the coil is cutting the most field lines" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "When the coil is parallel to the field, the sides of the coil are moving perpendicular to the field lines, cutting through them at the fastest rate. This means the flux through the coil is changing most rapidly, producing maximum induced voltage. Confusingly, this is when the total flux through the coil is actually zero (not maximum). Option A correctly states the voltage relationship for the wrong position. Option C is incorrect -- the field exists everywhere between the magnets."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "What component distinguishes an AC generator from a DC generator?",
+      "options": [
+        { "id": "a", "text": "An AC generator uses slip rings; a DC generator uses a split-ring commutator" },
+        { "id": "b", "text": "An AC generator uses a commutator; a DC generator uses slip rings" },
+        { "id": "c", "text": "An AC generator has more turns on its coil" },
+        { "id": "d", "text": "A DC generator uses a stronger magnet" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "An AC generator (alternator) uses slip rings, which maintain continuous contact with the coil and allow the alternating voltage to pass through unchanged. A DC generator uses a split-ring commutator, which reverses the connections every half turn, converting the AC produced in the coil into DC output. The number of turns (C) and magnet strength (D) affect the voltage magnitude, not whether the output is AC or DC."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A wind turbine generator produces 50 Hz AC electricity. How many complete rotations does the coil make each second?",
+      "options": [
+        { "id": "a", "text": "25 rotations" },
+        { "id": "b", "text": "50 rotations" },
+        { "id": "c", "text": "100 rotations" },
+        { "id": "d", "text": "It depends on the number of turns in the coil" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "For a simple generator with one coil, each complete rotation produces one complete cycle of AC. Therefore, 50 Hz (50 cycles per second) means 50 complete rotations per second. Option A (25) would be correct only if there were two pairs of poles. The number of turns in the coil (D) affects the voltage, not the frequency."
+    }
+  ]
+}

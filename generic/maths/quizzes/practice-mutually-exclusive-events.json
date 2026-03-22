@@ -1,0 +1,76 @@
+{
+  "id": "practice-mutually-exclusive-events",
+  "title": "Practice: Mutually Exclusive Events",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A bag contains red, blue and green counters. P(red) = 0.3, P(blue) = 0.45. These colours are mutually exclusive. What is P(green)?",
+      "options": [
+        { "id": "a", "text": "0.75" },
+        { "id": "b", "text": "0.35" },
+        { "id": "c", "text": "0.25" },
+        { "id": "d", "text": "0.15" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Since the events are mutually exclusive and exhaustive (they cover all outcomes), P(red) + P(blue) + P(green) = 1. So P(green) = 1 − 0.3 − 0.45 = 0.25."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A card is drawn from a standard 52-card deck. What is the probability of drawing a queen or a jack?",
+      "options": [
+        { "id": "a", "text": "1/169" },
+        { "id": "b", "text": "2/13" },
+        { "id": "c", "text": "1/13" },
+        { "id": "d", "text": "8/52" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Drawing a queen and drawing a jack are mutually exclusive (a card cannot be both). P(queen or jack) = P(queen) + P(jack) = 4/52 + 4/52 = 8/52 = 2/13. Option (a) multiplies instead of adding (a very common error)."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "For a biased dice: P(1) = 0.1, P(2) = 0.15, P(3) = 0.2, P(4) = 0.2, P(5) = 0.15, P(6) = 0.2. What is P(even number)?",
+      "options": [
+        { "id": "a", "text": "0.5" },
+        { "id": "b", "text": "0.55" },
+        { "id": "c", "text": "0.45" },
+        { "id": "d", "text": "0.6" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "P(even) = P(2) + P(4) + P(6) = 0.15 + 0.20 + 0.20 = 0.55. For a biased dice, P(even) is not necessarily 0.5 as it would be for a fair dice."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Events A and B are mutually exclusive with P(A) = 0.4 and P(B) = 0.3. What is P(A and B)?",
+      "options": [
+        { "id": "a", "text": "0.7" },
+        { "id": "b", "text": "0.12" },
+        { "id": "c", "text": "0.1" },
+        { "id": "d", "text": "0" }
+      ],
+      "correctAnswer": "d",
+      "explanation": "Mutually exclusive events cannot occur at the same time, so P(A and B) = 0. Option (a) is P(A or B). Option (b) incorrectly multiplies as if the events were independent."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A spinner has sections labelled 1 to 10. P(prime) = 0.4 and P(square number) = 0.2. Emily says P(prime or square) = 0.6. Is Emily correct?",
+      "options": [
+        { "id": "a", "text": "Yes, because you add the probabilities" },
+        { "id": "b", "text": "No, because prime and square are not mutually exclusive (1 is both)" },
+        { "id": "c", "text": "Yes, because these events are mutually exclusive" },
+        { "id": "d", "text": "No, because she should multiply" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The primes from 1-10 are {2,3,5,7} and the square numbers are {1,4,9}. These sets have no overlap (1 is NOT prime), so the events are mutually exclusive. P(prime or square) = 0.4 + 0.2 = 0.6. Emily is correct."
+    }
+  ]
+}

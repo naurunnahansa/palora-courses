@@ -1,0 +1,76 @@
+{
+  "id": "practice-acceleration",
+  "title": "Practice: Acceleration",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A car accelerates from 10 m/s to 30 m/s in 5 seconds. What is its acceleration?",
+      "options": [
+        { "id": "a", "text": "2 m/s²" },
+        { "id": "b", "text": "4 m/s²" },
+        { "id": "c", "text": "6 m/s²" },
+        { "id": "d", "text": "8 m/s²" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using a = (v - u) / t = (30 - 10) / 5 = 20/5 = 4 m/s². A common mistake is using only the final velocity instead of the change in velocity: 30/5 = 6 m/s² (option c). Always subtract the initial velocity from the final velocity first."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A bicycle decelerates from 12 m/s to rest in 4 seconds. What is its acceleration?",
+      "options": [
+        { "id": "a", "text": "+3 m/s²" },
+        { "id": "b", "text": "-3 m/s²" },
+        { "id": "c", "text": "+48 m/s²" },
+        { "id": "d", "text": "-48 m/s²" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "a = (v - u) / t = (0 - 12) / 4 = -12/4 = -3 m/s². The negative sign indicates deceleration (the bicycle is slowing down). Option (a) has the correct magnitude but the wrong sign — a positive value would mean the bicycle is speeding up. 'At rest' means v = 0 m/s."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An object has an acceleration of 2 m/s². What does this mean in practice?",
+      "options": [
+        { "id": "a", "text": "The object travels 2 metres every second" },
+        { "id": "b", "text": "The object's velocity increases by 2 m/s every second" },
+        { "id": "c", "text": "The object reaches a speed of 2 m/s" },
+        { "id": "d", "text": "The object moves for 2 seconds" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Acceleration of 2 m/s² means the velocity changes by 2 m/s each second. For example, if starting from rest: after 1 s the velocity is 2 m/s, after 2 s it is 4 m/s, after 3 s it is 6 m/s. Option (a) describes constant speed, not acceleration. Option (c) confuses acceleration with velocity."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A train starts from rest and reaches 25 m/s with a uniform acceleration of 0.5 m/s². How long does this take?",
+      "options": [
+        { "id": "a", "text": "12.5 s" },
+        { "id": "b", "text": "25 s" },
+        { "id": "c", "text": "50 s" },
+        { "id": "d", "text": "100 s" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Rearranging a = (v - u) / t to find time: t = (v - u) / a = (25 - 0) / 0.5 = 50 s. 'Starts from rest' means u = 0. Option (a) multiplies speed by acceleration instead of dividing. Option (b) divides by 1 instead of 0.5."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A bus is travelling at 15 m/s when the driver brakes with a deceleration of 3 m/s². What is the velocity of the bus after 3 seconds of braking?",
+      "options": [
+        { "id": "a", "text": "24 m/s" },
+        { "id": "b", "text": "12 m/s" },
+        { "id": "c", "text": "6 m/s" },
+        { "id": "d", "text": "5 m/s" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Using v = u + at, where deceleration means a = -3 m/s²: v = 15 + (-3 × 3) = 15 - 9 = 6 m/s. Option (a) adds instead of subtracting (ignoring that deceleration is negative). Option (d) incorrectly divides initial velocity by deceleration. Always remember that deceleration means acceleration is negative."
+    }
+  ]
+}

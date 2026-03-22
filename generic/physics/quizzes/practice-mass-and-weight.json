@@ -1,0 +1,76 @@
+{
+  "id": "practice-mass-and-weight",
+  "title": "Practice: Mass and Weight",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An astronaut has a mass of 75 kg on Earth. What is the astronaut's mass on the Moon, where g = 1.6 m/s²?",
+      "options": [
+        { "id": "a", "text": "12.5 kg" },
+        { "id": "b", "text": "75 kg" },
+        { "id": "c", "text": "120 kg" },
+        { "id": "d", "text": "735 kg" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Mass does not change with location — it is the amount of matter in an object. The astronaut's mass is 75 kg everywhere in the universe. Option (a) calculates weight on the Moon divided by Earth's g (120/9.8), confusing mass and weight. Weight changes with gravity, but mass stays constant."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Calculate the weight of a 60 kg person on Earth (g = 9.8 m/s²).",
+      "options": [
+        { "id": "a", "text": "60 N" },
+        { "id": "b", "text": "6.12 kg" },
+        { "id": "c", "text": "588 N" },
+        { "id": "d", "text": "588 kg" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Weight = mass × gravitational field strength: W = mg = 60 × 9.8 = 588 N. Weight is a force, so it must be measured in newtons (N), not kilograms. Option (a) confuses mass and weight by assuming 1 kg = 1 N. Option (d) has the right number but the wrong unit — weight is always in newtons."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An object weighs 24 N on a planet where g = 8 m/s². What is the object's mass?",
+      "options": [
+        { "id": "a", "text": "3 kg" },
+        { "id": "b", "text": "16 kg" },
+        { "id": "c", "text": "32 kg" },
+        { "id": "d", "text": "192 kg" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Rearranging W = mg: m = W/g = 24/8 = 3 kg. Option (b) subtracts g from W. Option (d) multiplies W by g instead of dividing. Since mass = weight / g, a smaller gravitational field strength does not change the mass — the same 3 kg object would weigh 29.4 N on Earth (3 × 9.8)."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Which statement correctly describes the difference between mass and weight?",
+      "options": [
+        { "id": "a", "text": "Mass is measured in newtons; weight is measured in kilograms" },
+        { "id": "b", "text": "Mass is a vector; weight is a scalar" },
+        { "id": "c", "text": "Mass is the amount of matter; weight is the gravitational force on that matter" },
+        { "id": "d", "text": "Mass changes with location; weight stays the same" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Mass is the amount of matter in an object (scalar, measured in kg). Weight is the force of gravity acting on that mass (vector, measured in N). Option (a) has the units reversed. Option (b) has the scalar/vector labels reversed — mass is scalar and weight is a vector (it acts downward). Option (d) is backwards — mass stays constant and weight changes."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A bag of sugar has a weight of 19.6 N on Earth (g = 9.8 m/s²). The same bag is taken to Mars, where g = 3.7 m/s². What is its weight on Mars?",
+      "options": [
+        { "id": "a", "text": "3.7 N" },
+        { "id": "b", "text": "7.4 N" },
+        { "id": "c", "text": "19.6 N" },
+        { "id": "d", "text": "72.5 N" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "First find the mass: m = W/g = 19.6/9.8 = 2 kg. Then calculate weight on Mars: W = mg = 2 × 3.7 = 7.4 N. Option (c) assumes weight stays the same everywhere — but weight depends on g, which is different on Mars. Option (a) forgets to find the mass first and just states g on Mars."
+    }
+  ]
+}

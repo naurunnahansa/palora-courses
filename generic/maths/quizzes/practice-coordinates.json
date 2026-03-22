@@ -1,0 +1,76 @@
+{
+  "id": "practice-coordinates",
+  "title": "Practice: Coordinates",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Find the midpoint of the line segment joining A(-3, 8) and B(5, -2).",
+      "options": [
+        { "id": "a", "text": "(1, 3)" },
+        { "id": "b", "text": "(2, 6)" },
+        { "id": "c", "text": "(4, 5)" },
+        { "id": "d", "text": "(1, 5)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Midpoint = ((-3+5)/2, (8+(-2))/2) = (2/2, 6/2) = (1, 3)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The midpoint of PQ is M(4, 3). If P = (1, 7), what are the coordinates of Q?",
+      "options": [
+        { "id": "a", "text": "(7, -1)" },
+        { "id": "b", "text": "(2.5, 5)" },
+        { "id": "c", "text": "(3, 10)" },
+        { "id": "d", "text": "(8, 6)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Using midpoint formula: (1 + x)/2 = 4, so x = 7. (7 + y)/2 = 3, so y = -1. Q = (7, -1)."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In which quadrant does the point (-5, -3) lie?",
+      "options": [
+        { "id": "a", "text": "First quadrant" },
+        { "id": "b", "text": "Second quadrant" },
+        { "id": "c", "text": "Third quadrant" },
+        { "id": "d", "text": "Fourth quadrant" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Both x and y are negative. The third quadrant (bottom-left) has negative x and negative y coordinates."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A square has vertices at (1, 1), (5, 1), (5, 5), and (1, 5). What is the length of its diagonal?",
+      "options": [
+        { "id": "a", "text": "4" },
+        { "id": "b", "text": "4*sqrt(2)" },
+        { "id": "c", "text": "8" },
+        { "id": "d", "text": "sqrt(32)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Side length = 4. Diagonal of a square = side x sqrt(2) = 4*sqrt(2). Alternatively: distance from (1,1) to (5,5) = sqrt(16+16) = sqrt(32) = 4*sqrt(2). Options b and d are the same value."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A triangle has vertices at (0, 0), (6, 0), and (3, 4). What are the coordinates of the midpoint of the longest side?",
+      "options": [
+        { "id": "a", "text": "(3, 0)" },
+        { "id": "b", "text": "(3, 2)" },
+        { "id": "c", "text": "(1.5, 2)" },
+        { "id": "d", "text": "(4.5, 2)" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "The sides have lengths: base from (0,0) to (6,0) = 6; from (0,0) to (3,4) = sqrt(9+16) = 5; from (6,0) to (3,4) = sqrt(9+16) = 5. The longest side is the base (length 6). Its midpoint is ((0+6)/2, (0+0)/2) = (3, 0)."
+    }
+  ]
+}

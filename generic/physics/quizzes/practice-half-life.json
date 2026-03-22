@@ -1,0 +1,76 @@
+{
+  "id": "practice-half-life",
+  "title": "Practice: Half-Life",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A radioactive sample has an activity of 800 Bq. After 30 minutes, the activity has fallen to 100 Bq. What is the half-life of the isotope?",
+      "options": [
+        { "id": "a", "text": "5 minutes" },
+        { "id": "b", "text": "10 minutes" },
+        { "id": "c", "text": "15 minutes" },
+        { "id": "d", "text": "30 minutes" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The activity drops from 800 to 100 Bq. Count the halvings: 800 -> 400 -> 200 -> 100. That is 3 half-lives. Total time = 30 minutes, so one half-life = 30/3 = 10 minutes. Option A (5 min) would give 6 half-lives, reducing to 12.5 Bq. Option C (15 min) would give 2 half-lives, reducing to 200 Bq. Option D (30 min) would give 1 half-life, reducing to 400 Bq."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A sample contains 6400 undecayed atoms of a radioactive isotope with a half-life of 2 hours. How many undecayed atoms remain after 8 hours?",
+      "options": [
+        { "id": "a", "text": "400" },
+        { "id": "b", "text": "800" },
+        { "id": "c", "text": "1600" },
+        { "id": "d", "text": "3200" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Number of half-lives = 8 hours / 2 hours = 4 half-lives. After each half-life, the number halves: 6400 -> 3200 -> 1600 -> 800 -> 400. After 4 half-lives, 400 undecayed atoms remain. Option B is after 3 half-lives. Option C is after 2 half-lives. Option D is after 1 half-life."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A scientist says that a radioactive isotope with a half-life of 1 hour will be completely gone after 2 hours. Why is this statement incorrect?",
+      "options": [
+        { "id": "a", "text": "The half-life is too short for the isotope to decay" },
+        { "id": "b", "text": "After each half-life, half the remaining nuclei decay, so the sample never completely disappears -- it just gets smaller and smaller" },
+        { "id": "c", "text": "Radioactive isotopes cannot decay in less than 24 hours" },
+        { "id": "d", "text": "After 2 hours, all the atoms will have decayed into the same element" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "This is a very common misconception. Half-life means half the remaining nuclei decay each half-life period, not half the original amount. After 1 hour, half remains. After 2 hours, a quarter remains (half of the half). The amount keeps halving but theoretically never reaches exactly zero. Two half-lives does not mean 'all gone' -- it means 25% remains."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Carbon-14 has a half-life of 5,700 years. An archaeologist finds a wooden tool where the carbon-14 activity is one-eighth of the activity in living wood. Approximately how old is the tool?",
+      "options": [
+        { "id": "a", "text": "5,700 years" },
+        { "id": "b", "text": "11,400 years" },
+        { "id": "c", "text": "17,100 years" },
+        { "id": "d", "text": "22,800 years" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "One-eighth means the activity has halved three times: 1 -> 1/2 -> 1/4 -> 1/8 (3 half-lives). Age = 3 x 5,700 = 17,100 years. Option A is 1 half-life (would give 1/2 activity). Option B is 2 half-lives (would give 1/4 activity). Option D is 4 half-lives (would give 1/16 activity). Carbon dating works because living organisms maintain a constant level of carbon-14, which begins to decay once the organism dies."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two radioactive samples X and Y each start with the same activity of 1000 Bq. Sample X has a half-life of 1 day and sample Y has a half-life of 10 days. After 10 days, which statement is correct?",
+      "options": [
+        { "id": "a", "text": "Both samples have the same activity" },
+        { "id": "b", "text": "Sample X has a higher activity than sample Y" },
+        { "id": "c", "text": "Sample Y has a higher activity than sample X" },
+        { "id": "d", "text": "Both samples have zero activity" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "After 10 days: Sample X has undergone 10 half-lives (10/1), so its activity = 1000 / 2^10 = approximately 1 Bq. Sample Y has undergone 1 half-life (10/10), so its activity = 1000 / 2 = 500 Bq. Sample Y has a much higher activity. The isotope with the longer half-life decays more slowly and retains more of its original activity over a given time period. Neither sample reaches zero (D) -- radioactive decay is exponential."
+    }
+  ]
+}

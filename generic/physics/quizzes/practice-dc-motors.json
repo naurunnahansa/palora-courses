@@ -1,0 +1,76 @@
+{
+  "id": "practice-dc-motors",
+  "title": "Practice: DC Motors",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a simple DC motor, what is the function of the split-ring commutator?",
+      "options": [
+        { "id": "a", "text": "It increases the current flowing through the coil" },
+        { "id": "b", "text": "It reverses the current direction in the coil every half turn to keep it spinning in the same direction" },
+        { "id": "c", "text": "It converts AC to DC" },
+        { "id": "d", "text": "It increases the strength of the magnetic field" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Without a commutator, the coil would rotate half a turn and then stop (or oscillate) because the force would reverse direction. The split-ring commutator reverses the current in the coil every half turn, ensuring the forces always push the coil in the same rotational direction. It does not increase current (A) or field strength (D), and converting AC to DC (C) is not its purpose in a motor."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A DC motor has a coil with 50 turns carrying a current of 2 A in a magnetic field of 0.3 T. Each side of the coil is 0.1 m long within the field. What is the force on ONE side of the coil?",
+      "options": [
+        { "id": "a", "text": "0.06 N" },
+        { "id": "b", "text": "0.3 N" },
+        { "id": "c", "text": "3 N" },
+        { "id": "d", "text": "6 N" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "For a coil with N turns, the force on one side is F = BIL x N = 0.3 x 2 x 0.1 x 50 = 3 N. Option A (0.06 N) is the force for a single turn only. Option B forgets to include the number of turns correctly. Option D doubles the answer, perhaps adding both sides when the question asks for one side only."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student builds a simple DC motor but it spins too slowly. Which change would NOT increase the motor's speed?",
+      "options": [
+        { "id": "a", "text": "Using a stronger magnet" },
+        { "id": "b", "text": "Increasing the current through the coil" },
+        { "id": "c", "text": "Replacing the split-ring commutator with slip rings" },
+        { "id": "d", "text": "Adding more turns to the coil" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Replacing the split-ring commutator with slip rings would change the motor into an AC generator setup -- the coil would oscillate back and forth rather than spinning continuously, because the current direction would not be reversed each half turn. Using a stronger magnet (A), increasing the current (B), and adding more turns (D) all increase the force on the coil and would make it spin faster."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a DC motor, the coil is momentarily vertical (perpendicular to the magnetic field). At this instant, what can be said about the forces on the coil?",
+      "options": [
+        { "id": "a", "text": "The forces are at their maximum and produce maximum turning effect" },
+        { "id": "b", "text": "The forces are at their maximum but produce zero turning effect because they act along the line of the coil" },
+        { "id": "c", "text": "There are no forces on the coil in this position" },
+        { "id": "d", "text": "The forces are at their minimum value" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "When the coil is vertical (perpendicular to the field), the sides of the coil are closest to the magnets, so the motor effect force is at maximum. However, these forces act directly along the plane of the coil (trying to stretch it rather than rotate it), producing zero turning moment. The coil continues past this point due to its momentum. This is a key concept students often find counterintuitive."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An electric fan uses a DC motor. The fan converts 60 J of electrical energy every second. If the motor is 75% efficient, how much kinetic energy is transferred to the fan blades each second?",
+      "options": [
+        { "id": "a", "text": "15 J" },
+        { "id": "b", "text": "45 J" },
+        { "id": "c", "text": "60 J" },
+        { "id": "d", "text": "80 J" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Efficiency = useful energy output / total energy input. So useful energy = efficiency x input = 0.75 x 60 J = 45 J per second is converted to kinetic energy. The remaining 15 J (A) is wasted as heat due to friction and resistance in the coil. Option C assumes 100% efficiency (no motor is perfectly efficient). Option D incorrectly divides rather than multiplies."
+    }
+  ]
+}

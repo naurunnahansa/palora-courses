@@ -1,0 +1,76 @@
+{
+  "id": "practice-inequalities-quadratic",
+  "title": "Practice: Quadratic Inequalities",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Solve: x^2 - 5x + 6 < 0",
+      "options": [
+        { "id": "a", "text": "x < 2 or x > 3" },
+        { "id": "b", "text": "2 < x < 3" },
+        { "id": "c", "text": "x < -2 or x > -3" },
+        { "id": "d", "text": "-3 < x < -2" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Factorise: (x - 2)(x - 3) < 0. Roots at x = 2 and x = 3. For a positive x^2 coefficient, the parabola is below the x-axis between the roots: 2 < x < 3."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Solve: x^2 >= 16",
+      "options": [
+        { "id": "a", "text": "x >= 4" },
+        { "id": "b", "text": "-4 <= x <= 4" },
+        { "id": "c", "text": "x <= -4 or x >= 4" },
+        { "id": "d", "text": "x >= -4" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "x^2 - 16 >= 0. (x+4)(x-4) >= 0. The parabola is on or above the x-axis outside the roots: x <= -4 or x >= 4. A common error is writing only x >= 4 (forgetting the negative root)."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Solve: x^2 + 3x - 10 <= 0",
+      "options": [
+        { "id": "a", "text": "-5 <= x <= 2" },
+        { "id": "b", "text": "x <= -5 or x >= 2" },
+        { "id": "c", "text": "-2 <= x <= 5" },
+        { "id": "d", "text": "x <= -2 or x >= 5" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Factorise: (x + 5)(x - 2) <= 0. Roots at x = -5 and x = 2. Parabola is below/on x-axis between roots: -5 <= x <= 2."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Solve: 2x^2 - x - 3 > 0",
+      "options": [
+        { "id": "a", "text": "-1 < x < 3/2" },
+        { "id": "b", "text": "x < -1 or x > 3/2" },
+        { "id": "c", "text": "x < -3/2 or x > 1" },
+        { "id": "d", "text": "-3/2 < x < 1" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Factorise: (2x - 3)(x + 1) > 0. Roots at x = 3/2 and x = -1. Parabola is above x-axis outside the roots: x < -1 or x > 3/2."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Find the range of values of k for which x^2 + kx + 4 = 0 has no real roots.",
+      "options": [
+        { "id": "a", "text": "-4 < k < 4" },
+        { "id": "b", "text": "k < -4 or k > 4" },
+        { "id": "c", "text": "-2 < k < 2" },
+        { "id": "d", "text": "k < -2 or k > 2" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "No real roots when discriminant < 0: k^2 - 16 < 0. k^2 < 16. -4 < k < 4."
+    }
+  ]
+}

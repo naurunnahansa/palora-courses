@@ -1,0 +1,76 @@
+{
+  "id": "practice-magnetic-effects-summary",
+  "title": "Practice: Magnetic Effects Summary",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A device contains a coil rotating in a magnetic field. The coil is connected to the external circuit via slip rings. Which device is this?",
+      "options": [
+        { "id": "a", "text": "A DC motor" },
+        { "id": "b", "text": "A DC generator" },
+        { "id": "c", "text": "An AC generator (alternator)" },
+        { "id": "d", "text": "A transformer" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Slip rings are the key identifier. An AC generator uses slip rings to maintain continuous contact with the rotating coil, preserving the alternating nature of the output. A DC motor and DC generator use a split-ring commutator instead. A transformer has no rotating parts -- it uses two stationary coils on an iron core."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Which of the following devices uses the motor effect (current + field = force)?",
+      "options": [
+        { "id": "a", "text": "A dynamo on a bicycle" },
+        { "id": "b", "text": "A dynamic microphone" },
+        { "id": "c", "text": "A transformer" },
+        { "id": "d", "text": "A loudspeaker" }
+      ],
+      "correctAnswer": "d",
+      "explanation": "A loudspeaker uses the motor effect: a current-carrying coil in a magnetic field experiences a force that moves the speaker cone. A bicycle dynamo (A) and a dynamic microphone (B) both use electromagnetic induction (changing flux induces a voltage). A transformer (C) also uses electromagnetic induction -- a changing current in the primary creates a changing magnetic field that induces a voltage in the secondary."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A transformer has 500 turns on the primary coil and 50 turns on the secondary coil. The primary voltage is 230 V and the primary current is 0.5 A. Assuming the transformer is ideal, what is the secondary current?",
+      "options": [
+        { "id": "a", "text": "0.05 A" },
+        { "id": "b", "text": "0.5 A" },
+        { "id": "c", "text": "5 A" },
+        { "id": "d", "text": "50 A" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "First find the secondary voltage: Vs = Vp x Ns/Np = 230 x 50/500 = 23 V. For an ideal transformer, power in = power out: VpIp = VsIs, so Is = VpIp/Vs = (230 x 0.5)/23 = 5 A. The voltage is stepped down by a factor of 10, so the current is stepped up by a factor of 10. This conserves energy."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Fleming's left-hand rule is used for the motor effect, while Fleming's right-hand rule is used for the generator effect. Which statement correctly links the rules to real devices?",
+      "options": [
+        { "id": "a", "text": "Left-hand rule for generators; right-hand rule for motors" },
+        { "id": "b", "text": "Left-hand rule for motors and speakers; right-hand rule for generators and microphones" },
+        { "id": "c", "text": "Left-hand rule for all electromagnetic devices" },
+        { "id": "d", "text": "Right-hand rule for all electromagnetic devices" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Fleming's left-hand rule applies to the motor effect (force on a current-carrying conductor in a field), which is used in motors and speakers. Fleming's right-hand rule applies to the generator effect (electromagnetic induction), used in generators and dynamic microphones. Option A has the rules backwards. Using only one rule for all devices (C or D) fails to distinguish between the two fundamental effects."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A wire of length 0.15 m carries a current of 4 A perpendicular to a magnetic field. The force on the wire is 0.3 N. What is the magnetic flux density (field strength)?",
+      "options": [
+        { "id": "a", "text": "0.18 T" },
+        { "id": "b", "text": "0.5 T" },
+        { "id": "c", "text": "2.0 T" },
+        { "id": "d", "text": "8.0 T" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Rearranging F = BIL to find B: B = F/(IL) = 0.3/(4 x 0.15) = 0.3/0.6 = 0.5 T. Option A multiplies F x L/I. Option C divides F by L only. Option D multiplies F by I and L instead of dividing. Always check units: force in N, current in A, length in m gives field strength in T."
+    }
+  ]
+}

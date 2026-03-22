@@ -1,0 +1,76 @@
+{
+  "id": "practice-area-under-curve",
+  "title": "Practice: Area Under a Curve",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "On a velocity-time graph, a car accelerates uniformly from 0 to 30 m/s in 10 seconds, then travels at constant 30 m/s for 5 seconds. What is the total distance?",
+      "options": [
+        { "id": "a", "text": "300 m" },
+        { "id": "b", "text": "450 m" },
+        { "id": "c", "text": "150 m" },
+        { "id": "d", "text": "225 m" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Area = triangle + rectangle. Triangle: (1/2)(10)(30) = 150 m. Rectangle: 30 x 5 = 150 m. Total = 150 + 150 = 300 m."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "To estimate the area under a curve, you can split it into strips. Using 4 strips of equal width under a curve from x = 0 to x = 8, each strip has width:",
+      "options": [
+        { "id": "a", "text": "4" },
+        { "id": "b", "text": "2" },
+        { "id": "c", "text": "1" },
+        { "id": "d", "text": "8" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Width = total range / number of strips = 8/4 = 2."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Using the trapezium rule with 3 strips to estimate the area under y = x^2 from x = 0 to x = 3, the strip width is 1. The y-values at x = 0, 1, 2, 3 are 0, 1, 4, 9. What is the estimate?",
+      "options": [
+        { "id": "a", "text": "9.5" },
+        { "id": "b", "text": "14" },
+        { "id": "c", "text": "9" },
+        { "id": "d", "text": "10.5" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Trapezium rule: (h/2)[first + last + 2(middle terms)] = (1/2)[0 + 9 + 2(1 + 4)] = (1/2)[9 + 10] = (1/2)(19) = 9.5."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "When the area under a velocity-time graph is below the time axis, this represents:",
+      "options": [
+        { "id": "a", "text": "Zero distance" },
+        { "id": "b", "text": "Distance travelled in the reverse direction" },
+        { "id": "c", "text": "Acceleration" },
+        { "id": "d", "text": "Deceleration" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Negative velocity means moving in the opposite direction. The area below the axis represents distance travelled in the reverse direction."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Using more strips (narrower trapeziums) in the trapezium rule generally makes the estimate:",
+      "options": [
+        { "id": "a", "text": "Less accurate" },
+        { "id": "b", "text": "More accurate" },
+        { "id": "c", "text": "Exactly correct" },
+        { "id": "d", "text": "No different" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "More strips means the straight-line tops of the trapeziums follow the curve more closely, giving a more accurate estimate of the actual area."
+    }
+  ]
+}

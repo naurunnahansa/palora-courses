@@ -1,0 +1,76 @@
+{
+  "id": "practice-microphones-and-speakers",
+  "title": "Practice: Microphones and Speakers",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A dynamic microphone converts sound into electrical signals. Which electromagnetic principle does it use?",
+      "options": [
+        { "id": "a", "text": "The motor effect -- a current-carrying coil in a magnetic field experiences a force" },
+        { "id": "b", "text": "Electromagnetic induction -- a coil moving in a magnetic field has a voltage induced in it" },
+        { "id": "c", "text": "Static electricity -- sound waves cause charges to build up on the diaphragm" },
+        { "id": "d", "text": "The heating effect of a current" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "In a dynamic microphone, sound waves cause a diaphragm to vibrate, which moves an attached coil back and forth within a permanent magnetic field. This changing flux through the coil induces a voltage (electromagnetic induction). The motor effect (A) is the principle used in speakers, not microphones -- they are reverse processes. Static electricity (C) and heating (D) are not involved."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A loudspeaker produces a louder sound when the current through its coil is increased. Which formula explains why the force on the coil increases?",
+      "options": [
+        { "id": "a", "text": "V = IR (increasing current increases voltage)" },
+        { "id": "b", "text": "P = I²R (increasing current increases power dissipated)" },
+        { "id": "c", "text": "F = BIL (increasing current increases the force on the conductor)" },
+        { "id": "d", "text": "E = QV (increasing current increases energy transferred)" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The loudspeaker works via the motor effect. The coil carries a current in a magnetic field, experiencing a force given by F = BIL. Increasing the current (I) directly increases the force (F), which causes the cone to vibrate with greater amplitude, producing a louder sound. While V = IR (A) is true, it does not explain the force. P = I²R (B) describes power dissipation in resistance, not the motor effect force."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A microphone produces an alternating voltage with a frequency of 440 Hz. What can you conclude about the sound that produced this signal?",
+      "options": [
+        { "id": "a", "text": "The sound has a frequency of 220 Hz because the microphone doubles the frequency" },
+        { "id": "b", "text": "The sound has a frequency of 440 Hz because the electrical signal matches the frequency of the sound wave" },
+        { "id": "c", "text": "The sound has a frequency of 880 Hz because the microphone halves the frequency" },
+        { "id": "d", "text": "The frequency of the sound cannot be determined from the electrical signal" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A microphone faithfully converts the sound wave into an electrical signal of the same frequency. The diaphragm vibrates at the same frequency as the incoming sound wave, so the coil moves at that frequency, inducing an alternating voltage at 440 Hz. The microphone does not change the frequency -- it reproduces it. A 440 Hz sound (the note A) produces a 440 Hz electrical signal."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A speaker and a microphone are described as 'the same device working in reverse.' Which row correctly matches each device to its energy conversion?",
+      "options": [
+        { "id": "a", "text": "Speaker: electrical to sound; Microphone: sound to electrical" },
+        { "id": "b", "text": "Speaker: sound to electrical; Microphone: electrical to sound" },
+        { "id": "c", "text": "Speaker: kinetic to electrical; Microphone: electrical to kinetic" },
+        { "id": "d", "text": "Speaker: electrical to light; Microphone: light to electrical" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A speaker converts electrical energy into sound energy (via the motor effect causing a cone to vibrate). A microphone converts sound energy into electrical energy (via electromagnetic induction as sound vibrates a diaphragm and attached coil). Option B has them backwards. While kinetic energy is involved as an intermediate step (C), the primary conversions are electrical-to-sound and sound-to-electrical."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a loudspeaker, a coil of 80 turns carries a current of 0.25 A in a magnetic field of 0.2 T. Each turn has a length of 0.05 m within the field. What is the total force on the coil?",
+      "options": [
+        { "id": "a", "text": "0.0025 N" },
+        { "id": "b", "text": "0.01 N" },
+        { "id": "c", "text": "0.2 N" },
+        { "id": "d", "text": "2.0 N" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Using F = BIL x N (for N turns): F = 0.2 x 0.25 x 0.05 x 80 = 0.2 N. Option A (0.0025 N) is the force on just one turn. Option B multiplies incorrectly. Option D is ten times too large. Remember that each turn contributes to the total force, so the number of turns must be included in the calculation."
+    }
+  ]
+}

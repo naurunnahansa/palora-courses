@@ -1,0 +1,76 @@
+{
+  "id": "practice-mean",
+  "title": "Practice: Mean",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The mean of 5 numbers is 12. Four of the numbers are 8, 10, 15 and 14. What is the fifth number?",
+      "options": [
+        { "id": "a", "text": "13" },
+        { "id": "b", "text": "11" },
+        { "id": "c", "text": "12" },
+        { "id": "d", "text": "15" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Sum of all 5 numbers = mean x count = 12 x 5 = 60. Sum of known numbers = 8 + 10 + 15 + 14 = 47. Fifth number = 60 - 47 = 13."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A class of 20 students has a mean test score of 64. Another class of 30 students has a mean of 72. What is the overall mean for all 50 students?",
+      "options": [
+        { "id": "a", "text": "68" },
+        { "id": "b", "text": "68.8" },
+        { "id": "c", "text": "69.6" },
+        { "id": "d", "text": "70" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Total for class 1 = 20 x 64 = 1280. Total for class 2 = 30 x 72 = 2160. Overall mean = (1280 + 2160) / 50 = 3440 / 50 = 68.8. The common error is averaging 64 and 72 to get 68, which ignores the different class sizes."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "After 8 matches, a cricketer's mean score is 45. After the 9th match, the mean drops to 42. What did they score in the 9th match?",
+      "options": [
+        { "id": "a", "text": "21" },
+        { "id": "b", "text": "18" },
+        { "id": "c", "text": "3" },
+        { "id": "d", "text": "42" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Total after 8 matches = 8 x 45 = 360. Total after 9 matches = 9 x 42 = 378. Score in 9th match = 378 - 360 = 18."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The numbers 3, 7, x, 11, 15 have a mean of 9. What is the value of x?",
+      "options": [
+        { "id": "a", "text": "8" },
+        { "id": "b", "text": "9" },
+        { "id": "c", "text": "10" },
+        { "id": "d", "text": "7" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Sum = 5 x 9 = 45. 3 + 7 + x + 11 + 15 = 45, so 36 + x = 45, giving x = 9."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Six data values have a mean of 10. Each value is multiplied by 3 and then 5 is added. What is the new mean?",
+      "options": [
+        { "id": "a", "text": "30" },
+        { "id": "b", "text": "35" },
+        { "id": "c", "text": "45" },
+        { "id": "d", "text": "65" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "When all values are multiplied by k then increased by c, the new mean = k x (old mean) + c = 3 x 10 + 5 = 35. This works because the mean follows the same linear transformation as the data."
+    }
+  ]
+}

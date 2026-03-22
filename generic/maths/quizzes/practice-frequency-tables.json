@@ -1,0 +1,76 @@
+{
+  "id": "practice-frequency-tables",
+  "title": "Practice: Frequency Tables",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A frequency table shows the number of siblings: 0 siblings (8 students), 1 sibling (12), 2 siblings (7), 3 siblings (3). What is the mean number of siblings?",
+      "options": [
+        { "id": "a", "text": "1.5" },
+        { "id": "b", "text": "1.17" },
+        { "id": "c", "text": "1" },
+        { "id": "d", "text": "7.5" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Mean = sum of (value × frequency) / total frequency = (0×8 + 1×12 + 2×7 + 3×3) / (8+12+7+3) = (0+12+14+9)/30 = 35/30 = 1.17 (to 2 d.p.). A common error is dividing by the number of rows (4) instead of total frequency (30)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Using the same data (0: freq 8, 1: freq 12, 2: freq 7, 3: freq 3), what is the median number of siblings?",
+      "options": [
+        { "id": "a", "text": "0" },
+        { "id": "b", "text": "1" },
+        { "id": "c", "text": "1.5" },
+        { "id": "d", "text": "2" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "30 values, so median is the average of the 15th and 16th values. Cumulative frequencies: 0 siblings covers positions 1-8, 1 sibling covers positions 9-20. Both the 15th and 16th values are 1. Median = 1."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A dice is rolled 60 times. The results are: 1 (12), 2 (8), 3 (10), 4 (11), 5 (9), 6 (10). What is the modal score?",
+      "options": [
+        { "id": "a", "text": "6" },
+        { "id": "b", "text": "12" },
+        { "id": "c", "text": "1" },
+        { "id": "d", "text": "3.5" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The mode is the value with the highest frequency. Score 1 has the highest frequency of 12. The mode is the score (1), not the frequency (12). Option (b) gives the frequency, not the mode."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A frequency table of goals scored per match is: 0 goals (5 matches), 1 goal (8), 2 goals (4), 3 goals (2), 4 goals (1). What is the range?",
+      "options": [
+        { "id": "a", "text": "7" },
+        { "id": "b", "text": "3" },
+        { "id": "c", "text": "4" },
+        { "id": "d", "text": "20" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Range = highest value − lowest value = 4 − 0 = 4. Option (a) subtracts frequencies. Option (b) is 3 − 0. The range measures the spread of the data values, not the frequencies."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The total of (score × frequency) for a frequency table is 156 and there are 40 data values. Three more data values of 5 are added. What is the new mean?",
+      "options": [
+        { "id": "a", "text": "3.98" },
+        { "id": "b", "text": "3.9" },
+        { "id": "c", "text": "3.72" },
+        { "id": "d", "text": "5.37" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "New total = 156 + (3 × 5) = 156 + 15 = 171. New number of values = 40 + 3 = 43. New mean = 171/43 = 3.977... ≈ 3.98 (to 2 d.p.)."
+    }
+  ]
+}

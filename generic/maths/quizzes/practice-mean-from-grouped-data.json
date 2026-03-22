@@ -1,0 +1,76 @@
+{
+  "id": "practice-mean-from-grouped-data",
+  "title": "Practice: Mean from Grouped Data",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Times (seconds) are grouped: 0 < t ≤ 10 (freq 4), 10 < t ≤ 20 (freq 10), 20 < t ≤ 30 (freq 8), 30 < t ≤ 40 (freq 2). What is the estimated mean time?",
+      "options": [
+        { "id": "a", "text": "25 seconds" },
+        { "id": "b", "text": "18.75 seconds" },
+        { "id": "c", "text": "20 seconds" },
+        { "id": "d", "text": "15 seconds" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Midpoints: 5, 15, 25, 35. Sum of (midpoint x freq) = 5x4 + 15x10 + 25x8 + 35x2 = 20 + 150 + 200 + 70 = 450. Total frequency = 24. Estimated mean = 450/24 = 18.75 seconds."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Distances (km) grouped: 0 ≤ d < 5 (freq 8), 5 ≤ d < 10 (freq 15), 10 ≤ d < 15 (freq 12), 15 ≤ d < 20 (freq 5). Estimate the mean distance.",
+      "options": [
+        { "id": "a", "text": "9.125 km" },
+        { "id": "b", "text": "12.5 km" },
+        { "id": "c", "text": "8.5 km" },
+        { "id": "d", "text": "10 km" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Midpoints: 2.5, 7.5, 12.5, 17.5. Sum = 2.5x8 + 7.5x15 + 12.5x12 + 17.5x5 = 20 + 112.5 + 150 + 87.5 = 365. Total freq = 40. Mean = 365/40 = 9.125 km."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Why is the mean from grouped data called an 'estimate'?",
+      "options": [
+        { "id": "a", "text": "Because we round the answer" },
+        { "id": "b", "text": "Because we use midpoints, which assume data is evenly spread within each class" },
+        { "id": "c", "text": "Because the sample size is too small" },
+        { "id": "d", "text": "Because grouped data is always inaccurate" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "We use the midpoint of each class to represent all values in that class. This assumes data is evenly spread within each class, which may not be true. We've lost the individual data values, so can only estimate the mean."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Ages: 20-29 (freq 10), 30-39 (freq 18), 40-49 (freq 12). A student uses midpoints 25, 35, 45. Another uses 24.5, 34.5, 44.5. Who is correct for this data?",
+      "options": [
+        { "id": "a", "text": "The first student, because midpoints are always whole numbers" },
+        { "id": "b", "text": "The second student, because (20+29)/2 = 24.5" },
+        { "id": "c", "text": "Both give the same estimate so it doesn't matter" },
+        { "id": "d", "text": "Neither is correct" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "For discrete data '20 to 29', midpoint = (20+29)/2 = 24.5. For continuous data with boundaries 19.5 to 29.5, midpoint = 24.5 also. The correct midpoints are 24.5, 34.5, 44.5."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Marks: 0 < m ≤ 20 (freq 6), 20 < m ≤ 40 (freq 14), 40 < m ≤ 60 (freq 20), 60 < m ≤ 80 (freq 10). The estimated mean is 42. The teacher adds 5 bonus marks to every student. What is the new estimated mean?",
+      "options": [
+        { "id": "a", "text": "42" },
+        { "id": "b", "text": "47" },
+        { "id": "c", "text": "84" },
+        { "id": "d", "text": "210" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Adding a constant to every value increases the mean by that constant. New mean = 42 + 5 = 47. The midpoints all shift up by 5, so the overall mean increases by 5."
+    }
+  ]
+}

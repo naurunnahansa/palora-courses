@@ -1,0 +1,76 @@
+{
+  "id": "practice-scatter-graphs",
+  "title": "Practice: Scatter Graphs",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A scatter graph of temperature vs ice cream sales shows points going from bottom-left to top-right. What type of correlation is this?",
+      "options": [
+        { "id": "a", "text": "Negative correlation" },
+        { "id": "b", "text": "No correlation" },
+        { "id": "c", "text": "Positive correlation" },
+        { "id": "d", "text": "Perfect correlation" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Points going from bottom-left to top-right indicate positive correlation: as temperature increases, ice cream sales increase. This is a sensible real-world relationship."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A scatter graph of car age (years) vs value (£) shows strong negative correlation. Which interpretation is most appropriate?",
+      "options": [
+        { "id": "a", "text": "Older cars cause lower values" },
+        { "id": "b", "text": "As car age increases, value tends to decrease" },
+        { "id": "c", "text": "Cheaper cars are always older" },
+        { "id": "d", "text": "Car age and value are unrelated" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Option (b) correctly describes correlation as a tendency, not a certainty. Option (a) implies causation, which correlation alone cannot prove. Option (c) states 'always', which is too strong. Correlation shows a trend, not a guaranteed relationship."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "On a scatter graph, most points cluster closely around a line of best fit, but one point is far from the others. This distant point is called:",
+      "options": [
+        { "id": "a", "text": "An error" },
+        { "id": "b", "text": "An anomaly (outlier)" },
+        { "id": "c", "text": "A negative point" },
+        { "id": "d", "text": "The range" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A point far from the general pattern is called an outlier or anomaly. It may be due to a recording error or an unusual case. Outliers should be identified but not automatically removed - they may represent genuine data."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A scatter graph plots hours of revision (x) against test score (y). The points suggest positive correlation. A student revised for 3 hours and scored 45. Another revised for 8 hours and scored 72. Estimate the score for 5 hours of revision.",
+      "options": [
+        { "id": "a", "text": "About 54" },
+        { "id": "b", "text": "About 72" },
+        { "id": "c", "text": "About 60" },
+        { "id": "d", "text": "About 45" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Using the two points: gradient = (72-45)/(8-3) = 27/5 = 5.4. At x=5: score = 45 + 5.4 x (5-3) = 45 + 10.8 = 55.8, approximately 54-56. This is interpolation (estimating within the data range), which is reliable."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Data shows positive correlation between hours of sunshine and ice cream sales for values 2-10 hours. Using the line of best fit to predict sales for 20 hours of sunshine would be:",
+      "options": [
+        { "id": "a", "text": "Reliable, because the correlation is positive" },
+        { "id": "b", "text": "Unreliable, because this is extrapolation beyond the data range" },
+        { "id": "c", "text": "Reliable, because we have a line of best fit" },
+        { "id": "d", "text": "Unreliable, because ice cream sales can't be predicted" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Predicting beyond the data range is extrapolation, which is unreliable because we don't know if the trend continues. The relationship between 2-10 hours may not hold at 20 hours. Interpolation (within the range) is much more reliable."
+    }
+  ]
+}

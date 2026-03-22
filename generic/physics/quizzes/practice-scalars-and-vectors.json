@@ -1,0 +1,76 @@
+{
+  "id": "practice-scalars-and-vectors",
+  "title": "Practice: Scalars and Vectors",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A car travels around a circular roundabout at a steady 30 km/h. Which statement is correct?",
+      "options": [
+        { "id": "a", "text": "Both speed and velocity are constant" },
+        { "id": "b", "text": "Speed is constant but velocity is changing" },
+        { "id": "c", "text": "Speed is changing but velocity is constant" },
+        { "id": "d", "text": "Both speed and velocity are changing" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Speed is a scalar — it only has magnitude, which stays at 30 km/h. Velocity is a vector — it has both magnitude and direction. As the car goes around the roundabout, its direction constantly changes, so velocity is constantly changing even though speed is constant. This is a key distinction between scalars and vectors."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Two forces act on a box: 12 N to the right and 5 N upward. What is the magnitude of the resultant force?",
+      "options": [
+        { "id": "a", "text": "7 N" },
+        { "id": "b", "text": "13 N" },
+        { "id": "c", "text": "17 N" },
+        { "id": "d", "text": "8.5 N" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "These forces are perpendicular, so we use Pythagoras' theorem: R = sqrt(12² + 5²) = sqrt(144 + 25) = sqrt(169) = 13 N. Option (c) of 17 N is the common mistake of simply adding the magnitudes, which only works when forces are in the same direction. Option (a) of 7 N is the result of subtracting, which only applies to opposite directions."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Which of the following lists contains ONLY vector quantities?",
+      "options": [
+        { "id": "a", "text": "Force, speed, acceleration" },
+        { "id": "b", "text": "Displacement, velocity, momentum" },
+        { "id": "c", "text": "Mass, weight, distance" },
+        { "id": "d", "text": "Energy, force, displacement" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Displacement, velocity, and momentum all have both magnitude and direction, making them vectors. Option (a) is wrong because speed is a scalar. Option (c) is wrong because mass and distance are scalars (weight is a vector, though). Option (d) is wrong because energy is a scalar."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A swimmer crosses a river heading due north at 3 m/s. The river current flows due east at 4 m/s. What is the swimmer's resultant speed?",
+      "options": [
+        { "id": "a", "text": "1 m/s" },
+        { "id": "b", "text": "5 m/s" },
+        { "id": "c", "text": "7 m/s" },
+        { "id": "d", "text": "3.5 m/s" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The velocities are perpendicular (north and east), so we use Pythagoras' theorem: R = sqrt(3² + 4²) = sqrt(9 + 16) = sqrt(25) = 5 m/s. This is a classic 3-4-5 right triangle. Simply adding (7 m/s) would be incorrect because the vectors are at right angles, not in the same direction."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A force of 20 N acts at 30° above the horizontal. What is the horizontal component of this force?",
+      "options": [
+        { "id": "a", "text": "10.0 N" },
+        { "id": "b", "text": "14.1 N" },
+        { "id": "c", "text": "17.3 N" },
+        { "id": "d", "text": "20.0 N" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The horizontal component is found using: F_x = F cos(theta) = 20 × cos(30°) = 20 × 0.866 = 17.3 N. Option (a) of 10.0 N is the vertical component (20 × sin 30° = 10 N). A common error is mixing up sine and cosine when resolving vectors — cosine gives the component adjacent to the angle."
+    }
+  ]
+}

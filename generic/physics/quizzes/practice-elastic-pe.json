@@ -1,0 +1,76 @@
+{
+  "id": "practice-elastic-pe",
+  "title": "Practice: Elastic Potential Energy",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A spring with spring constant 200 N/m is stretched by 0.1 m. What is the elastic potential energy stored? (EPE = 1/2 x k x e^2)",
+      "options": [
+        { "id": "a", "text": "20 J" },
+        { "id": "b", "text": "1 J" },
+        { "id": "c", "text": "10 J" },
+        { "id": "d", "text": "2 J" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "EPE = 1/2 x k x e^2 = 1/2 x 200 x 0.1^2 = 1/2 x 200 x 0.01 = 1 J. Option A (20 J) results from forgetting to square the extension. Option C (10 J) forgets both the 1/2 and squaring. Option D (2 J) forgets only the 1/2."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A spring obeys Hooke's law. If the extension is doubled, what happens to the elastic potential energy stored?",
+      "options": [
+        { "id": "a", "text": "It doubles" },
+        { "id": "b", "text": "It stays the same" },
+        { "id": "c", "text": "It quadruples (x4)" },
+        { "id": "d", "text": "It halves" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "EPE = 1/2 x k x e^2. Since extension is squared in the formula, doubling the extension increases EPE by 2^2 = 4 times. This is similar to how kinetic energy depends on velocity squared. Option A would only be correct if EPE were directly proportional to extension."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A catapult with spring constant 400 N/m is used to launch a stone. If 8 J of elastic potential energy is stored, what is the extension of the elastic band?",
+      "options": [
+        { "id": "a", "text": "0.04 m" },
+        { "id": "b", "text": "0.2 m" },
+        { "id": "c", "text": "0.4 m" },
+        { "id": "d", "text": "0.02 m" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Rearranging EPE = 1/2 x k x e^2: e^2 = 2 x EPE / k = 2 x 8 / 400 = 0.04. So e = sqrt(0.04) = 0.2 m. Option A (0.04 m) is e^2, not e. Option D forgets to multiply by 2 before dividing."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A toy car is powered by a compressed spring. When released, the spring's elastic potential energy is converted into the car's kinetic energy. If the spring stores 0.5 J and the car has a mass of 0.1 kg, what is the maximum speed of the car? (Assume no friction)",
+      "options": [
+        { "id": "a", "text": "10 m/s" },
+        { "id": "b", "text": "5 m/s" },
+        { "id": "c", "text": "3.2 m/s" },
+        { "id": "d", "text": "1 m/s" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "All EPE converts to KE: 1/2 x m x v^2 = 0.5 J. So v^2 = 2 x 0.5 / 0.1 = 10. v = sqrt(10) = 3.16 m/s, approximately 3.2 m/s. Option A (10 m/s) is v^2 without taking the square root. Option B and D come from incorrect rearrangements."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student stretches a spring beyond its elastic limit. What happens to the spring when the force is removed?",
+      "options": [
+        { "id": "a", "text": "It returns to its original length because springs always obey Hooke's law" },
+        { "id": "b", "text": "It does not return to its original length because it has been permanently deformed" },
+        { "id": "c", "text": "It breaks into two pieces" },
+        { "id": "d", "text": "It becomes shorter than its original length" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Beyond the elastic limit, the spring is permanently deformed and will not return to its original length when the force is removed. Hooke's law (F = k x e) only applies up to the limit of proportionality. The spring does not necessarily break; it just does not fully recover its shape."
+    }
+  ]
+}

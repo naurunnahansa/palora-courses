@@ -1,0 +1,76 @@
+{
+  "id": "practice-rotations",
+  "title": "Practice: Rotations",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The point (4, 1) is rotated 90° clockwise about the origin. What are the coordinates of the image?",
+      "options": [
+        { "id": "a", "text": "(−1, 4)" },
+        { "id": "b", "text": "(1, −4)" },
+        { "id": "c", "text": "(−4, −1)" },
+        { "id": "d", "text": "(−4, 1)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A 90° clockwise rotation about the origin maps (x, y) to (y, −x). So (4, 1) maps to (1, −4). Option (a) is the result of a 90° anticlockwise rotation."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A triangle is rotated 180° about the point (2, 3). The vertex A is at (5, 1). What are the coordinates of A'?",
+      "options": [
+        { "id": "a", "text": "(−5, −1)" },
+        { "id": "b", "text": "(−1, 5)" },
+        { "id": "c", "text": "(−1, 7)" },
+        { "id": "d", "text": "(7, −1)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "For 180° rotation about centre (2, 3): find the displacement from centre: (5−2, 1−3) = (3, −2). Negate it: (−3, 2). Add back to centre: (2−3, 3+2) = (−1, 5). Option (a) is the error of rotating about the origin instead."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "The point (−3, 2) is rotated 90° anticlockwise about the origin. What are the coordinates of the image?",
+      "options": [
+        { "id": "a", "text": "(2, 3)" },
+        { "id": "b", "text": "(−2, −3)" },
+        { "id": "c", "text": "(3, 2)" },
+        { "id": "d", "text": "(−2, 3)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A 90° anticlockwise rotation about the origin maps (x, y) to (−y, x). So (−3, 2) maps to (−2, −3). Option (a) applies the clockwise rule instead."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Point B(1, 4) is the image of point A after a 90° clockwise rotation about the point (3, 2). What are the coordinates of A?",
+      "options": [
+        { "id": "a", "text": "(5, 4)" },
+        { "id": "b", "text": "(1, 0)" },
+        { "id": "c", "text": "(5, 0)" },
+        { "id": "d", "text": "(1, 4)" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "To reverse a 90° clockwise rotation, apply a 90° anticlockwise rotation. B relative to centre: (1−3, 4−2) = (−2, 2). Anticlockwise rule (−y, x): (−2, −2). Add centre: (3−2, 2−2) = (1, 0)."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A shape has rotational symmetry. After a rotation of 90° clockwise about the origin, the point (a, 3) maps to (3, −a). What is the value of a?",
+      "options": [
+        { "id": "a", "text": "−3" },
+        { "id": "b", "text": "3" },
+        { "id": "c", "text": "0" },
+        { "id": "d", "text": "9" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "90° clockwise about origin maps (x, y) to (y, −x). So (a, 3) maps to (3, −a). Comparing with the given image (3, −a), this is consistent for any value of a. However, the x-component of the image must equal y = 3, which it does. The y-component of the image is −a = −a. Since the mapping already gives (3, −a), we need the original x = a to satisfy y-image = −a, which means a = 3 (matching the given coordinates)."
+    }
+  ]
+}

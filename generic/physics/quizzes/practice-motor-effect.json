@@ -1,0 +1,76 @@
+{
+  "id": "practice-motor-effect",
+  "title": "Practice: The Motor Effect",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A wire carrying a current of 3 A passes through a magnetic field of strength 0.5 T. The length of wire in the field is 0.2 m and the wire is perpendicular to the field. What is the force on the wire?",
+      "options": [
+        { "id": "a", "text": "0.1 N" },
+        { "id": "b", "text": "0.3 N" },
+        { "id": "c", "text": "3.0 N" },
+        { "id": "d", "text": "7.5 N" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using F = BIL: F = 0.5 T x 3 A x 0.2 m = 0.3 N. A common error is forgetting one of the three quantities or multiplying incorrectly. Option A uses only B x L. Option C uses only B x I x 2 (wrong calculation). Option D multiplies all values without the correct formula."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Using Fleming's left-hand rule, if the first finger (field) points north and the second finger (current) points east, in which direction does the thumb (force) point?",
+      "options": [
+        { "id": "a", "text": "Downward" },
+        { "id": "b", "text": "Upward" },
+        { "id": "c", "text": "West" },
+        { "id": "d", "text": "South" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Fleming's left-hand rule: the first finger points in the direction of the magnetic field (north), the second finger points in the direction of conventional current (east), and the thumb -- held at right angles to both -- points upward, giving the direction of the force. A common mistake is confusing left-hand and right-hand rules or mixing up which finger represents which quantity."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A current-carrying wire is placed in a magnetic field but experiences no force. Which of the following best explains why?",
+      "options": [
+        { "id": "a", "text": "The current is too small to produce a force" },
+        { "id": "b", "text": "The wire is parallel to the magnetic field lines" },
+        { "id": "c", "text": "The magnetic field is not strong enough" },
+        { "id": "d", "text": "The wire is made of a non-magnetic material" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The motor effect only produces a force when the current has a component perpendicular to the magnetic field. When the wire is parallel to the field lines, the angle between them is 0 degrees and sin(0) = 0, so the force is zero regardless of the current or field strength. Any non-zero current in any non-zero field will produce a force provided the wire is not parallel to the field. The material of the wire (D) does not matter -- the force acts on any current-carrying conductor."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student wants to increase the force on a current-carrying wire in a magnetic field. Which combination of changes would produce the greatest increase in force?",
+      "options": [
+        { "id": "a", "text": "Double the current and halve the length of wire in the field" },
+        { "id": "b", "text": "Double the magnetic field strength and double the current" },
+        { "id": "c", "text": "Triple the length of wire in the field only" },
+        { "id": "d", "text": "Halve the current and double the magnetic field strength" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using F = BIL: Option A gives 2I x 0.5L = 1x original (no change). Option B gives 2B x 2I x L = 4x original (quadrupled). Option C gives 3L = 3x original (tripled). Option D gives 2B x 0.5I = 1x original (no change). Doubling both B and I (option B) gives the greatest increase -- four times the original force."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A loudspeaker uses the motor effect to produce sound. A coil attached to a paper cone sits around a permanent magnet. When an alternating current flows through the coil, what happens?",
+      "options": [
+        { "id": "a", "text": "The coil and cone vibrate back and forth, pushing air to create sound waves" },
+        { "id": "b", "text": "The permanent magnet spins, causing the cone to rotate" },
+        { "id": "c", "text": "The coil heats up, expanding the air to create sound" },
+        { "id": "d", "text": "The cone becomes magnetised and is repelled from the magnet" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "In a loudspeaker, the alternating current changes direction repeatedly, so the force on the coil (from the motor effect) alternates direction. This causes the coil and attached cone to vibrate back and forth, pushing and pulling on the air to create sound waves. The magnet does not spin (B). Heating (C) is not the mechanism. The cone does not become magnetised (D) -- it is the current-carrying coil that experiences the force."
+    }
+  ]
+}

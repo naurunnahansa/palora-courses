@@ -1,0 +1,76 @@
+{
+  "id": "practice-current",
+  "title": "Practice: Electric Current",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A current of 0.5 A flows through a lamp for 2 minutes. How much charge passes through the lamp?",
+      "options": [
+        { "id": "a", "text": "1 C" },
+        { "id": "b", "text": "4 C" },
+        { "id": "c", "text": "60 C" },
+        { "id": "d", "text": "0.25 C" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Using Q = I x t, first convert 2 minutes to seconds: 2 x 60 = 120 s. Then Q = 0.5 x 120 = 60 C. Option A (1 C) comes from using 2 minutes without converting to seconds (0.5 x 2 = 1). Always convert time to seconds when using the formula Q = It. Option D comes from dividing I by t."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a metallic conductor, conventional current flows from positive to negative. What actually moves through the wire?",
+      "options": [
+        { "id": "a", "text": "Positive charges moving from positive to negative terminal" },
+        { "id": "b", "text": "Protons moving through the wire" },
+        { "id": "c", "text": "Electrons moving from negative to positive terminal (opposite to conventional current)" },
+        { "id": "d", "text": "Neutrons moving through the wire" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "In metals, current is carried by free (delocalised) electrons, which are negatively charged. They flow from the negative terminal to the positive terminal — opposite to the direction of conventional current. Conventional current direction was defined before electrons were discovered, so it is historically defined as positive to negative. Protons (option B) and neutrons (option D) are locked in the nucleus and cannot move through the wire."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An ammeter reads 2.5 A. How many coulombs of charge pass through it each second?",
+      "options": [
+        { "id": "a", "text": "0.4 C" },
+        { "id": "b", "text": "2.5 C" },
+        { "id": "c", "text": "25 C" },
+        { "id": "d", "text": "5 C" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Current is defined as the rate of flow of charge: I = Q/t. If I = 2.5 A, then in 1 second, Q = I x t = 2.5 x 1 = 2.5 C. By definition, 1 ampere means 1 coulomb of charge passes per second. So 2.5 A means 2.5 coulombs per second. Option A incorrectly divides 1 by 2.5."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "An ammeter should be connected in a circuit:",
+      "options": [
+        { "id": "a", "text": "In parallel with the component being measured" },
+        { "id": "b", "text": "In series with the component being measured" },
+        { "id": "c", "text": "Between the two terminals of the battery only" },
+        { "id": "d", "text": "It does not matter how it is connected" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "An ammeter must be connected in series so that all the current flowing through the component also flows through the ammeter, giving an accurate reading. If connected in parallel (option A), the ammeter would provide a low-resistance path and could be damaged by excessive current — that is how voltmeters are connected instead. An ammeter has very low resistance to minimise its effect on the circuit."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A battery delivers 900 C of charge to a circuit over 5 minutes. What is the average current?",
+      "options": [
+        { "id": "a", "text": "180 A" },
+        { "id": "b", "text": "3 A" },
+        { "id": "c", "text": "4500 A" },
+        { "id": "d", "text": "0.33 A" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using I = Q/t, first convert 5 minutes to seconds: 5 x 60 = 300 s. Then I = 900/300 = 3 A. Option A (180) uses minutes instead of seconds (900/5 = 180). Option C multiplies Q by t. Always convert time to seconds before using electrical formulae."
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "practice-calculating-enthalpy-changes",
+  "title": "Practice: Calculating Enthalpy Changes",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A student burns 0.5 g of ethanol (Mr = 46) and uses the heat to warm 100 g of water. The temperature rises by 13.5°C. Calculate the energy released per mole of ethanol. (c = 4.2 J/g/°C)",
+      "options": [
+        { "id": "a", "text": "-522 kJ/mol" },
+        { "id": "b", "text": "-5670 J/mol" },
+        { "id": "c", "text": "-261 kJ/mol" },
+        { "id": "d", "text": "-1044 kJ/mol" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "First, Q = mcDeltaT = 100 x 4.2 x 13.5 = 5670 J. Moles of ethanol = 0.5/46 = 0.01087 mol. Energy per mole = 5670/0.01087 = 521,600 J/mol = approximately 522 kJ/mol. The negative sign indicates exothermic. (The actual value is about 1367 kJ/mol - the difference is due to heat loss to surroundings.)"
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a calorimetry experiment, 25.0 cm³ of 1.0 mol/dm³ HCl is mixed with 25.0 cm³ of 1.0 mol/dm³ NaOH. The temperature rises by 6.8°C. Assuming the solution has the same density and specific heat capacity as water (4.2 J/g/°C), what is the enthalpy of neutralisation per mole?",
+      "options": [
+        { "id": "a", "text": "-57.1 kJ/mol" },
+        { "id": "b", "text": "-28.6 kJ/mol" },
+        { "id": "c", "text": "-1428 J/mol" },
+        { "id": "d", "text": "-114.2 kJ/mol" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Total volume = 50 cm³, so mass = 50 g. Q = mcDeltaT = 50 x 4.2 x 6.8 = 1428 J. Moles of HCl = 0.025 x 1.0 = 0.025 mol (same for NaOH). Enthalpy per mole = 1428/0.025 = 57,120 J/mol = 57.1 kJ/mol. With negative sign: -57.1 kJ/mol (exothermic). This is close to the accepted value of -57.1 kJ/mol for strong acid-strong base neutralisation."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In the equation Q = mcDeltaT, a student correctly measures Q = 8400 J. However, she knows the actual energy released should be higher. Which factor most likely caused the measured value to be too low?",
+      "options": [
+        { "id": "a", "text": "She used too much water" },
+        { "id": "b", "text": "Heat was lost to the surroundings during the experiment" },
+        { "id": "c", "text": "The thermometer was inaccurate and read too high" },
+        { "id": "d", "text": "She measured the mass of water incorrectly" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The most significant source of error in calorimetry experiments is heat loss to the surroundings. Energy escapes to the air, the container, and the thermometer, meaning the temperature rise measured is less than it should be. This gives a lower value of Q. Using insulation (polystyrene cup, lid) helps reduce this error."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Using bond energies: N-H = 391, H-H = 436, N≡N = 945 (all kJ/mol), calculate Delta H for: N2 + 3H2 -> 2NH3",
+      "options": [
+        { "id": "a", "text": "+93 kJ/mol" },
+        { "id": "b", "text": "-93 kJ/mol" },
+        { "id": "c", "text": "-399 kJ/mol" },
+        { "id": "d", "text": "-786 kJ/mol" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Bonds broken: 1 x N≡N (945) + 3 x H-H (3 x 436 = 1308) = 2253 kJ. Bonds made: 2 x NH3, each has 3 N-H bonds, so 6 x N-H (6 x 391 = 2346) = 2346 kJ. Delta H = 2253 - 2346 = -93 kJ/mol. The reaction is exothermic, which is consistent with the Haber process being exothermic."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A calorimetry experiment measures a temperature change of 8°C when 200 cm³ of solution is used. If the experiment were repeated with only 100 cm³ of solution (same concentration and amounts of reactant), what temperature change would you expect?",
+      "options": [
+        { "id": "a", "text": "4°C" },
+        { "id": "b", "text": "8°C" },
+        { "id": "c", "text": "16°C" },
+        { "id": "d", "text": "12°C" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The same amounts of reactants release the same amount of energy (Q is unchanged). Using Q = mcDeltaT, if m is halved but Q stays the same, then DeltaT must double. So 8°C x 2 = 16°C. Less solution means the same energy heats a smaller mass, causing a larger temperature rise."
+    }
+  ]
+}

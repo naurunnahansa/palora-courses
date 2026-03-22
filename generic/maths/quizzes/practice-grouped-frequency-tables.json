@@ -1,0 +1,76 @@
+{
+  "id": "practice-grouped-frequency-tables",
+  "title": "Practice: Grouped Frequency Tables",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A grouped frequency table shows test scores: 0-20 (4 students), 21-40 (8), 41-60 (15), 61-80 (10), 81-100 (3). Which class interval contains the median?",
+      "options": [
+        { "id": "a", "text": "21-40" },
+        { "id": "b", "text": "41-60" },
+        { "id": "c", "text": "61-80" },
+        { "id": "d", "text": "0-20" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Total = 40 students. Median is between 20th and 21st values. Cumulative: 0-20 has 4, up to 40 has 12, up to 60 has 27. The 20th and 21st values both fall in the 41-60 class (positions 13-27)."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Heights are grouped: 140 ≤ h < 150 (3), 150 ≤ h < 160 (12), 160 ≤ h < 170 (18), 170 ≤ h < 180 (7). What is the estimated mean height?",
+      "options": [
+        { "id": "a", "text": "160 cm" },
+        { "id": "b", "text": "162.25 cm" },
+        { "id": "c", "text": "161.5 cm" },
+        { "id": "d", "text": "165 cm" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using midpoints: (145×3 + 155×12 + 165×18 + 175×7) / 40 = (435 + 1860 + 2970 + 1225) / 40 = 6490/40 = 162.25 cm. We must use class midpoints for grouped data, giving an estimated mean."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a grouped table, the class 10 < x ≤ 20 has frequency 15. What is the class width and midpoint?",
+      "options": [
+        { "id": "a", "text": "Width 10, midpoint 15" },
+        { "id": "b", "text": "Width 11, midpoint 15" },
+        { "id": "c", "text": "Width 10, midpoint 10" },
+        { "id": "d", "text": "Width 10, midpoint 20" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Class width = upper boundary − lower boundary = 20 − 10 = 10. Midpoint = (10 + 20) / 2 = 15. The midpoint is used to estimate the mean from grouped data."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Weights (kg) are grouped: 50-60 (5), 60-70 (12), 70-80 (18), 80-90 (10), 90-100 (5). The class boundaries are 50 ≤ w < 60, etc. What is the modal class?",
+      "options": [
+        { "id": "a", "text": "60-70" },
+        { "id": "b", "text": "70-80" },
+        { "id": "c", "text": "75" },
+        { "id": "d", "text": "18" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The modal class is the class with the highest frequency: 70-80 with 18. For grouped data, we identify the modal class (interval), not a single value. Option (c) gives the midpoint, and (d) gives the frequency."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A grouped table with class intervals of equal width has: 0-10 (6), 10-20 (14), 20-30 (22), 30-40 (8). Estimate the number of values less than 25.",
+      "options": [
+        { "id": "a", "text": "42" },
+        { "id": "b", "text": "31" },
+        { "id": "c", "text": "20" },
+        { "id": "d", "text": "36" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "All values below 20: 6 + 14 = 20. For 20-30 class, 25 is halfway through, so estimate 22 × 0.5 = 11 values below 25. Total estimate = 20 + 11 = 31. We assume values are evenly distributed within each class."
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "practice-venn-diagrams",
+  "title": "Practice: Venn Diagrams",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a class of 30 students, 18 study French, 12 study Spanish and 5 study both. How many students study neither language?",
+      "options": [
+        { "id": "a", "text": "0" },
+        { "id": "b", "text": "5" },
+        { "id": "c", "text": "10" },
+        { "id": "d", "text": "3" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Using the addition formula: French or Spanish = 18 + 12 − 5 = 25. Neither = 30 − 25 = 5. A common error is forgetting to subtract the overlap, giving 30 − 30 = 0."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "From the Venn diagram: A only = 8, B only = 12, A and B = 6, neither = 4. A student is chosen at random. Find P(A).",
+      "options": [
+        { "id": "a", "text": "8/30" },
+        { "id": "b", "text": "14/30" },
+        { "id": "c", "text": "6/30" },
+        { "id": "d", "text": "8/26" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Total = 8 + 12 + 6 + 4 = 30. A includes A only + A and B = 8 + 6 = 14. P(A) = 14/30 = 7/15. A common error is using only the 'A only' region (8/30)."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a survey of 50 people: 30 like coffee, 25 like tea, 10 like neither. How many like both coffee and tea?",
+      "options": [
+        { "id": "a", "text": "5" },
+        { "id": "b", "text": "10" },
+        { "id": "c", "text": "15" },
+        { "id": "d", "text": "20" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Like at least one = 50 − 10 = 40. Using the addition rule: Coffee + Tea − Both = at least one. 30 + 25 − Both = 40. Both = 55 − 40 = 15."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "From a Venn diagram with sets A and B: P(A) = 0.6, P(B) = 0.5, P(A and B) = 0.2. What is P(A or B)?",
+      "options": [
+        { "id": "a", "text": "1.1" },
+        { "id": "b", "text": "0.9" },
+        { "id": "c", "text": "0.7" },
+        { "id": "d", "text": "0.3" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "P(A or B) = P(A) + P(B) − P(A and B) = 0.6 + 0.5 − 0.2 = 0.9. Option (a) forgets to subtract the intersection. You must subtract P(A and B) to avoid double-counting."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a group of 40 students: 22 play football, 17 play rugby, 8 play both. A student who plays football is chosen at random. What is the probability this student also plays rugby?",
+      "options": [
+        { "id": "a", "text": "8/40" },
+        { "id": "b", "text": "8/17" },
+        { "id": "c", "text": "8/22" },
+        { "id": "d", "text": "17/40" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Given the student plays football, we restrict to the 22 football players. Of these, 8 also play rugby. P(rugby | football) = 8/22 = 4/11. Option (b) divides by rugby players instead. Option (a) uses the full group."
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "practice-series-circuits",
+  "title": "Practice: Series Circuits",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Three resistors of 2 ohms, 3 ohms, and 5 ohms are connected in series to a 20 V battery. What is the current flowing through the circuit?",
+      "options": [
+        { "id": "a", "text": "10 A" },
+        { "id": "b", "text": "2 A" },
+        { "id": "c", "text": "4 A" },
+        { "id": "d", "text": "0.5 A" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "In series, total resistance = R1 + R2 + R3 = 2 + 3 + 5 = 10 ohms. Then I = V/R = 20/10 = 2 A. Option A (10) uses only the total resistance. Option C uses only the 5 ohm resistor. Option D inverts the calculation. In series, all resistances simply add up."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "In a series circuit with a 12 V supply, the p.d. across the first component is 5 V and across the second is 4 V. What is the p.d. across the third component?",
+      "options": [
+        { "id": "a", "text": "9 V" },
+        { "id": "b", "text": "12 V" },
+        { "id": "c", "text": "3 V" },
+        { "id": "d", "text": "1 V" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "In a series circuit, the potential differences across all components add up to the supply voltage. So V3 = 12 - 5 - 4 = 3 V. Option A adds 5 and 4 instead of subtracting from 12. Option B is the total supply voltage, not the remaining p.d. This is a direct application of Kirchhoff's second law for series circuits."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A series circuit contains two lamps and a battery. Ammeter A1 is placed before the first lamp and reads 0.3 A. What does ammeter A2, placed between the two lamps, read?",
+      "options": [
+        { "id": "a", "text": "0.15 A" },
+        { "id": "b", "text": "0.6 A" },
+        { "id": "c", "text": "0.3 A" },
+        { "id": "d", "text": "0 A" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "In a series circuit, the current is the same at every point — there is only one path for current to flow. So A2 also reads 0.3 A. Option A (0.15 A) incorrectly assumes the current is halved by each component. Option B (0.6 A) incorrectly assumes currents add up. Current is NOT used up by components — this is one of the most common misconceptions in electricity."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "Old Christmas tree lights were connected in series. If one bulb blew (broke), all the other bulbs went out. Why?",
+      "options": [
+        { "id": "a", "text": "The broken bulb absorbed all the electrical energy" },
+        { "id": "b", "text": "In series there is only one path for current, so a break anywhere stops current flowing through the entire circuit" },
+        { "id": "c", "text": "The voltage was too high for the remaining bulbs" },
+        { "id": "d", "text": "The other bulbs needed the broken one to work" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "In a series circuit, there is only ONE path for current. If any component breaks (creating an open circuit), it breaks the single loop and current cannot flow to any of the other components. This is a major disadvantage of series circuits for practical applications. Modern Christmas lights are wired in parallel so that one blown bulb does not affect the rest."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "difficulty": "application",
+      "stem": "A 6 V battery is connected in series with a 4 ohm and an 8 ohm resistor. What is the potential difference across the 8 ohm resistor?",
+      "options": [
+        { "id": "a", "text": "2 V" },
+        { "id": "b", "text": "4 V" },
+        { "id": "c", "text": "6 V" },
+        { "id": "d", "text": "8 V" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Total resistance = 4 + 8 = 12 ohms. Current = V/R = 6/12 = 0.5 A. The p.d. across the 8 ohm resistor = I x R = 0.5 x 8 = 4 V. Alternatively, the voltage splits in the ratio of resistances: the 8 ohm resistor gets 8/12 of the total voltage = (8/12) x 6 = 4 V. The 4 ohm resistor gets the remaining 2 V, and 2 + 4 = 6 V (the supply voltage)."
+    }
+  ]
+}
